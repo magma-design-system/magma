@@ -53,8 +53,10 @@ import {
   clearDraft,
   hashText,
   readDraft,
+  reasonText,
   reconcileDraft,
   writeDraft,
+  type DraftReason,
   type DraftSource,
   type LoadedRatios,
   type StudioDraft,
@@ -62,6 +64,7 @@ import {
 import { Check, Field, Range, Select, TextInput, type Option } from './magma.js';
 import { HUE_ENDS, endsOf, moveEnd, type HueEnds } from './hue-ends.js';
 import { PaletteSide } from './palette-side.js';
+import { msg, useT, type T } from './i18n.js';
 import './palette.css';
 // the named curves of the engine, then a custom one edited by its parameters
 type CurvePreset = keyof typeof CURVE_PRESETS;
@@ -142,14 +145,15 @@ function resolveBaseColor(config: MagmaConfig, color: ColorConfig): string | und
 // shift of its own over a global one (hs+, vittorio 2026-11-05); a hue shift, its own or the global
 // one it inherits (hs); nothing
 function badgeOf(
+  t: T,
   config: MagmaConfig,
   color: ColorConfig,
 ): { label: string; title: string } | undefined {
   if (isAliasColor(color)) return { label: 'ref', title: `alias -> ${color.alias}` };
   if (hasHueShift(color.hueShift) && hasHueShift(config.hueShift))
-    return { label: 'hs+', title: 'hue shifting of its own, over the global one' };
+    return { label: 'hs+', title: t('hue shifting of its own, over the global one') };
   if (hasHueShift(color.hueShift ?? config.hueShift))
-    return { label: 'hs', title: 'hue shifting active' };
+    return { label: 'hs', title: t('hue shifting active') };
   return undefined;
 }
 
@@ -171,6 +175,7 @@ function textColorFor(hex: string): string {
 }
 
 function ScaleRow({ label, steps, seed }: { label: string; steps: Step[]; seed?: string }) {
+  const t = useT();
   return (
     <div class="scale-row">
       <span class="scale-label">{label}</span>
@@ -179,7 +184,10 @@ function ScaleRow({ label, steps, seed }: { label: string; steps: Step[]; seed?:
           <div
             class="scale-cell"
             style={{ background: step.value }}
-            title={`${step.value} - contrast ${step.contrast.toFixed(2)}:1`}
+            title={t('{value} - contrast {ratio}:1', {
+              value: step.value,
+              ratio: step.contrast.toFixed(2),
+            })}
           >
             <span class="cell-contrast" style={{ color: textColorFor(step.value) }}>
               {step.contrast.toFixed(1)}
@@ -190,9 +198,13 @@ function ScaleRow({ label, steps, seed }: { label: string; steps: Step[]; seed?:
           </div>
         ))}
         {seed !== undefined && (
-          <div class="scale-cell seed" style={{ background: seed }} title={`color token: ${seed}`}>
+          <div
+            class="scale-cell seed"
+            style={{ background: seed }}
+            title={t('color token: {value}', { value: seed })}
+          >
             <span class="cell-hex" style={{ color: textColorFor(seed) }}>
-              seed
+              {t('seed')}
             </span>
           </div>
         )}
@@ -204,6 +216,7 @@ function ScaleRow({ label, steps, seed }: { label: string; steps: Step[]; seed?:
 // the ramps of the colour selected: the cards and the cells are data, drawn in the colours they
 // show; a configuration the engine cannot solve says why in place of the ramps
 function Preview({ scales, error }: { scales: ColorScales | null; error: string | null }) {
+  const t = useT();
   if (error)
     return (
       <mds-banner class="palette-ramps-error" variant="error">
@@ -214,10 +227,10 @@ function Preview({ scales, error }: { scales: ColorScales | null; error: string 
   return (
     <div class="palette-ramps">
       <div class="preview-card light">
-        <ScaleRow label="light" steps={scales.light} seed={scales.lightColor} />
+        <ScaleRow label={t('light')} steps={scales.light} seed={scales.lightColor} />
       </div>
       <div class="preview-card dark">
-        <ScaleRow label="dark" steps={scales.dark} seed={scales.darkColor} />
+        <ScaleRow label={t('dark')} steps={scales.dark} seed={scales.darkColor} />
       </div>
     </div>
   );
@@ -255,8 +268,9 @@ function HueShiftEditor({
   allowInherit,
   globalActive,
   id,
-  title = 'Hue shifting',
+  title,
 }: HueShiftEditorProps) {
+  const t = useT();
   const mode: HueShiftMode =
     value === undefined
       ? allowInherit
@@ -308,10 +322,15 @@ function HueShiftEditor({
 
   const modes: Option[] = [
     ...(allowInherit
-      ? [{ value: 'inherit', label: `Inherit global (${globalActive ? 'active' : 'off'})` }]
+      ? [
+          {
+            value: 'inherit',
+            label: globalActive ? t('Inherit global (active)') : t('Inherit global (off)'),
+          },
+        ]
       : []),
-    { value: 'custom', label: 'Custom' },
-    { value: 'off', label: 'Off' },
+    { value: 'custom', label: t('Custom') },
+    { value: 'off', label: t('Off') },
   ];
 
   // a group of fields of the form: a fieldset with no border, its legend the title of the group
@@ -322,12 +341,12 @@ function HueShiftEditor({
     <fieldset class="palette-group" id={id} tabIndex={id ? -1 : undefined}>
       <legend>
         <mds-text typography="group" tag="span">
-          {title}
+          {title ?? t('Hue shifting')}
         </mds-text>
       </legend>
       <div class="palette-group-content">
         <div class="palette-fields">
-          <Field label="Mode">
+          <Field label={t('Mode')}>
             <Select
               value={mode}
               onValue={(next) => setMode(next as HueShiftMode)}
@@ -336,7 +355,7 @@ function HueShiftEditor({
           </Field>
           {enabled && (
             <>
-              <Field label="Curve">
+              <Field label={t('Curve')}>
                 <Select
                   value={curveKind}
                   options={CURVE_KINDS.map((kind) => ({ value: kind, label: kind }))}
@@ -349,17 +368,17 @@ function HueShiftEditor({
               </Field>
               {curveKind === 'custom' && (
                 <>
-                  <Field label="Dead zone">
+                  <Field label={t('Dead zone')}>
                     <Range
                       value={deadZone}
                       min={0}
                       max={0.95}
                       step={0.05}
-                      label="Dead zone"
+                      label={t('Dead zone')}
                       onValue={(next) => patch({ curve: { deadZone: next, easing } })}
                     />
                   </Field>
-                  <Field label="Easing">
+                  <Field label={t('Easing')}>
                     <Select
                       value={easing}
                       options={EASING_OPTIONS}
@@ -377,12 +396,12 @@ function HueShiftEditor({
               <div class="palette-ends" role="group" aria-labelledby={endsTitle}>
                 <div class="palette-ends-head">
                   <mds-text id={endsTitle} typography="label" tag="p">
-                    The two ends
+                    {t('The two ends')}
                   </mds-text>
                   <Select
-                    label="Ends"
+                    label={t('Ends')}
                     value={ends}
-                    options={HUE_ENDS}
+                    options={HUE_ENDS.map((one) => ({ ...one, label: t(one.label) }))}
                     onValue={(next) => {
                       setEnds(next as HueEnds);
                       // the light end takes the link at once, from the dark one
@@ -391,21 +410,21 @@ function HueShiftEditor({
                     }}
                   />
                 </div>
-                <Field label="Dark (degrees)">
+                <Field label={t('Dark (degrees)')}>
                   <Range
                     value={dark}
                     min={-180}
                     max={180}
-                    label="Dark (degrees)"
+                    label={t('Dark (degrees)')}
                     onValue={(next) => moveTo('dark', next)}
                   />
                 </Field>
-                <Field label="Light (degrees)">
+                <Field label={t('Light (degrees)')}>
                   <Range
                     value={light}
                     min={-180}
                     max={180}
-                    label="Light (degrees)"
+                    label={t('Light (degrees)')}
                     onValue={(next) => moveTo('light', next)}
                   />
                 </Field>
@@ -415,8 +434,8 @@ function HueShiftEditor({
                 <div
                   class="palette-weights"
                   role="img"
-                  aria-label="Shift intensity per step (10-step scale)"
-                  title="shift intensity per step (10-step scale)"
+                  aria-label={t('Shift intensity per step (10-step scale)')}
+                  title={t('shift intensity per step (10-step scale)')}
                 >
                   {weights.map((weight) => (
                     <div class="palette-weight">
@@ -513,12 +532,15 @@ function ColorEditor({
   onColorCommit,
   onOpenSource,
 }: ColorEditorProps) {
+  const t = useT();
   const exportField = (
     <CommitText
-      label="Export groups"
+      label={t('Export groups')}
       value={(color.export ?? []).join(', ')}
       placeholder={
-        inheritedExport.length ? `inherit (${inheritedExport.join(', ')})` : 'e.g. tones, default'
+        inheritedExport.length
+          ? t('inherit ({value})', { value: inheritedExport.join(', ') })
+          : t('e.g. tones, default')
       }
       onCommit={(text) => {
         const raw = text
@@ -537,7 +559,7 @@ function ColorEditor({
       checked={color.disabled ?? false}
       onChecked={(checked) => onChange({ disabled: checked || undefined })}
     >
-      Disabled
+      {t('Disabled')}
     </Check>
   );
 
@@ -549,7 +571,7 @@ function ColorEditor({
     const targetKnown = !!color.alias && aliasTargets.includes(color.alias);
     const references: Option[] = [
       ...(!targetKnown && color.alias
-        ? [{ value: color.alias, label: `${color.alias} (missing)` }]
+        ? [{ value: color.alias, label: t('{name} (missing)', { name: color.alias }) }]
         : []),
       ...aliasTargets.map((name) => ({ value: name, label: name })),
     ];
@@ -561,13 +583,13 @@ function ColorEditor({
         <div class="palette-fields">
           <CommitText
             key={isBuiltin ? 'built-in-name' : 'name'}
-            label="Name"
+            label={t('Name')}
             value={color.name}
             disabled={isBuiltin}
-            message={isBuiltin ? 'Built-in variant: it cannot be renamed' : undefined}
+            message={isBuiltin ? t('Built-in variant: it cannot be renamed') : undefined}
             onCommit={(name) => onChange({ name })}
           />
-          <Field label="Reference">
+          <Field label={t('Reference')}>
             <Select
               value={color.alias ?? ''}
               options={references}
@@ -578,7 +600,7 @@ function ColorEditor({
           <dl class="palette-value">
             <div>
               <mds-text typography="label" tag="dt" class="studio-muted">
-                Resolves to
+                {t('Resolves to')}
               </mds-text>
               <mds-text tag="dd">
                 <span class="palette-resolved">
@@ -586,7 +608,7 @@ function ColorEditor({
                     class="studio-swatch"
                     style={{ background: resolvedColor ?? 'transparent' }}
                   />
-                  {resolvedColor ?? 'unresolved'}
+                  {resolvedColor ?? t('unresolved')}
                 </span>
               </mds-text>
             </div>
@@ -595,8 +617,10 @@ function ColorEditor({
           <div class="studio-row palette-switches">{disabledField}</div>
         </div>
         <mds-text tag="p" class="studio-muted">
-          Reference to {color.alias}: this family re-exports the resolved scale of the source. Base
-          color, hue shift, ratios and formula are defined by the source, not here.
+          {t(
+            'Reference to {name}: this family re-exports the resolved scale of the source. Base color, hue shift, ratios and formula are defined by the source, not here.',
+            { name: color.alias ?? '' },
+          )}
         </mds-text>
         {/* the group a family has in this place, for a reference a banner that says where its hue
             shifting is set: an info banner, its action in the variant of the banner, strong
@@ -605,17 +629,19 @@ function ColorEditor({
         {targetKnown && (
           <section class="palette-group palette-group-note" aria-labelledby="palette-reference-hue">
             <mds-text id="palette-reference-hue" typography="group" tag="h3">
-              Hue shifting
+              {t('Hue shifting')}
             </mds-text>
             <mds-banner variant="info">
-              The hue shifting of a reference is the one of the family it points at, {color.alias}:
-              set it there, and every reference to it follows.
+              {t(
+                'The hue shifting of a reference is the one of the family it points at, {name}: set it there, and every reference to it follows.',
+                { name: color.alias ?? '' },
+              )}
               <mds-button
                 slot="action"
                 type="button"
                 variant="info"
                 tone="strong"
-                label={`Open ${color.alias}`}
+                label={t('Open {name}', { name: color.alias ?? '' })}
                 onClick={onOpenSource}
               ></mds-button>
             </mds-banner>
@@ -628,8 +654,8 @@ function ColorEditor({
   return (
     <div class="palette-editor" key="own">
       <div class="palette-fields">
-        <CommitText label="Name" value={color.name} onCommit={(name) => onChange({ name })} />
-        <Field label="Base color" message={color.color}>
+        <CommitText label={t('Name')} value={color.name} onCommit={(name) => onChange({ name })} />
+        <Field label={t('Base color')} message={color.color}>
           {/* until Magma has a colour field: #1260 */}
           <input
             type="color"
@@ -641,21 +667,21 @@ function ColorEditor({
             onChange={(e) => onColorCommit((e.target as HTMLInputElement).value)}
           />
         </Field>
-        <Field label="Ratios">
+        <Field label={t('Ratios')}>
           <Select
             value={color.ratios ?? ''}
             options={[
-              { value: '', label: `inherit (${inheritedRatios})` },
+              { value: '', label: t('inherit ({value})', { value: inheritedRatios }) },
               ...scaleNames.map((preset) => ({ value: preset, label: labelFor(preset) })),
             ]}
             onValue={(ratios) => onChange({ ratios: ratios || undefined })}
           />
         </Field>
-        <Field label="Formula">
+        <Field label={t('Formula')}>
           <Select
             value={color.formula ?? ''}
             options={[
-              { value: '', label: `inherit (${inheritedFormula})` },
+              { value: '', label: t('inherit ({value})', { value: inheritedFormula }) },
               { value: 'wcag2', label: 'wcag2' },
               { value: 'wcag3', label: 'wcag3' },
             ]}
@@ -664,11 +690,11 @@ function ColorEditor({
             }
           />
         </Field>
-        <Field label="Colorspace">
+        <Field label={t('Colorspace')}>
           <Select
             value={color.colorspace ?? ''}
             options={[
-              { value: '', label: 'inherit' },
+              { value: '', label: t('inherit') },
               ...COLORSPACES.map((space) => ({ value: space, label: space })),
             ]}
             onValue={(colorspace) =>
@@ -683,7 +709,7 @@ function ColorEditor({
             checked={color.smooth ?? false}
             onChecked={(checked) => onChange({ smooth: checked || undefined })}
           >
-            Smooth
+            {t('Smooth')}
           </Check>
           {disabledField}
         </div>
@@ -715,18 +741,23 @@ interface AppProps {
 
 /** One line under the title of each view: what it holds. */
 const VIEW_SUMMARY: Record<View, string> = {
-  colors:
+  colors: msg(
     'The families of colour of the configuration, each solved into a ramp of steps in light and dark.',
-  scales:
+  ),
+  scales: msg(
     'The contrast ratios the families solve their steps at, against the background of the mode.',
-  surface:
+  ),
+  surface: msg(
     'The families that generate surfaces, and the balances: the lightness of the surfaces and borders, the targets of the text.',
-  themes:
+  ),
+  themes: msg(
     'Each family with surfaces, status aside, is a theme: its name, its accents and the CSS that switches it in.',
-  groups: 'The ratios, formula and export of each group of the configuration.',
-  contrast:
+  ),
+  groups: msg('The ratios, formula and export of each group of the configuration.'),
+  contrast: msg(
     'Every pair the contrast gate judges, in each theme and both modes: what the build of Magma would say of this configuration.',
-  diff: 'The palette against the configuration Magma builds with.',
+  ),
+  diff: msg('The palette against the configuration Magma builds with.'),
 };
 
 export function App({
@@ -736,6 +767,7 @@ export function App({
   onGate,
   onConfigActions,
 }: AppProps = {}) {
+  const t = useT();
   // a persisted working state, restored once at mount, takes precedence over
   // the bundled defaults
   const bootDraft = useMemo(() => readDraft() as StudioDraft<View> | null, []);
@@ -788,8 +820,9 @@ export function App({
   const [origin, setOrigin] = useState<(DraftSource & { json: string }) | null>(null);
   // the source changed under a draft with edits of its own: the user picks one
   const [draftConflict, setDraftConflict] = useState<{
-    reason: string;
+    reason: DraftReason;
     config: CloneableConfig;
+    /** In English (msg), translated where it is drawn. */
     label: string;
   } | null>(null);
   // JSON of the last-persisted config; null means nothing has been saved yet
@@ -829,12 +862,19 @@ export function App({
       if (isAliasColor(selected)) {
         const source = config.colors.find((c) => c.name === selected.alias);
         if (!source) {
-          return [null, `alias target "${selected.alias}" is not defined in this config`];
+          return [
+            null,
+            t('alias target "{name}" is not defined in this config', {
+              name: selected.alias ?? '',
+            }),
+          ];
         }
         if (isAliasColor(source)) {
           return [
             null,
-            `alias target "${selected.alias}" is itself a reference; point it at a base-color family`,
+            t('alias target "{name}" is itself a reference; point it at a base-color family', {
+              name: selected.alias ?? '',
+            }),
           ];
         }
         // resolve through the real generator with the source present, so the
@@ -859,6 +899,7 @@ export function App({
     config.smooth,
     config.formula,
     view,
+    t,
   ]);
 
   const [fullScales, fullScalesError] = useMemo((): [
@@ -928,8 +969,8 @@ export function App({
   };
   const scaleLabel = (formula: Formula, name: string): string => {
     const origin = scaleOrigin(formula, name);
-    if (origin === 'builtin') return `${name} (built-in)`;
-    if (origin === 'builtin-overridden') return `${name} (built-in, overridden)`;
+    if (origin === 'builtin') return t('{name} (built-in)', { name });
+    if (origin === 'builtin-overridden') return t('{name} (built-in, overridden)', { name });
     return name;
   };
 
@@ -1067,7 +1108,7 @@ export function App({
         setDraftConflict({
           reason: decision.reason,
           config: sourceConfig,
-          label: fileConfig ? 'Use the file on disk' : 'Use the bundled config',
+          label: fileConfig ? msg('Use the file on disk') : msg('Use the bundled config'),
         });
       }
       // a draft written before drafts kept what was loaded (#1330) was made on this source
@@ -1111,34 +1152,34 @@ export function App({
       });
       if (!res.ok) {
         const err = (await res.json().catch(() => ({}))) as { error?: string };
-        throw new Error(err.error ?? `save failed (${res.status})`);
+        throw new Error(err.error ?? t('save failed ({status})', { status: res.status }));
       }
       const written = (await res.json().catch(() => ({}))) as { path?: string };
       const json = JSON.stringify(config);
       setSavedConfig(json);
       setOrigin({ path: written.path ?? savePath, hash: hashText(json), json });
-      setStatusMsg('saved');
-      setTimeout(() => setStatusMsg((msg) => (msg === 'saved' ? null : msg)), 1500);
+      const saved = t('saved');
+      setStatusMsg(saved);
+      setTimeout(() => setStatusMsg((shown) => (shown === saved ? null : shown)), 1500);
     } catch (error) {
-      setStatusMsg(error instanceof Error ? error.message : 'save failed');
+      setStatusMsg(error instanceof Error ? error.message : t('save failed'));
     } finally {
       setSaving(false);
     }
   };
 
   const buildTokens = async () => {
-    setStatusMsg('building...');
+    setStatusMsg(t('building...'));
     try {
       const res = await fetch('/api/build', { method: 'POST' });
       const data = (await res.json().catch(() => ({}))) as { error?: string };
-      if (!res.ok) throw new Error(data.error ?? `build failed (${res.status})`);
-      setStatusMsg('tokens generated on disk');
-      setTimeout(
-        () => setStatusMsg((msg) => (msg === 'tokens generated on disk' ? null : msg)),
-        2000,
-      );
+      if (!res.ok)
+        throw new Error(data.error ?? t('build failed ({status})', { status: res.status }));
+      const built = t('tokens generated on disk');
+      setStatusMsg(built);
+      setTimeout(() => setStatusMsg((shown) => (shown === built ? null : shown)), 2000);
     } catch (error) {
-      setStatusMsg(error instanceof Error ? error.message : 'build failed');
+      setStatusMsg(error instanceof Error ? error.message : t('build failed'));
     }
   };
 
@@ -1153,7 +1194,7 @@ export function App({
       const parsed = JSON.parse(await file.text()) as CloneableConfig;
       const { valid, errors } = validateConfig(parsed);
       if (!valid) {
-        throw new Error(errors.slice(0, 3).join('; ') || 'it does not match the schema');
+        throw new Error(errors.slice(0, 3).join('; ') || t('it does not match the schema'));
       }
       setConfig(parsed);
       setLoadedRatios(ratiosOf(parsed));
@@ -1162,7 +1203,10 @@ export function App({
       setLoadError(null);
     } catch (error) {
       setLoadError(
-        `Could not load ${file.name}: ${error instanceof Error ? error.message : String(error)}`,
+        t('Could not load {file}: {error}', {
+          file: file.name,
+          error: error instanceof Error ? error.message : String(error),
+        }),
       );
       // the error is a banner of the pages of Colors: an import from another section opens them
       setView(view);
@@ -1183,7 +1227,11 @@ export function App({
     const duplicate = config.colors.find(
       (other, i) => i !== index && !!other.color && other.color.toLowerCase() === hex.toLowerCase(),
     );
-    setLoadError(duplicate ? `Warning: ${hex} is already used by "${duplicate.name}"` : null);
+    setLoadError(
+      duplicate
+        ? t('Warning: {hex} is already used by "{name}"', { hex, name: duplicate.name })
+        : null,
+    );
 
     const [group, baseName] = color.name.split('.');
     const autoAssigned =
@@ -1291,7 +1339,9 @@ export function App({
       setLoadError(null);
     } catch (error) {
       setLoadError(
-        `Could not build the CSS: ${error instanceof Error ? error.message : String(error)}`,
+        t('Could not build the CSS: {error}', {
+          error: error instanceof Error ? error.message : String(error),
+        }),
       );
     }
   };
@@ -1303,7 +1353,9 @@ export function App({
       setLoadError(null);
     } catch (error) {
       setLoadError(
-        `Could not build the palette: ${error instanceof Error ? error.message : String(error)}`,
+        t('Could not build the palette: {error}', {
+          error: error instanceof Error ? error.message : String(error),
+        }),
       );
     }
   };
@@ -1327,7 +1379,9 @@ export function App({
       setLoadError(null);
     } catch (error) {
       setLoadError(
-        `Could not build the Figma tokens: ${error instanceof Error ? error.message : String(error)}`,
+        t('Could not build the Figma tokens: {error}', {
+          error: error instanceof Error ? error.message : String(error),
+        }),
       );
     }
   };
@@ -1358,7 +1412,9 @@ export function App({
       setLoadError(null);
     } catch (error) {
       setLoadError(
-        `Could not build the zip: ${error instanceof Error ? error.message : String(error)}`,
+        t('Could not build the zip: {error}', {
+          error: error instanceof Error ? error.message : String(error),
+        }),
       );
     }
   };
@@ -1370,14 +1426,35 @@ export function App({
   const configRuns = useRef<Record<string, () => void>>({});
   configRuns.current = {
     import: () => fileInput.current?.click(),
-    copy: () => guard({ label: 'Copy JSON', verb: 'Copy', run: copyJson }),
-    zip: () => guard({ label: 'Download all tokens', verb: 'Download', run: downloadZip }),
-    config: () => guard({ label: 'Download config', verb: 'Download', run: downloadJson }),
+    copy: () => guard({ label: msg('Copy JSON'), proceed: msg('Copy anyway'), run: copyJson }),
+    zip: () =>
+      guard({
+        label: msg('Download all tokens'),
+        proceed: msg('Download anyway'),
+        run: downloadZip,
+      }),
+    config: () =>
+      guard({ label: msg('Download config'), proceed: msg('Download anyway'), run: downloadJson }),
     figma: () =>
-      guard({ label: 'Download Figma tokens', verb: 'Download', run: downloadFigmaDtcg }),
-    css: () => guard({ label: 'Download CSS tokens', verb: 'Download', run: downloadCss }),
-    gimp: () => guard({ label: 'Download GIMP palette', verb: 'Download', run: downloadGimp }),
-    build: () => guard({ label: 'Build tokens on disk', verb: 'Build', run: buildTokens }),
+      guard({
+        label: msg('Download Figma tokens'),
+        proceed: msg('Download anyway'),
+        run: downloadFigmaDtcg,
+      }),
+    css: () =>
+      guard({
+        label: msg('Download CSS tokens'),
+        proceed: msg('Download anyway'),
+        run: downloadCss,
+      }),
+    gimp: () =>
+      guard({
+        label: msg('Download GIMP palette'),
+        proceed: msg('Download anyway'),
+        run: downloadGimp,
+      }),
+    build: () =>
+      guard({ label: msg('Build tokens on disk'), proceed: msg('Build anyway'), run: buildTokens }),
   };
   const configActions = useMemo<ConfigAction[]>(() => {
     const run = (id: string) => () => configRuns.current[id]?.();
@@ -1385,20 +1462,38 @@ export function App({
     // the badge says what is read or handed over: the file (json, css, gpl), the format of the
     // tokens (DTCG), misc for the zip of all of them (vittorio, 2026-11-09)
     return [
-      { id: 'import', label: 'Import config', format: 'json', icon: 'mi/baseline/upload-file' },
+      {
+        id: 'import',
+        label: msg('Import config'),
+        format: 'json',
+        icon: 'mi/baseline/upload-file',
+      },
       {
         id: 'copy',
-        label: copied ? 'Copied!' : 'Copy JSON',
+        label: msg(copied ? 'Copied!' : 'Copy JSON'),
         icon: 'mi/baseline/content-copy',
         keepOpen: true,
       },
-      { id: 'zip', label: 'Download all tokens', format: 'misc', icon: download, apart: true },
-      { id: 'config', label: 'Download config', format: 'json', icon: download },
-      { id: 'figma', label: 'Download Figma tokens', format: 'DTCG', icon: download },
-      { id: 'css', label: 'Download CSS tokens', format: 'css', icon: download },
-      { id: 'gimp', label: 'Download GIMP palette', format: 'gpl', icon: download },
+      {
+        id: 'zip',
+        label: msg('Download all tokens'),
+        format: 'misc',
+        icon: download,
+        apart: true,
+      },
+      { id: 'config', label: msg('Download config'), format: 'json', icon: download },
+      { id: 'figma', label: msg('Download Figma tokens'), format: 'DTCG', icon: download },
+      { id: 'css', label: msg('Download CSS tokens'), format: 'css', icon: download },
+      { id: 'gimp', label: msg('Download GIMP palette'), format: 'gpl', icon: download },
       ...(serverMode
-        ? [{ id: 'build', label: 'Build tokens on disk', icon: 'mi/baseline/build', apart: true }]
+        ? [
+            {
+              id: 'build',
+              label: msg('Build tokens on disk'),
+              icon: 'mi/baseline/build',
+              apart: true,
+            },
+          ]
         : []),
     ].map((action) => ({ ...action, run: run(action.id) }));
   }, [copied, serverMode]);
@@ -1467,7 +1562,9 @@ export function App({
       setLoadError(null);
     } catch (error) {
       setLoadError(
-        `Could not export the selection: ${error instanceof Error ? error.message : String(error)}`,
+        t('Could not export the selection: {error}', {
+          error: error instanceof Error ? error.message : String(error),
+        }),
       );
     }
   };
@@ -1496,12 +1593,12 @@ export function App({
               of the contrast gate, on every page of Colors */}
           <div class="studio-page-name">
             <mds-text typography="page" tag="h1">
-              {COLORS_PAGES.find((page) => page.id === view)?.label}
+              {t(COLORS_PAGES.find((page) => page.id === view)?.label ?? '')}
             </mds-text>
             <GateBadge verdict={report.verdict} />
           </div>
           <mds-text typography="detail" tag="p" class="studio-muted">
-            {VIEW_SUMMARY[view]}
+            {t(VIEW_SUMMARY[view])}
           </mds-text>
         </div>
         {/* the actions of the page (the page-header block of Magma): Reset in view, the one
@@ -1519,8 +1616,10 @@ export function App({
             icon="mi/baseline/restart-alt"
             variant="dark"
             tone="text"
-            label="Reset"
-            title="Discard the loaded configuration and every local change, back to the one Magma builds with"
+            label={t('Reset')}
+            title={t(
+              'Discard the loaded configuration and every local change, back to the one Magma builds with',
+            )}
             disabled={!canReset}
             onClick={() => {
               clearDraft();
@@ -1552,16 +1651,18 @@ export function App({
                 tone="outline"
                 disabled
                 title={saveRefusal}
-                label={dirty ? 'Read-only *' : 'Read-only'}
+                label={dirty ? t('Read-only *') : t('Read-only')}
               ></mds-button>
             ) : (
               <mds-button
                 variant="dark"
                 tone="outline"
-                onClick={() => guard({ label: 'Save', verb: 'Save', run: saveConfig })}
+                onClick={() =>
+                  guard({ label: msg('Save'), proceed: msg('Save anyway'), run: saveConfig })
+                }
                 disabled={saving || !dirty || !!draftConflict}
                 title={savePath ?? undefined}
-                label={saving ? 'Saving...' : dirty ? 'Save *' : 'Saved'}
+                label={saving ? t('Saving...') : dirty ? t('Save *') : t('Saved')}
               ></mds-button>
             ))}
         </div>
@@ -1574,26 +1675,28 @@ export function App({
         </mds-banner>
       ) : draftConflict ? (
         <mds-banner class="studio-notice draft-conflict" variant="warning">
-          {draftConflict.reason}, and the draft restored from this browser has edits of its own.
+          {t('{reason}, and the draft restored from this browser has edits of its own.', {
+            reason: reasonText(t, draftConflict.reason),
+          })}
           <mds-button
             slot="action"
             type="button"
             variant="dark"
             tone="outline"
-            label={draftConflict.label}
+            label={t(draftConflict.label)}
             onClick={() => resolveDraftConflict(true)}
           ></mds-button>
           <mds-button
             slot="action"
             type="button"
-            label="Keep the draft"
+            label={t('Keep the draft')}
             onClick={() => resolveDraftConflict(false)}
           ></mds-button>
         </mds-banner>
       ) : (
         saveRefusal && (
           <mds-banner class="studio-notice" variant="info">
-            Saving is off: {saveRefusal}
+            {t('Saving is off: {reason}', { reason: saveRefusal })}
           </mds-banner>
         )
       )}
@@ -1625,7 +1728,7 @@ export function App({
         <aside
           id="palette-list"
           class={`palette-list${listOpen ? ' palette-list-open' : ''}`}
-          aria-label="The families of colour"
+          aria-label={t('The families of colour')}
         >
           {/* the main action of the list, a part of the page: primary outline (actions.md,
               part-primary), the primary strong being Download in the head of the page. At the
@@ -1639,7 +1742,7 @@ export function App({
             variant="primary"
             tone="outline"
             class="palette-add"
-            label="Add color"
+            label={t('Add color')}
             onClick={() =>
               setAddModal({
                 kind: 'color',
@@ -1658,7 +1761,7 @@ export function App({
               </mds-text>
               <ul class="palette-list-items">
                 {colors.map((color) => {
-                  const badge = badgeOf(config, color);
+                  const badge = badgeOf(t, config, color);
                   return (
                     <li class={`palette-item${color.disabled ? ' palette-item-off' : ''}`}>
                       {/* until Magma has a list and detail: #1262. A button of Magma per family,
@@ -1708,7 +1811,7 @@ export function App({
         <mds-modal
           opened
           interaction="strict"
-          aria-label={addModal.kind === 'alias' ? 'New reference' : 'New color'}
+          aria-label={addModal.kind === 'alias' ? t('New reference') : t('New color')}
           onmdsModalClose={() => setAddModal(null)}
         >
           <mds-banner
@@ -1716,14 +1819,14 @@ export function App({
             variant="light"
             tone="box"
             dismissible
-            headline={addModal.kind === 'alias' ? 'New reference' : 'New color'}
+            headline={addModal.kind === 'alias' ? t('New reference') : t('New color')}
             onmdsBannerClose={() => setAddModal(null)}
           >
             <div class="studio-dialog">
               <fieldset class="palette-choice">
                 <legend>
                   <mds-text typography="label" tag="span">
-                    Kind
+                    {t('Kind')}
                   </mds-text>
                 </legend>
                 <div class="studio-row">
@@ -1745,7 +1848,7 @@ export function App({
                       )
                     }
                   >
-                    Own color
+                    {t('Own color')}
                   </Check>
                   <Check
                     type="radio"
@@ -1769,18 +1872,18 @@ export function App({
                       })
                     }
                   >
-                    Reference
+                    {t('Reference')}
                   </Check>
                 </div>
                 <mds-text typography="caption" tag="p" class="studio-muted">
                   {aliasTargets.length === 0
-                    ? 'No base-color family to reference yet.'
-                    : 'A reference follows another family instead of solving a palette.'}
+                    ? t('No base-color family to reference yet.')
+                    : t('A reference follows another family instead of solving a palette.')}
                 </mds-text>
               </fieldset>
               {addModal.kind === 'color' ? (
                 // keyed apart: the field of the picker has a message, the select none
-                <Field key="color" label="Color" message={addModal.color}>
+                <Field key="color" label={t('Color')} message={addModal.color}>
                   {/* until Magma has a colour field: #1260 */}
                   <input
                     type="color"
@@ -1800,7 +1903,7 @@ export function App({
                   />
                 </Field>
               ) : (
-                <Field key="references" label="References">
+                <Field key="references" label={t('References')}>
                   <Select
                     value={addModal.alias}
                     options={aliasTargets.map((name) => ({ value: name, label: name }))}
@@ -1817,7 +1920,7 @@ export function App({
                   />
                 </Field>
               )}
-              <Field label="Group">
+              <Field label={t('Group')}>
                 <Select
                   // A1: references are locked to the alias-only `variant` family
                   value={addModal.kind === 'alias' ? 'variant' : addModal.group}
@@ -1829,7 +1932,7 @@ export function App({
                   onValue={(group) => setAddModal((state) => state && { ...state, group })}
                 />
               </Field>
-              <Field label="Name">
+              <Field label={t('Name')}>
                 <TextInput
                   value={addModal.name}
                   // a name the person types stops following the picker; the echo of a name the
@@ -1863,14 +1966,14 @@ export function App({
               type="button"
               variant="dark"
               tone="outline"
-              label="Cancel"
+              label={t('Cancel')}
               onClick={() => setAddModal(null)}
             ></mds-button>
             <mds-button
               slot="action"
               type="button"
               disabled={!addModal.name.trim() || (addModal.kind === 'alias' && !addModal.alias)}
-              label={addModal.kind === 'alias' ? 'Add reference' : 'Add color'}
+              label={addModal.kind === 'alias' ? t('Add reference') : t('Add color')}
               onClick={() => {
                 const base = addModal.name.trim();
                 let candidate = base;
@@ -1917,7 +2020,7 @@ export function App({
                   icon="mi/baseline/more-vert"
                   variant="dark"
                   tone="text"
-                  aria-label={`Actions of ${selected.name}`}
+                  aria-label={t('Actions of {name}', { name: selected.name })}
                 ></mds-button>
               </div>
               {/* the ramps of the family, beside its fields and the settings of the whole
@@ -1978,7 +2081,7 @@ export function App({
                     variant="dark"
                     tone="text"
                     class="studio-menu-link"
-                    label="Duplicate"
+                    label={t('Duplicate')}
                     onClick={() => {
                       closeMenus();
                       updateConfig((draft) => {
@@ -1997,11 +2100,11 @@ export function App({
                     variant="error"
                     tone="text"
                     class="studio-menu-link"
-                    label="Delete color"
+                    label={t('Delete color')}
                     disabled={BUILTIN_ALIAS_NAMES.has(selected.name)}
                     title={
                       BUILTIN_ALIAS_NAMES.has(selected.name)
-                        ? 'built-in variant: cannot be deleted'
+                        ? t('built-in variant: cannot be deleted')
                         : undefined
                     }
                     onClick={() => {
@@ -2022,11 +2125,11 @@ export function App({
                 2026-11-05) */}
               <mds-details class="palette-global">
                 <mds-text slot="title" typography="part" tag="span">
-                  Global settings
+                  {t('Global settings')}
                 </mds-text>
                 <div class="palette-editor">
                   <div class="palette-fields">
-                    <Field label="Colorspace">
+                    <Field label={t('Colorspace')}>
                       <Select
                         value={config.colorspace ?? 'HSL'}
                         options={COLORSPACES.map((space) => ({ value: space, label: space }))}
@@ -2047,12 +2150,12 @@ export function App({
                           })
                         }
                       >
-                        Smooth
+                        {t('Smooth')}
                       </Check>
                     </div>
                   </div>
                   <HueShiftEditor
-                    title="Global hue shifting"
+                    title={t('Global hue shifting')}
                     value={config.hueShift}
                     onChange={(hueShift) =>
                       updateConfig((draft) => {
@@ -2230,8 +2333,8 @@ export function App({
           onSave={saveBatch}
           onExport={(names) =>
             guard({
-              label: 'Export selection',
-              verb: 'Export',
+              label: msg('Export selection'),
+              proceed: msg('Export anyway'),
               run: () => exportSelection(names),
             })
           }

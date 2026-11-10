@@ -4,6 +4,7 @@ import type {
   MagmaConfig,
 } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
 import { generateScales } from './generator.js';
+import { useT } from './i18n.js';
 import { Check, Field, TextInput } from './magma.js';
 import './batch.css';
 
@@ -31,6 +32,7 @@ export function BatchExportModal({
   onExport,
   onClose,
 }: BatchExportModalProps) {
+  const t = useT();
   const [checked, setChecked] = useState<Set<string>>(() => new Set(names));
   const [exportValue, setExportValue] = useState(initialExport);
 
@@ -70,7 +72,7 @@ export function BatchExportModal({
       return next;
     });
 
-  const title = `Batch export (${activeNames.length})`;
+  const title = t('Batch export ({count})', { count: activeNames.length });
   return (
     <mds-modal opened aria-label={title} onmdsModalClose={onClose}>
       <mds-banner
@@ -83,7 +85,7 @@ export function BatchExportModal({
       >
         <div class="studio-dialog">
           {error && <mds-banner variant="error">{error}</mds-banner>}
-          <div class="batch-list" role="group" aria-label="The colors of the batch">
+          <div class="batch-list" role="group" aria-label={t('The colors of the batch')}>
             {names.map((name) => {
               const color = colorsByName.get(name);
               const light = (scales as Map<string, { light: { value: string }[] }> | null)?.get(
@@ -108,31 +110,34 @@ export function BatchExportModal({
               );
             })}
           </div>
-          <Field label="Export groups" message="Comma-separated, e.g. city, palette">
+          <Field label={t('Export groups')} message={t('Comma-separated, e.g. city, palette')}>
             <TextInput value={exportValue} onValue={setExportValue} />
           </Field>
         </div>
-        <mds-button slot="action" type="button" variant="dark" tone="outline" onClick={onClose}>
-          Cancel
-        </mds-button>
+        <mds-button
+          slot="action"
+          type="button"
+          variant="dark"
+          tone="outline"
+          label={t('Cancel')}
+          onClick={onClose}
+        ></mds-button>
         <mds-button
           slot="action"
           type="button"
           variant="dark"
           tone="outline"
           disabled={activeNames.length === 0}
+          label={t('Export selection')}
           onClick={() => onExport(activeNames)}
-        >
-          Export selection
-        </mds-button>
+        ></mds-button>
         <mds-button
           slot="action"
           type="button"
           disabled={activeNames.length === 0}
+          label={t('Save export')}
           onClick={() => onSave(activeNames, exportList.length ? exportList : undefined)}
-        >
-          Save export
-        </mds-button>
+        ></mds-button>
       </mds-banner>
     </mds-modal>
   );

@@ -1,4 +1,5 @@
 import { COLOR_MODES } from '@maggioli-design-system/design-tokens/src/lib/theme-manifest.mjs';
+import { followLanguage } from './i18n-previews.js';
 
 /*
   How the studio sets a theme on a page of its own (an iframe): the scene and the groups of the
@@ -23,7 +24,7 @@ const PREF_CLASSES = [
 
 /**
  * Sets on the document of a frame what the author checks the theme under: the theme, the mode
- * and the contrast, written as the preferences of Magma write them on <html> (`data-magma-pref`,
+ * and the contrast, and the language of the studio (i18n-previews.ts), written as the preferences of Magma write them on <html> (`data-magma-pref`,
  * `pref-mode-*`, `pref-contrast-*`, mds-pref-mode and mds-pref-contrast), so the frame follows
  * them and neither the system nor the choice the person stored. The scene has no mode nor
  * contrast of its own (scene.html): two frames side by side share the storage of the origin, and
@@ -47,6 +48,8 @@ export function applyFrame(
   },
 ) {
   const html = scene.documentElement;
+  // the language of the studio, and the texts of the page in it (#1336)
+  followLanguage(scene);
   html.setAttribute('data-theme-name', theme);
   html.setAttribute('data-magma-pref', '');
   html.classList.remove(...PREF_CLASSES);

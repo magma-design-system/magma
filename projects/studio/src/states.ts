@@ -1,5 +1,6 @@
 import type { ComponentAxes } from '../magma-api.js';
 import { COMPONENTS, TONES, type Painted } from './paints.js';
+import { msg, type T } from './i18n.js';
 
 /*
   The states of a colour beside a contrast scale (scales.tsx, #1308): the components the sample
@@ -35,11 +36,11 @@ export interface StatesPlan {
 
 /** The states of an action and the attribute that gives each (magma.api.txt, mds-button). */
 export const ACTION_STATES: ReadonlyArray<{ label: string; attribute?: string }> = [
-  { label: 'Rest' },
-  { label: 'Hover', attribute: 'data-studio-hover' },
-  { label: 'Pressed', attribute: 'active' },
-  { label: 'Selected', attribute: 'current' },
-  { label: 'Disabled', attribute: 'disabled' },
+  { label: msg('Rest') },
+  { label: msg('Hover'), attribute: 'data-studio-hover' },
+  { label: msg('Pressed'), attribute: 'active' },
+  { label: msg('Selected'), attribute: 'current' },
+  { label: msg('Disabled'), attribute: 'disabled' },
 ];
 
 /** The tones a component takes, in the order of the guide; a tone it alone has goes last. */
@@ -77,8 +78,10 @@ const escape = (text: string) =>
   text.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('"', '&quot;');
 
 /** The markup of the page for a plan: written into the <main> of states.html. */
-export function statesMarkup(plan: StatesPlan): string {
+export function statesMarkup(plan: StatesPlan, t: T): string {
   const variant = escape(plan.variant);
+  const named = (tag: string) =>
+    escape(t('{tag}, variant {variant}', { tag, variant: plan.variant }));
   const parts: string[] = [];
   if (plan.action) {
     const { tag, tones } = plan.action;
@@ -89,7 +92,7 @@ export function statesMarkup(plan: StatesPlan): string {
       .join('');
     const rows = ACTION_STATES.map(
       ({ label, attribute }) =>
-        `<mds-text typography="caption" class="states-muted">${label}</mds-text>` +
+        `<mds-text typography="caption" class="states-muted">${escape(t(label))}</mds-text>` +
         tones
           .map(
             (tone) =>
@@ -98,23 +101,24 @@ export function statesMarkup(plan: StatesPlan): string {
           .join(''),
     ).join('');
     parts.push(
-      `<section class="states-grid" style="--states-tones: ${tones.length}" aria-label="${tag}, variant ${variant}"><span></span>${head}${rows}</section>`,
+      `<section class="states-grid" style="--states-tones: ${tones.length}" aria-label="${named(tag)}"><span></span>${head}${rows}</section>`,
     );
   }
   if (plan.message) {
     const { tag, tones } = plan.message;
+    const text = escape(t('The text of a message of the page.'));
     parts.push(
-      `<section class="states-stack" aria-label="${tag}, variant ${variant}">${tones
+      `<section class="states-stack" aria-label="${named(tag)}">${tones
         .map(
           (tone) =>
-            `<${tag} variant="${variant}" tone="${escape(tone)}" headline="Tono ${escape(tone)}">Il testo di un messaggio della pagina.</${tag}>`,
+            `<${tag} variant="${variant}" tone="${escape(tone)}" headline="${escape(t('Tone {tone}', { tone }))}">${text}</${tag}>`,
         )
         .join('')}</section>`,
     );
   }
   for (const { tag, tones } of plan.markers)
     parts.push(
-      `<section class="states-row" aria-label="${tag}, variant ${variant}">${tones
+      `<section class="states-row" aria-label="${named(tag)}">${tones
         .map(
           (tone) =>
             `<${tag} variant="${variant}" tone="${escape(tone)}" label="${escape(tone)}"></${tag}>`,

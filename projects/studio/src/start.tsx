@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from 'preact/hooks';
 import './start.css';
 import { applyFrame } from './frame.js';
 import { DEMO_STEPS, demoStep, type DemoReading, type DemoStep } from './start-demo.js';
-import type { GateVerdict } from './gate.js';
+import { msg, rich, useT } from './i18n.js';
+import { verdictLabel } from './verdict.js';
 import {
   BEHAVIOR_PAGES,
   COLORS_PAGES,
@@ -74,23 +75,15 @@ const lessMotion = (): boolean =>
  */
 export const FEATURES: string[] = [
   // the Themes page: the colour modes each theme is used in (theme-choices.ts, `modes`)
-  'Themes in light and dark, or in one mode of your choice',
+  msg('Themes in light and dark, or in one mode of your choice'),
   // the contrast gate of the build of Magma, run on the configuration at every edit (gate.ts)
-  'Contrast checked by itself at every edit',
+  msg('Contrast checked by itself at every edit'),
   // Palette and Contrast scales: the base colour of a family, the contrast of each step of its ramp
-  'Colour ramps you shape step by step',
+  msg('Colour ramps you shape step by step'),
   // the downloads (app.tsx): the Figma tokens (DTCG), the configuration and the tokens Magma
   // builds with, the CSS tokens, a GIMP palette
-  'Exports for Figma, the design system, CSS and GIMP',
+  msg('Exports for Figma, the design system, CSS and GIMP'),
 ];
-
-/** What the gate says, in the words of its badge (GateBadge of verdict.tsx). */
-const verdictLine = (verdict: GateVerdict): string =>
-  verdict.state === 'pass'
-    ? 'All contrasts are OK'
-    : verdict.state === 'fail'
-      ? `${verdict.violations} contrast${verdict.violations === 1 ? '' : 's'} below target`
-      : 'Contrast not measured';
 
 /**
  * The play: its moment and the step on screen. Each step is computed once for the page
@@ -157,16 +150,17 @@ const focusButton = (host: HTMLElement | null) =>
 function Reading({ reading }: { reading: DemoReading }) {
   const { cell } = reading;
   const pass = cell.state === 'pass';
+  const t = useT();
   return (
     <div class="start-reading">
       <mds-text typography="label" tag="dt" class="studio-muted">
-        {reading.check.label}
+        {t(reading.check.label)}
       </mds-text>
       <dd>
         <mds-text typography="h6" tag="span">{`Lc ${Math.round(cell.achieved)}`}</mds-text>
         <mds-badge
           variant={pass ? 'success' : 'error'}
-          label={pass ? `Meets ${cell.target}` : `Below ${cell.target}`}
+          label={t(pass ? 'Meets {target}' : 'Below {target}', { target: cell.target })}
         ></mds-badge>
       </dd>
     </div>
@@ -183,6 +177,7 @@ function Hero() {
   const [height, setHeight] = useState<number | undefined>();
   const play = usePlay(painted);
   const { phase, shown } = play;
+  const t = useT();
 
   // the banner painted with the step on screen; the first paint of hero.html, once it has loaded,
   // starts the play
@@ -230,17 +225,17 @@ function Hero() {
         <header class="start-hero-head">
           <div class="start-hero-intro">
             <mds-text typography="page" tag="h1" id="start-title">
-              The theme of your product, readable by everyone
+              {t('The theme of your product, readable by everyone')}
             </mds-text>
             <mds-text typography="detail" tag="p">
-              Magma Studio is where a product shapes its theme on Magma. You state how much contrast
-              the text needs, and the studio picks the colours that meet it, in every theme and both
-              modes.
+              {t(
+                'Magma Studio is where a product shapes its theme on Magma. You state how much contrast the text needs, and the studio picks the colours that meet it, in every theme and both modes.',
+              )}
             </mds-text>
           </div>
           <mds-list class="start-features">
             {FEATURES.map((feature) => (
-              <mds-list-item icon="mi/baseline/check-circle">{feature}</mds-list-item>
+              <mds-list-item icon="mi/baseline/check-circle">{t(feature)}</mds-list-item>
             ))}
           </mds-list>
         </header>
@@ -252,15 +247,16 @@ function Hero() {
               aria-hidden="true"
             ></mds-icon>
             <mds-text typography="detail" tag="p">
-              The text, the icon and the main action of this banner are under their contrast
-              targets.
+              {t(
+                'The text, the icon and the main action of this banner are under their contrast targets.',
+              )}
             </mds-text>
           </div>
           <iframe
             ref={frame}
             class="start-stage-frame"
             src="hero.html"
-            title="A banner of a product, painted with the configuration of the animation"
+            title={t('A banner of a product, painted with the configuration of the animation')}
             style={height ? { blockSize: `${height}px` } : undefined}
             onLoad={() => setLoaded((count) => count + 1)}
           />
@@ -274,7 +270,7 @@ function Hero() {
             </dl>
             <div class="start-meter" aria-hidden="true">
               <mds-text typography="caption" tag="p" class="start-meter-label">
-                {shown && verdictLine(shown.verdict)}
+                {shown && verdictLabel(t, shown.verdict)}
               </mds-text>
               <mds-progress
                 progress={shown?.solved ?? 0}
@@ -291,7 +287,7 @@ function Hero() {
               aria-hidden="true"
             ></mds-icon>
             <mds-text typography="detail" tag="p">
-              The contrast issues are fixed: the gate of Magma passes.
+              {t('The contrast issues are fixed: the gate of Magma passes.')}
             </mds-text>
             <mds-button
               ref={replayButton}
@@ -300,15 +296,13 @@ function Hero() {
               icon="mi/baseline/replay"
               icon-position="right"
               onClick={replay}
-            >
-              Replay
-            </mds-button>
+              label={t('Replay')}
+            ></mds-button>
           </div>
           <figcaption class="studio-hidden">
-            A banner painted with the configuration Magma builds with, drawn pale: its text targets
-            under the floors of the contrast gate and the ramp of its accent faded, so its text, its
-            icon and its main action read poorly. Then the studio brings both back step by step,
-            solving the colours again at each one, until every pair the gate judges meets its floor.
+            {t(
+              'A banner painted with the configuration Magma builds with, drawn pale: its text targets under the floors of the contrast gate and the ramp of its accent faded, so its text, its icon and its main action read poorly. Then the studio brings both back step by step, solving the colours again at each one, until every pair the gate judges meets its floor.',
+            )}
           </figcaption>
         </figure>
       </div>
@@ -322,47 +316,58 @@ const colorsPage = (view: ColorsView) => COLORS_PAGES.find((page) => page.id ===
 interface Step {
   title: string;
   text: string;
-  link?: { label: string; route: Route; icon: string };
+  /** A link to a page: its label, translated where it is drawn, and its values. */
+  link?: { label: string; vars?: Record<string, string>; route: Route; icon: string };
 }
 
 /** The steps of the work, in its order (#693, "The plan"). */
 const stepsOf = (draftView?: ColorsView): Step[] => [
   {
-    title: 'Start from a configuration',
-    text: 'The studio opens on the configuration Magma builds with. Import your own from the Config menu of the bar: your edits stay in this browser as a draft until you reset them.',
+    title: msg('Start from a configuration'),
+    text: msg(
+      'The studio opens on the configuration Magma builds with. Import your own from the Config menu of the bar: your edits stay in this browser as a draft until you reset them.',
+    ),
     link: draftView
       ? {
-          label: `Continue on ${colorsPage(draftView).label}`,
+          label: msg('Continue on {page}'),
+          vars: { page: colorsPage(draftView).label },
           route: { section: 'colors', view: draftView },
           icon: 'mi/baseline/arrow-forward',
         }
-      : { label: 'Open the palette', route: palette, icon: 'mi/baseline/arrow-forward' },
+      : { label: msg('Open the palette'), route: palette, icon: 'mi/baseline/arrow-forward' },
   },
   {
-    title: 'Change it where the change belongs',
-    text: 'Each section works at one level, from one colour to the whole product. Make a change at the narrowest level that holds it: the levels after it follow.',
+    title: msg('Change it where the change belongs'),
+    text: msg(
+      'Each section works at one level, from one colour to the whole product. Make a change at the narrowest level that holds it: the levels after it follow.',
+    ),
   },
   {
-    title: 'Keep the contrast gate green',
-    text: 'The gate of the build of Magma judges every edit. The badge beside each title of Colors, and the count on its menu, say how many pairs fall below their floor.',
+    title: msg('Keep the contrast gate green'),
+    text: msg(
+      'The gate of the build of Magma judges every edit. The badge beside each title of Colors, and the count on its menu, say how many pairs fall below their floor.',
+    ),
     link: {
-      label: 'Contrast check',
+      label: colorsPage('contrast').label,
       route: { section: 'colors', view: 'contrast' },
       icon: 'mi/outline/fact-check',
     },
   },
   {
-    title: 'Judge it on a product, then take it',
-    text: 'The Theme section shows the theme on a page of a product, in both modes and under the preferences of a person. The Config menu of the bar hands over what a product loads: the configuration, the tokens, the Figma tokens.',
-    link: { label: 'Theme', route: { section: 'theme' }, icon: 'mi/outline/format-size' },
+    title: msg('Judge it on a product, then take it'),
+    text: msg(
+      'The Theme section shows the theme on a page of a product, in both modes and under the preferences of a person. The Config menu of the bar hands over what a product loads: the configuration, the tokens, the Figma tokens.',
+    ),
+    link: { label: msg('Theme'), route: { section: 'theme' }, icon: 'mi/outline/format-size' },
   },
 ];
 
 function Steps({ draftView }: { draftView?: ColorsView }) {
+  const t = useT();
   return (
     <section class="start-frame start-section" aria-labelledby="start-steps">
       <mds-text typography="section" tag="h2" id="start-steps">
-        How the work goes
+        {t('How the work goes')}
       </mds-text>
       {/* an li, not an mds-list-item: a list item of Magma holds text only, a step holds a
           title, a paragraph and a link */}
@@ -370,10 +375,10 @@ function Steps({ draftView }: { draftView?: ColorsView }) {
         {stepsOf(draftView).map((step) => (
           <li class="start-step">
             <mds-text typography="part" tag="h3">
-              {step.title}
+              {t(step.title)}
             </mds-text>
             <mds-text typography="detail" tag="p" class="studio-muted">
-              {step.text}
+              {t(step.text)}
             </mds-text>
             {step.link && (
               <mds-button
@@ -383,9 +388,12 @@ function Steps({ draftView }: { draftView?: ColorsView }) {
                 icon={step.link.icon}
                 icon-position={step.link.icon.endsWith('arrow-forward') ? 'right' : undefined}
                 class="start-step-link"
-              >
-                {step.link.label}
-              </mds-button>
+                label={t(step.link.label, {
+                  ...Object.fromEntries(
+                    Object.entries(step.link.vars ?? {}).map(([name, value]) => [name, t(value)]),
+                  ),
+                })}
+              ></mds-button>
             )}
           </li>
         ))}
@@ -426,68 +434,76 @@ const linkOf = <Id extends string>(item: MenuItem<Id>, route: Route) => ({
  */
 export const LEVELS: Level[] = [
   {
-    name: 'Colour',
-    section: 'Colors',
+    name: msg('Colour'),
+    section: msg('Colors'),
     icon: 'mi/baseline/palette',
-    unit: 'One family of colour, or a group of them',
-    changes:
+    unit: msg('One family of colour, or a group of them'),
+    changes: msg(
       'The base colour of a family, the contrast ratios its ramp of steps is solved at in light and dark, the formula and the export of its group.',
-    reaches: 'Every step of the family, and every role and theme that paints with it.',
+    ),
+    reaches: msg('Every step of the family, and every role and theme that paints with it.'),
     pages: colorsLinks('colors', 'scales', 'groups'),
   },
   {
-    name: 'Role',
-    section: 'Colors',
+    name: msg('Role'),
+    section: msg('Colors'),
     icon: 'mi/baseline/account-tree',
-    unit: 'The roles every theme shares',
-    changes:
+    unit: msg('The roles every theme shares'),
+    changes: msg(
       'The families that generate surfaces, the lightness of the surfaces and the borders, the contrast target of each role of the text.',
-    reaches:
+    ),
+    reaches: msg(
       'Every surface, border and text of every theme: the studio picks the step of each ramp that meets each target.',
+    ),
     pages: colorsLinks('surface'),
   },
   {
-    name: 'Theme',
-    section: 'Colors',
+    name: msg('Theme'),
+    section: msg('Colors'),
     icon: 'mi/baseline/theater-comedy',
-    unit: 'One theme',
-    changes:
+    unit: msg('One theme'),
+    changes: msg(
       'The family a theme is drawn from, its name, the accents it repoints and the colour modes it is used in.',
-    reaches: 'The pages of a product that switch the theme in, with data-theme-name.',
+    ),
+    reaches: msg('The pages of a product that switch the theme in, with data-theme-name.'),
     pages: colorsLinks('themes'),
   },
   {
-    name: 'Product',
-    section: 'Theme',
+    name: msg('Product'),
+    section: msg('Theme'),
     icon: 'mi/baseline/web',
-    unit: 'The theme on a page of a product',
-    changes:
+    unit: msg('The theme on a page of a product'),
+    changes: msg(
       'What the theme is judged under: the mode, more contrast, the preferences of a person, the width of the page. Typography, shape, density and depth come next.',
-    reaches: 'Nothing is saved from here yet: it is where a theme is judged as a whole.',
-    pages: [{ label: 'Theme', route: { section: 'theme' }, icon: 'mi/baseline/format-size' }],
+    ),
+    reaches: msg('Nothing is saved from here yet: it is where a theme is judged as a whole.'),
+    pages: [{ label: msg('Theme'), route: { section: 'theme' }, icon: 'mi/baseline/format-size' }],
   },
   {
-    name: 'Composition',
-    section: 'Behavior',
+    name: msg('Composition'),
+    section: msg('Behavior'),
     icon: 'mi/baseline/style',
-    unit: 'Every page of every product',
-    changes:
+    unit: msg('Every page of every product'),
+    changes: msg(
       'Nothing: these pages read what Magma decided, the design language, the patterns and the blocks, and the layer of the product.',
-    reaches: 'How the pages of a product are put together, whatever the theme.',
+    ),
+    reaches: msg('How the pages of a product are put together, whatever the theme.'),
     pages: BEHAVIOR_PAGES.map((page) => linkOf(page, { section: 'behavior', page: page.id })),
   },
 ];
 
 function Levels() {
+  const t = useT();
   return (
     <section class="start-frame start-section" aria-labelledby="start-levels">
       <header class="start-section-head">
         <mds-text typography="section" tag="h2" id="start-levels">
-          Where each change is made
+          {t('Where each change is made')}
         </mds-text>
         <mds-text typography="detail" tag="p" class="studio-muted">
-          From one colour to the whole product. Each level is built on the one before, so a change
-          reaches every level after it.
+          {t(
+            'From one colour to the whole product. Each level is built on the one before, so a change reaches every level after it.',
+          )}
         </mds-text>
       </header>
       {/* an li, not an mds-list-item: a list item of Magma holds text only, a level holds a
@@ -501,39 +517,42 @@ function Levels() {
               </span>
               <div class="start-level-title">
                 <mds-text typography="caption" tag="p" class="studio-muted">
-                  {`${index + 1} \u00b7 ${level.section}`}
+                  {`${index + 1} \u00b7 ${t(level.section)}`}
                 </mds-text>
                 <mds-text typography="part" tag="h3">
-                  {level.name}
+                  {t(level.name)}
                 </mds-text>
               </div>
             </div>
             <dl class="start-level-values">
               <div>
                 <mds-text typography="label" tag="dt" class="studio-muted">
-                  You act on
+                  {t('You act on')}
                 </mds-text>
                 <dd>
                   <mds-text typography="detail" tag="p">
-                    <b>{level.unit}</b>
+                    <b>{t(level.unit)}</b>
                   </mds-text>
                   <mds-text typography="detail" tag="p">
-                    {level.changes}
+                    {t(level.changes)}
                   </mds-text>
                 </dd>
               </div>
               <div>
                 <mds-text typography="label" tag="dt" class="studio-muted">
-                  It reaches
+                  {t('It reaches')}
                 </mds-text>
                 <dd>
                   <mds-text typography="detail" tag="p">
-                    {level.reaches}
+                    {t(level.reaches)}
                   </mds-text>
                 </dd>
               </div>
             </dl>
-            <nav class="start-level-pages" aria-label={`The pages of ${level.name}`}>
+            <nav
+              class="start-level-pages"
+              aria-label={t('The pages of {level}', { level: t(level.name) })}
+            >
               {level.pages.map((page) => (
                 <mds-button
                   href={hrefOf(page.route)}
@@ -541,20 +560,30 @@ function Levels() {
                   tone="text"
                   icon={page.icon.replace('/baseline/', '/outline/')}
                   class="studio-menu-link"
-                >
-                  {page.label}
-                </mds-button>
+                  label={t(page.label)}
+                ></mds-button>
               ))}
             </nav>
           </li>
         ))}
       </ol>
       <mds-text typography="detail" tag="p" class="studio-muted start-checks">
-        At every level,{' '}
-        <mds-link href={hrefOf({ section: 'colors', view: 'contrast' })}>Contrast check</mds-link>{' '}
-        lists every pair the gate judges, and{' '}
-        <mds-link href={hrefOf({ section: 'colors', view: 'diff' })}>Diffs</mds-link> compares the
-        palette with the one Magma builds with.
+        {rich(
+          t,
+          'At every level, {check} lists every pair the gate judges, and {diffs} compares the palette with the one Magma builds with.',
+          {
+            check: (
+              <mds-link href={hrefOf({ section: 'colors', view: 'contrast' })}>
+                {t(colorsPage('contrast').label)}
+              </mds-link>
+            ),
+            diffs: (
+              <mds-link href={hrefOf({ section: 'colors', view: 'diff' })}>
+                {t(colorsPage('diff').label)}
+              </mds-link>
+            ),
+          },
+        )}
       </mds-text>
     </section>
   );

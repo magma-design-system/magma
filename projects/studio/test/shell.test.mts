@@ -1,4 +1,7 @@
 // @vitest-environment jsdom
+import { readFileSync } from 'node:fs'
+import { dirname, join } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { afterEach, beforeEach, expect, test, vi } from 'vitest'
 import { h, render } from 'preact'
 
@@ -6,10 +9,14 @@ import initialConfig from '@maggioli-design-system/design-tokens/.magma-design-t
 import { DRAFT_STORAGE_KEY, hashText, type StudioDraft } from '../src/draft.js'
 import { Studio } from '../src/shell.js'
 import { THEME_CHOICES_KEY, resetThemeChoices, updateThemeChoices } from '../src/theme-choices.js'
+import { textOf } from './text.mjs'
 
 // The shell of the studio: the bar names the three sections, each page is a link with the
 // current one marked (app-shell), and the Theme section shows the theme in its own document.
 // jsdom does not upgrade the Magma components: the test reads the markup the shell writes.
+
+// the folder of this file: the URL global of jsdom is no file URL readFileSync takes
+const here = dirname(fileURLToPath(import.meta.url))
 
 const root = document.createElement('div')
 document.body.append(root)
@@ -34,7 +41,7 @@ const at = async (hash: string) => {
 }
 const links = (scope: Element | null) =>
   [...(scope?.querySelectorAll('mds-button[href]') ?? [])].map((link) => ({
-    text: link.textContent?.trim(),
+    text: textOf(link),
     href: link.getAttribute('href'),
     current: link.getAttribute('aria-current'),
   }))
@@ -42,7 +49,7 @@ const links = (scope: Element | null) =>
 test('the bar names the three sections, Colors and Behavior opening their pages from a menu, then Config', async () => {
   await at('#/colors/groups')
   const nav = [...root.querySelectorAll('mds-header-bar > mds-button[slot="nav"]')]
-  expect(nav.map((one) => one.textContent?.trim())).toEqual(['Colors', 'Theme', 'Behavior', 'Config'])
+  expect(nav.map((one) => textOf(one))).toEqual(['Colors', 'Theme', 'Behavior', 'Config'])
   expect(nav[0].getAttribute('tone')).toBe('weak')
 
   const [colors, behavior] = [...root.querySelectorAll('mds-dropdown')].filter((menu) =>
@@ -98,7 +105,7 @@ test('the Config menu of the bar imports and exports the configuration from any 
   // the take-outs after a separator
   expect(menu.querySelectorAll('mds-separator').length).toBe(1)
   // and in the menu of a narrow window
-  const narrow = root.querySelector('nav.studio-menu')!
+  const narrow = root.querySelector('nav.studio-menu-nav')!
   expect([...narrow.querySelectorAll('.studio-config-item mds-button')].map((one) => one.getAttribute('label')))
     .toContain('Import config')
   // a download from the Theme section hands over its file
@@ -341,4 +348,44 @@ test('the bar says the version of the Magma the studio runs on, under its name',
   render(null, root)
   await at('#/colors/palette')
   expect(root.querySelector('.studio-product-version')).toBeNull()
+})
+
+// #1336: the menu of the bar, at every width, holds the preferences of the person: the language
+// first, then the mode, the contrast and the animations; on a narrow window the sections before them
+test('the menu of the bar holds the preferences of the person, at every width', async () => {
+  await at('#/start')
+  expect(root.querySelector('mds-header')?.getAttribute('menu')).toBe('all')
+  const prefs = root.querySelector('.studio-menu mds-pref')!
+  // the studio follows the language at once: no reload to ask for
+  expect(prefs.hasAttribute('live-language')).toBe(true)
+  expect([...prefs.children].map((one) => one.localName)).toEqual([
+    'mds-pref-language', 'mds-pref-mode', 'mds-pref-contrast', 'mds-pref-animation',
+  ])
+  expect([...prefs.querySelectorAll('mds-pref-language-item')].map((one) => one.getAttribute('code'))).toEqual(['it', 'en'])
+  const menu = root.querySelector('.studio-menu')!
+  expect([...menu.children].map((one) => one.className)).toEqual(['studio-menu-nav', 'studio-menu-prefs'])
+})
+
+test('the menu hides its sections from the width the bar shows them, the tablet breakpoint of Magma', () => {
+  // a media query reads no custom property: the width of style.css is screen.tablet.min
+  const tablet = JSON.parse(readFileSync(join(here, '../../design-tokens/tokens/screen/default.json'), 'utf8'))
+    .screen.tablet.min.value
+  const css = readFileSync(join(here, '../src/style.css'), 'utf8')
+  expect(css).toMatch(new RegExp(`@media \\(width >= ${tablet}\\) \\{\\s*\\.studio-menu-nav \\{\\s*display: none;`))
+  // and mds-header-bar shows its sections from that breakpoint up (nav="desktop", the default)
+  const bar = readFileSync(join(here, '../../stencil/src/components/mds-header-bar/mds-header-bar.css'), 'utf8')
+  expect(bar).toMatch(/:host\(\[nav='desktop'\]\) \.nav \{\s*@apply max-tablet:hidden;/)
+})
+
+test('the studio follows the language of <html lang> at once', async () => {
+  document.documentElement.lang = 'it'
+  try {
+    await at('#/start')
+    const nav = () => [...root.querySelectorAll('mds-header-bar > mds-button[slot="nav"]')].map((one) => textOf(one))
+    expect(nav()).toEqual(['Colori', 'Tema', 'Regole', 'Configurazione'])
+    document.documentElement.lang = 'en'
+    await vi.waitFor(() => expect(nav()).toEqual(['Colors', 'Theme', 'Behavior', 'Config']))
+  } finally {
+    document.documentElement.lang = ''
+  }
 })

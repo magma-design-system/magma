@@ -11,6 +11,7 @@ import {
   type GateReport,
   type PairState,
 } from './gate.js';
+import { msg, plural, rich, useT, type T } from './i18n.js';
 import { Check } from './magma.js';
 import { ThemeVerdict } from './verdict.js';
 import './contrast.css';
@@ -24,42 +25,48 @@ import './contrast.css';
 */
 
 const MODES: Mode[] = ['light', 'dark'];
+/** The name of a mode inside a sentence. */
+const MODE_NAMES: Record<Mode, string> = { light: msg('light'), dark: msg('dark') };
 
 /** The categories of the gate, in its order, as the page names them. */
 export const CATEGORIES: ReadonlyArray<{ id: Category; title: string; about: string }> = [
   {
     id: 'text-on-surface',
-    title: 'Text on the surfaces',
-    about: 'Every text role on every surface of the theme.',
+    title: msg('Text on the surfaces'),
+    about: msg('Every text role on every surface of the theme.'),
   },
   {
     id: 'on-emphasis',
-    title: 'Text on the solid fills',
-    about:
+    title: msg('Text on the solid fills'),
+    about: msg(
       'The on-emphasis text of each hue on its fill and the states of the fill, on-inverse on the muted inverse surface.',
+    ),
   },
   {
     id: 'text-on-hue',
-    title: 'Text of a hue on its washes',
-    about:
+    title: msg('Text of a hue on its washes'),
+    about: msg(
       'The text of each status hue on its own washes: enforced where the wash carries that text, reported where it does not.',
+    ),
   },
   {
     id: 'text-on-wash',
-    title: 'Text on the neutral washes',
-    about:
+    title: msg('Text on the neutral washes'),
+    about: msg(
       'The text roles on the washes of the neutral band: enforced where the wash carries that text, reported where it does not.',
+    ),
   },
   {
     id: 'hue-fg',
-    title: 'Coloured text on the surfaces',
-    about: 'The text of each hue on the page and on a card. Reported, not enforced.',
+    title: msg('Coloured text on the surfaces'),
+    about: msg('The text of each hue on the page and on a card. Reported, not enforced.'),
   },
   {
     id: 'border',
-    title: 'Borders on the surfaces',
-    about:
+    title: msg('Borders on the surfaces'),
+    about: msg(
       'The WCAG 2 ratio of each border on the page and on a card: a border of state is reported under 3:1, a decorative one has no floor.',
+    ),
   },
 ];
 
@@ -71,37 +78,37 @@ type BadgeVariant = 'success' | 'error' | 'warning' | 'info' | 'dark';
 
 /**
  * The badge of a pair in one mode, as the Semantic surface preview draws a verdict: `error` for
- * what fails the build, `warning` for what the gate only reports, `success` when it holds.
+ * what fails the build, `warning` for what the gate only reports, `success` when it holds. The
+ * label fills `{measure}` with the target of the pair.
  */
-const VERDICTS: Record<
-  PairState,
-  { variant: BadgeVariant; label: (cell: GateCell) => string; title: string }
-> = {
-  pass: { variant: 'success', label: () => 'OK', title: 'meets its target' },
+const VERDICTS: Record<PairState, { variant: BadgeVariant; label: string; title: string }> = {
+  pass: { variant: 'success', label: msg('OK'), title: msg('meets its target') },
   fail: {
     variant: 'error',
-    label: (cell) => `under ${measure(cell, cell.target)}`,
-    title: 'under its target: the contrast gate fails, the build of Magma refuses the theme',
+    label: msg('under {measure}'),
+    title: msg('under its target: the contrast gate fails, the build of Magma refuses the theme'),
   },
   accepted: {
     variant: 'info',
-    label: () => 'accepted',
-    title: 'under its target, accepted by the baseline of design-tokens as a known offender',
+    label: msg('accepted'),
+    title: msg('under its target, accepted by the baseline of design-tokens as a known offender'),
   },
   below: {
     variant: 'warning',
-    label: (cell) => `under ${measure(cell, cell.target)}`,
-    title: 'under its target: the gate reports it, it does not fail on it',
+    label: msg('under {measure}'),
+    title: msg('under its target: the gate reports it, it does not fail on it'),
   },
   info: {
     variant: 'dark',
-    label: () => 'no floor',
-    title: 'a decorative border: no ratio floor, WCAG 1.4.11 is for the borders that convey state',
+    label: msg('no floor'),
+    title: msg(
+      'a decorative border: no ratio floor, WCAG 1.4.11 is for the borders that convey state',
+    ),
   },
   off: {
     variant: 'dark',
-    label: () => 'not offered',
-    title: 'measured, not judged: the theme is not used in this mode',
+    label: msg('not offered'),
+    title: msg('measured, not judged: the theme is not used in this mode'),
   },
 };
 
@@ -110,22 +117,23 @@ const under = (pair: GatePair): boolean =>
   MODES.some((mode) => ['fail', 'accepted', 'below'].includes(pair.cells[mode].state));
 
 /** What a pair is held to: its target, the same in both modes or one per mode, and whether. */
-function targetOf(pair: GatePair): string {
+function targetOf(t: T, pair: GatePair): string {
   const { light, dark } = pair.cells;
   const target =
     light.target === dark.target
       ? measure(light, light.target)
-      : `${measure(light, light.target)} light, ${dark.target} dark`;
+      : t('{light} light, {dark} dark', { light: measure(light, light.target), dark: dark.target });
   const rule: Record<Severity, string> = {
-    error: 'enforced',
-    warn: 'reported',
-    info: 'no floor',
+    error: t('enforced'),
+    warn: t('reported'),
+    info: t('no floor'),
   };
   return pair.severity === 'info' ? rule.info : `${target}, ${rule[pair.severity]}`;
 }
 
 /** One mode of a pair: a sample of the two colours, the measure and the verdict. */
 function PairCell({ cell, border }: { cell: GateCell; border: boolean }) {
+  const t = useT();
   const verdict = VERDICTS[cell.state];
   return (
     <div class={cell.state === 'off' ? 'contrast-cell contrast-cell-off' : 'contrast-cell'}>
@@ -136,14 +144,17 @@ function PairCell({ cell, border }: { cell: GateCell; border: boolean }) {
             ? { background: cell.bgHex, borderColor: cell.fgHex }
             : { background: cell.bgHex, color: cell.fgHex }
         }
-        title={`${cell.fgHex} on ${cell.bgHex}`}
+        title={t('{fg} on {bg}', { fg: cell.fgHex, bg: cell.bgHex })}
         aria-hidden="true"
       >
         {border ? '' : 'Aa'}
       </span>
       <code>{measure(cell, cell.achieved)}</code>
-      <span title={verdict.title}>
-        <mds-badge variant={verdict.variant} label={verdict.label(cell)}></mds-badge>
+      <span title={t(verdict.title)}>
+        <mds-badge
+          variant={verdict.variant}
+          label={t(verdict.label, { measure: measure(cell, cell.target) })}
+        ></mds-badge>
       </span>
     </div>
   );
@@ -159,34 +170,38 @@ function CategoryTable({
   about: string;
   pairs: GatePair[];
 }) {
+  const t = useT();
   return (
     <section class="contrast-category">
       <div class="contrast-category-head">
         <mds-text typography="group" tag="h3">
-          {title}
+          {t(title)}
         </mds-text>
         <mds-text typography="caption" tag="p" class="studio-muted">
-          {about}
+          {t(about)}
         </mds-text>
       </div>
       <mds-table class="contrast-table">
         <mds-table-header>
-          <mds-table-header-cell label="Pair"></mds-table-header-cell>
-          <mds-table-header-cell label="Target"></mds-table-header-cell>
-          <mds-table-header-cell label="Light"></mds-table-header-cell>
-          <mds-table-header-cell label="Dark"></mds-table-header-cell>
+          <mds-table-header-cell label={t('Pair')}></mds-table-header-cell>
+          <mds-table-header-cell label={t('Target')}></mds-table-header-cell>
+          <mds-table-header-cell label={t('Light')}></mds-table-header-cell>
+          <mds-table-header-cell label={t('Dark')}></mds-table-header-cell>
         </mds-table-header>
         <mds-table-body>
           {pairs.map((pair) => (
             <mds-table-row key={`${pair.fg}|${pair.bg}`} data-pair={`${pair.fg}|${pair.bg}`}>
               <mds-table-cell>
                 <mds-text typography="detail" tag="span">
-                  <code>{pair.fg}</code> on <code>{pair.bg}</code>
+                  {rich(t, '{fg} on {bg}', {
+                    fg: <code>{pair.fg}</code>,
+                    bg: <code>{pair.bg}</code>,
+                  })}
                 </mds-text>
               </mds-table-cell>
               <mds-table-cell>
                 <mds-text typography="caption" tag="span" class="studio-muted">
-                  {targetOf(pair)}
+                  {targetOf(t, pair)}
                 </mds-text>
               </mds-table-cell>
               {MODES.map((mode) => (
@@ -204,11 +219,12 @@ function CategoryTable({
 
 /** The Contrast check page: the verdict, then a card per theme with a table per category. */
 export function ContrastCheck({ report }: { report: GateReport }) {
+  const t = useT();
   const [onlyUnder, setOnlyUnder] = useState(false);
   const { verdict, themes } = report;
   if (verdict.state === 'error')
     return (
-      <mds-banner class="contrast-notice" variant="warning" headline="Contrast not measured">
+      <mds-banner class="contrast-notice" variant="warning" headline={t('Contrast not measured')}>
         {verdict.message}
       </mds-banner>
     );
@@ -216,17 +232,31 @@ export function ContrastCheck({ report }: { report: GateReport }) {
   return (
     <div class="contrast">
       <mds-text typography="detail" tag="p" class="contrast-hint studio-muted">
-        The pairs and the targets of <code>nx run design-tokens:contrast</code>, in every theme of
-        the Themes page. A mode a theme is not offered in is measured, not judged.
+        {rich(
+          t,
+          'The pairs and the targets of {command}, in every theme of the Themes page. A mode a theme is not offered in is measured, not judged.',
+          { command: <code>{'nx run design-tokens:contrast'}</code> },
+        )}
       </mds-text>
       <mds-text typography="detail" tag="p" role="status">
         {verdict.state === 'fail'
-          ? `${verdict.violations} pair${verdict.violations === 1 ? '' : 's'} below target: the build of Magma would refuse this configuration.`
-          : `Every enforced pair meets its target: ${measured} measures in ${themes.length} theme${themes.length === 1 ? '' : 's'}.`}
+          ? plural(
+              t,
+              verdict.violations,
+              '{count} pair below target: the build of Magma would refuse this configuration.',
+              '{count} pairs below target: the build of Magma would refuse this configuration.',
+            )
+          : plural(
+              t,
+              themes.length,
+              'Every enforced pair meets its target: {measured} measures in {count} theme.',
+              'Every enforced pair meets its target: {measured} measures in {count} themes.',
+              { measured },
+            )}
       </mds-text>
       <div class="studio-row">
         <Check type="switch" checked={onlyUnder} onChecked={setOnlyUnder}>
-          Only the pairs below their target
+          {t('Only the pairs below their target')}
         </Check>
       </div>
       {themes.map((theme) => {
@@ -239,10 +269,10 @@ export function ContrastCheck({ report }: { report: GateReport }) {
                   <mds-text typography="part" tag="h2">
                     {theme.name}
                   </mds-text>
-                  {theme.base && <mds-badge variant="dark" label="base"></mds-badge>}
+                  {theme.base && <mds-badge variant="dark" label={t('base')}></mds-badge>}
                 </div>
                 <mds-text typography="caption" tag="p" class="studio-muted">
-                  drawn from <code>{theme.family}</code>
+                  {rich(t, 'drawn from {family}', { family: <code>{theme.family}</code> })}
                 </mds-text>
                 <ThemeVerdict theme={theme} />
               </div>
@@ -251,7 +281,7 @@ export function ContrastCheck({ report }: { report: GateReport }) {
               <div class="contrast-categories">
                 {shown.length === 0 ? (
                   <mds-text typography="detail" tag="p" class="studio-muted">
-                    Every pair meets its target.
+                    {t('Every pair meets its target.')}
                   </mds-text>
                 ) : (
                   CATEGORIES.map(({ id, title, about }) => {
@@ -272,12 +302,18 @@ export function ContrastCheck({ report }: { report: GateReport }) {
   );
 }
 
-/** Something that hands the configuration out of the studio: a download, a save, a copy. */
+/**
+ * Something that hands the configuration out of the studio: a download, a save, a copy. Its label
+ * and the text of its button in the dialog are written in English and marked with msg() where the
+ * action is made: the dialog translates them where it draws them. The button carries its whole
+ * text, never a verb the dialog composes: one English word may be a verb and a noun (Export), and
+ * the catalogue gives each English text one Italian.
+ */
 export interface ExportAction {
   /** What the action is called where the person chose it: `Download all tokens`. */
   label: string;
-  /** Its verb, which the button of the dialog repeats: `Download`. */
-  verb: string;
+  /** The button of the dialog that runs the action anyway, repeating its verb: `Download anyway`. */
+  proceed: string;
   run: () => void;
 }
 
@@ -303,8 +339,14 @@ export function GateDialog({
   onConfirm: () => void;
   onReview: () => void;
 }) {
+  const t = useT();
   const failures = gateFailures(report);
-  const headline = `Export with ${failures.length} contrast${failures.length === 1 ? '' : 's'} below target?`;
+  const headline = plural(
+    t,
+    failures.length,
+    'Export with {count} contrast below target?',
+    'Export with {count} contrasts below target?',
+  );
   return (
     <mds-modal opened aria-label={headline} onmdsModalClose={onCancel}>
       <mds-banner
@@ -317,20 +359,28 @@ export function GateDialog({
       >
         <div class="studio-dialog contrast-dialog">
           <mds-text typography="detail" tag="p">
-            {action.label} hands out a configuration that fails the contrast gate of design-tokens:
-            the build of Magma would refuse it, and these pairs are hard to read.
+            {t(
+              '{action} hands out a configuration that fails the contrast gate of design-tokens: the build of Magma would refuse it, and these pairs are hard to read.',
+              { action: t(action.label) },
+            )}
           </mds-text>
           <mds-list class="contrast-failures">
             {failures.slice(0, NAMED_FAILURES).map(({ theme, cell }) => (
               <mds-list-item typography="caption">
-                {theme}, {cell.mode}: <code>{cell.fgToken}</code> on <code>{cell.bgToken}</code>,{' '}
-                {measure(cell, cell.achieved)} under {cell.target}
+                {rich(t, '{theme}, {mode}: {fg} on {bg}, {achieved} under {target}', {
+                  theme,
+                  mode: t(MODE_NAMES[cell.mode]),
+                  fg: <code>{cell.fgToken}</code>,
+                  bg: <code>{cell.bgToken}</code>,
+                  achieved: measure(cell, cell.achieved),
+                  target: cell.target,
+                })}
               </mds-list-item>
             ))}
           </mds-list>
           {failures.length > NAMED_FAILURES && (
             <mds-text typography="caption" tag="p" class="studio-muted">
-              and {failures.length - NAMED_FAILURES} more
+              {t('and {count} more', { count: failures.length - NAMED_FAILURES })}
             </mds-text>
           )}
           <div>
@@ -339,7 +389,7 @@ export function GateDialog({
               variant="dark"
               tone="text"
               icon="mi/baseline/fact-check"
-              label="See every pair"
+              label={t('See every pair')}
               onClick={onReview}
             ></mds-button>
           </div>
@@ -350,13 +400,13 @@ export function GateDialog({
           variant="dark"
           tone="outline"
           autofocus
-          label="Cancel"
+          label={t('Cancel')}
           onClick={onCancel}
         ></mds-button>
         <mds-button
           slot="action"
           type="button"
-          label={`${action.verb} anyway`}
+          label={t(action.proceed)}
           onClick={onConfirm}
         ></mds-button>
       </mds-banner>

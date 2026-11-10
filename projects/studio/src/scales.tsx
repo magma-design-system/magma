@@ -20,6 +20,7 @@ import { Field, Select, TextInput, swatchIcon, type Option } from './magma.js';
 import { paintedBy, type Painted } from './paints.js';
 import { sceneStyle, type ConfigTheme } from './scene-css.js';
 import { forceHover, settled, statesMarkup, statesPlan } from './states.js';
+import { msg, plural, rich, useT, type T } from './i18n.js';
 import { useThemeChoices, type ThemeChoices } from './theme-choices.js';
 import './scales.css';
 
@@ -92,8 +93,6 @@ function numberOf(raw: string): number | null {
   return Number.isFinite(value) ? value : null;
 }
 
-const plural = (count: number, word: string) => `${count} ${word}${count === 1 ? '' : 's'}`;
-
 const sameStops = (a: number[], b: number[]) =>
   a.length === b.length && a.every((value, index) => value === b[index]);
 
@@ -107,16 +106,21 @@ export type EasingName = string;
 
 // mds-input-select takes a flat list of options: the families follow each other in their order
 const EASING_OPTIONS: Option[] = [
-  { value: 'manual', label: 'manual' },
+  { value: 'manual', label: msg('manual') },
   ...Object.values(EASING_FAMILIES)
     .flat()
     .map((name) => ({ value: name, label: name })),
 ];
 
+// the label of wcag3 is names and numbers only, the same in every language
 const FORMULA_OPTIONS: Option[] = [
   { value: 'wcag3', label: 'wcag3 (APCA Lc, 0-106)' },
-  { value: 'wcag2', label: 'wcag2 (ratio, 1-21)' },
+  { value: 'wcag2', label: msg('wcag2 (ratio, 1-21)') },
 ];
+
+/** The options of a select in the language of the page: their labels marked with msg(). */
+const translated = (t: T, options: Option[]): Option[] =>
+  options.map((option) => ({ ...option, label: t(option.label) }));
 
 interface CommitInputProps {
   value: string;
@@ -160,6 +164,7 @@ interface DistributionStripProps {
  */
 // until Magma has a range of several values: #1261
 function DistributionStrip({ values, axis, formula, onChange }: DistributionStripProps) {
+  const t = useT();
   const stripRef = useRef<HTMLDivElement>(null);
   const position = (value: number) => ((value - axis.min) / (axis.max - axis.min)) * 100;
 
@@ -189,7 +194,7 @@ function DistributionStrip({ values, axis, formula, onChange }: DistributionStri
   };
 
   const ticks: number[] = [];
-  for (let t = axis.min; t <= axis.max; t += axis.tick) ticks.push(roundTo(t, 0));
+  for (let at = axis.min; at <= axis.max; at += axis.tick) ticks.push(roundTo(at, 0));
 
   return (
     <div class="scales-strip" ref={stripRef}>
@@ -198,13 +203,19 @@ function DistributionStrip({ values, axis, formula, onChange }: DistributionStri
         <div
           class="scales-band"
           style={{ left: 0, width: `${position(axis.lowClamp)}%` }}
-          title={`dead zone: below Lc ${axis.lowClamp} APCA reports 0 and the step collapses toward the background`}
+          title={t(
+            'dead zone: below Lc {clamp} APCA reports 0 and the step collapses toward the background',
+            { clamp: axis.lowClamp },
+          )}
         />
       )}
       <div
         class="scales-band"
         style={{ left: `${position(axis.ceiling)}%`, right: 0 }}
-        title={`unreachable: above the ${formula} ceiling (${axis.ceiling}) the step clamps to the pure extreme`}
+        title={t(
+          'unreachable: above the {formula} ceiling ({ceiling}) the step clamps to the pure extreme',
+          { formula, ceiling: axis.ceiling },
+        )}
       />
       <div class="scales-band-edge" style={{ left: `${position(axis.ceiling)}%` }} />
       {ticks.map((tick) => (
@@ -221,8 +232,12 @@ function DistributionStrip({ values, axis, formula, onChange }: DistributionStri
             style={{ left: `${position(value)}%` }}
             title={
               issue
-                ? `step ${index + 1}: ${value} - ${issue.message}`
-                : `step ${index + 1}: ${value}`
+                ? t('step {step}: {value} - {issue}', {
+                    step: index + 1,
+                    value,
+                    issue: issue.message,
+                  })
+                : t('step {step}: {value}', { step: index + 1, value })
             }
             onPointerDown={startDrag(index)}
           >
@@ -257,6 +272,7 @@ function DistributionControls({
   onApply,
   children,
 }: DistributionControlsProps) {
+  const t = useT();
   const [steps, setSteps] = useState(values.length);
   const [min, setMin] = useState(values[0] ?? axis.min);
   const [max, setMax] = useState(values[values.length - 1] ?? axis.max);
@@ -266,8 +282,8 @@ function DistributionControls({
     const fn = (EASINGS as Record<string, EasingFn | undefined>)[easingName];
     if (!fn) return;
     const generated = Array.from({ length: s }, (_, i) => {
-      const t = s === 1 ? 1 : i / (s - 1);
-      return roundTo(lo + (hi - lo) * fn(t), axis.precision);
+      const at = s === 1 ? 1 : i / (s - 1);
+      return roundTo(lo + (hi - lo) * fn(at), axis.precision);
     });
     onApply(generated);
   };
@@ -291,10 +307,10 @@ function DistributionControls({
 
   return (
     <div class="scales-distribution">
-      <Field label="Distribution">
+      <Field label={t('Distribution')}>
         <Select
           value={easing}
-          options={EASING_OPTIONS}
+          options={translated(t, EASING_OPTIONS)}
           onValue={(next) => {
             onEasingChange(next);
             if (next === 'manual') return;
@@ -317,7 +333,7 @@ function DistributionControls({
         <>
           <CommitInput
             class="scales-distribution-number"
-            field="Steps"
+            field={t('Steps')}
             type="number"
             min={2}
             max={24}
@@ -327,7 +343,7 @@ function DistributionControls({
           />
           <CommitInput
             class="scales-distribution-number"
-            field="Min"
+            field={t('Min')}
             type="number"
             step={step}
             value={String(min)}
@@ -335,7 +351,7 @@ function DistributionControls({
           />
           <CommitInput
             class="scales-distribution-number"
-            field="Max"
+            field={t('Max')}
             type="number"
             step={step}
             value={String(max)}
@@ -357,13 +373,14 @@ interface RenameDialogProps {
 
 /** The new name of a scale: the colours and groups that use it follow it (app.tsx). */
 function RenameDialog({ name, ratioSet, onRename, onClose }: RenameDialogProps) {
+  const t = useT();
   const [draft, setDraft] = useState(name);
   const next = draft.trim();
   const problem =
     next === ''
-      ? 'Write a name'
+      ? t('Write a name')
       : next !== name && ratioSet[next]
-        ? `A scale named "${next}" exists already`
+        ? t('A scale named "{name}" exists already', { name: next })
         : null;
   const ready = !problem && next !== name;
   const submit = () => {
@@ -371,7 +388,7 @@ function RenameDialog({ name, ratioSet, onRename, onClose }: RenameDialogProps) 
     onRename(next);
     onClose();
   };
-  const title = `Rename the scale ${name}`;
+  const title = t('Rename the scale {name}', { name });
   const onKeydown = {
     onmdsInputKeydown: (event: CustomEvent<KeyboardEvent>) => {
       if (event.detail?.key === 'Enter') submit();
@@ -389,18 +406,27 @@ function RenameDialog({ name, ratioSet, onRename, onClose }: RenameDialogProps) 
       >
         <div class="studio-dialog" {...onKeydown}>
           <Field
-            label="Name"
-            message={problem ?? 'The colors and the groups that use the scale take the new name'}
+            label={t('Name')}
+            message={problem ?? t('The colors and the groups that use the scale take the new name')}
           >
             <TextInput value={draft} onValue={setDraft} />
           </Field>
         </div>
-        <mds-button slot="action" type="button" variant="dark" tone="outline" onClick={onClose}>
-          Cancel
-        </mds-button>
-        <mds-button slot="action" type="button" disabled={!ready} onClick={submit}>
-          Rename
-        </mds-button>
+        <mds-button
+          slot="action"
+          type="button"
+          variant="dark"
+          tone="outline"
+          label={t('Cancel')}
+          onClick={onClose}
+        ></mds-button>
+        <mds-button
+          slot="action"
+          type="button"
+          disabled={!ready}
+          label={t('Rename')}
+          onClick={submit}
+        ></mds-button>
       </mds-banner>
     </mds-modal>
   );
@@ -415,7 +441,8 @@ interface DeleteDialogProps {
 
 /** The confirmation of the delete of a scale some colours use (actions.md, confirm). */
 function DeleteDialog({ name, usedBy, onDelete, onClose }: DeleteDialogProps) {
-  const title = `Delete the scale ${name}?`;
+  const t = useT();
+  const title = t('Delete the scale {name}?', { name });
   return (
     <mds-modal opened aria-label={title} onmdsModalClose={onClose}>
       <mds-banner
@@ -428,8 +455,13 @@ function DeleteDialog({ name, usedBy, onDelete, onClose }: DeleteDialogProps) {
       >
         <div class="studio-dialog">
           <mds-text typography="detail" tag="p">
-            The scale "{name}" is used by {plural(usedBy, 'color')}: deleting it reassigns them to
-            the "default" scale.
+            {plural(
+              t,
+              usedBy,
+              'The scale "{name}" is used by {count} color: deleting it reassigns them to the "default" scale.',
+              'The scale "{name}" is used by {count} colors: deleting it reassigns them to the "default" scale.',
+              { name },
+            )}
           </mds-text>
         </div>
         <mds-button
@@ -438,22 +470,20 @@ function DeleteDialog({ name, usedBy, onDelete, onClose }: DeleteDialogProps) {
           variant="dark"
           tone="outline"
           autofocus
+          label={t('Cancel')}
           onClick={onClose}
-        >
-          Cancel
-        </mds-button>
+        ></mds-button>
         <mds-button
           slot="action"
           type="button"
           variant="error"
           tone="strong"
+          label={t('Delete')}
           onClick={() => {
             onDelete();
             onClose();
           }}
-        >
-          Delete
-        </mds-button>
+        ></mds-button>
       </mds-banner>
     </mds-modal>
   );
@@ -467,8 +497,8 @@ const closeMenu = (event: Event) => {
 };
 
 const SCHEMES: ReadonlyArray<{ id: Scheme; label: string }> = [
-  { id: 'light', label: 'Light' },
-  { id: 'dark', label: 'Dark' },
+  { id: 'light', label: msg('Light') },
+  { id: 'dark', label: msg('Dark') },
 ];
 
 /**
@@ -514,6 +544,7 @@ function ScaleStates({
   scheme,
   choices,
 }: ScaleStatesProps) {
+  const t = useT();
   const frame = useRef<HTMLIFrameElement>(null);
   const forced = useRef(new WeakSet<object>());
   const [loaded, setLoaded] = useState(0);
@@ -523,7 +554,7 @@ function ScaleStates({
     [config, family, scale, formula, choices],
   );
   const plan = useMemo(() => statesPlan(painted), [painted]);
-  const markup = plan ? statesMarkup(plan) : '';
+  const markup = plan ? statesMarkup(plan, t) : '';
 
   useEffect(() => {
     const page = frame.current?.contentDocument;
@@ -563,7 +594,12 @@ function ScaleStates({
       ref={frame}
       class="scales-states"
       src="states.html"
-      title={`The states of ${family} on the scale ${scale}, ${scheme} mode`}
+      title={t(
+        scheme === 'light'
+          ? 'The states of {family} on the scale {scale}, light mode'
+          : 'The states of {family} on the scale {scale}, dark mode',
+        { family, scale },
+      )}
       style={height ? { blockSize: `${height}px` } : undefined}
       onLoad={() => setLoaded((count) => count + 1)}
     />
@@ -616,6 +652,7 @@ export function ScalesManager({
   onAddScale,
   onDeleteScale,
 }: ScalesManagerProps) {
+  const t = useT();
   // scale under inspection in the usage panel
   const [inspectedState, setInspected] = useState('default');
   const inspected = ratioSet[inspectedState] ? inspectedState : 'default';
@@ -678,18 +715,22 @@ export function ScalesManager({
     <div class="scales-page">
       <div class="scales-intro">
         <mds-text typography="detail" tag="p" class="scales-muted scales-reading">
-          Contrast scales define the target contrast of every step{' '}
-          <em>against the theme background</em>: 0 sits on the background, the maximum is the
-          strongest contrast (dark in light mode, light in dark mode). Colors pick a scale with
-          their <code>ratios</code> field; the <code>default</code> scale is mandatory. Pick a
-          distribution easing, or drag the markers / edit the numbers to go manual; Reset takes a
-          scale back to the steps of the configuration loaded.
+          {rich(
+            t,
+            'Contrast scales define the target contrast of every step {against}: 0 sits on the background, the maximum is the strongest contrast (dark in light mode, light in dark mode). Colors pick a scale with their {ratios} field; the {default} scale is mandatory. Pick a distribution easing, or drag the markers / edit the numbers to go manual; Reset takes a scale back to the steps of the configuration loaded.',
+            {
+              against: <em>{t('against the theme background')}</em>,
+              // the name of a field and of a scale: code, the same in every language
+              ratios: <code>{'ratios'}</code>,
+              default: <code>{'default'}</code>,
+            },
+          )}
         </mds-text>
         <div class="scales-formula">
-          <Field label="Formula">
+          <Field label={t('Formula')}>
             <Select
               value={formula}
-              options={FORMULA_OPTIONS}
+              options={translated(t, FORMULA_OPTIONS)}
               onValue={(next) => onFormulaChange(next as Formula)}
             />
           </Field>
@@ -699,13 +740,13 @@ export function ScalesManager({
       <mds-card class="scales-usage">
         <mds-card-header>
           <mds-text typography="part" tag="h2">
-            The colors of a scale, by group
+            {t('The colors of a scale, by group')}
           </mds-text>
         </mds-card-header>
         <mds-card-content>
           <div class="scales-card-body">
             <div class="scales-usage-select">
-              <Field label="Scale">
+              <Field label={t('Scale')}>
                 <Select
                   value={inspected}
                   options={scaleOptions}
@@ -725,7 +766,7 @@ export function ScalesManager({
             </div>
             {involved.size === 0 ? (
               <mds-text typography="detail" tag="p" class="scales-muted">
-                No color uses this scale right now
+                {t('No color uses this scale right now')}
               </mds-text>
             ) : (
               <dl class="scales-groups">
@@ -743,7 +784,10 @@ export function ScalesManager({
                           icon={swatchIcon(color.color)}
                           selectable
                           selected={color.name === selectedName}
-                          title={`${color.name} (${color.color}) - click to use it as the sample color`}
+                          title={t('{name} ({color}) - click to use it as the sample color', {
+                            name: color.name,
+                            color: color.color,
+                          })}
                           onmdsChipSelect={(
                             event: CustomEvent<{ element: HTMLElement; selected?: boolean }>,
                           ) => {
@@ -764,17 +808,26 @@ export function ScalesManager({
         </mds-card-content>
       </mds-card>
 
-      <div class="scales-states-head" role="toolbar" aria-label="The states beside the scales">
+      <div class="scales-states-head" role="toolbar" aria-label={t('The states beside the scales')}>
         <mds-text typography="detail" tag="p" class="scales-muted">
           {source
-            ? `${selectedName} takes the ramp of ${source} whatever its scale: the states of ${source} show beside its scales.`
+            ? t(
+                '{name} takes the ramp of {source} whatever its scale: the states of {source} show beside its scales.',
+                { name: selectedName, source },
+              )
             : statesTheme
-              ? `Beside each scale, ${sampleName} solved on it paints the components it paints, in the theme ${statesTheme.name}.`
-              : `${selectedName} paints no component of Magma: no variant of a component takes it, no theme points an accent at it and no theme is drawn from it.`}
+              ? t(
+                  'Beside each scale, {name} solved on it paints the components it paints, in the theme {theme}.',
+                  { name: sampleName, theme: statesTheme.name },
+                )
+              : t(
+                  '{name} paints no component of Magma: no variant of a component takes it, no theme points an accent at it and no theme is drawn from it.',
+                  { name: selectedName },
+                )}
         </mds-text>
         {statesTheme && (
           <mds-tab
-            aria-label="Mode"
+            aria-label={t('Mode')}
             onmdsTabChange={(event: CustomEvent<{ id: number; value?: string }>) => {
               const value = event.detail?.value as Scheme | undefined;
               if (value) setScheme(value);
@@ -783,12 +836,16 @@ export function ScalesManager({
             {SCHEMES.map((one) => (
               <mds-tab-item
                 type="button"
-                label={one.label}
+                label={t(one.label)}
                 value={one.id}
                 selected={one.id === scheme}
                 disabled={!modes.includes(one.id)}
                 title={
-                  modes.includes(one.id) ? undefined : `${statesTheme.name} is ${modes[0]} only`
+                  modes.includes(one.id)
+                    ? undefined
+                    : t(modes[0] === 'light' ? '{theme} is light only' : '{theme} is dark only', {
+                        theme: statesTheme.name,
+                      })
                 }
               ></mds-tab-item>
             ))}
@@ -811,9 +868,9 @@ export function ScalesManager({
         // scale holds the stops it was loaded with, on manual, or the configuration loaded has no
         // scale of this name. The title says which
         const resetOff = !loadedStops
-          ? `the loaded configuration has no scale named ${name}`
+          ? t('the loaded configuration has no scale named {name}', { name })
           : easing === 'manual' && sameStops(values, loadedStops)
-            ? `${name} holds the steps of the loaded configuration`
+            ? t('{name} holds the steps of the loaded configuration', { name })
             : null;
         return (
           <div class="scales-card" key={name}>
@@ -827,18 +884,21 @@ export function ScalesManager({
                     {origin !== 'custom' && (
                       <mds-badge
                         variant={origin === 'builtin-overridden' ? 'info' : 'dark'}
-                        label={
-                          origin === 'builtin-overridden' ? 'Built-in, overridden' : 'Built-in'
-                        }
-                        title={
+                        label={t(
+                          origin === 'builtin-overridden' ? 'Built-in, overridden' : 'Built-in',
+                        )}
+                        title={t(
                           origin === 'builtin-overridden'
                             ? 'shipped with magma; shown here because your config overrides its stops'
-                            : 'shipped with magma; shown even though it is not in your config'
-                        }
+                            : 'shipped with magma; shown even though it is not in your config',
+                        )}
                       ></mds-badge>
                     )}
                     <mds-text typography="detail" class="scales-muted">
-                      {plural(values.length, 'step')}, used by {plural(usedBy, 'color')}
+                      {t('{steps}, used by {colors}', {
+                        steps: plural(t, values.length, '{count} step', '{count} steps'),
+                        colors: plural(t, usedBy, '{count} color', '{count} colors'),
+                      })}
                     </mds-text>
                   </div>
                   <mds-button
@@ -848,7 +908,7 @@ export function ScalesManager({
                     icon="mi/baseline/more-vert"
                     variant="dark"
                     tone="text"
-                    aria-label={`Actions of the scale ${name}`}
+                    aria-label={t('Actions of the scale {name}', { name })}
                   ></mds-button>
                 </mds-card-header>
                 <mds-card-content>
@@ -860,13 +920,17 @@ export function ScalesManager({
                       onChange={(next) => manualChange(name, next)}
                     />
 
-                    <div class="scales-stops" role="group" aria-label={`The steps of ${name}`}>
+                    <div
+                      class="scales-stops"
+                      role="group"
+                      aria-label={t('The steps of {name}', { name })}
+                    >
                       {values.map((value, index) => (
                         <div class="scales-stop">
                           <CommitInput
                             type="number"
                             size="md"
-                            label={`Step ${index + 1}`}
+                            label={t('Step {step}', { step: index + 1 })}
                             min={axis.min}
                             max={axis.max}
                             step={step}
@@ -889,8 +953,8 @@ export function ScalesManager({
                             size="sm"
                             variant="dark"
                             tone="text"
-                            aria-label={`Remove step ${index + 1}`}
-                            title="remove step"
+                            aria-label={t('Remove step {step}', { step: index + 1 })}
+                            title={t('remove step')}
                             disabled={values.length <= 2}
                             onClick={() =>
                               manualChange(
@@ -907,7 +971,8 @@ export function ScalesManager({
                         size="md"
                         variant="dark"
                         tone="outline"
-                        title="insert a step in the widest gap"
+                        title={t('insert a step in the widest gap')}
+                        label={t('Add step')}
                         onClick={() => {
                           let gapIndex = 0;
                           let gapSize = -1;
@@ -925,9 +990,7 @@ export function ScalesManager({
                           next.splice(gapIndex + 1, 0, inserted);
                           manualChange(name, next);
                         }}
-                      >
-                        Add step
-                      </mds-button>
+                      ></mds-button>
                     </div>
 
                     <DistributionControls
@@ -946,18 +1009,22 @@ export function ScalesManager({
                         disabled={resetOff !== null}
                         title={
                           resetOff ??
-                          `back to the steps of ${name} in the loaded configuration, distribution manual`
+                          t(
+                            'back to the steps of {name} in the loaded configuration, distribution manual',
+                            { name },
+                          )
                         }
+                        label={t('Reset')}
                         onClick={() => loadedStops && manualChange(name, [...loadedStops])}
-                      >
-                        Reset
-                      </mds-button>
+                      ></mds-button>
                     </DistributionControls>
 
                     {sample && (
                       <div
                         class="scales-sample"
-                        title="selected color rendered with this scale, ordered like the axis: 0 (background side) to max contrast"
+                        title={t(
+                          'selected color rendered with this scale, ordered like the axis: 0 (background side) to max contrast',
+                        )}
                       >
                         {[...sample].reverse().map((value) => (
                           <div class="scales-sample-cell" style={{ background: value }} />
@@ -989,32 +1056,30 @@ export function ScalesManager({
                   variant="dark"
                   tone="text"
                   disabled={builtin}
-                  title={
+                  title={t(
                     name === 'default'
                       ? 'the default scale is mandatory and cannot be renamed'
                       : builtin
                         ? 'built-in scales cannot be renamed'
-                        : 'rename scale'
-                  }
+                        : 'rename scale',
+                  )}
+                  label={t('Rename')}
                   onClick={(event: Event) => {
                     closeMenu(event);
                     setDialog({ kind: 'rename', name });
                   }}
-                >
-                  Rename
-                </mds-button>
+                ></mds-button>
                 <mds-button
                   type="button"
                   icon="mi/baseline/content-copy"
                   variant="dark"
                   tone="text"
+                  label={t('Duplicate')}
                   onClick={(event: Event) => {
                     closeMenu(event);
                     onAddScale(name);
                   }}
-                >
-                  Duplicate
-                </mds-button>
+                ></mds-button>
                 <mds-separator></mds-separator>
                 <mds-button
                   type="button"
@@ -1024,20 +1089,24 @@ export function ScalesManager({
                   disabled={name === 'default'}
                   title={
                     name === 'default'
-                      ? 'the default scale is mandatory'
+                      ? t('the default scale is mandatory')
                       : usedBy > 0
-                        ? `used by ${plural(usedBy, 'color')}: deleting reassigns them to the default scale`
-                        : 'delete scale'
+                        ? plural(
+                            t,
+                            usedBy,
+                            'used by {count} color: deleting reassigns them to the default scale',
+                            'used by {count} colors: deleting reassigns them to the default scale',
+                          )
+                        : t('delete scale')
                   }
+                  label={t('Delete')}
                   onClick={(event: Event) => {
                     closeMenu(event);
                     // a scale no color uses goes at once; one in use asks first
                     if (usedBy > 0) setDialog({ kind: 'delete', name });
                     else onDeleteScale(name);
                   }}
-                >
-                  Delete
-                </mds-button>
+                ></mds-button>
               </div>
             </mds-dropdown>
           </div>
@@ -1050,10 +1119,9 @@ export function ScalesManager({
         icon="mi/baseline/add"
         variant="dark"
         tone="outline"
+        label={t('Add scale')}
         onClick={() => onAddScale('default')}
-      >
-        Add scale
-      </mds-button>
+      ></mds-button>
 
       {dialog?.kind === 'rename' && (
         <RenameDialog

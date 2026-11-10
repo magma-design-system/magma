@@ -16,6 +16,7 @@ import {
 } from '@maggioli-design-system/design-tokens/src/lib/text-role.mjs';
 import { gateReport, type GateCell, type GateVerdict } from './gate.js';
 import { sceneStyle } from './scene-css.js';
+import { msg } from './i18n.js';
 
 /*
   The demo of the hero of the Start page (start.tsx): the configuration Magma builds with, drawn
@@ -140,13 +141,13 @@ export function demoConfig(step: number): MagmaConfig {
 export const CHECKS = [
   // the text of the banner on its ground: --mds-banner-color on --mds-banner-background
   // (mds-banner-variant.css, primary, weak)
-  { id: 'texts', label: 'Texts', fg: 'text-default', bg: 'surface-overlay' },
+  { id: 'texts', label: msg('Texts'), fg: 'text-default', bg: 'surface-overlay' },
   // the icon of the banner, --mds-banner-icon-color: the gate measures the ink of a hue on the
   // surfaces default and raised only (ELEVATED of contrast-gate.ts), raised the nearest to the
   // overlay of the banner and darker than it in light mode, so never kinder than the banner
-  { id: 'icons', label: 'Icons', fg: 'accent-fg', bg: 'surface-raised' },
+  { id: 'icons', label: msg('Icons'), fg: 'accent-fg', bg: 'surface-raised' },
   // the main action, mds-button strong: its ink on its fill (mds-button-variant.css)
-  { id: 'actions', label: 'Actions', fg: 'accent-on-emphasis', bg: 'accent-emphasis' },
+  { id: 'actions', label: msg('Actions'), fg: 'accent-on-emphasis', bg: 'accent-emphasis' },
 ] as const;
 
 export type Check = (typeof CHECKS)[number];

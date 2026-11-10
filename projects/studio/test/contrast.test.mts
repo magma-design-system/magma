@@ -13,6 +13,7 @@ import { DRAFT_STORAGE_KEY, hashText, type StudioDraft } from '../src/draft.js'
 import { gateReport, type GateReport } from '../src/gate.js'
 import { NO_THEME_CHOICES, resetThemeChoices } from '../src/theme-choices.js'
 import { ThemesManager } from '../src/themes.js'
+import { textOf } from './text.mjs'
 
 // The contrast gate in the studio (#698): every pair it judges, per theme and per mode, on the
 // Contrast check page; its verdict beside the title of every page of Colors and on each card of
@@ -179,7 +180,7 @@ test('the Colors section counts the pairs that fail, in the bar, in view whereve
     expect(verdict.state === 'fail' && String(verdict.violations)).toBe(notification.getAttribute('value'))
     expect(notification.getAttribute('max')).toBe('99')
     // the name of the section stays its own: the count is read with it, not in place of it
-    expect(root.querySelector('#studio-colors')?.textContent?.trim()).toBe('Colors')
+    expect(textOf(root.querySelector('#studio-colors'))).toBe('Colors')
 
     // a configuration that passes shows no count
     render(null, root)
@@ -253,12 +254,12 @@ test('the dialog leads to every pair, on the Contrast check page', async () => {
 
 test('the Themes page says the verdict of each theme per mode, and its export asks through the gate', async () => {
   const report = gateReport(failing())
-  const asked: Array<{ label: string; verb: string }> = []
+  const asked: Array<{ label: string; proceed: string }> = []
   render(
     h(ThemesManager, {
       config: failing(),
       report,
-      guard: ({ label, verb }: { label: string; verb: string }) => asked.push({ label, verb }),
+      guard: ({ label, proceed }: { label: string; proceed: string }) => asked.push({ label, proceed }),
     }),
     root,
   )
@@ -268,5 +269,5 @@ test('the Themes page says the verdict of each theme per mode, and its export as
     `dark: ${report.themes[0].failing.dark} below target`,
   ])
   await act(() => magmaButton('Copy CSS')!.click())
-  expect(asked).toEqual([{ label: 'Copy CSS', verb: 'Copy' }])
+  expect(asked).toEqual([{ label: 'Copy CSS', proceed: 'Copy anyway' }])
 })

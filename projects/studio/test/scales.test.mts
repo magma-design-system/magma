@@ -8,6 +8,8 @@ import initialConfig from '@maggioli-design-system/design-tokens/.magma-design-t
 import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs'
 import { ScalesManager, type RatioSet } from '../src/scales.js'
 import { App } from '../src/app.js'
+import { LangProvider, type Lang } from '../src/i18n.js'
+import { textOf } from './text.mjs'
 
 // The Contrast scales page is written in Magma: its stops, its distribution and its menus are
 // mds-* components. jsdom does not upgrade them, so the test dispatches the events they emit and
@@ -31,7 +33,7 @@ const root = document.createElement('div')
 document.body.append(root)
 afterEach(() => act(() => render(null, root)))
 
-function show (selectedName = config.colors[1].name) {
+function show (selectedName = config.colors[1].name, lang: Lang = 'en') {
   const spies = {
     onChangeScale: vi.fn(),
     onAddScale: vi.fn(),
@@ -72,7 +74,7 @@ function show (selectedName = config.colors[1].name) {
       onDeleteScale: spies.onDeleteScale,
     })
   }
-  act(() => render(h(Page, {}), root))
+  act(() => render(h(LangProvider, { value: lang }, h(Page, {})), root))
   return spies
 }
 
@@ -93,7 +95,7 @@ const stop = (name: string, step: number) =>
   card(name).querySelector(`mds-input[aria-label="Step ${step}"]`)!
 const menuItem = (name: string, label: string) =>
   [...card(name).querySelectorAll<HTMLElement>('mds-dropdown mds-button')].find(
-    (button) => button.textContent?.trim() === label,
+    (button) => textOf(button) === label,
   )!
 const click = (element: HTMLElement) => act(() => element.click())
 
@@ -107,13 +109,30 @@ test('a card per scale: its title, its badge, its count, its menu with Delete la
   // the menu opens from the button of the card it names
   const more = tint.querySelector('mds-card-header mds-button[slot="action"]')!
   expect(tint.querySelector('mds-dropdown')?.getAttribute('target')).toBe(`#${more.id}`)
-  expect([...tint.querySelectorAll('mds-dropdown mds-button')].map((b) => b.textContent?.trim()))
+  expect([...tint.querySelectorAll('mds-dropdown mds-button')].map(textOf))
     .toEqual(['Rename', 'Duplicate', 'Delete'])
   expect(menuItem('tint', 'Delete').getAttribute('variant')).toBe('error')
   // the default scale is mandatory, a built-in keeps its name
   expect(menuItem('default', 'Delete').hasAttribute('disabled')).toBe(true)
   expect(menuItem('tint', 'Rename').hasAttribute('disabled')).toBe(true)
   expect(menuItem('custom-1', 'Rename').hasAttribute('disabled')).toBe(false)
+})
+
+test('the page speaks the language of the studio', () => {
+  show(config.colors[1].name, 'it')
+  const tint = card('tint')
+  expect(tint.querySelector('mds-badge')?.getAttribute('label')).toBe('Integrata')
+  expect(tint.textContent).toContain('5 gradini, usata da 1 colore')
+  expect([...tint.querySelectorAll('mds-dropdown mds-button')].map(textOf)).toEqual(['Rinomina', 'Duplica', 'Elimina'])
+  expect(tint.querySelector('mds-input[aria-label="Gradino 1"]')).not.toBeNull()
+  // the option a distribution starts on, translated; the easings keep their names
+  const options = [...tint.querySelectorAll('.scales-distribution mds-input-select option')].map((option) => option.textContent)
+  expect(options).toEqual(expect.arrayContaining(['manuale', 'sine-in-out']))
+  click(menuItem('tint', 'Elimina'))
+  const dialog = root.querySelector('mds-modal')!
+  expect(dialog.getAttribute('aria-label')).toBe('Vuoi eliminare la scala tint?')
+  expect(dialog.textContent).toContain('usata da 1 colore: se la elimini, passa alla scala "default"')
+  expect([...dialog.querySelectorAll('mds-button[slot="action"]')].map(textOf)).toEqual(['Annulla', 'Elimina'])
 })
 
 test('a stop typed is written when the person commits it, clamped and in order', () => {
@@ -160,7 +179,7 @@ test('a step is removed and added from its buttons', () => {
   // two steps at least: their remove buttons are off
   expect(card('custom-1').querySelector('mds-button[aria-label="Remove step 1"]')?.hasAttribute('disabled')).toBe(true)
   const add = [...card('custom-1').querySelectorAll<HTMLElement>('.scales-stops > mds-button')].find(
-    (button) => button.textContent?.trim() === 'Add step',
+    (button) => textOf(button) === 'Add step',
   )!
   click(add)
   expect(stops('custom-1')).toEqual(['20', '40', '60'])
@@ -206,7 +225,7 @@ test('Delete asks first for a scale some colors use, and deletes at once one nob
   expect(dialog.textContent).toContain('used by 1 color')
   const buttons = [...dialog.querySelectorAll<HTMLElement>('mds-button[slot="action"]')]
   // Cancel first, Delete last in the red
-  expect(buttons.map((b) => b.textContent?.trim())).toEqual(['Cancel', 'Delete'])
+  expect(buttons.map(textOf)).toEqual(['Cancel', 'Delete'])
   click(buttons[1])
   expect(spies.onDeleteScale).toHaveBeenCalledWith('tint')
   expect(root.querySelector('mds-modal')).toBeNull()
@@ -222,7 +241,7 @@ test('Rename opens a dialog that refuses an empty name or one taken', () => {
   const dialog = root.querySelector('mds-modal')!
   const field = dialog.querySelector('mds-input')!
   const rename = () =>
-    [...root.querySelectorAll<HTMLElement>('mds-modal mds-button')].find((b) => b.textContent?.trim() === 'Rename')!
+    [...root.querySelectorAll<HTMLElement>('mds-modal mds-button')].find((b) => textOf(b) === 'Rename')!
   // unchanged: nothing to rename yet
   expect(rename().hasAttribute('disabled')).toBe(true)
   emit(field, 'mdsInputChange', { value: 'tint' })
@@ -298,7 +317,7 @@ test('an alias follows no scale, and a family that paints nothing has no states'
 // Reset beside the distribution (#1330): back to the steps of the configuration loaded, on manual
 const reset = (name: string) =>
   [...card(name).querySelectorAll<HTMLElement>('.scales-distribution mds-button')].find(
-    (button) => button.textContent?.trim() === 'Reset',
+    (button) => textOf(button) === 'Reset',
   )!
 const easing = (name: string) =>
   card(name).querySelector('.scales-distribution mds-input-select')?.getAttribute('value')

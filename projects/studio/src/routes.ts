@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'preact/hooks';
 import { THEME_NAME } from '@maggioli-design-system/design-tokens/semantic.model';
 import { MODES, type ModeView } from './scene-prefs.js';
+import { msg } from './i18n.js';
 
 /*
   The pages of the studio and their addresses. Every page is a link (the app-shell block of
@@ -37,6 +38,7 @@ export interface MenuItem<Id extends string> {
   id: Id;
   /** The segment of the address. */
   slug: string;
+  /** The name of the page in English, translated where it is drawn (i18n.ts). */
   label: string;
   icon: string;
   /** Drawn after a separator: a page apart from the ones above it. */
@@ -44,37 +46,42 @@ export interface MenuItem<Id extends string> {
 }
 
 export const COLORS_PAGES: MenuItem<ColorsView>[] = [
-  { id: 'colors', slug: 'palette', label: 'Palette', icon: 'mi/baseline/palette' },
-  { id: 'scales', slug: 'contrast-scales', label: 'Contrast scales', icon: 'mi/baseline/contrast' },
+  { id: 'colors', slug: 'palette', label: msg('Palette'), icon: 'mi/baseline/palette' },
+  {
+    id: 'scales',
+    slug: 'contrast-scales',
+    label: msg('Contrast scales'),
+    icon: 'mi/baseline/contrast',
+  },
   {
     id: 'surface',
     slug: 'semantic-surface',
-    label: 'Semantic surface',
+    label: msg('Semantic surface'),
     icon: 'mi/baseline/account-tree',
   },
-  { id: 'themes', slug: 'themes', label: 'Themes', icon: 'mi/baseline/theater-comedy' },
-  { id: 'groups', slug: 'groups', label: 'Groups', icon: 'mi/baseline/workspaces' },
+  { id: 'themes', slug: 'themes', label: msg('Themes'), icon: 'mi/baseline/theater-comedy' },
+  { id: 'groups', slug: 'groups', label: msg('Groups'), icon: 'mi/baseline/workspaces' },
   // the pages that check the work against what Magma builds: the contrast gate, the committed
   // palette
   {
     id: 'contrast',
     slug: 'contrast-check',
-    label: 'Contrast check',
+    label: msg('Contrast check'),
     icon: 'mi/baseline/fact-check',
     apart: true,
   },
-  { id: 'diff', slug: 'diffs', label: 'Diffs', icon: 'mi/baseline/difference' },
+  { id: 'diff', slug: 'diffs', label: msg('Diffs'), icon: 'mi/baseline/difference' },
 ];
 
 export const BEHAVIOR_PAGES: MenuItem<BehaviorPage>[] = [
   {
     id: 'design-language',
     slug: 'design-language',
-    label: 'Design language',
+    label: msg('Design language'),
     icon: 'mi/baseline/style',
   },
-  { id: 'patterns', slug: 'patterns', label: 'Patterns', icon: 'mi/baseline/pattern' },
-  { id: 'blocks', slug: 'blocks', label: 'Blocks', icon: 'mi/baseline/widgets' },
+  { id: 'patterns', slug: 'patterns', label: msg('Patterns'), icon: 'mi/baseline/pattern' },
+  { id: 'blocks', slug: 'blocks', label: msg('Blocks'), icon: 'mi/baseline/widgets' },
 ];
 
 /**

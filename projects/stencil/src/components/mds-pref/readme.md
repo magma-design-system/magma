@@ -16,6 +16,7 @@ The `<mds-pref>` web component is the accessibility-preferences panel of the Mag
 - **Compound parent**: Expects `mds-pref-animation`, `mds-pref-consumption`, `mds-pref-contrast`, `mds-pref-mode`, `mds-pref-theme` and/or `mds-pref-language` children in its default slot; it owns no preference UI of its own beyond coordination (it forwards `size`, flags the document and asks for a reload). The lock of a single-mode theme on `mds-pref-mode` needs no parent: the mode control reads it from `<html>`.
 - **Size propagation**: `size` cascades down to every nested `mds-pref-*` child, on load, on every change and to the children added later; without a `size` on the panel each child keeps its own.
 - **Reload notice**: The panel shows an inline caption prompting the user to refresh the page when a preference that cannot apply live (`consumption` or `language`) changes after load. A `controller` panel, which is hidden, shows none.
+- **Live language**: Magma components follow `<html lang>` at once; the content of the application may not, which is why a change of language asks for a reload. An application that translates its own content as `<html lang>` changes says so with `live-language`, and the panel asks for no reload after a change of language (a change of consumption still asks).
 - **Document flag**: While at least one `<mds-pref>` is on the page, `<html>` carries `data-magma-pref`, which turns off the styles' fallback to the OS preferences; it is removed only when the last instance leaves the page, so a settings page that unmounts its own panel leaves the app controller in charge. Moving a panel in the DOM (between a sidebar and a menu, or with a client router that keeps it across pages) keeps the flag and the reload notice.
 - **Live language sync**: When a `language` change is emitted, the panel re-resolves its own locale so the reload notice is shown in the newly selected language.
 
@@ -25,6 +26,7 @@ The `<mds-pref>` web component is the accessibility-preferences panel of the Mag
 
 #### Other behavioral props
 
+- **`live-language`** tells the panel the application follows `<html lang>` on its own, so a change of language shows no reload notice.
 - **`controller`** switches the component from a visible on-DOM panel into a headless controller that applies and reacts to preferences without rendering UI; in this mode it drives document-level preference state without a visible panel.
 
 
@@ -115,6 +117,20 @@ Set the `controller` boolean attribute when you need the preference engine to ap
 
 `<mds-pref>` shows an inline caption telling the user to refresh the page after a `consumption` or `language` change: nothing to wire. It shows for a change made after the panel loaded, so the stored choices the controls apply on load raise no notice; a `controller` panel is hidden and shows none.
 
+#### An Application That Follows the Language Live
+
+When the application translates its own content as `<html lang>` changes (it observes the attribute, or re-renders on `mdsPrefLanguageChange`), add `live-language`: a change of language then needs no reload, and the panel asks for none. A change of consumption still asks.
+
+```html
+<mds-pref live-language>
+  <mds-pref-mode></mds-pref-mode>
+  <mds-pref-language>
+    <mds-pref-language-item code="it"></mds-pref-language-item>
+    <mds-pref-language-item code="en"></mds-pref-language-item>
+  </mds-pref-language>
+</mds-pref>
+```
+
 
 ### 3. Mistakes
 
@@ -199,10 +215,11 @@ The controls fire no native `change` event. Use the documented `mdsPrefChange` e
 
 ## Properties
 
-| Property     | Attribute    | Description                                                                                        | Type                        | Default     |
-| ------------ | ------------ | -------------------------------------------------------------------------------------------------- | --------------------------- | ----------- |
-| `controller` | `controller` | Sets if the component works as hidden element controller instead as UI element, visible on the DOM | `boolean \| undefined`      | `undefined` |
-| `size`       | `size`       | Sets the size of the component items nested inside it                                              | `"md" \| "sm" \| undefined` | `undefined` |
+| Property       | Attribute       | Description                                                                                                                                                                         | Type                        | Default     |
+| -------------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- | ----------- |
+| `controller`   | `controller`    | Sets if the component works as hidden element controller instead as UI element, visible on the DOM                                                                                  | `boolean \| undefined`      | `undefined` |
+| `liveLanguage` | `live-language` | Tells the panel that the application follows `<html lang>` on its own, translating its content as the language changes, so a change of language needs no reload and shows no notice | `boolean \| undefined`      | `undefined` |
+| `size`         | `size`          | Sets the size of the component items nested inside it                                                                                                                               | `"md" \| "sm" \| undefined` | `undefined` |
 
 
 ## Slots

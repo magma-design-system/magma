@@ -7,6 +7,7 @@ import { paintedBy } from '../src/paints.js'
 import { sceneStyle } from '../src/scene-css.js'
 import { onScale } from '../src/scales.js'
 import { ACTION_STATES, forcedSelector, forceHover, statesMarkup, statesPlan } from '../src/states.js'
+import { translator } from '../src/i18n.js'
 
 // The states of a colour beside a contrast scale (#1308): the components the family paints at
 // every tone the documentation gives them, an action in the states mds-button publishes, the
@@ -15,6 +16,7 @@ import { ACTION_STATES, forcedSelector, forceHover, statesMarkup, statesPlan } f
 const config = initialConfig as unknown as MagmaConfig
 const painted = (family: string) =>
   paintedBy(family, { config, themes: sceneStyle(config)!.themes })
+const en = translator('en')
 
 test('a status shows its action at every state and tone, and its message at every tone', () => {
   const plan = statesPlan(painted('status.error'))!
@@ -24,7 +26,7 @@ test('a status shows its action at every state and tone, and its message at ever
   expect(plan.markers).toEqual([])
 
   const page = document.createElement('main')
-  page.innerHTML = statesMarkup(plan)
+  page.innerHTML = statesMarkup(plan, en)
   const buttons = [...page.querySelectorAll('mds-button')]
   expect(buttons).toHaveLength(ACTION_STATES.length * 5)
   expect(buttons.every((button) => button.getAttribute('variant') === 'error')).toBe(true)
@@ -35,6 +37,16 @@ test('a status shows its action at every state and tone, and its message at ever
     'weak',
     'box',
   ])
+  expect(page.querySelector('section')?.getAttribute('aria-label')).toBe('mds-button, variant error')
+
+  // in the language of the studio: the names of the states, the sections, the messages
+  page.innerHTML = statesMarkup(plan, translator('it'))
+  const states = [...page.querySelectorAll('.states-grid > mds-text')].map((text) => text.textContent)
+  expect(states).toEqual(expect.arrayContaining(['Riposo', 'Premuto', 'Disabilitato']))
+  expect(page.querySelector('section')?.getAttribute('aria-label')).toBe('mds-button, variante error')
+  const banner = page.querySelector('mds-banner')!
+  expect(banner.getAttribute('headline')).toBe('Tono strong')
+  expect(banner.textContent).toBe('Il testo di un messaggio della pagina.')
 })
 
 test('a label, which neither the action nor the message takes, shows the markers of a category', () => {
@@ -43,7 +55,7 @@ test('a label, which neither the action nor the message takes, shows the markers
   expect(plan.message).toBeUndefined()
   expect(plan.markers.map(({ tag }) => tag)).toEqual(['mds-badge', 'mds-label'])
   const page = document.createElement('main')
-  page.innerHTML = statesMarkup(plan)
+  page.innerHTML = statesMarkup(plan, en)
   expect([...page.querySelectorAll('mds-badge')].map((badge) => badge.getAttribute('tone'))).toEqual([
     'strong',
     'weak',

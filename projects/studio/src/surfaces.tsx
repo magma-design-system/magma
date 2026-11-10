@@ -22,6 +22,7 @@ import {
 import boxShadowTokens from '@maggioli-design-system/design-tokens/tokens/cosmetic/box-shadow.json';
 import committedConfig from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json';
 import { Field, Range, Select } from './magma.js';
+import { msg, rich, useT, type T } from './i18n.js';
 import './surfaces.css';
 
 /*
@@ -33,7 +34,9 @@ import './surfaces.css';
 
 type Mode = 'light' | 'dark';
 const MODES: Mode[] = ['light', 'dark'];
-const MODE_LABEL: Record<Mode, string> = { light: 'Light', dark: 'Dark' };
+const MODE_LABEL: Record<Mode, string> = { light: msg('Light'), dark: msg('Dark') };
+/** The name of a mode inside a text. */
+const MODE_NAME: Record<Mode, string> = { light: msg('light'), dark: msg('dark') };
 
 // box-shadow presets straight from the design-tokens source (tokens/cosmetic/box-shadow.json,
 // shipped as --shadow-*); token references resolved, "none" first. Preview aid only, not a token.
@@ -71,16 +74,16 @@ function toPercent(level: string | number): number {
 
 // what each semantic role is for (SEMANTIC_COLOR_SPEC sections 6.1 and 6.3)
 const SURFACE_PURPOSE: Record<string, string> = {
-  sunken: 'wells, insets, code blocks, tracks (recessed)',
-  muted: 'same-plane grouping: zebra rows, subtle sections',
-  default: 'the canvas / page background',
-  raised: 'cards, panels, sticky headers (lifted)',
-  overlay: 'modal, dropdown, popover, tooltip, sheet (top)',
+  sunken: msg('wells, insets, code blocks, tracks (recessed)'),
+  muted: msg('same-plane grouping: zebra rows, subtle sections'),
+  default: msg('the canvas / page background'),
+  raised: msg('cards, panels, sticky headers (lifted)'),
+  overlay: msg('modal, dropdown, popover, tooltip, sheet (top)'),
 };
 const BORDER_PURPOSE: Record<string, string> = {
-  muted: 'decorative: grid, dividers, cell/row borders (softest)',
-  default: 'functional outlines: inputs, buttons',
-  strong: 'assertive / state: selected, focus, error',
+  muted: msg('decorative: grid, dividers, cell/row borders (softest)'),
+  default: msg('functional outlines: inputs, buttons'),
+  strong: msg('assertive / state: selected, focus, error'),
 };
 // Borders are judged with the WCAG2 non-text ratio (NOT APCA), and only the STATE roles
 // carry the 3:1 floor of WCAG 1.4.11 - decorative borders deliberately have none, so a
@@ -102,15 +105,21 @@ export interface BorderVerdict {
 }
 /** SHARED by both border previews (the surface panel and the theme cards) so one rule
  * decides the verdict in both. `bgHex` is the surface the chip is actually drawn on. */
-export function borderVerdict(borderHex: string, bgHex: string, role: string): BorderVerdict {
+export function borderVerdict(t: T, borderHex: string, bgHex: string, role: string): BorderVerdict {
   const ratio = Math.round(wcag2Ratio(borderHex, bgHex) * 10) / 10;
   const isState = BORDER_STATE_ROLES.has(role);
   const ok = ratio >= BORDER_MIN_RATIO;
   const note = !isState
-    ? `${ratio}:1 on the surface below; decorative, no ratio floor`
+    ? t('{ratio}:1 on the surface below; decorative, no ratio floor', { ratio })
     : ok
-      ? `${ratio}:1 on the surface below, OK (floor ${BORDER_MIN_RATIO}:1, WCAG 1.4.11)`
-      : `${ratio}:1 on the surface below is under the ${BORDER_MIN_RATIO}:1 floor for a border that conveys state (WCAG 1.4.11)`;
+      ? t('{ratio}:1 on the surface below, OK (floor {floor}:1, WCAG 1.4.11)', {
+          ratio,
+          floor: BORDER_MIN_RATIO,
+        })
+      : t(
+          '{ratio}:1 on the surface below is under the {floor}:1 floor for a border that conveys state (WCAG 1.4.11)',
+          { ratio, floor: BORDER_MIN_RATIO },
+        );
   return { ratio, isState, ok, note };
 }
 
@@ -125,10 +134,10 @@ function Verdict({ state, label }: { state: 'success' | 'warning' | 'error'; lab
 
 // text roles are chosen BY APCA TARGET vs the worst-case surface (A7); see SEMANTIC_COLOR_SPEC 9.1
 const TEXT_PURPOSE: Record<string, string> = {
-  default: 'body / primary data (highest contrast)',
-  muted: 'secondary ESSENTIAL text: address, phone (stays legible)',
-  subtle: 'non-essential: captions, hints, units',
-  disabled: 'disabled / inactive (lowest)',
+  default: msg('body / primary data (highest contrast)'),
+  muted: msg('secondary ESSENTIAL text: address, phone (stays legible)'),
+  subtle: msg('non-essential: captions, hints, units'),
+  disabled: msg('disabled / inactive (lowest)'),
 };
 // APCA Lc floor per text role: the minimum legible contrast, INDEPENDENT of the
 // editable theme.text target (SEMANTIC_COLOR_SPEC 9.1): the floors of the CI contrast
@@ -182,8 +191,8 @@ const EXCLUDED_SURFACE_GROUPS = new Set(['variant']);
 /** The two panels of the preview, in the order of their tabs. */
 type PreviewTab = 'text' | 'surface';
 const PREVIEW_TABS: { id: PreviewTab; label: string; icon: string }[] = [
-  { id: 'text', label: 'Testi', icon: 'mi/baseline/text-fields' },
-  { id: 'surface', label: 'Surface', icon: 'mi/baseline/layers' },
+  { id: 'text', label: msg('Texts'), icon: 'mi/baseline/text-fields' },
+  { id: 'surface', label: msg('Surface'), icon: 'mi/baseline/layers' },
 ];
 
 interface SurfaceManagerProps {
@@ -212,6 +221,7 @@ export function SurfaceManager({
   onToggleGroupSurface,
   onUpdateTheme,
 }: SurfaceManagerProps) {
+  const t = useT();
   const theme = config.theme ?? DEFAULT_THEME;
   // preview-only: which Magma box-shadow renders on the surface boxes (default off)
   const [previewShadow, setPreviewShadow] = useState('none');
@@ -303,14 +313,18 @@ export function SurfaceManager({
         class="surfaces-family"
         aria-pressed={on ? 'true' : 'false'}
         data-inherited={inherited ? '' : undefined}
-        title={inherited ? `${color.name} (follows the ${group} group)` : color.name}
+        title={
+          inherited
+            ? t('{name} (follows the {group} group)', { name: color.name, group })
+            : color.name
+        }
         onClick={() => onToggleSurface(color.name, !on)}
       >
         <span class="studio-swatch" style={{ background: color.color }} />
         <mds-text typography="caption" tag="span">
           {familyOf(color)}
         </mds-text>
-        {inherited && <mds-badge variant="dark" label={`via ${group}`}></mds-badge>}
+        {inherited && <mds-badge variant="dark" label={t('via {group}', { group })}></mds-badge>}
       </button>
     );
   };
@@ -324,11 +338,12 @@ export function SurfaceManager({
         <div class="surfaces-lead">
           {head}
           <mds-text typography="detail" tag="p" class="surfaces-muted">
-            Surfaces and borders are placed by perceptual <em>lightness</em> in OKLCH (not APCA),
-            per mode and per role. Opt a family in below; the shared ramp is the same for every
-            family (the tint comes from each family's key color). The active default tint is chosen
-            in <code>styles</code>, not here. Every family you opt in here also becomes a theme on
-            the Themes page, whatever its group, except the status ones.
+            {rich(
+              t,
+              "Surfaces and borders are placed by perceptual {lightness} in OKLCH (not APCA), per mode and per role. Opt a family in below; the shared ramp is the same for every family (the tint comes from each family's key color). The active default tint is chosen in {styles}, not here. Every family you opt in here also becomes a theme on the Themes page, whatever its group, except the status ones.",
+              // the name of a package: code, the same in every language
+              { lightness: <em>{t('lightness')}</em>, styles: <code>{'styles'}</code> },
+            )}
           </mds-text>
         </div>
         <div class="surfaces-optin">
@@ -337,14 +352,21 @@ export function SurfaceManager({
           <div class="surfaces-card">
             <div class="surfaces-head">
               <mds-text typography="part" tag="h2">
-                Surface groups
+                {t('Surface groups')}
               </mds-text>
               <mds-text typography="caption" tag="p" class="surfaces-muted">
-                A whole group at once: every family in it generates a <code>--surface-*</code>,{' '}
-                <code>--border-*</code> and <code>--text-*</code> scale.
+                {rich(
+                  t,
+                  'A whole group at once: every family in it generates a {surface}, {border} and {text} scale.',
+                  {
+                    surface: <code>{'--surface-*'}</code>,
+                    border: <code>{'--border-*'}</code>,
+                    text: <code>{'--text-*'}</code>,
+                  },
+                )}
               </mds-text>
             </div>
-            <div class="surfaces-choices" role="group" aria-label="Surface groups">
+            <div class="surfaces-choices" role="group" aria-label={t('Surface groups')}>
               {surfaceGroups.map((group) => {
                 const required = RESERVED_GROUPS.has(group);
                 return (
@@ -352,7 +374,10 @@ export function SurfaceManager({
                     class="surfaces-choice"
                     title={
                       required
-                        ? `${group} always generates surfaces: its components paint text on their own tinted background, so the pair needs a generated text role to be legible by construction`
+                        ? t(
+                            '{group} always generates surfaces: its components paint text on their own tinted background, so the pair needs a generated text role to be legible by construction',
+                            { group },
+                          )
                         : undefined
                     }
                   >
@@ -365,7 +390,7 @@ export function SurfaceManager({
                         onToggleGroupSurface(group, Boolean(event.detail?.selected))
                       }
                     ></mds-chip>
-                    {required && <mds-badge variant="dark" label="always on"></mds-badge>}
+                    {required && <mds-badge variant="dark" label={t('always on')}></mds-badge>}
                   </span>
                 );
               })}
@@ -377,25 +402,27 @@ export function SurfaceManager({
           <div class="surfaces-card">
             <div class="surfaces-head">
               <mds-text typography="part" tag="h2">
-                Surface families
+                {t('Surface families')}
               </mds-text>
               <mds-text typography="caption" tag="p" class="surfaces-muted">
-                Refine the groups above per family: a family with no flag of its own follows its
-                group. Each one you opt in here also becomes a theme.
+                {t(
+                  'Refine the groups above per family: a family with no flag of its own follows its group. Each one you opt in here also becomes a theme.',
+                )}
               </mds-text>
             </div>
-            <div class="surfaces-choices" role="group" aria-label="Surface families">
+            <div class="surfaces-choices" role="group" aria-label={t('Surface families')}>
               {themeColors.map(familyButton)}
             </div>
             {reservedColors.length > 0 && (
               <div class="surfaces-reserved">
                 <mds-text typography="caption" tag="p" class="surfaces-muted">
-                  <strong>Status, never a theme.</strong> These families generate surfaces so that
-                  banners, toasts and badges get a text role legible on their own tint; a theme
-                  drawn from one would paint the whole interface in a status colour, and the page
-                  would mix with the messages that colour carries.
+                  {rich(
+                    t,
+                    '{lead} These families generate surfaces so that banners, toasts and badges get a text role legible on their own tint; a theme drawn from one would paint the whole interface in a status colour, and the page would mix with the messages that colour carries.',
+                    { lead: <strong>{t('Status, never a theme.')}</strong> },
+                  )}
                 </mds-text>
-                <div class="surfaces-choices" role="group" aria-label="Status families">
+                <div class="surfaces-choices" role="group" aria-label={t('Status families')}>
                   {reservedColors.map(familyButton)}
                 </div>
               </div>
@@ -411,17 +438,18 @@ export function SurfaceManager({
         <div class="surfaces-card">
           <div class="surfaces-head">
             <mds-text typography="part" tag="h2">
-              Lightness levels (%)
+              {t('Lightness levels (%)')}
             </mds-text>
             <mds-text typography="caption" tag="p" class="surfaces-muted">
-              The shared ramp for surfaces and borders, per mode; the text targets are an APCA Lc,
-              the same in both modes.
+              {t(
+                'The shared ramp for surfaces and borders, per mode; the text targets are an APCA Lc, the same in both modes.',
+              )}
             </mds-text>
           </div>
           <div class="surfaces-levels">
             <TextTargets targets={textTargets} onChange={setTextTarget} />
             <LevelGroup
-              title="Surfaces"
+              title={t('Surfaces')}
               roles={SURFACE_ROLES as readonly string[]}
               table={theme.surfaces as Record<Mode, Record<string, string | number>>}
               purpose={SURFACE_PURPOSE}
@@ -429,7 +457,7 @@ export function SurfaceManager({
               onChange={(mode, role, pct) => setLevel('surfaces', mode, role, pct)}
             />
             <LevelGroup
-              title="Borders"
+              title={t('Borders')}
               roles={BORDER_ROLES as readonly string[]}
               table={theme.borders as Record<Mode, Record<string, string | number>>}
               purpose={BORDER_PURPOSE}
@@ -444,13 +472,13 @@ export function SurfaceManager({
           {genError && <mds-banner variant="error">{genError}</mds-banner>}
           {!genError && optedFamilies.length === 0 && (
             <mds-text typography="detail" tag="p" class="surfaces-muted">
-              No family opts into surfaces yet: turn one on above to preview it.
+              {t('No family opts into surfaces yet: turn one on above to preview it.')}
             </mds-text>
           )}
           {!genError && shownFamily && (
             <>
               <div class="surfaces-preview-controls">
-                <Field label="Preview family">
+                <Field label={t('Preview family')}>
                   <Select
                     size="md"
                     value={shownFamily}
@@ -458,7 +486,7 @@ export function SurfaceManager({
                     options={optedFamilies.map((family) => ({ value: family, label: family }))}
                   />
                 </Field>
-                <Field label="Preview shadow">
+                <Field label={t('Preview shadow')}>
                   <Select
                     size="md"
                     value={previewShadow}
@@ -468,21 +496,24 @@ export function SurfaceManager({
                 </Field>
               </div>
               <mds-text typography="caption" tag="p" class="surfaces-muted">
-                The shadow is a Magma <code>--shadow-*</code> on the surface boxes below (preview
-                only, not a token).
+                {rich(
+                  t,
+                  'The shadow is a Magma {shadow} on the surface boxes below (preview only, not a token).',
+                  { shadow: <code>{'--shadow-*'}</code> },
+                )}
               </mds-text>
               <div class="surfaces-card">
                 {/* B5: Testi (text step-charts) / Surface (surface+border boxes), one panel at a time */}
                 <mds-tab
                   onmdsTabChange={(event: CustomEvent<{ id: number; value?: string }>) => {
-                    const tab = PREVIEW_TABS.find((t) => t.id === event.detail?.value);
+                    const tab = PREVIEW_TABS.find((one) => one.id === event.detail?.value);
                     if (tab) setPreviewTab(tab.id);
                   }}
                 >
                   {PREVIEW_TABS.map((tab) => (
                     <mds-tab-item
                       type="button"
-                      label={tab.label}
+                      label={t(tab.label)}
                       value={tab.id}
                       icon={tab.icon}
                       selected={previewTab === tab.id}
@@ -533,16 +564,19 @@ function TextPanel({
   texts,
   targets,
 }: PanelProps & { targets: Record<string, number | { step: number }> }) {
+  const t = useT();
   return (
     <>
       <div class="surfaces-head">
         <mds-text typography="part" tag="h2">
-          Text-role step selection
+          {t('Text-role step selection')}
         </mds-text>
         <mds-text typography="caption" tag="p" class="surfaces-muted">
-          The worst-case APCA Lc of each tone step; the engine picks the <em>least-contrast</em>{' '}
-          step whose bar clears a target. Edit the targets (or the surface levels) and the pick
-          moves.
+          {rich(
+            t,
+            'The worst-case APCA Lc of each tone step; the engine picks the {least} step whose bar clears a target. Edit the targets (or the surface levels) and the pick moves.',
+            { least: <em>{t('least-contrast')}</em> },
+          )}
         </mds-text>
       </div>
       <div class="surfaces-modes">
@@ -588,54 +622,66 @@ export function SurfaceCanvas({
   off?: string;
   children?: ComponentChildren;
 }) {
+  const t = useT();
+  // a surface by the name of its role, which stays as it is in every language, and its colour
+  const surface = (role: string) => (
+    <>
+      {role} <code>{hex(s, role)}</code>
+    </>
+  );
   return (
     <div
       class={off ? 'surfaces-canvas surfaces-canvas-off' : 'surfaces-canvas'}
       style={{ background: hex(s, 'default'), color: canvasText }}
-      title={SURFACE_PURPOSE.default}
+      title={t(SURFACE_PURPOSE.default)}
     >
       <span class="surfaces-canvas-label">
-        {mode} - canvas <code>{hex(s, 'default')}</code>
+        {rich(t, '{mode} - canvas {color}', {
+          mode: t(MODE_NAME[mode]),
+          color: <code>{hex(s, 'default')}</code>,
+        })}
         {off && ` - ${off}`}
       </span>
       <div class="surfaces-boxes">
         <div
           class="surfaces-box"
           style={{ background: hex(s, 'sunken') }}
-          title={SURFACE_PURPOSE.sunken}
+          title={t(SURFACE_PURPOSE.sunken)}
         >
-          sunken <code>{hex(s, 'sunken')}</code>
+          {surface('sunken')}
         </div>
         <div
           class="surfaces-box"
           style={{ background: hex(s, 'muted') }}
-          title={SURFACE_PURPOSE.muted}
+          title={t(SURFACE_PURPOSE.muted)}
         >
-          muted <code>{hex(s, 'muted')}</code>
+          {surface('muted')}
         </div>
       </div>
       <div
         class="surfaces-box surfaces-box--raised"
         style={{ background: hex(s, 'raised') }}
-        title={SURFACE_PURPOSE.raised}
+        title={t(SURFACE_PURPOSE.raised)}
       >
-        <span>
-          raised <code>{hex(s, 'raised')}</code>
-        </span>
+        <span>{surface('raised')}</span>
         <div
           class="surfaces-box"
           style={{ background: hex(s, 'overlay') }}
-          title={SURFACE_PURPOSE.overlay}
+          title={t(SURFACE_PURPOSE.overlay)}
         >
-          overlay <code>{hex(s, 'overlay')}</code>
+          {surface('overlay')}
         </div>
       </div>
       {/* text roles (A7) below the surface swatches: by-target step + achieved
         APCA Lc vs the canvas. A surface-only family borrows the neutral ink. */}
       <div class="surfaces-texts">
         {!ownText && (
-          <span title="No tone scale of its own, so this surface shows the default NEUTRAL ink (foreground = active counterpart of surface). Check the Lc to see if the neutral ink is legible on this surface.">
-            <mds-badge variant="info" label="inherits neutral ink"></mds-badge>
+          <span
+            title={t(
+              'No tone scale of its own, so this surface shows the default NEUTRAL ink (foreground = active counterpart of surface). Check the Lc to see if the neutral ink is legible on this surface.',
+            )}
+          >
+            <mds-badge variant="info" label={t('inherits neutral ink')}></mds-badge>
           </span>
         )}
         {(() => {
@@ -652,20 +698,29 @@ export function SurfaceCanvas({
             // the (more important) role above it
             const belowFloor = lc < floor;
             const outOfOrder = above ? lc > above.lc : false;
+            const purpose = t(TEXT_PURPOSE[role]);
             const title = belowFloor
-              ? `${TEXT_PURPOSE[role]} - Lc ${lc} is below the ${floor} legibility floor`
+              ? t('{purpose} - Lc {lc} is below the {floor} legibility floor', {
+                  purpose,
+                  lc,
+                  floor,
+                })
               : outOfOrder && above
-                ? `${TEXT_PURPOSE[role]} - Lc ${lc} out-contrasts ${above.role} (Lc ${above.lc}); a lower role must stay softer`
-                : `${TEXT_PURPOSE[role]} - Lc ${lc} OK (floor ${floor})`;
+                ? t(
+                    '{purpose} - Lc {lc} out-contrasts {above} (Lc {aboveLc}); a lower role must stay softer',
+                    { purpose, lc, above: above.role, aboveLc: above.lc },
+                  )
+                : t('{purpose} - Lc {lc} OK (floor {floor})', { purpose, lc, floor });
+            // the role by its name, `text-muted` written with a space, the same in every language
             return (
               <span class="surfaces-text" style={{ color: c }} title={title}>
-                text {role} <code>{c}</code> <code>Lc {lc}</code>
+                {`text ${role}`} <code>{c}</code> <code>Lc {lc}</code>
                 {belowFloor ? (
-                  <Verdict state="error" label={`under Lc ${floor}`} />
+                  <Verdict state="error" label={t('under Lc {floor}', { floor })} />
                 ) : outOfOrder && above ? (
-                  <Verdict state="warning" label={`over ${above.role}`} />
+                  <Verdict state="warning" label={t('over {role}', { role: above.role })} />
                 ) : (
-                  <Verdict state="success" label="OK" />
+                  <Verdict state="success" label={t('OK')} />
                 )}
               </span>
             );
@@ -675,19 +730,22 @@ export function SurfaceCanvas({
       <div class="surfaces-borders">
         {(BORDER_ROLES as readonly string[]).map((role) => {
           const bg = hex(s, 'default');
-          const v = borderVerdict(hex(b, role), bg, role);
+          const v = borderVerdict(t, hex(b, role), bg, role);
           return (
             <span
               class="surfaces-border"
               style={{ borderColor: hex(b, role), background: bg }}
-              title={`${BORDER_PURPOSE[role]} - ${v.note}`}
+              title={`${t(BORDER_PURPOSE[role])} - ${v.note}`}
             >
-              border {role} <code>{v.ratio}:1</code>
+              {`border ${role}`} <code>{v.ratio}:1</code>
               {v.isState &&
                 (v.ok ? (
-                  <Verdict state="success" label="OK" />
+                  <Verdict state="success" label={t('OK')} />
                 ) : (
-                  <Verdict state="warning" label={`under ${BORDER_MIN_RATIO}:1`} />
+                  <Verdict
+                    state="warning"
+                    label={t('under {ratio}:1', { ratio: BORDER_MIN_RATIO })}
+                  />
                 ))}
             </span>
           );
@@ -710,7 +768,7 @@ function SurfacePanel({
     <>
       <div class="surfaces-head">
         <mds-text typography="part" tag="h2">
-          <code>surface-{family}</code> / <code>border-{family}</code>
+          <code>{`surface-${family}`}</code> / <code>{`border-${family}`}</code>
         </mds-text>
       </div>
       <div class="surfaces-modes">
@@ -774,6 +832,7 @@ interface LevelGroupProps {
 
 /** The lightness of each role of a group (surfaces, borders), one slider per mode. */
 function LevelGroup({ title, roles, table, purpose, range, onChange }: LevelGroupProps) {
+  const t = useT();
   return (
     <fieldset class="surfaces-level-group">
       <legend>
@@ -784,17 +843,17 @@ function LevelGroup({ title, roles, table, purpose, range, onChange }: LevelGrou
       <div class="surfaces-level-grid">
         <span />
         {MODES.map((mode) => (
-          <ColumnHead name={MODE_LABEL[mode]} range={`${range[mode].min}-${range[mode].max}`} />
+          <ColumnHead name={t(MODE_LABEL[mode])} range={`${range[mode].min}-${range[mode].max}`} />
         ))}
         {roles.map((role) => (
           <>
-            <RoleName role={role} purpose={purpose[role]} />
+            <RoleName role={role} purpose={t(purpose[role])} />
             {MODES.map((mode) => (
               <Range
                 value={toPercent(table[mode]?.[role] ?? 0)}
                 min={range[mode].min}
                 max={range[mode].max}
-                label={`${title} ${role}, ${mode}`}
+                label={`${title} ${role}, ${t(MODE_NAME[mode])}`}
                 onValue={(value) => onChange(mode, role, value)}
               />
             ))}
@@ -816,32 +875,33 @@ interface TextTargetsProps {
  * and border levels. A `{ step }` override is shown read-only.
  */
 function TextTargets({ targets, onChange }: TextTargetsProps) {
+  const t = useT();
   return (
     <fieldset class="surfaces-level-group">
       <legend>
         <mds-text typography="group" tag="span">
-          Text (APCA Lc)
+          {t('Text (APCA Lc)')}
         </mds-text>
       </legend>
       <div class="surfaces-level-grid">
         <span />
-        <ColumnHead name="Target" range={`0-${TEXT_TARGET_MAX}`} />
+        <ColumnHead name={t('Target')} range={`0-${TEXT_TARGET_MAX}`} />
         <span />
         {(TEXT_ROLES as readonly string[]).map((role) => {
           const level = targets[role];
           return (
             <>
-              <RoleName role={role} purpose={TEXT_PURPOSE[role]} />
+              <RoleName role={role} purpose={t(TEXT_PURPOSE[role])} />
               {typeof level === 'object' ? (
                 <mds-text typography="caption" tag="span" class="surfaces-muted">
-                  step {level.step} (pinned)
+                  {t('step {step} (pinned)', { step: level.step })}
                 </mds-text>
               ) : (
                 <Range
                   value={level ?? 0}
                   min={0}
                   max={TEXT_TARGET_MAX}
-                  label={`Text ${role}, target`}
+                  label={t('Text {role}, target', { role })}
                   onValue={(value) => onChange(role, value)}
                 />
               )}
@@ -855,6 +915,8 @@ function TextTargets({ targets, onChange }: TextTargetsProps) {
 }
 
 const LC_MAX = 108;
+/** The letters each step of the chart is drawn in: a sample of type, no word. */
+const SAMPLE_GLYPHS = 'Ag';
 
 interface StepChartProps {
   mode: Mode;
@@ -873,10 +935,11 @@ interface StepChartProps {
  * always agree with the generated tokens.
  */
 function StepSelectionChart({ mode, tone, surface, text, targets }: StepChartProps) {
+  const t = useT();
   if (!tone || !surface) {
     return (
       <mds-text typography="caption" tag="p" class="surfaces-chart-empty surfaces-muted">
-        {MODE_LABEL[mode]}: no tone/surface scale
+        {t('{mode}: no tone/surface scale', { mode: t(MODE_LABEL[mode]) })}
       </mds-text>
     );
   }
@@ -911,7 +974,7 @@ function StepSelectionChart({ mode, tone, surface, text, targets }: StepChartPro
   // threshold lines from numeric targets ({ step } pins carry no Lc line)
   const lines = (TEXT_ROLES as readonly string[])
     .map((role) => ({ role, target: targets[role] }))
-    .filter((t): t is { role: string; target: number } => typeof t.target === 'number');
+    .filter((line): line is { role: string; target: number } => typeof line.target === 'number');
 
   const pct = (lc: number) => `${Math.min(100, (lc / LC_MAX) * 100)}%`;
 
@@ -919,16 +982,16 @@ function StepSelectionChart({ mode, tone, surface, text, targets }: StepChartPro
     <div class="surfaces-chart">
       <div class="surfaces-chart-row">
         <mds-text typography="label" tag="span" class="surfaces-chart-mode">
-          {MODE_LABEL[mode]}
+          {t(MODE_LABEL[mode])}
         </mds-text>
         <span class="surfaces-chart-track">
-          {lines.map((t) => (
+          {lines.map((line) => (
             <span
               class="surfaces-chart-tick"
-              style={{ left: pct(t.target) }}
-              title={`${t.role} target ${t.target}`}
+              style={{ left: pct(line.target) }}
+              title={t('{role} target {target}', { role: line.role, target: line.target })}
             >
-              {t.target}
+              {line.target}
             </span>
           ))}
         </span>
@@ -941,9 +1004,13 @@ function StepSelectionChart({ mode, tone, surface, text, targets }: StepChartPro
             <span
               class="surfaces-chart-sample"
               style={{ background: s.bind.value, color: s.value }}
-              title={`tone ${s.value} on its worst surface: ${s.bind.role} ${s.bind.value}`}
+              title={t('tone {color} on its worst surface: {role} {surface}', {
+                color: s.value,
+                role: s.bind.role,
+                surface: s.bind.value,
+              })}
             >
-              Ag
+              {SAMPLE_GLYPHS}
             </span>
             <span class="surfaces-chart-step">
               <span>
@@ -952,8 +1019,8 @@ function StepSelectionChart({ mode, tone, surface, text, targets }: StepChartPro
               {picks && <span class="surfaces-chart-picks">{picks.join(' ')}</span>}
             </span>
             <span class="surfaces-chart-track">
-              {lines.map((t) => (
-                <span class="surfaces-chart-line" style={{ left: pct(t.target) }} />
+              {lines.map((line) => (
+                <span class="surfaces-chart-line" style={{ left: pct(line.target) }} />
               ))}
               <span class="surfaces-chart-fill" style={{ width: pct(s.lc) }} />
             </span>

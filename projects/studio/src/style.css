@@ -75,10 +75,29 @@
   gap: var(--magma-rhythm-label-control);
 }
 
+/* the menu of the bar (shell.tsx): the sections where the bar hides them, then the preferences of
+   the person */
 .studio-menu {
   display: grid;
   gap: var(--magma-rhythm-inline);
   padding: var(--magma-rhythm-inset);
+}
+
+.studio-menu-nav,
+.studio-menu-prefs {
+  display: grid;
+  gap: var(--magma-rhythm-inline);
+}
+
+/* the sections of the menu stand for those of the bar, which mds-header-bar hides on a window
+   narrower than its `tablet` breakpoint (`nav="desktop"`, `max-tablet:hidden`): from that width
+   the bar shows them, and the menu holds the preferences alone. A media query reads no custom
+   property, so the width is written here: 768px is `screen.tablet.min` of design-tokens
+   (--breakpoint-tablet), and test/shell.test.mts holds it to that token. */
+@media (width >= 768px) {
+  .studio-menu-nav {
+    display: none;
+  }
 }
 
 .studio-menu-title {

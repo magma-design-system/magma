@@ -5,6 +5,7 @@ import {
   createColorTokens,
   type MagmaConfig,
 } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
+import { plural, useT } from './i18n.js';
 import './diff.css';
 
 // The diff compares the palette generated from the edited config against the
@@ -84,6 +85,7 @@ function diffColor(
 // one mode of a colour: its label, then its steps. The steps are data, each in its own colour
 // inline; a changed step is ringed twice, so the ring reads on a light step and on a dark one
 function DiffRow({ label, cells }: { label: string; cells: DiffCell[] }) {
+  const t = useT();
   return (
     <div class="diffs-mode">
       <mds-text typography="caption" tag="p" class="studio-muted">
@@ -97,9 +99,9 @@ function DiffRow({ label, cells }: { label: string; cells: DiffCell[] }) {
             title={
               cell.changed
                 ? cell.from
-                  ? `${cell.step}: ${cell.from} to ${cell.value}${cell.deltaE !== undefined ? ` (\u0394E ${cell.deltaE.toFixed(1)})` : ''}`
-                  : `${cell.step}: added (${cell.value})`
-                : `${cell.step}: ${cell.value} (unchanged)`
+                  ? `${t('{step}: {from} to {to}', { step: cell.step, from: cell.from, to: cell.value })}${cell.deltaE !== undefined ? ` (\u0394E ${cell.deltaE.toFixed(1)})` : ''}`
+                  : t('{step}: added ({value})', { step: cell.step, value: cell.value })
+                : t('{step}: {value} (unchanged)', { step: cell.step, value: cell.value })
             }
           />
         ))}
@@ -117,6 +119,7 @@ const BADGE_VARIANT: Record<ColorDiff['status'], string> = {
 };
 
 export function DiffView({ config }: { config: MagmaConfig }) {
+  const t = useT();
   const baseline = useMemo(() => paletteOf(initialConfigJson as unknown as MagmaConfig), []);
   const [current, error] = useMemo<[ColorTree | null, string | null]>(() => {
     try {
@@ -153,14 +156,14 @@ export function DiffView({ config }: { config: MagmaConfig }) {
   return (
     <div class="diffs-page">
       <mds-text typography="detail" tag="p" class="diffs-hint studio-muted">
-        Differences between the current palette and the one generated from the committed
-        configuration. Changed steps are outlined; the badge shows the largest perceptual distance
-        (deltaE) across the color.
+        {t(
+          'Differences between the current palette and the one generated from the committed configuration. Changed steps are outlined; the badge shows the largest perceptual distance (deltaE) across the color.',
+        )}
       </mds-text>
       <mds-text typography="detail" tag="p" role="status">
         {diffs.length === 0
-          ? 'No differences from the committed configuration.'
-          : `${changed} changed, ${added} new, ${removed} removed`}
+          ? t('No differences from the committed configuration.')
+          : t('{changed} changed, {added} new, {removed} removed', { changed, added, removed })}
       </mds-text>
       {diffs.map((d) => (
         <mds-card class="diffs-card" key={d.path}>
@@ -173,17 +176,17 @@ export function DiffView({ config }: { config: MagmaConfig }) {
               tone="weak"
               label={
                 d.status === 'new'
-                  ? 'new'
+                  ? t('new')
                   : d.status === 'removed'
-                    ? 'removed'
-                    : `\u0394E ${d.maxDeltaE.toFixed(1)} - ${d.changedCount} step${d.changedCount === 1 ? '' : 's'}`
+                    ? t('removed')
+                    : `\u0394E ${d.maxDeltaE.toFixed(1)} - ${plural(t, d.changedCount, '{count} step', '{count} steps')}`
               }
             />
           </mds-card-header>
           <mds-card-content>
             <div class="diffs-modes">
-              <DiffRow label="light" cells={d.light} />
-              <DiffRow label="dark" cells={d.dark} />
+              <DiffRow label={t('light')} cells={d.light} />
+              <DiffRow label={t('dark')} cells={d.dark} />
             </div>
           </mds-card-content>
         </mds-card>

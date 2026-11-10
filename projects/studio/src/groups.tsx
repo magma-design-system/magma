@@ -10,6 +10,7 @@ import {
   resolveRatiosName,
 } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
 import type { ColorScales, Step } from './generator.js';
+import { plural, rich, useT } from './i18n.js';
 import { Check, Field, Select, TextInput } from './magma.js';
 import './groups.css';
 
@@ -37,8 +38,6 @@ const parseExport = (text: string): string[] =>
     .split(',')
     .map((entry) => entry.trim())
     .filter(Boolean);
-
-const plural = (count: number, noun: string): string => `${count} ${noun}${count === 1 ? '' : 's'}`;
 
 // the light ramp of a colour: data, so each step keeps its own colour inline
 function Ramp({ steps }: { steps: Step[] }) {
@@ -74,6 +73,7 @@ export function GroupsManager({
   onSelectByExport,
   onOpenBatch,
 }: GroupsManagerProps) {
+  const t = useT();
   // when on, selected colors are lifted into a dedicated section on top so
   // they can be compared side by side; the rest stay grouped below
   const [groupSelected, setGroupSelected] = useState(false);
@@ -130,10 +130,10 @@ export function GroupsManager({
           </Check>
           {overrides.length > 0 && (
             <mds-badge
-              label="override"
+              label={t('override')}
               variant="info"
               tone="weak"
-              title={`overrides the group: ${overrides.join(', ')}`}
+              title={t('overrides the group: {overrides}', { overrides: overrides.join(', ') })}
             />
           )}
         </span>
@@ -152,17 +152,18 @@ export function GroupsManager({
   return (
     <div class="groups-page">
       <mds-text typography="detail" tag="p" class="groups-hint studio-muted">
-        Ratios, formula and export are managed per token group here (the <code>groups</code> section
-        of the configuration). Tick colors across groups to set their export together, or pick an
-        existing export to load every color that uses it. Group selected lifts the ticked colors
-        into a section on top, to compare them.
+        {rich(
+          t,
+          'Ratios, formula and export are managed per token group here (the {groups} section of the configuration). Tick colors across groups to set their export together, or pick an existing export to load every color that uses it. Group selected lifts the ticked colors into a section on top, to compare them.',
+          { groups: <code>{'groups'}</code> },
+        )}
       </mds-text>
       {/* the selection of the batch (docs/agents/patterns/item-list.md, "selection"): how many,
           then the batch action; the view of the selection and the selection by export follow */}
       <div class="groups-selection">
         <div class="groups-selection-bar">
           <mds-text typography="detail" tag="p" role="status">
-            {selected.size} selected
+            {t('{count} selected', { count: selected.size })}
           </mds-text>
           <mds-button
             type="button"
@@ -170,19 +171,18 @@ export function GroupsManager({
             tone="outline"
             disabled={selected.size === 0}
             onClick={onOpenBatch}
-          >
-            Batch export
-          </mds-button>
+            label={t('Batch export')}
+          ></mds-button>
           <Check type="switch" checked={groupSelected} onChecked={setGroupSelected}>
-            Group selected
+            {t('Group selected')}
           </Check>
         </div>
         <span class="groups-selection-export">
-          <Field label="Select by export">
+          <Field label={t('Select by export')}>
             <Select
               size="md"
               value={exportPick}
-              placeholder="Choose an export"
+              placeholder={t('Choose an export')}
               options={exportNames.map((name) => ({ value: name, label: name }))}
               onValue={(value) => {
                 setExportPick(value);
@@ -198,10 +198,10 @@ export function GroupsManager({
           <mds-card-header>
             <span class="groups-card-title">
               <mds-text typography="part" tag="h2">
-                Selected
+                {t('Selected colors')}
               </mds-text>
               <mds-text typography="detail" tag="p" class="studio-muted">
-                {plural(selectedColors.length, 'color')}
+                {plural(t, selectedColors.length, '{count} color', '{count} colors')}
               </mds-text>
             </span>
           </mds-card-header>
@@ -223,18 +223,21 @@ export function GroupsManager({
                   {groupName}
                 </mds-text>
                 <mds-text typography="detail" tag="p" class="studio-muted">
-                  {plural(colors.length, 'color')}
+                  {plural(t, colors.length, '{count} color', '{count} colors')}
                 </mds-text>
               </span>
             </mds-card-header>
             <mds-card-content>
               <div class="groups-settings">
-                <Field label="Formula">
+                <Field label={t('Formula')}>
                   <Select
                     size="md"
                     value={groupConfig.formula ?? ''}
                     options={[
-                      { value: '', label: `inherit (${config.formula ?? 'wcag3'})` },
+                      {
+                        value: '',
+                        label: t('inherit ({value})', { value: config.formula ?? 'wcag3' }),
+                      },
                       { value: 'wcag2', label: 'wcag2' },
                       { value: 'wcag3', label: 'wcag3' },
                     ]}
@@ -246,12 +249,12 @@ export function GroupsManager({
                     }
                   />
                 </Field>
-                <Field label="Ratios">
+                <Field label={t('Ratios')}>
                   <Select
                     size="md"
                     value={groupConfig.ratios ?? ''}
                     options={[
-                      { value: '', label: 'inherit (default)' },
+                      { value: '', label: t('inherit ({value})', { value: 'default' }) },
                       ...scaleNamesFor(effectiveFormula).map((name) => ({
                         value: name,
                         label: labelFor(effectiveFormula, name),
@@ -263,12 +266,12 @@ export function GroupsManager({
                   />
                 </Field>
                 <div class="groups-settings-export">
-                  <Field label="Export">
+                  <Field label={t('Export')}>
                     <TextInput
                       size="md"
                       commit="leave"
                       value={(groupConfig.export ?? []).join(', ')}
-                      placeholder="e.g. palette, default"
+                      placeholder={t('e.g. palette, default')}
                       onValue={(text) => commitExport(groupName, groupConfig, text)}
                     />
                   </Field>
@@ -279,7 +282,9 @@ export function GroupsManager({
                   members.map(renderMember)
                 ) : (
                   <mds-text typography="detail" tag="p" class="studio-muted">
-                    All the colors of the group are in the Selected section.
+                    {t('All the colors of the group are in the {section} section.', {
+                      section: t('Selected colors'),
+                    })}
                   </mds-text>
                 )}
               </div>

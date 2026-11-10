@@ -5,10 +5,12 @@
   only draws them, in its dropdown and in the menu of a narrow window. Each says beside its label
   the format of what it reads or hands over, a badge the click goes through.
 */
+import { useT } from './i18n.js';
 
 /** An action of the Config menu: what it is called, what it reads or hands over, what it runs. */
 export interface ConfigAction {
   id: string;
+  /** What it is called, in English (msg): translated where it is drawn (#1336). */
   label: string;
   icon: string;
   /** The format of what the action reads or hands over: the badge beside its label. */
@@ -29,6 +31,7 @@ export function ConfigItems({
   /** After an action ran, with it: the bar closes its menu, unless the action keeps it open. */
   onRun?: (action: ConfigAction) => void;
 }) {
+  const t = useT();
   return (
     <>
       {actions.map((action) => (
@@ -41,8 +44,8 @@ export function ConfigItems({
               tone="text"
               icon={action.icon}
               class="studio-menu-link"
-              label={action.label}
-              aria-label={action.format ? `${action.label}, ${action.format}` : undefined}
+              label={t(action.label)}
+              aria-label={action.format ? `${t(action.label)}, ${action.format}` : undefined}
               data-action={action.id}
               onClick={() => {
                 action.run();

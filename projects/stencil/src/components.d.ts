@@ -2407,6 +2407,10 @@ export namespace Components {
          */
         "controller"?: boolean;
         /**
+          * Tells the panel that the application follows `<html lang>` on its own, translating its content as the language changes, so a change of language needs no reload and shows no notice
+         */
+        "liveLanguage"?: boolean;
+        /**
           * Sets the size of the component items nested inside it
          */
         "size"?: TabSizeType;
@@ -7942,6 +7946,10 @@ declare namespace LocalJSX {
          */
         "controller"?: boolean;
         /**
+          * Tells the panel that the application follows `<html lang>` on its own, translating its content as the language changes, so a change of language needs no reload and shows no notice
+         */
+        "liveLanguage"?: boolean;
+        /**
           * Sets the size of the component items nested inside it
          */
         "size"?: TabSizeType;
@@ -9632,6 +9640,7 @@ declare namespace LocalJSX {
     interface MdsPrefAttributes {
         "size": TabSizeType;
         "controller": boolean;
+        "liveLanguage": boolean;
     }
     interface MdsPrefAnimationAttributes {
         "size": TabSizeType;
