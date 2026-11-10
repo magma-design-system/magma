@@ -436,7 +436,7 @@ const CustomTemplate = (args) => {
           slot="window"
           class="max-w-[400px] w-full mx-6"
           tone="box"
-          deletable
+          dismissible
           headline="Action required"
         >
           <mds-text typography="detail">
