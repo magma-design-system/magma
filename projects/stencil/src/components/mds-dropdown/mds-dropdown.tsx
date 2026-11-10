@@ -122,19 +122,23 @@ export class MdsDropdown implements FloatingElement {
    */
   @Event({ eventName: 'mdsDropdownChange' }) changedEvent: EventEmitter<MdsDropdownEventDetail>;
 
+  // A watcher runs as soon as the instance exists, the controller only from componentDidLoad: a
+  // property set in between, by a framework binding or by a page that moves its nodes in the
+  // same task it inserts them, has nothing to place yet, and componentDidLoad places what it
+  // finds (#527)
   @Watch('hideArrow')
   hideArrowChanged(): void {
-    this.floatingController.updatePosition();
+    this.floatingController?.updatePosition();
   }
 
   @Watch('arrowPadding')
   arrowPaddingChanged(): void {
-    this.floatingController.updatePosition();
+    this.floatingController?.updatePosition();
   }
 
   @Watch('disableAutoPlacement')
   disableAutoPlacementChanged(): void {
-    this.floatingController.updatePosition();
+    this.floatingController?.updatePosition();
   }
 
   @Watch('backdrop')
@@ -154,37 +158,40 @@ export class MdsDropdown implements FloatingElement {
 
   @Watch('flip')
   flipChanged(): void {
-    this.floatingController.updatePosition();
+    this.floatingController?.updatePosition();
   }
 
   @Watch('offset')
   offsetChanged(): void {
-    this.floatingController.updatePosition();
+    this.floatingController?.updatePosition();
   }
 
   @Watch('placement')
   placementChanged(): void {
-    this.floatingController.updatePosition();
+    this.floatingController?.updatePosition();
   }
 
   @Watch('disableShift')
   disableShiftChanged(): void {
-    this.floatingController.updatePosition();
+    this.floatingController?.updatePosition();
   }
 
   @Watch('shiftPadding')
   shiftPaddingChanged(): void {
-    this.floatingController.updatePosition();
+    this.floatingController?.updatePosition();
   }
 
   @Watch('strategy')
   strategyChanged(): void {
-    this.floatingController.updatePosition();
+    this.floatingController?.updatePosition();
   }
 
   @Watch('target')
   targetChanged(): void {
     if ((this.target ?? '') === '' || this.floatingController == null) return;
+    // a host out of the page has no caller to look for: one taken out before it loaded still
+    // loads, and connectedCallback looks again if it comes back
+    if (!this.host.isConnected) return;
     const caller = this.floatingController.updateCaller(this.target);
     if (!caller) return;
     if (this.caller && this.caller !== caller) this.unsetInteractionBehaviour(this.caller);
@@ -198,6 +205,8 @@ export class MdsDropdown implements FloatingElement {
 
   @Watch('visible')
   visibleChanged(newValue: boolean): void {
+    // before the load: componentDidLoad opens a panel it finds visible, events included
+    if (this.floatingController == null) return;
     this.changedEvent.emit({ caller: this.caller, visible: newValue });
     this.floatingController.syncExpanded(newValue);
     if (newValue) {
@@ -454,8 +463,15 @@ export class MdsDropdown implements FloatingElement {
     }
   }
 
+  // a dropdown moved in the page is disconnected and connected again, without loading again: it
+  // finds its caller, and the Escape that disconnectedCallback took away, once more
+  connectedCallback(): void {
+    if (this.floatingController) this.targetChanged();
+  }
+
   disconnectedCallback(): void {
-    this.floatingController.dismiss();
+    // a dropdown taken out before it loaded has no controller yet
+    this.floatingController?.dismiss();
     this.backdropController.detachBackdrop();
     this.km.detachEscapeBehavior();
   }

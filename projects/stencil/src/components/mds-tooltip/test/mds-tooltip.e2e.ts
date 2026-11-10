@@ -1,4 +1,5 @@
 import { render } from '@stencil/vitest';
+import { onTestFinished } from 'vitest';
 import { userEvent } from 'vitest/browser';
 import { mockIconFetch } from '@test/fetch';
 
@@ -180,6 +181,58 @@ describe('mds-tooltip', () => {
       await vi.waitFor(() => {
         expect(caller).toEqualAttribute('aria-describedby', 'tip');
       });
+    });
+  });
+
+  // #527: the watchers and disconnectedCallback run as soon as the instance exists, the controller
+  // is made in componentDidLoad. With its bundle already loaded the instance is built inside
+  // append() and loads later: a page that inserts the tooltip and drops it or sets it in the same
+  // task reaches it in between
+  describe('before it has loaded', () => {
+    beforeEach(async () => {
+      await render('<mds-tooltip></mds-tooltip>');
+    });
+
+    const insert = (): { box: HTMLElement; tip: HTMLMdsTooltipElement } => {
+      const box = document.createElement('div');
+      box.innerHTML =
+        '<mds-button id="caller" label="Target"></mds-button><mds-tooltip id="tip" target="#caller" disable-auto-placement>Hint</mds-tooltip>';
+      document.body.append(box);
+      onTestFinished(() => box.remove());
+      const tip = box.querySelector('mds-tooltip') as HTMLMdsTooltipElement;
+      // what the tests below are about: an instance that exists and has not loaded
+      expect(tip).not.toHaveAttribute('hydrated');
+      return { box, tip };
+    };
+
+    it('leaves the page without an error when it is taken out', async () => {
+      const error = vi.spyOn(console, 'error');
+      const warn = vi.spyOn(console, 'warn');
+      const { tip } = insert();
+
+      tip.remove();
+      await tip.componentOnReady();
+
+      expect(error).not.toHaveBeenCalled();
+      // out of the page it still loads, and does not go looking for a caller from there
+      expect(warn).not.toHaveBeenCalled();
+    });
+
+    it('shows on load when visible and placement are set before', async () => {
+      const error = vi.spyOn(console, 'error');
+      const { box, tip } = insert();
+
+      tip.placement = 'bottom';
+      tip.visible = true;
+      await tip.componentOnReady();
+
+      expect(error).not.toHaveBeenCalled();
+      await vi.waitFor(() => {
+        expect(tip).toHaveAttribute('data-floating-placed');
+      });
+      // placed under its caller, it unfurls from its top edge
+      expect(tip.style.transformOrigin).toMatch(/ top$/);
+      expect(box.querySelector('#caller')).toEqualAttribute('aria-describedby', 'tip');
     });
   });
 
