@@ -305,6 +305,27 @@ describe('mds-button-dropdown stretched', () => {
     // the label stays in the middle of the main action, as in a stretched mds-button
     expect(label.left + label.width / 2).toBeCloseTo(primary.left + primary.width / 2, 0);
   });
+
+  // the footer of a card under 380px stacks its row and stretches every action: the main action
+  // takes the width from the start, the chevron stays on its right, at the end of the row; a
+  // lone split button keeps its own width there (#1250), so it stands beside another action
+  it('keeps the chevron at the end of the stacked row of a narrow mds-card-footer', async () => {
+    const { root } = await render<HTMLElement>(
+      `<mds-card style="width: 20rem"><mds-card-footer><mds-button variant="dark" tone="outline" label="Anteprima"></mds-button><mds-button-dropdown label="Scarica" icon="mi/baseline/download"><mds-button label="Scarica come SVG"></mds-button></mds-button-dropdown></mds-card-footer></mds-card>`,
+    );
+    await hydrated(root);
+    const dropdown = root.querySelector('mds-button-dropdown')!;
+    const action = box(root.querySelector('mds-card-footer > mds-button')!);
+    const primary = box(primaryAction(dropdown));
+    const arrow = box(chevron(dropdown));
+
+    expect(box(root.querySelector('mds-card-footer')!).width).toBeLessThan(380);
+    expect(box(dropdown).width).toBeCloseTo(action.width, 0);
+    expect(primary.left).toBeCloseTo(action.left, 0);
+    expect(arrow.left).toBeCloseTo(primary.right, 0);
+    expect(arrow.right).toBeCloseTo(action.right, 0);
+    expect(primary.width).toBeGreaterThan(arrow.width);
+  });
 });
 
 // the outer corners of the two buttons are the corners of the host, the radius they had on their
