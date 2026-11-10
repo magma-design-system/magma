@@ -187,7 +187,8 @@ nx run stencil-angular:test    # Vitest in jsdom through the Angular unit-test b
   `npm run test.watch` (from `projects/stencil-react`) keeps Vitest in watch mode.
 - **Angular** (`projects/stencil-angular/magma-angular/src/lib/*.spec.ts`): module wiring, generated
   proxies (inputs, outputs, one custom element per proxy), `ControlValueAccessor` directives with
-  Reactive Forms. The specs run with Vitest in jsdom through the Angular `unit-test` builder
+  reactive and template-driven forms, one test per accessor type that writes the value, reads it
+  back from the change event and passes `disabled` down to the native control. The specs run with Vitest in jsdom through the Angular `unit-test` builder
   (`globals: true`, so `describe`, `it`, `expect` and `vi` need no import) against the real custom
   elements, which load and render in jsdom: wait for the `hydrated` attribute before asserting on
   the state of an element, since its watchers run only once it has loaded. The specs stay out of
