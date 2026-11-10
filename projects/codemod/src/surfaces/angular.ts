@@ -39,7 +39,7 @@ import {
   type ClassRenameEntry,
   type ClassReportEntry,
 } from './shared/class-ops.js';
-import { invertBoolean, remapEnum } from './shared/attribute-ops.js';
+import { invertBoolean, numberKind, numberRenameFlag, remapEnum } from './shared/attribute-ops.js';
 import { readsColorToken, rewriteColorReads } from './shared/color-ops.js';
 import {
   declarationRulesOf,
@@ -536,7 +536,8 @@ export const transformAngular = (
 
     function applyPropRename(rule: PropRenameRule, id: string): void {
       const s = findStatic(rule.from.attr);
-      if (s) {
+      const number = (value: AttrValue) => (rule.when === 'number' ? numberKind(value) : 'number');
+      if (s && number(s.valueSpan ? stringLiteral(s.value) : bareTrue()) === 'number') {
         const span = s.sourceSpan as Span;
         const text2 = s.valueSpan ? `${rule.to.attr}="${s.value}"` : rule.to.attr;
         edits.push({ start: span.start.offset, end: span.end.offset, text: text2 });
@@ -551,7 +552,19 @@ export const transformAngular = (
         });
       }
       const i = findInput(rule.from.prop);
-      if (i && i.valueSpan) {
+      const bound = i?.valueSpan ? number(dynamic(text(i.valueSpan as Span))) : 'other';
+      if (i && bound === 'unknown') {
+        findings.push({
+          kind: 'flag',
+          surface: 'angular',
+          file: ctx.file,
+          line,
+          ruleId: id,
+          component: tag,
+          message: numberRenameFlag(rule),
+        });
+      }
+      if (i && i.valueSpan && bound === 'number') {
         const span = i.sourceSpan as Span;
         edits.push({
           start: span.start.offset,

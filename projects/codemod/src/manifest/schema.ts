@@ -25,6 +25,13 @@ export interface PropRenameRule {
   to: PropId;
   confidence: Confidence;
   note?: string;
+  /**
+   * Rename only a value of this kind. `number`: a value written as a number
+   * (an attribute of digits, `{4}`, `[size]="4"`) is renamed, another literal
+   * (`size="sm"`) is left as it is, an expression is reported, since only its
+   * value at run time tells (category Q, #1334). Without it, every value.
+   */
+  when?: 'number';
 }
 
 /** Category C — prop removed with no replacement; warn the consumer. */

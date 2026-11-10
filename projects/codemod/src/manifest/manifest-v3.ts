@@ -355,6 +355,18 @@ export const removals: Record<string, Rule[]> = {
   // (#1145): `mds-chip`, `mds-note` and the others keep it, they remove a value.
   'mds-banner': [deletableToDismissible()],
   'mds-push-notification-item': [deletableToDismissible()],
+  // a number in `size` was the row count of the list, which is `rows` since magma 2.3.0; `size`
+  // keeps the height of the field, `sm`, `md`, `lg`
+  'mds-input-select': [
+    {
+      kind: 'propRename',
+      from: { attr: 'size', prop: 'size' },
+      to: { attr: 'rows', prop: 'rows' },
+      when: 'number',
+      confidence: 'safe',
+      note: 'a number in `size` was the row count of the list, which Magma 3 reads from `rows` only',
+    },
+  ],
   'mds-toast': [deletableToDismissible()],
   // it had no effect: `mds-tree` never read it, each `mds-tree-item` reads its own
   'mds-tree': [

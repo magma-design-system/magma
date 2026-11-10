@@ -102,10 +102,9 @@ export class MdsInputSelect {
 
   /**
    * Specifies the height of the field, the same as `mds-button`: `sm` 28px, `md` 36px, `lg` 48px.
-   * A number is still read as `rows`, the row count this prop used to set: that use is deprecated
-   * and goes in the next major
+   * The row count of the list is `rows`
    */
-  @Prop({ reflect: true }) readonly size?: InputSizeType | number = 'lg';
+  @Prop({ reflect: true }) readonly size?: InputSizeType = 'lg';
 
   /**
    * Specifies the value of the component
@@ -282,27 +281,7 @@ export class MdsInputSelect {
     this.syncSelection();
   }
 
-  /**
-   * The row count of the deprecated numeric `size`: a number, or the digits an attribute gives.
-   */
-  private legacyRows(): number | undefined {
-    const size: unknown = this.size;
-    if (typeof size === 'number') return size;
-    if (typeof size === 'string' && /^\d+$/.test(size)) return Number(size);
-    return undefined;
-  }
-
-  @Watch('size')
-  protected sizeChanged(): void {
-    if (this.legacyRows() !== undefined) {
-      console.warn(
-        '<mds-input-select>: a number in `size` is deprecated: use `rows` for the visible option rows. `size` sets the height of the field (sm, md, lg).',
-      );
-    }
-  }
-
   componentWillLoad(): void {
-    this.sizeChanged();
     // needed for react component, this prop should be used as default-value html attributo instead of defaultValue prop
     if (
       this.defaultValue != null &&
@@ -446,7 +425,7 @@ export class MdsInputSelect {
           required={this.required}
           disabled={this.isDisabled()}
           multiple={this.multiple}
-          size={this.rows || this.legacyRows() || 0}
+          size={this.rows || 0}
           part="select"
           ref={(el) => (this.selectEl = el as HTMLSelectElement)}
         >

@@ -1,4 +1,4 @@
-import { invertBoolean, remapEnum } from './attribute-ops.js';
+import { invertBoolean, numberKind, remapEnum } from './attribute-ops.js';
 import { bareTrue, boolLiteral, stringLiteral, dynamic } from './value-model.js';
 
 describe('invertBoolean (arrow → hideArrow, oldDefault true / newDefault false)', () => {
@@ -63,5 +63,26 @@ describe('remapEnum', () => {
 
   it('flags dynamic values', () => {
     expect(remapEnum(dynamic('tone'), map, v2set)).toMatchObject({ action: 'flag' });
+  });
+});
+
+// a rename limited to numbers: a number in `size` of mds-input-select becomes `rows` (#1334)
+describe('numberKind', () => {
+  it('reads digits as a number, in an attribute or an expression', () => {
+    expect(numberKind(stringLiteral('4'))).toBe('number');
+    expect(numberKind(dynamic('4'))).toBe('number');
+    expect(numberKind(dynamic("'4'"))).toBe('number');
+  });
+
+  it('reads another literal as other', () => {
+    expect(numberKind(stringLiteral('sm'))).toBe('other');
+    expect(numberKind(dynamic("'md'"))).toBe('other');
+    expect(numberKind(bareTrue())).toBe('other');
+    expect(numberKind(boolLiteral(true))).toBe('other');
+  });
+
+  it('leaves an expression to its value at run time', () => {
+    expect(numberKind(dynamic('visibleRows'))).toBe('unknown');
+    expect(numberKind(dynamic('compact ? 4 : 8'))).toBe('unknown');
   });
 });

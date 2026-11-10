@@ -1891,10 +1891,10 @@ export namespace Components {
          */
         "setValue": (value: string | number | null) => Promise<void>;
         /**
-          * Specifies the height of the field, the same as `mds-button`: `sm` 28px, `md` 36px, `lg` 48px. A number is still read as `rows`, the row count this prop used to set: that use is deprecated and goes in the next major
+          * Specifies the height of the field, the same as `mds-button`: `sm` 28px, `md` 36px, `lg` 48px. The row count of the list is `rows`
           * @default 'lg'
          */
-        "size"?: InputSizeType | number;
+        "size"?: InputSizeType;
         /**
           * Specifies the value of the component
           * @default ''
@@ -7365,10 +7365,10 @@ declare namespace LocalJSX {
          */
         "rows"?: number;
         /**
-          * Specifies the height of the field, the same as `mds-button`: `sm` 28px, `md` 36px, `lg` 48px. A number is still read as `rows`, the row count this prop used to set: that use is deprecated and goes in the next major
+          * Specifies the height of the field, the same as `mds-button`: `sm` 28px, `md` 36px, `lg` 48px. The row count of the list is `rows`
           * @default 'lg'
          */
-        "size"?: InputSizeType | number;
+        "size"?: InputSizeType;
         /**
           * Specifies the value of the component
           * @default ''
@@ -9453,7 +9453,7 @@ declare namespace LocalJSX {
         "required": boolean;
         "multiple": boolean;
         "rows": number;
-        "size": string;
+        "size": InputSizeType;
         "value": string;
         "defaultValue": string;
         "variant": ThemeStatusVariantType;

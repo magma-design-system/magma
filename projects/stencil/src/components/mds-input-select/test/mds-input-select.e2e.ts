@@ -436,7 +436,7 @@ describe('in a disabled fieldset', () => {
 
 describe('size', () => {
   // the field had one height, 48px; `size` was the row count of the native select, which now
-  // goes through `rows`, while a number in `size` keeps working for now, with a warning
+  // goes through `rows`: magma 3 no longer reads a number in `size` (#1334)
   it.each([
     { size: undefined, height: 48 },
     { size: 'lg', height: 48 },
@@ -460,14 +460,13 @@ describe('size', () => {
     expect(warn).not.toHaveBeenCalled();
   });
 
-  it('still reads a number in size as the row count, and warns that it is deprecated', async () => {
-    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+  it('reads no row count from a number in size, and keeps the default height', async () => {
     const { root } = await render(
-      '<mds-input-select multiple size="4"><option value="a">A</option><option value="b">B</option></mds-input-select>',
+      '<mds-input-select size="4"><option value="a">A</option><option value="b">B</option></mds-input-select>',
     );
 
-    expect(root.shadowRoot!.querySelector('select')!.size).toBe(4);
-    expect(warn).toHaveBeenCalledWith(expect.stringContaining('a number in `size` is deprecated'));
+    expect(root.shadowRoot!.querySelector('select')!.size).toBe(0);
+    expect(root.getBoundingClientRect().height).toBe(48);
   });
 
   it('gives a sized field no row count', async () => {

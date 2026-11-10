@@ -1,7 +1,6 @@
 /* The size of the field, with the heights of mds-button: md 36px and sm 28px here, lg 48px in
  * the base sheet. The arrow keeps its distance from the edge in proportion, and the tip moves
- * next to it when the field has the focus. A number in `size` (the deprecated row count, now
- * `rows`) matches neither, so the field stays lg. */
+ * next to it when the field has the focus. */
 
 :host([size='md']) {
   --mds-input-tip-horizontal-offset-focused: --spacing(800);

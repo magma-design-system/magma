@@ -834,7 +834,7 @@ mds-input-select prop name (attr name) [reflect]: string | undefined
 mds-input-select prop placeholder (attr placeholder) [reflect]: string | undefined
 mds-input-select prop required (attr required) [reflect]: boolean | undefined = false
 mds-input-select prop rows (attr rows) [reflect]: number | undefined = 0
-mds-input-select prop size (attr size) [reflect]: "lg" | "md" | "sm" | number | undefined = 'lg'
+mds-input-select prop size (attr size) [reflect]: "lg" | "md" | "sm" | undefined = 'lg'
 mds-input-select prop value (attr value) [reflect]: null | number | string | undefined = ''
 mds-input-select prop variant (attr variant) [reflect]: "error" | "info" | "success" | "warning" | undefined
 mds-input-select event mdsInputSelectChange: MdsInputSelectEventDetail [bubbles, cancelable, composed]
