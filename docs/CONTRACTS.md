@@ -101,6 +101,34 @@ keep in step.
 - **Held by**: the lint tests hold `USE_OF_UTILITY` to the roots of the `--color` namespace, in
   the fixtures and in the built map.
 
+## `typography.css` (design-tokens)
+
+- **What**: `dist/css/typography.css`, the non-colour tokens (fonts, type sizes, leading,
+  spacing, containers, breakpoints, aspect ratios, motion, borders, radii, shadows) and the roles
+  of the design language (`--magma-rhythm-*`, `--magma-width-*`, `--magma-container-*`,
+  `--text-size-title-<role>`) as custom properties of one `:root {}`: the plain-CSS twin of
+  `tailwind-theme-typography.css` (#513), which styles ships unchanged as
+  `dist/css/typography.css`.
+- **Produced by**: the design-tokens build, format `css/vars-typography`
+  (`src/formats/css-vars-typography`) in the `css` platform of
+  `src/config/styledictionary/tailwind4.json`, next to the Tailwind theme; the copy step of
+  styles (`scripts/copy.ts`).
+- **Contract**: [`projects/design-tokens/SPEC.md`](../projects/design-tokens/SPEC.md), "The two
+  typography sheets" (what the twin shares with the Tailwind theme and where it differs) and
+  "Design language roles"; [`docs/agents/assets.md`](agents/assets.md), "Import order
+  (mandatory)", for the page.
+- **Read by**: the consumer page, through styles (the import block of the guide, layer
+  `theme`); the MCP `render_preview` (`projects/mcp/src/render.ts`: the import block, and the
+  `--breakpoint-*` it sizes a render by); the styles build (`scripts/editor-tokens.ts`, the
+  `scale` group of the editor sheet; `scripts/properties.ts`, the values that resolve the
+  `@property` registrations); the stencil e2e tests that put the tokens on their page
+  (`src/test/design-language.e2e.ts`, the `?raw` imports of the component tests).
+- **Held by**: `test/typography-root.test.mts` of design-tokens (one `:root` with no Tailwind
+  at-rule, the values of the Tailwind theme, and the differences only the bridges, the roles and
+  the Tailwind namespaces); `test/roles.test.mts` (the values of the roles and their bridges);
+  `test/dtcg-export.test.mts` (the scale and motion of the DTCG export equal the sheet); the
+  `render_preview` tests (the widths from the installed styles).
+
 ## The mode of a theme
 
 - **What**: `--magma-color-modes`, the one colour mode (`light` or `dark`) a theme can be used
