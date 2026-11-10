@@ -45,6 +45,12 @@ Consumer applications must import styles in this exact cascade layer order to av
 The font weights are the ones the type scale uses (Karla 400/700, Merriweather 300/400,
 Roboto 500/700/900, Roboto Mono 400); Merriweather 700 covers bold inside reading text.
 
+`hydrated.css` hides each component until it is hydrated. The loader of the components adds a
+sheet of its own out of every layer (`hydratedFlag` in `projects/stencil/stencil.config.ts`), for
+the pages that do not import this file: before hydration it hides the host whatever the layers
+say, and once hydrated it hands `visibility` back to them (`revert-layer`). A utility such as
+`invisible` hides a hydrated component, as `hidden` removes it (#1229).
+
 ## Tailwind 4 configuration
 
 Magma's Tailwind 4 layer is CSS-first: the theme (palette, typography tokens and the

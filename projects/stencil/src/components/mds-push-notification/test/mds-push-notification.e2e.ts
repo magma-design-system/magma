@@ -34,6 +34,25 @@ describe('mds-push-notification', () => {
     expect(root).not.toHaveAttribute('visible');
   });
 
+  it('keeps a new item hidden until its entrance', async () => {
+    // the slotted item waits off the stack with visibility: hidden, out of the accessibility
+    // tree; the flag sheet of the lazy loader beat that rule until it handed visibility back to
+    // the page's layers (#1229). The intro delay is stretched to read the item before it enters
+    const { root } = await render(`
+      <mds-push-notification style="--mds-push-notification-items-intro-delay: 1s">
+        <mds-push-notification-item>Nuovo messaggio</mds-push-notification-item>
+      </mds-push-notification>
+    `);
+    const item = root.querySelector('mds-push-notification-item')!;
+
+    expect(item).toHaveAttribute('hydrated');
+    expect(getComputedStyle(item).visibility).toBe('hidden');
+
+    await vi.waitFor(() => expect(getComputedStyle(item).visibility).toBe('visible'), {
+      timeout: 3000,
+    });
+  });
+
   it('hides and emits mdsPushNotificationHide when the clear button is clicked', async () => {
     const { root, spyOnEvent, waitForChanges } = await render(
       '<mds-push-notification visible></mds-push-notification>',
