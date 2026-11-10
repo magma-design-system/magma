@@ -383,6 +383,7 @@ mds-chip prop icon (attr icon): string | undefined
 mds-chip prop label (attr label) [reflect, required]: string
 mds-chip prop selectable (attr selectable) [reflect]: boolean | undefined = false
 mds-chip prop selected (attr selected) [reflect, mutable]: boolean | undefined
+mds-chip prop swatch (attr swatch): string | undefined
 mds-chip prop tone (attr tone) [reflect]: "strong" | "weak" | undefined = 'strong'
 mds-chip prop variant (attr variant) [reflect]: "ai" | "amaranth" | "aqua" | "blue" | "dark" | "error" | "green" | "info" | "lime" | "orange" | "orchid" | "primary" | "purple" | "red" | "secondary" | "sky" | "success" | "violet" | "warning" | "yellow" | undefined = 'primary'
 mds-chip event mdsChipClickLabel: MdsChipEvent [bubbles, cancelable, composed]

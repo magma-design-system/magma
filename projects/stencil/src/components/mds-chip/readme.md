@@ -11,7 +11,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ### 1. Description
 
-The `<mds-chip>` web component is the Magma Design System's compact element for representing a discrete piece of information, a filter, a selection, or a removable token. It renders a label with optional leading icon and an optional delete affordance, and can be made interactive (clickable or selectable) to act as a lightweight button-like control rather than a static tag.
+The `<mds-chip>` web component is the Magma Design System's compact element for representing a discrete piece of information, a filter, a selection, or a removable token. It renders a label with an optional leading icon or colour swatch and an optional delete affordance, and can be made interactive (clickable or selectable) to act as a lightweight button-like control rather than a static tag.
 
 #### Semantic Behavior
 
@@ -22,6 +22,7 @@ The `<mds-chip>` web component is the Magma Design System's compact element for 
 - **Delete affordance**: When `deletable`, a trailing delete button is rendered with a localized title (el/en/es/it) and emits the delete event on activation.
 - **Emitted events**: `mdsChipClickLabel` fires on activation for non-selectable chips, `mdsChipSelect` fires (carrying the new `selected` value) for selectable chips, and `mdsChipDelete` fires from the delete button - all carrying the originating event and host element.
 - **Label is text, on one line**: Long labels do not wrap (`truncate="word"` on the inner text).
+- **One leading mark**: `swatch` takes the place of `icon`; when both are set the chip draws the swatch. The swatch is decorative and hidden from assistive technologies, so the label has to name the colour.
 
 #### Properties & Visual Configurations
 
@@ -34,6 +35,7 @@ The shared `variant` / `tone` ladders are defined in [`docs/agents/variants.md`]
 - **`selected`** drives the selected visual treatment and can be set externally to pre-select a chip; an unselected chip carries no attribute.
 - **`deletable`** adds the trailing cancel button for removable tokens; reserve it for chips the user is meant to dismiss.
 - **`icon`** is an SVG filename slug from the Magma icon library, shown decoratively to the left of the label.
+- **`swatch`** is a colour of the product, any CSS colour, drawn as a round swatch where the icon goes: for chips whose label names a colour (a family of colours, a category, a calendar). It is not a role and does not follow `variant` or the mode: the chip draws it as given, inside a ring that keeps it visible on the chip at rest and selected, in light and dark. A value that is not a colour draws the empty ring.
 
 
 ### 2. Examples
@@ -74,6 +76,16 @@ Reference icons by their filename slug (no `.svg` extension). The icon is render
   variant="primary"
   tone="strong"
 ></mds-chip>
+```
+
+#### Chip with a Colour Swatch
+
+Use `swatch` when the label names a colour of the product: a family of colours to turn on and off, a category, a calendar. The value is the product's own, any CSS colour (`#a89586`, `rgb(47 111 208)`, `oklch(70% 0.19 50)`), not a token: the chip draws it as given in every mode, round and where the icon goes, inside a ring that keeps a colour as light or as dark as the chip visible. The swatch is hidden from assistive technologies, so the label names the colour; it takes the place of `icon`.
+
+```html
+<mds-chip label="kaolin" swatch="#9aa3ad" selectable selected></mds-chip>
+<mds-chip label="fireclay" swatch="#a89586" selectable></mds-chip>
+<mds-chip label="Calendario ferie" swatch="#2f6fd0" clickable></mds-chip>
 ```
 
 #### Clickable Chip (Action, No Toggle)
@@ -242,7 +254,7 @@ Without `clickable`, the chip has no `role`, no focus management, and no keyboar
 
 #### Do Not Slot Content Into the Chip
 
-`<mds-chip>` has no default or named slots - all content is driven by props (`label`, `icon`, `deletable`). Slotting HTML children is ignored by the Shadow DOM.
+`<mds-chip>` has no default or named slots - all content is driven by props (`label`, `icon`, `swatch`, `deletable`). Slotting HTML children is ignored by the Shadow DOM.
 
 ```html
 <!-- INCORRECT -->
@@ -258,6 +270,30 @@ Without `clickable`, the chip has no `role`, no focus management, and no keyboar
   deletable
   variant="primary"
 ></mds-chip>
+```
+
+#### Do Not Draw a Colour Through the Icon
+
+A circle icon painted with the colour, or the markup of an `<svg>` given to `icon`, sits on the disc of the icon, has no ring to keep a colour as light or as dark as the chip visible, and leans on custom properties that are not public. Give the colour to `swatch`.
+
+```html
+<!-- INCORRECT -->
+<mds-chip label="fireclay" icon="mdi/circle" style="--mds-chip-icon-color: #a89586"></mds-chip>
+
+<!-- CORRECT -->
+<mds-chip label="fireclay" swatch="#a89586"></mds-chip>
+```
+
+#### Do Not Say a State With a Swatch
+
+The swatch draws its colour as given: a status painted there does not follow the mode, the named theme or the contrast preference as a variant does, and, hidden from assistive technologies, it adds nothing a screen reader hears. Say a status with `variant` and an icon; keep `swatch` for a colour the label names.
+
+```html
+<!-- INCORRECT -->
+<mds-chip label="Errore" swatch="#d32f2f"></mds-chip>
+
+<!-- CORRECT -->
+<mds-chip label="Errore" icon="mi/baseline/error" variant="error" tone="strong"></mds-chip>
 ```
 
 #### Do Not Pierce Shadow DOM to Style the Delete Button
@@ -311,17 +347,18 @@ With `selected="false"` the component reads the prop as `false` and drops the at
 
 ## Properties
 
-| Property             | Attribute    | Description                                                                                             | Type                                                                                                                                                                                                                                          | Default     |
-| -------------------- | ------------ | ------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `clickable`          | `clickable`  | Adds ARIA support to the element if has interaction                                                     | `boolean \| undefined`                                                                                                                                                                                                                        | `undefined` |
-| `deletable`          | `deletable`  | Shows the cross icon to perform cancel/delete action on element                                         | `boolean \| undefined`                                                                                                                                                                                                                        | `undefined` |
-| `disabled`           | `disabled`   | Sets the component disabled status: neither the label nor the delete button can be focused or activated | `boolean \| undefined`                                                                                                                                                                                                                        | `false`     |
-| `icon`               | `icon`       | The icon displayed to the left of the component's label                                                 | `string \| undefined`                                                                                                                                                                                                                         | `undefined` |
-| `label` _(required)_ | `label`      | The label displayed to the right of the component's icon                                                | `string`                                                                                                                                                                                                                                      | `undefined` |
-| `selectable`         | `selectable` | Sets if the component change is status to selected when is clicked                                      | `boolean \| undefined`                                                                                                                                                                                                                        | `false`     |
-| `selected`           | `selected`   | Sets the component selected                                                                             | `boolean \| undefined`                                                                                                                                                                                                                        | `undefined` |
-| `tone`               | `tone`       | Sets the color variant tone of the component                                                            | `"strong" \| "weak" \| undefined`                                                                                                                                                                                                             | `'strong'`  |
-| `variant`            | `variant`    | Sets the color variant of the component                                                                 | `"ai" \| "amaranth" \| "aqua" \| "blue" \| "dark" \| "error" \| "green" \| "info" \| "lime" \| "orange" \| "orchid" \| "primary" \| "purple" \| "red" \| "secondary" \| "sky" \| "success" \| "violet" \| "warning" \| "yellow" \| undefined` | `'primary'` |
+| Property             | Attribute    | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | Type                                                                                                                                                                                                                                          | Default     |
+| -------------------- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| `clickable`          | `clickable`  | Adds ARIA support to the element if has interaction                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | `boolean \| undefined`                                                                                                                                                                                                                        | `undefined` |
+| `deletable`          | `deletable`  | Shows the cross icon to perform cancel/delete action on element                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | `boolean \| undefined`                                                                                                                                                                                                                        | `undefined` |
+| `disabled`           | `disabled`   | Sets the component disabled status: neither the label nor the delete button can be focused or activated                                                                                                                                                                                                                                                                                                                                                                                                                                   | `boolean \| undefined`                                                                                                                                                                                                                        | `false`     |
+| `icon`               | `icon`       | The icon displayed to the left of the component's label                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `string \| undefined`                                                                                                                                                                                                                         | `undefined` |
+| `label` _(required)_ | `label`      | The label displayed to the right of the component's icon                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | `string`                                                                                                                                                                                                                                      | `undefined` |
+| `selectable`         | `selectable` | Sets if the component change is status to selected when is clicked                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | `boolean \| undefined`                                                                                                                                                                                                                        | `false`     |
+| `selected`           | `selected`   | Sets the component selected                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | `boolean \| undefined`                                                                                                                                                                                                                        | `undefined` |
+| `swatch`             | `swatch`     | A colour drawn as a round swatch where the icon goes, in place of `icon`: any CSS colour (`#2f6fd0`, `rgb(47 111 208)`, `oklch(55% 0.2 260)`). It is a value of the product, the colour the label names (a family of colours, a category, a calendar), not a role of Magma: the chip draws it as it is given in every mode and theme, inside a ring that keeps it visible on the chip, at rest and selected. Decorative: hidden from assistive technologies, since the label names it. A value that is not a colour draws the empty ring. | `string \| undefined`                                                                                                                                                                                                                         | `undefined` |
+| `tone`               | `tone`       | Sets the color variant tone of the component                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | `"strong" \| "weak" \| undefined`                                                                                                                                                                                                             | `'strong'`  |
+| `variant`            | `variant`    | Sets the color variant of the component                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `"ai" \| "amaranth" \| "aqua" \| "blue" \| "dark" \| "error" \| "green" \| "info" \| "lime" \| "orange" \| "orchid" \| "primary" \| "purple" \| "red" \| "secondary" \| "sky" \| "success" \| "violet" \| "warning" \| "yellow" \| undefined` | `'primary'` |
 
 
 ## Events

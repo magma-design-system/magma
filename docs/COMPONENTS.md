@@ -213,7 +213,7 @@ Parts (e.g. `mds-table-cell`, `mds-card-header`) always compose inside their par
 
 | Component          | Native analogue | Intent                                                                                                                          |
 | ------------------ | --------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| `mds-chip`         | -               | Compact, selectable tag with optional icon and delete action.                                                                   |
+| `mds-chip`         | -               | Compact, selectable tag with optional icon or colour swatch and delete action.                                                  |
 | `mds-badge`        | -               | Small inline badge for counts, status dots, or tags.                                                                            |
 | `mds-label`        | -               | Standalone text label for grouping or tagging - **not** the `<label>` for inputs (use `mds-input-field`'s label slot for that). |
 | `mds-mention`      | -               | Inline @-mention tag with avatar and name.                                                                                      |
