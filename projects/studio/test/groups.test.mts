@@ -10,6 +10,7 @@ import type {
   MagmaConfig,
 } from '@maggioli-design-system/design-tokens/src/lib/color.mjs'
 import { GroupsManager } from '../src/groups.js'
+import { textOf } from './text.mjs'
 
 // The Groups page answers to the controls of Magma: the selection of each colour, the batch
 // action, the view of the selection, the selection by export and the settings of each group.
@@ -98,7 +99,7 @@ const count = () => root.querySelector('.groups-selection [role="status"]')?.tex
 
 const batchButton = () =>
   [...root.querySelectorAll<HTMLElement>('mds-button')].find(
-    (el) => el.textContent?.trim() === 'Batch export',
+    (el) => textOf(el) === 'Batch export',
   )!
 
 test('every colour has its own checkbox, always on the page and named after the colour', () => {
@@ -140,14 +141,14 @@ test('group selected lifts the ticked colours into a card of their own, out of t
   show()
   emit(colourSwitch(card('tone'), 'kaolin'), 'mdsInputSwitchChange', { name: '', checked: true, value: '' })
   await flush()
-  expect(card('Selected')).toBeUndefined()
+  expect(card('Selected colors')).toBeUndefined()
 
   const groupSelected = root.querySelector('.groups-selection-bar mds-input-switch[type="switch"]')!
   expect(groupSelected.textContent?.trim()).toBe('Group selected')
   emit(groupSelected, 'mdsInputSwitchChange', { name: '', checked: true, value: '' })
   await flush()
 
-  expect(colourSwitch(card('Selected'), 'kaolin')).toBeDefined()
+  expect(colourSwitch(card('Selected colors'), 'kaolin')).toBeDefined()
   expect(colourSwitch(card('tone'), 'kaolin')).toBeUndefined()
   // the group still counts all of its colours
   expect(card('tone').textContent).toContain('5 colors')

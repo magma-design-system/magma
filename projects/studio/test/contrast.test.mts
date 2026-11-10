@@ -254,12 +254,12 @@ test('the dialog leads to every pair, on the Contrast check page', async () => {
 
 test('the Themes page says the verdict of each theme per mode, and its export asks through the gate', async () => {
   const report = gateReport(failing())
-  const asked: Array<{ label: string; verb: string }> = []
+  const asked: Array<{ label: string; proceed: string }> = []
   render(
     h(ThemesManager, {
       config: failing(),
       report,
-      guard: ({ label, verb }: { label: string; verb: string }) => asked.push({ label, verb }),
+      guard: ({ label, proceed }: { label: string; proceed: string }) => asked.push({ label, proceed }),
     }),
     root,
   )
@@ -269,5 +269,5 @@ test('the Themes page says the verdict of each theme per mode, and its export as
     `dark: ${report.themes[0].failing.dark} below target`,
   ])
   await act(() => magmaButton('Copy CSS')!.click())
-  expect(asked).toEqual([{ label: 'Copy CSS', verb: 'Copy' }])
+  expect(asked).toEqual([{ label: 'Copy CSS', proceed: 'Copy anyway' }])
 })

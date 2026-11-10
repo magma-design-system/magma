@@ -2,17 +2,16 @@
   The Italian of the studio (#1336), by the English text it translates (i18n.ts). The studio
   speaks to the person with "tu", as the Italian of the Magma components does ("Hai caricato",
   "Seleziona"). The words that come back on every page keep one Italian form, the glossary of the
-  README ("Languages").
+  README ("Languages"). The catalogue is in parts, by the pages they translate: this file holds the
+  shell and what the modules share, the pages of Colors have a file each (i18n-it-*.ts), and the
+  previews keep their own (i18n-it-previews.ts, i18n-previews.ts).
 */
 import { IT_PALETTE } from './i18n-it-palette.js';
 import { IT_SCALES } from './i18n-it-scales.js';
 import { IT_THEMES } from './i18n-it-themes.js';
 
-export const IT: Record<string, string> = {
-  ...IT_PALETTE,
-  ...IT_SCALES,
-  ...IT_THEMES,
-
+/** The Italian of the shell, the Start page, the verdict and the names the modules share. */
+export const IT_SHELL: Record<string, string> = {
   // the names of the supporting modules (hue-ends.ts, paints.ts, states.ts)
   Free: 'Libere',
   Mirror: 'Speculari',
@@ -178,4 +177,12 @@ export const IT: Record<string, string> = {
   'The pages of {level}': 'Le pagine di {level}',
   'At every level, {check} lists every pair the gate judges, and {diffs} compares the palette with the one Magma builds with.':
     'A ogni livello, {check} elenca ogni coppia giudicata dalla verifica, e {diffs} confronta la palette con quella con cui si compila Magma.',
+};
+
+/** The catalogue: every part, each key in one of them. */
+export const IT: Record<string, string> = {
+  ...IT_SHELL,
+  ...IT_PALETTE,
+  ...IT_SCALES,
+  ...IT_THEMES,
 };

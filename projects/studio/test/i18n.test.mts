@@ -5,7 +5,10 @@ import { fileURLToPath } from 'node:url'
 import ts from 'typescript'
 import { expect, test } from 'vitest'
 
-import { IT } from '../src/i18n-it.js'
+import { IT, IT_SHELL } from '../src/i18n-it.js'
+import { IT_PALETTE } from '../src/i18n-it-palette.js'
+import { IT_SCALES } from '../src/i18n-it-scales.js'
+import { IT_THEMES } from '../src/i18n-it-themes.js'
 import { LANGUAGE_KEY, langOf, plural, startLanguage, translator } from '../src/i18n.js'
 
 // The languages of the studio (#1336, i18n.ts): the language it starts in, the translator, and
@@ -98,27 +101,22 @@ test('every text of the studio has its Italian, with the same placeholders', () 
   expect(differ).toEqual([])
 })
 
+test('a text is translated in one part of the catalogue only', () => {
+  // the parts are spread into one catalogue: a key in two of them would keep the Italian of the last
+  const parts = { IT_SHELL, IT_PALETTE, IT_SCALES, IT_THEMES }
+  const seen = new Map<string, string>()
+  const twice: string[] = []
+  for (const [part, entries] of Object.entries(parts))
+    for (const text of Object.keys(entries)) {
+      if (seen.has(text)) twice.push(`${JSON.stringify(text)} in ${seen.get(text)} and ${part}`)
+      seen.set(text, part)
+    }
+  expect(twice).toEqual([])
+})
+
 test('every Italian text is used by a source', () => {
   expect(Object.keys(IT).filter((text) => !used.has(text))).toEqual([])
 })
-
-/**
- * The modules still in English while the branch of #1336 translates them one at a time: the two
- * tests below skip them. The last commit of the branch empties it and takes it away.
- */
-const PENDING = new Set([
-  'app.tsx',
-  'batch.tsx',
-  'config-menu.tsx',
-  'contrast.tsx',
-  'diff.tsx',
-  'groups.tsx',
-  'magma.tsx',
-  'palette-side.tsx',
-  'scales.tsx',
-  'surfaces.tsx',
-  'themes.tsx',
-])
 
 /**
  * The attributes whose value people read or hear: written in English, they are a text left out of
@@ -132,7 +130,6 @@ const worded = (text: string) => /[A-Za-z]{2,}/.test(text) && !NOT_ENGLISH.has(t
 test('no text of the interface is written outside the catalogue', () => {
   const found: string[] = []
   for (const { name, file } of sources) {
-    if (PENDING.has(name)) continue
     visit(file, (node) => {
       const at = () => `${name}:${file.getLineAndCharacterOfPosition(node.getStart()).line + 1}`
       if (ts.isJsxText(node) && worded(node.text)) found.push(`${at()} ${JSON.stringify(node.text.trim())}`)
@@ -146,24 +143,35 @@ test('no text of the interface is written outside the catalogue', () => {
 })
 
 /**
- * mds-button, mds-badge, mds-input-switch and mds-input-range copy the text of their slot into
- * their `label` once (readSlottedLabel, textContent), so a text in the slot would stay in the
- * language they loaded in: the text goes in `label`.
+ * mds-button and mds-badge copy the text of their slot into their `label` once (readSlottedLabel),
+ * so a text in the slot would stay in the language they loaded in: the text goes in `label`.
+ * mds-input-switch and mds-input-range have no `label` to take it: they read their text once into
+ * the name they give their control, so one that holds a translated text is keyed by the language
+ * (`key={lang}`) and mounts again, reading the new text, when the language changes.
  */
-const COPY_THEIR_SLOT = new Set(['mds-button', 'mds-badge', 'mds-input-switch', 'mds-input-range'])
+const COPY_INTO_LABEL = new Set(['mds-button', 'mds-badge'])
+const READ_ONCE = new Set(['mds-input-switch', 'mds-input-range'])
 
-test('no component that copies its slot once holds a translated text in it', () => {
+/** An element holds a text of its own: text, or an expression that is no element. */
+const holdsText = (node: ts.JsxElement) =>
+  node.children.some(
+    (child) =>
+      (ts.isJsxText(child) && child.text.trim() !== '') ||
+      (ts.isJsxExpression(child) && !!child.expression && !ts.isJsxElement(child.expression) && !ts.isBinaryExpression(child.expression)),
+  )
+
+test('no component that reads its slot once holds a translated text it would not follow', () => {
   const found: string[] = []
   for (const { name, file } of sources) {
-    if (PENDING.has(name)) continue
     visit(file, (node) => {
-      if (!ts.isJsxElement(node) || !COPY_THEIR_SLOT.has(node.openingElement.tagName.getText())) return
-      const text = node.children.some(
-        (child) =>
-          (ts.isJsxText(child) && child.text.trim() !== '') ||
-          (ts.isJsxExpression(child) && !!child.expression && !ts.isJsxElement(child.expression) && !ts.isBinaryExpression(child.expression)),
+      if (!ts.isJsxElement(node) || !holdsText(node)) return
+      const tag = node.openingElement.tagName.getText()
+      const at = `${name}:${file.getLineAndCharacterOfPosition(node.getStart()).line + 1} <${tag}>`
+      if (COPY_INTO_LABEL.has(tag)) found.push(`${at} holds its text: give it a label`)
+      const keyed = node.openingElement.attributes.properties.some(
+        (attribute) => ts.isJsxAttribute(attribute) && attribute.name.getText() === 'key',
       )
-      if (text) found.push(`${name}:${file.getLineAndCharacterOfPosition(node.getStart()).line + 1} <${node.openingElement.tagName.getText()}>`)
+      if (READ_ONCE.has(tag) && !keyed) found.push(`${at} holds a text: key it by the language`)
     })
   }
   expect(found).toEqual([])

@@ -22,6 +22,7 @@ import { Field, Select, TextInput, type Option } from './magma.js';
 import { type ThemeChoices, updateThemeChoices, useThemeChoices } from './theme-choices.js';
 import type { ExportAction } from './contrast.js';
 import type { GateReport, GateTheme } from './gate.js';
+import { msg, rich, translator, useT, type T } from './i18n.js';
 import { ThemeVerdict } from './verdict.js';
 import { hrefOf } from './routes.js';
 import './themes.css';
@@ -46,6 +47,8 @@ import './themes.css';
 
 type Mode = 'light' | 'dark';
 const MODES: Mode[] = ['light', 'dark'];
+/** The name of a mode inside a sentence. */
+const MODE_NAMES: Record<Mode, string> = { light: msg('light'), dark: msg('dark') };
 type RoleSet = Record<string, { value: string }>;
 type FamilyModes = { light: RoleSet; dark: RoleSet };
 
@@ -85,9 +88,9 @@ const defOf = (def: (typeof semantic.themes)[string]) =>
  * theme file, theme-manifest.mts): both, the default of a theme that says nothing, or one alone.
  */
 export const MODE_CHOICES: Option[] = [
-  { value: 'light dark', label: 'Light and dark' },
-  { value: 'light', label: 'Light only' },
-  { value: 'dark', label: 'Dark only' },
+  { value: 'light dark', label: msg('Light and dark') },
+  { value: 'light', label: msg('Light only') },
+  { value: 'dark', label: msg('Dark only') },
 ];
 
 /**
@@ -115,14 +118,23 @@ export const SHIPPED_BY_FAMILY: ReadonlyMap<
     ]),
 );
 
-/** Why a name a person gave a theme cannot be used, or null when it can. */
-export function themeNameProblem(name: string, family: string, names: Record<string, string>) {
+/**
+ * Why a name a person gave a theme cannot be used, or null when it can. In English unless a
+ * translator is given: the export writes it in a comment of the CSS, which stays English.
+ */
+export function themeNameProblem(
+  name: string,
+  family: string,
+  names: Record<string, string>,
+  t: T = translator('en'),
+) {
   if (!THEME_NAME.test(name))
-    return 'lowercase words joined by hyphens, as editorial or my-product';
+    return t('lowercase words joined by hyphens, as editorial or my-product');
   if (RESERVED_THEME_NAMES.has(name))
-    return `${name} is a theme Magma ships: pick a name of your own`;
+    return t('{name} is a theme Magma ships: pick a name of your own', { name });
   const taken = Object.entries(names).find(([other, value]) => other !== family && value === name);
-  if (taken) return `the theme drawn from ${taken[0]} is named ${name} already`;
+  if (taken)
+    return t('the theme drawn from {family} is named {name} already', { family: taken[0], name });
   return null;
 }
 
@@ -220,6 +232,7 @@ export function ThemesManager({
   report,
   guard = (action) => action.run(),
 }: ThemesManagerProps) {
+  const t = useT();
   // generate once; read the per-family surface/text/border/variant role sets
   const [surfaces, texts, borders, variants, seeds, genError] = useMemo(() => {
     try {
@@ -299,20 +312,25 @@ export function ThemesManager({
   return (
     <div class="themes">
       <mds-text typography="detail" tag="p" class="themes-muted">
-        Each family opted into a surface (Semantic surface), whatever its group, is a theme with a
-        name of its own, except the status ones, which would mix with the messages they colour:{' '}
-        <code>{nameOf(semantic.tint)}</code>, drawn from <code>{semantic.tint}</code>, is the base{' '}
-        <code>:root</code>, and every other one switches in via <code>data-theme-name</code>,
-        repointing the whole <code>--magma-tint-*</code> block (surface + border + text) to its
-        family. The names of the themes Magma ships are reserved. An accent is a role that points at
-        a <code>variant</code>; a theme may repoint it - pick a variant per role below and the
-        accent retints with the theme. Any tint works; text comes from the family's own scale.
+        {rich(
+          t,
+          "Each family opted into a surface (Semantic surface), whatever its group, is a theme with a name of its own, except the status ones, which would mix with the messages they colour: {base}, drawn from {tint}, is the base {root}, and every other one switches in via {attribute}, repointing the whole {block} block (surface + border + text) to its family. The names of the themes Magma ships are reserved. An accent is a role that points at a {variant}; a theme may repoint it - pick a variant per role below and the accent retints with the theme. Any tint works; text comes from the family's own scale.",
+          {
+            base: <code>{nameOf(semantic.tint)}</code>,
+            tint: <code>{semantic.tint}</code>,
+            root: <code>{':root'}</code>,
+            attribute: <code>{'data-theme-name'}</code>,
+            block: <code>{'--magma-tint-*'}</code>,
+            variant: <code>{'variant'}</code>,
+          },
+        )}
       </mds-text>
 
       {extras.length === 0 && (
         <mds-text typography="detail" tag="p" class="themes-muted">
-          Only the base theme so far: opt another family into a surface (Semantic surface) and it
-          appears here as a theme.
+          {t(
+            'Only the base theme so far: opt another family into a surface (Semantic surface) and it appears here as a theme.',
+          )}
         </mds-text>
       )}
 
@@ -327,7 +345,7 @@ export function ThemesManager({
             nameProblem={
               SHIPPED_BY_FAMILY.has(family)
                 ? null
-                : themeNameProblem(nameOf(family), family, givenNames)
+                : themeNameProblem(nameOf(family), family, givenNames, t)
             }
             onName={(name) =>
               updateThemeChoices((prev) => ({ ...prev, names: { ...prev.names, [family]: name } }))
@@ -354,11 +372,18 @@ export function ThemesManager({
         <div class="themes-card">
           <div class="themes-head">
             <mds-text typography="part" tag="h2">
-              Export
+              {t('Export')}
             </mds-text>
             <mds-text typography="caption" tag="p" class="themes-muted">
-              Paste into a styles theme file; the <code>default</code> is the base{' '}
-              <code>:root</code> from <code>semantic.css</code>, so only the overrides are emitted.
+              {rich(
+                t,
+                'Paste into a styles theme file; the {default} is the base {root} from {file}, so only the overrides are emitted.',
+                {
+                  default: <code>{'default'}</code>,
+                  root: <code>{':root'}</code>,
+                  file: <code>{'semantic.css'}</code>,
+                },
+              )}
             </mds-text>
           </div>
           <div class="studio-row">
@@ -368,13 +393,15 @@ export function ThemesManager({
               tone="outline"
               size="md"
               icon={copied ? 'mi/baseline/check' : 'mi/baseline/content-copy'}
-              onClick={() => guard({ label: 'Copy CSS', verb: 'Copy', run: copy })}
-              label={copied ? 'Copied' : 'Copy CSS'}
+              onClick={() =>
+                guard({ label: msg('Copy CSS'), proceed: msg('Copy anyway'), run: copy })
+              }
+              label={copied ? t('Copied') : t('Copy CSS')}
             ></mds-button>
           </div>
           <mds-details class="themes-export-details">
             <mds-text slot="title" typography="detail" tag="span">
-              The CSS of the themes
+              {t('The CSS of the themes')}
             </mds-text>
             <pre class="themes-export">{exportCss}</pre>
           </mds-details>
@@ -428,6 +455,7 @@ function ThemeCard({
   modes,
   onModes,
 }: ThemeCardProps) {
+  const t = useT();
   const hasScales = Boolean(surfaces[family] && texts[family]);
   const isDefault = family === semantic.tint;
   // the Theme section lists the themes whose name is valid, and the base (configThemes)
@@ -444,15 +472,15 @@ function ThemeCard({
             <mds-text typography="part" tag="h2" class="themes-name">
               {name || family}
             </mds-text>
-            {isDefault && <mds-badge variant="dark" label="base"></mds-badge>}
+            {isDefault && <mds-badge variant="dark" label={t('base')}></mds-badge>}
             {shipped && (
-              <span title="a theme Magma ships: its name is reserved">
-                <mds-badge variant="dark" label="shipped"></mds-badge>
+              <span title={t('a theme Magma ships: its name is reserved')}>
+                <mds-badge variant="dark" label={t('shipped')}></mds-badge>
               </span>
             )}
           </div>
           <mds-text typography="caption" tag="p" class="themes-family themes-muted">
-            drawn from <code>{family}</code>
+            {rich(t, 'drawn from {family}', { family: <code>{family}</code> })}
           </mds-text>
           <code class="themes-attr">{isDefault ? ':root' : `data-theme-name='${name}'`}</code>
           {/* the verdict of the contrast gate on the theme, per mode, live while it is edited:
@@ -463,7 +491,7 @@ function ThemeCard({
         {!shipped && (
           <div class="themes-name-field">
             <Field
-              label="Name"
+              label={t('Name')}
               message={nameProblem ?? undefined}
               variant={nameProblem ? 'error' : undefined}
             >
@@ -486,28 +514,31 @@ function ThemeCard({
             <div
               class="themes-accents"
               role="group"
-              aria-label={`The accents of ${name || family}`}
+              aria-label={t('The accents of {theme}', { theme: name || family })}
             >
               {ACCENT_ROLES.map((role) => {
                 const current = accentFor(family, role);
                 const isBase = current === semantic.accents[role];
                 return (
                   <div class="themes-accent">
-                    <Field label={accentLabel(role)}>
+                    <Field label={t(accentLabel(role))}>
                       <Select
                         size="md"
                         value={current}
                         onValue={(variant) => onAccent(family, role, variant)}
                         options={variantFamilies.map((v) => ({
                           value: v,
-                          label: `${v.replace('variant-', '')}${v === semantic.accents[role] ? ' (base)' : ''}`,
+                          label:
+                            v === semantic.accents[role]
+                              ? t('{variant} (base)', { variant: v.replace('variant-', '') })
+                              : v.replace('variant-', ''),
                         }))}
                       />
                     </Field>
                     {!isBase && (
                       <mds-badge
                         variant="info"
-                        label={isDefault ? 'changed' : 'override'}
+                        label={isDefault ? t('changed') : t('override')}
                       ></mds-badge>
                     )}
                   </div>
@@ -515,12 +546,12 @@ function ThemeCard({
               })}
             </div>
             <div class="themes-accent themes-modes-field">
-              <Field label="Modes">
+              <Field label={t('Modes')}>
                 <Select
                   size="md"
                   value={modes.join(' ')}
                   onValue={(value) => onModes(value.split(' ') as ColorMode[])}
-                  options={MODE_CHOICES}
+                  options={MODE_CHOICES.map((choice) => ({ ...choice, label: t(choice.label) }))}
                 />
               </Field>
             </div>
@@ -530,7 +561,7 @@ function ThemeCard({
 
       {!hasScales ? (
         <mds-text typography="caption" tag="p" class="themes-muted">
-          <code>{family}</code> has no surface+text scale.
+          {rich(t, '{family} has no surface+text scale.', { family: <code>{family}</code> })}
         </mds-text>
       ) : (
         // the same canvas as Semantic surface per mode: the surfaces of the theme are in view
@@ -542,7 +573,7 @@ function ThemeCard({
         <div class="themes-modes">
           {MODES.map((mode) => {
             const s = surfaces[family][mode];
-            const t = texts[family]?.[mode];
+            const ink = texts[family]?.[mode];
             const offered = modes.includes(mode);
             return (
               <div class="themes-mode">
@@ -550,10 +581,10 @@ function ThemeCard({
                   mode={mode}
                   s={s}
                   b={borders[family]?.[mode]}
-                  ink={t}
+                  ink={ink}
                   ownText
-                  canvasText={hex(t, 'default')}
-                  off={offered ? undefined : 'not offered by the theme'}
+                  canvasText={hex(ink, 'default')}
+                  off={offered ? undefined : t('not offered by the theme')}
                 >
                   {/* accents applied on THIS theme's surface, per mode. Each role: a
                     solid pill (emphasis fill + on-emphasis text) with its APCA Lc,
@@ -577,11 +608,12 @@ function ThemeCard({
                           >
                             {role}
                           </span>
+                          {/* a sample of type, the same in every language */}
                           <span
                             class="themes-sample-soft"
                             style={{ background: aSurface, color: aFg }}
                           >
-                            Aa
+                            {'Aa'}
                           </span>
                           <code>Lc {apcaLc(onEmph, emphasis).toFixed(0)}</code>
                         </span>
@@ -597,8 +629,11 @@ function ThemeCard({
                     variant="dark"
                     tone="outline"
                     size="md"
-                    label={`Test in ${mode}`}
-                    aria-label={`Test in ${mode}, ${name}`}
+                    label={t('Test in {mode}', { mode: t(MODE_NAMES[mode]) })}
+                    aria-label={t('Test in {mode}, {theme}', {
+                      mode: t(MODE_NAMES[mode]),
+                      theme: name,
+                    })}
                   ></mds-button>
                 )}
               </div>

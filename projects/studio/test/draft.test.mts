@@ -6,10 +6,12 @@ import initialConfig from '@maggioli-design-system/design-tokens/.magma-design-t
 import {
   DRAFT_STORAGE_KEY,
   hashText,
+  reasonText,
   reconcileDraft,
   type StudioDraft,
 } from '../src/draft.js'
 import { App } from '../src/app.js'
+import { translator } from '../src/i18n.js'
 
 // The studio mirrors its working config to localStorage. A restored draft
 // used to win over the config on disk even after the file changed or was
@@ -28,6 +30,12 @@ function draftOf (config: Config, source: StudioDraft['source'], edited?: boolea
   return { config, selectedName: config.colors[0].name, view: 'colors', source, edited }
 }
 
+/** What reconcileDraft decides, a reason in the words of the banner, in English. */
+const decide = (...args: Parameters<typeof reconcileDraft>) => {
+  const decision = reconcileDraft(...args)
+  return decision.use === 'ask' ? { use: 'ask', reason: reasonText(translator('en'), decision.reason) } : decision
+}
+
 test('hashText is stable and tells configs apart', () => {
   expect(hashText(diskJson)).toBe(hashText(JSON.stringify(JSON.parse(diskJson))))
   expect(hashText(diskJson)).not.toBe(hashText(changedJson))
@@ -42,7 +50,7 @@ test('reconcileDraft keeps a draft made on the same source', () => {
 test('reconcileDraft asks when the source changed under a draft with edits', () => {
   const was = { path: PATH, hash: hashText(diskJson) }
   const now = { path: PATH, hash: hashText(changedJson) }
-  expect(reconcileDraft(draftOf(edits, was, true), now, changedJson)).toEqual({
+  expect(decide(draftOf(edits, was, true), now, changedJson)).toEqual({
     use: 'ask',
     reason: `${PATH} changed after this draft was saved`,
   })
@@ -55,7 +63,7 @@ test('reconcileDraft asks when the source changed under a draft with edits', () 
 test('reconcileDraft says why: removed, created, another file, an older draft', () => {
   const was = { path: PATH, hash: hashText(diskJson) }
   const ask = (draft: StudioDraft, source: { path: string | null, hash: string | null }) =>
-    reconcileDraft(draft, source, changedJson)
+    decide(draft, source, changedJson)
 
   expect(ask(draftOf(edits, was, true), { path: PATH, hash: null })).toEqual({
     use: 'ask', reason: `${PATH} was removed after this draft was saved`,
@@ -72,6 +80,14 @@ test('reconcileDraft says why: removed, created, another file, an older draft', 
   expect(ask(draftOf(edits, undefined), was)).toEqual({
     use: 'ask', reason: `this draft comes from an older studio and may not match ${PATH}`,
   })
+})
+
+test('the reason is worded in the language of the page, the bundled config by its name', () => {
+  const decision = reconcileDraft(draftOf(edits, { path: null, hash: hashText(diskJson) }, true), { path: PATH, hash: hashText(diskJson) }, changedJson)
+  if (decision.use !== 'ask') throw new Error(`no question: ${decision.use}`)
+  expect(reasonText(translator('it'), decision.reason)).toBe(
+    `questa bozza ha come base la configurazione inclusa, ora lo studio mostra ${PATH}`,
+  )
 })
 
 const root = document.createElement('div')

@@ -3,6 +3,7 @@ import { afterEach, expect, test, vi } from 'vitest'
 import { h, render } from 'preact'
 import { useState } from 'preact/hooks'
 
+import { LangProvider } from '../src/i18n.js'
 import { Check, Field, Range, Select, TextInput, swatchIcon } from '../src/magma.js'
 
 // The form controls of Magma hand back the next value, as a native control of Preact does, and
@@ -62,6 +63,32 @@ test('a checkbox hands back its state, which only the person changes', () => {
   expect(check.textContent).toBe('smooth')
   emit('mds-input-switch', 'mdsInputSwitchChange', { name: '', checked: true, value: '' })
   expect(onChecked).toHaveBeenCalledWith(true)
+})
+
+test('a checkbox and a slider mount again when the language changes, to read their new text', () => {
+  // mds-input-switch and mds-input-range read their text once into the name of their control
+  // (#1336): keyed by the language, a change of it gives them a new element, which reads it again
+  const draw = (lang: 'en' | 'it', text: string) =>
+    render(
+      h(LangProvider, { value: lang }, [
+        h(Check, { checked: true, onChecked: () => undefined, children: text }),
+        h(Range, { value: 40, onValue: () => undefined, min: 0, max: 100, label: text }),
+      ]),
+      root,
+    )
+  const check = () => root.querySelector('mds-input-switch')
+  const slider = () => root.querySelector('mds-input-range')
+  draw('en', 'Smooth')
+  const [checkBefore, sliderBefore] = [check(), slider()]
+  // the same language keeps the elements, whatever else the page renders
+  draw('en', 'Smooth')
+  expect(check()).toBe(checkBefore)
+  expect(slider()).toBe(sliderBefore)
+  draw('it', 'Morbida')
+  expect(check()).not.toBe(checkBefore)
+  expect(slider()).not.toBe(sliderBefore)
+  expect(check()?.textContent).toBe('Morbida')
+  expect(slider()?.textContent).toBe('Morbida')
 })
 
 test('a value the page sets is not handed back, though the component emits it while Preact sets it', () => {

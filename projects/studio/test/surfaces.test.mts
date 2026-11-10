@@ -8,6 +8,8 @@ import initialConfig from '@maggioli-design-system/design-tokens/.magma-design-t
 import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs'
 import type { ThemeConfig } from '@maggioli-design-system/design-tokens/src/lib/surface.mjs'
 import { SurfaceManager } from '../src/surfaces.js'
+import { LangProvider } from '../src/i18n.js'
+import { textOf } from './text.mjs'
 
 // The Semantic surface page, written in Magma: the groups are chips, the families toggle
 // buttons, the levels sliders, the preview two selects and two tabs. jsdom does not upgrade the
@@ -55,7 +57,7 @@ const theme = () => current.theme as ThemeConfig & { text: Record<string, number
 
 // a slider is named by its text (magma.tsx, Range)
 const slider = (name: string) =>
-  [...root.querySelectorAll('mds-input-range')].find((one) => one.textContent === name)!
+  [...root.querySelectorAll('mds-input-range')].find((one) => textOf(one) === name)!
 
 test('a group is a Magma chip: choosing it hands back the group, status stays on', async () => {
   const chips = [...root.querySelectorAll('mds-chip')]
@@ -162,6 +164,20 @@ test('the tabs switch the preview between the step charts and the surface boxes'
 
   await emit(tabs, 'mdsTabChange', { id: 1, value: 'surface' })
   expect(root.querySelectorAll('.surfaces-canvas')).toHaveLength(2)
+})
+
+test('the page speaks the language of the studio', () => {
+  render(h(LangProvider, { value: 'it' }, h(Page, {})), root)
+  expect(slider('Superfici default, chiaro').getAttribute('value')).toBe('96')
+  expect(slider('Testo muted, obiettivo')).toBeDefined()
+  const status = [...root.querySelectorAll('mds-chip')].find((chip) => chip.getAttribute('label') === 'status')!
+  expect(status.parentElement?.querySelector('mds-badge')?.getAttribute('label')).toBe('sempre attivo')
+  expect(root.querySelector('.surfaces-choices[aria-label="Famiglie di stato"]')).not.toBeNull()
+  expect([...root.querySelectorAll('mds-tab-item')].map((item) => item.getAttribute('label'))).toEqual(['Testi', 'Superficie'])
+  // the roles keep their names, the canvas names its mode
+  const canvas = root.querySelector('.surfaces-canvas')!
+  expect(canvas.querySelector('.surfaces-canvas-label')?.textContent).toMatch(/^chiaro - canvas #/)
+  expect(canvas.textContent).toContain('border strong')
 })
 
 test('the contrast verdicts of the preview are Magma badges, not emoji', () => {

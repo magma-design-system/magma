@@ -1,5 +1,6 @@
 import type { ComponentChildren } from 'preact';
 import { useRef, useState } from 'preact/hooks';
+import { useLangOf } from './i18n.js';
 import './magma.css';
 
 /*
@@ -217,7 +218,12 @@ export function Select({
   );
 }
 
-/** A checkbox, a switch or a radio (`mds-input-switch`), its label beside it. */
+/**
+ * A checkbox, a switch or a radio (`mds-input-switch`), its label beside it. mds-input-switch has
+ * no `label`: its text is its slot, which it reads once into the name of its control, so it is
+ * keyed by the language and mounts again, reading the new text, when the language changes (#1336);
+ * its state comes from the props and survives.
+ */
 export function Check({
   checked,
   onChecked,
@@ -235,8 +241,10 @@ export function Check({
   value?: string;
   disabled?: boolean;
 }) {
+  const lang = useLangOf();
   return (
     <mds-input-switch
+      key={lang}
       type={type}
       name={name}
       value={value}
@@ -254,7 +262,9 @@ export function Check({
 /**
  * A slider (`mds-input-range`) of one value. mds-input-range names its slider with its own text
  * and draws that text over the track, never with the aria-label of its host: the label goes in as
- * text, hidden from the eye where the page shows its own label beside the slider.
+ * text, hidden from the eye where the page shows its own label beside the slider. It reads that
+ * text once: keyed by the language, it mounts again and reads the new one when the language
+ * changes (#1336).
  */
 export function Range({
   value,
@@ -278,8 +288,10 @@ export function Range({
   disabled?: boolean;
 }) {
   const set = useSet(value);
+  const lang = useLangOf();
   return (
     <mds-input-range
+      key={lang}
       value={value}
       min={min}
       max={max}

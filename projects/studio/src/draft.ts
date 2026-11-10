@@ -1,4 +1,5 @@
 import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
+import { msg, type T } from './i18n.js';
 
 // the working state is mirrored to localStorage so a reload keeps the edited
 // or loaded configuration instead of falling back to the source config. The key
@@ -43,7 +44,23 @@ export type DraftDecision =
   /** show the source config: no draft, or one with nothing of its own */
   | { use: 'source' }
   /** the source changed under unsaved edits: let the user pick */
-  | { use: 'ask'; reason: string };
+  | { use: 'ask'; reason: DraftReason };
+
+/**
+ * Why the studio asks, as data the banner of the App words in the language of the page (#1336,
+ * `reasonText`): the sentence in English, its places `{source}` and `{from}` filled with the
+ * configurations it names. A place takes a path or the name of the bundled config with its article
+ * (`la configurazione inclusa`), so the Italian words each place as a subject or an object, never
+ * after a preposition, which Italian would join to the article (`alla`).
+ */
+export interface DraftReason {
+  /** The sentence, in English (msg). */
+  text: string;
+  /** The configuration the studio shows now: its path, null for the bundled one. */
+  source: string | null;
+  /** The configuration the draft was made on, when the sentence names it. */
+  from?: string | null;
+}
 
 // cyrb53: a fast, synchronous 53-bit string hash. A fingerprint only has to
 // tell two configs apart, and crypto.subtle is missing outside secure contexts
@@ -60,8 +77,10 @@ export function hashText(text: string): string {
   return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36);
 }
 
-function sourceLabel(path: string | null): string {
-  return path ?? 'the bundled config';
+/** The reason in words: a configuration by its path, the bundled one by its name. */
+export function reasonText(t: T, reason: DraftReason): string {
+  const label = (path: string | null | undefined) => path ?? t('the bundled config');
+  return t(reason.text, { source: label(reason.source), from: label(reason.from) });
 }
 
 /**
@@ -82,19 +101,21 @@ export function reconcileDraft(
   // a draft with no edits of its own only mirrored its old source
   if (from && draft.edited === false) return { use: 'source' };
 
-  let why: string;
+  const why = (text: string, was?: string | null): DraftReason =>
+    was === undefined ? { text, source: source.path } : { text, source: source.path, from: was };
+  let reason: DraftReason;
   if (!from) {
-    why = `this draft comes from an older studio and may not match ${sourceLabel(source.path)}`;
+    reason = why(msg('this draft comes from an older studio and may not match {source}'));
   } else if (from.path !== source.path) {
-    why = `this draft was made on ${sourceLabel(from.path)}, the studio now shows ${sourceLabel(source.path)}`;
+    reason = why(msg('this draft was made on {from}, the studio now shows {source}'), from.path);
   } else if (source.hash === null) {
-    why = `${sourceLabel(source.path)} was removed after this draft was saved`;
+    reason = why(msg('{source} was removed after this draft was saved'));
   } else if (from.hash === null) {
-    why = `${sourceLabel(source.path)} was created after this draft was saved`;
+    reason = why(msg('{source} was created after this draft was saved'));
   } else {
-    why = `${sourceLabel(source.path)} changed after this draft was saved`;
+    reason = why(msg('{source} changed after this draft was saved'));
   }
-  return { use: 'ask', reason: why };
+  return { use: 'ask', reason };
 }
 
 export function readDraft(): StudioDraft | null {
