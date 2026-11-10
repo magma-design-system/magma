@@ -541,7 +541,7 @@ export const checkSetup = (context: ToolContext): Tool => ({
         ? `${path.relative(root, setter.file)} sets the icon path.`
         : stray
           ? `${path.relative(root, stray.file)} names mdsIconSvgPath, but mds-icon reads the path only from IconsSetService.setSvgPath() and from sessionStorage.setItem('mdsIconSvgPath', ...).`
-          : 'Nothing in the sources sets the icon path: mds-icon does not know where the icons are. Call IconsSetService.setSvgPath() from @maggioli-design-system/magma/services before the first mds-icon renders.',
+          : 'Nothing in the sources sets the icon path: mds-icon does not know where the icons are. Call IconsSetService.setSvgPath() from @maggioli-design-system/magma before the first mds-icon renders.',
       guide: 'agents/assets.md (Tell mds-icon where the icons are)',
     });
 
