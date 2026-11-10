@@ -6,7 +6,7 @@
   "module": "dist/index.js",
   "es2015": "dist/esm/index.mjs",
   "es2017": "dist/esm/index.mjs",
-  "types": "dist/types/components.d.ts",
+  "types": "dist/types/index.d.ts",
   "bin": {
     "magma-mcp": "dist/mcp/cli.js"
   },
@@ -15,7 +15,7 @@
   "unpkg": "dist/mds-components/mds-components.esm.js",
   "exports": {
     ".": {
-      "types": "./dist/types/components.d.ts",
+      "types": "./dist/types/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs.js",
       "default": "./dist/index.js"
