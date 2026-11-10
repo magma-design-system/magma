@@ -18,7 +18,7 @@
     "@maggioli-design-system/design-tokens": "*",
     "@maggioli-design-system/identity": "*",
     "apca-w3": "0.1.9",
-    "chroma-js": "3.2.0",
+    "chroma-js": "3.3.0",
     "color-namer": "1.4.0",
     "fflate": "0.8.3",
     "handlebars": "4.7.10",
