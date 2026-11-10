@@ -79,7 +79,9 @@ for (const { name, file } of sources) {
     const texts =
       callee === 't' || callee === 'msg'
         ? literals(node.arguments[0])
-        : callee === 'plural'
+        : callee === 'rich'
+          ? literals(node.arguments[1])
+          : callee === 'plural'
           ? [...literals(node.arguments[2]), ...literals(node.arguments[3])]
           : []
     for (const text of texts) used.set(text, `${name}:${file.getLineAndCharacterOfPosition(node.getStart()).line + 1}`)
@@ -106,7 +108,7 @@ test('every Italian text is used by a source', () => {
  */
 const PENDING = new Set([
   'app.tsx', 'batch.tsx', 'config-menu.tsx', 'contrast.tsx', 'diff.tsx', 'groups.tsx', 'magma.tsx',
-  'palette-side.tsx', 'scales.tsx', 'start.tsx', 'surfaces.tsx', 'themes.tsx', 'verdict.tsx',
+  'palette-side.tsx', 'scales.tsx', 'surfaces.tsx', 'themes.tsx',
 ])
 
 /**

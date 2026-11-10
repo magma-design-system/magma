@@ -19,6 +19,7 @@ import {
   targetsAt,
 } from '../src/start-demo.js'
 import { FEATURES, LEVELS, PLAY_MS, StartPage } from '../src/start.js'
+import { textOf } from './text.mjs'
 
 // The Start page (start.tsx), an introduction: a hero whose play, once, is the engine of the studio
 // on the configuration of Magma drawn pale, its text targets lowered and the ramp of its accent
@@ -165,7 +166,7 @@ test('the play shows the problem, fixes it step by step, and ends on the banner 
   expect(verdict()).toBe('All contrasts are OK')
   expect(readings()).toEqual(['success', 'success', 'success'])
   expect(bar().getAttribute('progress')).toBe('1')
-  expect(replay().textContent?.trim()).toBe('Replay')
+  expect(textOf(replay())).toBe('Replay')
   // and it stays there: the play runs once
   await new Promise((done) => setTimeout(done, PLAY_MS))
   expect(open()).toEqual(['fixed'])

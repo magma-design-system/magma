@@ -1,4 +1,4 @@
-import { createContext } from 'preact';
+import { createContext, type ComponentChild } from 'preact';
 import { useContext, useEffect, useMemo, useState } from 'preact/hooks';
 import { IT } from './i18n-it.js';
 
@@ -91,6 +91,19 @@ export const msg = (text: string): string => text;
  */
 export const plural = (t: T, count: number, one: string, other: string, vars?: Vars): string =>
   t(count === 1 ? one : other, { count, ...vars });
+
+/**
+ * A text whose placeholders are elements (a link inside a sentence): translated whole, so the
+ * language orders its words, then cut at the placeholders, each given its element.
+ */
+export const rich = (t: T, text: string, parts: Record<string, ComponentChild>): ComponentChild[] =>
+  t(text)
+    .split(/(\{\w+\})/)
+    .filter((piece) => piece !== '')
+    .map((piece) => {
+      const name = /^\{(\w+)\}$/.exec(piece)?.[1];
+      return name !== undefined && name in parts ? parts[name] : piece;
+    });
 
 const LangContext = createContext<Lang>('en');
 
