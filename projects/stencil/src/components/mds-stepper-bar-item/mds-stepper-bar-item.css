@@ -9,7 +9,7 @@
  * @prop --mds-stepper-bar-item-icon-color-done: Sets the color of the icon when the component is done
  * @prop --mds-stepper-bar-item-icon-color-current: Sets the color of the icon when the component is current
  * @prop --mds-stepper-bar-item-icon-color: Sets the color of the icon
- * @prop --mds-stepper-bar-item-min-width: Public. Sets the minimum width of the component
+ * @prop --mds-stepper-bar-item-min-width: Public. Sets the minimum width of the component; the last item, which has no bar, takes the width of its texts instead
  * @prop --mds-stepper-bar-item-progress-background: Sets the background color of the progress bar
  * @prop --mds-stepper-bar-item-progress-color: Sets the color of the progress bar
  * @prop --mds-stepper-bar-item-progress-thickness: Sets the thickness of the progress bar
@@ -64,8 +64,13 @@
   }
 } */
 
+/* the last step draws no bar after its icon: it takes the width of its texts, and the room of a
+   wider row goes to the bars of the steps before it instead of an empty column (#680, entry 14) */
+
 :host(:last-of-type) {
-  flex-basis: --spacing(100);
+  flex-basis: auto;
+  flex-grow: 0;
+  min-width: auto;
 }
 
 :host(:last-of-type) .progress {

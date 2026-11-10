@@ -110,4 +110,32 @@ describe('mds-stepper-bar', () => {
     expect(items[1]).not.toHaveAttribute('id');
     expect(document.getElementById('step-account')).toBe(items[0]);
   });
+
+  // the last step draws no bar: it took an equal share of the row all the same, and left an empty
+  // column after its icon, a third of the row with three steps (#680, entry 14)
+  it('gives the room of a wider row to the bars, not to the last step', async () => {
+    const stepper = (width: number) => `
+      <mds-stepper-bar style="width: ${width}px" items-done="2">
+        <mds-stepper-bar-item step label="Account"></mds-stepper-bar-item>
+        <mds-stepper-bar-item step label="Dati"></mds-stepper-bar-item>
+        <mds-stepper-bar-item step label="Fine"></mds-stepper-bar-item>
+      </mds-stepper-bar>`;
+    const { root, waitForChanges } = await render<HTMLElement>(
+      `<div>${stepper(800)}${stepper(1100)}</div>`,
+    );
+    await waitForChanges();
+    const [narrow, wide] = Array.from(root.querySelectorAll('mds-stepper-bar')).map((bar) => {
+      const items = Array.from(bar.querySelectorAll('mds-stepper-bar-item'));
+      const bars = items
+        .slice(0, -1)
+        .map((item) => item.shadowRoot!.querySelector('.progress')!.getBoundingClientRect().width);
+      return {
+        last: items[items.length - 1].getBoundingClientRect().width,
+        bars: bars.reduce((sum, width) => sum + width, 0),
+      };
+    });
+
+    expect(wide.last).toBeCloseTo(narrow.last, 0);
+    expect(wide.bars - narrow.bars).toBeCloseTo(300, 0);
+  });
 });
