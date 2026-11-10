@@ -309,7 +309,7 @@ The dropdown manages its own interaction and emits `mdsDropdownVisible`, `mdsDro
 
 #### Do Not Use `target` Without a Matching Element in the DOM
 
-`target` is resolved with `querySelector` at `componentDidLoad` time. If the selector does not match any element the dropdown has no caller and cannot position or open itself. Always verify the `id` is present in the DOM before the component loads.
+`target` is resolved with `querySelector` when the dropdown loads, again whenever `target` changes, and when the dropdown comes back to the page after being moved. If the selector does not match any element the dropdown has no caller and cannot position or open itself. Always verify the `id` is present in the DOM before the component loads.
 
 ```html
 <!-- INCORRECT - typo: button has id "btn-salva", target points to "#salva" -->

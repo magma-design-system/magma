@@ -224,8 +224,12 @@ export class FloatingController {
       const hostId = setAttributeIfEmpty(this._host, 'id', hashRandomValue('mds-dropdown'));
       const callerId = setAttributeIfEmpty(caller, 'id', hashRandomValue('mds-dropdown-caller'));
       this.writeOnCaller('aria-controls', hostId);
-      this._labelledByOurs = !this._host.hasAttribute('aria-labelledby');
-      setAttributeIfEmpty(this._host, 'aria-labelledby', callerId);
+      // ours only once we write it: the same caller wired again, by a dropdown moved in the
+      // page, finds the label it was given and must still take it back when the target moves on
+      if (!this._host.hasAttribute('aria-labelledby')) {
+        this._host.setAttribute('aria-labelledby', callerId);
+        this._labelledByOurs = true;
+      }
     }
 
     const popupRole = this._host.getAttribute('role') ?? '';
