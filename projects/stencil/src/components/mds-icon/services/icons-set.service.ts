@@ -11,8 +11,9 @@ const SVG_PATH_GLOBAL = Symbol.for('@maggioli-design-system/magma:mdsIconSvgPath
 /**
  * Where `mds-icon` fetches the icon files from: `<path><name>.svg`, cached in memory and in
  * IndexedDB. One instance, `IconsSetService`, is shared by every `<mds-icon>` and exported from
- * the package root: products call `setSvgPath()` and `getSvgPath()` on it; the other members
- * serve `mds-icon` and are not part of the public contract.
+ * the package root: products call `setSvgPath()` and `getSvgPath()` on it, tagged `@public` and
+ * so listed in magma.api.txt; the other members serve `mds-icon` and are not part of the public
+ * contract.
  *
  * The path an icon is fetched from, first match wins:
  *
@@ -96,6 +97,8 @@ class IconsSetController {
    * The path wins over the `mdsIconSvgPath` key of `sessionStorage` (see the order above), and
    * every mounted icon loads again from it (`mdsIconSvgPathUpdate` on `window`). On a server
    * (no `window`) a valid path is accepted and nothing is stored: call it again in the browser.
+   *
+   * @public
    */
   setSvgPath(svgPath: string): void {
     const error = Error(
@@ -128,6 +131,12 @@ class IconsSetController {
     }
   }
 
+  /**
+   * The directory the icons are fetched from, as `setSvgPath()` stored it; empty when none is
+   * set yet.
+   *
+   * @public
+   */
   getSvgPath(): string {
     return this._svgPath;
   }

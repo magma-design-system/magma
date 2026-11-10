@@ -212,6 +212,15 @@ describe('memberKey', () => {
     ['mds-tab encapsulation shadow DEPRECATED', 'mds-tab encapsulation'],
     ['type Size = "md" | "sm"', 'type Size'],
     ['interface Detail { id: string; }', 'type Detail'],
+    ['IconsSetService export const', 'IconsSetService export'],
+    ['IconsSetService export const DEPRECATED', 'IconsSetService export'],
+    ['NavigationHandler export type', 'NavigationHandler export'],
+    [
+      'IconsSetService method setSvgPath(svgPath: string) => void',
+      'IconsSetService method setSvgPath',
+    ],
+    ['Store property key: string', 'Store property key'],
+    ['Store property key [readonly]: string', 'Store property key'],
   ])('%s', (line, key) => {
     expect(memberKey(line)).toBe(key);
   });
@@ -249,6 +258,48 @@ describe('apiChanges', () => {
     expect(one(css(' INTERNAL'), css(''))).toEqual({ bump: 'minor', why: 'now public' });
     expect(one(css(''), css(' [static]'))).toEqual({ bump: 'minor', why: 'now static' });
     expect(one(css(' [static]'), css(''))).toEqual({ bump: 'minor', why: 'no longer static' });
+  });
+
+  it('weighs an export of the package root and its promised members as the component ones', () => {
+    const service = [
+      'IconsSetService export const',
+      'IconsSetService method getSvgPath() => string',
+      'IconsSetService method setSvgPath(svgPath: string) => void',
+    ].join('\n');
+    const without = (line: string) => service.replace(`\n${line}`, '');
+    expect(one(service, without('IconsSetService method getSvgPath() => string'))).toEqual({
+      bump: 'major',
+      why: 'removed',
+    });
+    expect(one(service, service.replace('(svgPath: string)', '(path: URL)'))).toEqual({
+      bump: 'major',
+      why: 'changed',
+    });
+    expect(one(service, `${service}\nIconsSetService property ready [readonly]: boolean`)).toEqual({
+      bump: 'minor',
+      why: 'added',
+    });
+    expect(one(service, service.replace('export const', 'export const DEPRECATED'))).toEqual({
+      bump: 'minor',
+      why: 'deprecated',
+    });
+    /* a const that becomes a type keeps its key: the import of the value breaks */
+    expect(one('NavigationService export const', 'NavigationService export type')).toEqual({
+      bump: 'major',
+      why: 'changed',
+    });
+    expect(one('Store property key: string', 'Store property key [readonly]: string')).toEqual({
+      bump: 'major',
+      why: 'changed',
+    });
+    /* the whole export removed: every line of it is a removal */
+    const gone = apiChanges(service, '');
+    expect(gone.map((c) => [c.key, c.bump])).toEqual([
+      ['IconsSetService export', 'major'],
+      ['IconsSetService method getSvgPath', 'major'],
+      ['IconsSetService method setSvgPath', 'major'],
+    ]);
+    expect(requiredBump(gone)).toBe('major');
   });
 
   it('needs a major for a new required prop', () => {

@@ -221,3 +221,12 @@ For colour values inside CSS vars name a semantic role, never a palette step: se
 [`color.md`](color.md). For radii use the `--magma-radius-*` scale, which follows the
 corner geometry ([`theming.md`](theming.md)); a raw `--radius-*` or a pixel value does
 not.
+
+## Services
+
+`IconsSetService` and `NavigationService`, the services the package exports next to the
+components, configure them from code. Call only their members tagged `@public` in the JSDoc,
+which the editor shows (`IconsSetService.setSvgPath()`, `NavigationService.setHandler()`):
+those are promised across releases. The other members serve the components
+(`IconsSetService.fetchSvg()`, `NavigationService.handle()`) and may change or go in any
+release, as the internal custom properties do.

@@ -33,3 +33,6 @@ export type * from './components';
 export { IconsSetService } from './components/mds-icon/services/icons-set.service';
 export { NavigationService } from './common/navigation';
 export type { NavigationHandler } from './common/navigation';
+
+// magma.api.txt lists every export of this module and, of a service, the members whose JSDoc
+// carries @public: the ones a product may call (rootApi in scripts/api-snapshot-lib.ts).

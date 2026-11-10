@@ -56,10 +56,12 @@ keep in step.
 
 ## `magma.api.txt` (magma)
 
-- **What**: the public API of magma as text, one member per line, each CSS custom property with
-  its contract (`INTERNAL`, `[static]`).
-- **Produced by**: `build.api-snapshot`, the last step of the stencil build; committed, never
-  edited by hand.
+- **What**: the public API of magma as text, one member per line: the components, each CSS
+  custom property with its contract (`INTERNAL`, `[static]`), then the exports of the package
+  root with their members tagged `@public`.
+- **Produced by**: `build.api-snapshot`, the last step of the stencil build, from
+  `dist/documentation.json` and the declarations of the root (`dist/types/index.d.ts` and the
+  files it re-exports); committed, never edited by hand.
 - **Contract**: [`projects/stencil/SPEC.md`](../projects/stencil/SPEC.md), "Public API
   snapshot"; [`docs/WORKFLOW.md`](WORKFLOW.md), "6. Review by risk level".
 - **Read by**: `check.pr-risk` (the review level and the semver check posted on every pull
