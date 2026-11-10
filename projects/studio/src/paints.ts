@@ -6,6 +6,7 @@ import type { ComponentAxes } from '../magma-api.js';
 import type { ConfigTheme } from './scene-css.js';
 import { NO_THEME_CHOICES, type ThemeChoices } from './theme-choices.js';
 import { accentOfTheme } from './themes.js';
+import { msg } from './i18n.js';
 
 /*
   What a family of the palette paints: the components a change of it moves, so that the previews
@@ -77,8 +78,14 @@ export const paintingComponents = (
     ({ variant }) => variant?.values.length && variant.values.every((value) => kinds.has(value)),
   );
 
-/** The kind of variant the families of a group are, by their own name (status-error: error). */
-const KIND_OF_GROUP: Record<string, string> = { status: 'Status', label: 'Label' };
+/**
+ * The kind of variant the families of a group are, by their own name (status-error: error). The
+ * kinds are the English names of the guide (docs/agents/variants.md), compared as they are and
+ * translated only where they are drawn (i18n.ts).
+ */
+const KIND_OF_GROUP: Record<string, string> = { status: msg('Status'), label: msg('Label') };
+const ACCENT = msg('Accent');
+const NEUTRAL = msg('Neutral');
 
 /**
  * The variants each accent role paints (docs/agents/variants.md, Accent): `primary` and
@@ -169,14 +176,14 @@ export function paintedBy(
       for (const variant of VARIANTS_OF_ACCENT[role] ?? [])
         variants.push({
           variant,
-          kind: 'Accent',
+          kind: ACCENT,
           through: `variant.${target.slice('variant-'.length)}`,
         });
     }
   // a theme retints the neutral scaffolding (docs/agents/color.md), the roles of `dark` and `light`
   if (drawn)
     for (const [variant, kind] of kinds)
-      if (kind === 'Neutral') variants.push({ variant, kind, through: family });
+      if (kind === NEUTRAL) variants.push({ variant, kind, through: family });
 
   return {
     theme,

@@ -1,5 +1,6 @@
 import type { ComponentAxes } from '../magma-api.js';
 import { COMPONENTS, TONES, type Painted } from './paints.js';
+import { msg } from './i18n.js';
 
 /*
   The states of a colour beside a contrast scale (scales.tsx, #1308): the components the sample
@@ -35,11 +36,11 @@ export interface StatesPlan {
 
 /** The states of an action and the attribute that gives each (magma.api.txt, mds-button). */
 export const ACTION_STATES: ReadonlyArray<{ label: string; attribute?: string }> = [
-  { label: 'Rest' },
-  { label: 'Hover', attribute: 'data-studio-hover' },
-  { label: 'Pressed', attribute: 'active' },
-  { label: 'Selected', attribute: 'current' },
-  { label: 'Disabled', attribute: 'disabled' },
+  { label: msg('Rest') },
+  { label: msg('Hover'), attribute: 'data-studio-hover' },
+  { label: msg('Pressed'), attribute: 'active' },
+  { label: msg('Selected'), attribute: 'current' },
+  { label: msg('Disabled'), attribute: 'disabled' },
 ];
 
 /** The tones a component takes, in the order of the guide; a tone it alone has goes last. */

@@ -4,7 +4,29 @@
   "Seleziona"). The words that come back on every page keep one Italian form, the glossary of the
   README ("Languages").
 */
+import { IT_PALETTE } from './i18n-it-palette.js';
+import { IT_SCALES } from './i18n-it-scales.js';
+import { IT_THEMES } from './i18n-it-themes.js';
+
 export const IT: Record<string, string> = {
+  ...IT_PALETTE,
+  ...IT_SCALES,
+  ...IT_THEMES,
+
+  // the names of the supporting modules (hue-ends.ts, paints.ts, states.ts)
+  Free: 'Libere',
+  Mirror: 'Speculari',
+  Linked: 'Collegate',
+  Status: 'Stato',
+  Label: 'Etichetta',
+  Accent: 'Accento',
+  Neutral: 'Neutro',
+  Rest: 'Riposo',
+  Hover: 'Hover',
+  Pressed: 'Premuto',
+  Selected: 'Selezionato',
+  Disabled: 'Disabilitato',
+
   // the bar and its menu (shell.tsx)
   'for Magma v{version}': 'per Magma v{version}',
   Colors: 'Colori',

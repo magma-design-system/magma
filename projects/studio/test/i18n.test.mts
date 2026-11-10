@@ -107,8 +107,17 @@ test('every Italian text is used by a source', () => {
  * tests below skip them. The last commit of the branch empties it and takes it away.
  */
 const PENDING = new Set([
-  'app.tsx', 'batch.tsx', 'config-menu.tsx', 'contrast.tsx', 'diff.tsx', 'groups.tsx', 'magma.tsx',
-  'palette-side.tsx', 'scales.tsx', 'surfaces.tsx', 'themes.tsx',
+  'app.tsx',
+  'batch.tsx',
+  'config-menu.tsx',
+  'contrast.tsx',
+  'diff.tsx',
+  'groups.tsx',
+  'magma.tsx',
+  'palette-side.tsx',
+  'scales.tsx',
+  'surfaces.tsx',
+  'themes.tsx',
 ])
 
 /**
