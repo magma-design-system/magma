@@ -170,7 +170,7 @@ switch it on with `data-theme-name` ([`theming.md`](theming.md)), do not paint i
 `variant-*` has no role of its own: the accents are `accent` and `accent-ai`.
 
 The inverse surface is `--magma-surface-inverse` with `--magma-on-inverse` on it: Magma 3
-removed its Magma 2 names, `--magma-neutral-emphasis` / `--magma-neutral-on-emphasis`.
+removed its Magma 2 names, `neutral-emphasis` / `neutral-on-emphasis`.
 
 ## Outside the web
 
