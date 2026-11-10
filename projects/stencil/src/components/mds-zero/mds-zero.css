@@ -2,22 +2,30 @@
  * @prop --mds-zero-contents-max-width: Public. Set if the contents has a max width to be centered in the component
  */
 
+/* the panel of an empty state, on the roles of the design language (#1189, #1231): one inset
+   shared by its regions (rhythm/inset, rhythm/shared-inset), the illustration, the content and
+   the actions at rhythm/content-actions, the title and the text of the content at
+   rhythm/title-content, the actions side by side at rhythm/inline; with no action the footer is
+   gone, so the inset stays the same on every side. The fill is surface-muted, a step under the
+   page in both modes, on the plane where the items would stand (surfaces/tints-in-components,
+   chosen by vittorio on the render of #1231) */
+
 :host {
   --mds-zero-contents-max-width: --spacing(10000);
   --mds-zero-transition-duration: var(--duration-200);
   --private-zero-transition-duration: var(--mds-zero-transition-duration);
 
-  @apply ease-out mobile:px-600;
+  @apply ease-out;
 
   align-items: center;
-  background-color: rgb(var(--magma-wash-soft));
+  background-color: rgb(var(--magma-surface-muted));
   border-radius: var(--magma-radius-xl);
   corner-shape: var(--magma-corner-shape);
   display: flex;
   flex-direction: column;
-  gap: --spacing(600);
+  gap: var(--magma-rhythm-content-actions);
   justify-items: center;
-  padding: --spacing(1200);
+  padding: var(--magma-rhythm-inset);
   transition-duration: var(--private-zero-transition-duration);
   transition-property: box-shadow, background-color;
 }
@@ -26,6 +34,7 @@
   align-items: center;
   display: flex;
   flex-direction: column;
+  gap: var(--magma-rhythm-title-content);
   justify-items: center;
   max-width: var(--mds-zero-contents-max-width);
   text-align: center;
@@ -34,9 +43,13 @@
 :host .actions {
   align-items: center;
   display: flex;
-  gap: --spacing(200);
+  gap: var(--magma-rhythm-inline);
   justify-items: center;
   width: 100%;
+}
+
+:host .actions--hidden {
+  display: none;
 }
 
 :host ::slotted([slot='action']) {
