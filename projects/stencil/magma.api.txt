@@ -1139,6 +1139,7 @@ mds-policy-ai part chip-wrapper
 mds-policy-ai part icon
 mds-pref encapsulation shadow
 mds-pref prop controller (attr controller) [reflect, mutable]: boolean | undefined
+mds-pref prop liveLanguage (attr live-language) [reflect]: boolean | undefined
 mds-pref prop size (attr size) [reflect]: "md" | "sm" | undefined
 mds-pref slot (default)
 mds-pref-animation encapsulation shadow

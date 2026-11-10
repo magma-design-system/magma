@@ -22,6 +22,45 @@ describe('mds-pref', () => {
     expect(notice()).not.toBeNull();
   });
 
+  // #1336: an application that translates its content as <html lang> changes needs no reload
+  describe('live-language', () => {
+    const html = document.documentElement;
+    const lang = html.lang;
+    afterEach(() => {
+      localStorage.removeItem('mdsPrefLanguage');
+      html.lang = lang;
+    });
+
+    it('asks for no reload after a change of language', async () => {
+      const { root, waitForChanges } = await render(`
+        <mds-pref live-language>
+          <mds-pref-language>
+            <mds-pref-language-item code="it"></mds-pref-language-item>
+            <mds-pref-language-item code="en"></mds-pref-language-item>
+          </mds-pref-language>
+        </mds-pref>
+      `);
+      const language = root.querySelector('mds-pref-language')!;
+
+      language.set = html.lang === 'it' ? 'en' : 'it';
+      await waitForChanges();
+
+      expect(html.lang).toBe(language.set);
+      expect(root.shadowRoot!.querySelector('.reload-required')).toBeNull();
+    });
+
+    it('still asks for a reload after a change of consumption', async () => {
+      const { root, waitForChanges } = await render(
+        '<mds-pref live-language><mds-pref-consumption></mds-pref-consumption></mds-pref>',
+      );
+
+      root.querySelector('mds-pref-consumption')!.mode = 'low';
+      await waitForChanges();
+
+      expect(root.shadowRoot!.querySelector('.reload-required')).not.toBeNull();
+    });
+  });
+
   it('shows no reload notice in controller mode, where it is hidden', async () => {
     const { root, waitForChanges } = await render(
       '<mds-pref controller><mds-pref-consumption></mds-pref-consumption></mds-pref>',

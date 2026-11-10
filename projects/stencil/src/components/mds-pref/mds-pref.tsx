@@ -66,6 +66,19 @@ export class MdsPref {
     }
   }
 
+  /**
+   * Tells the panel that the application follows `<html lang>` on its own, translating its
+   * content as the language changes, so a change of language needs no reload and shows no notice
+   */
+  @Prop({ reflect: true }) readonly liveLanguage?: boolean;
+
+  // A preference whose change the content of the page may not follow until a reload: the
+  // consumption, and the language unless the application follows it live
+  private needsReload = (preference?: string): boolean =>
+    preference !== undefined &&
+    this.prefNeedsReload.includes(preference) &&
+    !(preference === 'language' && this.liveLanguage);
+
   private sizeChildren = (size?: TabSizeType): void => {
     const allElements = Array.from(this.host.querySelectorAll('*'));
     const elements = allElements.filter((el) => el.tagName.toLowerCase().startsWith('mds-pref-'));
@@ -119,7 +132,7 @@ export class MdsPref {
   // A change heard before the panel loaded is a control applying the stored choice, no pick.
   @Listen('mdsPrefChange')
   handlePrefChange(e: CustomEvent<MdsPrefChangeEventDetail>): void {
-    if (this.loaded && !this.controller && this.prefNeedsReload.includes(e.detail?.preference)) {
+    if (this.loaded && !this.controller && this.needsReload(e.detail?.preference)) {
       this.showReload = true;
     }
   }
