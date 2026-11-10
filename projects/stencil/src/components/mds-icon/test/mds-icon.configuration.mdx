@@ -10,10 +10,10 @@ Every `<mds-icon>` shares a single in-memory service, so you configure the path 
 
 ## Recommended: `IconsSetService.setSvgPath()`
 
-Import the shared singleton from the package's `services` entry point and set the path. This happens entirely in memory — **no `sessionStorage`** — and notifies every mounted icon to (re)load, so it works even where storage is blocked (incognito, sandboxed iframes, storage partitioning).
+Import the shared singleton from the package root and set the path. This happens entirely in memory, **without `sessionStorage`**, and notifies every mounted icon to (re)load, so it works even where storage is blocked (incognito, sandboxed iframes, storage partitioning). A path set this way wins over the `sessionStorage` key below.
 
 ```ts
-import { IconsSetService } from '@maggioli-design-system/magma/services';
+import { IconsSetService } from '@maggioli-design-system/magma';
 
 IconsSetService.setSvgPath('/assets/svg/');
 ```
