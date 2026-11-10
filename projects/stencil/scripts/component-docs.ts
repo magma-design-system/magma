@@ -16,7 +16,8 @@
  * dist/documentation.json for the shipped layout (relative to the component's folder),
  * It gives each component the id of its Storybook docs page (`storybook`) and the file the
  * address of the published Storybook (scripts/story-titles-lib.ts), since the ids follow
- * neither the tags nor always the titles (#1148).
+ * neither the tags nor always the titles (#1148), and beside it the address of the published
+ * studio (`studio`, #1294).
  *
  * It then checks that every relative link of the shipped agent docs - the per-component
  * ones and the AGENTS.md + agents/ of the three entry-point packages - resolves inside
@@ -42,7 +43,7 @@ import {
 } from './agent-docs-lib';
 import { COMPONENTS_DIR } from './meta';
 import { markStyles } from './style-contract-lib';
-import { readComponentStories, STORYBOOK_URL, storybookDocsIds } from './story-titles-lib';
+import { PUBLISHED_SITE, readComponentStories, storybookDocsIds } from './story-titles-lib';
 
 const STENCIL_DIR = process.cwd();
 const DOCS_JSON = path.join(STENCIL_DIR, 'dist', 'documentation.json');
@@ -56,6 +57,8 @@ interface DocsJson {
   compiler?: unknown;
   /** The published Storybook: a component's docs page opens at `?path=/docs/<storybook>`. */
   storybook?: string;
+  /** The published studio: its pages open at `#/<page>` (`#/theme`, `#/colors/palette`). */
+  studio?: string;
   components: DocsComponent[];
   [key: string]: unknown;
 }
@@ -83,6 +86,7 @@ function writeComponentDocs(docs: DocsJson, version: string): number {
       timestamp: docs.timestamp,
       compiler: docs.compiler,
       storybook: docs.storybook,
+      studio: docs.studio,
       components: [componentDocsJson(component)],
     };
     fs.writeFileSync(path.join(dir, 'documentation.json'), JSON.stringify(single, null, 2) + '\n');
@@ -190,7 +194,7 @@ function main(): void {
     for (const { tag } of unlisted) console.error(`  ${tag}`);
     process.exit(1);
   }
-  docs.storybook = STORYBOOK_URL;
+  Object.assign(docs, PUBLISHED_SITE);
   for (const component of docs.components) component.storybook = storybookIds.get(component.tag);
 
   const count = writeComponentDocs(docs, version);

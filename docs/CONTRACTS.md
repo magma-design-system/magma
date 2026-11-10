@@ -25,7 +25,11 @@ keep in step.
   methods, slots, parts, and the CSS custom properties with their contract (`visibility`
   public or internal, `static`). Beside them, where each component is in the published
   Storybook: `storybook` at the top is its address, `storybook` on a component the id of its
-  docs page, which opens at `<storybook>?path=/docs/<id>` (#1148). And `usage` on each
+  docs page, which opens at `<storybook>?path=/docs/<id>` (#1148). Beside it, `studio` is the
+  address of the published studio, whose pages open at `<studio>#/<page>` (`#/theme`,
+  `#/colors/palette`, #1294). Both are folders of the GitHub Pages site of the repository, where
+  `deploy-site.yml` publishes the site of `main`, and both stand at the top of the
+  `documentation.json` of each component too. And `usage` on each
   component: its hand-written files, keyed by the file name without `.md`, `1. Description`,
   `2. Examples` and `3. Mistakes` (the number only sets the order; `USAGE_FILES` in
   `projects/stencil/scripts/agent-docs-lib.ts`), their links rewritten for the shipped layout.
@@ -36,7 +40,9 @@ keep in step.
   `projects/stencil/scripts/component-docs.ts`, which moves the public mark of each `@prop`
   into `visibility` and `static`, and reads the Storybook ids from the stories files
   (`scripts/story-titles-lib.ts`, the id of the meta or its title, through Storybook's own
-  `toId`).
+  `toId`). The addresses at the top are `PUBLISHED_SITE` of the same file: the Pages site read
+  from `repository.url` of the package, the folders the ones `deploy-site.yml` moves the two
+  builds into.
 - **Contract**: [`projects/stencil/SPEC.md`](../projects/stencil/SPEC.md), "Authoring rules"
   (the styling API and the public mark) and "Per-component usage docs" (the usage files);
   [`docs/ARCHITECTURE.md`](ARCHITECTURE.md), 3.5.
@@ -48,11 +54,16 @@ keep in step.
   `usage` in
   `src/loaders/components.ts` of `magma-design-system/docs`: the description is the overview of
   a component, the other two its sub-pages, and the first example its preview; it leaves out a
-  name it does not know.
+  name it does not know. It links the Storybook from `storybook`, and the studio from a
+  constant of its own (`STUDIO` in `src/lib/nav.mjs`) until a release of magma carries
+  `studio`.
 - **Held by**: `component-docs.ts` fails the build on a mark it cannot read
   (`style-contract-lib.spec.ts`), on a component with no Storybook page of its own
   (`story-titles-lib.spec.ts`) and on a usage file outside `USAGE_FILES`
   (`agent-docs-lib.spec.ts`); `check.usage-docs`; `check.api-snapshot`.
+  `story-titles-lib.spec.ts` holds `storybook` and `studio` to the folders of `deploy-site.yml`,
+  the studio to the `og:url` of its page and to its link in `docs/agents/theming.md`, and reads
+  both in the built file.
 
 ## `magma.api.txt` (magma)
 
@@ -102,6 +113,34 @@ keep in step.
   colour utility paints), the docs site.
 - **Held by**: the lint tests hold `USE_OF_UTILITY` to the roots of the `--color` namespace, in
   the fixtures and in the built map.
+
+## `typography.css` (design-tokens)
+
+- **What**: `dist/css/typography.css`, the non-colour tokens (fonts, type sizes, leading,
+  spacing, containers, breakpoints, aspect ratios, motion, borders, radii, shadows) and the roles
+  of the design language (`--magma-rhythm-*`, `--magma-width-*`, `--magma-container-*`,
+  `--text-size-title-<role>`) as custom properties of one `:root {}`: the plain-CSS twin of
+  `tailwind-theme-typography.css` (#513), which styles ships unchanged as
+  `dist/css/typography.css`.
+- **Produced by**: the design-tokens build, format `css/vars-typography`
+  (`src/formats/css-vars-typography`) in the `css` platform of
+  `src/config/styledictionary/tailwind4.json`, next to the Tailwind theme; the copy step of
+  styles (`scripts/copy.ts`).
+- **Contract**: [`projects/design-tokens/SPEC.md`](../projects/design-tokens/SPEC.md), "The two
+  typography sheets" (what the twin shares with the Tailwind theme and where it differs) and
+  "Design language roles"; [`docs/agents/assets.md`](agents/assets.md), "Import order
+  (mandatory)", for the page.
+- **Read by**: the consumer page, through styles (the import block of the guide, layer
+  `theme`); the MCP `render_preview` (`projects/mcp/src/render.ts`: the import block, and the
+  `--breakpoint-*` it sizes a render by); the styles build (`scripts/editor-tokens.ts`, the
+  `scale` group of the editor sheet; `scripts/properties.ts`, the values that resolve the
+  `@property` registrations); the stencil e2e tests that put the tokens on their page
+  (`src/test/design-language.e2e.ts`, the `?raw` imports of the component tests).
+- **Held by**: `test/typography-root.test.mts` of design-tokens (one `:root` with no Tailwind
+  at-rule, the values of the Tailwind theme, and the differences only the bridges, the roles and
+  the Tailwind namespaces); `test/roles.test.mts` (the values of the roles and their bridges);
+  `test/dtcg-export.test.mts` (the scale and motion of the DTCG export equal the sheet); the
+  `render_preview` tests (the widths from the installed styles).
 
 ## The mode of a theme
 

@@ -18,6 +18,7 @@ import {
   rootOf,
   type ComponentTaxonomy,
 } from './agent-docs-lib';
+import { PROJECT_DIR } from './meta';
 
 /** The group of the sidebar that holds the pages of every component. */
 export const STORIES_ROOT = 'UI';
@@ -120,10 +121,54 @@ export function storyTitleErrors(components: ComponentTaxonomy[], pages: StoryPa
 }
 
 /**
- * The published Storybook, where deploy-site.yml puts the Storybook of `main` (GitHub
- * Pages, since the move away from GitLab CI). A docs page opens at `?path=/docs/<id>`.
+ * The address of the GitHub Pages site of a repository, from its URL as package.json writes it
+ * (`git+https://github.com/<owner>/<repo>.git`, the form npm normalises it to): GitHub serves
+ * the project site of `<owner>/<repo>` at `https://<owner>.github.io/<repo>/` (GitHub Docs,
+ * "About GitHub Pages", "Types of GitHub Pages sites"), with no custom domain set. A URL that
+ * is not of a GitHub repository has no such site: it throws instead of guessing one.
  */
-export const STORYBOOK_URL = 'https://magma-design-system.github.io/magma/storybook/';
+export function pagesUrlOf(repository: string): string {
+  const match = /^(?:git\+)?https:\/\/github\.com\/([^/]+)\/([^/]+?)(?:\.git)?\/?$/.exec(
+    repository,
+  );
+  if (!match) throw new Error(`Not the URL of a GitHub repository: ${repository}`);
+  return `https://${match[1]!.toLowerCase()}.github.io/${match[2]}/`;
+}
+
+/**
+ * The Pages site of the repository of magma, read from `repository.url` of its package.json:
+ * npm checks that field against the repository a release with provenance is built in, so it
+ * names the repository deploy-site.yml runs in. Read here, in an input of the stencil build,
+ * so the addresses below are rebuilt when it changes.
+ */
+export const PAGES_URL = pagesUrlOf(
+  JSON.parse(fs.readFileSync(path.join(PROJECT_DIR, 'package.json'), 'utf8')).repository.url,
+);
+
+/**
+ * The published Storybook: deploy-site.yml assembles the Storybook of `main` into the
+ * `storybook/` folder of the Pages site (since the move away from GitLab CI). A docs page
+ * opens at `?path=/docs/<id>`. The folder is the workflow's choice, not an input of this
+ * build: story-titles-lib.spec.ts fails when the workflow moves it.
+ */
+export const STORYBOOK_URL = `${PAGES_URL}storybook/`;
+
+/**
+ * The published studio (projects/studio, #1288, #1294): deploy-site.yml assembles the studio
+ * of `main` into the `studio/` folder of the Pages site. Its build does not decide where it
+ * lives, since it loads everything by relative paths (`base: './'` of its vite.config.ts), and
+ * its pages are addressed by the hash (`#/theme`, `#/colors/palette`, src/routes.ts), so this
+ * root is all a link needs. story-titles-lib.spec.ts holds the folder to the workflow and the
+ * address to the `og:url` of projects/studio/index.html.
+ */
+export const STUDIO_URL = `${PAGES_URL}studio/`;
+
+/**
+ * Where the site of `main` is published, as the top of documentation.json (and of the
+ * documentation.json of each component) says it, so its readers link it without keeping an
+ * address of their own (docs/CONTRACTS.md, "documentation.json").
+ */
+export const PUBLISHED_SITE = { storybook: STORYBOOK_URL, studio: STUDIO_URL };
 
 /**
  * The id of the Storybook docs page of each component (#1148): the page of its own stories
