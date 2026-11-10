@@ -190,6 +190,35 @@ describe('mds-tab', () => {
       coversItem(root, item);
     });
 
+    // the observer of the strip moves the slider: it stopped for good when the strip was moved,
+    // and when overflow was turned off
+    it('follows a change of the layout after the strip is moved in the page', async () => {
+      const { root } = await render(`<div><div>${second}</div><div class="other"></div></div>`);
+      const tab = root.querySelector('mds-tab')!;
+      const [first, item] = Array.from(tab.querySelectorAll('mds-tab-item'));
+      await settled(tab, item);
+
+      root.querySelector('.other')!.appendChild(tab);
+      first.label = 'A much longer first label';
+
+      await staysStill(tab);
+      coversItem(tab, item);
+    });
+
+    it('follows a change of the layout after overflow is turned off', async () => {
+      const { root } = await render<HTMLMdsTabElement>(
+        second.replace('<mds-tab>', '<mds-tab overflow>'),
+      );
+      const [first, item] = Array.from(root.querySelectorAll('mds-tab-item'));
+      await settled(root, item);
+
+      root.overflow = false;
+      first.label = 'A much longer first label';
+
+      await staysStill(root);
+      coversItem(root, item);
+    });
+
     it('slides to the tab that is selected', async () => {
       const { root } = await render(second);
       const [first, item] = Array.from(root.querySelectorAll('mds-tab-item'));
@@ -232,6 +261,138 @@ describe('mds-tab', () => {
       root.appendChild(linkItem('#b'));
 
       await vi.waitFor(() => expect(tabs(root)).not.toHaveAttribute('role'));
+    });
+  });
+
+  // #1245: the strip watches its scroll and its size while it is drawn and in the page. Removed
+  // before its first load, its teardown read the parts it watches, not there yet, and threw
+  describe('in and out of the page', () => {
+    const items = `<mds-tab-item label="First" selected></mds-tab-item>
+  <mds-tab-item label="Second"></mds-tab-item>`;
+
+    const wrapperOf = (tab: HTMLElement): Element =>
+      tab.shadowRoot!.querySelector('.tabs-wrapper')!;
+
+    /**
+     * How many ResizeObserver watch an element now, followed through observe, unobserve and
+     * disconnect: the observer of the strip watches its `.tabs-wrapper`.
+     */
+    const resizeWatchers = (): ((target: Element) => number) => {
+      const watched = new Map<ResizeObserver, Set<Element>>();
+      const { observe, unobserve, disconnect } = ResizeObserver.prototype;
+      vi.spyOn(ResizeObserver.prototype, 'observe').mockImplementation(function (
+        this: ResizeObserver,
+        target: Element,
+        options?: ResizeObserverOptions,
+      ) {
+        watched.set(this, (watched.get(this) ?? new Set()).add(target));
+        observe.call(this, target, options);
+      });
+      vi.spyOn(ResizeObserver.prototype, 'unobserve').mockImplementation(function (
+        this: ResizeObserver,
+        target: Element,
+      ) {
+        watched.get(this)?.delete(target);
+        unobserve.call(this, target);
+      });
+      vi.spyOn(ResizeObserver.prototype, 'disconnect').mockImplementation(function (
+        this: ResizeObserver,
+      ) {
+        watched.delete(this);
+        disconnect.call(this);
+      });
+      return (target) => [...watched.values()].filter((targets) => targets.has(target)).length;
+    };
+
+    /** A strip created by script, as a framework does, not connected yet. */
+    const created = (): HTMLMdsTabElement => {
+      const tab = document.createElement('mds-tab');
+      tab.innerHTML = items;
+      return tab;
+    };
+
+    it('throws nothing when removed before its first load, and loads when it comes back', async () => {
+      const consoleError = vi.spyOn(console, 'error');
+      // a strip already in the page: the component is defined, and the next one is built at
+      // once, as in a framework that creates and destroys it in quick succession
+      const { root } = await render(`<div>${strip}</div>`);
+      const watchers = resizeWatchers();
+      const tab = created();
+
+      root.appendChild(tab);
+      tab.remove();
+
+      // what its connection scheduled still runs: the strip loads out of the page, where it has
+      // nothing to watch. An observer started there was never stopped
+      await vi.waitFor(() => expect(tab).toHaveAttribute('hydrated'));
+      expect(consoleError).not.toHaveBeenCalled();
+      expect(watchers(wrapperOf(tab))).toBe(0);
+
+      root.appendChild(tab);
+
+      await vi.waitFor(() => expect(watchers(wrapperOf(tab))).toBe(1));
+      expect(consoleError).not.toHaveBeenCalled();
+    });
+
+    it('stops watching the strip when removed after its load', async () => {
+      const watchers = resizeWatchers();
+      const { root } = await render(`<div>${strip}</div>`);
+      const tab = root.querySelector('mds-tab')!;
+      const wrapper = wrapperOf(tab);
+      await vi.waitFor(() => expect(watchers(wrapper)).toBe(1));
+      const removeListener = vi.spyOn(
+        tab.shadowRoot!.querySelector('.tabs')!,
+        'removeEventListener',
+      );
+
+      tab.remove();
+
+      expect(watchers(wrapper)).toBe(0);
+      expect(removeListener).toHaveBeenCalledWith('scroll', expect.any(Function));
+    });
+
+    it('watches the strip again, once, when moved in the page', async () => {
+      const watchers = resizeWatchers();
+      const { root } = await render(`<div><div>${strip}</div><div class="other"></div></div>`);
+      const tab = root.querySelector('mds-tab')!;
+      const wrapper = wrapperOf(tab);
+      await vi.waitFor(() => expect(watchers(wrapper)).toBe(1));
+
+      root.querySelector('.other')!.appendChild(tab);
+
+      expect(watchers(wrapper)).toBe(1);
+    });
+
+    it('watches the strip once however often overflow is turned on and off', async () => {
+      const watchers = resizeWatchers();
+      const { root, waitForChanges } = await render<HTMLMdsTabElement>(strip);
+      const wrapper = wrapperOf(root);
+      await vi.waitFor(() => expect(watchers(wrapper)).toBe(1));
+
+      // the strip is watched from its load on: turned on, overflow started a second observer
+      root.overflow = true;
+      await waitForChanges();
+      expect(watchers(wrapper)).toBe(1);
+
+      root.overflow = false;
+      await waitForChanges();
+      root.overflow = true;
+      await waitForChanges();
+      expect(watchers(wrapper)).toBe(1);
+    });
+
+    it('takes overflow set before its first load', async () => {
+      const consoleError = vi.spyOn(console, 'error');
+      const { root } = await render(`<div>${strip}</div>`);
+      const tab = created();
+
+      root.appendChild(tab);
+      tab.overflow = true;
+
+      await vi.waitFor(() =>
+        expect(tab.shadowRoot?.querySelector('.tabs-wrapper-overflow-left')).toBeTruthy(),
+      );
+      expect(consoleError).not.toHaveBeenCalled();
     });
   });
 

@@ -43,7 +43,7 @@ export class MdsTab {
   private currentItemEl: HTMLMdsTabItemElement;
   private tabs: HTMLElement;
   private tabsContainer: HTMLElement;
-  private observer: ResizeObserver;
+  private observer?: ResizeObserver;
   private tabItems: Array<HTMLMdsTabItemElement> = [];
   private contentItems: Array<HTMLElement> = [];
   private cssSlideDelayDuration: string;
@@ -100,6 +100,13 @@ export class MdsTab {
   componentWillLoad(): void {
     this.setTabsItems();
     this.hasContent = this.queryContentItems().length > 0;
+  }
+
+  // a strip moved in the page is disconnected and connected again, without loading again: the
+  // check of its scroll and size starts again here. On the first connection it is not drawn yet,
+  // and componentDidLoad starts it
+  connectedCallback(): void {
+    this.initOverflowCheck();
   }
 
   disconnectedCallback(): void {
@@ -171,12 +178,21 @@ export class MdsTab {
     this.scrollTabs(this.currentItemIndex);
   };
 
+  // The strip is watched while it is drawn and in the page: its scroll for the overflow shadows,
+  // its size for those and for the slider. A strip removed before its first load has neither
+  // parts nor observer: its teardown used to read them and throw (#1245)
   private unsetOverflowCheck = (): void => {
-    this.tabs.removeEventListener('scroll', this.updateOverflowState);
-    this.observer.unobserve(this.tabsContainer);
+    this.tabs?.removeEventListener('scroll', this.updateOverflowState);
+    this.observer?.disconnect();
+    this.observer = undefined;
   };
 
   private initOverflowCheck = (): void => {
+    // not drawn yet: componentDidLoad starts the check. Out of the page (removed before its load
+    // ended): connectedCallback starts it when the strip comes back
+    if (this.tabs == null || this.tabsContainer == null || !this.element.isConnected) return;
+    // one check at a time: a second observer would keep running after the teardown
+    this.unsetOverflowCheck();
     this.tabs.addEventListener('scroll', this.updateOverflowState);
     this.observer = new ResizeObserver(() => {
       if (this.overflow) this.updateOverflowState();
@@ -321,13 +337,12 @@ export class MdsTab {
     }
   }
 
+  // the strip is watched whatever overflow says, since its observer moves the slider too: turned
+  // off, the check used to stop and the slider no longer followed the layout; turned on, a
+  // second observer started next to the first. The shadows only need the current state
   @Watch('overflow')
   handleOverflowChange(newValue?: boolean): void {
-    if (!newValue) {
-      this.unsetOverflowCheck();
-      return;
-    }
-    this.initOverflowCheck();
+    if (newValue) this.updateOverflowState();
   }
 
   @Watch('size')
