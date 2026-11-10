@@ -301,31 +301,34 @@ export function SurfaceManager({
     number | { step: number }
   >;
 
-  // a family to opt in, the same in the list of the themes and in the reserved row
-  const familyButton = (color: ColorConfig) => {
+  // a family to opt in, the same in the list of the themes and in the reserved row: a selectable
+  // chip with the swatch of its colour, and beside it, as beside a group that is always on, the
+  // badge of a family that follows its group
+  const familyChip = (color: ColorConfig) => {
     const group = groupOf(color);
     const on = resolveSurfaceOptIn(config, color) !== undefined;
     const inherited = color.surface === undefined && Boolean(config.groups?.[group]?.surface);
-    // until mds-chip has a colour swatch: #1263
     return (
-      <button
-        type="button"
-        class="surfaces-family"
-        aria-pressed={on ? 'true' : 'false'}
-        data-inherited={inherited ? '' : undefined}
+      <span
+        key={color.name}
+        class="surfaces-choice"
         title={
           inherited
             ? t('{name} (follows the {group} group)', { name: color.name, group })
             : color.name
         }
-        onClick={() => onToggleSurface(color.name, !on)}
       >
-        <span class="studio-swatch" style={{ background: color.color }} />
-        <mds-text typography="caption" tag="span">
-          {familyOf(color)}
-        </mds-text>
+        <mds-chip
+          label={familyOf(color)}
+          swatch={color.color}
+          selectable
+          selected={on}
+          onmdsChipSelect={(event: CustomEvent<{ selected?: boolean }>) =>
+            onToggleSurface(color.name, Boolean(event.detail?.selected))
+          }
+        ></mds-chip>
         {inherited && <mds-badge variant="dark" label={t('via {group}', { group })}></mds-badge>}
-      </button>
+      </span>
     );
   };
 
@@ -411,7 +414,7 @@ export function SurfaceManager({
               </mds-text>
             </div>
             <div class="surfaces-choices" role="group" aria-label={t('Surface families')}>
-              {themeColors.map(familyButton)}
+              {themeColors.map(familyChip)}
             </div>
             {reservedColors.length > 0 && (
               <div class="surfaces-reserved">
@@ -423,7 +426,7 @@ export function SurfaceManager({
                   )}
                 </mds-text>
                 <div class="surfaces-choices" role="group" aria-label={t('Status families')}>
-                  {reservedColors.map(familyButton)}
+                  {reservedColors.map(familyChip)}
                 </div>
               </div>
             )}
