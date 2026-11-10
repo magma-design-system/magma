@@ -17,6 +17,7 @@ The `<mds-banner>` web component is the Magma Design System surface for contextu
 
 - **Variant-driven ARIA**: The announcement role is derived from `variant`, not set manually. `error` and `warning` announce assertively (`role="alert"`); `ai`, `info`, `primary`, and `success` announce politely (`role="status"`); `light` and `dark` are decorative and silent.
 - **Headline as label**: When `headline` is set it also becomes the banner's accessible label.
+- **The headline follows its place**: in the page it is the title of a part, `h6`; as the window of a dialog (`slot="window"` on a child of `mds-modal`) it is the title of the dialog, `h5`, above the `h6` of the parts and the groups of fields the dialog holds (`titles/part` and `titles/dialog` of the design language). A banner moved in or out of a modal after the load, or given the slot `window` there, takes the style of its new place.
 - **Dismissal**: When `dismissible` is true a close button is rendered; activating it emits `mdsBannerClose` and, if the banner sits inside an `mds-modal`, closes that modal.
 - **Localized close button**: The close button title is localized (el/en/es/it) from the host language.
 - **Action slot**: The `action` region is rendered only when a direct `[slot="action"]` child is present, so banners without actions produce no empty container.
@@ -31,6 +32,7 @@ This component uses the shared `variant` / `tone` ladders defined in [`docs/agen
 #### Other behavioral props
 
 - **`hideCockade`** (default `false`) removes the colored decorative badge wrapping the leading `icon`; set it for a flatter icon presentation.
+- **`typography`** writes the style of the headline instead of its place: `h6` or `h5`, nothing larger, since `h4` is too large for a banner. A value it does not know falls back to the style of the place. Left out, the style is the role of the title of the place (`part`, `dialog`), so a theme that moves the role moves the headline too.
 - **`icon`** is a Magma icon library slug shown at the top-left, surfaced as decorative.
 - **`dismissible`** shows the close button - choose it for transient or user-acknowledged messages rather than persistent context.
 - **`deletable`** is the old name of `dismissible`, deprecated: the button dismisses the message, it deletes nothing. It still works, and goes in the next major.
@@ -177,20 +179,26 @@ Use `variant="ai"` to mark banners that present AI-generated content or AI-power
 </mds-banner>
 ```
 
-#### Dismissible Banner inside mds-modal
+#### The Window of a Dialog
 
-When `dismissible` is set and the banner lives inside an `<mds-modal>`, activating the close button emits `mdsBannerClose` and also closes the modal automatically - no extra JavaScript needed.
+Slotted as the `window` of an `<mds-modal>`, the banner is the dialog: `variant="light"` `tone="box"` `dismissible`, its close button closes the modal with no extra JavaScript, and its headline is the title of the dialog, in `h5`, with no attribute to write. The headline is hidden from screen readers, so `aria-label` on `mds-modal` names the dialog, with the same text.
 
 ```html
-<mds-modal opened>
-  <mds-banner variant="warning" dismissible headline="Attenzione">
-    <mds-text typography="detail">
-      Stai per eliminare tutti i dati. L'azione non e reversibile.
-    </mds-text>
-    <mds-button slot="action" variant="warning" tone="outline">Annulla</mds-button>
-    <mds-button slot="action" variant="warning" tone="strong">Elimina</mds-button>
+<mds-modal aria-label="Eliminare Contratto di servizio?">
+  <mds-banner slot="window" variant="light" tone="box" dismissible headline="Eliminare Contratto di servizio?">
+    <mds-text typography="detail">Il documento non potra' essere recuperato.</mds-text>
+    <mds-button slot="action" variant="dark" tone="outline" autofocus>Annulla</mds-button>
+    <mds-button slot="action" variant="error" tone="strong">Elimina</mds-button>
   </mds-banner>
 </mds-modal>
+```
+
+In the page the same banner keeps its headline in `h6`, the title of a part. `typography` writes the style when the place does not say it: `h6` or `h5`, nothing larger.
+
+```html
+<mds-banner variant="info" typography="h5" headline="Nuova versione del servizio">
+  <mds-text typography="detail">Da oggi puoi firmare i documenti dall'app.</mds-text>
+</mds-banner>
 ```
 
 #### CSS Custom Property Customization
@@ -224,6 +232,26 @@ Common incorrect uses of `<mds-banner>`. Each entry pairs the wrong form with th
 <!-- CORRECT -->
 <mds-banner variant="info" tone="weak">
   <mds-text typography="detail">Informazione di sistema.</mds-text>
+</mds-banner>
+```
+
+#### Do Not Ask the Headline for a Style Larger Than `h5`
+
+`typography` takes `h6` and `h5` only: a value it does not know, such as `h4`, falls back to the style of the place. A title written in the default slot instead of `headline` is no headline either: it is not the accessible label of the banner, and it keeps its style wherever the banner goes. Write the title in `headline` and leave its style to the place, or write `h6` or `h5`.
+
+```html
+<!-- INCORRECT -->
+<mds-banner variant="info" typography="h4" headline="Nuovo servizio">
+  <mds-text typography="detail">Da oggi puoi firmare i documenti dall'app.</mds-text>
+</mds-banner>
+<mds-banner variant="info">
+  <mds-text typography="h4">Nuovo servizio</mds-text>
+  <mds-text typography="detail">Da oggi puoi firmare i documenti dall'app.</mds-text>
+</mds-banner>
+
+<!-- CORRECT -->
+<mds-banner variant="info" headline="Nuovo servizio">
+  <mds-text typography="detail">Da oggi puoi firmare i documenti dall'app.</mds-text>
 </mds-banner>
 ```
 
@@ -345,15 +373,16 @@ The component fires `mdsBannerClose` only when the close button is activated (bo
 
 ## Properties
 
-| Property      | Attribute      | Description                                                                                                                                                                                              | Type                                                                                                 | Default     |
-| ------------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ----------- |
-| `deletable`   | `deletable`    | <span style="color:red">**[DEPRECATED]**</span> Use `dismissible`: the button dismisses the message, it deletes nothing. Goes in the next major.<br/><br/>Shows the close button, as `dismissible` does. | `boolean \| undefined`                                                                               | `undefined` |
-| `dismissible` | `dismissible`  | Shows a close button that dismisses the banner: activating it emits `mdsBannerClose`                                                                                                                     | `boolean \| undefined`                                                                               | `undefined` |
-| `headline`    | `headline`     | The title on the top of the banner                                                                                                                                                                       | `string \| undefined`                                                                                | `undefined` |
-| `hideCockade` | `hide-cockade` | Hides the decoration around the banner icon                                                                                                                                                              | `boolean \| undefined`                                                                               | `false`     |
-| `icon`        | `icon`         | An icon displayed at the top left of the banner                                                                                                                                                          | `string \| undefined`                                                                                | `undefined` |
-| `tone`        | `tone`         | Sets the tone of the color variant                                                                                                                                                                       | `"box" \| "strong" \| "weak" \| undefined`                                                           | `'weak'`    |
-| `variant`     | `variant`      | Sets the theme variant colors                                                                                                                                                                            | `"ai" \| "dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning" \| undefined` | `'primary'` |
+| Property      | Attribute      | Description                                                                                                                                                                                                                                                                                                                                                     | Type                                                                                                 | Default     |
+| ------------- | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ----------- |
+| `deletable`   | `deletable`    | <span style="color:red">**[DEPRECATED]**</span> Use `dismissible`: the button dismisses the message, it deletes nothing. Goes in the next major.<br/><br/>Shows the close button, as `dismissible` does.                                                                                                                                                        | `boolean \| undefined`                                                                               | `undefined` |
+| `dismissible` | `dismissible`  | Shows a close button that dismisses the banner: activating it emits `mdsBannerClose`                                                                                                                                                                                                                                                                            | `boolean \| undefined`                                                                               | `undefined` |
+| `headline`    | `headline`     | The title on the top of the banner                                                                                                                                                                                                                                                                                                                              | `string \| undefined`                                                                                | `undefined` |
+| `hideCockade` | `hide-cockade` | Hides the decoration around the banner icon                                                                                                                                                                                                                                                                                                                     | `boolean \| undefined`                                                                               | `false`     |
+| `icon`        | `icon`         | An icon displayed at the top left of the banner                                                                                                                                                                                                                                                                                                                 | `string \| undefined`                                                                                | `undefined` |
+| `tone`        | `tone`         | Sets the tone of the color variant                                                                                                                                                                                                                                                                                                                              | `"box" \| "strong" \| "weak" \| undefined`                                                           | `'weak'`    |
+| `typography`  | `typography`   | The style of the headline: `h6`, the title of a part, or `h5`, the title of a dialog (#1189, titles). Left out, it follows the place of the banner: `h6` in the page, `h5` as the window of a dialog (`slot="window"` on a child of `mds-modal`), above the `h6` of the parts and the groups of fields it holds. Nothing larger: `h4` is too large for a banner | `"h5" \| "h6" \| undefined`                                                                          | `undefined` |
+| `variant`     | `variant`      | Sets the theme variant colors                                                                                                                                                                                                                                                                                                                                   | `"ai" \| "dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning" \| undefined` | `'primary'` |
 
 
 ## Events
