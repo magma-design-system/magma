@@ -1,4 +1,4 @@
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { DIRECTIVES } from '../stencil-generated';
 import { TextValueAccessor } from '../stencil-generated/text-value-accessor';
 import { SelectValueAccessor } from '../stencil-generated/select-value-accessor';
@@ -40,24 +40,4 @@ const VALUE_ACCESSORS = [
   imports: [...DIRECTIVES, ...VALUE_ACCESSORS],
   exports: [...DIRECTIVES, ...VALUE_ACCESSORS],
 })
-export class MagmaModule {
-  /**
-   * @deprecated Non serve più: usare direttamente `MagmaModule` (o, meglio, i
-   * singoli componenti standalone). Resta come no-op per retrocompatibilità e
-   * verrà rimosso in una major successiva.
-   *
-   * Registrava i custom element via `defineCustomElements()` del loader lazy.
-   * È superfluo — ogni proxy standalone registra il proprio custom element da
-   * sé, tramite `@ProxyCmp({ defineCustomElementFn })` sull'output
-   * `dist-custom-elements` — ed era l'unico vero killer del tree-shaking:
-   * misurato su un'app di prova, portava il build da 229 kB in 2 file a 1.9 MB
-   * in 142 file, perché il loader carica a runtime i chunk di tutti i 115
-   * componenti.
-   */
-  static forRoot(): ModuleWithProviders<MagmaModule> {
-    return {
-      ngModule: MagmaModule,
-      providers: [],
-    };
-  }
-}
+export class MagmaModule {}

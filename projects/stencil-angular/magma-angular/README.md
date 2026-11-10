@@ -37,7 +37,7 @@ import { MagmaModule } from '@maggioli-design-system/magma-angular'
 @NgModule({
   imports: [
    ...,
-   MagmaModule.forRoot(),
+   MagmaModule,
   ],
   bootstrap: [AppComponent],
 })
@@ -60,14 +60,3 @@ import { MagmaModule } from '@maggioli-design-system/magma-angular'
 export class AppComponent implements OnInit {}
 ```
 
-set config for module in `app.config.ts`
-```
-import { MagmaModule } from '@maggioli-design-system/magma-angular';
-
-export const appConfig: ApplicationConfig = {
-  providers: [
-    ...,
-    importProvidersFrom(MagmaModule.forRoot())
-  ],
-};
-```

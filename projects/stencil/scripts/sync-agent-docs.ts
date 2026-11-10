@@ -82,7 +82,7 @@ const TARGETS: Target[] = [
     framework: 'Angular (>= 20)',
     wrapperPkg: '@maggioli-design-system/magma-angular',
     register:
-      "import the standalone Mds* components from '@maggioli-design-system/magma-angular' (they self-register; MagmaModule.forRoot() is deprecated and a no-op)",
+      "import the standalone Mds* components from '@maggioli-design-system/magma-angular' (they self-register)",
   },
 ];
 

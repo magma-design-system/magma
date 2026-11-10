@@ -286,6 +286,10 @@ text of a prop, the description of a custom property).
 | the previews of `cool` and `warm` (`--magma-preview-cool-wash`, ...)            | the preview of `business` or `editorial` | reported |
 | `--magma-neutral-emphasis`, `--magma-neutral-on-emphasis` and their classes (`bg-neutral-emphasis`, `text-neutral-on-emphasis`, ...) | `--magma-surface-inverse`, `--magma-on-inverse` (`bg-surface-inverse`, `text-on-inverse`) | rewritten |
 
+Not rewritten: `MagmaModule.forRoot()` of magma-angular, a no-op in Magma 2, is gone; the compiler reports
+the call (`forRoot` does not exist), drop it and the `importProvidersFrom(...)` around it. A
+`data-theme-name="default"` written by hand on `<html>` is left too: write `business`, or remove the attribute.
+
 `deletable` stays on the components where it is the right word, because they remove a value: `mds-chip`,
 `mds-note` and the others are left alone.
 
