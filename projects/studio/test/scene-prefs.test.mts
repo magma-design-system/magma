@@ -96,27 +96,43 @@ test('the scene starts from what each component applies with nothing chosen', ()
   expect(DEFAULT_PREFS.consumption).toBe(/defaultMode: ConsumptionModeType = '([^']+)'/.exec(consumption)![1])
 })
 
-test('each page a frame loads holds the preferences the dropdown sets, and no language', () => {
-  // the pages of VIEWS (shell.tsx): a language the dropdown does not set, stored by the origin,
-  // would switch the page with nothing to switch it back
-  for (const page of ['scene.html', 'groups.html']) {
+test('no page a frame loads holds a preference of its own', () => {
+  // an mds-pref-* keeps its choice in the storage of the origin, which the frames side by side
+  // share with the preferences of the studio, in the menu of its bar (#1336): a choice of the
+  // scene would become the studio's, and the studio's would reach the scene
+  for (const page of ['scene.html', 'groups.html', 'hero.html', 'states.html']) {
     const html = readFileSync(join(here, '..', page), 'utf8')
-    expect(html, page).toContain('<mds-pref-animation')
-    expect(html, page).toContain('<mds-pref-consumption')
-    expect(html, page).not.toContain('<mds-pref-language')
+    expect(html, page).not.toMatch(/<mds-pref[\s>-]/)
   }
 })
 
-test('the preferences are set on the mds-pref-* of the scene, only when they change', () => {
+/** The class a component writes on <html> for a mode, read from its source. */
+const selectorOf = (component: string, mode: string) =>
+  new RegExp(`(?:'${mode}'|${mode}): \\{\\s*selector: '([^']+)'`).exec(component)![1]
+/** The custom property a component writes on <html>, read from its source. */
+const propertyOf = (component: string) => /customPropertyAlias: string = '([^']+)'/.exec(component)![1]
+
+test('the preferences are written on the <html> of the scene as the components write them, only when they change', () => {
   const page = new DOMParser().parseFromString(scene, 'text/html')
+  const html = page.documentElement
   const prefs = { animation: 'reduce', consumption: 'low' } as const
   applyPrefs(page, prefs)
-  expect(page.querySelector('mds-pref-animation')?.getAttribute('mode')).toBe('reduce')
-  expect(page.querySelector('mds-pref-consumption')?.getAttribute('mode')).toBe('low')
+  expect(html.classList.contains(selectorOf(animation, 'reduce'))).toBe(true)
+  expect(html.classList.contains(selectorOf(consumption, 'low'))).toBe(true)
+  expect(html.style.getPropertyValue(propertyOf(animation))).toBe('reduce')
+  expect(html.style.getPropertyValue(propertyOf(consumption))).toBe('low')
 
-  // the same choice again writes nothing, so no component applies it a second time
-  const writes = vi.spyOn(Element.prototype, 'setAttribute')
-  applyPrefs(page, prefs)
-  expect(writes).not.toHaveBeenCalled()
-  writes.mockRestore()
+  // another mode takes the place of the one before
+  applyPrefs(page, { ...prefs, animation: 'system' })
+  expect(html.classList.contains(selectorOf(animation, 'system'))).toBe(true)
+  expect(html.classList.contains(selectorOf(animation, 'reduce'))).toBe(false)
+
+  // the same choice again writes nothing, so the store of the page hears of no change
+  const classes = vi.spyOn(DOMTokenList.prototype, 'add')
+  const properties = vi.spyOn(CSSStyleDeclaration.prototype, 'setProperty')
+  applyPrefs(page, { ...prefs, animation: 'system' })
+  expect(classes).not.toHaveBeenCalled()
+  expect(properties).not.toHaveBeenCalled()
+  classes.mockRestore()
+  properties.mockRestore()
 })

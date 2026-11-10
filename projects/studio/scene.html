@@ -6,18 +6,18 @@
     <title>Magma studio, scene</title>
     <!--
       The scene the Theme section shows in its iframe: the desk of an office of a product, made of
-      Magma components only, so a theme set on its <html> (data-theme-name) and the preferences of
-      its own panel (mds-pref, which writes on its own document) move the scene and leave the
-      studio alone (#695, "The dogfooding constraint").
+      Magma components only, so a theme and the preferences of the person set on its <html> move
+      the scene and leave the studio alone (#695, "The dogfooding constraint").
 
       It is a demo of the components as the one of the daisyUI theme generator (#697, Scenes): one
       card per task of the desk, side by side in columns, so a theme is judged on most of Magma at
       once: a hue on a themed surface, text at every prominence, borders, a disabled state, the
       solid fills of the main actions, the colours of the states. The cards are items of a set
       (docs/agents/patterns/surfaces.md, card); the columns fill top to bottom, each card whole.
-      The mode and the contrast are set by the studio on the <html> of each frame (shell.tsx,
-      applyFrame), so the panel of the preferences of this page has neither: a stored mode would
-      bring the two frames side by side to the same one.
+      The studio writes every preference on the <html> of each frame (applyFrame of frame.ts, the
+      mode and the contrast; applyPrefs of scene-prefs.tsx, the animations and the consumption), so
+      this page holds no mds-pref-*: it would keep its choice in the storage of the origin, shared
+      with the two frames side by side and with the studio's own preferences (#1336).
       The plain CSS below takes every value from the tokens of the installed Magma.
     -->
     <style>
@@ -509,14 +509,5 @@
         </mds-card>
       </div>
     </main>
-    <!-- the preferences of the scene, never shown: the dropdown of the bar of the studio sets
-      their attributes (scene-prefs.tsx), and they apply them on this document. No language: the
-      dropdown has none, and a stored one would switch the scene with nothing to switch it back -->
-    <aside id="studio-pref" hidden aria-label="Preferences">
-      <mds-pref>
-        <mds-pref-animation></mds-pref-animation>
-        <mds-pref-consumption></mds-pref-consumption>
-      </mds-pref>
-    </aside>
   </body>
 </html>
