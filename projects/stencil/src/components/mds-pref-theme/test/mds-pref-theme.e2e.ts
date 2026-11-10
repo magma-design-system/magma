@@ -180,9 +180,9 @@ describe('mds-pref-theme', () => {
     // "Caldo", while the open list showed the labels of the items
     const PICKER = `
 <mds-pref-theme>
-  <mds-pref-theme-item name="default" label="Neutro"></mds-pref-theme-item>
-  <mds-pref-theme-item name="cool" label="Freddo"></mds-pref-theme-item>
-  <mds-pref-theme-item name="warm" label="Caldo"></mds-pref-theme-item>
+  <mds-pref-theme-item name="business" label="Neutro"></mds-pref-theme-item>
+  <mds-pref-theme-item name="ocean" label="Freddo"></mds-pref-theme-item>
+  <mds-pref-theme-item name="sunset" label="Caldo"></mds-pref-theme-item>
 </mds-pref-theme>`;
 
     const triggerOf = (root: HTMLElement): HTMLMdsTabItemElement =>
@@ -197,16 +197,16 @@ describe('mds-pref-theme', () => {
     it('follows the item picked in the list', async () => {
       const { root, waitForChanges } = await render(PICKER);
 
-      root.querySelector<HTMLElement>('mds-pref-theme-item[name="warm"]')!.click();
+      root.querySelector<HTMLElement>('mds-pref-theme-item[name="sunset"]')!.click();
       await waitForChanges();
 
-      expect(root).toEqualAttribute('name', 'warm');
+      expect(root).toEqualAttribute('name', 'sunset');
       expect(triggerOf(root).label).toBe('Caldo');
     });
 
     it('derives the label from the name when no item matches the active theme', async () => {
       const { root } = await render(
-        '<mds-pref-theme name="dark-blue"><mds-pref-theme-item name="default"></mds-pref-theme-item></mds-pref-theme>',
+        '<mds-pref-theme name="dark-blue"><mds-pref-theme-item name="business"></mds-pref-theme-item></mds-pref-theme>',
       );
 
       expect(triggerOf(root).label).toBe('Dark blue');
@@ -215,16 +215,16 @@ describe('mds-pref-theme', () => {
     it('follows a label changed after load', async () => {
       const { root, waitForChanges } = await render(PICKER);
 
-      root.querySelector('mds-pref-theme-item[name="default"]')!.setAttribute('label', 'Neutral');
+      root.querySelector('mds-pref-theme-item[name="business"]')!.setAttribute('label', 'Neutral');
       await new Promise((resolve) => setTimeout(resolve));
       await waitForChanges();
 
       expect(triggerOf(root).label).toBe('Neutral');
     });
 
-    // `default` is the old name of business (#692): a picker of the two product themes, with
-    // the name left on its default, showed "Default" and marked no item
-    it('stands default for the business item, while default is the default of name', async () => {
+    // a picker of the two product themes, with the name left on its default, showed "Default"
+    // and marked no item (#692); magma 3 makes business the default of name (#1334)
+    it('marks the business item when the name is left out', async () => {
       const { root } = await render(`
 <mds-pref-theme>
   <mds-pref-theme-item name="business" label="Gestionale"></mds-pref-theme-item>
@@ -240,16 +240,17 @@ describe('mds-pref-theme', () => {
       );
     });
 
-    it('marks an item named default when the active theme is business', async () => {
+    // `default` was the old name of business, which magma 3 removed (#1334)
+    it('marks no item named default when the active theme is business', async () => {
       const { root } = await render(`
 <mds-pref-theme name="business">
   <mds-pref-theme-item name="default" label="Neutro"></mds-pref-theme-item>
   <mds-pref-theme-item name="editorial" label="Editoriale"></mds-pref-theme-item>
 </mds-pref-theme>`);
 
-      expect(triggerOf(root).label).toBe('Neutro');
+      expect(triggerOf(root).label).toBe('Business');
       expect(root.querySelector<HTMLMdsPrefThemeItemElement>('[name="default"]')!.selected).toBe(
-        true,
+        false,
       );
     });
   });
@@ -324,19 +325,19 @@ describe('mds-pref-theme', () => {
   // #826: the items got their listener once, on load: an item added later did nothing when picked
   it('applies the theme of an item added after load when it is picked', async () => {
     const { root, waitForChanges } = await render(
-      '<mds-pref-theme><mds-pref-theme-item name="default"></mds-pref-theme-item></mds-pref-theme>',
+      '<mds-pref-theme><mds-pref-theme-item name="business"></mds-pref-theme-item></mds-pref-theme>',
     );
 
-    const warm = document.createElement('mds-pref-theme-item');
-    warm.setAttribute('name', 'warm');
-    root.appendChild(warm);
+    const sunset = document.createElement('mds-pref-theme-item');
+    sunset.setAttribute('name', 'sunset');
+    root.appendChild(sunset);
     await waitForChanges();
-    warm.click();
+    sunset.click();
     await waitForChanges();
 
-    expect(root).toEqualAttribute('name', 'warm');
-    expect(document.documentElement).toHaveClass('pref-theme-warm');
-    expect(warm.selected).toBe(true);
+    expect(root).toEqualAttribute('name', 'sunset');
+    expect(document.documentElement).toHaveClass('pref-theme-sunset');
+    expect(sunset.selected).toBe(true);
   });
 });
 
@@ -351,20 +352,20 @@ describe('mds-pref-theme mdsPrefChange', () => {
     try {
       const { root, waitForChanges } = await render(`
         <mds-pref-theme>
-          <mds-pref-theme-item name="default" label="Neutro"></mds-pref-theme-item>
-          <mds-pref-theme-item name="warm" label="Caldo"></mds-pref-theme-item>
+          <mds-pref-theme-item name="business" label="Neutro"></mds-pref-theme-item>
+          <mds-pref-theme-item name="sunset" label="Caldo"></mds-pref-theme-item>
         </mds-pref-theme>`);
       await waitForChanges();
       expect(preferences).toEqual([]);
 
-      root.querySelector<HTMLElement>('mds-pref-theme-item[name="warm"]')!.click();
+      root.querySelector<HTMLElement>('mds-pref-theme-item[name="sunset"]')!.click();
       await waitForChanges();
       // a render of its own: a label changed after load
-      root.querySelector('mds-pref-theme-item[name="warm"]')!.setAttribute('label', 'Calda');
+      root.querySelector('mds-pref-theme-item[name="sunset"]')!.setAttribute('label', 'Calda');
       await waitForChanges();
 
       expect(preferences).toEqual(['theme']);
-      expect(document.documentElement).toHaveClass('pref-theme-warm');
+      expect(document.documentElement).toHaveClass('pref-theme-sunset');
     } finally {
       document.removeEventListener('mdsPrefChange', record);
     }

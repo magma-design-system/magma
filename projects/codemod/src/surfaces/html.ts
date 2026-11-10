@@ -31,7 +31,7 @@ import {
 } from './shared/declaration-ops.js';
 import { readsColorToken, rewriteColorReads } from './shared/color-ops.js';
 import { transformCss } from './css.js';
-import { invertBoolean, remapEnum } from './shared/attribute-ops.js';
+import { invertBoolean, numberKind, remapEnum } from './shared/attribute-ops.js';
 import { bareTrue, stringLiteral, type AttrValue } from './shared/value-model.js';
 import { applyEdits, lineIndentAt, type Edit } from './shared/edits.js';
 import { type Finding } from '../report/types.js';
@@ -382,6 +382,13 @@ export const transformHtml = (
       if (!l) return;
       const raw = source.slice(l.startOffset, l.endOffset);
       const parsed = parseRawAttr(raw);
+      const attr = getAttr(rule.from.attr);
+      if (
+        rule.when === 'number' &&
+        attr &&
+        numberKind(attrValueOf(attr, parsed.hasValue)) !== 'number'
+      )
+        return;
       edits.push({
         start: l.startOffset,
         end: l.startOffset + parsed.name.length,
@@ -430,7 +437,7 @@ export const transformHtml = (
       const raw = source.slice(l.startOffset, l.endOffset);
       const parsed = parseRawAttr(raw);
       const v2set = rule.v2set ? component!.v2EnumSets?.[rule.v2set] : undefined;
-      const outcome = remapEnum(attrValueOf(attr, parsed.hasValue), rule.map, v2set);
+      const outcome = remapEnum(attrValueOf(attr, parsed.hasValue), rule.map, v2set, rule.why);
       if (outcome.action === 'rename') {
         const q = parsed.quote;
         edits.push({

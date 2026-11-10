@@ -36,16 +36,6 @@ import miBaselineKeyboardArrowUp from '@icon/mi/baseline/keyboard-arrow-up.svg';
 import { TabSizeType } from '@type/button';
 
 /**
- * `default` is the old name of `business`, the base theme (the `themes` map of
- * semantic.config.ts, #692): the same theme, so an item of either name stands for it. The
- * component keeps `default` as the default of `name` until the next major makes it `business`.
- */
-const sameTheme = (a?: string | null, b?: string | null): boolean => {
-  const base = (name?: string | null) => (name === 'default' ? 'business' : name);
-  return base(a) === base(b);
-};
-
-/**
  * @slot - Add `mds-pref-theme-item` element/s.
  * @category preferences
  */
@@ -97,7 +87,7 @@ export class MdsPrefTheme {
    * A string representing the theme name, in lowercase kebab-case.
    * @example 'maggioli-editore'
    */
-  @Prop({ mutable: true, reflect: true }) name: string = 'default';
+  @Prop({ mutable: true, reflect: true }) name: string = 'business';
 
   /**
    * Specifies the theme scheme which can be 'light', 'dark' or 'all'
@@ -229,8 +219,8 @@ export class MdsPrefTheme {
    * shows it, or, when no item matches, the label an item derives from the name.
    */
   private readonly triggerLabel = (): string => {
-    const item = Array.from(this.element.querySelectorAll('mds-pref-theme-item')).find((element) =>
-      sameTheme(element.name ?? element.getAttribute('name') ?? 'default', this.name),
+    const item = Array.from(this.element.querySelectorAll('mds-pref-theme-item')).find(
+      (element) => (element.name ?? element.getAttribute('name') ?? 'business') === this.name,
     );
     return item?.label || item?.getAttribute('label') || labelFromName(this.name);
   };
@@ -269,7 +259,7 @@ export class MdsPrefTheme {
   private readonly checkThemeSelect = (): void => {
     this.themeItems = this.element.querySelectorAll('mds-pref-theme-item');
     this.themeItems.forEach((element) => {
-      element.selected = sameTheme(element.name, this.name);
+      element.selected = element.name === this.name;
     });
   };
 

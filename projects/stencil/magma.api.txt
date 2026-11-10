@@ -121,7 +121,6 @@ mds-badge css --mds-badge-border-width INTERNAL
 mds-badge css --mds-badge-color
 mds-badge css --mds-badge-radius
 mds-banner encapsulation shadow
-mds-banner prop deletable (attr deletable): boolean | undefined DEPRECATED
 mds-banner prop dismissible (attr dismissible): boolean | undefined
 mds-banner prop headline (attr headline): string | undefined
 mds-banner prop hideCockade (attr hide-cockade) [reflect]: boolean | undefined = false
@@ -196,10 +195,8 @@ mds-breadcrumb css --mds-breadcrumb-button-background-disabled INTERNAL
 mds-breadcrumb css --mds-breadcrumb-button-background-hover INTERNAL
 mds-breadcrumb css --mds-breadcrumb-button-background-selected INTERNAL
 mds-breadcrumb css --mds-breadcrumb-button-color INTERNAL
-mds-breadcrumb css --mds-breadcrumb-button-color-current INTERNAL
 mds-breadcrumb css --mds-breadcrumb-button-color-hover INTERNAL
 mds-breadcrumb css --mds-breadcrumb-button-color-selected INTERNAL
-mds-breadcrumb css --mds-breadcrumb-current-button-color INTERNAL
 mds-breadcrumb-item encapsulation shadow
 mds-breadcrumb-item prop label (attr label) [reflect]: string | undefined
 mds-breadcrumb-item prop selected (attr selected) [reflect, mutable]: boolean | undefined
@@ -241,8 +238,6 @@ mds-button css --mds-button-await-duration INTERNAL
 mds-button css --mds-button-background
 mds-button css --mds-button-border-color INTERNAL
 mds-button css --mds-button-border-default-opacity INTERNAL
-mds-button css --mds-button-border-high-contrast-hover-width INTERNAL
-mds-button css --mds-button-border-high-contrast-width INTERNAL
 mds-button css --mds-button-border-hover-opacity INTERNAL
 mds-button css --mds-button-border-opacity INTERNAL
 mds-button css --mds-button-border-tone-outline-hover-width INTERNAL
@@ -835,7 +830,7 @@ mds-input-select prop name (attr name) [reflect]: string | undefined
 mds-input-select prop placeholder (attr placeholder) [reflect]: string | undefined
 mds-input-select prop required (attr required) [reflect]: boolean | undefined = false
 mds-input-select prop rows (attr rows) [reflect]: number | undefined = 0
-mds-input-select prop size (attr size) [reflect]: "lg" | "md" | "sm" | number | undefined = 'lg'
+mds-input-select prop size (attr size) [reflect]: "lg" | "md" | "sm" | undefined = 'lg'
 mds-input-select prop value (attr value) [reflect]: null | number | string | undefined = ''
 mds-input-select prop variant (attr variant) [reflect]: "error" | "info" | "success" | "warning" | undefined
 mds-input-select event mdsInputSelectChange: MdsInputSelectEventDetail [bubbles, cancelable, composed]
@@ -1170,7 +1165,7 @@ mds-pref-mode css --mds-pref-mode-overlay-show-duration INTERNAL
 mds-pref-mode css --mds-pref-mode-overlay-z-index
 mds-pref-theme encapsulation shadow
 mds-pref-theme prop cornerShape (attr corner-shape) [reflect, mutable]: "bevel" | "default" | "notch" | "round" | "scoop" | "square" | "squircle" | undefined
-mds-pref-theme prop name (attr name) [reflect, mutable]: string = 'default'
+mds-pref-theme prop name (attr name) [reflect, mutable]: string = 'business'
 mds-pref-theme prop scheme (attr scheme) [reflect, mutable]: "all" | "dark" | "light" = 'all'
 mds-pref-theme prop size (attr size) [reflect]: "md" | "sm" | undefined
 mds-pref-theme event mdsPrefChange: MdsPrefChangeEventDetail [bubbles, cancelable, composed]
@@ -1178,7 +1173,7 @@ mds-pref-theme event mdsPrefThemeChange: MdsPrefThemeEventDetail [bubbles, cance
 mds-pref-theme slot (default)
 mds-pref-theme-item encapsulation shadow
 mds-pref-theme-item prop label (attr label) [reflect, mutable]: string | undefined
-mds-pref-theme-item prop name (attr name) [reflect]: string = 'default'
+mds-pref-theme-item prop name (attr name) [reflect]: string = 'business'
 mds-pref-theme-item prop scheme (attr scheme) [reflect]: "all" | "dark" | "light" | undefined = 'all'
 mds-pref-theme-item prop selected (attr selected) [reflect]: boolean | undefined = false
 mds-pref-theme-item event mdsPrefThemeItemSelect: MdsPrefThemeEventDetail [bubbles, cancelable, composed]
@@ -1267,7 +1262,6 @@ mds-push-notification css --mds-push-notification-items-timing-function INTERNAL
 mds-push-notification-item encapsulation shadow
 mds-push-notification-item prop dateFormat (attr date-format) [reflect]: string = 'timeago'
 mds-push-notification-item prop datetime (attr datetime) [reflect, mutable]: string | undefined
-mds-push-notification-item prop deletable (attr deletable) [reflect, mutable]: boolean | undefined = false DEPRECATED
 mds-push-notification-item prop dismissible (attr dismissible) [reflect, mutable]: boolean | undefined
 mds-push-notification-item prop icon (attr icon) [reflect]: string | undefined
 mds-push-notification-item prop initials (attr initials) [reflect, mutable]: string | undefined
@@ -1566,7 +1560,6 @@ mds-text css --mds-text-line-clamp
 mds-text css --mds-text-selection-background INTERNAL
 mds-text css --mds-text-selection-color INTERNAL
 mds-toast encapsulation shadow
-mds-toast prop deletable (attr deletable): boolean | undefined DEPRECATED
 mds-toast prop dismissible (attr dismissible): boolean | undefined
 mds-toast prop duration (attr duration) [reflect, mutable]: number | undefined = 5000
 mds-toast prop position (attr position) [reflect, mutable]: "bottom-center" | "bottom-left" | "bottom-right" | "top-center" | "top-left" | "top-right" = 'bottom-center'
@@ -1615,7 +1608,6 @@ mds-tooltip css --mds-tooltip-z-index
 mds-tree encapsulation shadow
 mds-tree prop actions (attr actions) [reflect]: "auto" | "visible" | undefined = 'auto'
 mds-tree prop appearance (attr appearance) [reflect]: "depth" | "none" = 'depth'
-mds-tree prop async (attr async) [reflect]: boolean | undefined DEPRECATED
 mds-tree prop expanded (attr expanded) [reflect, mutable]: boolean | undefined
 mds-tree prop label (attr label): string
 mds-tree prop toggle (attr toggle) [reflect]: "chevron" | "folder" = 'chevron'

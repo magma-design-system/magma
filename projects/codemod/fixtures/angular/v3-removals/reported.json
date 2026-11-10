@@ -1,0 +1,22 @@
+[
+  {
+    "kind": "warn",
+    "line": 5,
+    "contains": "`async` on mds-tree is gone"
+  },
+  {
+    "kind": "flag",
+    "line": 10,
+    "contains": "rename it to `rows` where it gives a number"
+  },
+  {
+    "kind": "dynamic",
+    "line": 12,
+    "contains": "[name] is dynamic"
+  },
+  {
+    "kind": "flag",
+    "line": 14,
+    "contains": "use editorial"
+  }
+]

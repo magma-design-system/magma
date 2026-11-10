@@ -33,14 +33,20 @@
  *    `leading-none` and `max-inline-none`, and a measure on a spacing utility
  *    (`p-prose`, no class in Magma 3);
  *  - `var(--spacing-prose)` becomes `var(--container-prose)`.
+ *
+ * #1334, category Q: what Magma 2 deprecated until the next major is gone.
+ * Each name with a replacement of the same value is rewritten, see
+ * {@link removals}.
  */
 import { colorTokenNames } from './color-tokens.generated.js';
 import {
   type ClassRenameRule,
   type ClassReportRule,
+  type ComponentManifest,
   type CssVarRenameRule,
   type EnsureAttrRule,
   type Manifest,
+  type Rule,
 } from './schema.js';
 
 /**
@@ -329,18 +335,242 @@ const measureVars: CssVarRenameRule[] = MEASURES.map((measure) => ({
 /** The rules of category P, also pinned by the fixtures of the v2 -> v3 test manifest. */
 export const spacingRules = { classes: spacingClassRules(), cssVars: measureVars };
 
+/** The button dismisses the message, it deletes nothing (#1145): the same boolean, renamed. */
+const deletableToDismissible = (): Rule => ({
+  kind: 'propRename',
+  from: { attr: 'deletable', prop: 'deletable' },
+  to: { attr: 'dismissible', prop: 'dismissible' },
+  confidence: 'safe',
+  note: '`deletable` was the old name of `dismissible`, gone in Magma 3',
+});
+
+/**
+ * The two names of the inverse surface that Magma 2 published as deprecated
+ * aliases, with the role each one renamed (`deprecated: 'Renamed to
+ * --magma-surface-inverse.'` in semantic.model.ts of design-tokens 15). Magma 3
+ * publishes them no more, so the generated colour list lacks them: they are
+ * added to it, so that category N rewrites a Magma 2 read of them before Q
+ * renames it.
+ */
+export const INVERSE_RENAMES: Readonly<Record<string, string>> = {
+  'magma-neutral-emphasis': 'magma-surface-inverse',
+  'magma-neutral-on-emphasis': 'magma-on-inverse',
+};
+
+/**
+ * The utility roots that read a colour of the theme: the
+ * `namespaces["--color"].utilities` of the consumption map of styles
+ * (`dist/tailwind/consumption.json`, Tailwind 4.3), held to the built map by
+ * manifest-v3.test.ts. A Tailwind colour `--color-neutral-emphasis` makes
+ * `bg-neutral-emphasis`, `text-neutral-emphasis` and the others.
+ */
+export const COLOR_ROOTS = [
+  'accent',
+  'bg',
+  'border',
+  'border-b',
+  'border-be',
+  'border-bs',
+  'border-e',
+  'border-l',
+  'border-r',
+  'border-s',
+  'border-t',
+  'border-x',
+  'border-y',
+  'caret',
+  'decoration',
+  'divide',
+  'drop-shadow',
+  'fill',
+  'from',
+  'inset-ring',
+  'inset-shadow',
+  'mask-b-from',
+  'mask-b-to',
+  'mask-conic-from',
+  'mask-conic-to',
+  'mask-l-from',
+  'mask-l-to',
+  'mask-linear-from',
+  'mask-linear-to',
+  'mask-r-from',
+  'mask-r-to',
+  'mask-radial-from',
+  'mask-radial-to',
+  'mask-t-from',
+  'mask-t-to',
+  'mask-x-from',
+  'mask-x-to',
+  'mask-y-from',
+  'mask-y-to',
+  'outline',
+  'placeholder',
+  'ring',
+  'ring-offset',
+  'scrollbar-thumb',
+  'scrollbar-track',
+  'shadow',
+  'stroke',
+  'text',
+  'text-shadow',
+  'to',
+  'via',
+] as const;
+
+/**
+ * The previews of the themes Magma 2 deprecated (`--magma-preview-<name>-wash`
+ * and `-accent`, which every theme publishes for `mds-pref-theme-item`,
+ * docs/agents/theming.md): `default` was `business`, so its previews are
+ * renamed; `cool` and `warm` have no theme in Magma 3, so theirs are reported.
+ */
+const PREVIEW_PARTS = ['wash', 'accent'] as const;
+
+/**
+ * The global rules of category Q: the custom properties and the classes of the
+ * inverse surface, and the previews of the theme `default`.
+ */
+export const removalGlobals = {
+  colors: [
+    ...Object.keys(INVERSE_RENAMES),
+    ...['default', 'cool', 'warm'].flatMap((theme) =>
+      PREVIEW_PARTS.map((part) => `magma-preview-${theme}-${part}`),
+    ),
+  ],
+  cssVars: [
+    ...Object.entries(INVERSE_RENAMES).map(([from, to]): CssVarRenameRule => ({
+      kind: 'cssVarRename',
+      from,
+      to,
+    })),
+    ...PREVIEW_PARTS.map((part): CssVarRenameRule => ({
+      kind: 'cssVarRename',
+      from: `magma-preview-default-${part}`,
+      to: `magma-preview-business-${part}`,
+    })),
+  ],
+  classes: COLOR_ROOTS.flatMap((root) =>
+    Object.entries(INVERSE_RENAMES).map(([from, to]): ClassRenameRule => ({
+      kind: 'classRename',
+      from: `${root}-${from.replace(/^magma-/, '')}`,
+      to: `${root}-${to.replace(/^magma-/, '')}`,
+    })),
+  ),
+};
+
+/**
+ * The named themes Magma 2 deprecated, as `semantic.config.ts` of design-tokens
+ * 15 said: `default` the old name of `business`, rewritten; `cool` and `warm`
+ * worked examples of the theme axis with no product theme of their own,
+ * reported with the theme their deprecation named.
+ */
+const themeNames = (): Rule => ({
+  kind: 'enumRemap',
+  prop: { attr: 'name', prop: 'name' },
+  map: { default: 'business', cool: null, warm: null },
+  confidence: 'safe',
+  why: {
+    cool: '`cool` is gone in Magma 3: a worked example of the theme axis, not a product theme; use business or editorial',
+    warm: '`warm` is gone in Magma 3: a worked example of the theme axis, not a product theme; use editorial',
+  },
+});
+
+/**
+ * Category Q (#1334): what Magma 2 deprecated until the next major. The source
+ * of each rule is the deprecation Magma 2 ships (its `@deprecated` text, the
+ * `@prop` description of a custom property), which names the replacement; a
+ * replacement of the same value is rewritten.
+ */
+export const removals: Record<string, Rule[]> = {
+  // `deletable` was the old name of `dismissible` on three components only
+  // (#1145): `mds-chip`, `mds-note` and the others keep it, they remove a value.
+  'mds-banner': [deletableToDismissible()],
+  // the two old names of the colour of the selected item, both read as fallbacks of the new one
+  'mds-breadcrumb': [
+    'mds-breadcrumb-button-color-current',
+    'mds-breadcrumb-current-button-color',
+  ].map((from): Rule => ({
+    kind: 'cssVarRename',
+    from,
+    to: 'mds-breadcrumb-button-color-selected',
+  })),
+  'mds-push-notification-item': [deletableToDismissible()],
+  // a number in `size` was the row count of the list, which is `rows` since magma 2.3.0; `size`
+  // keeps the height of the field, `sm`, `md`, `lg`
+  // read by nothing: the contrast preference acts on the colour roles, the button has no border of
+  // its own for it
+  'mds-button': [
+    'mds-button-border-high-contrast-hover-width',
+    'mds-button-border-high-contrast-width',
+  ].map((name): Rule => ({
+    kind: 'cssVarRemove',
+    name,
+    message: `\`--${name}\` is gone in Magma 3: it was deprecated and read by nothing, the contrast preference acts on the colour roles; remove it`,
+  })),
+  'mds-input-select': [
+    {
+      kind: 'propRename',
+      from: { attr: 'size', prop: 'size' },
+      to: { attr: 'rows', prop: 'rows' },
+      when: 'number',
+      confidence: 'safe',
+      note: 'a number in `size` was the row count of the list, which Magma 3 reads from `rows` only',
+    },
+  ],
+  'mds-pref-theme': [themeNames()],
+  'mds-pref-theme-item': [
+    themeNames(),
+    ...['cool', 'warm'].flatMap((theme) =>
+      PREVIEW_PARTS.map((part): Rule => ({
+        kind: 'cssVarRemove',
+        name: `magma-preview-${theme}-${part}`,
+        message: `\`--magma-preview-${theme}-${part}\` is gone in Magma 3 with the theme \`${theme}\`: use the preview of business or editorial`,
+      })),
+    ),
+  ],
+  'mds-toast': [deletableToDismissible()],
+  // it had no effect: `mds-tree` never read it, each `mds-tree-item` reads its own
+  'mds-tree': [
+    {
+      kind: 'propRemove',
+      prop: { attr: 'async', prop: 'async' },
+      strategy: 'delete',
+      message:
+        '`async` on mds-tree is gone in Magma 3: it had no effect; set `async` on each mds-tree-item that loads its children on demand',
+    },
+  ],
+};
+
+/** `MdsBanner` from `mds-banner`, as the React wrappers name the components. */
+const reactName = (tag: string): string =>
+  tag.replace(/(^|-)([a-z])/g, (_, _dash: string, c: string) => c.toUpperCase());
+
+/** Adds the rules of category Q to the components of a manifest, after their own. */
+export const withRemovals = (
+  components: Record<string, ComponentManifest>,
+): Record<string, ComponentManifest> => {
+  const merged = { ...components };
+  for (const [tag, rules] of Object.entries(removals)) {
+    const own = merged[tag];
+    merged[tag] = own
+      ? { ...own, rules: [...own.rules, ...rules] }
+      : { tag, react: reactName(tag), rules };
+  }
+  return merged;
+};
+
 export const manifestV3: Manifest = {
   fromVersion: '2',
   toVersion: '3',
   global: {
     colorTokens: {
       kind: 'colorToken',
-      names: [...colorTokenNames, ...CONTRACT_COLORS],
+      names: [...colorTokenNames, ...CONTRACT_COLORS, ...removalGlobals.colors],
     },
-    classes: spacingRules.classes,
-    cssVars: spacingRules.cssVars,
+    classes: [...spacingRules.classes, ...removalGlobals.classes],
+    cssVars: [...spacingRules.cssVars, ...removalGlobals.cssVars],
   },
-  components: {
+  components: withRemovals({
     'mds-accordion-item': {
       tag: 'mds-accordion-item',
       react: 'MdsAccordionItem',
@@ -389,5 +619,5 @@ export const manifestV3: Manifest = {
       react: 'MdsInputSelect',
       rules: [dropRgb('mds-input-select-variant-color')],
     },
-  },
+  }),
 };

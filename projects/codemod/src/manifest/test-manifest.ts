@@ -6,7 +6,7 @@
  *
  * Do not use at runtime — the CLI bundles `manifest.ts`.
  */
-import { spacingRules } from './manifest-v3.js';
+import { removalGlobals, spacingRules, withRemovals } from './manifest-v3.js';
 import { type Manifest } from './schema.js';
 
 export const testManifest: Manifest = {
@@ -296,7 +296,7 @@ export const ensureAttrManifest: Manifest = {
  * a removal, so the fixtures pin the rewrite whatever the generated list holds;
  * and the report of the item that leaves its `typography` out (category O); and the
  * rules of category P as the real manifest builds them, which read no generated
- * data.
+ * data; and the rules of category Q, the real ones, added to the components.
  */
 export const testManifestV3: Manifest = {
   fromVersion: '2',
@@ -315,12 +315,15 @@ export const testManifestV3: Manifest = {
         'mds-input-date-variant-color',
         'mds-input-variant-color',
         'mds-modal-overlay-color',
+        'magma-on-inverse',
+        'magma-surface-inverse',
+        ...removalGlobals.colors,
       ],
     },
-    classes: spacingRules.classes,
-    cssVars: spacingRules.cssVars,
+    classes: [...spacingRules.classes, ...removalGlobals.classes],
+    cssVars: [...spacingRules.cssVars, ...removalGlobals.cssVars],
   },
-  components: {
+  components: withRemovals({
     'mds-accordion-item': {
       tag: 'mds-accordion-item',
       react: 'MdsAccordionItem',
@@ -363,5 +366,5 @@ export const testManifestV3: Manifest = {
         },
       ],
     },
-  },
+  }),
 };

@@ -177,8 +177,12 @@ A deprecated prop still works, and the next major removes it. The message quotes
 `@deprecated` text, which says what to use instead; the component's `AGENTS.md` marks the
 same props as **Deprecated**.
 
+Magma 3.0 deprecates no prop, so the rule reports nothing until a release deprecates one. In
+Magma 2 it reported `deletable` on `mds-toast`, the old name of `dismissible`, which Magma 3
+removed:
+
 ```html
-<!-- INCORRECT: deletable is the old name of dismissible -->
+<!-- INCORRECT in Magma 2: deletable is the old name of dismissible -->
 <mds-toast visible deletable duration="0">Invio non riuscito</mds-toast>
 
 <!-- CORRECT -->

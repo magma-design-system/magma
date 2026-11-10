@@ -74,4 +74,29 @@ describe('migrateLegacyPreferenceStorage', () => {
 
     expect(dump(storage)).toEqual({ mdsPrefMode: 'light', mdsPrefTheme: 'business' });
   });
+
+  // magma 3 removed `default`, the old name of `business` a magma 2 page stored (#1334)
+  it('reads a stored default, the magma 2 name of business, as business', () => {
+    const storage = storageWith({ mdsPrefMode: 'dark', mdsPrefTheme: 'default' });
+
+    migrateLegacyPreferenceStorage(storage);
+
+    expect(dump(storage)).toEqual({ mdsPrefMode: 'dark', mdsPrefTheme: 'business' });
+  });
+
+  it('carries a v1 default over to business too', () => {
+    const storage = storageWith({ mdsPrefThemeName: 'default' });
+
+    migrateLegacyPreferenceStorage(storage);
+
+    expect(dump(storage)).toEqual({ mdsPrefTheme: 'business' });
+  });
+
+  it('leaves cool and warm alone, which a product may name a theme of its own', () => {
+    const storage = storageWith({ mdsPrefTheme: 'cool' });
+
+    migrateLegacyPreferenceStorage(storage);
+
+    expect(dump(storage)).toEqual({ mdsPrefTheme: 'cool' });
+  });
 });

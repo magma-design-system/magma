@@ -4,8 +4,35 @@
  * return an *outcome* describing what the surface should render — they never
  * touch a concrete AST, so the logic is written and tested once.
  */
+import { type PropRenameRule } from '../../manifest/schema.js';
 import { type AttrValue, resolveBoolean } from './value-model.js';
 import { negateExprText } from './negate.js';
+
+/** Whether a value is a number: `number`, `other` (another literal), `unknown` (an expression). */
+export type NumberKind = 'number' | 'other' | 'unknown';
+
+const DIGITS = /^\d+(\.\d+)?$/;
+
+/**
+ * Whether a value is written as a number, for a rename limited to numbers
+ * (`PropRenameRule.when`): digits in an attribute (`size="4"`), a numeric
+ * literal or a string of digits in an expression (`{4}`, `{'4'}`, `[size]="4"`).
+ * Any other expression is `unknown`: only its value at run time tells.
+ */
+export const numberKind = (current: AttrValue): NumberKind => {
+  if (current.kind === 'stringLiteral')
+    return DIGITS.test(current.value.trim()) ? 'number' : 'other';
+  if (current.kind !== 'dynamic') return 'other';
+  const expr = current.expr.trim();
+  if (DIGITS.test(expr)) return 'number';
+  const quoted = /^(['"`])([^'"`]*)\1$/.exec(expr);
+  if (quoted) return DIGITS.test(quoted[2]!.trim()) ? 'number' : 'other';
+  return 'unknown';
+};
+
+/** The report of a rename limited to numbers whose value is an expression. */
+export const numberRenameFlag = (rule: PropRenameRule): string =>
+  `${rule.note ?? `\`${rule.from.prop}\` -> \`${rule.to.prop}\``}: the value is an expression, rename it to \`${rule.to.prop}\` where it gives a number`;
 
 /** What to do with the renamed boolean prop after inverting its value. */
 export type InvertOutcome =
@@ -62,6 +89,7 @@ export const remapEnum = (
   current: AttrValue,
   map: Record<string, string | null>,
   v2set?: readonly string[],
+  why?: Record<string, string>,
 ): EnumRemapOutcome => {
   if (current.kind === 'dynamic') {
     return { action: 'flag', reason: 'dynamic value, cannot remap enum' };
@@ -75,7 +103,10 @@ export const remapEnum = (
   if (Object.prototype.hasOwnProperty.call(map, value)) {
     const target = map[value];
     if (target === null || target === undefined) {
-      return { action: 'flag', reason: `"${value}" has no v2 equivalent, migrate manually` };
+      return {
+        action: 'flag',
+        reason: why?.[value] ?? `"${value}" has no v2 equivalent, migrate manually`,
+      };
     }
     if (v2set && !v2set.includes(target)) {
       return { action: 'flag', reason: `mapped target "${target}" is not in the v2 set` };

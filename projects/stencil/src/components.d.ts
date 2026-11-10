@@ -367,11 +367,6 @@ export namespace Components {
      */
     interface MdsBanner {
         /**
-          * Shows the close button, as `dismissible` does.
-          * @deprecated Use `dismissible`: the button dismisses the message, it deletes nothing. Goes in the next major.
-         */
-        "deletable"?: boolean;
-        /**
           * Shows a close button that dismisses the banner: activating it emits `mdsBannerClose`
          */
         "dismissible"?: boolean;
@@ -1896,10 +1891,10 @@ export namespace Components {
          */
         "setValue": (value: string | number | null) => Promise<void>;
         /**
-          * Specifies the height of the field, the same as `mds-button`: `sm` 28px, `md` 36px, `lg` 48px. A number is still read as `rows`, the row count this prop used to set: that use is deprecated and goes in the next major
+          * Specifies the height of the field, the same as `mds-button`: `sm` 28px, `md` 36px, `lg` 48px. The row count of the list is `rows`
           * @default 'lg'
          */
-        "size"?: InputSizeType | number;
+        "size"?: InputSizeType;
         /**
           * Specifies the value of the component
           * @default ''
@@ -2505,7 +2500,7 @@ export namespace Components {
         /**
           * Specifies the theme name attribute A string representing the theme name, in lowercase kebab-case.
           * @example 'maggioli-editore'
-          * @default 'default'
+          * @default 'business'
          */
         "name": string;
         /**
@@ -2529,7 +2524,7 @@ export namespace Components {
         /**
           * Specifies the theme name; the swatch shows the preview that theme publishes, `--magma-preview-<name>-wash` and `--magma-preview-<name>-accent`
           * @example 'editorial'
-          * @default 'default'
+          * @default 'business'
          */
         "name": string;
         /**
@@ -2674,12 +2669,6 @@ export namespace Components {
           * @example '2025-06-15T09:30:00+02:00'
          */
         "datetime"?: string;
-        /**
-          * Shows the dismiss button, as `dismissible` does.
-          * @deprecated Use `dismissible`: the button dismisses the notification, it deletes nothing. Goes in the next major.
-          * @default false
-         */
-        "deletable"?: boolean;
         /**
           * Shows a dismiss button: activating it emits `mdsPushNotificationItemClose`, and a parent `mds-push-notification` takes the item out of the stack
          */
@@ -3241,11 +3230,6 @@ export namespace Components {
      */
     interface MdsToast {
         /**
-          * Shows the hide button, as `dismissible` does.
-          * @deprecated Use `dismissible`: the button dismisses the message, it deletes nothing. Goes in the next major.
-         */
-        "deletable"?: boolean;
-        /**
           * Shows a button that hides the toast, an arrow towards the edge the toast leaves by
          */
         "dismissible"?: boolean;
@@ -3371,11 +3355,6 @@ export namespace Components {
           * @default 'depth'
          */
         "appearance": TreeAppearance;
-        /**
-          * Has no effect on the tree: `async` is read on each `mds-tree-item`.
-          * @deprecated Set `async` on the items that load their children on demand. Goes in the next major.
-         */
-        "async"?: boolean;
         /**
           * Specifies if the tree is expanded.
          */
@@ -5770,11 +5749,6 @@ declare namespace LocalJSX {
      */
     interface MdsBanner {
         /**
-          * Shows the close button, as `dismissible` does.
-          * @deprecated Use `dismissible`: the button dismisses the message, it deletes nothing. Goes in the next major.
-         */
-        "deletable"?: boolean;
-        /**
           * Shows a close button that dismisses the banner: activating it emits `mdsBannerClose`
          */
         "dismissible"?: boolean;
@@ -7391,10 +7365,10 @@ declare namespace LocalJSX {
          */
         "rows"?: number;
         /**
-          * Specifies the height of the field, the same as `mds-button`: `sm` 28px, `md` 36px, `lg` 48px. A number is still read as `rows`, the row count this prop used to set: that use is deprecated and goes in the next major
+          * Specifies the height of the field, the same as `mds-button`: `sm` 28px, `md` 36px, `lg` 48px. The row count of the list is `rows`
           * @default 'lg'
          */
-        "size"?: InputSizeType | number;
+        "size"?: InputSizeType;
         /**
           * Specifies the value of the component
           * @default ''
@@ -8060,7 +8034,7 @@ declare namespace LocalJSX {
         /**
           * Specifies the theme name attribute A string representing the theme name, in lowercase kebab-case.
           * @example 'maggioli-editore'
-          * @default 'default'
+          * @default 'business'
          */
         "name"?: string;
         /**
@@ -8092,7 +8066,7 @@ declare namespace LocalJSX {
         /**
           * Specifies the theme name; the swatch shows the preview that theme publishes, `--magma-preview-<name>-wash` and `--magma-preview-<name>-accent`
           * @example 'editorial'
-          * @default 'default'
+          * @default 'business'
          */
         "name"?: string;
         /**
@@ -8240,12 +8214,6 @@ declare namespace LocalJSX {
           * @example '2025-06-15T09:30:00+02:00'
          */
         "datetime"?: string;
-        /**
-          * Shows the dismiss button, as `dismissible` does.
-          * @deprecated Use `dismissible`: the button dismisses the notification, it deletes nothing. Goes in the next major.
-          * @default false
-         */
-        "deletable"?: boolean;
         /**
           * Shows a dismiss button: activating it emits `mdsPushNotificationItemClose`, and a parent `mds-push-notification` takes the item out of the stack
          */
@@ -8820,11 +8788,6 @@ declare namespace LocalJSX {
      */
     interface MdsToast {
         /**
-          * Shows the hide button, as `dismissible` does.
-          * @deprecated Use `dismissible`: the button dismisses the message, it deletes nothing. Goes in the next major.
-         */
-        "deletable"?: boolean;
-        /**
           * Shows a button that hides the toast, an arrow towards the edge the toast leaves by
          */
         "dismissible"?: boolean;
@@ -8954,11 +8917,6 @@ declare namespace LocalJSX {
           * @default 'depth'
          */
         "appearance"?: TreeAppearance;
-        /**
-          * Has no effect on the tree: `async` is read on each `mds-tree-item`.
-          * @deprecated Set `async` on the items that load their children on demand. Goes in the next major.
-         */
-        "async"?: boolean;
         /**
           * Specifies if the tree is expanded.
          */
@@ -9176,7 +9134,6 @@ declare namespace LocalJSX {
         "tone": ToneMinimalBoxVariantType;
         "hideCockade": boolean;
         "dismissible": boolean;
-        "deletable": boolean;
         "headline": string;
         "icon": string;
     }
@@ -9496,7 +9453,7 @@ declare namespace LocalJSX {
         "required": boolean;
         "multiple": boolean;
         "rows": number;
-        "size": string;
+        "size": InputSizeType;
         "value": string;
         "defaultValue": string;
         "variant": ThemeStatusVariantType;
@@ -9679,7 +9636,6 @@ declare namespace LocalJSX {
         "datetime": string;
         "dateFormat": NotificationItemDateFormatType;
         "dismissible": boolean;
-        "deletable": boolean;
         "icon": string;
         "initials": string;
         "message": string;
@@ -9821,7 +9777,6 @@ declare namespace LocalJSX {
         "tone": ToneMinimalVariantType;
         "position": ToastPosition;
         "dismissible": boolean;
-        "deletable": boolean;
     }
     interface MdsToastRegionAttributes {
         "position": ToastPosition;
@@ -9844,7 +9799,6 @@ declare namespace LocalJSX {
     }
     interface MdsTreeAttributes {
         "appearance": TreeAppearance;
-        "async": boolean;
         "label": string;
         "toggle": TreeIcon;
         "togglePosition": ButtonIconPositionType;

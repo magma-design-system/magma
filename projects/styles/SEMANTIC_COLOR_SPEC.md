@@ -253,7 +253,7 @@ component composes it with its own geometry and alpha, e.g.
 
 | Mode | Value | Named on |
 |---|---|---|
-| light | `5 5 5` (`6 5 5` under `warm`) | step `01` of the active tint, the ink extreme |
+| light | `5 5 5` under `business` | step `01` of the active tint, the ink extreme |
 | dark | `0 0 0` | the seed, pure black, whatever the theme (repointed by the dark block, like the fill ink of 6.5) |
 
 **It stays dark in both modes (#790).** It used to name step `01` in dark too, which flips to
@@ -317,7 +317,7 @@ component needs a role for.
 
 **It follows the theme.** Both levels name steps of the active tint ramp through
 `--magma-tint-scale-*`, like the wash band of 6.1b, so a named theme retints the chip with the
-page: under `cool` step `02` is `#232b35` instead of `#2a2a2a`. Named on `--tone-neutral-*`
+page: under a theme on `porcelain` step `02` is `#232b35` instead of `#2a2a2a`. Named on `--tone-neutral-*`
 directly they would stay a static grey while everything around them retints - which is what
 the dark variants had silently lost when they left `--magma-scale-*` for these roles (#731).
 
@@ -378,10 +378,10 @@ For each of `neutral, accent, accent-ai, info, success, warning, danger`, the sa
 The `neutral` hue is special: its background needs are already covered by the `surface`
 family and the wash band (6.1b), so in the hue matrix `neutral` contributes only `fg` /
 `border`, and its emphasis pair (the dark neutral chip) is published as the inverse surface
-of 6.1d, `--magma-surface-inverse` / `--magma-on-inverse`; `--magma-neutral-emphasis` /
-`--magma-neutral-on-emphasis` remain as deprecated aliases. The colored hues carry the full
-quintet. This keeps neutral backgrounds in ONE place with no duplicate `neutral-surface`
-token.
+of 6.1d, `--magma-surface-inverse` / `--magma-on-inverse`; its Magma 2 names,
+`--magma-neutral-emphasis` / `--magma-neutral-on-emphasis`, went with Magma 3 (#1334). The
+colored hues carry the full quintet. This keeps neutral backgrounds in ONE place with no
+duplicate `neutral-surface` token.
 
 **The accents.** Two roles, declared in the `accents` map of `semantic.config.ts`: `accent`,
 the general accent (family `variant-primary`), and `ai` (family `variant-ai`). The general
@@ -566,7 +566,7 @@ corner geometry (`data-corner-shape`), carries no colour and is documented in `S
   ramp step rather than from a surface - the wash band (6.1b), the shadow ink (6.1c), the
   inverse pair (6.1d) and the neutral hue's `fg` / `border` - resolve through
   `--magma-tint-scale-01..10`, which the theme repoints with the rest of the block. Pinned
-  to `--tone-neutral-*` instead they would stay grey under `cool` / `warm` while the
+  to `--tone-neutral-*` instead they would stay grey under `editorial` while the
   surfaces around them retinted (the regression found and fixed on #736). Since surfaces
   can be opted in per GROUP, a family can carry `--surface-<x>-*` and no `--<x>-01..10`; a
   ramp pointer with nothing to resolve to would silently put those roles back on the
@@ -579,10 +579,10 @@ corner geometry (`data-corner-shape`), carries no colour and is documented in `S
   is the base `:root` (tint `neutral`, accent `variant-primary`) and emits no rule, so no
   `data-theme-name` means `business`; `editorial` is `bisque` with the accent on
   `variant-secondary`, the alias of `brand.maggioli-editore`. `default` (the old name of
-  `business`, which `mds-pref-theme` still writes), `cool` and `warm` shipped with magma
-  2.0.0 and stay until the next major, marked `deprecated` in the config: a comment above
-  their block, `$deprecated` on their preview tokens, the description of the DTCG `theme`
-  modifier. The contrast gate verifies every theme that repoints something in its own
+  `business`), `cool` and `warm` shipped with magma 2.0.0, deprecated until the next major,
+  and went with magma 3 (#1334); a theme marked `deprecated` in the config gets a comment
+  above its block, `$deprecated` on its preview tokens and a line in the description of the
+  DTCG `theme` modifier. The contrast gate verifies every theme that repoints something in its own
   family and accents, not only the base layer. `business` and `editorial` are files in the
   public theme format (`design-tokens/themes/<name>.json`, #694) that `semantic.config.ts`
   reads: `business` is the base, so `:root` takes its tint and its accents

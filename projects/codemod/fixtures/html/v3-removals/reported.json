@@ -1,0 +1,12 @@
+[
+  {
+    "kind": "warn",
+    "line": 5,
+    "contains": "`async` on mds-tree is gone"
+  },
+  {
+    "kind": "flag",
+    "line": 13,
+    "contains": "use business or editorial"
+  }
+]

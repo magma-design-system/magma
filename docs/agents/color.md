@@ -165,12 +165,12 @@ Only when the colour encodes data rather than an interface role:
   knockout; not a page or card background.
 
 Never use `--magma-tint-*`: it is the internal pointer a named theme repoints, not a role.
-`tone-bisque` backs the named theme `editorial` (and `tone-porcelain` the deprecated `cool`):
+`tone-bisque` backs the named theme `editorial`:
 switch it on with `data-theme-name` ([`theming.md`](theming.md)), do not paint it by hand.
 `variant-*` has no role of its own: the accents are `accent` and `accent-ai`.
 
-Deprecated: `--magma-neutral-emphasis` / `--magma-neutral-on-emphasis` are aliases of
-`--magma-surface-inverse` / `--magma-on-inverse`.
+The inverse surface is `--magma-surface-inverse` with `--magma-on-inverse` on it: Magma 3
+removed its Magma 2 names, `neutral-emphasis` / `neutral-on-emphasis`.
 
 ## Outside the web
 

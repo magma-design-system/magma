@@ -101,7 +101,7 @@ export interface SemanticConfig {
    * Colored hues carry the full quintet; a `partial` hue omits `surface` (spec 6.4).
    * The partial (neutral) hue's emphasis pair is emitted as the INVERSE SURFACE role
    * (`--magma-surface-inverse` / `--magma-on-inverse`), not a colored `-emphasis` fill;
-   * the old `neutral-emphasis` / `-on-emphasis` names remain as deprecated aliases.
+   * its old names `neutral-emphasis` / `-on-emphasis` went with magma 3 (#1334).
    *
    * `family` names the RAMP (`status-success`), `roles` the generated role scales
    * of the same family (`--text-success-*`): the surface engine drops the group
@@ -351,22 +351,9 @@ export const semantic: SemanticConfig = {
   themes: {
     [business.name]: business.color.tint, // the base: tint and accents are already on :root
     [editorial.name]: themeDefOf(editorial),
-    // Shipped since magma 2.0.0, so they stay until the next major (#692). They stay entries of
-    // this file: a deprecated theme is no starting point, so it gets no file of the format.
-    default: {
-      surface: business.color.tint,
-      deprecated:
-        'the old name of business: mds-pref-theme still writes it until the next major, when its default becomes business',
-    },
-    cool: {
-      surface: 'porcelain',
-      deprecated:
-        'a worked example of the theme axis, not a product theme: use business or editorial',
-    },
-    warm: {
-      surface: 'bisque',
-      deprecated: 'a worked example of the theme axis, not a product theme: use editorial',
-    },
+    // A name shipped and then deprecated stays an entry here, with `deprecated`, until the next
+    // major: no file of the format, since it is no starting point. Magma 3 has none: `default`
+    // (the old name of business), `cool` and `warm`, deprecated in magma 2, went with it (#1334).
   },
   contrast: {
     // muted/subtle text shift one step stronger; decorative and default borders
@@ -465,8 +452,6 @@ export const roleDescriptions: Record<string, string> = {
   'surface-inverse': 'A chip that flips with the mode: dark on a light page, light on a dark one.',
   'surface-inverse-muted': 'The inverse chip, one step quieter.',
   'on-inverse': 'Text and icons on either inverse surface.',
-  'neutral-emphasis': 'Deprecated: the inverse surface under its old name.',
-  'neutral-on-emphasis': 'Deprecated: the ink on the inverse surface under its old name.',
 };
 
 /**

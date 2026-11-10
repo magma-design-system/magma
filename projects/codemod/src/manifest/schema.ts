@@ -25,6 +25,13 @@ export interface PropRenameRule {
   to: PropId;
   confidence: Confidence;
   note?: string;
+  /**
+   * Rename only a value of this kind. `number`: a value written as a number
+   * (an attribute of digits, `{4}`, `[size]="4"`) is renamed, another literal
+   * (`size="sm"`) is left as it is, an expression is reported, since only its
+   * value at run time tells (category Q, #1334). Without it, every value.
+   */
+  when?: 'number';
 }
 
 /** Category C — prop removed with no replacement; warn the consumer. */
@@ -45,6 +52,11 @@ export interface EnumRemapRule {
   /** Name of the entry in the component's `v2EnumSets` to validate targets/literals against. */
   v2set?: string;
   confidence: Confidence;
+  /**
+   * Why a value with a `null` target is reported, by value: the replacement the
+   * deprecation names (#1334). Without it the report says it has no v2 equivalent.
+   */
+  why?: Record<string, string>;
 }
 
 /** Category B — rename a boolean prop and negate its value. */

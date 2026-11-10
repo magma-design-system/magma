@@ -46,8 +46,8 @@ export const noFalseBoolean = (element: LintElement, component: ComponentInfo): 
     }));
 
 /**
- * `<mds-toast deletable>`: a deprecated prop, which goes in the next major. The message is the
- * `@deprecated` text of the prop, which says what to use instead.
+ * `<mds-toast deletable>` in Magma 2: a deprecated prop, which goes in the next major. The
+ * message is the `@deprecated` text of the prop, which says what to use instead.
  */
 export const noDeprecated = (element: LintElement, component: ComponentInfo): Finding[] => {
   const found: Finding[] = [];

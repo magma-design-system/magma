@@ -68,8 +68,8 @@ const lockedSchemeOf = (modes: string): 'light' | 'dark' | undefined => {
 };
 
 /**
- * Carry the v1 storage keys over to the v2 ones, once, before any controller
- * reads them.
+ * Carry the v1 storage keys over to the v2 ones, and the magma 2 theme
+ * `default` over to `business`, once, before any controller reads them.
  *
  * v1 called the mode `mdsPrefTheme` and the named theme `mdsPrefThemeName`; v2
  * calls them `mdsPrefMode` and `mdsPrefTheme`. The key `mdsPrefTheme` exists in
@@ -94,6 +94,10 @@ const migrateLegacyPreferenceStorage = (storage: Storage): void => {
     }
     storage.removeItem('mdsPrefThemeName');
   }
+  // magma 3 removed `default`, the old name of `business` that a magma 2 page stored as the
+  // theme (#1334): the person's choice stays the base theme. `cool` and `warm` are left as they
+  // are, a product may name a theme of its own so.
+  if (storage.getItem('mdsPrefTheme') === 'default') storage.setItem('mdsPrefTheme', 'business');
 };
 
 if (typeof localStorage !== 'undefined') {

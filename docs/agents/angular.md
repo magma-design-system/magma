@@ -71,8 +71,8 @@ import { MagmaModule } from '@maggioli-design-system/magma-angular';
 export class AppModule {}
 ```
 
-`MagmaModule.forRoot()` is deprecated and now a no-op. Drop the call - and the
-`importProvidersFrom(...)` around it, if you had one. It used to invoke
+Magma 3 removed `MagmaModule.forRoot()`, deprecated and a no-op in Magma 2. Drop the call -
+and the `importProvidersFrom(...)` around it, if you had one. It used to invoke
 `defineCustomElements()` from the lazy loader, which is redundant (the standalone
 proxies self-register) and expensive: on a probe app it took the build from
 229 kB in 2 files to 1.9 MB in 142, because the loader pulls the runtime chunks

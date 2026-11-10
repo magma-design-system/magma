@@ -733,10 +733,9 @@ export const Reference = {
             chip that flips with the mode (dark on a light UI, light on a dark UI: toast, tooltip);
             its text is <code style={{ fontFamily: MONO }}>on-inverse</code>. This is now a
             dedicated role, decoupled from the colored{' '}
-            <code style={{ fontFamily: MONO }}>-emphasis</code> fills. The old{' '}
+            <code style={{ fontFamily: MONO }}>-emphasis</code> fills. Its Magma 2 names,{' '}
             <code style={{ fontFamily: MONO }}>neutral-emphasis</code> /{' '}
-            <code style={{ fontFamily: MONO }}>neutral-on-emphasis</code> names still resolve as
-            deprecated aliases.
+            <code style={{ fontFamily: MONO }}>neutral-on-emphasis</code>, went with Magma 3.
           </mds-text>
           <mds-text typography="detail" style={{ color: textVar('muted') }}>
             <code style={{ fontFamily: MONO }}>surface-inverse-muted</code> (step 03 of the active

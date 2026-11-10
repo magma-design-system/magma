@@ -74,7 +74,8 @@ describe('MagmaModule', () => {
     expect(fixture.componentInstance.events).toEqual([event]);
   });
 
-  it('keeps forRoot() as a provider-less alias for backwards compatibility', () => {
-    expect(MagmaModule.forRoot()).toEqual({ ngModule: MagmaModule, providers: [] });
+  // forRoot() was a no-op kept for compatibility, deprecated in magma 2: magma 3 removes it (#1334)
+  it('has no forRoot(): the module is imported as it is', () => {
+    expect('forRoot' in MagmaModule).toBe(false);
   });
 });

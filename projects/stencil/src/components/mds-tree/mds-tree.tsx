@@ -27,13 +27,6 @@ export class MdsTree {
   @Prop({ reflect: true }) readonly appearance: TreeAppearance = 'depth';
 
   /**
-   * Has no effect on the tree: `async` is read on each `mds-tree-item`.
-   * @deprecated Set `async` on the items that load their children on demand. Goes in the next
-   * major.
-   */
-  @Prop({ reflect: true }) readonly async?: boolean;
-
-  /**
    * Names the tree for assistive technologies: the tree is a list of its items, and the label
    * is what that list is called
    */

@@ -61,7 +61,7 @@ import {
   reportUnreadColorValue,
 } from './shared/declaration-ops.js';
 import { type ClassFinding } from './shared/semantic-ops.js';
-import { invertBoolean, remapEnum } from './shared/attribute-ops.js';
+import { invertBoolean, numberKind, numberRenameFlag, remapEnum } from './shared/attribute-ops.js';
 import {
   bareTrue,
   boolLiteral,
@@ -317,6 +317,22 @@ export const transformReact = (
     function applyPropRename(rule: PropRenameRule, id: string): void {
       const attr = findAttr(nameOf(rule.from));
       if (!attr) return;
+      if (rule.when === 'number') {
+        const number = numberKind(valueOf(attr));
+        if (number === 'other') return;
+        if (number === 'unknown') {
+          findings.push({
+            kind: 'flag',
+            surface: 'react',
+            file: ctx.file,
+            line,
+            ruleId: id,
+            component: tag,
+            message: numberRenameFlag(rule),
+          });
+          return;
+        }
+      }
       const nameNode = attr.getNameNode();
       edits.push({ start: nameNode.getStart(), end: nameNode.getEnd(), text: nameOf(rule.to) });
       findings.push({
@@ -351,7 +367,7 @@ export const transformReact = (
       const attr = findAttr(nameOf(rule.prop));
       if (!attr) return;
       const v2set = rule.v2set ? component!.v2EnumSets?.[rule.v2set] : undefined;
-      const outcome = remapEnum(valueOf(attr), rule.map, v2set);
+      const outcome = remapEnum(valueOf(attr), rule.map, v2set, rule.why);
       if (outcome.action === 'rename') {
         edits.push({
           start: attr.getStart(),

@@ -1,13 +1,13 @@
 // The named themes as the build ships them in dist/css/themes.css (#692): business is the base
 // :root and emits no rule of its own, editorial retints the tint to bisque and the accent to the
 // Maggioli Editore brand, every theme publishes its preview for a picker, and a name kept until
-// the next major says so above its block. Needs a build first (nx: test dependsOn build).
+// the next major would say so above its block. Needs a build first (nx: test dependsOn build).
 import { readFileSync } from 'fs'
 import { join, resolve } from 'path'
 import postcss, { type Comment, type Rule } from 'postcss'
 import { describe, expect, test } from 'vitest'
 
-import { semanticModel } from '../../design-tokens/semantic.model'
+import { namedThemeCss, semanticModel } from '../../design-tokens/semantic.model'
 
 const css = postcss.parse(readFileSync(join(resolve(__dirname, '..'), 'dist', 'css', 'themes.css'), 'utf8'))
 const rules: Rule[] = []
@@ -51,9 +51,12 @@ describe('the two themes of the products', () => {
     expect(rules.some((rule) => rule.selector === `:root${scope('editorial')}.pref-contrast-more`)).toBe(true)
   })
 
-  test('only the names kept until the next major are deprecated', () => {
-    const deprecated = model.themes.filter((theme) => theme.deprecated).map(({ name }) => name)
-    expect(deprecated).toEqual(['default', 'cool', 'warm'])
+  // magma 3 removed default, cool and warm, the names magma 2 kept until the next major (#1334)
+  test('ships business and editorial, and no name kept until the next major', () => {
+    expect(model.themes.map(({ name }) => name)).toEqual(['business', 'editorial'])
+    expect(model.themes.filter((theme) => theme.deprecated)).toEqual([])
+    for (const name of ['default', 'cool', 'warm'])
+      expect(rules.some((one) => one.selector.includes(scope(name))), name).toBe(false)
   })
 })
 
@@ -74,11 +77,12 @@ describe('the preview of each theme', () => {
   })
 })
 
+// Magma 3 ships no deprecated theme (#1334), so the block is printed from one made up here.
 test('a deprecated theme says why it goes, on the line above its block', () => {
-  for (const name of ['cool', 'warm']) {
-    const rule = rules.find((one) => one.selector === `:root${scope(name)}`)!
-    const comment = rule.prev() as Comment | undefined
-    expect(comment?.type, name).toBe('comment')
-    expect(comment?.text, name).toMatch(new RegExp(`^${name}, deprecated: `))
-  }
+  const editorial = model.themes.find(({ name }) => name === 'editorial')!
+  const sheet = postcss.parse(namedThemeCss({ ...editorial, name: 'old', deprecated: 'use editorial' }))
+  const rule = sheet.nodes.find((node): node is Rule => node.type === 'rule')!
+  const comment = rule.prev() as Comment | undefined
+  expect(comment?.type).toBe('comment')
+  expect(comment?.text).toBe('old, deprecated: use editorial.')
 })

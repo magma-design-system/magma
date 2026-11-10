@@ -168,7 +168,7 @@ test('the inverse surface has a less marked level, gated for on-inverse text', a
   );
   expect(semantic.neutralHueSteps.emphasisMuted).toBe('03');
   // a muted level that resolved to the base fill would collapse weak onto strong
-  expect(map['--magma-surface-inverse-muted']).not.toBe(map['--magma-neutral-emphasis']);
+  expect(map['--magma-surface-inverse-muted']).not.toBe(map['--magma-surface-inverse']);
 
   const pairs = evaluatePairs(await loadTree(), map).filter(
     (r) => r.fgToken === 'on-inverse' && r.bgToken === 'surface-inverse-muted',
@@ -275,8 +275,9 @@ test('every fill ink takes the canvas in dark and the seed in light', async () =
   const inks = Object.keys(map).filter(
     (token) => token.endsWith('on-emphasis') || token === '--magma-on-inverse',
   );
-  // text, the four hues, the partial neutral, the two accents and on-inverse
-  expect(inks.length).toBeGreaterThanOrEqual(9);
+  // text, the four hues, the two accents and on-inverse, the ink of the partial neutral since
+  // magma 3 dropped its old name neutral-on-emphasis (#1334)
+  expect(inks.length).toBeGreaterThanOrEqual(8);
   for (const token of inks) {
     expect(map[token], token).toEqual({
       light: `--${semantic.seed}`,

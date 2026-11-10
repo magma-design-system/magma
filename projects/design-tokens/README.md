@@ -94,7 +94,7 @@ Each set lists only what it changes. To get the tokens of one condition, merge t
 | Modifier | Contexts |
 | :--- | :--- |
 | `mode` | `light` (default), `dark` |
-| `theme` | `business` (default), `editorial`, the deprecated `default`, `cool` and `warm`, and each of them with `-contrast-more` |
+| `theme` | `business` (default) and `editorial`, and each of them with `-contrast-more` |
 
 The theme and the contrast preference are one modifier because they are not independent: under a named theme, the stylesheets restate the contrast promotions in the theme's own family. Dark mode with the `cool` theme and more contrast, for example, merges `base`, `mode-dark`, `contrast-more`, `theme-cool` and `theme-cool-contrast-more`.
 

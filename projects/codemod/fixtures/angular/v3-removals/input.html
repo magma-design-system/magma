@@ -1,0 +1,15 @@
+<mds-banner deletable headline="Salvato">Le modifiche sono salvate.</mds-banner>
+<mds-toast [visible]="open" [deletable]="true" duration="0">Invio non riuscito</mds-toast>
+<mds-push-notification-item [deletable]="canDismiss" message="Nuovo documento"></mds-push-notification-item>
+<mds-chip label="Tag" deletable></mds-chip>
+<mds-tree async label="Archivio">
+  <mds-tree-item label="Ufficio" async></mds-tree-item>
+</mds-tree>
+<mds-input-select multiple [size]="4" label="Uffici"></mds-input-select>
+<mds-input-select size="5" label="Mesi"></mds-input-select>
+<mds-input-select [size]="visibleRows" label="Anni"></mds-input-select>
+<mds-input-select size="sm" label="Anno"></mds-input-select>
+<mds-pref-theme [name]="theme">
+  <mds-pref-theme-item name="default" label="Gestionale"></mds-pref-theme-item>
+  <mds-pref-theme-item name="warm" label="Caldo"></mds-pref-theme-item>
+</mds-pref-theme>

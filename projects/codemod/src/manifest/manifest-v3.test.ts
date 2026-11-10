@@ -6,12 +6,15 @@ import { transformHtml } from '../surfaces/html.js';
 import { collectColorTokens } from './color-token-source.js';
 import { colorTokenNames } from './color-tokens.generated.js';
 import {
+  COLOR_ROOTS,
   LOGICAL_ROOTS,
   MEASURES,
   manifestV3,
+  removalGlobals,
   SIZE_ROOTS,
   SPACING_ROOTS,
   SPACING_STEPS,
+  spacingRules,
 } from './manifest-v3.js';
 import { chainFrom, DEFAULT_FROM, JUMPS, supersededFlags } from './manifests.js';
 
@@ -139,7 +142,8 @@ describe('the v2 -> v3 manifest', () => {
 });
 
 describe('category P: the t-shirt names leave spacing (#1061)', () => {
-  const classes = manifestV3.global.classes!;
+  // the class rules of P, without those of Q (the inverse surface, #1334)
+  const classes = spacingRules.classes;
   const renames = new Map(
     classes.flatMap((rule) => (rule.kind === 'classRename' ? [[rule.from, rule.to]] : [])),
   );
@@ -192,6 +196,8 @@ describe('category P: the t-shirt names leave spacing (#1061)', () => {
       spacing: { utilities: string[]; keys: string[] };
     };
     expect([...SPACING_ROOTS].sort()).toEqual([...map.namespaces['--spacing']!.utilities].sort());
+    // category Q: the roots that read a colour, for the classes of the inverse surface (#1334)
+    expect([...COLOR_ROOTS].sort()).toEqual([...map.namespaces['--color']!.utilities].sort());
     // no named step of spacing, no measure, is a theme key any more
     const gone: string[] = [...Object.keys(SPACING_STEPS), ...MEASURES];
     expect(map.spacing.keys.filter((key) => gone.includes(key))).toEqual([]);
@@ -225,5 +231,29 @@ describe('the jumps', () => {
       'mds-input/cssVarRename/mds-input-variant-color',
     ]);
     expect(supersededFlags(chainFrom(2)).size).toBe(0);
+  });
+});
+
+describe('category Q: the old names of the inverse surface (#1334)', () => {
+  it('renames them as custom properties and as the classes of every colour root', () => {
+    expect(manifestV3.global.cssVars).toEqual(expect.arrayContaining(removalGlobals.cssVars));
+    expect(manifestV3.global.classes).toEqual(expect.arrayContaining(removalGlobals.classes));
+    expect(removalGlobals.classes).toContainEqual({
+      kind: 'classRename',
+      from: 'bg-neutral-emphasis',
+      to: 'bg-surface-inverse',
+    });
+    expect(removalGlobals.classes).toContainEqual({
+      kind: 'classRename',
+      from: 'text-neutral-on-emphasis',
+      to: 'text-on-inverse',
+    });
+    expect(removalGlobals.classes).toHaveLength(COLOR_ROOTS.length * 2);
+  });
+
+  it('keeps them colours, so a Magma 2 read through rgb() is rewritten too', () => {
+    expect(manifestV3.global.colorTokens!.names).toEqual(
+      expect.arrayContaining(['magma-neutral-emphasis', 'magma-neutral-on-emphasis']),
+    );
   });
 });

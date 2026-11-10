@@ -27,7 +27,7 @@ export class MdsPrefThemeItem {
    * `--magma-preview-<name>-wash` and `--magma-preview-<name>-accent`
    * @example 'editorial'
    */
-  @Prop({ reflect: true }) readonly name: string = 'default';
+  @Prop({ reflect: true }) readonly name: string = 'business';
 
   /**
    * Specifies the theme scheme which can be 'light', 'dark' or 'all'

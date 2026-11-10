@@ -40,8 +40,8 @@ The canonical form: slot every `mds-pref-*` control directly inside `<mds-pref>`
 <mds-pref>
   <mds-pref-mode></mds-pref-mode>
   <mds-pref-theme>
-    <mds-pref-theme-item name="default"></mds-pref-theme-item>
-    <mds-pref-theme-item name="cool"></mds-pref-theme-item>
+    <mds-pref-theme-item name="business"></mds-pref-theme-item>
+    <mds-pref-theme-item name="editorial"></mds-pref-theme-item>
   </mds-pref-theme>
   <mds-pref-contrast></mds-pref-contrast>
   <mds-pref-animation></mds-pref-animation>
@@ -145,16 +145,16 @@ Each control applies and stores its own preference, but the coordination between
 <!-- INCORRECT -->
 <mds-pref-mode></mds-pref-mode>
 <mds-pref-theme>
-  <mds-pref-theme-item name="default"></mds-pref-theme-item>
-  <mds-pref-theme-item name="cool"></mds-pref-theme-item>
+  <mds-pref-theme-item name="business"></mds-pref-theme-item>
+  <mds-pref-theme-item name="editorial"></mds-pref-theme-item>
 </mds-pref-theme>
 
 <!-- CORRECT -->
 <mds-pref>
   <mds-pref-mode></mds-pref-mode>
   <mds-pref-theme>
-    <mds-pref-theme-item name="default"></mds-pref-theme-item>
-    <mds-pref-theme-item name="cool"></mds-pref-theme-item>
+    <mds-pref-theme-item name="business"></mds-pref-theme-item>
+    <mds-pref-theme-item name="editorial"></mds-pref-theme-item>
   </mds-pref-theme>
 </mds-pref>
 ```

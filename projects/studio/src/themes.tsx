@@ -93,9 +93,14 @@ export const MODE_CHOICES: Option[] = [
  * The name of a theme is its own, not the name of the family it is drawn from (decided with
  * vittorio, 2026-11-05): `editorial` is drawn from `bisque`. Every name Magma ships is reserved,
  * the deprecated ones included while themes.css still emits them, so a theme of a product never
- * takes one (semantic.config.ts, `themes`).
+ * takes one (semantic.config.ts, `themes`). So is `default`, the old name of `business`, which
+ * magma 3 removed: mds-pref-theme reads a `default` a magma 2 page stored as `business`
+ * (preference.ts of stencil, #1334), so a theme of that name would never be applied.
  */
-export const RESERVED_THEME_NAMES: ReadonlySet<string> = new Set(Object.keys(semantic.themes));
+export const RESERVED_THEME_NAMES: ReadonlySet<string> = new Set([
+  ...Object.keys(semantic.themes),
+  'default',
+]);
 
 /**
  * The themes Magma ships, by the family they are drawn from: their name, their accents and their

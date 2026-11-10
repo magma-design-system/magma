@@ -256,8 +256,9 @@ A theme made for one colour mode says so: `"color": { "tint": "bisque", "modes":
   `dist/config/magma-theme.schema.json`. `readTheme` validates a theme (and its accent roles
   against the layer) and `themeDefOf` turns it into a `ThemeDef`. A file that does not validate
   stops every build that reads the layer.
-- **The deprecated themes** (`default`, `cool`, `warm`) stay entries of `semantic.config.ts`
-  until the next major: a deprecated theme is no starting point, so it gets no file.
+- **A deprecated theme** stays an entry of `semantic.config.ts`, with `deprecated`, until the
+  next major: it is no starting point, so it gets no file. Magma 3 has none: `default`, `cool`
+  and `warm`, deprecated in Magma 2, went with it (#1334).
 - **Not in the format yet** (#694): the balances (the shared `theme` block of the rc), a family
   of the theme's own (the standalone mode), the theme in a link and the `locked` flag.
 - **The keeper:** `test/theme-manifest.test.mts` holds every file of `themes/` to the schema, to

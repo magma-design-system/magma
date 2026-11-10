@@ -44,16 +44,17 @@ describe('mds-breadcrumb', () => {
       expect(getComputedStyle(buttonOf(home)).color).not.toBe('rgb(1, 2, 3)');
     });
 
-    it.each([
-      ['--mds-breadcrumb-button-color-current', 'rgb(7, 8, 9)'],
-      ['--mds-breadcrumb-current-button-color', 'rgb(10, 11, 12)'],
-    ])('still reads the deprecated %s', async (name, colour) => {
-      const { root } = await render(trail(`${name}: ${colour}`));
-      const selected = buttonOf(root.querySelector('mds-breadcrumb-item[selected]')!);
-      await settled(selected);
+    // the two old names of the selected colour, deprecated in magma 2, are gone (#1334)
+    it.each(['--mds-breadcrumb-button-color-current', '--mds-breadcrumb-current-button-color'])(
+      'no longer reads %s',
+      async (name) => {
+        const { root } = await render(trail(`${name}: rgb(7, 8, 9)`));
+        const selected = buttonOf(root.querySelector('mds-breadcrumb-item[selected]')!);
+        await settled(selected);
 
-      expect(getComputedStyle(selected).color).toBe(colour);
-    });
+        expect(getComputedStyle(selected).color).not.toBe('rgb(7, 8, 9)');
+      },
+    );
 
     it('gives the disabled back button its background', async () => {
       const { root } = await render(

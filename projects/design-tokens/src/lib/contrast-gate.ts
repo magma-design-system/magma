@@ -92,6 +92,15 @@ const emphasisStatesOf = (aliases: AliasMap, hue: string): string[] => {
     .filter((token) => token.startsWith(prefix))
     .map((token) => token.slice(`--magma-${hue}-`.length));
 };
+/**
+ * The ink and the fill of a hue's emphasis pair. The partial neutral's is the inverse surface
+ * role (spec 6.4), `--magma-on-inverse` on `--magma-surface-inverse`, the names the layer
+ * publishes since magma 3 dropped `neutral-emphasis` / `-on-emphasis` (#1334).
+ */
+const emphasisPairOf = (hue: string): [string, string] =>
+  hue === 'neutral'
+    ? ['--magma-on-inverse', '--magma-surface-inverse']
+    : [`--magma-${hue}-on-emphasis`, `--magma-${hue}-emphasis`];
 // The colored hues (every hue that is neither an accent nor the partial neutral):
 // the ones that publish a text ladder on their own wash levels.
 const TINTED_HUES = ['info', 'success', 'warning', 'danger'] as const;
@@ -260,8 +269,10 @@ function baseAliases(m: SemanticMapping): Record<string, string> {
       if (!partial) set(`${hue}-surface`, `${family}-${m.hueSteps.surface}`);
       set(`${hue}-fg`, `${source}-${steps.fg}`);
       set(`${hue}-border`, `${source}-${steps.border}`);
-      set(`${hue}-emphasis`, `${source}-${steps.emphasis}`);
-      set(`${hue}-on-emphasis`, m.seed);
+      // the partial hue's emphasis pair is the inverse surface role (spec 6.4), under the names
+      // the layer publishes: its old names neutral-emphasis / -on-emphasis went with magma 3
+      set(partial ? 'surface-inverse' : `${hue}-emphasis`, `${source}-${steps.emphasis}`);
+      set(partial ? 'on-inverse' : `${hue}-on-emphasis`, m.seed);
       // the inverse surface's less marked level (spec 6.1d): a fill that carries
       // on-inverse text, gated like an emphasis state
       if (partial && m.neutralHueSteps.emphasisMuted) {
@@ -455,15 +466,8 @@ export function evaluatePairs(
     }
     // 2. every hue's on-emphasis text on its emphasis fill (enforced)
     for (const hue of HUES) {
-      push(
-        'on-emphasis',
-        'error',
-        'apca',
-        `--magma-${hue}-on-emphasis`,
-        `--magma-${hue}-emphasis`,
-        targets.onEmphasis[mode],
-        mode,
-      );
+      const [ink, fill] = emphasisPairOf(hue);
+      push('on-emphasis', 'error', 'apca', ink, fill, targets.onEmphasis[mode], mode);
     }
     // 2b. hover/active fills carry on-emphasis text too (enforced), for accents and
     //     colored hues alike. They are more extreme than the base emphasis in the

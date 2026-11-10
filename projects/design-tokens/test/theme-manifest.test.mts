@@ -61,8 +61,8 @@ test('business is the base: :root takes its tint and it repoints nothing', () =>
   const business = themeFile('business.json') as ThemeManifest
   expect(semantic.tint).toBe(business.color.tint)
   expect(semantic.themes.business).toBe(business.color.tint)
-  // default is the old name of business, so it follows it
-  expect(semantic.themes.default).toMatchObject({ surface: business.color.tint })
+  // default, the old name of business, deprecated in magma 2, went with magma 3 (#1334)
+  expect(semantic.themes.default).toBeUndefined()
 })
 
 test('editorial enters the config as the entry it was before the format', () => {

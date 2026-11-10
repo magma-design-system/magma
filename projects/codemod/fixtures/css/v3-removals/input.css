@@ -1,0 +1,29 @@
+/* the old names of the colour of the selected item of a breadcrumb */
+mds-breadcrumb.brand {
+  --mds-breadcrumb-button-color-current: var(--magma-accent-fg);
+}
+
+mds-breadcrumb.legacy {
+  --mds-breadcrumb-current-button-color: var(--magma-text-default);
+}
+
+/* read by nothing in Magma 2 already: reported */
+mds-button.contrast {
+  --mds-button-border-high-contrast-width: 2px;
+}
+
+/* the old names of the inverse surface, read as channels in Magma 2 */
+.chip {
+  background: rgb(var(--magma-neutral-emphasis));
+  color: rgb(var(--magma-neutral-on-emphasis) / 0.9);
+}
+
+.tip {
+  @apply bg-neutral-emphasis text-neutral-on-emphasis;
+}
+
+/* the previews of the themes Magma 2 deprecated */
+.picker {
+  --swatch: var(--magma-preview-default-wash);
+  --swatch-cool: var(--magma-preview-cool-accent);
+}

@@ -77,13 +77,6 @@ export class MdsPushNotificationItem {
   @Prop({ reflect: true, mutable: true }) dismissible?: boolean;
 
   /**
-   * Shows the dismiss button, as `dismissible` does.
-   * @deprecated Use `dismissible`: the button dismisses the notification, it deletes nothing.
-   * Goes in the next major.
-   */
-  @Prop({ reflect: true, mutable: true }) deletable?: boolean = false;
-
-  /**
    * Specifies the icon to be displayed
    */
   @Prop({ reflect: true }) readonly icon?: string;
@@ -137,10 +130,9 @@ export class MdsPushNotificationItem {
 
   componentDidLoad(): void {
     this.handleDismissibleChange(this.dismissible);
-    this.handleDeletableChange(this.deletable);
   }
 
-  private isDismissible = (): boolean => this.dismissible === true || this.deletable === true;
+  private isDismissible = (): boolean => this.dismissible === true;
 
   private onSlotChange = (): void => {
     this.hasActions = hasChildWithSlot(this.host, 'action');
@@ -179,13 +171,6 @@ export class MdsPushNotificationItem {
   handleDismissibleChange(newValue?: boolean): void {
     if (newValue === false) {
       this.dismissible = undefined;
-    }
-  }
-
-  @Watch('deletable')
-  handleDeletableChange(newValue?: boolean): void {
-    if (newValue === false) {
-      this.deletable = undefined;
     }
   }
 

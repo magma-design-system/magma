@@ -136,10 +136,10 @@ every other role keeps its name.
 
 Status hues: `info`, `success`, `warning`, `danger` (`danger` draws from the
 `status-error` family). The accent (`variant-primary`) and the AI accent (`variant-ai`)
-retint with a named theme; the status hues never do. `--magma-neutral-emphasis` /
-`--magma-neutral-on-emphasis` are deprecated aliases of `--magma-surface-inverse` /
-`--magma-on-inverse`. `--magma-tint-*` is the layer's internal repoint block, never
-consumed.
+retint with a named theme; the status hues never do. The inverse surface is
+`--magma-surface-inverse` / `--magma-on-inverse` (its Magma 2 names `--magma-neutral-emphasis` /
+`--magma-neutral-on-emphasis` went with Magma 3). `--magma-tint-*` is the layer's internal
+repoint block, never consumed.
 
 How the five surfaces stack (page, sunken and muted below it, raised and overlay above),
 their light and dark values, the shadow a raised element needs in light, and how named
@@ -166,12 +166,12 @@ Four independent axes on `<html>`, on top of the semantic layer:
   semantic tokens follow it automatically (see Dark mode below).
 - **`data-theme-name`** - a named theme overrides the semantic layer. The common
   case is retinting the neutral scaffolding with ONE swap: a theme repoints the
-  `--magma-tint-*` block at another generated family (`porcelain` for a cool cast,
-  `bisque` for warm) and every surface, border and text role follows; it can repoint
+  `--magma-tint-*` block at another generated family (`bisque` for `editorial`, a warm
+  grey) and every surface, border and text role follows; it can repoint
   the accents too (`--magma-tint-accent-*`). The shipped themes (#692) are `business`,
   the base `:root`, which emits no rule, so no `data-theme-name` means `business`; and
   `editorial`, `bisque` with the Maggioli Editore accent (`variant-secondary`). `default`
-  (the old name of `business`), `cool` and `warm` stay until the next major, deprecated.
+  (the old name of `business`), `cool` and `warm`, deprecated in Magma 2, went with Magma 3.
   All of them are generated into `dist/css/themes.css` from the `themes` map of
   `semantic.config.ts`, which reads `business` and `editorial` from their files in
   design-tokens (`themes/<name>.json`, the public theme format of #694). The sheet also opens

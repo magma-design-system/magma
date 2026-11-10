@@ -124,11 +124,11 @@ describe('mds-banner', () => {
       await vi.waitFor(() => expect(close).toHaveReceivedEventTimes(1));
     });
 
-    // #1145: the button dismisses the message, it deletes nothing; the old name still works
-    it('keeps deletable as a deprecated name of dismissible', async () => {
+    // #1145: the button dismisses the message, it deletes nothing; magma 3 drops the old name (#1334)
+    it('shows no close button for deletable, the old name of dismissible', async () => {
       const { root } = await render('<mds-banner deletable>Text</mds-banner>');
 
-      expect(closeButton(root)).not.toBeNull();
+      expect(closeButton(root)).toBeNull();
     });
 
     // the close button sits at the top right of a narrow banner; a framework sets the prop as a
