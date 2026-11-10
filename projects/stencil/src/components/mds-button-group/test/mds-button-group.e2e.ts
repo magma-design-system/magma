@@ -1,4 +1,5 @@
 import { render } from '@stencil/vitest';
+import { mockIconFetch } from '@test/fetch';
 import { page } from 'vitest/browser';
 
 /** Top-left, top-right, bottom-right, bottom-left, rounded to the pixel. */
@@ -105,6 +106,11 @@ describe('mds-button-group', () => {
 // to its labelled members, each at its own width plus the same share, and keeps an icon-only
 // member at its size; at its own width nothing moves (#1340)
 describe('mds-button-group stretched', () => {
+  // the icon-only members: their size does not depend on the drawing, served from a mock
+  beforeEach(() => {
+    mockIconFetch();
+  });
+
   const draft = (style = '') =>
     `<mds-button-group style="${style}"><mds-button tone="outline" label="Salva come bozza"></mds-button><mds-button label="Pubblica"></mds-button></mds-button-group>`;
 

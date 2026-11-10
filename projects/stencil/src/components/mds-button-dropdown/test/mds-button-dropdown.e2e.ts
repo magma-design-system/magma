@@ -310,6 +310,7 @@ describe('mds-button-dropdown stretched', () => {
   // takes the width from the start, the chevron stays on its right, at the end of the row; a
   // lone split button keeps its own width there (#1250), so it stands beside another action
   it('keeps the chevron at the end of the stacked row of a narrow mds-card-footer', async () => {
+    mockIconFetch();
     const { root } = await render<HTMLElement>(
       `<mds-card style="width: 20rem"><mds-card-footer><mds-button variant="dark" tone="outline" label="Anteprima"></mds-button><mds-button-dropdown label="Scarica" icon="mi/baseline/download"><mds-button label="Scarica come SVG"></mds-button></mds-button-dropdown></mds-card-footer></mds-card>`,
     );
