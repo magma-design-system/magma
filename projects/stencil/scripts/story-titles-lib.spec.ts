@@ -1,13 +1,19 @@
 import { describe, expect, it } from 'vitest';
 import type { ComponentTaxonomy } from './agent-docs-lib';
-import { COMPONENTS_DIR } from './meta';
+import { COMPONENTS_DIR, DIST_DIR, PROJECT_DIR } from './meta';
 import fs from 'node:fs';
+import path from 'node:path';
 import {
+  PAGES_URL,
+  pagesUrlOf,
+  PUBLISHED_SITE,
   readComponentStories,
   readStoryId,
   readStoryTitle,
+  STORYBOOK_URL,
   storybookDocsIds,
   storyTitleErrors,
+  STUDIO_URL,
 } from './story-titles-lib';
 
 describe('readStoryTitle', () => {
@@ -123,6 +129,77 @@ describe('storyTitleErrors', () => {
       'mds-table-row/test/mds-table-row.mdx: title "UI / Data / Row" is not under "Layout / Table", the page of mds-table',
     ]);
   });
+});
+
+// GitHub Docs, "Types of GitHub Pages sites": the project site of <owner>/<repo>
+describe('pagesUrlOf', () => {
+  it('reads the Pages site of a repository from its URL in package.json', () => {
+    expect(pagesUrlOf('git+https://github.com/magma-design-system/magma.git')).toBe(
+      'https://magma-design-system.github.io/magma/',
+    );
+    expect(pagesUrlOf('https://github.com/Owner/Repo')).toBe('https://owner.github.io/Repo/');
+  });
+
+  it('names no site for a URL that is not of a GitHub repository', () => {
+    expect(() => pagesUrlOf('git+https://gitlab.com/maggioli/magma.git')).toThrow(
+      'Not the URL of a GitHub repository',
+    );
+    expect(() => pagesUrlOf('github:magma-design-system/magma')).toThrow();
+  });
+});
+
+// The real repository (#1148, #1294): the addresses the top of documentation.json gives are
+// where deploy-site.yml publishes the site of `main`, so the readers that link them keep no
+// address of their own
+describe('the published site', () => {
+  const workflow = fs.readFileSync(
+    path.join(PROJECT_DIR, '../../.github/workflows/deploy-site.yml'),
+    'utf8',
+  );
+  /** The folder of the Pages site a build is moved into, in the step "Assemble the site". */
+  const folderOf = (build: string) =>
+    new RegExp(`mv ${build} _site/([\\w-]+)\\n`).exec(workflow)?.[1];
+
+  it('is the whole Pages site of the repository, assembled in _site/', () => {
+    expect(workflow).toMatch(/upload-pages-artifact@\S+\s+with:\s+path: _site\s/);
+  });
+
+  it('holds the Storybook and the studio in the folders the workflow moves them into', () => {
+    expect(STORYBOOK_URL).toBe(`${PAGES_URL}${folderOf('projects/stencil/dist-storybook')}/`);
+    expect(STUDIO_URL).toBe(`${PAGES_URL}${folderOf('projects/studio/dist-site')}/`);
+  });
+
+  it('gives the studio the address its own page says it has', () => {
+    const html = fs.readFileSync(path.join(PROJECT_DIR, '../studio/index.html'), 'utf8');
+    expect(/<meta property="og:url" content="([^"]+)"/.exec(html)?.[1]).toBe(STUDIO_URL);
+  });
+
+  it('is the studio the agent guide of theming links', () => {
+    const guide = path.join(PROJECT_DIR, '../../docs/agents/theming.md');
+    expect(fs.readFileSync(guide, 'utf8')).toContain(`<${STUDIO_URL}#/theme>`);
+  });
+
+  // a move breaks every link already out there: a decision, never a side effect
+  it('is the site the links out there point to', () => {
+    expect(PUBLISHED_SITE).toEqual({
+      storybook: 'https://magma-design-system.github.io/magma/storybook/',
+      studio: 'https://magma-design-system.github.io/magma/studio/',
+    });
+  });
+
+  const built = (file: string) => path.join(DIST_DIR, file);
+  it.skipIf(!fs.existsSync(built('documentation.json')))(
+    'is written at the top of the built documentation.json, and of the one of a component',
+    () => {
+      for (const file of [
+        'documentation.json',
+        'collection/components/mds-button/documentation.json',
+      ]) {
+        const { storybook, studio } = JSON.parse(fs.readFileSync(built(file), 'utf8'));
+        expect({ storybook, studio }, file).toEqual(PUBLISHED_SITE);
+      }
+    },
+  );
 });
 
 // The real tree: every component has a docs page to link to
