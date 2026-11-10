@@ -52,8 +52,7 @@
   transition-timing-function: var(--mds-push-notification-item-timing-function);
 }
 
-:host([dismissible]:not([dismissible='false'])),
-:host([deletable]:not([deletable='false'])) {
+:host([dismissible]:not([dismissible='false'])) {
   @apply pr-800;
 }
 

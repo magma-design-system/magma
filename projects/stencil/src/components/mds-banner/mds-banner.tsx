@@ -69,13 +69,6 @@ export class MdsBanner {
   @Prop() readonly dismissible?: boolean;
 
   /**
-   * Shows the close button, as `dismissible` does.
-   * @deprecated Use `dismissible`: the button dismisses the message, it deletes nothing.
-   * Goes in the next major.
-   */
-  @Prop() readonly deletable?: boolean;
-
-  /**
    * The title on the top of the banner
    */
   @Prop() readonly headline?: string;
@@ -99,7 +92,7 @@ export class MdsBanner {
     warning: { role: 'alert', live: 'assertive' },
   };
 
-  private isDismissible = (): boolean => this.dismissible === true || this.deletable === true;
+  private isDismissible = (): boolean => this.dismissible === true;
 
   private dismissibleHandler = (): void => {
     if (this.isDismissible()) {

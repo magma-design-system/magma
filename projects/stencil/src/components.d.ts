@@ -367,11 +367,6 @@ export namespace Components {
      */
     interface MdsBanner {
         /**
-          * Shows the close button, as `dismissible` does.
-          * @deprecated Use `dismissible`: the button dismisses the message, it deletes nothing. Goes in the next major.
-         */
-        "deletable"?: boolean;
-        /**
           * Shows a close button that dismisses the banner: activating it emits `mdsBannerClose`
          */
         "dismissible"?: boolean;
@@ -2675,12 +2670,6 @@ export namespace Components {
          */
         "datetime"?: string;
         /**
-          * Shows the dismiss button, as `dismissible` does.
-          * @deprecated Use `dismissible`: the button dismisses the notification, it deletes nothing. Goes in the next major.
-          * @default false
-         */
-        "deletable"?: boolean;
-        /**
           * Shows a dismiss button: activating it emits `mdsPushNotificationItemClose`, and a parent `mds-push-notification` takes the item out of the stack
          */
         "dismissible"?: boolean;
@@ -3240,11 +3229,6 @@ export namespace Components {
      * @category feedback
      */
     interface MdsToast {
-        /**
-          * Shows the hide button, as `dismissible` does.
-          * @deprecated Use `dismissible`: the button dismisses the message, it deletes nothing. Goes in the next major.
-         */
-        "deletable"?: boolean;
         /**
           * Shows a button that hides the toast, an arrow towards the edge the toast leaves by
          */
@@ -5770,11 +5754,6 @@ declare namespace LocalJSX {
      */
     interface MdsBanner {
         /**
-          * Shows the close button, as `dismissible` does.
-          * @deprecated Use `dismissible`: the button dismisses the message, it deletes nothing. Goes in the next major.
-         */
-        "deletable"?: boolean;
-        /**
           * Shows a close button that dismisses the banner: activating it emits `mdsBannerClose`
          */
         "dismissible"?: boolean;
@@ -8241,12 +8220,6 @@ declare namespace LocalJSX {
          */
         "datetime"?: string;
         /**
-          * Shows the dismiss button, as `dismissible` does.
-          * @deprecated Use `dismissible`: the button dismisses the notification, it deletes nothing. Goes in the next major.
-          * @default false
-         */
-        "deletable"?: boolean;
-        /**
           * Shows a dismiss button: activating it emits `mdsPushNotificationItemClose`, and a parent `mds-push-notification` takes the item out of the stack
          */
         "dismissible"?: boolean;
@@ -8820,11 +8793,6 @@ declare namespace LocalJSX {
      */
     interface MdsToast {
         /**
-          * Shows the hide button, as `dismissible` does.
-          * @deprecated Use `dismissible`: the button dismisses the message, it deletes nothing. Goes in the next major.
-         */
-        "deletable"?: boolean;
-        /**
           * Shows a button that hides the toast, an arrow towards the edge the toast leaves by
          */
         "dismissible"?: boolean;
@@ -9176,7 +9144,6 @@ declare namespace LocalJSX {
         "tone": ToneMinimalBoxVariantType;
         "hideCockade": boolean;
         "dismissible": boolean;
-        "deletable": boolean;
         "headline": string;
         "icon": string;
     }
@@ -9679,7 +9646,6 @@ declare namespace LocalJSX {
         "datetime": string;
         "dateFormat": NotificationItemDateFormatType;
         "dismissible": boolean;
-        "deletable": boolean;
         "icon": string;
         "initials": string;
         "message": string;
@@ -9821,7 +9787,6 @@ declare namespace LocalJSX {
         "tone": ToneMinimalVariantType;
         "position": ToastPosition;
         "dismissible": boolean;
-        "deletable": boolean;
     }
     interface MdsToastRegionAttributes {
         "position": ToastPosition;

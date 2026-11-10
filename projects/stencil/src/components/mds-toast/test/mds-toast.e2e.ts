@@ -105,11 +105,11 @@ describe('mds-toast', () => {
       expect(hideButton(root)).toEqualAttribute('type', 'button');
     });
 
-    // #1145: the button dismisses the message, it deletes nothing; the old name still works
-    it('keeps deletable as a deprecated name of dismissible', async () => {
+    // #1145: the button dismisses the message, it deletes nothing; magma 3 drops the old name (#1334)
+    it('shows no hide button for deletable, the old name of dismissible', async () => {
       const { root } = await render('<mds-toast visible deletable duration="0">Text</mds-toast>');
 
-      expect(hideButton(root)).toEqualAttribute('aria-label', 'Nascondi');
+      expect(hideButton(root)).toBeNull();
     });
 
     // an arrow, not a cross, next to an action that may itself be a cancel: it points to the

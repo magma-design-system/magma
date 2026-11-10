@@ -33,7 +33,6 @@ This component uses the shared `variant` / `tone` ladders defined in [`docs/agen
 - **`hideCockade`** (default `false`) removes the colored decorative badge wrapping the leading `icon`; set it for a flatter icon presentation.
 - **`icon`** is a Magma icon library slug shown at the top-left, surfaced as decorative.
 - **`dismissible`** shows the close button - choose it for transient or user-acknowledged messages rather than persistent context.
-- **`deletable`** is the old name of `dismissible`, deprecated: the button dismisses the message, it deletes nothing. It still works, and goes in the next major.
 - The **default slot** carries the body text/markup; the **`action` slot** holds inline controls, with `mds-button` the recommended element.
 
 
@@ -345,15 +344,14 @@ The component fires `mdsBannerClose` only when the close button is activated (bo
 
 ## Properties
 
-| Property      | Attribute      | Description                                                                                                                                                                                              | Type                                                                                                 | Default     |
-| ------------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ----------- |
-| `deletable`   | `deletable`    | <span style="color:red">**[DEPRECATED]**</span> Use `dismissible`: the button dismisses the message, it deletes nothing. Goes in the next major.<br/><br/>Shows the close button, as `dismissible` does. | `boolean \| undefined`                                                                               | `undefined` |
-| `dismissible` | `dismissible`  | Shows a close button that dismisses the banner: activating it emits `mdsBannerClose`                                                                                                                     | `boolean \| undefined`                                                                               | `undefined` |
-| `headline`    | `headline`     | The title on the top of the banner                                                                                                                                                                       | `string \| undefined`                                                                                | `undefined` |
-| `hideCockade` | `hide-cockade` | Hides the decoration around the banner icon                                                                                                                                                              | `boolean \| undefined`                                                                               | `false`     |
-| `icon`        | `icon`         | An icon displayed at the top left of the banner                                                                                                                                                          | `string \| undefined`                                                                                | `undefined` |
-| `tone`        | `tone`         | Sets the tone of the color variant                                                                                                                                                                       | `"box" \| "strong" \| "weak" \| undefined`                                                           | `'weak'`    |
-| `variant`     | `variant`      | Sets the theme variant colors                                                                                                                                                                            | `"ai" \| "dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning" \| undefined` | `'primary'` |
+| Property      | Attribute      | Description                                                                          | Type                                                                                                 | Default     |
+| ------------- | -------------- | ------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- | ----------- |
+| `dismissible` | `dismissible`  | Shows a close button that dismisses the banner: activating it emits `mdsBannerClose` | `boolean \| undefined`                                                                               | `undefined` |
+| `headline`    | `headline`     | The title on the top of the banner                                                   | `string \| undefined`                                                                                | `undefined` |
+| `hideCockade` | `hide-cockade` | Hides the decoration around the banner icon                                          | `boolean \| undefined`                                                                               | `false`     |
+| `icon`        | `icon`         | An icon displayed at the top left of the banner                                      | `string \| undefined`                                                                                | `undefined` |
+| `tone`        | `tone`         | Sets the tone of the color variant                                                   | `"box" \| "strong" \| "weak" \| undefined`                                                           | `'weak'`    |
+| `variant`     | `variant`      | Sets the theme variant colors                                                        | `"ai" \| "dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning" \| undefined` | `'primary'` |
 
 
 ## Events

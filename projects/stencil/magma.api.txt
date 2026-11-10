@@ -121,7 +121,6 @@ mds-badge css --mds-badge-border-width INTERNAL
 mds-badge css --mds-badge-color
 mds-badge css --mds-badge-radius
 mds-banner encapsulation shadow
-mds-banner prop deletable (attr deletable): boolean | undefined DEPRECATED
 mds-banner prop dismissible (attr dismissible): boolean | undefined
 mds-banner prop headline (attr headline): string | undefined
 mds-banner prop hideCockade (attr hide-cockade) [reflect]: boolean | undefined = false
@@ -1267,7 +1266,6 @@ mds-push-notification css --mds-push-notification-items-timing-function INTERNAL
 mds-push-notification-item encapsulation shadow
 mds-push-notification-item prop dateFormat (attr date-format) [reflect]: string = 'timeago'
 mds-push-notification-item prop datetime (attr datetime) [reflect, mutable]: string | undefined
-mds-push-notification-item prop deletable (attr deletable) [reflect, mutable]: boolean | undefined = false DEPRECATED
 mds-push-notification-item prop dismissible (attr dismissible) [reflect, mutable]: boolean | undefined
 mds-push-notification-item prop icon (attr icon) [reflect]: string | undefined
 mds-push-notification-item prop initials (attr initials) [reflect, mutable]: string | undefined
@@ -1566,7 +1564,6 @@ mds-text css --mds-text-line-clamp
 mds-text css --mds-text-selection-background INTERNAL
 mds-text css --mds-text-selection-color INTERNAL
 mds-toast encapsulation shadow
-mds-toast prop deletable (attr deletable): boolean | undefined DEPRECATED
 mds-toast prop dismissible (attr dismissible): boolean | undefined
 mds-toast prop duration (attr duration) [reflect, mutable]: number | undefined = 5000
 mds-toast prop position (attr position) [reflect, mutable]: "bottom-center" | "bottom-left" | "bottom-right" | "top-center" | "top-left" | "top-right" = 'bottom-center'

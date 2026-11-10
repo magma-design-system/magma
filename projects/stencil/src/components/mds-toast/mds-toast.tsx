@@ -96,13 +96,6 @@ export class MdsToast {
   @Prop() readonly dismissible?: boolean;
 
   /**
-   * Shows the hide button, as `dismissible` does.
-   * @deprecated Use `dismissible`: the button dismisses the message, it deletes nothing.
-   * Goes in the next major.
-   */
-  @Prop() readonly deletable?: boolean;
-
-  /**
    * Emits once the toast is hidden and its exit animation is over, whoever hid it: the `reason` of
    * the detail says who, `timeout`, `close` (the person, with the hide button) or `hide` (the application)
    */
@@ -311,7 +304,7 @@ export class MdsToast {
           <div class={clsx('actions', !this.hasActions && 'actions--hidden')}>
             <slot name="action" onSlotchange={this.onActionSlotChange} />
           </div>
-          {(this.dismissible || this.deletable) && (
+          {this.dismissible && (
             <mds-button
               aria-label={this.t.get('hide')}
               class="hide"

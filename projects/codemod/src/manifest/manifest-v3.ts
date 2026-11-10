@@ -33,14 +33,20 @@
  *    `leading-none` and `max-inline-none`, and a measure on a spacing utility
  *    (`p-prose`, no class in Magma 3);
  *  - `var(--spacing-prose)` becomes `var(--container-prose)`.
+ *
+ * #1334, category Q: what Magma 2 deprecated until the next major is gone.
+ * Each name with a replacement of the same value is rewritten, see
+ * {@link removals}.
  */
 import { colorTokenNames } from './color-tokens.generated.js';
 import {
   type ClassRenameRule,
   type ClassReportRule,
+  type ComponentManifest,
   type CssVarRenameRule,
   type EnsureAttrRule,
   type Manifest,
+  type Rule,
 } from './schema.js';
 
 /**
@@ -329,6 +335,47 @@ const measureVars: CssVarRenameRule[] = MEASURES.map((measure) => ({
 /** The rules of category P, also pinned by the fixtures of the v2 -> v3 test manifest. */
 export const spacingRules = { classes: spacingClassRules(), cssVars: measureVars };
 
+/** The button dismisses the message, it deletes nothing (#1145): the same boolean, renamed. */
+const deletableToDismissible = (): Rule => ({
+  kind: 'propRename',
+  from: { attr: 'deletable', prop: 'deletable' },
+  to: { attr: 'dismissible', prop: 'dismissible' },
+  confidence: 'safe',
+  note: '`deletable` was the old name of `dismissible`, gone in Magma 3',
+});
+
+/**
+ * Category Q (#1334): what Magma 2 deprecated until the next major. The source
+ * of each rule is the deprecation Magma 2 ships (its `@deprecated` text, the
+ * `@prop` description of a custom property), which names the replacement; a
+ * replacement of the same value is rewritten.
+ */
+export const removals: Record<string, Rule[]> = {
+  // `deletable` was the old name of `dismissible` on three components only
+  // (#1145): `mds-chip`, `mds-note` and the others keep it, they remove a value.
+  'mds-banner': [deletableToDismissible()],
+  'mds-push-notification-item': [deletableToDismissible()],
+  'mds-toast': [deletableToDismissible()],
+};
+
+/** `MdsBanner` from `mds-banner`, as the React wrappers name the components. */
+const reactName = (tag: string): string =>
+  tag.replace(/(^|-)([a-z])/g, (_, _dash: string, c: string) => c.toUpperCase());
+
+/** Adds the rules of category Q to the components of a manifest, after their own. */
+export const withRemovals = (
+  components: Record<string, ComponentManifest>,
+): Record<string, ComponentManifest> => {
+  const merged = { ...components };
+  for (const [tag, rules] of Object.entries(removals)) {
+    const own = merged[tag];
+    merged[tag] = own
+      ? { ...own, rules: [...own.rules, ...rules] }
+      : { tag, react: reactName(tag), rules };
+  }
+  return merged;
+};
+
 export const manifestV3: Manifest = {
   fromVersion: '2',
   toVersion: '3',
@@ -340,7 +387,7 @@ export const manifestV3: Manifest = {
     classes: spacingRules.classes,
     cssVars: spacingRules.cssVars,
   },
-  components: {
+  components: withRemovals({
     'mds-accordion-item': {
       tag: 'mds-accordion-item',
       react: 'MdsAccordionItem',
@@ -389,5 +436,5 @@ export const manifestV3: Manifest = {
       react: 'MdsInputSelect',
       rules: [dropRgb('mds-input-select-variant-color')],
     },
-  },
+  }),
 };

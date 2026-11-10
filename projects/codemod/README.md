@@ -153,6 +153,7 @@ The breaking changes of Magma 3 (epic #1292), one category per part; each part a
 | N   | Colour tokens (#918)          | a colour token is a full colour, no longer three channels: its reads through `rgb()` become `var()` or `color-mix()`, its channel definitions `rgb()`, and the input properties that took channels lose their `-rgb`. See below | safe; strings and unread values: report |
 | O   | Title of an accordion item (#1218) | the title of `mds-accordion-item` and `mds-accordion-timer-item` is `h6` by default, no longer `h5`: an item that leaves `typography` out is reported, nothing is written. See below | report |
 | P   | Spacing steps (#1061)         | a t-shirt name is a container size, spacing a numeric step: a spacing utility with a t-shirt name becomes the step of the same value (`p-md` -> `p-400`), under every variant; `var(--spacing-prose)` becomes `var(--container-prose)`. See below | safe; a class whose value changes: report |
+| Q   | Removals (#1334)              | what Magma 2 deprecated until the next major is gone: a name with a replacement of the same value is rewritten (`deletable` -> `dismissible`), one without is reported. See below | safe; no replacement: report |
 
 ### Colour tokens (N)
 
@@ -265,6 +266,19 @@ Reported, not rewritten:
   were 0; in Magma 3 they are `line-height: 1` and no limit.
 - A measure on a spacing utility (`p-prose`, `gap-text`): no class in Magma 3. The report gives
   `p-(--container-prose)`, which keeps the value.
+
+### Removals (Q)
+
+Magma 2 kept some names it deprecated "until the next major", each with its replacement, which Magma 2 already
+ships: Magma 3 removes them. The rules take the replacement from the deprecation Magma 2 wrote (the `@deprecated`
+text of a prop, the description of a custom property).
+
+| Magma 2                                                              | Magma 3        | Codemod   |
+| -------------------------------------------------------------------- | -------------- | --------- |
+| `deletable` on `mds-banner`, `mds-toast`, `mds-push-notification-item` | `dismissible` | rewritten |
+
+`deletable` stays on the components where it is the right word, because they remove a value: `mds-chip`,
+`mds-note` and the others are left alone.
 
 ## Migration matrix: Magma 1 -> 2
 

@@ -110,8 +110,8 @@
 }
 
 /* .body--dismissible: in a narrow banner the close button sits at the top right, and the first
- * line keeps clear of it. A class, not the attribute of the host: dismissible and deletable are
- * not reflected, a framework sets them as properties */
+ * line keeps clear of it. A class, not the attribute of the host: dismissible is not reflected, a
+ * framework sets it as a property */
 
 @container mds-banner (max-width: 300px) {
   .body--dismissible .headline,
