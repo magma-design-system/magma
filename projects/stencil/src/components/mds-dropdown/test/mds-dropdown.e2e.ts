@@ -1,4 +1,5 @@
 import { render } from '@stencil/vitest';
+import { onTestFinished } from 'vitest';
 import { userEvent } from 'vitest/browser';
 
 /** Where the arrow sits inside the panel, in layout coordinates - the space
@@ -378,6 +379,141 @@ describe('mds-dropdown', () => {
       await waitForChanges();
 
       expect(panel.visible).toBe(true);
+    });
+  });
+
+  // #527: the watchers and disconnectedCallback run as soon as the instance exists, the controller
+  // is made in componentDidLoad. With its bundle already loaded, as on any page but the first, the
+  // instance is built inside append() and loads a frame later: a page that inserts the dropdown
+  // and drops it or sets it in the same task (a client router swapping the copies of the elements
+  // it keeps, a framework binding) reaches it in between
+  describe('before it has loaded', () => {
+    beforeEach(async () => {
+      await render('<mds-dropdown></mds-dropdown>');
+    });
+
+    const insert = (markup: string): { box: HTMLElement; panel: HTMLMdsDropdownElement } => {
+      const box = document.createElement('div');
+      box.innerHTML = `<mds-button id="caller" label="Open"></mds-button><mds-button id="other" label="Other"></mds-button>${markup}`;
+      document.body.append(box);
+      onTestFinished(() => box.remove());
+      const panel = box.querySelector('mds-dropdown') as HTMLMdsDropdownElement;
+      // what the tests below are about: an instance that exists and has not loaded
+      expect(panel).not.toHaveAttribute('hydrated');
+      return { box, panel };
+    };
+
+    it.each([
+      ['the dropdown', (box: HTMLElement) => box.querySelector('mds-dropdown')!.remove()],
+      ['the dropdown with its caller', (box: HTMLElement) => box.remove()],
+    ])('leaves the page without an error when %s is taken out', async (_, takeOut) => {
+      const error = vi.spyOn(console, 'error');
+      const warn = vi.spyOn(console, 'warn');
+      const { box, panel } = insert('<mds-dropdown target="#caller">Menu</mds-dropdown>');
+
+      takeOut(box);
+      await panel.componentOnReady();
+
+      expect(error).not.toHaveBeenCalled();
+      // out of the page it still loads, and does not go looking for a caller from there
+      expect(warn).not.toHaveBeenCalled();
+      expect(box.querySelector('#caller')).not.toHaveAttribute('aria-controls');
+    });
+
+    it('opens on load when visible and placement are set before', async () => {
+      const error = vi.spyOn(console, 'error');
+      const { box, panel } = insert(
+        '<mds-dropdown target="#caller" disable-auto-placement>Menu</mds-dropdown>',
+      );
+      const shown = vi.fn();
+      panel.addEventListener('mdsDropdownVisible', shown);
+
+      panel.placement = 'top';
+      panel.visible = true;
+      await panel.componentOnReady();
+
+      expect(error).not.toHaveBeenCalled();
+      await vi.waitFor(() => {
+        expect(box.querySelector('#caller')).toEqualAttribute('aria-expanded', 'true');
+        expect(panel).toHaveAttribute('data-floating-placed');
+      });
+      // placed on top of its caller, it unfurls from its bottom edge
+      expect(panel.style.transformOrigin).toMatch(/ bottom$/);
+      expect(shown).toHaveBeenCalledTimes(1);
+    });
+
+    it('wires the caller that a target set before names', async () => {
+      const error = vi.spyOn(console, 'error');
+      const { box, panel } = insert(
+        '<mds-dropdown id="panel" target="#caller">Menu</mds-dropdown>',
+      );
+
+      panel.target = '#other';
+      await panel.componentOnReady();
+
+      expect(error).not.toHaveBeenCalled();
+      await vi.waitFor(() => {
+        expect(box.querySelector('#other')).toEqualAttribute('aria-controls', 'panel');
+      });
+      expect(box.querySelector('#caller')).not.toHaveAttribute('aria-controls');
+    });
+
+    it('wires its caller when it comes back to the page', async () => {
+      const warn = vi.spyOn(console, 'warn');
+      const { box, panel } = insert(
+        '<mds-dropdown id="panel" target="#caller">Menu</mds-dropdown>',
+      );
+
+      panel.remove();
+      await panel.componentOnReady();
+      box.append(panel);
+
+      await vi.waitFor(() => {
+        expect(box.querySelector('#caller')).toEqualAttribute('aria-controls', 'panel');
+      });
+      expect(warn).not.toHaveBeenCalled();
+    });
+  });
+
+  // a node moved in the page is disconnected and connected again, without loading again
+  describe('moved in the page', () => {
+    const moved = async () => {
+      const rendered = await render(
+        `<div>
+           <mds-button id="caller" label="Open"></mds-button>
+           <mds-button id="second" label="Second"></mds-button>
+           <mds-dropdown id="panel" target="#caller">Menu</mds-dropdown>
+         </div>`,
+      );
+      const panel = rendered.root.querySelector('#panel') as HTMLMdsDropdownElement;
+      await vi.waitFor(() => {
+        expect(panel).toEqualAttribute('aria-labelledby', 'caller');
+      });
+      rendered.root.append(panel);
+      return { ...rendered, panel };
+    };
+
+    it('still closes on Escape', async () => {
+      const { panel, waitForChanges } = await moved();
+
+      panel.visible = true;
+      await waitForChanges();
+      await userEvent.keyboard('{Escape}');
+      await waitForChanges();
+
+      // disconnectedCallback takes the Escape away, and nothing gave it back
+      expect(panel.visible).toBe(false);
+    });
+
+    it('takes back the label it gave itself when the target moves on', async () => {
+      const { panel } = await moved();
+
+      panel.target = '#second';
+
+      // wired twice to the same caller, it took the label for one it had not written
+      await vi.waitFor(() => {
+        expect(panel).toEqualAttribute('aria-labelledby', 'second');
+      });
     });
   });
 

@@ -149,44 +149,47 @@ export class MdsTooltip implements FloatingElement {
     caller.addEventListener('keydown', this.handleEscape);
   };
 
+  // A watcher runs as soon as the instance exists, the controller only from componentDidLoad: a
+  // property set in between has nothing to place yet, and componentDidLoad places what it finds
+  // (#527)
   @Watch('hideArrow')
   hideArrowChanged(): void {
-    this.floatingController.updatePosition();
+    this.floatingController?.updatePosition();
   }
 
   @Watch('disableAutoPlacement')
   disableAutoPlacementChanged(): void {
-    this.floatingController.updatePosition();
+    this.floatingController?.updatePosition();
   }
 
   @Watch('flip')
   flipChanged(): void {
-    this.floatingController.updatePosition();
+    this.floatingController?.updatePosition();
   }
 
   @Watch('offset')
   offsetChanged(): void {
-    this.floatingController.updatePosition();
+    this.floatingController?.updatePosition();
   }
 
   @Watch('placement')
   placementChanged(): void {
-    this.floatingController.updatePosition();
+    this.floatingController?.updatePosition();
   }
 
   @Watch('disableShift')
   disableShiftChanged(): void {
-    this.floatingController.updatePosition();
+    this.floatingController?.updatePosition();
   }
 
   @Watch('shiftPadding')
   shiftPaddingChanged(): void {
-    this.floatingController.updatePosition();
+    this.floatingController?.updatePosition();
   }
 
   @Watch('strategy')
   strategyChanged(): void {
-    this.floatingController.updatePosition();
+    this.floatingController?.updatePosition();
   }
 
   @Watch('relation')
@@ -196,6 +199,8 @@ export class MdsTooltip implements FloatingElement {
 
   @Watch('visible')
   visibleChanged(newValue: boolean): void {
+    // before the load: componentDidLoad places a tooltip it finds visible
+    if (this.floatingController == null) return;
     this.floatingController.updatePosition();
     if (newValue) {
       this.floatingController.updatePosition();
@@ -207,6 +212,9 @@ export class MdsTooltip implements FloatingElement {
   @Watch('target')
   targetChanged(): void {
     if ((this.target ?? '') === '') return;
+    // a host out of the page has no caller to look for: one taken out before it loaded still
+    // loads, and connectedCallback looks again if it comes back
+    if (!this.host.isConnected) return;
 
     const caller = this.floatingController?.updateCaller(this.target);
     if (!caller) return;
