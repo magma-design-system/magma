@@ -6,7 +6,7 @@
  *
  * Do not use at runtime — the CLI bundles `manifest.ts`.
  */
-import { spacingRules, withRemovals } from './manifest-v3.js';
+import { removalGlobals, spacingRules, withRemovals } from './manifest-v3.js';
 import { type Manifest } from './schema.js';
 
 export const testManifest: Manifest = {
@@ -315,10 +315,13 @@ export const testManifestV3: Manifest = {
         'mds-input-date-variant-color',
         'mds-input-variant-color',
         'mds-modal-overlay-color',
+        'magma-on-inverse',
+        'magma-surface-inverse',
+        ...removalGlobals.colors,
       ],
     },
-    classes: spacingRules.classes,
-    cssVars: spacingRules.cssVars,
+    classes: [...spacingRules.classes, ...removalGlobals.classes],
+    cssVars: [...spacingRules.cssVars, ...removalGlobals.cssVars],
   },
   components: withRemovals({
     'mds-accordion-item': {

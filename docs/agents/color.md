@@ -169,8 +169,8 @@ Never use `--magma-tint-*`: it is the internal pointer a named theme repoints, n
 switch it on with `data-theme-name` ([`theming.md`](theming.md)), do not paint it by hand.
 `variant-*` has no role of its own: the accents are `accent` and `accent-ai`.
 
-Deprecated: `--magma-neutral-emphasis` / `--magma-neutral-on-emphasis` are aliases of
-`--magma-surface-inverse` / `--magma-on-inverse`.
+The inverse surface is `--magma-surface-inverse` with `--magma-on-inverse` on it: Magma 3
+removed its Magma 2 names, `--magma-neutral-emphasis` / `--magma-neutral-on-emphasis`.
 
 ## Outside the web
 

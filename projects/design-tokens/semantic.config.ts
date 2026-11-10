@@ -101,7 +101,7 @@ export interface SemanticConfig {
    * Colored hues carry the full quintet; a `partial` hue omits `surface` (spec 6.4).
    * The partial (neutral) hue's emphasis pair is emitted as the INVERSE SURFACE role
    * (`--magma-surface-inverse` / `--magma-on-inverse`), not a colored `-emphasis` fill;
-   * the old `neutral-emphasis` / `-on-emphasis` names remain as deprecated aliases.
+   * its old names `neutral-emphasis` / `-on-emphasis` went with magma 3 (#1334).
    *
    * `family` names the RAMP (`status-success`), `roles` the generated role scales
    * of the same family (`--text-success-*`): the surface engine drops the group
@@ -465,8 +465,6 @@ export const roleDescriptions: Record<string, string> = {
   'surface-inverse': 'A chip that flips with the mode: dark on a light page, light on a dark one.',
   'surface-inverse-muted': 'The inverse chip, one step quieter.',
   'on-inverse': 'Text and icons on either inverse surface.',
-  'neutral-emphasis': 'Deprecated: the inverse surface under its old name.',
-  'neutral-on-emphasis': 'Deprecated: the ink on the inverse surface under its old name.',
 };
 
 /**

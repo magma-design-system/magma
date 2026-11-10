@@ -221,8 +221,8 @@ const borderSection = (): SemanticSection => ({
 //    hues: it is the INVERSE SURFACE role (a dark chip in light mode, light in dark -
 //    toast, tooltip). It is emitted under role names --magma-surface-inverse /
 //    --magma-on-inverse (Material inverseSurface), decoupled from the colored
-//    <hue>-emphasis fills. The former --magma-neutral-emphasis / -on-emphasis names
-//    stay as DEPRECATED aliases (one release) so existing consumers keep resolving.
+//    <hue>-emphasis fills. The former --magma-neutral-emphasis / -on-emphasis names,
+//    deprecated aliases in magma 2, are gone with magma 3 (#1334).
 const hueSection = (
   hue: string,
   { family, roles, partial }: { family: string; roles?: string; partial?: boolean },
@@ -244,13 +244,6 @@ const hueSection = (
         role('surface-inverse', tintStep(steps.emphasis), 'surface-inverse'),
         role('surface-inverse-muted', tintStep(steps.emphasisMuted), 'surface-inverse-muted'),
         role('on-inverse', 'magma-tint-text-on-emphasis', 'on-inverse'),
-        role(`${hue}-emphasis`, 'magma-surface-inverse', `${hue}-emphasis`, {
-          note: 'deprecated: renamed to --magma-surface-inverse / --magma-on-inverse',
-          deprecated: 'Renamed to --magma-surface-inverse.',
-        }),
-        role(`${hue}-on-emphasis`, 'magma-on-inverse', `${hue}-on-emphasis`, {
-          deprecated: 'Renamed to --magma-on-inverse.',
-        }),
       ],
     };
   }

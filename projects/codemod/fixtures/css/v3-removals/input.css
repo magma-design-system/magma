@@ -11,3 +11,13 @@ mds-breadcrumb.legacy {
 mds-button.contrast {
   --mds-button-border-high-contrast-width: 2px;
 }
+
+/* the old names of the inverse surface, read as channels in Magma 2 */
+.chip {
+  background: rgb(var(--magma-neutral-emphasis));
+  color: rgb(var(--magma-neutral-on-emphasis) / 0.9);
+}
+
+.tip {
+  @apply bg-neutral-emphasis text-neutral-on-emphasis;
+}

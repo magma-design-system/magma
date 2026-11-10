@@ -136,10 +136,10 @@ every other role keeps its name.
 
 Status hues: `info`, `success`, `warning`, `danger` (`danger` draws from the
 `status-error` family). The accent (`variant-primary`) and the AI accent (`variant-ai`)
-retint with a named theme; the status hues never do. `--magma-neutral-emphasis` /
-`--magma-neutral-on-emphasis` are deprecated aliases of `--magma-surface-inverse` /
-`--magma-on-inverse`. `--magma-tint-*` is the layer's internal repoint block, never
-consumed.
+retint with a named theme; the status hues never do. The inverse surface is
+`--magma-surface-inverse` / `--magma-on-inverse` (its Magma 2 names `--magma-neutral-emphasis` /
+`--magma-neutral-on-emphasis` went with Magma 3). `--magma-tint-*` is the layer's internal
+repoint block, never consumed.
 
 How the five surfaces stack (page, sunken and muted below it, raised and overlay above),
 their light and dark values, the shadow a raised element needs in light, and how named

@@ -378,10 +378,10 @@ For each of `neutral, accent, accent-ai, info, success, warning, danger`, the sa
 The `neutral` hue is special: its background needs are already covered by the `surface`
 family and the wash band (6.1b), so in the hue matrix `neutral` contributes only `fg` /
 `border`, and its emphasis pair (the dark neutral chip) is published as the inverse surface
-of 6.1d, `--magma-surface-inverse` / `--magma-on-inverse`; `--magma-neutral-emphasis` /
-`--magma-neutral-on-emphasis` remain as deprecated aliases. The colored hues carry the full
-quintet. This keeps neutral backgrounds in ONE place with no duplicate `neutral-surface`
-token.
+of 6.1d, `--magma-surface-inverse` / `--magma-on-inverse`; its Magma 2 names,
+`--magma-neutral-emphasis` / `--magma-neutral-on-emphasis`, went with Magma 3 (#1334). The
+colored hues carry the full quintet. This keeps neutral backgrounds in ONE place with no
+duplicate `neutral-surface` token.
 
 **The accents.** Two roles, declared in the `accents` map of `semantic.config.ts`: `accent`,
 the general accent (family `variant-primary`), and `ai` (family `variant-ai`). The general

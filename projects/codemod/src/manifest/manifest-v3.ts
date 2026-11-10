@@ -345,6 +345,97 @@ const deletableToDismissible = (): Rule => ({
 });
 
 /**
+ * The two names of the inverse surface that Magma 2 published as deprecated
+ * aliases, with the role each one renamed (`deprecated: 'Renamed to
+ * --magma-surface-inverse.'` in semantic.model.ts of design-tokens 15). Magma 3
+ * publishes them no more, so the generated colour list lacks them: they are
+ * added to it, so that category N rewrites a Magma 2 read of them before Q
+ * renames it.
+ */
+export const INVERSE_RENAMES: Readonly<Record<string, string>> = {
+  'magma-neutral-emphasis': 'magma-surface-inverse',
+  'magma-neutral-on-emphasis': 'magma-on-inverse',
+};
+
+/**
+ * The utility roots that read a colour of the theme: the
+ * `namespaces["--color"].utilities` of the consumption map of styles
+ * (`dist/tailwind/consumption.json`, Tailwind 4.3), held to the built map by
+ * manifest-v3.test.ts. A Tailwind colour `--color-neutral-emphasis` makes
+ * `bg-neutral-emphasis`, `text-neutral-emphasis` and the others.
+ */
+export const COLOR_ROOTS = [
+  'accent',
+  'bg',
+  'border',
+  'border-b',
+  'border-be',
+  'border-bs',
+  'border-e',
+  'border-l',
+  'border-r',
+  'border-s',
+  'border-t',
+  'border-x',
+  'border-y',
+  'caret',
+  'decoration',
+  'divide',
+  'drop-shadow',
+  'fill',
+  'from',
+  'inset-ring',
+  'inset-shadow',
+  'mask-b-from',
+  'mask-b-to',
+  'mask-conic-from',
+  'mask-conic-to',
+  'mask-l-from',
+  'mask-l-to',
+  'mask-linear-from',
+  'mask-linear-to',
+  'mask-r-from',
+  'mask-r-to',
+  'mask-radial-from',
+  'mask-radial-to',
+  'mask-t-from',
+  'mask-t-to',
+  'mask-x-from',
+  'mask-x-to',
+  'mask-y-from',
+  'mask-y-to',
+  'outline',
+  'placeholder',
+  'ring',
+  'ring-offset',
+  'scrollbar-thumb',
+  'scrollbar-track',
+  'shadow',
+  'stroke',
+  'text',
+  'text-shadow',
+  'to',
+  'via',
+] as const;
+
+/** The global rules of category Q: the custom properties and the classes of the inverse surface. */
+export const removalGlobals = {
+  colors: Object.keys(INVERSE_RENAMES),
+  cssVars: Object.entries(INVERSE_RENAMES).map(([from, to]): CssVarRenameRule => ({
+    kind: 'cssVarRename',
+    from,
+    to,
+  })),
+  classes: COLOR_ROOTS.flatMap((root) =>
+    Object.entries(INVERSE_RENAMES).map(([from, to]): ClassRenameRule => ({
+      kind: 'classRename',
+      from: `${root}-${from.replace(/^magma-/, '')}`,
+      to: `${root}-${to.replace(/^magma-/, '')}`,
+    })),
+  ),
+};
+
+/**
  * Category Q (#1334): what Magma 2 deprecated until the next major. The source
  * of each rule is the deprecation Magma 2 ships (its `@deprecated` text, the
  * `@prop` description of a custom property), which names the replacement; a
@@ -423,10 +514,10 @@ export const manifestV3: Manifest = {
   global: {
     colorTokens: {
       kind: 'colorToken',
-      names: [...colorTokenNames, ...CONTRACT_COLORS],
+      names: [...colorTokenNames, ...CONTRACT_COLORS, ...removalGlobals.colors],
     },
-    classes: spacingRules.classes,
-    cssVars: spacingRules.cssVars,
+    classes: [...spacingRules.classes, ...removalGlobals.classes],
+    cssVars: [...spacingRules.cssVars, ...removalGlobals.cssVars],
   },
   components: withRemovals({
     'mds-accordion-item': {

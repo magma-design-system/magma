@@ -126,8 +126,8 @@ test('a theme of the studio is judged under the name the Themes page gives it', 
   expect(ocean.family).toBe('blue')
   // keyed as the CLI keys a theme, its neutral hue on the ramp of its group, as the export
   // repoints it (label-blue, not a tone)
-  const neutral = pairOf(ocean, 'neutral-on-emphasis', 'neutral-emphasis').cells.light
-  expect(neutral.key).toBe('ocean:neutral-on-emphasis|neutral-emphasis|light')
+  const neutral = pairOf(ocean, 'on-inverse', 'surface-inverse').cells.light
+  expect(neutral.key).toBe('ocean:on-inverse|surface-inverse|light')
   expect(neutral.bgHex).toBe(treeOf(blue).label.blue.light['2'].value)
 })
 
