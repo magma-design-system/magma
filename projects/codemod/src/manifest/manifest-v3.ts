@@ -356,6 +356,16 @@ export const removals: Record<string, Rule[]> = {
   'mds-banner': [deletableToDismissible()],
   'mds-push-notification-item': [deletableToDismissible()],
   'mds-toast': [deletableToDismissible()],
+  // it had no effect: `mds-tree` never read it, each `mds-tree-item` reads its own
+  'mds-tree': [
+    {
+      kind: 'propRemove',
+      prop: { attr: 'async', prop: 'async' },
+      strategy: 'delete',
+      message:
+        '`async` on mds-tree is gone in Magma 3: it had no effect; set `async` on each mds-tree-item that loads its children on demand',
+    },
+  ],
 };
 
 /** `MdsBanner` from `mds-banner`, as the React wrappers name the components. */

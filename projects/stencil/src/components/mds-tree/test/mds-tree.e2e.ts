@@ -9,6 +9,16 @@ describe('mds-tree', () => {
     expect(root).toHaveAttribute('hydrated');
   });
 
+  // `async` on the tree had no effect, it is read on each item: magma 3 drops it (#1334)
+  it('has no async of its own, only its items have one', async () => {
+    const { root } = await render(
+      '<mds-tree async><mds-tree-item label="Parent" async></mds-tree-item></mds-tree>',
+    );
+
+    expect('async' in root).toBe(false);
+    expect(root.querySelector<HTMLMdsTreeItemElement>('mds-tree-item')!.async).toBe(true);
+  });
+
   it('stacks the items it was given, and only those', async () => {
     // the stacking order used to read assignedNodes(), which counts the whitespace between
     // the items: a tree written across more than one line threw on the first text node,

@@ -3356,11 +3356,6 @@ export namespace Components {
          */
         "appearance": TreeAppearance;
         /**
-          * Has no effect on the tree: `async` is read on each `mds-tree-item`.
-          * @deprecated Set `async` on the items that load their children on demand. Goes in the next major.
-         */
-        "async"?: boolean;
-        /**
           * Specifies if the tree is expanded.
          */
         "expanded"?: boolean;
@@ -8923,11 +8918,6 @@ declare namespace LocalJSX {
          */
         "appearance"?: TreeAppearance;
         /**
-          * Has no effect on the tree: `async` is read on each `mds-tree-item`.
-          * @deprecated Set `async` on the items that load their children on demand. Goes in the next major.
-         */
-        "async"?: boolean;
-        /**
           * Specifies if the tree is expanded.
          */
         "expanded"?: boolean;
@@ -9809,7 +9799,6 @@ declare namespace LocalJSX {
     }
     interface MdsTreeAttributes {
         "appearance": TreeAppearance;
-        "async": boolean;
         "label": string;
         "toggle": TreeIcon;
         "togglePosition": ButtonIconPositionType;

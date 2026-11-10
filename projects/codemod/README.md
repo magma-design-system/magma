@@ -276,6 +276,7 @@ text of a prop, the description of a custom property).
 | Magma 2                                                              | Magma 3        | Codemod   |
 | -------------------------------------------------------------------- | -------------- | --------- |
 | `deletable` on `mds-banner`, `mds-toast`, `mds-push-notification-item` | `dismissible` | rewritten |
+| `async` on `mds-tree`, which had no effect                            | `async` on each `mds-tree-item` that loads its children | removed, reported |
 
 `deletable` stays on the components where it is the right word, because they remove a value: `mds-chip`,
 `mds-note` and the others are left alone.
