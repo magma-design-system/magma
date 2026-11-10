@@ -1165,7 +1165,7 @@ mds-pref-mode css --mds-pref-mode-overlay-show-duration INTERNAL
 mds-pref-mode css --mds-pref-mode-overlay-z-index
 mds-pref-theme encapsulation shadow
 mds-pref-theme prop cornerShape (attr corner-shape) [reflect, mutable]: "bevel" | "default" | "notch" | "round" | "scoop" | "square" | "squircle" | undefined
-mds-pref-theme prop name (attr name) [reflect, mutable]: string = 'default'
+mds-pref-theme prop name (attr name) [reflect, mutable]: string = 'business'
 mds-pref-theme prop scheme (attr scheme) [reflect, mutable]: "all" | "dark" | "light" = 'all'
 mds-pref-theme prop size (attr size) [reflect]: "md" | "sm" | undefined
 mds-pref-theme event mdsPrefChange: MdsPrefChangeEventDetail [bubbles, cancelable, composed]
@@ -1173,7 +1173,7 @@ mds-pref-theme event mdsPrefThemeChange: MdsPrefThemeEventDetail [bubbles, cance
 mds-pref-theme slot (default)
 mds-pref-theme-item encapsulation shadow
 mds-pref-theme-item prop label (attr label) [reflect, mutable]: string | undefined
-mds-pref-theme-item prop name (attr name) [reflect]: string = 'default'
+mds-pref-theme-item prop name (attr name) [reflect]: string = 'business'
 mds-pref-theme-item prop scheme (attr scheme) [reflect]: "all" | "dark" | "light" | undefined = 'all'
 mds-pref-theme-item prop selected (attr selected) [reflect]: boolean | undefined = false
 mds-pref-theme-item event mdsPrefThemeItemSelect: MdsPrefThemeEventDetail [bubbles, cancelable, composed]

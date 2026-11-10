@@ -47,8 +47,8 @@ It is one attribute on `<html>`, and it needs `themes.css` ([`assets.md`](assets
 | `editorial` | the publishing side | `bisque`, warm grey | the Maggioli Editore brand |
 
 No `data-theme-name` means `business`: it is the base `:root` and emits no rule.
-`default` (its old name), `cool` and `warm` still work and are deprecated: they leave at
-the next major.
+Magma 3 removed the themes Magma 2 deprecated: `default` (the old name of `business`),
+`cool` and `warm`. A choice `mds-pref-theme` stored as `default` is read as `business`.
 
 The status colors (info, success, warning, danger) never change with the theme. To let
 the user choose, use `mds-pref-theme`: it writes the attribute, remembers the choice and

@@ -21,3 +21,9 @@ mds-button.contrast {
 .tip {
   @apply bg-neutral-emphasis text-neutral-on-emphasis;
 }
+
+/* the previews of the themes Magma 2 deprecated */
+.picker {
+  --swatch: var(--magma-preview-default-wash);
+  --swatch-cool: var(--magma-preview-cool-accent);
+}

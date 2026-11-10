@@ -88,8 +88,8 @@ describe('mds-pref', () => {
             <mds-pref>
               <mds-pref-mode mode="dark"></mds-pref-mode>
               <mds-pref-theme>
-                <mds-pref-theme-item name="default" scheme="all"></mds-pref-theme-item>
-                <mds-pref-theme-item name="cool" scheme="light"></mds-pref-theme-item>
+                <mds-pref-theme-item name="business" scheme="all"></mds-pref-theme-item>
+                <mds-pref-theme-item name="ocean" scheme="light"></mds-pref-theme-item>
               </mds-pref-theme>
             </mds-pref>
           </div>
@@ -99,7 +99,7 @@ describe('mds-pref', () => {
 
       root.querySelector('.menu')!.append(root.querySelector('mds-pref')!);
       await settle(waitForChanges);
-      root.querySelector<HTMLElement>('mds-pref-theme-item[name="cool"]')!.click();
+      root.querySelector<HTMLElement>('mds-pref-theme-item[name="ocean"]')!.click();
       await settle(waitForChanges);
 
       const mode = root.querySelector<HTMLMdsPrefModeElement>('mds-pref-mode')!.shadowRoot!;
@@ -138,13 +138,13 @@ describe('mds-pref', () => {
   // The lock reaches mds-pref-mode through the scheme the theme writes on <html> (#1274): the
   // panel no longer passes it down, so it holds for a mode control anywhere on the page
   describe('the lock of a single-mode theme', () => {
-    // `cool` stands in for a light-only theme here; only its `scheme` matters
+    // `ocean` stands in for a light-only theme here; only its `scheme` matters
     const markup = `
       <mds-pref>
         <mds-pref-mode mode="dark"></mds-pref-mode>
         <mds-pref-theme>
-          <mds-pref-theme-item name="default" scheme="all"></mds-pref-theme-item>
-          <mds-pref-theme-item name="cool" scheme="light"></mds-pref-theme-item>
+          <mds-pref-theme-item name="business" scheme="all"></mds-pref-theme-item>
+          <mds-pref-theme-item name="ocean" scheme="light"></mds-pref-theme-item>
         </mds-pref-theme>
       </mds-pref>
     `;
@@ -156,7 +156,7 @@ describe('mds-pref', () => {
     it('shows the light mode when a light-only theme is selected, without touching the stored mode preference', async () => {
       const { root, waitForChanges } = await render(markup);
 
-      clickVariant(root, 'cool');
+      clickVariant(root, 'ocean');
       await waitForChanges();
 
       const mode = root.querySelector<HTMLMdsPrefModeElement>('mds-pref-mode')!;
@@ -172,9 +172,9 @@ describe('mds-pref', () => {
     it('clears the lock when an all-scheme theme is selected', async () => {
       const { root, waitForChanges } = await render(markup);
 
-      clickVariant(root, 'cool');
+      clickVariant(root, 'ocean');
       await waitForChanges();
-      clickVariant(root, 'default');
+      clickVariant(root, 'business');
       await waitForChanges();
 
       const mode = root.querySelector<HTMLMdsPrefModeElement>('mds-pref-mode')!.shadowRoot!;

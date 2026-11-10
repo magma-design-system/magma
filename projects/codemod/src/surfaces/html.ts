@@ -437,7 +437,7 @@ export const transformHtml = (
       const raw = source.slice(l.startOffset, l.endOffset);
       const parsed = parseRawAttr(raw);
       const v2set = rule.v2set ? component!.v2EnumSets?.[rule.v2set] : undefined;
-      const outcome = remapEnum(attrValueOf(attr, parsed.hasValue), rule.map, v2set);
+      const outcome = remapEnum(attrValueOf(attr, parsed.hasValue), rule.map, v2set, rule.why);
       if (outcome.action === 'rename') {
         const q = parsed.quote;
         edits.push({

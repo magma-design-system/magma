@@ -32,7 +32,7 @@ describe('mds-pref-theme-item', () => {
     // it sat in the default slot of mds-button, which takes text only: the button read its
     // label from it and the preview was gone, a 0x0 box, so every theme looked the same
     const markup =
-      '<mds-pref-theme-item name="cool" label="Freddo" style="--mds-pref-theme-item-color-background: rgb(1, 2, 3)"></mds-pref-theme-item>';
+      '<mds-pref-theme-item name="ocean" label="Freddo" style="--mds-pref-theme-item-color-background: rgb(1, 2, 3)"></mds-pref-theme-item>';
 
     it('is on screen next to the label of the button', async () => {
       const { root } = await render<HTMLMdsPrefThemeItemElement>(markup);
@@ -108,7 +108,7 @@ describe('mds-pref-theme-item', () => {
       await userEvent.click(root.shadowRoot!.querySelector('.theme-preview')!);
       await waitForChanges();
 
-      expect(select).toHaveReceivedEventDetail({ name: 'cool', scheme: 'all' });
+      expect(select).toHaveReceivedEventDetail({ name: 'ocean', scheme: 'all' });
     });
 
     it('puts no markup in the text-only slot of mds-button', async () => {

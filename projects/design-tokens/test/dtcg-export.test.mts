@@ -188,7 +188,8 @@ function walkCssOnly (tree: Node): string[] {
 }
 
 describe('DTCG 2025.10', () => {
-  const files = ['base', 'mode-dark', 'contrast-more', 'theme-editorial', 'theme-editorial-contrast-more', 'theme-cool', 'theme-cool-contrast-more', 'theme-warm', 'theme-warm-contrast-more']
+  // cool and warm, deprecated in magma 2, went with magma 3 (#1334)
+  const files = ['base', 'mode-dark', 'contrast-more', 'theme-editorial', 'theme-editorial-contrast-more']
   const TYPES = ['color', 'dimension', 'fontFamily', 'fontWeight', 'duration', 'cubicBezier', 'number', 'shadow', 'typography']
   const isDimension = (value: unknown) =>
     typeof (value as DtcgDimension)?.value === 'number' && ['px', 'rem'].includes((value as DtcgDimension).unit)
@@ -253,8 +254,10 @@ describe('DTCG 2025.10', () => {
 })
 
 describe('values match the stylesheets', () => {
-  const lightTree = scenario('light', 'default')
-  const darkTree = scenario('dark', 'default')
+  // the base theme, the default context of the theme modifier (`default`, its old name, went
+  // with magma 3, #1334)
+  const lightTree = scenario('light', 'business')
+  const darkTree = scenario('dark', 'business')
 
   test('palette, light and dark: colors-rgb.css', () => {
     for (const [mode, tree, block] of [['light', lightTree, light], ['dark', darkTree, dark]] as const)

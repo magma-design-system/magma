@@ -1414,9 +1414,8 @@ export const Preferences = {
           <mds-pref class="w-full">
             <mds-pref-mode />
             <mds-pref-theme>
-              <mds-pref-theme-item name="default" />
-              <mds-pref-theme-item name="cool" />
-              <mds-pref-theme-item name="warm" />
+              <mds-pref-theme-item name="business" />
+              <mds-pref-theme-item name="editorial" />
             </mds-pref-theme>
             <mds-pref-contrast />
             <mds-pref-animation />

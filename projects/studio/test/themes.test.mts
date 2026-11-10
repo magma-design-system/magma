@@ -95,8 +95,10 @@ test('the export prints each theme as themes.css does: the shipped ones by their
 })
 
 test('a theme of the person never takes a name Magma ships, nor a name already given', () => {
-  for (const name of ['business', 'editorial', 'default', 'cool', 'warm'])
+  for (const name of ['business', 'editorial', 'default'])
     expect(RESERVED_THEME_NAMES.has(name)).toBe(true)
+  // magma 3 removed cool and warm (#1334): a product may name a theme so
+  for (const name of ['cool', 'warm']) expect(RESERVED_THEME_NAMES.has(name)).toBe(false)
   expect(themeNameProblem('editorial', 'porcelain', {})).toMatch(/Magma ships/)
   expect(themeNameProblem('My Theme', 'porcelain', {})).toMatch(/lowercase/)
   expect(themeNameProblem('studio', 'porcelain', { kaolin: 'studio' })).toMatch(/kaolin/)

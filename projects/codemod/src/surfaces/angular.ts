@@ -608,6 +608,7 @@ export const transformAngular = (
           s.valueSpan ? stringLiteral(s.value) : bareTrue(),
           rule.map,
           v2set,
+          rule.why,
         );
         if (outcome.action === 'rename') {
           edits.push({

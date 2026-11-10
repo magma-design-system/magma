@@ -89,6 +89,7 @@ export const remapEnum = (
   current: AttrValue,
   map: Record<string, string | null>,
   v2set?: readonly string[],
+  why?: Record<string, string>,
 ): EnumRemapOutcome => {
   if (current.kind === 'dynamic') {
     return { action: 'flag', reason: 'dynamic value, cannot remap enum' };
@@ -102,7 +103,10 @@ export const remapEnum = (
   if (Object.prototype.hasOwnProperty.call(map, value)) {
     const target = map[value];
     if (target === null || target === undefined) {
-      return { action: 'flag', reason: `"${value}" has no v2 equivalent, migrate manually` };
+      return {
+        action: 'flag',
+        reason: why?.[value] ?? `"${value}" has no v2 equivalent, migrate manually`,
+      };
     }
     if (v2set && !v2set.includes(target)) {
       return { action: 'flag', reason: `mapped target "${target}" is not in the v2 set` };

@@ -21,3 +21,9 @@ mds-button.contrast {
 .tip {
   @apply bg-surface-inverse text-on-inverse;
 }
+
+/* the previews of the themes Magma 2 deprecated */
+.picker {
+  --swatch: var(--magma-preview-business-wash);
+  --swatch-cool: var(--magma-preview-cool-accent);
+}

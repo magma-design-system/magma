@@ -2500,7 +2500,7 @@ export namespace Components {
         /**
           * Specifies the theme name attribute A string representing the theme name, in lowercase kebab-case.
           * @example 'maggioli-editore'
-          * @default 'default'
+          * @default 'business'
          */
         "name": string;
         /**
@@ -2524,7 +2524,7 @@ export namespace Components {
         /**
           * Specifies the theme name; the swatch shows the preview that theme publishes, `--magma-preview-<name>-wash` and `--magma-preview-<name>-accent`
           * @example 'editorial'
-          * @default 'default'
+          * @default 'business'
          */
         "name": string;
         /**
@@ -8034,7 +8034,7 @@ declare namespace LocalJSX {
         /**
           * Specifies the theme name attribute A string representing the theme name, in lowercase kebab-case.
           * @example 'maggioli-editore'
-          * @default 'default'
+          * @default 'business'
          */
         "name"?: string;
         /**
@@ -8066,7 +8066,7 @@ declare namespace LocalJSX {
         /**
           * Specifies the theme name; the swatch shows the preview that theme publishes, `--magma-preview-<name>-wash` and `--magma-preview-<name>-accent`
           * @example 'editorial'
-          * @default 'default'
+          * @default 'business'
          */
         "name"?: string;
         /**

@@ -280,6 +280,10 @@ text of a prop, the description of a custom property).
 | a number in `size` of `mds-input-select`, the row count of the list    | `rows` (`size` keeps `sm`, `md`, `lg`) | rewritten; an expression: reported |
 | `--mds-breadcrumb-button-color-current`, `--mds-breadcrumb-current-button-color` | `--mds-breadcrumb-button-color-selected` | rewritten |
 | `--mds-button-border-high-contrast-width`, `--mds-button-border-high-contrast-hover-width`, read by nothing | none | reported |
+| the theme `default` in `name` of `mds-pref-theme` and `mds-pref-theme-item`   | `business` | rewritten |
+| the themes `cool` and `warm`, worked examples of the theme axis                | `business` or `editorial` | reported |
+| `--magma-preview-default-wash`, `--magma-preview-default-accent`               | `--magma-preview-business-wash`, `-accent` | rewritten |
+| the previews of `cool` and `warm` (`--magma-preview-cool-wash`, ...)            | the preview of `business` or `editorial` | reported |
 | `--magma-neutral-emphasis`, `--magma-neutral-on-emphasis` and their classes (`bg-neutral-emphasis`, `text-neutral-on-emphasis`, ...) | `--magma-surface-inverse`, `--magma-on-inverse` (`bg-surface-inverse`, `text-on-inverse`) | rewritten |
 
 `deletable` stays on the components where it is the right word, because they remove a value: `mds-chip`,

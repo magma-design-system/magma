@@ -1,0 +1,12 @@
+[
+  {
+    "kind": "warn",
+    "line": 12,
+    "contains": "`--mds-button-border-high-contrast-width` is gone in Magma 3"
+  },
+  {
+    "kind": "warn",
+    "line": 28,
+    "contains": "`--magma-preview-cool-accent` is gone in Magma 3 with the theme `cool`"
+  }
+]

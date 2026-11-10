@@ -21,7 +21,7 @@ The `<mds-pref-theme-item>` web component is a single selectable theme entry ins
 
 #### Properties & Visual Configurations
 
-- **`name`**: The theme identifier reported to the parent and matched against the parent's active `name` to compute initial selection. Use a simple or kebab-case string; the named themes are `business`, the base theme, and `editorial` ([`docs/agents/theming.md`](../../../../../../docs/agents/theming.md)). `default`, `cool` and `warm` still work and are deprecated: they leave at the next major. The parent validates the lowercase/kebab format and ignores an invalid name with a console warning.
+- **`name`**: The theme identifier reported to the parent and matched against the parent's active `name` to compute initial selection. Use a simple or kebab-case string; the named themes are `business`, the base theme, and `editorial` ([`docs/agents/theming.md`](../../../../../../docs/agents/theming.md)). With `name` left out the item stands for `business`. Magma 3 removed `default`, `cool` and `warm`. The parent validates the lowercase/kebab format and ignores an invalid name with a console warning.
 - **`scheme`**: Declares which color schemes the theme supports - `all` (default, both light and dark), or `light` / `dark` to force a single mode. This value travels with the selection event and is applied by the parent when the item is chosen, unless the theme declares its own mode in its stylesheet (`color.modes` of its file), which wins.
 - **`selected`**: Reflects whether this item is the active theme. The parent sets it on every item when it loads and on each pick, so a value set by hand is overwritten.
 
@@ -132,7 +132,7 @@ Common incorrect uses of `<mds-pref-theme-item>`. Each entry pairs the wrong for
 Setting `selected` on one item does not deselect the others - the parent is the only actor that can coordinate the whole group. When it loads it marks only the item matching the active theme, overwriting the `selected` in the markup; a value set later from script leaves several items marked. Drive initial selection through the parent's `name` prop or by letting the user click.
 
 ```html
-<!-- INCORRECT - the parent overwrites both on load and marks "default" -->
+<!-- INCORRECT - the parent overwrites both on load and marks "business" -->
 <mds-pref-theme name="business" scheme="all">
   <mds-pref-theme-item name="business" label="Gestionale" scheme="all"></mds-pref-theme-item>
   <mds-pref-theme-item name="editorial" label="Editoriale" scheme="all" selected></mds-pref-theme-item>
@@ -202,12 +202,12 @@ mds-pref-theme-item[name="editorial"] {
 
 ## Properties
 
-| Property   | Attribute  | Description                                                                                                                                    | Type                                      | Default     |
-| ---------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- | ----------- |
-| `label`    | `label`    | Specifies the theme name                                                                                                                       | `string \| undefined`                     | `undefined` |
-| `name`     | `name`     | Specifies the theme name; the swatch shows the preview that theme publishes, `--magma-preview-<name>-wash` and `--magma-preview-<name>-accent` | `string`                                  | `'default'` |
-| `scheme`   | `scheme`   | Specifies the theme scheme which can be 'light', 'dark' or 'all'                                                                               | `"all" \| "dark" \| "light" \| undefined` | `'all'`     |
-| `selected` | `selected` | Specifies if the element is selected                                                                                                           | `boolean \| undefined`                    | `false`     |
+| Property   | Attribute  | Description                                                                                                                                    | Type                                      | Default      |
+| ---------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- | ------------ |
+| `label`    | `label`    | Specifies the theme name                                                                                                                       | `string \| undefined`                     | `undefined`  |
+| `name`     | `name`     | Specifies the theme name; the swatch shows the preview that theme publishes, `--magma-preview-<name>-wash` and `--magma-preview-<name>-accent` | `string`                                  | `'business'` |
+| `scheme`   | `scheme`   | Specifies the theme scheme which can be 'light', 'dark' or 'all'                                                                               | `"all" \| "dark" \| "light" \| undefined` | `'all'`      |
+| `selected` | `selected` | Specifies if the element is selected                                                                                                           | `boolean \| undefined`                    | `false`      |
 
 
 ## Events

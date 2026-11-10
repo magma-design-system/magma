@@ -367,7 +367,7 @@ export const transformReact = (
       const attr = findAttr(nameOf(rule.prop));
       if (!attr) return;
       const v2set = rule.v2set ? component!.v2EnumSets?.[rule.v2set] : undefined;
-      const outcome = remapEnum(valueOf(attr), rule.map, v2set);
+      const outcome = remapEnum(valueOf(attr), rule.map, v2set, rule.why);
       if (outcome.action === 'rename') {
         edits.push({
           start: attr.getStart(),

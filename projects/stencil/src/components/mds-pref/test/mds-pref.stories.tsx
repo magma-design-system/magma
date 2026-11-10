@@ -24,7 +24,7 @@ const Template = (args) => (
   <mds-pref {...args}>
     <mds-pref-mode></mds-pref-mode>
     <mds-pref-theme>
-      <mds-pref-theme-item name="default"></mds-pref-theme-item>
+      <mds-pref-theme-item name="business"></mds-pref-theme-item>
       <mds-pref-theme-item name="magma"></mds-pref-theme-item>
       <mds-pref-theme-item name="maggioli-editore"></mds-pref-theme-item>
     </mds-pref-theme>

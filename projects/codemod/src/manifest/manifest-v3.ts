@@ -418,14 +418,37 @@ export const COLOR_ROOTS = [
   'via',
 ] as const;
 
-/** The global rules of category Q: the custom properties and the classes of the inverse surface. */
+/**
+ * The previews of the themes Magma 2 deprecated (`--magma-preview-<name>-wash`
+ * and `-accent`, which every theme publishes for `mds-pref-theme-item`,
+ * docs/agents/theming.md): `default` was `business`, so its previews are
+ * renamed; `cool` and `warm` have no theme in Magma 3, so theirs are reported.
+ */
+const PREVIEW_PARTS = ['wash', 'accent'] as const;
+
+/**
+ * The global rules of category Q: the custom properties and the classes of the
+ * inverse surface, and the previews of the theme `default`.
+ */
 export const removalGlobals = {
-  colors: Object.keys(INVERSE_RENAMES),
-  cssVars: Object.entries(INVERSE_RENAMES).map(([from, to]): CssVarRenameRule => ({
-    kind: 'cssVarRename',
-    from,
-    to,
-  })),
+  colors: [
+    ...Object.keys(INVERSE_RENAMES),
+    ...['default', 'cool', 'warm'].flatMap((theme) =>
+      PREVIEW_PARTS.map((part) => `magma-preview-${theme}-${part}`),
+    ),
+  ],
+  cssVars: [
+    ...Object.entries(INVERSE_RENAMES).map(([from, to]): CssVarRenameRule => ({
+      kind: 'cssVarRename',
+      from,
+      to,
+    })),
+    ...PREVIEW_PARTS.map((part): CssVarRenameRule => ({
+      kind: 'cssVarRename',
+      from: `magma-preview-default-${part}`,
+      to: `magma-preview-business-${part}`,
+    })),
+  ],
   classes: COLOR_ROOTS.flatMap((root) =>
     Object.entries(INVERSE_RENAMES).map(([from, to]): ClassRenameRule => ({
       kind: 'classRename',
@@ -434,6 +457,23 @@ export const removalGlobals = {
     })),
   ),
 };
+
+/**
+ * The named themes Magma 2 deprecated, as `semantic.config.ts` of design-tokens
+ * 15 said: `default` the old name of `business`, rewritten; `cool` and `warm`
+ * worked examples of the theme axis with no product theme of their own,
+ * reported with the theme their deprecation named.
+ */
+const themeNames = (): Rule => ({
+  kind: 'enumRemap',
+  prop: { attr: 'name', prop: 'name' },
+  map: { default: 'business', cool: null, warm: null },
+  confidence: 'safe',
+  why: {
+    cool: '`cool` is gone in Magma 3: a worked example of the theme axis, not a product theme; use business or editorial',
+    warm: '`warm` is gone in Magma 3: a worked example of the theme axis, not a product theme; use editorial',
+  },
+});
 
 /**
  * Category Q (#1334): what Magma 2 deprecated until the next major. The source
@@ -476,6 +516,17 @@ export const removals: Record<string, Rule[]> = {
       confidence: 'safe',
       note: 'a number in `size` was the row count of the list, which Magma 3 reads from `rows` only',
     },
+  ],
+  'mds-pref-theme': [themeNames()],
+  'mds-pref-theme-item': [
+    themeNames(),
+    ...['cool', 'warm'].flatMap((theme) =>
+      PREVIEW_PARTS.map((part): Rule => ({
+        kind: 'cssVarRemove',
+        name: `magma-preview-${theme}-${part}`,
+        message: `\`--magma-preview-${theme}-${part}\` is gone in Magma 3 with the theme \`${theme}\`: use the preview of business or editorial`,
+      })),
+    ),
   ],
   'mds-toast': [deletableToDismissible()],
   // it had no effect: `mds-tree` never read it, each `mds-tree-item` reads its own
