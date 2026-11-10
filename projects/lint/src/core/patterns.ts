@@ -49,9 +49,9 @@ export const PATTERN_KINDS = ['pattern', 'block', 'design-language'] as const;
  * where the domains go; but Foundation there is the umbrella of the decisions Magma stands on
  * (principles, accessibility, color, typography, illustration, content), and the design
  * language is one group of it, Design language. Only this value is read: the core reads the
- * files of its own release, and no product layer has a domain. What may meet an older magma
- * names both until the next major: the skills of the Claude Code plugin, which main serves,
- * and the docs site.
+ * files of its own release, and no product layer has a domain. The skills of the Claude Code
+ * plugin, which main serves to every release, named both until magma 3 dropped `foundation`
+ * (#1334).
  */
 export const DESIGN_LANGUAGE = 'design-language';
 /**

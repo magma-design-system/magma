@@ -95,9 +95,9 @@ The kind is named after what the files are, not after the item of the docs site 
 (#1253). It was `foundation` in magma 2.11 and before, after the Foundation item of the site,
 where the domains go; but Foundation there is the umbrella, and the domains are one group of it,
 Design language, next to Base, Design and Content. The core reads only `design-language`: it
-reads the files of its own release, and no product layer has a domain. What may meet an older
-magma names both until the next major: the skills of the Claude Code plugin, which `main`
-serves, and the docs site.
+reads the files of its own release, and no product layer has a domain. The skills of the
+Claude Code plugin, which `main` serves to every release, named both until the next major:
+Magma 3 drops `foundation` from them (#1334).
 
 What changes from a pattern:
 
