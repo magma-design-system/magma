@@ -18,7 +18,7 @@ The `<mds-filter-item>` web component is a single selectable option inside the [
 - **Compound child only**: `<mds-filter-item>` must be a direct slot child of `<mds-filter>`; it is not used standalone and should not be mixed with other child types.
 - **Self-toggling + event**: Clicking (or activating via the keyboard) flips `selected` and emits `mdsFilterItemSelect` with `{ id, selected }`. The `id` is the one set in the markup; an item without one gets `item-<index>` from the parent on load. The parent enforces single vs. multiple selection and re-emits `mdsFilterChange` with the aggregated value list.
 - **State owned with the parent**: `selected` doubles as a styling hook and as the flag the parent reads/writes - in single-select mode the parent clears the other items' selection, and on reset it clears the whole group. The parent also follows a `selected` set by the application, without emitting `mdsFilterChange`.
-- **Toggle button**: The host is a `button` whose `aria-pressed` follows `selected`. Its name is the `label` followed by the `count` as a number of results in the page language (the `lang` of `<html>`): "Nuove, 11 results" in English, "Nuove, 11 risultati" in Italian. An `aria-label` written on the host by the author stays.
+- **Toggle button**: The host is a `button` whose `aria-pressed` follows `selected`. Its name is the `label` followed by the `count` as a number of results in the page language (the `lang` of `<html>`): "Nuove, 11 results" in English, "Nuove, 11 risultati" in Italian. The name contains the text the item shows, the label and the count as separate words, so a speech-input user can say what they see (WCAG 2.5.3, Label in Name). An `aria-label` written on the host by the author stays, as written: it must contain that text too, and follow the count when it changes.
 - **Keyboard activation**: Enter (and numpad Enter) and Space activate the item like a pointer click.
 - **Focus management**: The item is focusable unless `disabled`, in which case it drops out of the tab order.
 
@@ -202,6 +202,22 @@ Common incorrect uses of `<mds-filter-item>`. Each entry pairs the wrong form wi
 <mds-filter label="Priorita">
   <mds-filter-item label="Alta" value="high"></mds-filter-item>
   <mds-filter-item label="Bassa" value="low"></mds-filter-item>
+</mds-filter>
+```
+
+#### Do Not Leave the Count Out of an `aria-label` of Your Own
+
+The item names itself after its label and its count. An `aria-label` written on the host replaces that name as it is, and the count the item shows is visible text too: a name without it fails WCAG 2.5.3 (Label in Name), and a speech-input user saying the number does not reach the item. Put the count in the name, or leave the name to the item.
+
+```html
+<!-- INCORRECT -->
+<mds-filter label="Vista">
+  <mds-filter-item aria-label="Vista a griglia" icon="mi/baseline/grid-view" value="grid" count="3"></mds-filter-item>
+</mds-filter>
+
+<!-- CORRECT -->
+<mds-filter label="Vista">
+  <mds-filter-item aria-label="Vista a griglia, 3 risultati" icon="mi/baseline/grid-view" value="grid" count="3"></mds-filter-item>
 </mds-filter>
 ```
 

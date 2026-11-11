@@ -142,6 +142,11 @@ export class MdsFilterItem {
             {this.label}
           </mds-text>
         )}
+        {/* a word boundary between the label and the count: the text an item shows is read with
+            its text nodes joined (axe label-content-name-mismatch, WCAG 2.5.3), and "Nuove" and
+            "11" would make the one word "Nuove11", absent from the name. White space between the
+            items of a flex container is not rendered (CSS Flexbox 4), so nothing moves */}
+        {this.label && this.count ? ' ' : null}
         {this.count && (
           <div class="count">
             <mds-text aria-hidden="true" variant="info" typography="option">
