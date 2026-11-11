@@ -1,7 +1,6 @@
 import miBaselineClose from '@icon/mi/baseline/close.svg';
 import miBaselineExplore from '@icon/mi/baseline/explore.svg';
 import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core';
-import { KeyboardManager } from '@common/keyboard-manager';
 import { LoadingType } from '@type/loading';
 import { Locale } from '@common/locale';
 import { preferenceStore } from '@common/preference';
@@ -20,7 +19,6 @@ import localeIt from './meta/locale.it.json';
 })
 export class MdsUrlView {
   @Element() host: HTMLMdsUrlViewElement;
-  private km = new KeyboardManager();
   private t: Locale = new Locale({
     el: localeEl,
     en: localeEn,
@@ -70,18 +68,6 @@ export class MdsUrlView {
     this.host.closest('mds-modal')?.close();
   };
 
-  componentDidLoad(): void {
-    const close = this.host.shadowRoot?.querySelector<HTMLElement>('.action-close') ?? null;
-    if (close !== null) {
-      this.km.addElement(close);
-      this.km.attachClickBehavior();
-    }
-  }
-
-  disconnectedCallback(): void {
-    this.km.detachClickBehavior();
-  }
-
   render() {
     return (
       <Host
@@ -97,6 +83,9 @@ export class MdsUrlView {
             <mds-text class="title" typography="caption">
               {this.label ?? this.urlDomain(this.src)}
             </mds-text>
+            {/* mds-button clicks on Enter and Space by itself, and gives that back when the
+                view is moved in the page: a handler of the view on top of it clicked twice
+                (#1356) */}
             <mds-button
               title={this.t.get('close')}
               class="action-close"
