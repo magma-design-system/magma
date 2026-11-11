@@ -14,7 +14,8 @@ The `<mds-button-group>` web component is a layout container of the Magma Design
 #### Semantic Behavior
 
 - **Default slot is content**: Whatever buttons (or button-like controls) you place inside are projected in source order. The group joins its `<mds-button>` / `<mds-button-dropdown>` members: it flattens their inner corners and sets them 2px apart, so only the outer corners of the cluster stay rounded.
-- **Inline layout**: The group shrinks to fit its content with consistent spacing and stays inline with surrounding elements rather than spanning the full row width.
+- **Inline layout**: The group shrinks to fit its content with consistent spacing and stays inline with surrounding elements; on its own it never takes the full row width.
+- **Width in a stretched row**: A row that stretches the group, as `actions/stacked` does under `--magma-container-actions` (380px) in `<mds-card-footer>`, `<mds-banner>`, `<mds-status-bar>` or a row of your own (`align-self: stretch`, a `width`, a `flex-basis`), gets the cluster across the whole row, as every other labelled action of it: each labelled member keeps its own width plus the same share of the free width, its label in the middle, so a long label is never cut for a short one; an `<mds-button-dropdown>` member gives its share to its primary action, and an icon-only member keeps its size.
 - **No own semantics**: It exposes no role, ARIA attributes, form association, focus management, or keyboard handling of its own - accessibility and interaction live entirely in the slotted children. It is purely a visual grouping primitive.
 
 #### Properties & Visual Configurations
@@ -92,6 +93,22 @@ The default slot accepts any `<mds-button>` or `<mds-button-dropdown>` sibling c
     <mds-button variant="dark" tone="text" label="Esporta Excel"></mds-button>
   </mds-button-dropdown>
 </mds-button-group>
+```
+
+#### In a Row of Actions That Stacks
+
+Stretch the group as any other action of the row: under `--magma-container-actions` of its container (`@max-actions:`), `actions/stacked` puts every labelled action at the full width, and the group shares that width among its labelled members, the joined corners as before. No part or custom property is needed.
+
+```html
+<div class="@container">
+  <div class="flex justify-end gap-inline @max-actions:flex-col @max-actions:*:self-stretch">
+    <mds-button variant="dark" tone="outline" label="Annulla"></mds-button>
+    <mds-button-group>
+      <mds-button variant="primary" tone="outline" label="Salva come bozza"></mds-button>
+      <mds-button variant="primary" label="Pubblica"></mds-button>
+    </mds-button-group>
+  </div>
+</div>
 ```
 
 #### Disabled Buttons Inside a Group

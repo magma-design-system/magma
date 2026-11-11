@@ -42,17 +42,24 @@ mds-button {
 
 /* a host stretched by its row (actions/stacked: align-self, a width, a flex-basis) gives its free
    width to the main action, whose label mds-button centres, and the chevron stays at its own
-   size at the end; at its own width the host has none to give, so nothing moves (#1313) */
+   size at the end; at its own width the host has none to give, so nothing moves (#1313).
+   The outer corners of the two buttons are the corners of the host, the same radius on their
+   own: a row that joins the component flattens them there, as mds-button-group does with
+   ::slotted, which reaches the host and not the buttons inside it (#1340) */
 
 .dropdown-primary-action {
+  border-bottom-left-radius: inherit;
   border-bottom-right-radius: 0;
+  border-top-left-radius: inherit;
   border-top-right-radius: 0;
   flex-grow: 1;
 }
 
 .dropdown-action {
   border-bottom-left-radius: 0;
+  border-bottom-right-radius: inherit;
   border-top-left-radius: 0;
+  border-top-right-radius: inherit;
 }
 
 ::slotted(mds-button) {
