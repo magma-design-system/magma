@@ -1,4 +1,5 @@
 import { h } from '@stencil/core';
+import { expect, waitFor } from 'storybook/test';
 import { URLs } from '../../mds-img/meta/storybook';
 
 export default {
@@ -481,4 +482,77 @@ export const LayoutContent = {
 
 export const LayoutFooter = {
   render: LayoutFTemplate,
+};
+
+// actions/stacked (#1189, #1250): a card in a grid is narrow on any screen, its footer under
+// 380px, where a row of two actions stacks; a lone action has no order to keep and stays at its
+// own width at the end, a split button too
+const gridCard = (title: string, text: string, actions) => (
+  <mds-card class="w-full max-w-[320px] justify-self-center">
+    <mds-card-header>
+      <mds-text typography="h6">{title}</mds-text>
+    </mds-card-header>
+    <mds-card-content>
+      <mds-text>{text}</mds-text>
+    </mds-card-content>
+    <mds-card-footer>{actions}</mds-card-footer>
+  </mds-card>
+);
+
+export const LoneActionInAGrid = {
+  render: () => (
+    <div class="@container">
+      <div class="grid grid-cols-1 gap-600 @2xl:grid-cols-2 @4xl:grid-cols-3">
+        {gridCard(
+          'Colore',
+          "I ruoli semantici con cui si dipinge un'interfaccia.",
+          <mds-button
+            variant="primary"
+            tone="outline"
+            icon="mi/baseline/arrow-forward"
+            icon-position="right"
+          >
+            Leggi
+          </mds-button>,
+        )}
+        {gridCard(
+          'Logo',
+          'Il marchio del gruppo, in tutti i formati.',
+          <mds-button-dropdown label="Scarica" icon="mi/baseline/download">
+            <mds-button variant="dark" tone="text" label="Scarica come SVG"></mds-button>
+            <mds-button variant="dark" tone="text" label="Scarica come PNG"></mds-button>
+          </mds-button-dropdown>,
+        )}
+        {gridCard('Richiesta 2026/114', 'In attesa della firma del responsabile.', [
+          <mds-button key="rifiuta" variant="dark" tone="outline">
+            Rifiuta
+          </mds-button>,
+          <mds-button key="firma" variant="primary" tone="outline">
+            Firma
+          </mds-button>,
+        ])}
+      </div>
+    </div>
+  ),
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+    const footers = Array.from(canvasElement.querySelectorAll('mds-card-footer'));
+    const box = (element: Element) => element.getBoundingClientRect();
+
+    // the two lone actions and the row of two, so that no footer passes by holding nothing
+    expect(footers.map((footer) => footer.children.length)).toEqual([1, 1, 2]);
+    await waitFor(() => {
+      for (const footer of footers) {
+        const row = box(footer);
+        const actions = Array.from(footer.children).map(box);
+
+        expect(row.width).toBeLessThan(380);
+        if (actions.length === 1) {
+          expect(actions[0].width).toBeLessThan(row.width / 2);
+          expect(actions[0].right).toBeCloseTo(row.right, 0);
+        } else {
+          for (const action of actions) expect(action.width).toBeCloseTo(row.width, 0);
+        }
+      }
+    });
+  },
 };
