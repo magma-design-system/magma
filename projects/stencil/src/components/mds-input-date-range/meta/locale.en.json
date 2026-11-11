@@ -1,7 +1,11 @@
 {
+  "end": "End",
   "endDate": "End date",
+  "endValue": "{{{end}}}: {{{date}}}",
   "from": "From",
   "openCalendar": "Open calendar",
+  "pickDate": "Pick a date",
+  "start": "Start",
   "startDate": "Start date",
   "to": "to"
 }

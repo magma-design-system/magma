@@ -19,11 +19,13 @@ The `<mds-input-date-range>` web component is the Magma Design System control fo
 - **Range coercion**: When both dates are valid and the end falls before the start, the end is snapped to equal the start, also for a preselection that ends before it starts, so the committed range is never inverted.
 - **Min/max guard**: If `max` is earlier than `min` at load, `max` is clamped up to `min`; both bounds are forwarded to the calendar to block out-of-range selection, and to the slotted fields, which flag a date typed outside them and stop the submit; such a range is not emitted.
 - **Commit on blur**: Leaving the component validates the range, syncs the form value, and - when both dates are valid - emits selection.
-- **Calendar selection**: Picking a complete range in the pop-up calendar emits selection and, unless `delay` is `0`, auto-closes the dropdown after the delay.
+- **Active end**: the calendar picks one end of the range at a time, the active one. The field the user goes into names it, by focus or by a click: the "from" field the start, the "to" field the end. With no field named yet, it is the end the range lacks (the start of an empty range, the end of a range with its start alone), else the start. With no start the calendar always picks the start: a range is picked from its start.
+- **Header**: the top of the panel shows the two ends, "Start" and "End", each with its date or "Pick a date", as an [`mds-tab`](../../mds-tab) of two voices; the voice of the active end is selected, and a click or Enter / Space on a voice makes its end the active one. The end has nothing to pick, and its voice is disabled, until the range has a start. The words follow the page language, as "from" and "to".
+- **Calendar selection**: a click in the calendar changes the active end only, also on a complete range, which is no longer started again from scratch; then the end is the active one, so a range is picked with two clicks, start then end, and a second click corrects the end. A click never swaps the ends: a day before the start, while the end is picked, becomes the new start and the end is still to pick; a day after the end, while the start is picked, becomes the new start and the end is emptied. A click that completes the range emits selection; when it picks the end it also closes the dropdown after `delay`, unless `delay` is `0`, while one that picks the start leaves it open for the end.
 - **Preselection sync**: Slotted `mds-input-date-range-preselection` children act as quick-picks; activating one applies its range, and any external/calendar change re-evaluates which preset (if any) is marked selected; a preset matching the dates of load is marked selected from the start.
 - **Emitted events**: `mdsInputDateRangeValueChange` fires when a full, valid range is committed (calendar pick, preset, or focus-out with two valid dates) and either bound actually changed since the last emit.
-- **Focus management**: Clicking the host or either field label focuses the corresponding date input; a built-in calendar icon button, named in the page language (the `lang` of `<html>`) ("Open calendar"), toggles the calendar dropdown.
-- **Localization**: The "from"/"to" field labels and the calendar honor the resolved language (el/en/es/it).
+- **Focus management**: Clicking the host or either field label focuses the corresponding date input, and makes its end the active one; a built-in calendar icon button, named in the page language (the `lang` of `<html>`) ("Open calendar"), toggles the calendar dropdown. A pick in the calendar leaves the focus where it is: the header says which end comes next.
+- **Localization**: The "from"/"to" field labels, the words of the header and the calendar honor the resolved language (el/en/es/it).
 
 #### Properties & Visual Configurations
 
@@ -31,7 +33,8 @@ The `<mds-input-date-range>` web component is the Magma Design System control fo
 - **`min` / `max`** define the selectable window: the calendar blocks the dates outside it, and the host passes both bounds to the slotted fields, which check a typed date against them. A bound the range does not set leaves the one written on a field alone; one changed after load reaches both fields.
 - **`disabled`** disables the range, like a disabled native input: the calendar button is disabled, a calendar left open closes, and the dates are left out of the form. It disables the two slotted fields too: at load only when it is set, so a field disabled on its own stays disabled; a change after load reaches both fields.
 - **`size`** sets the height of the field, the same as [`<mds-button>`](../../mds-button): `sm` 28px, `md` 36px, `lg` 48px (default). Match it to the buttons next to the field, or go smaller in dense layouts (filter bars, table toolbars); the text style stays the same, the padding and the inner calendar button scale with it.
-- **`delay`** is the auto-close grace period (ms) after a complete selection; set it to `0` to keep the calendar open until the user dismisses it manually.
+- **`delay`** is the auto-close grace period (ms) after the click that picks the end of the range; set it to `0` to keep the calendar open until the user dismisses it manually.
+- **`dualCalendar`** shows two consecutive months side by side instead of one, whatever the width of the page; the grids of the two months start at the same height, a month of five weeks next to one of six.
 
 
 ### 2. Examples
@@ -44,6 +47,17 @@ The canonical form. Slot one [`mds-input-date`](../../mds-input-date) as `start`
 
 ```html
 <mds-input-date-range>
+  <mds-input-date slot="start"></mds-input-date>
+  <mds-input-date slot="end"></mds-input-date>
+</mds-input-date-range>
+```
+
+#### Picking a Range in the Calendar
+
+The calendar picks one end at a time: the one of the field the user went into, or the one selected in the header at the top of the panel. In an empty range the first click picks the start and the header passes to the end; the second click picks the end and, after `delay`, closes the panel. To change one end of a complete range, go into its field (or select its voice in the header) and click the new day: the other end stays. A day before the start, picked as the end, becomes the new start; a day after the end, picked as the start, becomes the new start and empties the end. Nothing needs configuring: the markup is the one of the minimal picker.
+
+```html
+<mds-input-date-range start-date="2026-03-10" end-date="2026-03-19">
   <mds-input-date slot="start"></mds-input-date>
   <mds-input-date slot="end"></mds-input-date>
 </mds-input-date-range>
@@ -122,7 +136,7 @@ Slot one or more [`mds-input-date-range-preselection`](../../mds-input-date-rang
 
 #### Controlling the Auto-Close Delay
 
-By default the calendar closes 500 ms after a complete range is picked. Set `delay="0"` to keep it open until the user dismisses it manually, or increase the value for a longer grace period.
+By default the calendar closes 500 ms after the click that picks the end of the range; a click that picks the start leaves it open for the end. Set `delay="0"` to keep it open until the user dismisses it manually, or increase the value for a longer grace period.
 
 ```html
 <!-- Keep the calendar open after selection -->
@@ -319,7 +333,7 @@ Without `name` the component is form-associated but submits no named field, so t
 | Property         | Attribute       | Description                                                                                                                                                                                                                                            | Type                                | Default     |
 | ---------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------- | ----------- |
 | `accessibleName` | `aria-label`    | The accessible name of the range: each of the two fields is named after it and after the end of the range it covers, the visible "from" and "to" labels living in this shadow root, where no IDREF of the slotted fields could reach them.             | `string \| undefined`               | `undefined` |
-| `delay`          | `delay`         | Specifies the delay in milliseconds before closing the calendar dropdown, if the value is 0 the dropdown will not close                                                                                                                                | `number`                            | `500`       |
+| `delay`          | `delay`         | Specifies the delay in milliseconds before closing the calendar dropdown after the click that picks the end of the range, if the value is 0 the dropdown will not close; a click that picks the start leaves it open for the end                       | `number`                            | `500`       |
 | `disabled`       | `disabled`      | Disables the range, like a disabled native input: the dates cannot be changed, from the fields or from the calendar, and are left out of the form. It disables the two slotted fields too. A disabled `<fieldset>` around the component does the same. | `boolean \| undefined`              | `false`     |
 | `dualCalendar`   | `dual-calendar` | Enables the linked dual-calendar range picker behavior.                                                                                                                                                                                                | `boolean`                           | `false`     |
 | `endDate`        | `end-date`      | Specifies the end date of the range                                                                                                                                                                                                                    | `string`                            | `''`        |
@@ -384,6 +398,8 @@ Type: `Promise<void>`
 
 ### Depends on
 
+- [mds-tab](../mds-tab)
+- [mds-tab-item](../mds-tab-item)
 - [mds-calendar](../mds-calendar)
 - [mds-text](../mds-text)
 - [mds-button](../mds-button)
@@ -392,15 +408,18 @@ Type: `Promise<void>`
 ### Graph
 ```mermaid
 graph TD;
+  mds-input-date-range --> mds-tab
+  mds-input-date-range --> mds-tab-item
   mds-input-date-range --> mds-calendar
   mds-input-date-range --> mds-text
   mds-input-date-range --> mds-button
   mds-input-date-range --> mds-dropdown
-  mds-calendar --> mds-button
-  mds-calendar --> mds-calendar-cell
+  mds-tab-item --> mds-button
   mds-button --> mds-icon
   mds-button --> mds-spinner
   mds-button --> mds-text
+  mds-calendar --> mds-button
+  mds-calendar --> mds-calendar-cell
   mds-calendar-cell --> mds-button
   style mds-input-date-range fill:#f9f,stroke:#333,stroke-width:4px
 ```
