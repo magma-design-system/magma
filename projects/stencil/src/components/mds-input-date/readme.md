@@ -19,10 +19,10 @@ The `<mds-input-date>` web component is the Magma Design System control for capt
 - **Validation on change**: The value is checked when the component loads, on every value change and whenever `required`, `min` or `max` change (also after load, as with the React wrappers under SSR). The validity reported to the form, the submitted value and the required tip follow every check: a date invalid, missing while `required` or outside the `min`/`max` range submits no value. The look follows once the field is touched, like `:user-invalid` on a native control: after the user edits or leaves the field, picks a date from the calendar, or a stopped submit points at it, each check sets `variant` to `'error'` or `'primary'` and emits `mdsInputValidation` with a boolean. An empty `required` field therefore loads in its own variant, not in `'error'`.
 - **Range self-correction**: If `max` is earlier than `min`, at load or after a later change of either, `max` is snapped to equal `min`.
 - **Selection event**: `mdsInputDateSelect` fires with the new string value whenever `value` changes, whether typed or picked from the calendar.
-- **Calendar dropdown**: The trailing calendar button, icon-only and named in the page language (the `lang` of `<html>`) ("Open calendar"), opens a single-date calendar; picking a day writes back the value and, after `delay`, auto-closes.
+- **Calendar dropdown**: The trailing calendar button, icon-only and named in the page language (the `lang` of `<html>`) ("Open calendar"), opens a single-date calendar; picking a day writes back the value and, after `delay`, auto-closes. It is shown only while the user can change the date: a read-only or disabled field (a disabled `<fieldset>` included) has no calendar button, its text takes its room and its end is left to the badge of its state; a calendar open on a field that becomes so closes.
 - **Slotted mode**: When the host carries a `slot` attribute it is treated as embedded - the calendar button, dropdown, and calendar are not rendered, leaving only the bare input for composition inside a larger field.
-- **Contextual tips**: A tip surfaces `disabled`, `readonly`, and `required` states; the required tip expands on focus and reflects success once the value is valid.
-- **Read-only**: A read-only field shows its tip and auto-selects its text on focus; its native input is read-only and its calendar button disabled, so the value cannot be changed.
+- **Contextual tips**: A tip surfaces `disabled`, `readonly`, and `required` states; the required tip expands on focus and reflects success once the value is valid. It stands on the top border of the field, half outside, clear of its rounded corner, and stays there while the field has the focus, as on `mds-input`.
+- **Read-only**: A read-only field shows its tip and auto-selects its text on focus; its native input is read-only and it has no calendar button, so the value cannot be changed.
 
 #### Properties & Visual Configurations
 
@@ -127,7 +127,7 @@ The calendar dropdown closes `delay` milliseconds after a date is picked (defaul
 
 #### Disabled and Read-only States
 
-`disabled` blocks all interaction and removes the field from the tab sequence. `readonly` keeps the field in the tab sequence and selects its text on focus, but the date cannot be changed: the native input is read-only and the calendar button disabled. Both surface a contextual tip.
+`disabled` blocks all interaction and removes the field from the tab sequence. `readonly` keeps the field in the tab sequence and selects its text on focus, but the date cannot be changed: the native input is read-only and there is no calendar button. Both surface a contextual tip on the top border, and leave the end of the field to it.
 
 ```html
 <!-- Disabled: no interaction at all -->
@@ -298,12 +298,12 @@ Setting `value=""` is the correct way to clear; do not set `value` to a non-ISO 
 | ---------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------- | ----------- |
 | `accessibleName` | `aria-label` | The accessible name of the native control: the label a screen reader announces. An `mds-input-field` around the component passes its own label down here, so the attribute is only written by hand when the control stands on its own. The placeholder is deliberately not a fallback: it disappears as soon as the field is filled. | `string \| undefined`                                                           | `undefined` |
 | `delay`          | `delay`      | Specifies the delay in milliseconds before closing the calendar dropdown, if the value is 0 the dropdown will not close                                                                                                                                                                                                              | `number`                                                                        | `500`       |
-| `disabled`       | `disabled`   | If true, the element is displayed as disabled                                                                                                                                                                                                                                                                                        | `boolean \| undefined`                                                          | `false`     |
+| `disabled`       | `disabled`   | If true, the element is displayed as disabled. The calendar button is not shown: the end of the field is left to the badge of its state                                                                                                                                                                                              | `boolean \| undefined`                                                          | `false`     |
 | `hideToday`      | `hide-today` | Hides the highlight on today's date in the calendar.                                                                                                                                                                                                                                                                                 | `boolean`                                                                       | `false`     |
 | `max`            | `max`        | Specifies the max date of the range, user cannot set dates after this date                                                                                                                                                                                                                                                           | `null \| string`                                                                | `null`      |
 | `min`            | `min`        | Specifies the min date of the range, user cannot set dates before this date                                                                                                                                                                                                                                                          | `null \| string`                                                                | `null`      |
 | `name`           | `name`       | Is needed to reference the form data after the form is submitted                                                                                                                                                                                                                                                                     | `string \| undefined`                                                           | `undefined` |
-| `readonly`       | `readonly`   | Specifies that the element is read-only                                                                                                                                                                                                                                                                                              | `boolean \| undefined`                                                          | `false`     |
+| `readonly`       | `readonly`   | Specifies that the element is read-only: the date cannot be typed, and the calendar button is not shown, as on a disabled field                                                                                                                                                                                                      | `boolean \| undefined`                                                          | `false`     |
 | `required`       | `required`   | Specifies that the element must be filled out before submitting the form                                                                                                                                                                                                                                                             | `boolean \| undefined`                                                          | `false`     |
 | `size`           | `size`       | Specifies the height of the field, the same as `mds-button`: `sm` 28px, `md` 36px, `lg` 48px                                                                                                                                                                                                                                         | `"lg" \| "md" \| "sm" \| undefined`                                             | `'lg'`      |
 | `value`          | `value`      | Specifies the value of the input                                                                                                                                                                                                                                                                                                     | `string`                                                                        | `''`        |
@@ -366,20 +366,17 @@ Type: `Promise<void>`
 
 ## CSS Custom Properties
 
-| Name                                        | Description                                                                |
-| ------------------------------------------- | -------------------------------------------------------------------------- |
-| `--mds-input-date-background`               | Public. The background of the date input                                   |
-| `--mds-input-date-field-background-empty`   | The background when the date field is empty                                |
-| `--mds-input-date-field-color-empty`        | The text/icon color when the date field is empty                           |
-| `--mds-input-date-icon-color`               | The color of the date input icon                                           |
-| `--mds-input-date-icon-color-rgb`           | Deprecated, read by nothing: the icon takes `--mds-input-date-icon-color`. |
-| `--mds-input-date-ring`                     | Public. The focus ring of the date input                                   |
-| `--mds-input-date-shadow`                   | Public. The shadow applied to the date input                               |
-| `--mds-input-date-variant-color-rgb`        | Public. The base RGB value for the date input variant                      |
-| `--mds-input-tip-background`                | Public. The background of the input tip                                    |
-| `--mds-input-tip-horizontal-offset`         | The horizontal offset for the input tip                                    |
-| `--mds-input-tip-horizontal-offset-focused` | The horizontal offset when the input tip is focused                        |
-| `--mds-input-tip-vertical-offset`           | The vertical offset for the input tip                                      |
+| Name                                      | Description                                                                |
+| ----------------------------------------- | -------------------------------------------------------------------------- |
+| `--mds-input-date-background`             | Public. The background of the date input                                   |
+| `--mds-input-date-field-background-empty` | The background when the date field is empty                                |
+| `--mds-input-date-field-color-empty`      | The text/icon color when the date field is empty                           |
+| `--mds-input-date-icon-color`             | The color of the date input icon                                           |
+| `--mds-input-date-icon-color-rgb`         | Deprecated, read by nothing: the icon takes `--mds-input-date-icon-color`. |
+| `--mds-input-date-ring`                   | Public. The focus ring of the date input                                   |
+| `--mds-input-date-shadow`                 | Public. The shadow applied to the date input                               |
+| `--mds-input-date-variant-color-rgb`      | Public. The base RGB value for the date input variant                      |
+| `--mds-input-tip-background`              | Public. The background of the input tip                                    |
 
 
 ## Dependencies

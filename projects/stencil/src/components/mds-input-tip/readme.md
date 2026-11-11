@@ -14,14 +14,15 @@ The `<mds-input-tip>` web component is the floating helper container of the Magm
 #### Semantic Behavior
 
 - **Floating overlay**: The tip floats over the parent input's edge without intercepting interaction (`pointer-events: none`, which `mds-input-tip-item` keeps too).
-- **Active expansion**: Setting `active` slides the tip into its expanded position; clearing it collapses the tip back flush with the input. It does not expand the items: each `mds-input-tip-item` shows its text only when its own `expanded` is set.
+- **Active expansion**: Setting `active` slides a bottom tip onto the edge of the input; clearing it collapses the tip back flush with the input. A top tip stays where it stands, on the top border. It does not expand the items: each `mds-input-tip-item` shows its text only when its own `expanded` is set.
+- **On the top border**: A top tip stands on the top border of its field, half outside, so that it never covers the button at the end of the field. It keeps clear of the rounded corner by the radius of the field, which the field passes down to it, plus a margin, and sits on the straight part of the border.
 - **Empty collapse**: When the host has no slotted content it is hidden entirely, so an unused tip occupies no space.
 - **Default slot is content**: The single default slot carries the tip's arbitrary children; there are no named slots, events, form association, or focus management of its own.
 
 #### Properties & Visual Configurations
 
 - **`active`** drives the expanded vs. collapsed state and is normally toggled by the parent input in response to focus, not set manually.
-- **`position`** selects which edge of the input the tip anchors to and therefore the direction it expands: `'top'` (default) sits on the top edge of the field, `'bottom'` on the bottom edge.
+- **`position`** selects which edge of the input the tip anchors to: `'top'` (default) stands on the top border of the field, half outside, and stays there on focus; `'bottom'` sits inside the bottom edge and slides onto it when `active`.
 
 
 ### 2. Examples
@@ -32,7 +33,7 @@ Correct and idiomatic ways to use the `<mds-input-tip>` component, ordered from 
 
 #### Status Chips Above the Field (position="top")
 
-Position the tip above the input with `position="top"` (the default). Slot [`mds-input-tip-item`](../../mds-input-tip-item) children for each status badge to show. The `active` prop slides the tip into its expanded position when the field is focused; each item shows its label only when its own `expanded` is set, which the parent inputs set together with `active`.
+Position the tip on the top border of the input with `position="top"` (the default), half outside, where it never covers the button at the end of the field. Slot [`mds-input-tip-item`](../../mds-input-tip-item) children for each status badge to show. The parent inputs pass down the radius of their field, so that the tip keeps clear of its rounded corner. The top tip stays on the border when the field is focused; each item shows its label only when its own `expanded` is set, which the parent inputs set together with `active`.
 
 ```html
 <div style="position: relative;">
@@ -63,7 +64,7 @@ Use `position="bottom"` to anchor the tip below the input. This is the canonical
 
 #### Toggling the Active State on Focus
 
-Drive `active`, and the `expanded` of the items that should open on focus, from a focus/blur handler to animate the tip in and out. Setting `active` slides the tip; removing it (or leaving it unset) collapses it back flush with the input edge.
+Drive `active`, and the `expanded` of the items that should open on focus, from a focus/blur handler to animate the tip in and out. Setting `active` slides a bottom tip onto the edge of the input, and removing it (or leaving it unset) collapses it back flush with it; a top tip stays on the border, and only its items expand.
 
 ```html
 <div style="position: relative;" id="wrapper">
@@ -251,10 +252,10 @@ mds-input-tip {
 
 ## Properties
 
-| Property   | Attribute  | Description                                                                                                                                                                    | Type                             | Default |
-| ---------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------- | ------- |
-| `active`   | `active`   | Moves the tip onto the edge of the input, as the parent input does while it has the focus. It does not expand the items: each `mds-input-tip-item` opens on its own `expanded` | `boolean \| undefined`           | `false` |
-| `position` | `position` | Specifies the position of the element relative to its container                                                                                                                | `"bottom" \| "top" \| undefined` | `'top'` |
+| Property   | Attribute  | Description                                                                                                                                                                                                                             | Type                             | Default |
+| ---------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- | ------- |
+| `active`   | `active`   | Moves the bottom tip onto the edge of the input, as the parent input does while it has the focus; the top tip stays on the border of the field. It does not expand the items: each `mds-input-tip-item` opens on its own `expanded`     | `boolean \| undefined`           | `false` |
+| `position` | `position` | Specifies the position of the element relative to its container: `top` stands on the top border of the field, half outside, clear of its corner by the radius the field passes down plus a margin; `bottom` sits inside the bottom edge | `"bottom" \| "top" \| undefined` | `'top'` |
 
 
 ## Slots
@@ -266,13 +267,14 @@ mds-input-tip {
 
 ## CSS Custom Properties
 
-| Name                                        | Description                                         |
-| ------------------------------------------- | --------------------------------------------------- |
-| `--mds-input-tip-active-translate`          | Transform applied to the tip when active            |
-| `--mds-input-tip-background`                | Public. Background color of the input tip           |
-| `--mds-input-tip-horizontal-offset`         | Default horizontal offset of the input tip          |
-| `--mds-input-tip-horizontal-offset-focused` | Horizontal offset applied when the input is focused |
-| `--mds-input-tip-vertical-offset`           | Vertical offset of the input tip                    |
+| Name                                        | Description                                                                                                  |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `--mds-input-tip-active-translate`          | Transform applied to the bottom tip when active                                                              |
+| `--mds-input-tip-background`                | Public. Background color of the input tip                                                                    |
+| `--mds-input-tip-field-radius`              | The corner radius of the field the tip stands on: the top tip keeps clear of the corner by it, plus a margin |
+| `--mds-input-tip-horizontal-offset`         | Default horizontal offset of the bottom tip                                                                  |
+| `--mds-input-tip-horizontal-offset-focused` | Horizontal offset of the bottom tip when the input is focused                                                |
+| `--mds-input-tip-vertical-offset`           | Vertical offset of the bottom tip                                                                            |
 
 
 ## Dependencies

@@ -89,6 +89,36 @@ export const Disabled = {
   },
 };
 
+/**
+ * Dates the user can change, and cannot: read-only and disabled. The calendar button changes the
+ * date, so a locked field has none: its text takes its room, and its end is left to the badge of
+ * its state, which covered it (#1368).
+ */
+const TemplateLocked = () => (
+  <div class="@container">
+    <div class="grid items-start gap-600 @md:grid-cols-3">
+      <mds-input-date aria-label="Scadenza" value="2026-11-11"></mds-input-date>
+      <mds-input-date aria-label="Creazione" value="2026-11-11" readonly></mds-input-date>
+      <mds-input-date aria-label="Archiviazione" value="2026-11-11" disabled></mds-input-date>
+    </div>
+  </div>
+);
+
+export const Locked = {
+  render: TemplateLocked,
+
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+    const fields = Array.from(canvasElement.querySelectorAll('mds-input-date'));
+    await waitFor(() => fields.forEach((field) => expect(field).toHaveAttribute('hydrated')));
+    fields.forEach((field) => {
+      const locked = field.hasAttribute('readonly') || field.hasAttribute('disabled');
+      const button = field.shadowRoot!.querySelector('.action-open-calendar');
+      if (locked) expect(button).toBeNull();
+      else expect(button).not.toBeNull();
+    });
+  },
+};
+
 // A date field inside a modal with a custom window (mds-banner in slot="window", so the calendar
 // pops out of the window instead of being clipped by the default window). The play opens the
 // modal and the calendar and checks that the calendar takes the field width, capped by

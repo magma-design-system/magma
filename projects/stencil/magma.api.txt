@@ -757,9 +757,6 @@ mds-input-date css --mds-input-date-ring
 mds-input-date css --mds-input-date-shadow
 mds-input-date css --mds-input-date-variant-color-rgb
 mds-input-date css --mds-input-tip-background
-mds-input-date css --mds-input-tip-horizontal-offset INTERNAL
-mds-input-date css --mds-input-tip-horizontal-offset-focused INTERNAL
-mds-input-date css --mds-input-tip-vertical-offset INTERNAL
 mds-input-date-range encapsulation shadow
 mds-input-date-range prop accessibleName (attr aria-label): string | undefined
 mds-input-date-range prop delay (attr delay) [reflect]: number = 500
@@ -915,6 +912,7 @@ mds-input-tip prop position (attr position) [reflect]: "bottom" | "top" | undefi
 mds-input-tip slot (default)
 mds-input-tip css --mds-input-tip-active-translate INTERNAL
 mds-input-tip css --mds-input-tip-background
+mds-input-tip css --mds-input-tip-field-radius INTERNAL
 mds-input-tip css --mds-input-tip-horizontal-offset INTERNAL
 mds-input-tip css --mds-input-tip-horizontal-offset-focused INTERNAL
 mds-input-tip css --mds-input-tip-vertical-offset INTERNAL

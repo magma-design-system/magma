@@ -1479,12 +1479,12 @@ export namespace Components {
          */
         "await": boolean;
         /**
-          * Specifies the icon type of the counter button when the input type is set to `number`
+          * Specifies the icon type of the counter buttons when the input type is set to `number`
           * @default 'arrow'
          */
         "controlsIcon"?: InputControlsIconType;
         /**
-          * Specifies the layout of the counter button when the input type is set to `number`
+          * Specifies the layout of the counter buttons when the input type is set to `number`: stacked at the end (`vertical`) or one at each end (`horizontal`). A read-only or disabled field has no counter buttons, and its text takes the room they leave
           * @default 'vertical'
          */
         "controlsLayout"?: InputControlsLayoutType;
@@ -1493,7 +1493,7 @@ export namespace Components {
          */
         "datalist"?: string[];
         /**
-          * If true, the element is displayed as disabled
+          * If true, the element is displayed as disabled. The buttons that change the value (the counter buttons of a number, the microphone, the picker of a colour) are not shown: the end of the field is left to the badge of its state
           * @default false
          */
         "disabled"?: boolean;
@@ -1552,7 +1552,7 @@ export namespace Components {
          */
         "placeholder"?: string;
         /**
-          * Specifies that the element is read-only
+          * Specifies that the element is read-only. The buttons that change the value (the counter buttons of a number, the microphone, the picker of a colour) are not shown, as on a disabled field; the password toggle stays, since it shows the value without changing it
           * @default false
          */
         "readonly"?: boolean;
@@ -1620,7 +1620,7 @@ export namespace Components {
          */
         "delay": number;
         /**
-          * If true, the element is displayed as disabled
+          * If true, the element is displayed as disabled. The calendar button is not shown: the end of the field is left to the badge of its state
           * @default false
          */
         "disabled"?: boolean;
@@ -1657,7 +1657,7 @@ export namespace Components {
          */
         "name"?: string;
         /**
-          * Specifies that the element is read-only
+          * Specifies that the element is read-only: the date cannot be typed, and the calendar button is not shown, as on a disabled field
           * @default false
          */
         "readonly"?: boolean;
@@ -2014,12 +2014,12 @@ export namespace Components {
      */
     interface MdsInputTip {
         /**
-          * Moves the tip onto the edge of the input, as the parent input does while it has the focus. It does not expand the items: each `mds-input-tip-item` opens on its own `expanded`
+          * Moves the bottom tip onto the edge of the input, as the parent input does while it has the focus; the top tip stays on the border of the field. It does not expand the items: each `mds-input-tip-item` opens on its own `expanded`
           * @default false
          */
         "active"?: boolean;
         /**
-          * Specifies the position of the element relative to its container
+          * Specifies the position of the element relative to its container: `top` stands on the top border of the field, half outside, clear of its corner by the radius the field passes down plus a margin; `bottom` sits inside the bottom edge
           * @default 'top'
          */
         "position"?: InputTipPositionType;
@@ -6987,12 +6987,12 @@ declare namespace LocalJSX {
          */
         "await"?: boolean;
         /**
-          * Specifies the icon type of the counter button when the input type is set to `number`
+          * Specifies the icon type of the counter buttons when the input type is set to `number`
           * @default 'arrow'
          */
         "controlsIcon"?: InputControlsIconType;
         /**
-          * Specifies the layout of the counter button when the input type is set to `number`
+          * Specifies the layout of the counter buttons when the input type is set to `number`: stacked at the end (`vertical`) or one at each end (`horizontal`). A read-only or disabled field has no counter buttons, and its text takes the room they leave
           * @default 'vertical'
          */
         "controlsLayout"?: InputControlsLayoutType;
@@ -7001,7 +7001,7 @@ declare namespace LocalJSX {
          */
         "datalist"?: string[];
         /**
-          * If true, the element is displayed as disabled
+          * If true, the element is displayed as disabled. The buttons that change the value (the counter buttons of a number, the microphone, the picker of a colour) are not shown: the end of the field is left to the badge of its state
           * @default false
          */
         "disabled"?: boolean;
@@ -7073,7 +7073,7 @@ declare namespace LocalJSX {
          */
         "placeholder"?: string;
         /**
-          * Specifies that the element is read-only
+          * Specifies that the element is read-only. The buttons that change the value (the counter buttons of a number, the microphone, the picker of a colour) are not shown, as on a disabled field; the password toggle stays, since it shows the value without changing it
           * @default false
          */
         "readonly"?: boolean;
@@ -7132,7 +7132,7 @@ declare namespace LocalJSX {
          */
         "delay"?: number;
         /**
-          * If true, the element is displayed as disabled
+          * If true, the element is displayed as disabled. The calendar button is not shown: the end of the field is left to the badge of its state
           * @default false
          */
         "disabled"?: boolean;
@@ -7172,7 +7172,7 @@ declare namespace LocalJSX {
          */
         "onMdsInputValidation"?: (event: MdsInputDateCustomEvent<boolean>) => void;
         /**
-          * Specifies that the element is read-only
+          * Specifies that the element is read-only: the date cannot be typed, and the calendar button is not shown, as on a disabled field
           * @default false
          */
         "readonly"?: boolean;
@@ -7574,12 +7574,12 @@ declare namespace LocalJSX {
      */
     interface MdsInputTip {
         /**
-          * Moves the tip onto the edge of the input, as the parent input does while it has the focus. It does not expand the items: each `mds-input-tip-item` opens on its own `expanded`
+          * Moves the bottom tip onto the edge of the input, as the parent input does while it has the focus; the top tip stays on the border of the field. It does not expand the items: each `mds-input-tip-item` opens on its own `expanded`
           * @default false
          */
         "active"?: boolean;
         /**
-          * Specifies the position of the element relative to its container
+          * Specifies the position of the element relative to its container: `top` stands on the top border of the field, half outside, clear of its corner by the radius the field passes down plus a margin; `bottom` sits inside the bottom edge
           * @default 'top'
          */
         "position"?: InputTipPositionType;

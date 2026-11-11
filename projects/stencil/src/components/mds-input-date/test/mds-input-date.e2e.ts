@@ -88,7 +88,7 @@ describe('mds-input-date', () => {
   });
 
   describe('open-calendar button placement', () => {
-    it.each(['', 'disabled'])(
+    it.each(['', 'required'])(
       'centers the button on the field vertical axis and keeps it inside the field (%s)',
       async (state) => {
         const { host } = await setupFieldInNarrowColumn(state);
@@ -355,13 +355,13 @@ describe('form reset', () => {
 
 // Like a native input, a read-only date cannot be changed (#822)
 describe('readonly', () => {
-  it('reaches the native input and the calendar button', async () => {
+  it('reaches the native input, and has no calendar button', async () => {
     const { root } = await render<HTMLMdsInputDateElement>(
       '<mds-input-date readonly value="2026-01-10"></mds-input-date>',
     );
 
     expect(root.shadowRoot!.querySelector('input')!.readOnly).toBe(true);
-    expect(root.shadowRoot!.querySelector('.action-open-calendar')).toHaveAttribute('disabled');
+    expect(root.shadowRoot!.querySelector('.action-open-calendar')).toBeNull();
   });
 
   it('keeps the value when the user types', async () => {
@@ -388,15 +388,71 @@ describe('in a disabled fieldset', () => {
     const native = () => field.shadowRoot!.querySelector('input')!;
 
     await vi.waitFor(() => expect(native().disabled).toBe(true));
-    // the calendar would set a date the form leaves out
-    expect(field.shadowRoot!.querySelector('.action-open-calendar')).toHaveAttribute('disabled');
+    // the calendar would set a date the form leaves out: the field has no calendar button
+    expect(field.shadowRoot!.querySelector('.action-open-calendar')).toBeNull();
     expect(new FormData(root).has('d')).toBe(false);
 
     root.querySelector('fieldset')!.disabled = false;
     await waitForChanges();
 
     expect(native().disabled).toBe(false);
+    expect(field.shadowRoot!.querySelector('.action-open-calendar')).not.toBeNull();
     expect(new FormData(root).get('d')).toBe('2026-01-10');
+  });
+});
+
+// The calendar button changes the date: a field the user cannot change has none, and leaves its
+// end to the badge of its state, which covered it, as the buttons at the end of mds-input do
+// (vittorio 2026-11-11, #1368). Before, it stayed on the field, disabled.
+describe('the calendar button of a field the user cannot change', () => {
+  /** The room the text of the field leaves at its end, and at its start. */
+  const padding = (host: Element) => {
+    const style = getComputedStyle(host.shadowRoot!.querySelector('.input')!);
+    return { start: style.paddingLeft, end: style.paddingRight };
+  };
+
+  it.each(
+    ['lg', 'md', 'sm'].flatMap((size) =>
+      ['readonly', 'disabled'].map((state) => ({ size, state })),
+    ),
+  )('is not shown on a $state $size field, whose text takes its room', async ({ size, state }) => {
+    const { root } = await render<HTMLMdsInputDateElement>(
+      `<mds-input-date size="${size}" value="2026-01-10" ${state}></mds-input-date>`,
+    );
+
+    expect(root.shadowRoot!.querySelector('.action-open-calendar')).toBeNull();
+    expect(root.shadowRoot!.querySelector('mds-dropdown')).toBeNull();
+    const { start, end } = padding(root);
+    expect(end).toBe(start);
+  });
+
+  it('comes back, with its room, once the field can be changed', async () => {
+    const { root, waitForChanges } = await render<HTMLMdsInputDateElement>(
+      '<mds-input-date value="2026-01-10" readonly></mds-input-date>',
+    );
+
+    root.readonly = false;
+    await waitForChanges();
+
+    expect(root.shadowRoot!.querySelector('.action-open-calendar')).not.toBeNull();
+    expect(root.shadowRoot!.querySelector('mds-dropdown')).not.toBeNull();
+    const { start, end } = padding(root);
+    expect(parseFloat(end)).toBeGreaterThan(parseFloat(start));
+  });
+
+  it.each([
+    ['read-only', (host: HTMLMdsInputDateElement) => (host.readonly = true)],
+    ['disabled', (host: HTMLMdsInputDateElement) => (host.disabled = true)],
+  ])('closes the calendar open on a field that gets %s', async (_state, lock) => {
+    const field = await setupFieldInNarrowColumn();
+    await openCalendarDropdown(field);
+
+    lock(field.host);
+    await field.waitForChanges();
+
+    // the dropdown leaves with its button, and nothing of it stays on the page
+    expect(field.host.shadowRoot!.querySelector('mds-dropdown')).toBeNull();
+    expect(field.host.shadowRoot!.querySelector('mds-calendar')).toBeNull();
   });
 });
 

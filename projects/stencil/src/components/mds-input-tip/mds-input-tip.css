@@ -1,11 +1,12 @@
 @import './css/mds-input-tip-fouc.css';
 
 /**
- * @prop --mds-input-tip-active-translate: Transform applied to the tip when active
+ * @prop --mds-input-tip-active-translate: Transform applied to the bottom tip when active
  * @prop --mds-input-tip-background: Public. Background color of the input tip
- * @prop --mds-input-tip-horizontal-offset-focused: Horizontal offset applied when the input is focused
- * @prop --mds-input-tip-horizontal-offset: Default horizontal offset of the input tip
- * @prop --mds-input-tip-vertical-offset: Vertical offset of the input tip
+ * @prop --mds-input-tip-field-radius: The corner radius of the field the tip stands on: the top tip keeps clear of the corner by it, plus a margin
+ * @prop --mds-input-tip-horizontal-offset-focused: Horizontal offset of the bottom tip when the input is focused
+ * @prop --mds-input-tip-horizontal-offset: Default horizontal offset of the bottom tip
+ * @prop --mds-input-tip-vertical-offset: Vertical offset of the bottom tip
  */
 
 :host {
@@ -13,6 +14,7 @@
   --private-input-tip-transition-duration: var(--mds-input-tip-transition-duration);
   --mds-input-tip-active-translate: translate(0, 0);
   --mds-input-tip-background: rgb(var(--magma-surface-inverse-muted));
+  --mds-input-tip-field-radius: 0px;
   --mds-input-tip-horizontal-offset-focused: 0px;
   --mds-input-tip-horizontal-offset: --spacing(400);
   --mds-input-tip-vertical-offset: --spacing(100);
@@ -34,24 +36,20 @@
   display: none;
 }
 
+/* The top tip stands on the top border of its field, half outside (half the height of an item,
+ * --spacing(300)), and stays there while the field has the focus: inside the field it covered the
+ * button at its end, and at md and sm it covered it almost whole. It keeps clear of the corner by
+ * the radius of the field, passed as --mds-input-tip-field-radius, plus a margin, so that it sits
+ * on the straight part of the border (vittorio 2026-11-11, #1368). */
+
 :host([position='top']) {
-  top: var(--mds-input-tip-vertical-offset);
+  left: calc(var(--mds-input-tip-field-radius) + --spacing(200));
+  right: calc(var(--mds-input-tip-field-radius) + --spacing(200));
+  top: calc(--spacing(300) / -2);
 }
 
 :host([position='bottom']) {
   bottom: var(--mds-input-tip-vertical-offset);
-}
-
-:host([position='top'][active]:not([active='false'])) {
-  --mds-input-tip-active-translate: translate(
-    calc(var(--mds-input-tip-horizontal-offset-focused) * -1),
-    calc(var(--mds-input-tip-vertical-offset) * -1)
-  );
-}
-
-:host([position='top'][active]:not([active='false'])) ::slotted(mds-input-tip-item) {
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
 }
 
 :host([position='bottom'][active]:not([active='false'])) {

@@ -7,9 +7,6 @@
  * @prop --mds-input-date-ring: Public. The focus ring of the date input
  * @prop --mds-input-date-shadow: Public. The shadow applied to the date input
  * @prop --mds-input-date-variant-color-rgb: Public. The base RGB value for the date input variant
- * @prop --mds-input-tip-horizontal-offset: The horizontal offset for the input tip
- * @prop --mds-input-tip-horizontal-offset-focused: The horizontal offset when the input tip is focused
- * @prop --mds-input-tip-vertical-offset: The vertical offset for the input tip
  * @prop --mds-input-tip-background: Public. The background of the input tip
  */
 
@@ -34,6 +31,13 @@
   --private-input-date-height: --spacing(1200);
   --private-input-date-padding-inline: --spacing(400);
   --private-input-date-calendar-area: --spacing(1200);
+
+  /* capped at a part of the height of the field like mds-button's (#913); the top tip keeps clear
+     of the corner by it (#1368) */
+  --private-input-date-radius: min(
+    var(--magma-radius-2xl),
+    var(--magma-corner-cap) * var(--private-input-date-height)
+  );
   --mds-input-date-icon-color: rgb(var(--magma-accent-fg));
 
   /* a field stands a step off its surface: overlay on a page, the step below inside an overlay
@@ -46,9 +50,6 @@
     0 1px --spacing(75) 0 rgb(var(--mds-input-date-variant-color-rgb) / 0.1),
     0 1px --spacing(50) 0 rgb(var(--mds-input-date-variant-color-rgb) / 0.06);
   --mds-input-date-variant-color-rgb: 0 0 0;
-  --mds-input-tip-horizontal-offset: --spacing(100);
-  --mds-input-tip-horizontal-offset-focused: --spacing(1000);
-  --mds-input-tip-vertical-offset: --spacing(100);
   --mds-input-tip-background: rgb(var(--magma-surface-inverse-muted));
   --mds-input-date-transition-duration: var(--duration-300);
 
@@ -57,11 +58,7 @@
 
   @apply text-info-detail;
 
-  /* capped at a part of the height of the field like mds-button's (#913) */
-  border-radius: min(
-    var(--magma-radius-2xl),
-    var(--magma-corner-cap) * var(--private-input-date-height)
-  );
+  border-radius: var(--private-input-date-radius);
   color: rgb(var(--magma-text-default));
   container-type: inline-size;
   corner-shape: var(--magma-corner-shape);
@@ -120,8 +117,15 @@
   box-shadow: var(--mds-input-date-ring), var(--mds-input-date-shadow);
   min-height: var(--private-input-date-height);
   padding-left: var(--private-input-date-padding-inline);
-  padding-right: var(--private-input-date-calendar-area);
+  padding-right: var(--private-input-date-padding-inline);
   width: 100%;
+}
+
+/* the calendar button takes the end of the field only where it is shown, on a field the user can
+   change (hasCalendarButton): a read-only or disabled date has the padding of any field (#1368) */
+
+:host(:not([slot])) .input.has-calendar-button {
+  padding-right: var(--private-input-date-calendar-area);
 }
 
 :host(:focus-within) .input {
@@ -185,9 +189,7 @@ mds-dropdown {
 }
 
 mds-input-tip {
-  --mds-input-tip-horizontal-offset: inherit;
-  --mds-input-tip-horizontal-offset-focused: inherit;
-  --mds-input-tip-vertical-offset: inherit;
+  --mds-input-tip-field-radius: var(--private-input-date-radius);
   --mds-input-tip-background: inherit;
 }
 
