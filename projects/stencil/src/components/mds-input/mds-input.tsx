@@ -172,6 +172,7 @@ export class MdsInput {
   /**
    * Specifies if the spinner icon is shown, replacing the icon if present. A `color` field keeps
    * its swatch, which shows the value, and shows the spinner at its end, before the picker button
+   * (read-only or disabled, the field has no picker button and the spinner takes the end)
    */
   @Prop({ reflect: true }) readonly await: boolean = false;
 
@@ -217,8 +218,9 @@ export class MdsInput {
   @Prop({ reflect: true, mutable: true }) maxlength?: number;
 
   /**
-   * Toggles text recognition. A `color` field ignores it: a colour code is typed or picked, not
-   * dictated, and its end holds the button of the picker
+   * Toggles text recognition. A read-only or disabled field has no dictation button. A `color`
+   * field ignores it: a colour code is typed or picked, not dictated, and its end holds the button
+   * of the picker
    */
   @Prop({ reflect: true }) readonly mic?: boolean;
 
@@ -339,6 +341,7 @@ export class MdsInput {
 
   formDisabledCallback(disabled: boolean): void {
     this.formDisabled = disabled;
+    this.stopLockedDictation();
   }
 
   private isDisabled = (): boolean => !!this.disabled || this.formDisabled;
@@ -685,6 +688,20 @@ export class MdsInput {
     if (newValue) {
       setFormValue(this.internals, null);
     }
+    this.stopLockedDictation();
+  }
+
+  @Watch('readonly')
+  protected readonlyChanged(): void {
+    this.stopLockedDictation();
+  }
+
+  /**
+   * A field that becomes read-only or disabled loses its dictation button, with which the user
+   * would stop a dictation: one in progress stops at once, emitting `mdsInputSpeechEnd`.
+   */
+  private stopLockedDictation(): void {
+    if (this.isRecording && !this.canEdit()) this.toggleTextRecognition();
   }
 
   /**
@@ -904,9 +921,27 @@ export class MdsInput {
     return this.isColor() || Boolean(this.icon ?? this.await);
   }
 
+  /**
+   * The picker button of a colour field, shown while the user can change the value: a read-only
+   * or disabled field offers no way to change it, as the swatch shows the colour, and leaves the
+   * end of the field to the badge of its state (vittorio 2026-11-11: the button clashed with it).
+   */
+  private hasColorPicker(): boolean {
+    return this.isColor() && this.canEdit();
+  }
+
+  /**
+   * The dictation button, shown while the user can change the value: a read-only or disabled field
+   * offers no way to change it, and leaves its end to the badge of its state, as a colour field
+   * does with its picker button (vittorio 2026-11-11).
+   */
+  private hasMicButton(): boolean {
+    return Boolean(this.mic) && !this.isColor() && this.canEdit();
+  }
+
   /** The mark at the end of the field: the microphone, or the picker button of a colour field. */
   private hasTrailingMark(): boolean {
-    return this.isColor() || Boolean(this.mic);
+    return this.isColor() ? this.hasColorPicker() || this.await : this.hasMicButton();
   }
 
   /**
@@ -984,6 +1019,7 @@ export class MdsInput {
               'input',
               this.hasLeadingMark() && 'has-icon',
               this.hasTrailingMark() && 'has-right-icon',
+              this.hasColorPicker() && this.await && 'has-right-icons',
             )}
             autoComplete={this.autocomplete}
             autoFocus={this.autofocus}
@@ -1076,24 +1112,23 @@ export class MdsInput {
           </div>
         )}
         {/* The picker button of a colour field, where the microphone goes, with the picker of the
-            platform hidden under it, so that the popup of the browser opens next to it. */}
-        {this.isColor() && (
+            platform hidden under it, so that the popup of the browser opens next to it; only on a
+            field the user can change (hasColorPicker). */}
+        {this.hasColorPicker() && (
           <input
             aria-hidden="true"
             class="color-picker"
-            disabled={!this.canEdit()}
             onInput={this.onColorPick}
             ref={(input) => (this.colorPicker = input)}
             tabIndex={-1}
             type="color"
           />
         )}
-        {this.isColor() && (
+        {this.hasColorPicker() && (
           <mds-button
             class="color-picker-button"
             size={this.buttonSize()}
             icon={miOutlinePalette}
-            disabled={!this.canEdit()}
             onClick={this.openColorPicker}
             tabindex="0"
             title={this.colorPickerName()}
@@ -1102,12 +1137,11 @@ export class MdsInput {
             part="color-picker-button"
           ></mds-button>
         )}
-        {this.mic && !this.isColor() && (
+        {this.hasMicButton() && (
           <mds-button
             class={clsx('mic-toggle-button', this.isRecording && 'mic-toggle-button--recording')}
             size={this.buttonSize()}
             icon={this.speechToTextIcon}
-            disabled={!this.canEdit()}
             onClick={this.toggleTextRecognition}
             tabindex="0"
             title={this.t.get(this.speechToTextLabelKey)}
@@ -1150,7 +1184,14 @@ export class MdsInput {
         {this.icon && !this.await && !this.isColor() && (
           <mds-icon class={clsx('icon', this.variant)} name={this.icon} />
         )}
-        <mds-spinner running={this.await} class={clsx('await', this.variant)} />
+        <mds-spinner
+          running={this.await}
+          class={clsx(
+            'await',
+            this.variant,
+            this.isColor() && !this.hasColorPicker() && 'await--end',
+          )}
+        />
       </Host>
     );
   }

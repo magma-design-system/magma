@@ -450,19 +450,44 @@ describe('type color', () => {
       expect(field).toEqualAttribute('variant', 'success');
     });
 
-    it.each(['readonly', 'disabled'])('opens nothing on a %s field', async (attribute) => {
+    // a field the user cannot change offers no picker, and leaves its end to the badge of its state
+    it.each(['readonly', 'disabled'])('has no picker button on a %s field', async (attribute) => {
       await setup(`<mds-input type="color" value="#2f6fd0" ${attribute}></mds-input>`);
 
-      expect(action()).toHaveAttribute('disabled');
-      action().click();
+      expect(action()).toBeNull();
+      expect(picker()).toBeNull();
+      expect(text()).not.toHaveClass('has-right-icon');
       swatch().click();
-      await pick('#ff0000');
 
       expect(opened).toEqual([]);
       expect(field.value).toBe('#2f6fd0');
       expect(changes).toEqual([]);
       // the colour stays in sight
       expect(getComputedStyle(swatch()).backgroundColor).toBe('rgb(47, 111, 208)');
+    });
+
+    it('shows the picker button again once the field can be changed', async () => {
+      await setup('<mds-input type="color" value="#2f6fd0" readonly></mds-input>');
+      expect(action()).toBeNull();
+
+      field.readonly = false;
+      await waitForChanges();
+
+      expect(action()).not.toBeNull();
+      await userEvent.click(action());
+      expect(opened).toEqual([picker()]);
+    });
+
+    it('has no picker button in a disabled fieldset, until it is enabled', async () => {
+      const form = await setup<HTMLFormElement>(
+        '<form><fieldset disabled><mds-input type="color" value="#2f6fd0"></mds-input></fieldset></form>',
+      );
+      await vi.waitFor(() => expect(action()).toBeNull());
+
+      form.querySelector('fieldset')!.disabled = false;
+      await waitForChanges();
+
+      expect(action()).not.toBeNull();
     });
 
     it('hides the picker under its button, out of reach of the keyboard and of assistive technologies', async () => {
@@ -546,6 +571,19 @@ describe('type color', () => {
         action().getBoundingClientRect().left,
       );
       // the text stops before the spinner
+      expect(parseFloat(getComputedStyle(text()).paddingRight)).toBeGreaterThanOrEqual(
+        box(spinner).right + box(spinner).width,
+      );
+    });
+
+    it('puts the spinner at the very end of a read-only field, which has no picker button', async () => {
+      await setup('<mds-input type="color" value="#2f6fd0" await readonly></mds-input>');
+
+      const spinner = field.shadowRoot!.querySelector('.await')!;
+      expect(action()).toBeNull();
+      // where the swatch stands at the start, mirrored
+      expect(box(spinner).right).toBe(box(swatch()).left);
+      expect(text()).toHaveClass('has-right-icon');
       expect(parseFloat(getComputedStyle(text()).paddingRight)).toBeGreaterThanOrEqual(
         box(spinner).right + box(spinner).width,
       );

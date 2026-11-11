@@ -33,7 +33,8 @@
   cursor: default;
 }
 
-/* the button of the picker stands where the microphone of a text field does */
+/* the button of the picker stands where the microphone of a text field does, while the user can
+ * change the value: a read-only or disabled field leaves the end to the badge of its state */
 
 .color-picker-button {
   fill: var(--mds-input-controls-color);
@@ -67,8 +68,14 @@
   right: var(--private-input-toggle-area);
 }
 
-:host([type='color'][await]) .input {
+.input.has-right-icons {
   padding-right: calc(
     var(--private-input-toggle-area) + var(--private-input-icon-size) + --spacing(200)
   );
+}
+
+/* a read-only or disabled field has no button of the picker: the spinner takes the end */
+
+:host([type='color']) .await.await--end {
+  right: var(--private-input-icon-offset-inline);
 }

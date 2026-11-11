@@ -1455,7 +1455,7 @@ export namespace Components {
          */
         "autofocus": boolean;
         /**
-          * Specifies if the spinner icon is shown, replacing the icon if present. A `color` field keeps its swatch, which shows the value, and shows the spinner at its end, before the picker button
+          * Specifies if the spinner icon is shown, replacing the icon if present. A `color` field keeps its swatch, which shows the value, and shows the spinner at its end, before the picker button (read-only or disabled, the field has no picker button and the spinner takes the end)
           * @default false
          */
         "await": boolean;
@@ -1507,7 +1507,7 @@ export namespace Components {
          */
         "maxlength"?: number;
         /**
-          * Toggles text recognition. A `color` field ignores it: a colour code is typed or picked, not dictated, and its end holds the button of the picker
+          * Toggles text recognition. A read-only or disabled field has no dictation button. A `color` field ignores it: a colour code is typed or picked, not dictated, and its end holds the button of the picker
          */
         "mic"?: boolean;
         /**
@@ -6922,7 +6922,7 @@ declare namespace LocalJSX {
          */
         "autofocus"?: boolean;
         /**
-          * Specifies if the spinner icon is shown, replacing the icon if present. A `color` field keeps its swatch, which shows the value, and shows the spinner at its end, before the picker button
+          * Specifies if the spinner icon is shown, replacing the icon if present. A `color` field keeps its swatch, which shows the value, and shows the spinner at its end, before the picker button (read-only or disabled, the field has no picker button and the spinner takes the end)
           * @default false
          */
         "await"?: boolean;
@@ -6963,7 +6963,7 @@ declare namespace LocalJSX {
          */
         "maxlength"?: number;
         /**
-          * Toggles text recognition. A `color` field ignores it: a colour code is typed or picked, not dictated, and its end holds the button of the picker
+          * Toggles text recognition. A read-only or disabled field has no dictation button. A `color` field ignores it: a colour code is typed or picked, not dictated, and its end holds the button of the picker
          */
         "mic"?: boolean;
         /**
