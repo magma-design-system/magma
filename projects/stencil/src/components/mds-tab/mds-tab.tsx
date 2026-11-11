@@ -274,6 +274,9 @@ export class MdsTab {
 
   @Listen('mdsTabItemSelect')
   changeEventHandler(event: CustomEvent<MdsTabItemEventDetail>): void {
+    // the focus goes back to the selected item only when it was in the strip: an item selected
+    // from code, while the user is elsewhere, does not pull the focus away (#341)
+    const focused = this.element.matches(':focus-within');
     // since the external developer can define a custom id
     // we must find the key from event.detail
     this.tabItems.forEach((item, key: number) => {
@@ -288,9 +291,11 @@ export class MdsTab {
         const mdsTabEl: HTMLMdsButtonElement = this.tabItems[
           this.currentItemIndex
         ].shadowRoot?.querySelector('mds-button') as HTMLMdsButtonElement;
-        setTimeout(() => {
-          mdsTabEl.focus();
-        }, 0);
+        if (focused) {
+          setTimeout(() => {
+            mdsTabEl.focus();
+          }, 0);
+        }
         return;
       }
       item.selected = undefined;

@@ -421,3 +421,45 @@ describe('mds-tab', () => {
     });
   });
 });
+
+// the focus went to the selected item after every selection, one made from code too: a strip
+// whose item a parent selects pulled the focus away from where the user was (#341)
+describe('mds-tab focus', () => {
+  const setup = async () => {
+    const { root } = await render(`<div><input id="elsewhere" />${strip}</div>`);
+    const [first, second] = Array.from(root.querySelectorAll('mds-tab-item'));
+    const button = (item: Element): HTMLElement =>
+      item.shadowRoot!.querySelector<HTMLElement>('mds-button')!;
+    return {
+      elsewhere: root.querySelector<HTMLInputElement>('#elsewhere')!,
+      first,
+      second,
+      button,
+    };
+  };
+
+  // a frame for the deferred focus of the strip, had it moved it
+  const settle = (): Promise<void> => new Promise((resolve) => setTimeout(resolve, 50));
+
+  it('stays where it is when an item is selected from code', async () => {
+    const { elsewhere, second } = await setup();
+    elsewhere.focus();
+
+    second.selected = true;
+    await vi.waitFor(() => expect(second).toHaveAttribute('selected'));
+    await settle();
+
+    expect(document.activeElement).toBe(elsewhere);
+  });
+
+  it('stays on the item selected from the keyboard', async () => {
+    const { second, button } = await setup();
+    button(second).focus();
+
+    await userEvent.keyboard('{Enter}');
+    await vi.waitFor(() => expect(second).toHaveAttribute('selected'));
+    await settle();
+
+    expect(document.activeElement).toBe(second);
+  });
+});
