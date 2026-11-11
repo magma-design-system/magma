@@ -55,6 +55,12 @@
   min-width: 0;
 }
 
+/* a value is data, as an <option>: its text names its thumb, and stays out of the label (#1261) */
+
+::slotted(mds-input-range-value) {
+  display: none;
+}
+
 .value {
   margin-left: auto;
 }
@@ -73,8 +79,6 @@
 }
 
 .field {
-  @apply focus-bounce;
-
   appearance: none;
   background-color: transparent;
   border-radius: var(--magma-radius-full);
@@ -85,14 +89,22 @@
   /* a native range input is 129 px wide in Chromium, and the automatic minimum of a flex item
    * kept it so in a narrower track */
   min-width: 0;
+
+  /* the ring of the focus is on the thumb: the outline of the browser would go round the track */
+  outline: none;
   z-index: 20;
 }
 
-.field:focus-visible {
+/* the ring of the focus goes round the thumb, not round the whole track as the outline of the
+ * input did: with several thumbs, each has its own (#1261) */
+
+.field:focus-visible::-webkit-slider-thumb {
   @apply focus-bounce--focused;
 }
 
 .field::-webkit-slider-thumb {
+  @apply focus-bounce;
+
   appearance: none;
   background-color: var(--mds-input-range-thumb-background);
   border-color: var(--mds-input-range-track-progress-background);
@@ -130,6 +142,47 @@
     (100% - var(--mds-input-range-track-size)) * (var(--mds-input-range-progress, 0) * 0.01) +
       (var(--mds-input-range-track-size) / 2)
   );
+}
+
+/* several thumbs: the fill runs from the centre of the first to the centre of the last */
+
+.track-progress--between {
+  margin-left: calc(
+    (100% - var(--mds-input-range-track-size)) *
+      (var(--private-input-range-progress-start, 0) * 0.01) +
+      (var(--mds-input-range-track-size) / 2)
+  );
+  width: calc(
+    (100% - var(--mds-input-range-track-size)) *
+      ((var(--mds-input-range-progress, 0) - var(--private-input-range-progress-start, 0)) * 0.01)
+  );
+}
+
+/* Several thumbs (#1261): a native input each, all as wide as the track and stacked on it, so
+ * that a value sits at the same place on every input. An input lets the pointer through to the
+ * track, which moves the nearest thumb; its thumb catches the pointer and drags itself. */
+
+.range--several .field {
+  inset-inline: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.range--several .field::-webkit-slider-thumb {
+  pointer-events: auto;
+}
+
+/* Two thumbs on one value lie on each other (a thumb is --spacing(600) wide, a step can be far
+ * less): the one with the focus lies on top, and the keys move it alone. Without the focus, a
+ * thumb held by its neighbours at its value lies under them, so that the one on top can move:
+ * of two thumbs on `max`, the first, which has room before it. */
+
+.range--several .field--held {
+  z-index: 10;
+}
+
+.range--several .field:focus {
+  z-index: 30;
 }
 
 .track-total {
