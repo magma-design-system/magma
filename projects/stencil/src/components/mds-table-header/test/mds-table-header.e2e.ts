@@ -68,5 +68,49 @@ describe('mds-table-header', () => {
 
       await expect((root as HTMLMdsTableHeaderElement).setSelection(1, 3)).resolves.toBeUndefined();
     });
+
+    // the table counts the rows selected in its markup on load, a frame before the header it
+    // makes selectable draws its switch: that count was lost (#1230)
+    it('keeps a count made before the switch exists', async () => {
+      const { root, waitForChanges } = await render<HTMLMdsTableHeaderElement>(
+        '<mds-table-header></mds-table-header>',
+      );
+
+      await root.setSelection(3, 3);
+      root.selectable = true;
+      await waitForChanges();
+
+      expect(checkbox(root).checked).toBe(true);
+      expect(checkbox(root).indeterminate).toBeFalsy();
+    });
+
+    it('keeps a partial count made before the switch exists', async () => {
+      const { root, waitForChanges } = await render<HTMLMdsTableHeaderElement>(
+        '<mds-table-header></mds-table-header>',
+      );
+
+      await root.setSelection(1, 3);
+      root.selectable = true;
+      await waitForChanges();
+
+      expect(checkbox(root).checked).toBeFalsy();
+      expect(checkbox(root).indeterminate).toBe(true);
+    });
+
+    it('names the switch after what a click on it does', async () => {
+      // the name followed only clicks on the switch itself: every row ticked one by one left a
+      // ticked switch called "Select all rows"
+      const { root, waitForChanges } = await render<HTMLMdsTableHeaderElement>(
+        '<mds-table-header selectable></mds-table-header>',
+      );
+
+      await root.setSelection(3, 3);
+      await waitForChanges();
+      expect(checkbox(root)).toHaveAttribute('title', 'Deselect all rows');
+
+      await root.setSelection(1, 3);
+      await waitForChanges();
+      expect(checkbox(root)).toHaveAttribute('title', 'Select all rows');
+    });
   });
 });

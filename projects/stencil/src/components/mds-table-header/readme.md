@@ -16,10 +16,10 @@ The `<mds-table-header>` web component is the header region of a Magma table, us
 #### Semantic Behavior
 
 - **Compound child only**: Must be slotted directly inside `<mds-table>` alongside `mds-table-body` (and optionally `mds-table-footer`); it is not used standalone. It is itself the header row: its own default slot accepts `mds-table-header-cell` element(s), one per column.
-- **Parent-driven selection state**: When `selectable` is true the header renders a master checkbox that the parent keeps in sync - `indeterminate` for partial selection and `checked` when all rows are selected.
+- **Parent-driven selection state**: When `selectable` is true the header renders a master checkbox that the parent keeps in sync - `indeterminate` for partial selection and `checked` when all rows are selected, rows selected in the markup on load included.
 - **Selection reported upward**: Toggling the master checkbox selects or deselects every row, after which the table re-emits its own `mdsTableSelectionChange` event.
 - **Automatic actions column**: When any row exposes a `[slot="action"]`, the header appends an extra header cell (exposed as the `actions` shadow part) labelled with the localized "actions" string.
-- **Localized labels**: The select-all/select-none switch title and the actions label are localized (el/en/es/it).
+- **Localized labels**: The select-all/select-none switch title and the actions label are localized (el/en/es/it). The title says what a click on the switch does: select every row, or deselect them once every row is selected, however they got selected.
 
 #### Properties & Visual Configurations
 
@@ -291,7 +291,7 @@ The component detects `[slot="action"]` children in the table body and appends t
 
 #### Do Not Call `setSelection` from Application Code
 
-`setSelection(selectedItems, totalItems)` is an internal method called by `<mds-table>` after each row selection change. Calling it from application code duplicates the table's internal bookkeeping and can leave the checkbox in an inconsistent state. React to selection results via the `mdsTableSelectionChange` event instead.
+`setSelection(selectedItems, totalItems)` is an internal method called by `<mds-table>` every time it counts the selected rows: on load, after each row selection change and when rows come and go. Calling it from application code duplicates the table's internal bookkeeping and can leave the checkbox in an inconsistent state. React to selection results via the `mdsTableSelectionChange` event instead.
 
 ```html
 <!-- INCORRECT -->
