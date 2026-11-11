@@ -120,7 +120,8 @@ terminal session with `/plugin marketplace add magma-design-system/magma`, then
 3. `nx run claude-plugin:check` fails when a skill is out of date or breaks the Agent Skills
    format (portable frontmatter keys only, `name` equal to its folder, a description of at most
    1024 characters, ASCII); the `claude-plugin-ci` workflow runs it when the plugin, the server,
-   the guides or the codemod change.
+   the guides, the codemod or the root toolchain (`package.json`, `package-lock.json`, `.nvmrc`)
+   change.
 4. With Claude Code installed, `claude plugin validate projects/claude-plugin` and
    `claude plugin validate .` check the manifests as Claude Code reads them.
 
