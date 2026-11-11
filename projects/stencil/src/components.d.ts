@@ -14,6 +14,7 @@ import { MdsAccordionTimerItemEventDetail } from "./components/mds-accordion-tim
 import { ToneBoxVariantType, ToneMinimalBoxVariantType, ToneMinimalVariantType, ToneSmartVariantType, ToneVariantType } from "./type/tone";
 import { ChipVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeInputVariantType, ThemeLabelVariantType, ThemeStatusVariantType, ThemeVariantType } from "./type/variant";
 import { AvatarSizeType } from "./components/mds-avatar-stack/meta/types";
+import { BannerTypographyType } from "./components/mds-banner/meta/types";
 import { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/types";
 import { ProgressBarSizeType } from "./type/progress";
 import { BibliographyFormatType, BibliographyRelationshipType } from "./components/mds-bibliography/meta/types";
@@ -103,6 +104,7 @@ export { MdsAccordionTimerItemEventDetail } from "./components/mds-accordion-tim
 export { ToneBoxVariantType, ToneMinimalBoxVariantType, ToneMinimalVariantType, ToneSmartVariantType, ToneVariantType } from "./type/tone";
 export { ChipVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeInputVariantType, ThemeLabelVariantType, ThemeStatusVariantType, ThemeVariantType } from "./type/variant";
 export { AvatarSizeType } from "./components/mds-avatar-stack/meta/types";
+export { BannerTypographyType } from "./components/mds-banner/meta/types";
 export { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/types";
 export { ProgressBarSizeType } from "./type/progress";
 export { BibliographyFormatType, BibliographyRelationshipType } from "./components/mds-bibliography/meta/types";
@@ -401,6 +403,10 @@ export namespace Components {
           * @default 'weak'
          */
         "tone"?: ToneMinimalBoxVariantType;
+        /**
+          * The style of the headline: `h6`, the title of a part, or `h5`, the title of a dialog (#1189, titles). Left out, it follows the place of the banner: `h6` in the page, `h5` as the window of a dialog (`slot="window"` on a child of `mds-modal`), above the `h6` of the parts and the groups of fields it holds. Nothing larger: `h4` is too large for a banner
+         */
+        "typography"?: BannerTypographyType;
         /**
           * Sets the theme variant colors
           * @default 'primary'
@@ -5826,6 +5832,10 @@ declare namespace LocalJSX {
          */
         "tone"?: ToneMinimalBoxVariantType;
         /**
+          * The style of the headline: `h6`, the title of a part, or `h5`, the title of a dialog (#1189, titles). Left out, it follows the place of the banner: `h6` in the page, `h5` as the window of a dialog (`slot="window"` on a child of `mds-modal`), above the `h6` of the parts and the groups of fields it holds. Nothing larger: `h4` is too large for a banner
+         */
+        "typography"?: BannerTypographyType;
+        /**
           * Sets the theme variant colors
           * @default 'primary'
          */
@@ -9214,6 +9224,7 @@ declare namespace LocalJSX {
         "dismissible": boolean;
         "deletable": boolean;
         "headline": string;
+        "typography": BannerTypographyType;
         "icon": string;
     }
     interface MdsBenchmarkBarAttributes {
