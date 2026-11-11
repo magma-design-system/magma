@@ -859,21 +859,120 @@ describe('speech-to-text', () => {
   });
 });
 
-// the buttons inside the field looked and stayed active on a disabled field
-describe('the buttons of a disabled field', () => {
-  it.each([
-    ['number', '.counter-button'],
-    ['password', '.password-toggle-button'],
-  ])('are disabled with the field, type="%s"', async (type, selector) => {
-    await setup(`<mds-input type="${type}" value="1" disabled></mds-input>`);
-    const buttons = Array.from(mdsInput.shadowRoot!.querySelectorAll(selector));
+// the buttons inside the field looked and stayed active on a disabled field; the password toggle
+// stays on a field the user cannot change, as it shows the value without changing it (#1368)
+describe('the password toggle of a disabled field', () => {
+  it('is disabled with the field', async () => {
+    await setup('<mds-input type="password" value="1" disabled></mds-input>');
+    const toggle = mdsInput.shadowRoot!.querySelector('.password-toggle-button')!;
 
-    expect(buttons.length).toBeGreaterThan(0);
-    buttons.forEach((button) => expect(button).toHaveAttribute('disabled'));
+    expect(toggle).toHaveAttribute('disabled');
 
     mdsInput.disabled = false;
     await waitForChanges();
-    buttons.forEach((button) => expect(button).not.toHaveAttribute('disabled'));
+    expect(toggle).not.toHaveAttribute('disabled');
+  });
+
+  it('stays on a read-only field, where it shows the value', async () => {
+    await setup('<mds-input type="password" value="1" readonly></mds-input>');
+
+    expect(mdsInput.shadowRoot!.querySelector('.password-toggle-button')).not.toHaveAttribute(
+      'disabled',
+    );
+  });
+});
+
+// The counter buttons change the value: a number the user cannot change has none, and leaves its
+// end to the badge of its state, which covered them, as the microphone and the colour picker do
+// (vittorio 2026-11-11, #1368). Before, they stayed on the field, disabled.
+describe('the counter buttons of a number', () => {
+  /** The room and the alignment of the text of a field. */
+  const textBox = (field: Element) => {
+    const { paddingLeft, paddingRight, textAlign } = getComputedStyle(
+      field.shadowRoot!.querySelector('.input')!,
+    );
+    return { paddingLeft, paddingRight, textAlign };
+  };
+
+  it.each(
+    ['vertical', 'horizontal'].flatMap((layout) =>
+      ['lg', 'md', 'sm'].flatMap((size) =>
+        ['readonly', 'disabled'].map((state) => ({ layout, size, state })),
+      ),
+    ),
+  )(
+    'are not shown on a $state $size number, $layout, whose text takes their room',
+    async ({ layout, size, state }) => {
+      const { root } = await render(`<div>
+        <mds-input type="number" controls-layout="${layout}" size="${size}" value="3" ${state}></mds-input>
+        <mds-input size="${size}" value="3"></mds-input>
+      </div>`);
+      const [number, text] = Array.from(root.querySelectorAll('mds-input'));
+
+      expect(number.shadowRoot!.querySelectorAll('.counter-button')).toHaveLength(0);
+      // the room of any field, the text at its start: the centring belongs to the side buttons
+      expect(textBox(number)).toEqual(textBox(text));
+    },
+  );
+
+  it.each(['vertical', 'horizontal'])(
+    'come back, with their room, once a %s number can be changed',
+    async (layout) => {
+      await setup(
+        `<mds-input type="number" controls-layout="${layout}" value="3" readonly></mds-input>`,
+      );
+
+      mdsInput.readonly = false;
+      await waitForChanges();
+
+      expect(mdsInput.shadowRoot!.querySelectorAll('.counter-button')).toHaveLength(2);
+      expect(mdsInput.shadowRoot!.querySelector('.input')).toHaveClass(`has-counter-${layout}`);
+    },
+  );
+
+  it('are not shown in a disabled fieldset, until it is enabled', async () => {
+    const { root: form, waitForChanges: wait } = await render<HTMLFormElement>(
+      '<form><fieldset disabled><mds-input type="number" value="3"></mds-input></fieldset></form>',
+    );
+    const field = form.querySelector('mds-input')!;
+    await vi.waitFor(() => expect(field.shadowRoot!.querySelector('input')!.disabled).toBe(true));
+    expect(field.shadowRoot!.querySelectorAll('.counter-button')).toHaveLength(0);
+
+    form.querySelector('fieldset')!.disabled = false;
+    await wait();
+
+    expect(field.shadowRoot!.querySelectorAll('.counter-button')).toHaveLength(2);
+  });
+
+  it('change the value of a number the user can change', async () => {
+    await setup('<mds-input type="number" value="3"></mds-input>');
+    const [increase, decrease] = Array.from(
+      mdsInput.shadowRoot!.querySelectorAll<HTMLElement>('.counter-button'),
+    );
+
+    increase.click();
+    increase.click();
+    decrease.click();
+    await waitForChanges();
+
+    expect(mdsInput.value).toBe('4');
+  });
+
+  // the side buttons carry the icon of the other buttons inside the field: an sm button at md and
+  // sm, which keeps it clear of the top tip on the border (#1368)
+  it.each([
+    { size: 'lg', button: 'md' },
+    { size: 'md', button: 'sm' },
+    { size: 'sm', button: 'sm' },
+  ])('are $button buttons on the sides of a $size number', async ({ size, button }) => {
+    await setup(
+      `<mds-input type="number" controls-layout="horizontal" size="${size}" value="3"></mds-input>`,
+    );
+    const controls = mdsInput.shadowRoot!.querySelectorAll('.counter-button--horizontal');
+
+    expect(controls).toHaveLength(2);
+    // lg leaves the default of mds-button, which it reflects
+    controls.forEach((control) => expect(control).toEqualAttribute('size', button));
   });
 });
 

@@ -44,9 +44,6 @@
     var(--mds-input-select-variant-color-rgb) / 0.5
   );
   --mds-input-select-arrow-icon-hover-color: rgb(var(--mds-input-select-variant-color-rgb));
-  --mds-input-tip-horizontal-offset: --spacing(100);
-  --mds-input-tip-horizontal-offset-focused: --spacing(1000);
-  --mds-input-tip-vertical-offset: --spacing(100);
   --mds-input-tip-background: rgb(var(--magma-surface-inverse-muted));
   --mds-input-select-transition-duration: var(--duration-300);
   --mds-input-select-icon-transition-duration: var(--duration-200);
@@ -60,22 +57,21 @@
   --private-input-select-padding-inline: --spacing(400);
   --private-input-select-arrow-area: --spacing(1200);
 
-  @apply text-info-detail;
-
-  /* the radius of mds-input, capped at a part of the height of the field like it (#913, #995) */
-  border-radius: min(
+  /* the radius of mds-input, capped at a part of the height of the field like it (#913, #995);
+     the top tip keeps clear of the corner by it (#1368) */
+  --private-input-select-radius: min(
     var(--magma-radius-xl),
     var(--magma-corner-cap) * var(--private-input-select-height)
   );
+
+  @apply text-info-detail;
+
+  border-radius: var(--private-input-select-radius);
   color: rgb(var(--magma-text-default));
   corner-shape: var(--magma-corner-shape);
   display: flex;
   position: relative;
   user-select: none;
-}
-
-:host([required]:not([required='false']):focus-within) .icon {
-  transform: translate(--spacing(150), --spacing(150));
 }
 
 :host(:hover),
@@ -160,7 +156,6 @@
 
 :host([disabled]:not([disabled='false'])) .icon {
   fill: rgb(var(--magma-text-disabled));
-  transform: translate(--spacing(250), --spacing(200));
 }
 
 .icon-container {
@@ -188,9 +183,7 @@
 }
 
 mds-input-tip {
-  --mds-input-tip-horizontal-offset: inherit;
-  --mds-input-tip-horizontal-offset-focused: inherit;
-  --mds-input-tip-vertical-offset: inherit;
+  --mds-input-tip-field-radius: var(--private-input-select-radius);
   --mds-input-tip-background: inherit;
 }
 

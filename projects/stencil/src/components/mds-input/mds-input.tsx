@@ -177,12 +177,14 @@ export class MdsInput {
   @Prop({ reflect: true }) readonly await: boolean = false;
 
   /**
-   * Specifies the layout of the counter button when the input type is set to `number`
+   * Specifies the layout of the counter buttons when the input type is set to `number`: stacked at
+   * the end (`vertical`) or one at each end (`horizontal`). A read-only or disabled field has no
+   * counter buttons, and its text takes the room they leave
    */
   @Prop({ reflect: true }) readonly controlsLayout?: InputControlsLayoutType = 'vertical';
 
   /**
-   * Specifies the icon type of the counter button when the input type is set to `number`
+   * Specifies the icon type of the counter buttons when the input type is set to `number`
    */
   @Prop({ reflect: true }) readonly controlsIcon?: InputControlsIconType = 'arrow';
 
@@ -193,7 +195,9 @@ export class MdsInput {
   @Prop() readonly datalist?: string[];
 
   /**
-   * If true, the element is displayed as disabled
+   * If true, the element is displayed as disabled. The buttons that change the value (the counter
+   * buttons of a number, the microphone, the picker of a colour) are not shown: the end of the
+   * field is left to the badge of its state
    */
   @Prop({ reflect: true }) readonly disabled?: boolean = false;
 
@@ -255,7 +259,9 @@ export class MdsInput {
   @Prop({ reflect: true }) readonly placeholder?: string;
 
   /**
-   * Specifies that the element is read-only
+   * Specifies that the element is read-only. The buttons that change the value (the counter
+   * buttons of a number, the microphone, the picker of a colour) are not shown, as on a disabled
+   * field; the password toggle stays, since it shows the value without changing it
    */
   @Prop({ reflect: true }) readonly readonly?: boolean = false;
 
@@ -939,6 +945,15 @@ export class MdsInput {
     return Boolean(this.mic) && !this.isColor() && this.canEdit();
   }
 
+  /**
+   * The counter buttons of a number, shown while the user can change the value: a read-only or
+   * disabled number is a plain field, its text takes their room, and its end is left to the badge
+   * of its state, as with the microphone (vittorio 2026-11-11, #1368).
+   */
+  private hasSteppers(): boolean {
+    return this.type === 'number' && this.canEdit();
+  }
+
   /** The mark at the end of the field: the microphone, or the picker button of a colour field. */
   private hasTrailingMark(): boolean {
     return this.isColor() ? this.hasColorPicker() || this.await : this.hasMicButton();
@@ -962,12 +977,15 @@ export class MdsInput {
         pref-mode={preferenceStore.state.mode}
         pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
-        {this.type === 'number' && this.controlsLayout === 'horizontal' && (
+        {/* The counter buttons of a number, only on a field the user can change (hasSteppers).
+            The side ones are as tall as the field, with the icon of the other buttons inside it:
+            an sm button at md and sm (buttonSize). */}
+        {this.hasSteppers() && this.controlsLayout === 'horizontal' && (
           <mds-button
             class="counter-button counter-button--horizontal counter-button--decrease"
             icon={this.controlsIcon === 'arrow' ? miBaselineArrowDown : miBaselineRemove}
-            disabled={!this.canEdit()}
             onClick={this.stepDown}
+            size={this.buttonSize()}
             tabindex="0"
             title={this.t.get('decrease')}
             variant="dark"
@@ -1020,6 +1038,10 @@ export class MdsInput {
               this.hasLeadingMark() && 'has-icon',
               this.hasTrailingMark() && 'has-right-icon',
               this.hasColorPicker() && this.await && 'has-right-icons',
+              this.hasSteppers() && this.controlsLayout === 'vertical' && 'has-counter-vertical',
+              this.hasSteppers() &&
+                this.controlsLayout === 'horizontal' &&
+                'has-counter-horizontal',
             )}
             autoComplete={this.autocomplete}
             autoFocus={this.autofocus}
@@ -1047,12 +1069,11 @@ export class MdsInput {
             value={this.isColor() ? this.colorText : this.value}
           />
         )}
-        {this.type === 'number' && this.controlsLayout === 'vertical' && (
+        {this.hasSteppers() && this.controlsLayout === 'vertical' && (
           <div class="counter counter--vertical">
             <mds-button
               class="counter-button"
               icon={this.controlsIcon === 'arrow' ? miBaselineArrowUp : miBaselineAdd}
-              disabled={!this.canEdit()}
               onClick={this.stepUp}
               tabindex="0"
               title={this.t.get('increase')}
@@ -1064,7 +1085,6 @@ export class MdsInput {
             <mds-button
               class="counter-button"
               icon={this.controlsIcon === 'arrow' ? miBaselineArrowDown : miBaselineRemove}
-              disabled={!this.canEdit()}
               onClick={this.stepDown}
               tabindex="0"
               title={this.t.get('decrease')}
@@ -1075,14 +1095,14 @@ export class MdsInput {
             ></mds-button>
           </div>
         )}
-        {this.type === 'number' && this.controlsLayout === 'horizontal' && (
+        {this.hasSteppers() && this.controlsLayout === 'horizontal' && (
           <mds-button
             class="counter-button counter-button--horizontal counter-button--increase"
             variant="dark"
             tone="text"
             icon={this.controlsIcon === 'arrow' ? miBaselineArrowUp : miBaselineAdd}
-            disabled={!this.canEdit()}
             onClick={this.stepUp}
+            size={this.buttonSize()}
             tabindex="0"
             title={this.t.get('increase')}
             part="counter-button-increase"

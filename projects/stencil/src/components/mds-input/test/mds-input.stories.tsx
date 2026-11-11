@@ -468,6 +468,162 @@ export const ColorDark = {
   play: playColorError,
 };
 
+/**
+ * Numbers the user can change, and cannot: read-only and disabled, in both layouts. The counter
+ * buttons change the value, so a locked number has none: its text takes their room, and its end
+ * is left to the badge of its state, which covered them (#1368).
+ */
+const TemplateNumberLocked = () => (
+  <div class="@container">
+    <div class="grid items-start gap-600 @md:grid-cols-3">
+      <mds-input type="number" aria-label="Quantita" value="3"></mds-input>
+      <mds-input type="number" aria-label="Quantita in sola lettura" value="3" readonly></mds-input>
+      <mds-input type="number" aria-label="Quantita disabilitata" value="3" disabled></mds-input>
+      <mds-input
+        type="number"
+        controls-layout="horizontal"
+        aria-label="Persone"
+        value="2"
+      ></mds-input>
+      <mds-input
+        type="number"
+        controls-layout="horizontal"
+        aria-label="Persone in sola lettura"
+        value="2"
+        readonly
+      ></mds-input>
+      <mds-input
+        type="number"
+        controls-layout="horizontal"
+        aria-label="Persone disabilitate"
+        value="2"
+        disabled
+      ></mds-input>
+    </div>
+  </div>
+);
+
+export const NumberLocked = {
+  render: TemplateNumberLocked,
+
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+    const fields = Array.from(canvasElement.querySelectorAll('mds-input'));
+    await waitFor(() => fields.forEach((field) => expect(field).toHaveAttribute('hydrated')));
+    fields.forEach((field) => {
+      const locked = field.hasAttribute('readonly') || field.hasAttribute('disabled');
+      expect(field.shadowRoot!.querySelectorAll('.counter-button')).toHaveLength(locked ? 0 : 2);
+    });
+  },
+};
+
+// what stands at the end of a field, under its top tip: the buttons, and the arrow of a select
+const END_ACTIONS =
+  '.password-toggle-button, .mic-toggle-button, .color-picker-button, .counter-button, .action-open-calendar';
+
+/** The glyphs at the end of a field: the icons of its buttons, or the arrow of a select. */
+const endGlyphs = (field: Element): Element[] =>
+  field.localName === 'mds-input-select'
+    ? Array.from(field.shadowRoot!.querySelectorAll('.icon'))
+    : Array.from(field.shadowRoot!.querySelectorAll(END_ACTIONS)).map((button) =>
+        button.shadowRoot!.querySelector('.icon')!,
+      );
+
+/** The area two boxes share, 0 when they do not overlap. */
+const overlap = (a: DOMRect, b: DOMRect): number =>
+  Math.max(0, Math.min(a.right, b.right) - Math.max(a.left, b.left)) *
+  Math.max(0, Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top));
+
+/**
+ * Fields with a top tip (the badge of read only and disabled, the dot of required) and an action
+ * at their end, in every size: the tip stands on the top border, half outside, clear of the corner
+ * and of the action, which it covered when it stood inside (vittorio 2026-11-11, #1368).
+ */
+const TemplateTipOnTheBorder = () => (
+  <div class="@container">
+    <div class="grid items-start gap-600 @md:grid-cols-3">
+      {(['lg', 'md', 'sm'] as const).map((size) => (
+        <div key={size} class="grid gap-600">
+          <mds-input-field label={`Password (${size})`}>
+            <mds-input type="password" value="segreto" readonly size={size}></mds-input>
+          </mds-input-field>
+          <mds-input-field label={`Colore (${size})`}>
+            <mds-input type="color" value="#2f6fd0" required size={size}></mds-input>
+          </mds-input-field>
+          <mds-input-field label={`Nota (${size})`}>
+            <mds-input mic value="Testo" required size={size}></mds-input>
+          </mds-input-field>
+          <mds-input-field label={`Quantita (${size})`}>
+            <mds-input type="number" value="3" required size={size}></mds-input>
+          </mds-input-field>
+          <mds-input-field label={`Persone (${size})`}>
+            <mds-input
+              type="number"
+              controls-layout="horizontal"
+              value="2"
+              required
+              size={size}
+            ></mds-input>
+          </mds-input-field>
+          <mds-input-field label={`Scadenza (${size})`}>
+            <mds-input-date value="2026-11-11" required size={size}></mds-input-date>
+          </mds-input-field>
+          <mds-input-field label={`Provincia (${size})`}>
+            <mds-input-select disabled size={size}>
+              <option value="bo">Bologna</option>
+            </mds-input-select>
+          </mds-input-field>
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
+const playTipOnTheBorder = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+  const fields = Array.from(
+    canvasElement.querySelectorAll('mds-input, mds-input-date, mds-input-select'),
+  );
+  await waitFor(() => fields.forEach((field) => expect(field).toHaveAttribute('hydrated')));
+  // the closed calendar of a date hides once its dropdown hydrates: until then the three calendars
+  // of the page show the same month to axe, as landmarks of the same name
+  await waitFor(() =>
+    fields.forEach((field) =>
+      field
+        .shadowRoot!.querySelectorAll('mds-dropdown')
+        .forEach((dropdown) => expect(getComputedStyle(dropdown).display).toBe('none')),
+    ),
+  );
+  await waitFor(() =>
+    fields.forEach((field) => {
+      const top = field.getBoundingClientRect().top;
+      const items = Array.from(
+        field.shadowRoot!.querySelectorAll('mds-input-tip[position="top"] mds-input-tip-item'),
+      ).map((item) => item.getBoundingClientRect());
+      const glyphs = endGlyphs(field).map((glyph) => glyph.getBoundingClientRect());
+
+      expect(items.length).toBeGreaterThan(0);
+      expect(glyphs.length).toBeGreaterThan(0);
+      items.forEach((item) => {
+        expect(Math.abs((item.top + item.bottom) / 2 - top)).toBeLessThanOrEqual(1);
+        glyphs.forEach((glyph) => expect(overlap(item, glyph)).toBe(0));
+      });
+    }),
+  );
+};
+
+export const TipOnTheBorder = {
+  render: TemplateTipOnTheBorder,
+
+  play: playTipOnTheBorder,
+};
+
+export const TipOnTheBorderDark = {
+  render: TemplateTipOnTheBorder,
+
+  beforeEach: inDarkMode,
+
+  play: playTipOnTheBorder,
+};
+
 const FormIntegrationTemplate = (args: MdsInputInterface) => {
   return (
     <div class="grid gap-600">

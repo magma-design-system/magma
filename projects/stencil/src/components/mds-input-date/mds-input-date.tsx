@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import {
   Component,
   Element,
@@ -118,12 +119,14 @@ export class MdsInputDate {
   @Prop({ reflect: true }) readonly hideToday: boolean = false;
 
   /**
-   * If true, the element is displayed as disabled
+   * If true, the element is displayed as disabled. The calendar button is not shown: the end of
+   * the field is left to the badge of its state
    */
   @Prop({ reflect: true }) readonly disabled?: boolean = false;
 
   /**
-   * Specifies that the element is read-only
+   * Specifies that the element is read-only: the date cannot be typed, and the calendar button is
+   * not shown, as on a disabled field
    */
   @Prop({ reflect: true }) readonly readonly?: boolean = false;
 
@@ -253,6 +256,20 @@ export class MdsInputDate {
 
   private isDisabled = (): boolean => !!this.disabled || this.formDisabled;
 
+  // the user can change the value: the calendar button, which changes it, follows it
+  private canEdit = (): boolean => !this.isDisabled() && !this.readonly;
+
+  /**
+   * The calendar button, with its dropdown, shown while the user can change the date: a read-only
+   * or disabled field offers no way to change it and leaves its end to the badge of its state, as
+   * the buttons at the end of mds-input do (vittorio 2026-11-11, #1368). A field that locks while
+   * the calendar is open loses the dropdown, which closes as it leaves the page. A field slotted
+   * in mds-input-date-range has none: the range opens its own calendar.
+   */
+  private hasCalendarButton(): boolean {
+    return !this.isSlotted && this.canEdit();
+  }
+
   /**
    * Like a native input, a form reset brings back the value of load and forgets the interaction:
    * the field looks pristine until the user edits or leaves it again.
@@ -364,7 +381,7 @@ export class MdsInputDate {
           aria-label={this.accessibleName}
           value={this.value}
           id="dateInput"
-          class="input"
+          class={clsx('input', this.hasCalendarButton() && 'has-calendar-button')}
           part="input-date"
           type="date"
           disabled={this.isDisabled()}
@@ -375,7 +392,7 @@ export class MdsInputDate {
           onInput={this.handleChange}
           onChange={this.handleChange}
         />
-        {!this.isSlotted && (
+        {this.hasCalendarButton() && (
           <div class="action-open-calendar-wrapper">
             <mds-button
               aria-label={this.t.get('openCalendar')}
@@ -383,8 +400,6 @@ export class MdsInputDate {
               class="action-open-calendar"
               // the default md button fills the 36px square of an md field; sm fits the 28px one
               size={this.size === 'sm' ? 'sm' : undefined}
-              // a read-only date cannot change, from the calendar either
-              disabled={this.isDisabled() || this.readonly}
               variant="dark"
               tone="text"
               icon={miBaselineCalendarToday}
@@ -406,7 +421,7 @@ export class MdsInputDate {
         </mds-input-tip>
         {/* the panel holds a calendar, not a list of entries: it is a group, not the
             menu the dropdown declares by default */}
-        {!this.isSlotted && (
+        {this.hasCalendarButton() && (
           <mds-dropdown
             placement="bottom-end"
             disable-auto-placement

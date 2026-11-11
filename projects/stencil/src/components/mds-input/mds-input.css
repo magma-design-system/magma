@@ -13,9 +13,9 @@
  * @prop --mds-input-textarea-min-height: Public. The min-height applied to the textarea.
  * @prop --mds-input-textarea-resize: Public. Controls whether the textarea is resizable.
  * @prop --mds-input-tip-background: Public. The background color of the input tip/inline help.
- * @prop --mds-input-tip-horizontal-offset-focused: The horizontal offset applied when the input tip is focused
- * @prop --mds-input-tip-horizontal-offset: The default horizontal offset applied to the input tip
- * @prop --mds-input-tip-vertical-offset: The vertical offset applied to the input tip
+ * @prop --mds-input-tip-horizontal-offset-focused: The horizontal offset applied to the bottom tip when the input is focused
+ * @prop --mds-input-tip-horizontal-offset: The default horizontal offset applied to the bottom tip
+ * @prop --mds-input-tip-vertical-offset: The vertical offset applied to the bottom tip
  * @prop --mds-input-variant-color-rgb: Public. The raw RGB channels used for variant-driven styling.
  */
 
@@ -303,16 +303,24 @@
 
   /* stylelint-disable-next-line property-no-vendor-prefix */
   -moz-appearance: textfield;
+}
+
+/* The counter buttons of a number take room from the text only where they are shown, on a field
+ * the user can change (hasSteppers): a read-only or disabled number is a plain field, with the
+ * padding of any field and its text at the start, as the centring belongs to the buttons on its
+ * sides (#1368). The classes follow a disabled fieldset too, which no attribute of the host shows. */
+
+.input.has-counter-vertical {
   padding-right: calc(var(--private-input-counter-width) + --spacing(100));
 }
 
-:host([type='number'][controls-layout='horizontal']) .input {
+.input.has-counter-horizontal {
   padding-left: calc(var(--private-input-control-size) + --spacing(200));
   padding-right: calc(var(--private-input-control-size) + --spacing(200));
   text-align: center;
 }
 
-:host([type='number'][controls-layout='horizontal'][icon]) .input {
+:host([icon]) .input.has-counter-horizontal {
   padding-left: calc(
     var(--private-input-control-size) + var(--private-input-icon-offset-inline) * 2 +
       var(--private-input-icon-size)
@@ -320,7 +328,7 @@
   text-align: left;
 }
 
-:host([type='number'][controls-layout='horizontal']) .icon {
+.input.has-counter-horizontal ~ .icon {
   left: calc(var(--private-input-control-size) + var(--private-input-icon-offset-inline));
 }
 
@@ -339,6 +347,9 @@
 }
 
 mds-input-tip {
+
+  /* the top tip stands on the border, clear of the corner by the radius of the field (#1368) */
+  --mds-input-tip-field-radius: var(--mds-input-border-radius);
   --mds-input-tip-horizontal-offset: inherit;
   --mds-input-tip-horizontal-offset-focused: inherit;
   --mds-input-tip-vertical-offset: inherit;
