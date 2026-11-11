@@ -1,7 +1,18 @@
 /*
   A cell is selected by any `selection` but `none`, which reads as no selection. The test for
-  `none` sits in a :where(), so these rules weigh what a plain [selection] did: the start, end and
-  single rules below them still win.
+  `none` sits in a :where(), so these rules weigh what a plain [selection] did.
+
+  Two layers draw a selection (#341):
+  - the band, on .area-background: the days of a range, and the halves of its ends that reach
+    them. A `preview` paints the band of a range not chosen yet, from the start to the day under
+    the pointer, paler.
+  - the dot, on .inner-dot, with its own text colour: a chosen day is a full dot, the start and
+    the end of a range alike, a single day too; the day under the pointer, not chosen yet, is a
+    ring. In a preview the start is the day already chosen and keeps its full dot, the end (or a
+    `single`) is the day under the pointer.
+  The band rules set --private-calendar-cell-background and -color, the dot rules
+  --private-calendar-cell-inner-background, -dot-color and -dot-ring only: a dot never fights the
+  band, on weekend days included, for its colours.
 */
 
 :host(:not([selection]:not(:where([selection='none'])))[today]) {
@@ -10,6 +21,8 @@
   );
   --private-calendar-cell-color: var(--private-calendar-cell-preselection-today-color);
 }
+
+/* the band */
 
 :host([selection]:not(:where([selection='none']))[month='current']) {
   --private-calendar-cell-background: var(
@@ -33,34 +46,11 @@
   --private-calendar-cell-background: var(
     --private-calendar-cell-selection-current-month-weekend-boundaries-background
   );
-  --private-calendar-cell-color: var(
-    --private-calendar-cell-selection-current-month-weekend-boundaries-color
-  );
 }
 
 :host([selection]:not(:where([selection='none']))[month='other']) {
   --private-calendar-cell-background: var(--private-calendar-cell-selection-other-month-background);
   --private-calendar-cell-color: var(--private-calendar-cell-selection-other-month-color);
-}
-
-:host([selection='start'][month='current']),
-:host([selection='end'][month='current']) {
-  --private-calendar-cell-inner-background: var(
-    --private-calendar-cell-selection-current-month-boundaries-background
-  );
-  --private-calendar-cell-color: var(
-    --private-calendar-cell-selection-current-month-boundaries-color
-  );
-}
-
-:host([selection='start'][month='other']),
-:host([selection='end'][month='other']) {
-  --private-calendar-cell-inner-background: var(
-    --private-calendar-cell-selection-other-month-boundaries-background
-  );
-  --private-calendar-cell-color: var(
-    --private-calendar-cell-selection-other-month-boundaries-color
-  );
 }
 
 :host(
@@ -79,40 +69,69 @@
   --private-calendar-cell-color: var(--private-calendar-cell-preselection-other-month-color);
 }
 
-:host([selection='start'][month='current'][preview]:not([preview='false'])),
-:host([selection='end'][month='current'][preview]:not([preview='false'])) {
+/* a day alone, chosen or under the pointer, reaches no other day: it has no band */
+
+:host([selection='single']) .area-background {
+  background-color: transparent;
+}
+
+/* the dot of a chosen day: full */
+
+:host([selection='start'][month='current']),
+:host([selection='end'][month='current']:not([preview]:not([preview='false']))),
+:host([selection='single'][month='current']:not([preview]:not([preview='false']))) {
+  --private-calendar-cell-inner-background: var(
+    --private-calendar-cell-selection-current-month-boundaries-background
+  );
+  --private-calendar-cell-dot-color: var(
+    --private-calendar-cell-selection-current-month-boundaries-color
+  );
+}
+
+:host([selection='start'][month='current']:nth-child(7n - 1)),
+:host([selection='start'][month='current']:nth-child(7n)),
+:host([selection='end'][month='current']:not([preview]:not([preview='false'])):nth-child(7n - 1)),
+:host([selection='end'][month='current']:not([preview]:not([preview='false'])):nth-child(7n)) {
+  --private-calendar-cell-dot-color: var(
+    --private-calendar-cell-selection-current-month-weekend-boundaries-color
+  );
+}
+
+:host([selection='start'][month='other']),
+:host([selection='end'][month='other']:not([preview]:not([preview='false']))),
+:host([selection='single'][month='other']:not([preview]:not([preview='false']))) {
+  --private-calendar-cell-inner-background: var(
+    --private-calendar-cell-selection-other-month-boundaries-background
+  );
+  --private-calendar-cell-dot-color: var(
+    --private-calendar-cell-selection-other-month-boundaries-color
+  );
+}
+
+/* the dot of the day under the pointer, not chosen yet: a ring */
+
+:host([selection='end'][month='current'][preview]:not([preview='false'])),
+:host([selection='single'][month='current'][preview]:not([preview='false'])) {
   --private-calendar-cell-inner-background: var(
     --private-calendar-cell-preselection-current-month-boundaries-background
   );
-  --private-calendar-cell-color: var(
+  --private-calendar-cell-dot-color: var(
     --private-calendar-cell-preselection-current-month-boundaries-color
+  );
+  --private-calendar-cell-dot-ring: var(
+    --private-calendar-cell-preselection-current-month-boundaries-border-color
   );
 }
 
-:host([selection='start'][month='other'][preview]:not([preview='false'])),
-:host([selection='end'][month='other'][preview]:not([preview='false'])) {
+:host([selection='end'][month='other'][preview]:not([preview='false'])),
+:host([selection='single'][month='other'][preview]:not([preview='false'])) {
   --private-calendar-cell-inner-background: var(
     --private-calendar-cell-preselection-other-month-boundaries-background
   );
-  --private-calendar-cell-color: var(
+  --private-calendar-cell-dot-color: var(
     --private-calendar-cell-preselection-other-month-boundaries-color
   );
-}
-
-:host([selection='single'][month='current']) {
-  --private-calendar-cell-inner-background: var(
-    --private-calendar-cell-preselection-current-month-boundaries-background
-  );
-  --private-calendar-cell-color: var(
-    --private-calendar-cell-preselection-current-month-boundaries-color
-  );
-}
-
-:host([selection='single'][month='other']) {
-  --private-calendar-cell-inner-background: var(
-    --private-calendar-cell-preselection-other-month-boundaries-background
-  );
-  --private-calendar-cell-color: var(
-    --private-calendar-cell-preselection-other-month-boundaries-color
+  --private-calendar-cell-dot-ring: var(
+    --private-calendar-cell-preselection-other-month-boundaries-border-color
   );
 }

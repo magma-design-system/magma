@@ -24,8 +24,8 @@ The `<mds-calendar-cell>` web component represents a single selectable day insid
 Most props are state mirrors written by the parent rather than knobs a consumer tunes directly.
 
 - **`month`**: Distinguishes how the day relates to the displayed month - `current` for in-month days, `other` for leading/trailing days spilling in from adjacent months. The type also allows `weekend`, which is deprecated: the calendar never sets it and it has no styling of its own, since the weekend color comes from the cell's position (the last two columns of the week).
-- **`selection`**: Marks the cell's position within an active range - `start`, `end`, `middle`, or `single` (a one-day or collapsed range); absence or `none` means unselected. This is what produces the connected range visuals across adjacent cells.
-- **`preview`**: When `true`, the current selection is a transient hover/preview rather than a committed selection, allowing distinct styling while the user is still choosing the second boundary.
+- **`selection`**: Marks the cell's position within an active range - `start`, `end`, `middle`, or `single` (a day alone: a one-day range, the start of a range waiting for its end, the day of a single picker); absence or `none` means unselected. A chosen `start`, `end` or `single` is a full dot, the same mark for both ends; `middle` and the halves of the ends that reach it are the band of the range.
+- **`preview`**: When `true`, the selection is a preview of the day under the pointer rather than a chosen one: a paler band, and the `end` (or a `single`) drawn as a ring, not chosen yet. The `start` of a preview is the day already chosen and keeps its full dot.
 - **`orientation`**: Selection-connector direction. The type allows `horizontal`, `vertical`, and `both`, but only `horizontal` is currently supported.
 - **`date`**: The cell's ISO `YYYY-MM-DD` date; the parent matches against it to compute selection state, so it is required for the cell to participate in range logic.
 
@@ -55,7 +55,7 @@ The parent sets the `today` boolean attribute on the cell that matches the curre
 
 #### Selection Range - Start, Middle, and End Positions
 
-The parent sets `selection` to express where a cell falls inside the active range. The `start` and `end` values add rounded caps; `middle` fills the span between them; `single` applies both caps for a one-day selection.
+The parent sets `selection` to express where a cell falls inside the active range. The `start` and `end` values are full dots, the same mark, with the band rounded around them; `middle` fills the span between them; `single` is a full dot with no band.
 
 ```html
 <!-- 3 June: start, 4 June: middle, 5 June: end -->
@@ -64,7 +64,7 @@ The parent sets `selection` to express where a cell falls inside the active rang
 
 #### Single-Day Selection
 
-The parent uses `selection="single"` for the day of a single picker, for a range whose two ends are the same day, and for the start of a range still waiting for its end. This applies a fully rounded pill on both sides rather than an open-ended bar.
+The parent uses `selection="single"` for the day of a single picker, for a range whose two ends are the same day, and for the start of a range still waiting for its end. The day is a full dot, with no band, as it reaches no other day.
 
 ```html
 <mds-calendar single-picker start-date="2024-06-10"></mds-calendar>
@@ -72,7 +72,7 @@ The parent uses `selection="single"` for the day of a single picker, for a range
 
 #### Preview (Hover) Selection
 
-While the user hovers toward the second boundary of a range, the parent sets `preview` on the cells between the start and the hovered day. The cells render distinct preview styling until the selection is committed.
+While the user hovers toward the end of a range, the parent sets `preview` on the cells from the start to the hovered day: the band is paler, the hovered day is a ring, and the start keeps the full dot of a chosen day. A hovered day that a click would make the new start, one before the start, is a `single` `preview` alone: a ring with no band.
 
 ```html
 <!-- range mode with a start and no end: hovering a later day previews the range -->
@@ -189,29 +189,31 @@ mds-calendar {
 | `--mds-calendar-cell-disabled-color`                                        | Text color for disabled days.                                                                                                                               |
 | `--mds-calendar-cell-other-month-background`                                | Background of days from adjacent months.                                                                                                                    |
 | `--mds-calendar-cell-other-month-color`                                     | Text color of days from adjacent months.                                                                                                                    |
-| `--mds-calendar-cell-preselection-current-month-background`                 | Background for preselected days (current month).                                                                                                            |
-| `--mds-calendar-cell-preselection-current-month-boundaries-background`      | Boundary background for preselected days (current month).                                                                                                   |
-| `--mds-calendar-cell-preselection-current-month-boundaries-color`           | Boundary color for preselected days (current month).                                                                                                        |
-| `--mds-calendar-cell-preselection-current-month-color`                      | Text color for preselected days (current month).                                                                                                            |
-| `--mds-calendar-cell-preselection-other-month-background`                   | Background for preselected days (other months).                                                                                                             |
-| `--mds-calendar-cell-preselection-other-month-boundaries-background`        | Boundary background for preselected days (other months).                                                                                                    |
-| `--mds-calendar-cell-preselection-other-month-boundaries-color`             | Boundary color for preselected days (other months).                                                                                                         |
-| `--mds-calendar-cell-preselection-other-month-color`                        | Text color for preselected days (other months).                                                                                                             |
+| `--mds-calendar-cell-preselection-current-month-background`                 | Background of the band of a preview, from the start to the day under the pointer (current month).                                                           |
+| `--mds-calendar-cell-preselection-current-month-boundaries-background`      | Fill of the ring of the day under the pointer (current month).                                                                                              |
+| `--mds-calendar-cell-preselection-current-month-boundaries-border-color`    | Ring of the day under the pointer, not chosen yet (current month).                                                                                          |
+| `--mds-calendar-cell-preselection-current-month-boundaries-color`           | Text color of the day under the pointer, the end a click there would pick (current month).                                                                  |
+| `--mds-calendar-cell-preselection-current-month-color`                      | Text color of the band of a preview (current month).                                                                                                        |
+| `--mds-calendar-cell-preselection-other-month-background`                   | Background of the band of a preview (other months).                                                                                                         |
+| `--mds-calendar-cell-preselection-other-month-boundaries-background`        | Fill of the ring of the day under the pointer (other months).                                                                                               |
+| `--mds-calendar-cell-preselection-other-month-boundaries-border-color`      | Ring of the day under the pointer, not chosen yet (other months).                                                                                           |
+| `--mds-calendar-cell-preselection-other-month-boundaries-color`             | Text color of the day under the pointer (other months).                                                                                                     |
+| `--mds-calendar-cell-preselection-other-month-color`                        | Text color of the band of a preview (other months).                                                                                                         |
 | `--mds-calendar-cell-preselection-today-background`                         | Background for today's date in preselection state.                                                                                                          |
 | `--mds-calendar-cell-preselection-today-color`                              | Text color for today's date in preselection state.                                                                                                          |
 | `--mds-calendar-cell-selection-boundaries-border-radius`                    | Border radius for day selection boundaries.                                                                                                                 |
-| `--mds-calendar-cell-selection-current-month-background`                    | Background for selected days (current month).                                                                                                               |
-| `--mds-calendar-cell-selection-current-month-boundaries-background`         | Boundary background for selected days (current month).                                                                                                      |
-| `--mds-calendar-cell-selection-current-month-boundaries-color`              | Boundary color for selected days (current month).                                                                                                           |
-| `--mds-calendar-cell-selection-current-month-color`                         | Text color for selected days (current month).                                                                                                               |
-| `--mds-calendar-cell-selection-current-month-weekend-background`            | Background for selected weekend days (current month).                                                                                                       |
-| `--mds-calendar-cell-selection-current-month-weekend-boundaries-background` | Boundary background for selected weekend days.                                                                                                              |
-| `--mds-calendar-cell-selection-current-month-weekend-boundaries-color`      | Boundary color for selected weekend days.                                                                                                                   |
-| `--mds-calendar-cell-selection-current-month-weekend-color`                 | Text color for selected weekend days (current month).                                                                                                       |
-| `--mds-calendar-cell-selection-other-month-background`                      | Background for selected days (other months).                                                                                                                |
-| `--mds-calendar-cell-selection-other-month-boundaries-background`           | Boundary background for selected days (other months).                                                                                                       |
-| `--mds-calendar-cell-selection-other-month-boundaries-color`                | Boundary color for selected days (other months).                                                                                                            |
-| `--mds-calendar-cell-selection-other-month-color`                           | Text color for selected days (other months).                                                                                                                |
+| `--mds-calendar-cell-selection-current-month-background`                    | Background of the band of a range, between and behind its ends (current month).                                                                             |
+| `--mds-calendar-cell-selection-current-month-boundaries-background`         | Fill of the dot of a chosen day: either end of a range, or the day of a single picker (current month).                                                      |
+| `--mds-calendar-cell-selection-current-month-boundaries-color`              | Text color of the dot of a chosen day (current month).                                                                                                      |
+| `--mds-calendar-cell-selection-current-month-color`                         | Text color of the band of a range (current month).                                                                                                          |
+| `--mds-calendar-cell-selection-current-month-weekend-background`            | Background of the band of a range on weekend days (current month).                                                                                          |
+| `--mds-calendar-cell-selection-current-month-weekend-boundaries-background` | Background of the band behind an end of a range on a weekend day.                                                                                           |
+| `--mds-calendar-cell-selection-current-month-weekend-boundaries-color`      | Text color of the dot of an end of a range on a weekend day.                                                                                                |
+| `--mds-calendar-cell-selection-current-month-weekend-color`                 | Text color of the band of a range on weekend days (current month).                                                                                          |
+| `--mds-calendar-cell-selection-other-month-background`                      | Background of the band of a range (other months).                                                                                                           |
+| `--mds-calendar-cell-selection-other-month-boundaries-background`           | Fill of the dot of a chosen day (other months).                                                                                                             |
+| `--mds-calendar-cell-selection-other-month-boundaries-color`                | Text color of the dot of a chosen day (other months).                                                                                                       |
+| `--mds-calendar-cell-selection-other-month-color`                           | Text color of the band of a range (other months).                                                                                                           |
 | `--mds-calendar-cell-selection-week-boundaries-border-radius`               | Border radius for week selection boundaries.                                                                                                                |
 | `--mds-calendar-cell-size`                                                  | Deprecated, read by nothing: a cell takes the width of its column in the calendar, and is square.                                                           |
 | `--mds-calendar-cell-weekend-background`                                    | Background for weekend days.                                                                                                                                |
