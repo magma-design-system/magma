@@ -23,6 +23,7 @@ import { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event
 import { MdsBreadcrumbItemEventDetail } from "./components/mds-breadcrumb-item/meta/event-detail";
 import { TextAnimationType } from "./components/mds-text/meta/types";
 import { ButtonCurrentType, ButtonDropdownVariantType, ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType, TabSizeType } from "./type/button";
+import { CalendarRangeEndType } from "./components/mds-calendar/meta/types";
 import { CalendarCellSelectionOrieintationType, CalendarCellSelectionPositionType, CalendarCellType } from "./components/mds-calendar-cell/meta/types";
 import { MdsChipEvent } from "./components/mds-chip/meta/interface";
 import { DropdownInteractionType } from "./components/mds-dropdown/meta/types";
@@ -112,6 +113,7 @@ export { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event
 export { MdsBreadcrumbItemEventDetail } from "./components/mds-breadcrumb-item/meta/event-detail";
 export { TextAnimationType } from "./components/mds-text/meta/types";
 export { ButtonCurrentType, ButtonDropdownVariantType, ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType, TabSizeType } from "./type/button";
+export { CalendarRangeEndType } from "./components/mds-calendar/meta/types";
 export { CalendarCellSelectionOrieintationType, CalendarCellSelectionPositionType, CalendarCellType } from "./components/mds-calendar-cell/meta/types";
 export { MdsChipEvent } from "./components/mds-chip/meta/interface";
 export { DropdownInteractionType } from "./components/mds-dropdown/meta/types";
@@ -754,6 +756,10 @@ export namespace Components {
      * @category forms
      */
     interface MdsCalendar {
+        /**
+          * Specifies the end of the range the next click picks, `start` or `end`, for a parent that lets the user choose it, as `mds-input-date-range` does from its fields and from the header of its panel. A click never puts the range backwards: a day after the end, picked as the start, becomes the new start and empties the end; a day before the start, picked as the end, becomes the new start and leaves the end to pick. With no start, a click picks the start. Left unset, the calendar picks the start, then the end, and a click on a complete range starts a new one.
+         */
+        "activeEnd"?: CalendarRangeEndType;
         /**
           * Disables switching to month or year selection views from the calendar header.
           * @default false
@@ -1679,7 +1685,7 @@ export namespace Components {
          */
         "accessibleName"?: string;
         /**
-          * Specifies the delay in milliseconds before closing the calendar dropdown, if the value is 0 the dropdown will not close
+          * Specifies the delay in milliseconds before closing the calendar dropdown after the click that picks the end of the range, if the value is 0 the dropdown will not close; a click that picks the start leaves it open for the end
           * @description Default is 500
           * @default 500
          */
@@ -6194,6 +6200,10 @@ declare namespace LocalJSX {
      */
     interface MdsCalendar {
         /**
+          * Specifies the end of the range the next click picks, `start` or `end`, for a parent that lets the user choose it, as `mds-input-date-range` does from its fields and from the header of its panel. A click never puts the range backwards: a day after the end, picked as the start, becomes the new start and empties the end; a day before the start, picked as the end, becomes the new start and leaves the end to pick. With no start, a click picks the start. Left unset, the calendar picks the start, then the end, and a click on a complete range starts a new one.
+         */
+        "activeEnd"?: CalendarRangeEndType;
+        /**
           * Disables switching to month or year selection views from the calendar header.
           * @default false
          */
@@ -7148,7 +7158,7 @@ declare namespace LocalJSX {
          */
         "accessibleName"?: string;
         /**
-          * Specifies the delay in milliseconds before closing the calendar dropdown, if the value is 0 the dropdown will not close
+          * Specifies the delay in milliseconds before closing the calendar dropdown after the click that picks the end of the range, if the value is 0 the dropdown will not close; a click that picks the start leaves it open for the end
           * @description Default is 500
           * @default 500
          */
@@ -9299,6 +9309,7 @@ declare namespace LocalJSX {
         "hoverDate": string | null;
         "startDate": string | null;
         "endDate": string | null;
+        "activeEnd": CalendarRangeEndType;
         "min": string | null;
         "max": string | null;
     }
