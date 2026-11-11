@@ -171,6 +171,51 @@ export function TextInput({
   );
 }
 
+/**
+ * A colour as the colour field writes it, `#rrggbb` in lower case, or `''` when it names none: the
+ * reading of `mds-input` (its meta/color.ts), which takes `#rgb` and any case. The configuration
+ * allows those too (and an alpha, which the field refuses), so the field echoes `#ABC` set by the
+ * page as `#aabbcc`: still an echo, not a colour of the person.
+ */
+const fieldColor = (text: string): string => {
+  const match = /^#?([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(text.trim());
+  if (!match) return '';
+  const digits = match[1].toLowerCase();
+  return `#${digits.length === 3 ? digits.replace(/./g, '$&$&') : digits}`;
+};
+
+/**
+ * A colour field (`mds-input` with `type="color"`, #1260): the code typed, or picked from its
+ * swatch with the picker of the platform. Each colour is handed back as it comes, as `#rrggbb`:
+ * a code typed, each step of a drag in the picker. The `''` the field holds while its text names
+ * no colour, or is empty, is never handed back: a colour of the studio always has one, and keeps
+ * the last while the field shows its error (`required`, and the message of `mds-input-field`).
+ */
+export function ColorInput({
+  value,
+  onValue,
+  label,
+}: {
+  value: string;
+  onValue: (value: string) => void;
+  /** The accessible name, when no mds-input-field labels it. */
+  label?: string;
+}) {
+  const set = useSet(value);
+  return (
+    <mds-input
+      type="color"
+      value={value}
+      aria-label={label}
+      required
+      onmdsInputChange={(event: Detail<{ value?: string }>) => {
+        const next = event.detail?.value ?? '';
+        if (next !== '' && next !== fieldColor(set.current)) onValue(next);
+      }}
+    />
+  );
+}
+
 export interface Option {
   value: string;
   label: string;

@@ -206,10 +206,10 @@ studio is for, the steps of the work and what each section changes, in three par
 ## The pages in Magma
 
 Every page is written with the components of Magma (#695): the controls of a form go through the
-bridges of `src/magma.tsx` (`Field`, `TextInput`, `Select`, `Check`, `Range`), which hand back
-the next value as a native control of Preact does and never the echo of a value the page set (the
-change events of `mds-input`, `mds-input-select` and `mds-input-range` leave on that too). A value
-the page parses or sorts (a name, a stop of a scale, a list of export groups) takes
+bridges of `src/magma.tsx` (`Field`, `TextInput`, `ColorInput`, `Select`, `Check`, `Range`), which
+hand back the next value as a native control of Preact does and never the echo of a value the page
+set (the change events of `mds-input`, `mds-input-select` and `mds-input-range` leave on that too).
+A value the page parses or sorts (a name, a stop of a scale, a list of export groups) takes
 `commit="leave"`: it is handed back on Enter or on leaving the field, as the change of a native
 input, not at every key. Dialogs are an `mds-modal` with an `mds-banner` window, the main action
 last; destructive actions sit in the menu of their item.
@@ -219,12 +219,11 @@ from the tokens only: spaces from the rhythm, widths from the widths, colours fr
 roles, a length with no relation a step of `--spacing`. `style.css` holds the frame: the shell,
 the Theme section and the frame of the pages of Colors; the document is the one of Magma.
 
-Four pieces Magma does not have yet stay native, painted with the tokens, each marked in the code
+The pieces Magma does not have yet stay native, painted with the tokens, each marked in the code
 with its issue until the component lands:
 
 | Piece | Where | Issue |
 | --- | --- | --- |
-| a colour field | the base colour of a family, New color | #1260 |
 | a range of several values | the axis of a contrast scale | #1261 |
 | a list and its detail | the families of the Palette (each an `mds-button`, its swatch the icon `mdi/circle` painted through `::part(icon)`) | #1262 |
 | a chip with a colour swatch | the families of Semantic surface (the usage of a scale draws the swatch as the icon of an `mds-chip`, `swatchIcon`) | #1263 |
@@ -512,7 +511,8 @@ New colors are created from a dialog: pick the value and the name auto-completes
 the "Name That Color" vocabulary (via [color-namer](https://github.com/colorjs/color-namer), ~1500
 names, kebab-cased: e.g. `persian-green`); choose the token group, confirm, and the studio lands
 on the new color already selected. Names are made unique with a numeric suffix when needed.
-Auto-naming keeps following the picker in the editor too, but only for names assigned by the
+Auto-naming keeps following the colour in the editor too, typed or picked in its colour field
+(`ColorInput`, `mds-input` with `type="color"`), but only for names assigned by the
 studio itself: a name typed by the user, or any name coming from a loaded configuration, is never
 touched. Picking a value already used by another color raises a warning.
 
