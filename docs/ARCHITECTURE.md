@@ -260,7 +260,7 @@ Global design decisions overridable via CSS custom properties on `:root`:
 
 ### 2.6 `stencil`
 
-The web component library. 117 components built with StencilJS, compiled to standard Custom Elements. Also outputs framework-specific wrappers:
+The web component library. 118 components built with StencilJS, compiled to standard Custom Elements. Also outputs framework-specific wrappers:
 
 - `@maggioli-design-system/magma` — vanilla JS / HTML
 - `@maggioli-design-system/magma-react` — React wrapper

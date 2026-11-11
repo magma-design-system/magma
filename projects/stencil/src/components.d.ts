@@ -45,6 +45,7 @@ import { InputControlsIconType, InputControlsLayoutType, InputSizeType, InputTex
 import { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input/meta/validators";
 import { MdsValidationErrors as MdsValidationErrors1, ModalOverflowType as ModalOverflowType1 } from "./components.d";
 import { EventDate } from "./components/mds-input-date-range/mds-input-date-range";
+import { MdsInputRangeValuesEventDetail } from "./components/mds-input-range/meta/event-detail";
 import { MdsInputSelectEventDetail } from "./components/mds-input-select/meta/event-detail";
 import { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
 import { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/event-detail";
@@ -135,6 +136,7 @@ export { InputControlsIconType, InputControlsLayoutType, InputSizeType, InputTex
 export { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input/meta/validators";
 export { MdsValidationErrors as MdsValidationErrors1, ModalOverflowType as ModalOverflowType1 } from "./components.d";
 export { EventDate } from "./components/mds-input-date-range/mds-input-date-range";
+export { MdsInputRangeValuesEventDetail } from "./components/mds-input-range/meta/event-detail";
 export { MdsInputSelectEventDetail } from "./components/mds-input-select/meta/event-detail";
 export { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
 export { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/event-detail";
@@ -1858,9 +1860,22 @@ export namespace Components {
          */
         "step": number;
         /**
-          * The value attribute contains a number which contains a representation of the selected number.
+          * The value attribute contains a number which contains a representation of the selected number. It holds the one value of a range without `mds-input-range-value` children: with children the values are theirs, and this one is left out
          */
         "value": number;
+    }
+    /**
+     * One value of an `mds-input-range` that holds several, as an `<option>` is one choice of a
+     * `<select>`: the range draws a thumb for it, and its text names that thumb. It draws nothing
+     * itself. Adding or removing a value is adding or removing one of these elements: the range
+     * watches its children.
+     * @parent mds-input-range
+     */
+    interface MdsInputRangeValue {
+        /**
+          * The value of the thumb. The range keeps it inside its `min` and `max`, on its `step` and between the values next to it, and writes it here as the thumb moves; set it to move the thumb. Without a value the thumb starts in the middle of the range, as a native range input
+         */
+        "value"?: number;
     }
     /**
      * @category forms
@@ -4469,6 +4484,7 @@ declare global {
     };
     interface HTMLMdsInputRangeElementEventMap {
         "mdsInputRangeChange": number;
+        "mdsInputRangeValuesChange": MdsInputRangeValuesEventDetail;
     }
     /**
      * @category forms
@@ -4486,6 +4502,19 @@ declare global {
     var HTMLMdsInputRangeElement: {
         prototype: HTMLMdsInputRangeElement;
         new (): HTMLMdsInputRangeElement;
+    };
+    /**
+     * One value of an `mds-input-range` that holds several, as an `<option>` is one choice of a
+     * `<select>`: the range draws a thumb for it, and its text names that thumb. It draws nothing
+     * itself. Adding or removing a value is adding or removing one of these elements: the range
+     * watches its children.
+     * @parent mds-input-range
+     */
+    interface HTMLMdsInputRangeValueElement extends Components.MdsInputRangeValue, HTMLStencilElement {
+    }
+    var HTMLMdsInputRangeValueElement: {
+        prototype: HTMLMdsInputRangeValueElement;
+        new (): HTMLMdsInputRangeValueElement;
     };
     interface HTMLMdsInputSelectElementEventMap {
         "mdsInputSelectChange": MdsInputSelectEventDetail;
@@ -5500,6 +5529,7 @@ declare global {
         "mds-input-field": HTMLMdsInputFieldElement;
         "mds-input-otp": HTMLMdsInputOtpElement;
         "mds-input-range": HTMLMdsInputRangeElement;
+        "mds-input-range-value": HTMLMdsInputRangeValueElement;
         "mds-input-select": HTMLMdsInputSelectElement;
         "mds-input-switch": HTMLMdsInputSwitchElement;
         "mds-input-tip": HTMLMdsInputTipElement;
@@ -7361,16 +7391,33 @@ declare namespace LocalJSX {
          */
         "name"?: string;
         /**
-          * Emits when the input range is changed
+          * Emits when the input range is changed: the value of a range without `mds-input-range-value` children
          */
         "onMdsInputRangeChange"?: (event: MdsInputRangeCustomEvent<number>) => void;
+        /**
+          * Emits when the values of a range with `mds-input-range-value` children change: from a thumb, from code, as a child comes or goes, or on a form reset. `values` holds them in order, from the lowest. The values of load are not a change
+         */
+        "onMdsInputRangeValuesChange"?: (event: MdsInputRangeCustomEvent<MdsInputRangeValuesEventDetail>) => void;
         /**
           * The step attribute is a number that specifies the granularity that the value must adhere to, or the special value any, which is described below.
           * @default 1
          */
         "step"?: number;
         /**
-          * The value attribute contains a number which contains a representation of the selected number.
+          * The value attribute contains a number which contains a representation of the selected number. It holds the one value of a range without `mds-input-range-value` children: with children the values are theirs, and this one is left out
+         */
+        "value"?: number;
+    }
+    /**
+     * One value of an `mds-input-range` that holds several, as an `<option>` is one choice of a
+     * `<select>`: the range draws a thumb for it, and its text names that thumb. It draws nothing
+     * itself. Adding or removing a value is adding or removing one of these elements: the range
+     * watches its children.
+     * @parent mds-input-range
+     */
+    interface MdsInputRangeValue {
+        /**
+          * The value of the thumb. The range keeps it inside its `min` and `max`, on its `step` and between the values next to it, and writes it here as the thumb moves; set it to move the thumb. Without a value the thumb starts in the middle of the range, as a native range input
          */
         "value"?: number;
     }
@@ -9534,6 +9581,9 @@ declare namespace LocalJSX {
         "disabled": boolean;
         "value": number;
     }
+    interface MdsInputRangeValueAttributes {
+        "value": number;
+    }
     interface MdsInputSelectAttributes {
         "accessibleName": string;
         "autocomplete": 'on';
@@ -9983,6 +10033,7 @@ declare namespace LocalJSX {
         "mds-input-field": Omit<MdsInputField, keyof MdsInputFieldAttributes> & { [K in keyof MdsInputField & keyof MdsInputFieldAttributes]?: MdsInputField[K] } & { [K in keyof MdsInputField & keyof MdsInputFieldAttributes as `attr:${K}`]?: MdsInputFieldAttributes[K] } & { [K in keyof MdsInputField & keyof MdsInputFieldAttributes as `prop:${K}`]?: MdsInputField[K] };
         "mds-input-otp": Omit<MdsInputOtp, keyof MdsInputOtpAttributes> & { [K in keyof MdsInputOtp & keyof MdsInputOtpAttributes]?: MdsInputOtp[K] } & { [K in keyof MdsInputOtp & keyof MdsInputOtpAttributes as `attr:${K}`]?: MdsInputOtpAttributes[K] } & { [K in keyof MdsInputOtp & keyof MdsInputOtpAttributes as `prop:${K}`]?: MdsInputOtp[K] };
         "mds-input-range": Omit<MdsInputRange, keyof MdsInputRangeAttributes> & { [K in keyof MdsInputRange & keyof MdsInputRangeAttributes]?: MdsInputRange[K] } & { [K in keyof MdsInputRange & keyof MdsInputRangeAttributes as `attr:${K}`]?: MdsInputRangeAttributes[K] } & { [K in keyof MdsInputRange & keyof MdsInputRangeAttributes as `prop:${K}`]?: MdsInputRange[K] };
+        "mds-input-range-value": Omit<MdsInputRangeValue, keyof MdsInputRangeValueAttributes> & { [K in keyof MdsInputRangeValue & keyof MdsInputRangeValueAttributes]?: MdsInputRangeValue[K] } & { [K in keyof MdsInputRangeValue & keyof MdsInputRangeValueAttributes as `attr:${K}`]?: MdsInputRangeValueAttributes[K] } & { [K in keyof MdsInputRangeValue & keyof MdsInputRangeValueAttributes as `prop:${K}`]?: MdsInputRangeValue[K] };
         "mds-input-select": Omit<MdsInputSelect, keyof MdsInputSelectAttributes> & { [K in keyof MdsInputSelect & keyof MdsInputSelectAttributes]?: MdsInputSelect[K] } & { [K in keyof MdsInputSelect & keyof MdsInputSelectAttributes as `attr:${K}`]?: MdsInputSelectAttributes[K] } & { [K in keyof MdsInputSelect & keyof MdsInputSelectAttributes as `prop:${K}`]?: MdsInputSelect[K] };
         "mds-input-switch": Omit<MdsInputSwitch, keyof MdsInputSwitchAttributes> & { [K in keyof MdsInputSwitch & keyof MdsInputSwitchAttributes]?: MdsInputSwitch[K] } & { [K in keyof MdsInputSwitch & keyof MdsInputSwitchAttributes as `attr:${K}`]?: MdsInputSwitchAttributes[K] } & { [K in keyof MdsInputSwitch & keyof MdsInputSwitchAttributes as `prop:${K}`]?: MdsInputSwitch[K] };
         "mds-input-tip": Omit<MdsInputTip, keyof MdsInputTipAttributes> & { [K in keyof MdsInputTip & keyof MdsInputTipAttributes]?: MdsInputTip[K] } & { [K in keyof MdsInputTip & keyof MdsInputTipAttributes as `attr:${K}`]?: MdsInputTipAttributes[K] } & { [K in keyof MdsInputTip & keyof MdsInputTipAttributes as `prop:${K}`]?: MdsInputTip[K] };
@@ -10250,6 +10301,14 @@ declare module "@stencil/core" {
              * @category forms
              */
             "mds-input-range": LocalJSX.IntrinsicElements["mds-input-range"] & JSXBase.HTMLAttributes<HTMLMdsInputRangeElement>;
+            /**
+             * One value of an `mds-input-range` that holds several, as an `<option>` is one choice of a
+             * `<select>`: the range draws a thumb for it, and its text names that thumb. It draws nothing
+             * itself. Adding or removing a value is adding or removing one of these elements: the range
+             * watches its children.
+             * @parent mds-input-range
+             */
+            "mds-input-range-value": LocalJSX.IntrinsicElements["mds-input-range-value"] & JSXBase.HTMLAttributes<HTMLMdsInputRangeValueElement>;
             /**
              * @category forms
              */

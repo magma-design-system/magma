@@ -11,23 +11,40 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ### 1. Description
 
-The `<mds-input-range>` web component is the Magma Design System slider control for picking a single numeric value from a continuous interval. It wraps a native `<input type="range">`, adding a labelled header, a styled track with a live progress fill, form association, and value formatting.
+The `<mds-input-range>` web component is the Magma Design System slider control for picking a numeric value from a continuous interval, or several values on one track. It wraps a native `<input type="range">` per thumb, adding a labelled header, a styled track with a live progress fill, form association, and value formatting.
 
 #### Semantic Behavior
 
 - **Form association**: Inside a `<form>` the selected number is reported under `name` with no extra wiring. A form reset brings back the value of load, thumb and progress included, or the middle of the range when the markup sets no `value`, like a native input.
 - **Value clamping and snapping**: On input the value is clamped into `[min, max]` and snapped to the nearest `step` increment, so the committed `value` is always valid even when set programmatically out of range.
 - **Decimal awareness**: The number of decimal places is derived from `step`, letting fractional steps snap correctly; as on a native input, a `step` that is not a positive number, from the start or set later, falls back to the default step, `1`.
-- **Disabled state**: Blocks interaction and clears the reported form value while disabled. A disabled `<fieldset>` around the component does the same, as it does a native input.
+- **Disabled state**: Blocks interaction and clears the reported form value while disabled; enabled again, the range reports its value again. A disabled `<fieldset>` around the component does the same, as it does a native input.
 - **Emitted event**: `mdsInputRangeChange` carries the new numeric value whenever `value` actually changes.
-- **Accessibility**: The control takes its accessible name from the slotted label text.
+- **Accessibility**: The control takes its accessible name from the slotted label text; with `formatValue` it also announces the formatted value (`aria-valuetext`). The ring of the focus goes round the thumb.
 - **Default slot is the label**: The default slot holds the field's text label, rendered in the header alongside the formatted current value.
 - **Width**: The slider takes the width its container gives it, a narrow grid cell too: the track gets shorter and a label longer than the room left by the value ends in an ellipsis.
+
+#### Several Values on One Track
+
+An [`<mds-input-range-value>`](../../mds-input-range-value) child per value turns the range into a slider with a thumb per value, as an `<option>` per choice turns a `<select>` into a list: a minimum and a maximum, or the stops of a scale.
+
+- **From the first child on**: with one child or more, the values are the children's, one child included; `value` and `mdsInputRangeChange` are left out, and keep the one value of a range without children.
+- **One native input per thumb**: each thumb is a native range input, all of them stacked on the track. The native input gives the slider role, the value, the name, the focus and the drag; a component of `role="slider"` elements would rewrite them, and leave the one value on another control.
+- **Neighbours bound each other**: a thumb never passes the thumbs next to it, but can reach them. The arrows move the thumb with the focus by one `step`, Page Up and Page Down by a tenth of the range, Home and End take it to its neighbours (or to `min` and `max`): the component handles these keys itself, because a native input knows only `min` and `max`.
+- **Order and limits of the markup**: the thumbs follow the values from the lowest, whatever the order of the children; each keeps the name of its own child. A value outside `min` and `max`, or off the step, is brought inside and onto the step, as a native input sanitizes it, and written back on its child; a child without a value starts in the middle.
+- **Names**: the text of the range names the group of thumbs, the text of each child names its thumb, as in the multi-thumb slider of the WAI-ARIA APG. A child without text gets the label and the position of its thumb ("Prezzo, 1 di 2", in the language of the page).
+- **Header**: the values in order, formatted as the one value: two are an interval joined by an en dash ("20 - 80" with a long dash), more a list joined by a middle dot.
+- **Fill**: from the first thumb to the last.
+- **Overlap**: a thumb is as wide as the track is tall, so two near values lie on each other: the thumb with the focus lies on top and the keys move it alone. Without the focus, a thumb held by its neighbours lies under them, so that the one on top can move.
+- **Pointer**: a thumb drags itself; a press on the track moves the nearest thumb there.
+- **Adding and removing**: adding a value is adding a child, removing one is removing it; the range watches its children, their values and their text.
+- **Form**: an entry per value under `name`, in order, as a native `<select multiple>`; a form reset gives each child back the value it had when the range first read it.
+- **Event**: `mdsInputRangeValuesChange` carries `{ values }`, in order, whenever the list changes: from a thumb, from code, as a child comes or goes, on a reset. The values of load are not a change.
 
 #### Properties & Visual Configurations
 
 - **`min` / `max` / `step`** define the permitted interval and granularity; `step` also controls how fractional values are snapped and how many decimals are preserved.
-- **`value`** is the committed numeric selection, kept clamped and snapped - set it programmatically to move the thumb.
+- **`value`** is the committed numeric selection of a range without `<mds-input-range-value>` children, kept clamped and snapped - set it programmatically to move the thumb. With children, each child holds the value of its thumb.
 - **`formatValue`** is a function `(value: number) => string` for presentation only: use it to render the header value as currency, a percentage, or a unit-suffixed label without changing the underlying numeric `value`.
 
 This component does not use the shared `variant` / `tone` ladders ([`docs/agents/variants.md`](../../../../../../docs/agents/variants.md)); it has no public CSS custom property: the thumb and the track follow the theme, and the `header` and `track` parts listed in [`readme.md`](../readme.md) are its styling hooks.
@@ -112,6 +129,47 @@ Set the boolean `disabled` attribute to prevent interaction. The component appli
   <mds-button type="submit" label="Salva impostazioni" variant="primary" tone="strong"></mds-button>
 </form>
 ```
+
+#### Several Values: an Interval
+
+Put an [`<mds-input-range-value>`](../../mds-input-range-value) per value inside the range: a thumb each. The text of the range is the label of the group, the text of each value names its thumb. The header shows the two values as an interval, formatted by `formatValue` as the one value.
+
+```html
+<mds-input-range id="prezzo-intervallo" min="0" max="500" step="10" name="prezzo">
+  Prezzo
+  <mds-input-range-value value="100">Minimo</mds-input-range-value>
+  <mds-input-range-value value="400">Massimo</mds-input-range-value>
+</mds-input-range>
+
+<script>
+  document.querySelector('#prezzo-intervallo').formatValue = (v) =>
+    v.toLocaleString('it-IT', { style: 'currency', currency: 'EUR' });
+</script>
+```
+
+The form receives one entry per value under `name`, in order: `prezzo=100&prezzo=400`, read on the server as a list, as the entries of a `<select multiple>`.
+
+#### Several Values: Listening to `mdsInputRangeValuesChange`
+
+With values, the range emits `mdsInputRangeValuesChange`, whose `detail.values` lists them in order from the lowest. It fires whenever the list changes: a thumb moved, a value set from code, a value added or removed, a form reset.
+
+```html
+<mds-input-range id="scala" min="1" max="21" step="0.5" name="contrasto">
+  Scala di contrasto
+  <mds-input-range-value value="3"></mds-input-range-value>
+  <mds-input-range-value value="4.5"></mds-input-range-value>
+  <mds-input-range-value value="7"></mds-input-range-value>
+  <mds-input-range-value value="12"></mds-input-range-value>
+</mds-input-range>
+
+<script>
+  document.querySelector('#scala').addEventListener('mdsInputRangeValuesChange', (event) => {
+    console.log('Passi:', event.detail.values); // [3, 4.5, 7, 12]
+  });
+</script>
+```
+
+The values without text are named after the label and their position ("Scala di contrasto, 2 di 4"). Adding a stop is appending an `<mds-input-range-value>`, removing one is removing it.
 
 #### Hiding the Header via `::part(header)`
 
@@ -204,6 +262,43 @@ A `step` of zero or negative is invalid: as on a native input it is ignored and 
 <mds-input-range name="q" step="1">Quantita</mds-input-range>
 ```
 
+#### Do Not Put Several Ranges Side by Side for One Interval
+
+Two ranges for a minimum and a maximum let the minimum pass the maximum, and give the form two names. Put both values on one range.
+
+```html
+<!-- INCORRECT -->
+<mds-input-range name="prezzo-min" value="100">Prezzo minimo</mds-input-range>
+<mds-input-range name="prezzo-max" value="400">Prezzo massimo</mds-input-range>
+
+<!-- CORRECT -->
+<mds-input-range name="prezzo">
+  Prezzo
+  <mds-input-range-value value="100">Minimo</mds-input-range-value>
+  <mds-input-range-value value="400">Massimo</mds-input-range-value>
+</mds-input-range>
+```
+
+#### Do Not Set `value` on a Range with Values
+
+With `<mds-input-range-value>` children, the values are theirs: `value` of the range and `mdsInputRangeChange` are left out. Set and read the values on the children, or listen to `mdsInputRangeValuesChange`.
+
+```html
+<!-- INCORRECT -->
+<mds-input-range value="20">
+  Prezzo
+  <mds-input-range-value>Minimo</mds-input-range-value>
+  <mds-input-range-value>Massimo</mds-input-range-value>
+</mds-input-range>
+
+<!-- CORRECT -->
+<mds-input-range>
+  Prezzo
+  <mds-input-range-value value="20">Minimo</mds-input-range-value>
+  <mds-input-range-value value="80">Massimo</mds-input-range-value>
+</mds-input-range>
+```
+
 #### Do Not Pierce the Shadow DOM to Style the Track or Thumb
 
 The component exposes `::part(header)` and `::part(track)` for all supported customization; it has no public CSS custom property, and the thumb and the track take their colours from the theme. Targeting internal class names via `>>>` or undocumented `::part()` names couples your code to the implementation and will break on minor releases.
@@ -249,29 +344,30 @@ mds-input-range::part(track) { /* "track" is a documented part */
 
 ## Properties
 
-| Property      | Attribute  | Description                                                                                                                                      | Type                                       | Default     |
-| ------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------ | ----------- |
-| `disabled`    | `disabled` | Sets if the component is disabled                                                                                                                | `boolean \| undefined`                     | `undefined` |
-| `formatValue` | --         | A function to custom how value is represented                                                                                                    | `((value: number) => string) \| undefined` | `undefined` |
-| `max`         | `max`      | The greatest value in the range of permitted values                                                                                              | `number`                                   | `100`       |
-| `min`         | `min`      | The lowest value in the range of permitted values                                                                                                | `number`                                   | `0`         |
-| `name`        | `name`     | Is needed to reference the form data after the form is submitted                                                                                 | `string \| undefined`                      | `undefined` |
-| `step`        | `step`     | The step attribute is a number that specifies the granularity that the value must adhere to, or the special value any, which is described below. | `number`                                   | `1`         |
-| `value`       | `value`    | The value attribute contains a number which contains a representation of the selected number.                                                    | `number`                                   | `undefined` |
+| Property      | Attribute  | Description                                                                                                                                                                                                                             | Type                                       | Default     |
+| ------------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ | ----------- |
+| `disabled`    | `disabled` | Sets if the component is disabled                                                                                                                                                                                                       | `boolean \| undefined`                     | `undefined` |
+| `formatValue` | --         | A function to custom how value is represented                                                                                                                                                                                           | `((value: number) => string) \| undefined` | `undefined` |
+| `max`         | `max`      | The greatest value in the range of permitted values                                                                                                                                                                                     | `number`                                   | `100`       |
+| `min`         | `min`      | The lowest value in the range of permitted values                                                                                                                                                                                       | `number`                                   | `0`         |
+| `name`        | `name`     | Is needed to reference the form data after the form is submitted                                                                                                                                                                        | `string \| undefined`                      | `undefined` |
+| `step`        | `step`     | The step attribute is a number that specifies the granularity that the value must adhere to, or the special value any, which is described below.                                                                                        | `number`                                   | `1`         |
+| `value`       | `value`    | The value attribute contains a number which contains a representation of the selected number. It holds the one value of a range without `mds-input-range-value` children: with children the values are theirs, and this one is left out | `number`                                   | `undefined` |
 
 
 ## Events
 
-| Event                 | Description                           | Type                  |
-| --------------------- | ------------------------------------- | --------------------- |
-| `mdsInputRangeChange` | Emits when the input range is changed | `CustomEvent<number>` |
+| Event                       | Description                                                                                                                                                                                                                              | Type                                          |
+| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------- |
+| `mdsInputRangeChange`       | Emits when the input range is changed: the value of a range without `mds-input-range-value` children                                                                                                                                     | `CustomEvent<number>`                         |
+| `mdsInputRangeValuesChange` | Emits when the values of a range with `mds-input-range-value` children change: from a thumb, from code, as a child comes or goes, or on a form reset. `values` holds them in order, from the lowest. The values of load are not a change | `CustomEvent<MdsInputRangeValuesEventDetail>` |
 
 
 ## Slots
 
-| Slot | Description                                                      |
-| ---- | ---------------------------------------------------------------- |
-|      | Add `text string`, `HTML elements` or `components` to this slot. |
+| Slot | Description                                                                                                                  |
+| ---- | ---------------------------------------------------------------------------------------------------------------------------- |
+|      | The label of the range, as text. Add an `mds-input-range-value` per value to hold several values, a thumb each, on one track |
 
 
 ## Shadow Parts

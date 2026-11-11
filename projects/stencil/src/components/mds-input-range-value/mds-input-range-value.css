@@ -1,0 +1,6 @@
+/* A value draws nothing, as an <option> in a list box: its range draws its thumb, and its text is
+ * read as the name of that thumb (#1261). The range hides it too, until this sheet arrives. */
+
+:host {
+  display: none;
+}

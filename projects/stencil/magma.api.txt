@@ -819,6 +819,7 @@ mds-input-range prop name (attr name) [reflect]: string | undefined
 mds-input-range prop step (attr step): number = 1
 mds-input-range prop value (attr value) [reflect, mutable]: number
 mds-input-range event mdsInputRangeChange: number [bubbles, cancelable, composed]
+mds-input-range event mdsInputRangeValuesChange: MdsInputRangeValuesEventDetail [bubbles, cancelable, composed]
 mds-input-range slot (default)
 mds-input-range part header
 mds-input-range part track
@@ -831,6 +832,9 @@ mds-input-range css --mds-input-range-track-background-disabled INTERNAL
 mds-input-range css --mds-input-range-track-progress-background INTERNAL
 mds-input-range css --mds-input-range-track-progress-background-disabled INTERNAL
 mds-input-range css --mds-input-range-track-size INTERNAL
+mds-input-range-value encapsulation shadow
+mds-input-range-value prop value (attr value) [reflect, mutable]: number | undefined
+mds-input-range-value slot (default)
 mds-input-select encapsulation shadow
 mds-input-select prop accessibleName (attr aria-label): string | undefined
 mds-input-select prop autocomplete (attr autocomplete) [reflect]: "on" | undefined
@@ -1825,6 +1829,7 @@ interface MdsHeaderEventDetail { bar: HTMLMdsHeaderBarElement; }
 interface MdsHeaderVisibilityEventDetail { /** The visibility the header has now, the value of its `visibility` prop */ visibility: 'hidden' | 'visible'; }
 interface MdsImgEventDetail { image: HTMLImageElement; }
 interface MdsInputEventDetail { value?: File | string | FormData | null; }
+interface MdsInputRangeValuesEventDetail { /** * The values of the `mds-input-range-value` children, one per thumb, in order from the lowest: * the order of their thumbs on the track and of their entries in the form. */ values: number[]; }
 interface MdsInputSelectEventDetail extends MdsInputEventDetail { /** * The values of the selected options, the placeholder left out: one with a single select, every * selected one with `multiple`, where `value` holds only the first, as `select.value` does. */ values: string[]; }
 interface MdsInputSwitchEventDetail { name: string; checked: boolean; value: string; }
 type MdsLabelVariantType = ThemeLabelVariantType | ThemeStatusVariantType;
