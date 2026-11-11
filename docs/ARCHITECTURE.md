@@ -227,6 +227,13 @@ CSS cascade layer order (consumer apps must respect this):
 reset → vendor → theme → base → components → utilities → overrides
 ```
 
+One sheet stays out of the layers: the hydrated flag of the lazy loader (`hydratedFlag` in
+`projects/stencil/stencil.config.ts`), for the pages that do not import `hydrated.css` too.
+Unlayered, it beats every layer: before hydration it hides each component whatever the page
+says; once the flag is set it hands `visibility` back to the layers (`revert-layer`), so a
+utility such as `invisible` decides it, as `hidden` decides `display`, and with no rule the host
+inherits it (#1229). `src/test/hydrated-visibility.e2e.ts` holds both halves.
+
 Dark mode is handled via palette-level CSS custom properties. Activation classes on `<html>`:
 - `pref-mode-light / dark` - manual mode
 - `pref-mode-system` - follows OS preference (as a page with no `mds-pref` controller does)

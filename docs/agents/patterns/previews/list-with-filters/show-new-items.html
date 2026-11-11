@@ -125,7 +125,7 @@ whole-page: true
     // the line empties but keeps its place (Mostra hidden, not removed): the results never move
     document.getElementById('nuove').textContent = '';
     document.getElementById('punto').dismissed = true;
-    event.currentTarget.style.visibility = 'hidden';
+    event.currentTarget.classList.add('invisible');
     // Mostra is gone: the focus goes to the heading of the page
     document.getElementById('titolo').focus();
   });
