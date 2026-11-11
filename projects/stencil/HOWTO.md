@@ -72,6 +72,13 @@ Keep in mind that:
 - the tests of a file share one browser page: reset the global state they touch in `beforeEach`
   (`src/test/setup.browser.ts` already clears `<html lang>`, the `pref-*` classes and the
   storages);
+- an element handed to `userEvent` becomes a locator that Vitest writes in the page, with its
+  copy of the Playwright selector engine (`ivya`), and that Playwright resolves. Since Playwright
+  1.65 the two disagree on names holding text not assigned to a slot, which Playwright and Chrome
+  leave out: the light DOM text of `mds-button` or `mds-badge`, copied into their shadow root,
+  makes Vitest look for `Retry Retry` where Playwright sees `Retry`, and the action times out.
+  Hand such a target over as a locator on its visible name,
+  `userEvent.click(page.getByRole('button', { name: 'Retry' }))`, until Vitest follows;
 - `nx run stencil:generate` still scaffolds the Jest flavoured spec and e2e files: answer no and
   start from the snippet above.
 
