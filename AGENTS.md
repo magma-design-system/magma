@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Magma is the Maggioli Group Design System: a library of 117 web components (StencilJS), design tokens, SVG icons, brand assets and CSS/Tailwind 4 styles, each published as a separate npm package.
+Magma is the Maggioli Group Design System: a library of 118 web components (StencilJS), design tokens, SVG icons, brand assets and CSS/Tailwind 4 styles, each published as a separate npm package.
 
 ## Stack
 
@@ -141,7 +141,7 @@ What one project produces and another reads (`documentation.json`, the token dat
 | Commit message convention: allowed types, scopes, special rules                        | `docs/COMMITS.md`                                |
 | Contribution workflow and git governance: branching, merge queue, releases, tests, issue labels, closing a unit of work | `docs/WORKFLOW.md`                      |
 | Writing and running tests: Vitest spec, e2e, storybook (play + a11y) and wrapper tests | `projects/stencil/HOWTO.md`                      |
-| Navigable catalogue of all 117 components, which per-component file to read, authoring usage docs | `docs/COMPONENTS.md`                  |
+| Navigable catalogue of all 118 components, which per-component file to read, authoring usage docs | `docs/COMPONENTS.md`                  |
 | Writing or changing a pattern (a task across components, shipped as `agents/patterns/<id>.md`): the method, the format, the preview of each case, the check, product layers; the skills `/pattern-new`, `/pattern-change`, `/pattern-preview`, `/pattern-list` | `docs/PATTERNS.md` |
 | Token families: which ones UI code paints with, how to consume them                    | `docs/TOKENS.md`                                 |
 | Editor autocomplete for tokens: setup, generated sheet, extension traps                | `docs/EDITOR_TOKENS.md`                          |

@@ -98,7 +98,7 @@ flowchart LR
   MCP["mcp<br/>its sources"]
   ID["identity<br/>logo-magma.svg"]
   subgraph wc["stencil<br/>package @maggioli-design-system/magma"]
-    BUILD["stencil build<br/>117 mds-* components, build.icons"]
+    BUILD["stencil build<br/>118 mds-* components, build.icons"]
     DOCS["agent docs, API snapshot<br/>sync-agent-docs, component-docs"]
     BL["scripts/build-lint.ts<br/>dist/lint, dist/mcp"]
     IMG["scripts/preview-images.ts<br/>the images of the previews"]
