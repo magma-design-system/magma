@@ -1,4 +1,6 @@
 {
+  "colorPicker": "Scegli un colore",
+  "colorPickerFor": "Scegli un colore per {{{name}}}",
   "decrease": "Diminuisci",
   "hidePassword": "Nascondi password",
   "increase": "Aumenta",
@@ -9,6 +11,7 @@
   "validationCc": "numero di carta non valido",
   "validationCfLength": "Codice fiscale deve essere lungo 16 caratteri",
   "validationCfRegex": "Codice fiscale inserito non corretto",
+  "validationColor": "Inserisci un codice colore esadecimale, come #2f6fd0",
   "validationEmail": "indirizzo email non valido",
   "validationIsbn": "codice isbn non valido",
   "validationIsbnFormat": "formato isbn non corretto",

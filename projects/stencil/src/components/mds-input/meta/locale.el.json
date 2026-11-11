@@ -1,4 +1,6 @@
 {
+  "colorPicker": "Επιλέξτε χρώμα",
+  "colorPickerFor": "Επιλέξτε χρώμα για {{{name}}}",
   "decrease": "Μείωση",
   "hidePassword": "Απόκρυψη κωδικού",
   "increase": "Αύξηση",
@@ -9,6 +11,7 @@
   "validationCc": "Μη έγκυρος αριθμός κάρτας",
   "validationCfLength": "Ο φορολογικός κωδικός πρέπει να έχει 16 χαρακτήρες",
   "validationCfRegex": "Ο φορολογικός κωδικός που εισαγάγατε δεν είναι σωστός",
+  "validationColor": "Εισαγάγετε έναν δεκαεξαδικό κωδικό χρώματος, όπως #2f6fd0",
   "validationEmail": "Μη έγκυρη διεύθυνση email",
   "validationIsbn": "Μη έγκυρος κωδικός ISBN",
   "validationIsbnFormat": "Μη έγκυρη μορφή ISBN",

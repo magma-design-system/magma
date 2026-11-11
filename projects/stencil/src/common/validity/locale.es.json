@@ -1,5 +1,6 @@
 {
   "cardNumber": "Introduce un número de tarjeta válido.",
+  "color": "Introduce un código de color hexadecimal, como #2f6fd0.",
   "email": "Introduce una dirección de correo electrónico.",
   "invalid": "Introduce un valor válido.",
   "invalidDate": "Introduce una fecha válida.",

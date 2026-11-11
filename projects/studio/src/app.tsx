@@ -61,7 +61,7 @@ import {
   type LoadedRatios,
   type StudioDraft,
 } from './draft.js';
-import { Check, Field, Range, Select, TextInput, type Option } from './magma.js';
+import { Check, ColorInput, Field, Range, Select, TextInput, type Option } from './magma.js';
 import { HUE_ENDS, endsOf, moveEnd, type HueEnds } from './hue-ends.js';
 import { PaletteSide } from './palette-side.js';
 import { msg, useT, type T } from './i18n.js';
@@ -510,7 +510,7 @@ interface ColorEditorProps {
   /** the source family's base color, for the read-only resolved swatch */
   resolvedColor: string | undefined;
   onChange: (patch: Partial<ColorConfig> | { hueShift: undefined }) => void;
-  /** fired when the color picker is released (change, not live input) */
+  /** fired with each colour of the colour field, after onChange: a code typed, a step of a pick */
   onColorCommit: (hex: string) => void;
   /** a reference: opens the hue shifting of the family it points at */
   onOpenSource: () => void;
@@ -655,16 +655,13 @@ function ColorEditor({
     <div class="palette-editor" key="own">
       <div class="palette-fields">
         <CommitText label={t('Name')} value={color.name} onCommit={(name) => onChange({ name })} />
-        <Field label={t('Base color')} message={color.color}>
-          {/* until Magma has a colour field: #1260 */}
-          <input
-            type="color"
-            class="palette-picker"
+        <Field label={t('Base color')}>
+          <ColorInput
             value={color.color}
-            onInput={(e) =>
-              onChange({ color: (e.target as HTMLInputElement).value as ColorConfig['color'] })
-            }
-            onChange={(e) => onColorCommit((e.target as HTMLInputElement).value)}
+            onValue={(hex) => {
+              onChange({ color: hex as ColorConfig['color'] });
+              onColorCommit(hex);
+            }}
           />
         </Field>
         <Field label={t('Ratios')}>
@@ -1218,9 +1215,9 @@ export function App({
   // user is never touched
   const autoNamedRef = useRef(new Set<string>());
 
-  // when the color picker is released, colors still carrying an
-  // auto-assigned name get renamed after the picked value, unique within
-  // the config; a duplicate hex only raises a warning
+  // at each colour of the colour field (a code typed, a step of the picker),
+  // colors still carrying an auto-assigned name get renamed after it, unique
+  // within the config; a duplicate hex only raises a warning
   const autoNameColor = (index: number, hex: string) => {
     const color = config.colors[index];
     if (!color) return;
@@ -1882,15 +1879,11 @@ export function App({
                 </mds-text>
               </fieldset>
               {addModal.kind === 'color' ? (
-                // keyed apart: the field of the picker has a message, the select none
-                <Field key="color" label={t('Color')} message={addModal.color}>
-                  {/* until Magma has a colour field: #1260 */}
-                  <input
-                    type="color"
-                    class="palette-picker palette-picker-large"
+                // keyed apart: a colour field and a select are two controls, not one changing type
+                <Field key="color" label={t('Color')}>
+                  <ColorInput
                     value={addModal.color}
-                    onInput={(e) => {
-                      const hex = (e.target as HTMLInputElement).value;
+                    onValue={(hex) =>
                       setAddModal(
                         (state) =>
                           state && {
@@ -1898,8 +1891,8 @@ export function App({
                             color: hex,
                             name: state.manual ? state.name : nearestColorName(hex),
                           },
-                      );
-                    }}
+                      )
+                    }
                   />
                 </Field>
               ) : (

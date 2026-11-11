@@ -795,33 +795,66 @@ describe('speech-to-text', () => {
       vi.stubGlobal('SpeechRecognition', FakeRecognition);
     });
 
-    it.each(['disabled', 'readonly'])('does not start on a %s field', async (state) => {
+    // a field the user cannot change has no dictation button, and leaves its end to the badge
+    // of its state (2026-11-11, with the picker button of type="color")
+    it.each(['disabled', 'readonly'])('has no dictation button on a %s field', async (state) => {
       await setup(`<mds-input mic value="abc" ${state}></mds-input>`);
-      const mic = mdsInput.shadowRoot!.querySelector<HTMLElement>('.mic-toggle-button')!;
 
-      expect(mic).toHaveAttribute('disabled');
-      mic.click();
-      await waitForChanges();
-
+      expect(mdsInput.shadowRoot!.querySelector('.mic-toggle-button')).toBeNull();
+      expect(mdsInput.shadowRoot!.querySelector('.input')).not.toHaveClass('has-right-icon');
       expect(FakeRecognition.last).toBeUndefined();
       expect(mdsInput.value).toBe('abc');
     });
 
-    it('stops when the field gets disabled while dictating', async () => {
+    it('shows the dictation button again once the field can be changed', async () => {
+      await setup('<mds-input mic value="abc" readonly></mds-input>');
+
+      mdsInput.readonly = false;
+      await waitForChanges();
+
+      expect(mdsInput.shadowRoot!.querySelector('.mic-toggle-button')).not.toBeNull();
+      expect(mdsInput.shadowRoot!.querySelector('.input')).toHaveClass('has-right-icon');
+    });
+
+    it('has no dictation button in a disabled fieldset, until it is enabled', async () => {
+      const { root: form, waitForChanges: wait } = await render<HTMLFormElement>(
+        '<form><fieldset disabled><mds-input mic value="abc"></mds-input></fieldset></form>',
+      );
+      const field = form.querySelector('mds-input')!;
+      await vi.waitFor(() =>
+        expect(field.shadowRoot!.querySelector('.mic-toggle-button')).toBeNull(),
+      );
+
+      form.querySelector('fieldset')!.disabled = false;
+      await wait();
+
+      expect(field.shadowRoot!.querySelector('.mic-toggle-button')).not.toBeNull();
+    });
+
+    // without its button the user could not stop the dictation: it stops when the field locks
+    it.each([
+      ['disabled', () => (mdsInput.disabled = true)],
+      ['read-only', () => (mdsInput.readonly = true)],
+    ])('stops at once when the field gets %s while dictating', async (_state, lock) => {
       await setup('<mds-input mic></mds-input>');
+      const ended = vi.fn();
+      mdsInput.addEventListener('mdsInputSpeechEnd', ended);
       mdsInput.shadowRoot!.querySelector<HTMLElement>('.mic-toggle-button')!.click();
       await waitForChanges();
       const recognition = FakeRecognition.last!;
       dictate(recognition, 'hello');
       expect(mdsInput.value).toBe('hello');
 
-      mdsInput.disabled = true;
-      await waitForChanges();
-      dictate(recognition, ' world');
+      lock();
       await waitForChanges();
 
-      expect(mdsInput.value).toBe('hello');
       expect(recognition.started).toBe(false);
+      expect(ended).toHaveBeenCalledTimes(1);
+      expect(mdsInput.shadowRoot!.querySelector('.mic-toggle-button')).toBeNull();
+      // a result still on its way writes nothing
+      dictate(recognition, ' world');
+      await waitForChanges();
+      expect(mdsInput.value).toBe('hello');
     });
   });
 });

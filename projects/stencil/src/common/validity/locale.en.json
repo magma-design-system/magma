@@ -1,5 +1,6 @@
 {
   "cardNumber": "Enter a valid card number.",
+  "color": "Enter a hex colour code, such as #2f6fd0.",
   "email": "Enter an email address.",
   "invalid": "Enter a valid value.",
   "invalidDate": "Enter a valid date.",

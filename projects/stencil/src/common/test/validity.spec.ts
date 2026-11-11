@@ -31,6 +31,7 @@ describe('updateValidity', () => {
 
   it.each([
     [{ rule: 'cardNumber' }, { typeMismatch: true }],
+    [{ rule: 'color' }, { badInput: true }],
     [{ rule: 'email' }, { typeMismatch: true }],
     [{ rule: 'invalid' }, { customError: true }],
     [{ rule: 'invalidDate' }, { badInput: true }],
@@ -95,6 +96,7 @@ describe('validityMessage', () => {
 
   it('has every message in every language', () => {
     const rules = [
+      'color',
       'invalid',
       'invalidDate',
       'max',

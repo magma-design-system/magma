@@ -193,6 +193,25 @@ test('the formula and the export groups of the colour follow their fields', asyn
   )
 })
 
+test('the base colour follows its colour field, which hands back colours only', async () => {
+  const base = field('Base color').querySelector('mds-input')!
+  expect(base.getAttribute('type')).toBe('color')
+  expect(base.hasAttribute('required')).toBe(true)
+  const before = color('tone.neutral')!.color
+  const handed = configs.length
+
+  // the field holds '' while its text names no colour: the family keeps its colour
+  emit(base, 'mdsInputChange', { value: '' })
+  // the echo of the colour the page set, as the field writes it: no change of the person
+  emit(base, 'mdsInputChange', { value: before.toLowerCase() })
+  await new Promise((resolve) => setTimeout(resolve, 0))
+  expect(configs.length).toBe(handed)
+
+  emit(base, 'mdsInputChange', { value: '#123456' })
+  await vi.waitFor(() => expect(color('tone.neutral')?.color).toBe('#123456'))
+  await vi.waitFor(() => expect(base.getAttribute('value')).toBe('#123456'))
+})
+
 test('Smooth switches the colour, and the one of the global settings the configuration', async () => {
   emit(switchLabelled('Smooth', root.querySelector('.palette-color')!), 'mdsInputSwitchChange', {
     name: '',
@@ -404,14 +423,18 @@ test('a new colour is named after the colour picked until the person types a nam
   const nameOf = () => field('Name', modal).querySelector('mds-input')!.getAttribute('value')
   expect(nameOf()).toBe(nearestColorName('#4f8fd9'))
 
-  // until Magma has a colour field (#1260) the picker is a native input
+  // the colour field of Magma (#1260): a code typed or a colour picked with its button
+  const colorField = () => field('Color', modal).querySelector('mds-input[type="color"]')!
   const pick = async (hex: string) => {
-    const picker = modal.querySelector<HTMLInputElement>('input[type="color"]')!
-    picker.value = hex
-    picker.dispatchEvent(new Event('input', { bubbles: true }))
-    await vi.waitFor(() => expect(field('Color', modal).getAttribute('message')).toBe(hex))
+    emit(colorField(), 'mdsInputChange', { value: hex })
+    await vi.waitFor(() => expect(colorField().getAttribute('value')).toBe(hex))
   }
   await pick('#ff0000')
+  expect(nameOf()).toBe(nearestColorName('#ff0000'))
+  // a text that names no colour leaves the colour, and the name, as they were
+  emit(colorField(), 'mdsInputChange', { value: '' })
+  await new Promise((resolve) => setTimeout(resolve, 0))
+  expect(colorField().getAttribute('value')).toBe('#ff0000')
   expect(nameOf()).toBe(nearestColorName('#ff0000'))
   // the echo of the name the studio set is not a name the person typed
   emit(field('Name', modal).querySelector('mds-input')!, 'mdsInputChange', { value: nameOf() })
@@ -443,7 +466,7 @@ test('choosing a reference in the dialog makes a reference in the variant group'
   })
   await vi.waitFor(() => expect(modal.getAttribute('aria-label')).toBe('New reference'))
   expect(modal.querySelector('mds-banner')!.getAttribute('headline')).toBe('New reference')
-  expect(modal.querySelector('input[type="color"]')).toBeNull()
+  expect(modal.querySelector('mds-input[type="color"]')).toBeNull()
   const group = field('Group', modal).querySelector('mds-input-select')!
   expect(group.getAttribute('value')).toBe('variant')
   expect(group.hasAttribute('disabled')).toBe(true)

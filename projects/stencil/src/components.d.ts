@@ -1474,7 +1474,7 @@ export namespace Components {
          */
         "autofocus": boolean;
         /**
-          * Specifies if the spinner icon is shown, replacing the icon if present
+          * Specifies if the spinner icon is shown, replacing the icon if present. A `color` field keeps its swatch, which shows the value, and shows the spinner at its end, before the picker button (read-only or disabled, the field has no picker button and the spinner takes the end)
           * @default false
          */
         "await": boolean;
@@ -1513,7 +1513,7 @@ export namespace Components {
          */
         "hasValidator": (validator?: MdsValidatorFn) => Promise<boolean>;
         /**
-          * An icon displayed at the left of the input, inside the field; the spinner of `await` takes its place
+          * An icon displayed at the left of the input, inside the field; the spinner of `await` takes its place. A `color` field ignores it: its swatch stands there, one mark at the start
          */
         "icon"?: string;
         /**
@@ -1526,7 +1526,7 @@ export namespace Components {
          */
         "maxlength"?: number;
         /**
-          * Toggles text recognition
+          * Toggles text recognition. A read-only or disabled field has no dictation button. A `color` field ignores it: a colour code is typed or picked, not dictated, and its end holds the button of the picker
          */
         "mic"?: boolean;
         /**
@@ -1585,7 +1585,7 @@ export namespace Components {
          */
         "tip"?: string;
         /**
-          * Specifies the type of input element
+          * Specifies the type of input element. `color` holds a colour: the field stays a text field, where the code is typed and validated, with a swatch of the colour at its start and a button at its end that opens the colour picker of the platform. Its value, in the change event and in the form, is the colour as `#rrggbb` in lower case, or `''` while the text is empty or names no colour, which is a validation error; the text also takes `#rgb` and the code without `#`, in any case, and is written back as `#rrggbb` when the field is left
           * @default 'text'
          */
         "type"?: InputTextType;
@@ -1595,7 +1595,7 @@ export namespace Components {
          */
         "typography": TypographyInputType;
         /**
-          * Specifies the value of the input element
+          * Specifies the value of the input element. With `type="color"`, a colour as `#rrggbb`: a value set as `#rgb`, without `#` or in upper case is written so, and one that names no colour is shown as it is, with its error, while the value becomes `''`
           * @default ''
          */
         "value": string;
@@ -6982,7 +6982,7 @@ declare namespace LocalJSX {
          */
         "autofocus"?: boolean;
         /**
-          * Specifies if the spinner icon is shown, replacing the icon if present
+          * Specifies if the spinner icon is shown, replacing the icon if present. A `color` field keeps its swatch, which shows the value, and shows the spinner at its end, before the picker button (read-only or disabled, the field has no picker button and the spinner takes the end)
           * @default false
          */
         "await"?: boolean;
@@ -7010,7 +7010,7 @@ declare namespace LocalJSX {
          */
         "form"?: string;
         /**
-          * An icon displayed at the left of the input, inside the field; the spinner of `await` takes its place
+          * An icon displayed at the left of the input, inside the field; the spinner of `await` takes its place. A `color` field ignores it: its swatch stands there, one mark at the start
          */
         "icon"?: string;
         /**
@@ -7023,7 +7023,7 @@ declare namespace LocalJSX {
          */
         "maxlength"?: number;
         /**
-          * Toggles text recognition
+          * Toggles text recognition. A read-only or disabled field has no dictation button. A `color` field ignores it: a colour code is typed or picked, not dictated, and its end holds the button of the picker
          */
         "mic"?: boolean;
         /**
@@ -7097,7 +7097,7 @@ declare namespace LocalJSX {
          */
         "tip"?: string;
         /**
-          * Specifies the type of input element
+          * Specifies the type of input element. `color` holds a colour: the field stays a text field, where the code is typed and validated, with a swatch of the colour at its start and a button at its end that opens the colour picker of the platform. Its value, in the change event and in the form, is the colour as `#rrggbb` in lower case, or `''` while the text is empty or names no colour, which is a validation error; the text also takes `#rgb` and the code without `#`, in any case, and is written back as `#rrggbb` when the field is left
           * @default 'text'
          */
         "type"?: InputTextType;
@@ -7107,7 +7107,7 @@ declare namespace LocalJSX {
          */
         "typography"?: TypographyInputType;
         /**
-          * Specifies the value of the input element
+          * Specifies the value of the input element. With `type="color"`, a colour as `#rrggbb`: a value set as `#rgb`, without `#` or in upper case is written so, and one that names no colour is shown as it is, with its error, while the value becomes `''`
           * @default ''
          */
         "value"?: string;

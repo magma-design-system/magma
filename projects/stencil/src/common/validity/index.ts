@@ -8,6 +8,7 @@ import localeIt from './locale.it.json';
 /** The rule a value breaks: it picks the validity flag and the message reported to the form. */
 type ValidityRule =
   | 'cardNumber'
+  | 'color'
   | 'email'
   | 'invalid'
   | 'invalidDate'
@@ -33,6 +34,9 @@ type ValidityProblem = {
 
 const flags: Record<ValidityRule, keyof ValidityStateFlags> = {
   cardNumber: 'typeMismatch',
+  // the text of a colour field that names no colour leaves the value empty, as the text of a
+  // native number that is no number does: the browser reports that as badInput
+  color: 'badInput',
   email: 'typeMismatch',
   invalid: 'customError',
   invalidDate: 'badInput',

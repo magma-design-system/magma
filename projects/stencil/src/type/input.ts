@@ -11,6 +11,7 @@ export const inputSizeDictionary = ['sm', 'md', 'lg'] as const;
 export type InputSizeType = (typeof inputSizeDictionary)[number];
 
 export const inputTextTypeDictionary = [
+  'color',
   'date',
   'email',
   'number',

@@ -1,4 +1,5 @@
 import { Locale } from '@common/locale';
+import { toSimpleColor } from './color';
 import localeEl from './locale.el.json';
 import localeEn from './locale.en.json';
 import localeEs from './locale.es.json';
@@ -119,6 +120,15 @@ export const urlValidatorFn: MdsValidatorFn = (input: string) => {
   } catch {
     return { url: validationMessage('validationUrl') };
   }
+};
+
+/**
+ * A colour field (`type="color"`): the text names a colour as a code `toSimpleColor` reads
+ * (`#rrggbb`, `#rgb`, with or without `#`); the message says what to write.
+ */
+export const colorValidatorFn: MdsValidatorFn = (input: string) => {
+  if (input === '') return null; // don't validate empty values to allow optional controls
+  return toSimpleColor(input) ? null : { color: validationMessage('validationColor') };
 };
 
 /**

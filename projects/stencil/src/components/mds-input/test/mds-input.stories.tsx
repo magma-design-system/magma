@@ -1,4 +1,5 @@
 import { citiesDictionary } from '@fixture/cities';
+import { inDarkMode } from '@fixture/dark-mode';
 import { themeInputVariantDictionary } from '@type/variant';
 import { autoCompleteDictionary } from '@type/autocomplete';
 import {
@@ -12,6 +13,7 @@ import { h } from '@stencil/core';
 
 import { MdsInputInterface } from '../mds-input';
 import { useEffect } from 'react';
+import { expect, waitFor } from 'storybook/test';
 
 // https://developers.google.com/web/updates/2015/06/checkout-faster-with-autofill
 
@@ -370,6 +372,100 @@ export const TextRecognition = {
     mic: true,
     placeholder: 'Es: Come si cresce un bovaro del bernese?',
   },
+};
+
+/**
+ * A colour field (#1260): the code is typed in the field and validated, the swatch at its start
+ * shows the colour, the button at its end opens the picker of the platform. The value is
+ * `#rrggbb`: `#ABC` is written `#aabbcc` at load, as a code typed is when the field is left.
+ */
+export const Color = {
+  render: Template,
+
+  args: {
+    'aria-label': 'Colore di base',
+    type: 'color',
+    value: '#2F6FD0',
+    placeholder: '#rrggbb',
+  },
+
+  play: async ({ canvasElement }) => {
+    const field = canvasElement.querySelector('mds-input') as HTMLMdsInputElement;
+    await waitFor(() => expect(field).toHaveAttribute('hydrated'));
+    await expect(field.value).toBe('#2f6fd0');
+    const swatch = field.shadowRoot!.querySelector('.swatch') as HTMLElement;
+    await expect(getComputedStyle(swatch).backgroundColor).toBe('rgb(47, 111, 208)');
+    const action = field.shadowRoot!.querySelector('.color-picker-button') as HTMLElement;
+    await expect(action).toHaveAttribute('title', 'Choose a colour for Colore di base');
+  },
+};
+
+/** The colour field in every size, empty, read-only, disabled and awaiting. */
+const TemplateColorStates = () => (
+  <div class="@container">
+    <div class="grid items-start gap-400 @md:grid-cols-2 @3xl:grid-cols-3">
+      <mds-input type="color" aria-label="Grande" value="#a89586"></mds-input>
+      <mds-input type="color" aria-label="Medio" size="md" value="#a89586"></mds-input>
+      <mds-input type="color" aria-label="Piccolo" size="sm" value="#a89586"></mds-input>
+      <mds-input type="color" aria-label="Vuoto" placeholder="#rrggbb"></mds-input>
+      <mds-input type="color" aria-label="Sola lettura" value="#2f6fd0" readonly></mds-input>
+      <mds-input type="color" aria-label="Disabilitato" value="#2f6fd0" disabled></mds-input>
+      <mds-input type="color" aria-label="In attesa" value="#2f6fd0" await></mds-input>
+      <mds-input type="color" aria-label="Bianco" value="#ffffff"></mds-input>
+      <mds-input type="color" aria-label="Nero" value="#000000"></mds-input>
+    </div>
+  </div>
+);
+
+export const ColorStates = {
+  render: TemplateColorStates,
+};
+
+/**
+ * A colour field whose text names no colour: the swatch is empty, the ring alone, and leaving the
+ * field shows the error. The value is `''`, which the form gets.
+ */
+const playColorError = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+  const field = canvasElement.querySelector('mds-input') as HTMLMdsInputElement;
+  await waitFor(() => expect(field).toHaveAttribute('hydrated'));
+  const input = field.shadowRoot!.querySelector('input.input') as HTMLInputElement;
+  input.focus();
+  input.blur();
+  await waitFor(() => expect(field).toHaveAttribute('variant', 'error'));
+  await expect(field.value).toBe('');
+  await expect(input.value).toBe('blu');
+};
+
+export const ColorError = {
+  render: Template,
+
+  args: {
+    'aria-label': 'Colore del bordo',
+    type: 'color',
+    value: 'blu',
+  },
+
+  play: playColorError,
+};
+
+/** The colour field and its error in dark: the ring of the swatch stays visible on the field. */
+const TemplateColorDark = () => (
+  <div class="@container">
+    <div class="grid items-start gap-400 @md:grid-cols-2">
+      <mds-input type="color" aria-label="Colore del bordo" value="blu"></mds-input>
+      <mds-input type="color" aria-label="Colore di base" value="#2f6fd0"></mds-input>
+      <mds-input type="color" aria-label="Nero" value="#000000"></mds-input>
+      <mds-input type="color" aria-label="Vuoto" placeholder="#rrggbb"></mds-input>
+    </div>
+  </div>
+);
+
+export const ColorDark = {
+  render: TemplateColorDark,
+
+  beforeEach: inDarkMode,
+
+  play: playColorError,
 };
 
 const FormIntegrationTemplate = (args: MdsInputInterface) => {

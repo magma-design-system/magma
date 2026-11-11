@@ -1,6 +1,8 @@
 import { themeInputVariantDictionary } from '@type/variant';
 import { validationModelDictionary } from '@component/mds-input/meta/dictionary';
 import { h } from '@stencil/core';
+import { inDarkMode } from '@fixture/dark-mode';
+import { expect, waitFor } from 'storybook/test';
 
 interface MdsInputFieldInterface {
   label?: string;
@@ -153,4 +155,49 @@ export const NestedButton = {
     placeholder: 'Es: MRCRSS83B21D704L',
     type: 'cf',
   },
+};
+
+/**
+ * Colour fields (#1260) with their label and message: one holding a colour, one whose text names
+ * no colour, which shows the message of mds-input once the field is left.
+ */
+const TemplateColor = () => (
+  <div class="@container">
+    <form class="grid items-start gap-400 @md:grid-cols-2">
+      <mds-input-field label="Colore di base">
+        <mds-input type="color" name="base" value="#2f6fd0" placeholder="#rrggbb"></mds-input>
+      </mds-input-field>
+      <mds-input-field label="Colore del bordo">
+        <mds-input type="color" name="border" value="blu" placeholder="#rrggbb"></mds-input>
+      </mds-input-field>
+    </form>
+  </div>
+);
+
+const playColor = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+  const [, wrong] = Array.from(canvasElement.querySelectorAll('mds-input-field'));
+  const field = wrong.querySelector('mds-input') as HTMLMdsInputElement;
+  await waitFor(() => expect(field).toHaveAttribute('hydrated'));
+  const input = field.shadowRoot!.querySelector('input.input') as HTMLInputElement;
+  input.focus();
+  input.blur();
+  await waitFor(() =>
+    expect(wrong).toHaveProperty('message', 'Enter a hex colour code, such as #2f6fd0'),
+  );
+  const action = field.shadowRoot!.querySelector('.color-picker-button') as HTMLElement;
+  await expect(action).toHaveAttribute('title', 'Choose a colour for Colore del bordo');
+};
+
+export const Color = {
+  render: TemplateColor,
+
+  play: playColor,
+};
+
+export const ColorDark = {
+  render: TemplateColor,
+
+  beforeEach: inDarkMode,
+
+  play: playColor,
 };

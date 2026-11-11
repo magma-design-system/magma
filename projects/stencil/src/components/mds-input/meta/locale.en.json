@@ -1,4 +1,6 @@
 {
+  "colorPicker": "Choose a colour",
+  "colorPickerFor": "Choose a colour for {{{name}}}",
   "decrease": "Decrease",
   "hidePassword": "Hide password",
   "increase": "Increase",
@@ -9,6 +11,7 @@
   "validationCc": "Invalid card number",
   "validationCfLength": "The tax code must be 16 characters long",
   "validationCfRegex": "The tax code entered is not correct",
+  "validationColor": "Enter a hex colour code, such as #2f6fd0",
   "validationEmail": "Invalid email address",
   "validationIsbn": "Invalid ISBN code",
   "validationIsbnFormat": "Invalid ISBN format",

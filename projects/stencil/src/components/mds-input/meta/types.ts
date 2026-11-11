@@ -1,4 +1,5 @@
 export type InputFieldType =
+  | 'color'
   | 'date'
   | 'email'
   | 'number'

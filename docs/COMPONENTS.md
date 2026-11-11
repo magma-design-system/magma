@@ -122,7 +122,7 @@ Parts (e.g. `mds-table-cell`, `mds-card-header`) always compose inside their par
 
 | Component                           | Native analogue               | Intent                                                                                             |
 | ----------------------------------- | ----------------------------- | -------------------------------------------------------------------------------------------------- |
-| `mds-input`                         | `<input>`, `<textarea>`       | Text input, single- or multi-line (`type="textarea"`), with validation, counter and typed formats. |
+| `mds-input`                         | `<input>`, `<textarea>`       | Text input, single- or multi-line (`type="textarea"`), with validation, counter, formats, colours. |
 | `mds-input-tip`                     | -                             | Used internally, not meant for direct use. Hint / validation container shown alongside an input.   |
 | `mds-input-tip-item`                | -                             | Used internally, not meant for direct use. Single tip message inside `mds-input-tip`.              |
 | `mds-input-field`                   | -                             | Wrapper around an input that provides label, tip, and validation slots.                            |
