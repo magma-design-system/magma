@@ -133,11 +133,10 @@ export class MdsStepperBar {
     strip.scrollLeft += itemBox.left - stripBox.left - centring;
   };
 
+  // the bar used to write `mds-stepper-bar-item-<n>` as the id of every item, over the one of the
+  // page, when it found its items by id; it finds them by tag now, and the id is the page's (#680)
   componentWillLoad(): void {
     this.items = this.queryItems();
-    this.items.forEach((item, key) => {
-      item.id = `mds-stepper-bar-item-${key}`;
-    });
   }
 
   componentDidLoad(): void {

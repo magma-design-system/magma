@@ -219,7 +219,7 @@ Lower the `typography` prop (default `h6`) when horizontal space is tight or whe
 
 #### Styling Customization
 
-Style items only through the public `--mds-stepper-bar-item-*` CSS custom properties: the text colour and the minimum width. The icon and progress colours follow the state the parent sets (queued, current, done) and are not set by the page. Use semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working. Target the `::part(badge)` surface only when a deep visual override of the badge wrapper is required.
+Style items only through the public `--mds-stepper-bar-item-*` CSS custom properties: the text colour and the minimum width. The minimum width applies to every item but the last: the last one draws no bar after its icon, so it takes the width of its texts and the bars of the others fill the rest of the row. The icon and progress colours follow the state the parent sets (queued, current, done) and are not set by the page. Use semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working. Target the `::part(badge)` surface only when a deep visual override of the badge wrapper is required.
 
 ```css
 .checkout-flow mds-stepper-bar-item {
@@ -371,20 +371,20 @@ Both are required props. An item without `label` has no accessible or visual des
 
 ## CSS Custom Properties
 
-| Name                                             | Description                                                         |
-| ------------------------------------------------ | ------------------------------------------------------------------- |
-| `--mds-stepper-bar-item-color`                   | Public. Sets the color of the text                                  |
-| `--mds-stepper-bar-item-duration`                | Sets the duration of the animation                                  |
-| `--mds-stepper-bar-item-icon-background`         | Sets the background-color of the icon                               |
-| `--mds-stepper-bar-item-icon-background-current` | Sets the background-color of the icon when the component is current |
-| `--mds-stepper-bar-item-icon-background-done`    | Sets the background-color of the icon when the component is done    |
-| `--mds-stepper-bar-item-icon-color`              | Sets the color of the icon                                          |
-| `--mds-stepper-bar-item-icon-color-current`      | Sets the color of the icon when the component is current            |
-| `--mds-stepper-bar-item-icon-color-done`         | Sets the color of the icon when the component is done               |
-| `--mds-stepper-bar-item-min-width`               | Public. Sets the minimum width of the component                     |
-| `--mds-stepper-bar-item-progress-background`     | Sets the background color of the progress bar                       |
-| `--mds-stepper-bar-item-progress-color`          | Sets the color of the progress bar                                  |
-| `--mds-stepper-bar-item-progress-thickness`      | Sets the thickness of the progress bar                              |
+| Name                                             | Description                                                                                                            |
+| ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------- |
+| `--mds-stepper-bar-item-color`                   | Public. Sets the color of the text                                                                                     |
+| `--mds-stepper-bar-item-duration`                | Sets the duration of the animation                                                                                     |
+| `--mds-stepper-bar-item-icon-background`         | Sets the background-color of the icon                                                                                  |
+| `--mds-stepper-bar-item-icon-background-current` | Sets the background-color of the icon when the component is current                                                    |
+| `--mds-stepper-bar-item-icon-background-done`    | Sets the background-color of the icon when the component is done                                                       |
+| `--mds-stepper-bar-item-icon-color`              | Sets the color of the icon                                                                                             |
+| `--mds-stepper-bar-item-icon-color-current`      | Sets the color of the icon when the component is current                                                               |
+| `--mds-stepper-bar-item-icon-color-done`         | Sets the color of the icon when the component is done                                                                  |
+| `--mds-stepper-bar-item-min-width`               | Public. Sets the minimum width of the component; the last item, which has no bar, takes the width of its texts instead |
+| `--mds-stepper-bar-item-progress-background`     | Sets the background color of the progress bar                                                                          |
+| `--mds-stepper-bar-item-progress-color`          | Sets the color of the progress bar                                                                                     |
+| `--mds-stepper-bar-item-progress-thickness`      | Sets the thickness of the progress bar                                                                                 |
 
 
 ## Dependencies
