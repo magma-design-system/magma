@@ -8,6 +8,24 @@ import { IconNameResolverFn, MdsIconSet } from '../meta/icon-set';
 // the path under it on `globalThis` gives them all one source of truth.
 const SVG_PATH_GLOBAL = Symbol.for('@maggioli-design-system/magma:mdsIconSvgPath');
 
+/**
+ * Where `mds-icon` fetches the icon files from: `<path><name>.svg`, cached in memory and in
+ * IndexedDB. One instance, `IconsSetService`, is shared by every `<mds-icon>` and exported from
+ * the package root: products call `setSvgPath()` and `getSvgPath()` on it, tagged `@public` and
+ * so listed in magma.api.txt; the other members serve `mds-icon` and are not part of the public
+ * contract.
+ *
+ * The path an icon is fetched from, first match wins:
+ *
+ * 1. the last path passed to `setSvgPath()`, of this service or of an `mds-icon` element (its
+ *    method calls this one), whenever it was called;
+ * 2. otherwise the `mdsIconSvgPath` key of `sessionStorage`, read when the first icon loads
+ *    without a path and kept as if passed to `setSvgPath()`: a later `setSvgPath()` replaces
+ *    it, a later change of the key is not seen. A storage the browser blocks or that throws
+ *    (`SecurityError` in a sandboxed iframe, private windows, storage partitioning) counts as
+ *    a missing key;
+ * 3. otherwise no path: the name is fetched as it is, and a slug finds no file.
+ */
 class IconsSetController {
   public readonly _svgPathKey = 'mdsIconSvgPath';
 
@@ -75,6 +93,12 @@ class IconsSetController {
    *
    * input path: empty or not a URL
    * throw error
+   *
+   * The path wins over the `mdsIconSvgPath` key of `sessionStorage` (see the order above), and
+   * every mounted icon loads again from it (`mdsIconSvgPathUpdate` on `window`). On a server
+   * (no `window`) a valid path is accepted and nothing is stored: call it again in the browser.
+   *
+   * @public
    */
   setSvgPath(svgPath: string): void {
     const error = Error(
@@ -107,6 +131,12 @@ class IconsSetController {
     }
   }
 
+  /**
+   * The directory the icons are fetched from, as `setSvgPath()` stored it; empty when none is
+   * set yet.
+   *
+   * @public
+   */
   getSvgPath(): string {
     return this._svgPath;
   }
@@ -198,7 +228,7 @@ class IconsSetController {
         try {
           storedSvgPath = window.sessionStorage.getItem(IconsSetService._svgPathKey) ?? '';
         } catch {
-          /* sessionStorage unavailable — ignore */
+          /* sessionStorage unavailable: a missing key */
         }
         if (storedSvgPath) {
           this.setSvgPath(storedSvgPath);
@@ -242,4 +272,16 @@ class IconsSetController {
   }
 }
 
+/**
+ * The one icon service of the page, shared by every `<mds-icon>`. Set the folder of the icons
+ * once, before or after the icons mount, without `sessionStorage`:
+ *
+ * ```ts
+ * import { IconsSetService } from '@maggioli-design-system/magma';
+ * IconsSetService.setSvgPath('/svg/');
+ * ```
+ *
+ * The class is not exported: a second instance would keep a cache of its own, and no icon
+ * registers on it.
+ */
 export const IconsSetService = new IconsSetController();

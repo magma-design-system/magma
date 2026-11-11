@@ -16,8 +16,8 @@ Every published entry point is tree-shakeable except the lazy loader, which regi
 | `magma`         | `/components/mds-button.js`                                       | one component per file                                                                             | ✅                                |
 | `magma`         | `/loader`                                                         | `defineCustomElements()`, registers everything lazily                                              | ❌ by design                      |
 | `magma`         | `/hydrate`                                                        | `renderToString()` for SSR (server-only bundle)                                                    | ❌ by design (server bundle)      |
-| `magma`         | `.`                                                               | lazy runtime + `IconsSetService`, `NavigationService` (no components)                              | n/a                               |
-| `magma`         | `/services`                                                       | `IconsSetService`, `NavigationService`                                                             | n/a                               |
+| `magma`         | `.`                                                               | lazy runtime + `IconsSetService`, `NavigationService` (no components), types of the components     | n/a                               |
+| `magma`         | `/services`                                                       | the same module as `.`, for code written against it                                                | n/a                               |
 | `magma`         | `/AGENTS.md`, `/agents/*`                                         | the agent docs (install guide, `docs/agents/` fragments)                                           | n/a                               |
 | `magma`         | `/dist/documentation.json`, `/dist/collection/components/<tag>/*` | the docs JSON, and per component `AGENTS.md`, `examples.md`, `mistakes.md`, `documentation.json` | n/a                               |
 | `magma-react`   | `.`                                                               | barrel of `Mds*` React wrappers                                                                    | ✅                                |
@@ -36,6 +36,8 @@ import { MdsButton } from '@maggioli-design-system/magma-react';
 // Angular - standalone, self-registering
 import { MdsButton } from '@maggioli-design-system/magma-angular';
 ```
+
+The guides import the services from `.`, not from `/services`: TypeScript reads the types of the root under every `moduleResolution`, those of a subpath of `exports` only under one that reads that field (`node10` does not). The root re-exports the types of the components too, as types only, so it gives what `dist/types/components.d.ts` gave before ([`src/index.ts`](src/index.ts)).
 
 ### What keeps this working
 
@@ -125,7 +127,7 @@ At build time iconsauce emits the resolved icons through one of two output strat
 1. **Single icon font** bundling every referenced icon, or
 2. **Reorganised SVG files** mirroring the slug path - `mi/baseline/close` becomes `public/assets/mi/baseline/close.svg`
 
-**Magma uses strategy 2** (files). At runtime, `mds-icon` fetches `<mdsIconSvgPath><slug>.svg` from a path the host app configures (recommended via `sessionStorage` - see [`src/components/mds-icon/readme.md`](src/components/mds-icon/readme.md) for the `IconsSetService.setSvgPath` / `setSvgPath` / `mdsIconSvgPathUpdate` alternatives).
+**Magma uses strategy 2** (files). At runtime, `mds-icon` fetches `<mdsIconSvgPath><slug>.svg` from a path the host app configures: `IconsSetService.setSvgPath()`, imported from the package root, is the recommended way; the `mdsIconSvgPath` key of `sessionStorage` and the `setSvgPath` method of an element are the alternatives, and the `mdsIconSvgPathUpdate` event reloads the mounted icons after a late write of the key (see [`src/components/mds-icon/readme.md`](src/components/mds-icon/readme.md); the order between them is in the JSDoc of `IconsSetController`).
 
 ### Why iconsauce (not inline SVG or direct icon-lib imports)
 
@@ -148,7 +150,9 @@ Never inline `<svg>` literals in a component template, and never import from an 
 Minimum host-app setup:
 
 ```javascript
-window.sessionStorage.setItem('mdsIconSvgPath', '/svg/');
+import { IconsSetService } from '@maggioli-design-system/magma';
+
+IconsSetService.setSvgPath('/svg/');
 ```
 
 `mds-icon` also accepts a base64-encoded data URI or a raw `<svg>` string as `name`, for dynamic icons coming from an API.
@@ -173,7 +177,7 @@ If a referenced slug isn't resolvable by any configured plugin, iconsauce report
 
 ## Public API snapshot
 
-`magma.api.txt` is the public API of the components, one sorted line per member: every prop (attribute, reflect, mutable, required, type, default), event (detail, bubbles, cancelable, composed), method signature, slot, part, `@prop`-documented CSS custom property and custom state, then the declarations of the types they reference. Prose is left out, so rewording a JSDoc does not touch it.
+`magma.api.txt` is the public API of magma, one sorted line per member: of the components, every prop (attribute, reflect, mutable, required, type, default), event (detail, bubbles, cancelable, composed), method signature, slot, part, `@prop`-documented CSS custom property and custom state (from `dist/documentation.json`); then the exports of the package root and their promised members (from `dist/types/index.d.ts`, below); then the declarations of the types they reference. Prose is left out, so rewording a JSDoc does not touch it.
 
 - **The build writes it** (`npm run build.api-snapshot`, last step of `npm run build`), like `src/components.d.ts`: commit it with the change that produced it.
 - **Review its diff.** It is what the change does to the contract consumers rely on; a PR that leaves it untouched changes no component API. A removed or changed line is a breaking change unless it only widens what is accepted, or makes the detail of an event a type that extends the old one: a listener still finds every field it read.
@@ -181,6 +185,7 @@ If a referenced slug isn't resolvable by any configured plugin, iconsauce report
 - **It drives the review level and the release check** of every PR (`docs/WORKFLOW.md` rule 6): a removed or narrowed member must ship as a declared breaking change, unless an `API-Compatible:` footer declares that no consumer can tell it apart from the old API.
 - **It sees what the generated docs see**: a custom property without `@prop` is missing from it; a part is listed when `render()` sets it or an `@part` names it, so an `@part` with no element behind it is listed too, and removing it is a removed line.
 - **A custom property carries its contract**: `css --mds-x-gap` is public, `css --mds-x-skin [static]` public and static, `css --mds-x-icon-color INTERNAL` internal. Removing a public one needs a major; removing or adding an internal one is a patch; making a public one internal, or an internal one public, or changing `[static]`, is a minor.
+- **The package root is in it too**: every named export of `src/index.ts` (the module of `.` and `./services`), as `IconsSetService export const` or `NavigationHandler export type`, read from its declarations, the files the TypeScript of a product reads. Of a service (a const typed with a class the root does not export), only the members whose JSDoc carries `@public`, the release tag of [TSDoc](https://tsdoc.org/pages/tags/public/), are listed: `IconsSetService method setSvgPath(svgPath: string) => void`. The others serve the components (`fetchSvg()`, `handle()`) and may change in any release, so a method the guides tell products to call gets the tag in the same change. An exported type is listed whole, with the types it references, among the component types. The tag and not the `Public.` mark of the custom properties: that mark lives in the description only because `documentation.json` keeps nothing else of a CSS `@prop`. Removing an export or a promised member, or changing its signature, needs a major; adding one, a minor. The build fails on what the snapshot cannot read instead of guessing (a class or function export, an `export *` of another module, `@public` on a private member, a description that starts with `Public.`): `rootApi` in `scripts/api-snapshot-lib.ts` lists the cases, extend it with its test.
 
 ## Tests
 

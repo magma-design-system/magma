@@ -145,16 +145,19 @@ of every component.
 
 ## 3. Set the icon path
 
-Set `mdsIconSvgPath` once at app startup, before the first `mds-icon` renders - e.g.
-in the root component constructor or an `APP_INITIALIZER`:
+Set the icon path once at app startup, before the first `mds-icon` renders - e.g.
+in the root component constructor or in `provideAppInitializer()`:
 
 ```typescript
-sessionStorage.setItem('mdsIconSvgPath', '/svg/');
+import { IconsSetService } from '@maggioli-design-system/magma';
+
+IconsSetService.setSvgPath('/svg/');
 ```
 
-For Angular Universal (SSR), guard against the server where `sessionStorage` is
-undefined - set it inside a browser-platform check (`isPlatformBrowser`) or in a
-client-only initializer.
+With SSR it needs no guard: on the server (no `window`) the call stores nothing, and
+the browser makes it again when the app boots there. The `mdsIconSvgPath` key of
+`sessionStorage` still works where the browser allows storage
+([`assets.md`](assets.md), "Tell mds-icon where the icons are").
 
 ## 4. Serve the icon SVGs and styles
 

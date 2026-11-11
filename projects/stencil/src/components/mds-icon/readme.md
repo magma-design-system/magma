@@ -18,7 +18,7 @@ The `<mds-icon>` web component is the single glyph primitive of the Magma Design
 - **Decorative by default**: The icon contributes no accessible name; meaning must come from the surrounding labelled control or text.
 - **Source resolution**: `name` is interpreted three ways - a string starting with `data:image/svg+xml;base64,` is decoded inline (as UTF-8; a payload that is not base64 draws nothing and logs a console warning), a markup string starting with the `<svg` element, or with the XML declaration, doctype or comments a saved `.svg` file opens with, is used verbatim, and anything else is treated as an icon filename slug fetched as `<svg directory><slug>.svg` (a name starting with `http` is fetched as it is). Without a `name` (attribute missing or empty, property `undefined` or `null`) the icon renders nothing, sends no request and logs nothing; removing `name` clears the icon.
 - **Async load**: When `name` is a slug the icon paints once the SVG arrives; a failed fetch renders empty rather than throwing. Only the latest `name` and SVG path count: a request that finishes after a newer one is discarded.
-- **Path configuration**: The SVG directory is set programmatically via the shared `IconsSetService.setSvgPath()` singleton (imported from `@maggioli-design-system/magma/services`), with the `mdsIconSvgPath` `sessionStorage` key as an optional fallback and the `setSvgPath` instance method as an alternative; icons that mounted before the path was configured reload themselves once it is set. An icon removed from the page stops listening for path changes; once it is put back it picks up a path set in the meantime.
+- **Path configuration**: The SVG directory is set programmatically via the shared `IconsSetService.setSvgPath()` singleton (imported from `@maggioli-design-system/magma`), with the `mdsIconSvgPath` `sessionStorage` key as an optional fallback and the `setSvgPath` instance method as an alternative; icons that mounted before the path was configured reload themselves once it is set. An icon removed from the page stops listening for path changes; once it is put back it picks up a path set in the meantime.
 
 #### Properties & Visual Configurations
 
@@ -48,15 +48,15 @@ The canonical form. Pass a slug string as `name`; the component fetches the matc
 
 #### Configuring the SVG Base Path via `IconsSetService` (recommended)
 
-Import the shared `IconsSetService` singleton from the package's `services` entry point and call `setSvgPath()`. It updates the shared, in-memory icon path - kept on `globalThis` so every bundled copy of the service (lazy chunks, `esm`/`esm-es5` variants, `dist/components`) agrees on it - and notifies all mounted icons to (re)load immediately. **No `sessionStorage` is involved**, which makes it the safest option when storage is blocked (incognito, sandboxed iframes, storage partitioning). Pass an absolute path (starting with `/`) or a full URL. The icons are downloaded with `fetch`: under a Content Security Policy the origin of the path must be allowed by `connect-src` (or `default-src`), which `'self'` already does for a path on the page's own origin, while a CDN must be listed.
+Import the shared `IconsSetService` singleton from the package root, `@maggioli-design-system/magma` (`@maggioli-design-system/magma/services` is the same module), and call `setSvgPath()`. It updates the shared, in-memory icon path - kept on `globalThis` so every bundled copy of the service (lazy chunks, `esm`/`esm-es5` variants, `dist/components`) agrees on it - and notifies all mounted icons to (re)load immediately. **No `sessionStorage` is involved**, which makes it the safest option when storage is blocked (incognito, sandboxed iframes, storage partitioning). Pass an absolute path (starting with `/`) or a full URL. The icons are downloaded with `fetch`: under a Content Security Policy the origin of the path must be allowed by `connect-src` (or `default-src`), which `'self'` already does for a path on the page's own origin, while a CDN must be listed.
 
 ```javascript
-import { IconsSetService } from '@maggioli-design-system/magma/services';
+import { IconsSetService } from '@maggioli-design-system/magma';
 
 IconsSetService.setSvgPath('/assets/img/svg/');
 ```
 
-It can be called before or after the icons mount: instances mounted earlier re-fetch automatically once the path is set. Always use the exported `IconsSetService`; do not construct your own controller, which would keep a separate icon cache and listener list.
+It can be called before or after the icons mount: instances mounted earlier re-fetch automatically once the path is set. A path set this way wins over the `mdsIconSvgPath` key of `sessionStorage`, read before or after it. On a server (no `window`) the call stores nothing: with SSR, call it in code the browser runs. Always use the exported `IconsSetService`; do not construct your own controller, which would keep a separate icon cache and listener list.
 
 #### Configuring the SVG Base Path via sessionStorage (optional)
 

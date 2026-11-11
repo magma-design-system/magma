@@ -29,6 +29,11 @@ const isSameOrigin = (href: string): boolean => {
   }
 };
 
+/**
+ * The one router hook of the page, exported from the package root as `NavigationService`.
+ * Products call `setHandler()`, tagged `@public` and so listed in magma.api.txt; the other
+ * members serve the components and may change in any release.
+ */
 class NavigationController {
   private get handler(): NavigationHandler | undefined {
     if (typeof globalThis === 'undefined') return undefined;
@@ -43,6 +48,8 @@ class NavigationController {
   /**
    * Registers the handler of the app, replacing the previous one; `undefined` removes it.
    * Returns the function that removes this handler, for the cleanup of an effect.
+   *
+   * @public
    */
   setHandler(handler?: NavigationHandler): () => void {
     this.handler = handler;

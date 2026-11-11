@@ -69,16 +69,18 @@ npm i @maggioli-design-system/magma-react
 ```
 
 ### Icon
-Set the path where the `mds-icon` component will get the svg icons inside `UseEffect` otherwise window is not defined
+Set the path where the `mds-icon` component will get the svg icons inside `useEffect`: on a server `setSvgPath()` stores nothing. `IconsSetService` comes from `@maggioli-design-system/magma`, installed next to this package.
 
 ```ts
 // app.js
+import { useEffect } from "react";
+import { IconsSetService } from "@maggioli-design-system/magma";
 
 export default function App({
   children,
 }) {
   useEffect(() => {
-    sessionStorage.setItem("mdsIconSvgPath", `/svg/`);
+    IconsSetService.setSvgPath("/svg/");
   }, []);
 
   return <>{children}</>;
@@ -89,13 +91,17 @@ Example using Nextjs with App Router
 
 ```tsx
 // client_globals_wrapper.tsx
+"use client";
+import { useEffect } from "react";
+import { IconsSetService } from "@maggioli-design-system/magma";
+
 export default function ClientGlobalsWrapper({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   useEffect(() => {
-    sessionStorage.setItem("mdsIconSvgPath", `/svg/`);
+    IconsSetService.setSvgPath("/svg/");
   }, []);
 
   return <>{children}</>;

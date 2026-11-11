@@ -98,7 +98,7 @@ Every pull request gets a review level from the `pr-risk` workflow: a `risk-*` l
 
 | Label            | Set when                                                                                     | Review                                                                  |
 | ---------------- | -------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| `risk-contract`  | `projects/stencil/magma.api.txt` changes: the public component API                          | every member the comment lists: each must be intended, and the release must say so |
+| `risk-contract`  | `projects/stencil/magma.api.txt` changes: the public API of the components and of the package root | every member the comment lists: each must be intended, and the release must say so |
 | `risk-behaviour` | shipped code changes (components, wrappers, codemods, the consumer-facing fields of a manifest) | the tests that cover it: do they describe the new behaviour, would they fail on the old code? |
 | `risk-visual`    | only CSS, tokens, styles, icons or brand assets change                                        | the rendered result (the stories involved), not the CSS                 |
 | `risk-low`       | docs, tests, stories, tooling or CI only                                                      | a green CI is enough                                                    |

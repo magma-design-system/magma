@@ -78,7 +78,7 @@
 # --- Review level (set on every PR by the pr-risk workflow, #843) ---
 - name: risk-contract
   color: b60205
-  description: 'Review level: changes the public component API (magma.api.txt)'
+  description: 'Review level: changes the public API (magma.api.txt)'
 - name: risk-behaviour
   color: fbca04
   description: 'Review level: changes shipped code, not the API - review the tests'

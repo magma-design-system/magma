@@ -4,8 +4,9 @@
  * scripts/pr-risk-lib.spec.ts can test it directly.
  *
  * The review level is the highest of:
- * - contract: magma.api.txt changes (the public component API, see api-snapshot-lib.ts), or
- *   what a pattern promises to every product (patternChanges below);
+ * - contract: magma.api.txt changes (the public API: the components and the exports of the
+ *   package root, see api-snapshot-lib.ts), or what a pattern promises to every product
+ *   (patternChanges below);
  * - behaviour: sources that ship as code change (components, wrappers, codemods, the
  *   consumer-facing fields of a package manifest);
  * - visual: only CSS, tokens, styles, icons or brand assets change;
@@ -235,14 +236,18 @@ export interface ApiChange {
 
 const isMember = (line: string) => line !== '' && !line.startsWith('#');
 
-/** What identifies a snapshot line across versions: component, kind and name, or the type name. */
+/**
+ * What identifies a snapshot line across versions: component (or export of the package root),
+ * kind and name, or the type name. The export line of a root export (`IconsSetService export
+ * const`) is keyed without its kind, so a const that becomes a type reads as a changed line.
+ */
 export const memberKey = (line: string): string => {
   const declared = /^(?:type|interface|enum|class)\s+(\w+)/.exec(line);
   if (declared) return `type ${declared[1]}`;
   const [tag, kind, rest = ''] = line.split(' ');
-  if (kind === 'encapsulation') return `${tag} ${kind}`;
+  if (kind === 'encapsulation' || kind === 'export') return `${tag} ${kind}`;
   if (kind === 'method') return `${tag} ${kind} ${rest.split('(')[0]}`;
-  if (kind === 'event') return `${tag} ${kind} ${rest.replace(/:$/, '')}`;
+  if (kind === 'event' || kind === 'property') return `${tag} ${kind} ${rest.replace(/:$/, '')}`;
   return `${tag} ${kind} ${rest}`;
 };
 
@@ -431,7 +436,8 @@ const changedLine = (before: string, after: string, declared: Declared): [Bump, 
     return facets;
   }
 
-  /* encapsulation, method signature, a declaration that changed shape */
+  /* encapsulation, method signature, the kind of a root export or the type of one of its
+     properties, a declaration that changed shape */
   facets.push(['major', 'changed']);
   return facets;
 };
@@ -561,7 +567,7 @@ export const REPORT_MARKER = '<!-- magma-pr-risk -->';
 
 export const REVIEW: Record<Tier, string> = {
   contract:
-    'The public component API, or what a pattern promises to every product, changes. Read the changes below one by one: each must be intended, and the release must say so for an API change.',
+    'The public API (a component, or an export of the package root), or what a pattern promises to every product, changes. Read the changes below one by one: each must be intended, and the release must say so for an API change.',
   behaviour:
     'Shipped code changes, the public API does not. Review the tests that cover the change: do they describe the new behaviour, and would they fail on the old code?',
   visual:
