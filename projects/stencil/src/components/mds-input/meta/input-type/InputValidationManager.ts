@@ -2,6 +2,7 @@ import { InputFieldType } from '../types';
 import {
   Validator,
   ccValidatorFn,
+  colorValidatorFn,
   emailValidatorFn,
   isbnValidatorFn,
   pivaValidatorFn,
@@ -62,6 +63,10 @@ export function createInputValidationManager(type: InputFieldType): InputValidat
     case 'url':
       inputManager = new InputValidationManager('');
       inputManager.validator.addValidator(urlValidatorFn);
+      break;
+    case 'color':
+      inputManager = new InputValidationManager('');
+      inputManager.validator.addValidator(colorValidatorFn);
       break;
     case 'cc':
       inputManager = new InputValidationManager(InputMaskPattern.CC_MASK);

@@ -41,6 +41,10 @@ describe('validityProblem', () => {
     expect(validityProblem({ url: '' }, {})).toEqual({ rule: 'url' });
   });
 
+  it('reports a text that names no colour', () => {
+    expect(validityProblem({ color: '' }, {})).toEqual({ rule: 'color' });
+  });
+
   it('reports a partita IVA or a card number that is not valid', () => {
     expect(validityProblem({ piva: '' }, {})).toEqual({ rule: 'vatNumber' });
     expect(validityProblem({ cc: '' }, {})).toEqual({ rule: 'cardNumber' });

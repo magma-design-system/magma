@@ -56,6 +56,7 @@ import {
   requiredValidor,
 } from './meta/validators';
 import { validityProblem } from './meta/validity';
+import { toSimpleColor } from './meta/color';
 import { hashRandomValue } from '@common/aria';
 import { preferenceStore } from '@common/preference';
 
@@ -122,6 +123,8 @@ export class MdsInput {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private recognition: any;
   private speechButton: HTMLMdsButtonElement;
+  // the picker of the platform a colour field opens from its swatch, hidden under it
+  private colorPicker?: HTMLInputElement;
 
   private datalistId: string;
   @Element() el: HTMLMdsInputElement;
@@ -130,6 +133,8 @@ export class MdsInput {
   @State() currentLengthLabel: string;
   @State() countVariant: InputTipItemVariantType = 'count-empty';
   @State() isPasswordVisible = false;
+  // the text of a colour field: what the user typed, which `value` holds only once it is a colour
+  @State() private colorText = '';
 
   private t: Locale = new Locale({
     el: localeEl,
@@ -163,7 +168,8 @@ export class MdsInput {
   @Prop({ reflect: true }) readonly autofocus: boolean = false;
 
   /**
-   * Specifies if the spinner icon is shown, replacing the icon if present
+   * Specifies if the spinner icon is shown, replacing the icon if present. A `color` field keeps
+   * its swatch, the value and the way to the picker, and shows the spinner at its end
    */
   @Prop({ reflect: true }) readonly await: boolean = false;
 
@@ -190,7 +196,7 @@ export class MdsInput {
 
   /**
    * An icon displayed at the left of the input, inside the field; the spinner of `await` takes
-   * its place
+   * its place. A `color` field ignores it: its swatch stands there, one mark at the start
    */
   @Prop({ mutable: true, reflect: true }) icon?: string;
 
@@ -209,7 +215,8 @@ export class MdsInput {
   @Prop({ reflect: true, mutable: true }) maxlength?: number;
 
   /**
-   * Toggles text recognition
+   * Toggles text recognition. A `color` field ignores it: a colour code is typed or picked, not
+   * dictated
    */
   @Prop({ reflect: true }) readonly mic?: boolean;
 
@@ -276,7 +283,12 @@ export class MdsInput {
   @Prop({ reflect: true }) readonly step?: string;
 
   /**
-   * Specifies the type of input element
+   * Specifies the type of input element. `color` holds a colour: the field stays a text field,
+   * where the code is typed and validated, with a swatch at its start that opens the colour
+   * picker of the platform. Its value, in the change event and in the form, is the colour as
+   * `#rrggbb` in lower case, or `''` while the text is empty or names no colour, which is a
+   * validation error; the text also takes `#rgb` and the code without `#`, in any case, and is
+   * written back as `#rrggbb` when the field is left
    */
   @Prop({ reflect: true }) readonly type?: InputTextType = 'text';
 
@@ -286,7 +298,9 @@ export class MdsInput {
   @Prop({ reflect: true }) typography: TypographyInputType = 'detail';
 
   /**
-   * Specifies the value of the input element
+   * Specifies the value of the input element. With `type="color"`, a colour as `#rrggbb`: a value
+   * set as `#rgb`, without `#` or in upper case is written so, and one that names no colour is
+   * shown as it is, with its error, while the value becomes `''`
    */
   @Prop({ mutable: true, reflect: true }) value: string = '';
 
@@ -336,8 +350,9 @@ export class MdsInput {
   formResetCallback(): void {
     const validated = this.validated;
     this.validated = false;
-    this.isValid = !(this.required && this.defaultValue === '');
-    this.value = this.defaultValue;
+    if (this.isColor()) this.showColor(this.defaultValue);
+    else this.value = this.defaultValue;
+    this.isValid = !(this.required && this.checkedValue() === '');
     if (validated) this.variant = 'primary';
   }
 
@@ -356,10 +371,52 @@ export class MdsInput {
       this.tabindex = tabindex !== null ? parseInt(tabindex) : undefined;
       this.el.removeAttribute('tabindex');
     }
+    if (this.isColor()) this.showColor(this.defaultValue);
     setFormValue(this.internals, this.value ?? null);
     this.maxLengthChanged(this.maxlength);
     this.buildValidation();
-    this.isValid = !(this.required && (this.value ?? '') === '');
+    this.isValid = !(this.required && this.checkedValue() === '');
+  }
+
+  /** A colour field (`type="color"`): its text is typed and validated, its value is its colour. */
+  private isColor = (): boolean => this.type === 'color';
+
+  /**
+   * What the validators check: the value, or the text of a colour field while it names no colour
+   * (its value is `''` then), so that it fails the colour validator instead of passing for an
+   * empty field.
+   */
+  private checkedValue(): string {
+    const value = this.value ?? '';
+    return this.isColor() && value === '' ? this.colorText.trim() : value;
+  }
+
+  /**
+   * Shows a text in a colour field and takes its colour as the value, as at load and on reset: a
+   * colour written as `#rrggbb`, any other text as it is, with the value `''`.
+   */
+  private showColor(text: string): void {
+    const color = toSimpleColor(text);
+    this.colorText = color || text;
+    this.value = color;
+  }
+
+  /**
+   * Keeps the text of a colour field with its value when the value changes. The value of the text
+   * leaves the text alone, as the user typed it until they leave the field; any other comes from
+   * outside (code, a framework) and is shown, as `#rrggbb` when it is a colour. A value that is
+   * no `#rrggbb` is set again to its colour, or to `''`, as a native input sanitizes its value
+   * (HTML, value sanitization of the color and number types). Returns true when it sets the value
+   * again, whose watcher goes on in its place.
+   */
+  private syncColorText(): boolean {
+    const value = this.value ?? '';
+    if (toSimpleColor(this.colorText) === value) return false;
+    const color = toSimpleColor(value);
+    this.colorText = color || value;
+    if (color === value) return false;
+    this.value = color;
+    return true;
   }
 
   componentDidLoad(): void {
@@ -397,11 +454,14 @@ export class MdsInput {
     this.inputValidation = validation;
   }
 
-  /** As on a native input, `pattern` constrains the text types, not a number, a date or a time. */
+  /**
+   * As on a native input, `pattern` constrains the text types, not a number, a date, a time or a
+   * colour, whose format is fixed.
+   */
   private patternApplies(): boolean {
     return (
       (this.pattern ?? '') !== '' &&
-      !['date', 'number', 'textarea', 'time'].includes(this.type ?? 'text')
+      !['color', 'date', 'number', 'textarea', 'time'].includes(this.type ?? 'text')
     );
   }
 
@@ -418,8 +478,7 @@ export class MdsInput {
    * change of the value or of the rules, not on blur: the form can be submitted without a blur.
    */
   private updateFormValidity(): void {
-    const value = this.value ?? '';
-    const errors = this.inputValidation.validator.check(value);
+    const errors = this.inputValidation.validator.check(this.checkedValue());
     const problem = errors
       ? validityProblem(errors, {
           max: this.numericBound(this.max),
@@ -456,7 +515,7 @@ export class MdsInput {
     this.updateFormValidity();
     if (!this.validated) {
       // pristine field: only the required tip follows, the variant waits for the first blur
-      this.isValid = !(this.required && (this.value ?? '') === '');
+      this.isValid = !(this.required && this.checkedValue() === '');
       return;
     }
     if (this.inputValidation.validator.hasValidator()) {
@@ -469,24 +528,39 @@ export class MdsInput {
     this.variant = 'primary';
   }
 
+  /** A field that becomes a colour field shows its value as its text, and takes its colour. */
+  @Watch('type')
+  protected typeChanged(): void {
+    if (this.isColor()) this.showColor(this.value ?? '');
+  }
+
   /**
    * Emits the change event when the component value changes
    */
   @Watch('value')
   protected valueChanged(): void {
+    if (this.isColor() && this.syncColorText()) return;
     this.changeEvent.emit({ value: this.value });
     setFormValue(this.internals, this.value ?? null);
+    this.followValue();
+  }
+
+  /**
+   * What follows a change of what the field holds: its value, or the text of a colour field,
+   * which can change while the value stays `''`.
+   */
+  private followValue(): void {
     this.updateFormValidity();
     if (this.maxlength !== undefined) {
       this.countMaxLength();
     }
     if (!this.validated) {
       // pristine field: only the required tip follows, the variant waits for the first blur
-      this.isValid = !(this.required && (this.value ?? '') === '');
+      this.isValid = !(this.required && this.checkedValue() === '');
       return;
     }
     // if is necessary for skip validation when reset input to retype correct value, validation is always onBlur
-    if (this.value === '') return;
+    if (this.checkedValue() === '') return;
     if (!this.isValid) this.validateInput();
   }
 
@@ -553,10 +627,10 @@ export class MdsInput {
     // validate input only when atleast one validator is present
     if (this.inputValidation.validator.hasValidator()) {
       this.validated = true;
-      this.isValid = this.inputValidation.isValid(this.value ?? '');
+      this.isValid = this.inputValidation.isValid(this.checkedValue());
 
       // set variant attribute
-      if ((this.value ?? '') === '' && !this.required) this.variant = 'primary';
+      if (this.checkedValue() === '' && !this.required) this.variant = 'primary';
       else this.variant = this.isValid ? 'success' : 'error';
 
       this.validationEvent.emit(this.isValid);
@@ -632,10 +706,50 @@ export class MdsInput {
 
   private onInput = (ev: InputEvent) => {
     const input = ev.target as HTMLInputElement | HTMLTextAreaElement | false;
+    if (input && this.isColor()) {
+      this.typeColor(input.value);
+      return;
+    }
     if (input) {
       this.value = input.value;
       setFormValue(this.internals, this.value);
     }
+  };
+
+  /**
+   * The text of a colour field, typed or picked: the value becomes its colour, or `''`, and its
+   * watcher follows; a text that leaves the value as it was is followed here.
+   */
+  private typeColor(text: string): void {
+    this.colorText = text;
+    const color = toSimpleColor(text);
+    if (color !== (this.value ?? '')) {
+      this.value = color;
+      return;
+    }
+    this.followValue();
+  }
+
+  /**
+   * Opens the colour picker of the platform from the swatch, on a field the user can change. The
+   * picker always holds a colour: black for an empty field, the default of a native colour input.
+   */
+  private openColorPicker = (): void => {
+    const picker = this.colorPicker;
+    if (!picker || !this.canEdit()) return;
+    picker.value = this.value || '#000000';
+    try {
+      picker.showPicker();
+    } catch {
+      // a browser without showPicker opens the picker of a colour input on a click
+      picker.click();
+    }
+  };
+
+  /** The colour picked writes the text and the value, as if typed: the same events follow. */
+  private onColorPick = (ev: Event): void => {
+    if (!this.canEdit()) return;
+    this.typeColor((ev.target as HTMLInputElement).value);
   };
 
   private onKeyDown = (ev: KeyboardEvent) => {
@@ -644,6 +758,8 @@ export class MdsInput {
 
   private onBlur = () => {
     this.hasFocus = false;
+    // a colour field writes the colour typed as the form gets it, #rrggbb, once the user leaves
+    if (this.isColor() && this.value) this.colorText = this.value;
     this.validateInput();
     this.blurEvent.emit();
     // this.isValidInput = this.validateInput()
@@ -770,6 +886,35 @@ export class MdsInput {
     return this.size === 'sm' || this.size === 'md' ? 'sm' : undefined;
   }
 
+  /**
+   * The type of the native input: a colour field is a text field, where the code is typed (the
+   * picker is the colour input under the swatch); a password shown is a text field too.
+   */
+  private nativeType(): string | undefined {
+    if (this.isColor()) return 'text';
+    return this.type === 'password' && this.isPasswordVisible ? 'text' : this.type;
+  }
+
+  /** The mark at the start of the field: the swatch of a colour field, else the icon or spinner. */
+  private hasLeadingMark(): boolean {
+    return this.isColor() || Boolean(this.icon ?? this.await);
+  }
+
+  /** The mark at the end of the field: the microphone, or the spinner of a colour field. */
+  private hasTrailingMark(): boolean {
+    return this.isColor() ? this.await : Boolean(this.mic);
+  }
+
+  /**
+   * The name of the swatch of a colour field: what it does, and for which field, since a form can
+   * hold more than one colour field and each swatch is a button of its own.
+   */
+  private colorPickerName(): string {
+    return this.accessibleName
+      ? this.t.get('colorPickerFor', { name: this.accessibleName })
+      : this.t.get('colorPicker');
+  }
+
   render() {
     return (
       <Host
@@ -791,13 +936,37 @@ export class MdsInput {
             part="counter-button-decrease"
           ></mds-button>
         )}
+        {/* The swatch of a colour field, where the icon goes: the colour of the value, and the
+            button that opens the picker of the platform, hidden under it. It comes before the
+            field, in the order it is seen, as the decrease button of a horizontal number does. */}
+        {this.isColor() && (
+          <input
+            aria-hidden="true"
+            class="color-picker"
+            disabled={!this.canEdit()}
+            onInput={this.onColorPick}
+            ref={(input) => (this.colorPicker = input)}
+            tabIndex={-1}
+            type="color"
+          />
+        )}
+        {this.isColor() && (
+          <button
+            aria-label={this.colorPickerName()}
+            class="swatch"
+            disabled={!this.canEdit()}
+            onClick={this.openColorPicker}
+            style={{ backgroundColor: this.value || undefined }}
+            type="button"
+          ></button>
+        )}
         {this.type === 'textarea' ? (
           <textarea
             aria-label={this.accessibleName}
             class={clsx(
               'input',
-              (this.icon ?? this.await) && 'has-icon',
-              this.mic && 'has-right-icon',
+              this.hasLeadingMark() && 'has-icon',
+              this.hasTrailingMark() && 'has-right-icon',
             )}
             autoFocus={this.autofocus}
             disabled={this.isDisabled()}
@@ -821,8 +990,8 @@ export class MdsInput {
             aria-label={this.accessibleName}
             class={clsx(
               'input',
-              (this.icon ?? this.await) && 'has-icon',
-              this.mic && 'has-right-icon',
+              this.hasLeadingMark() && 'has-icon',
+              this.hasTrailingMark() && 'has-right-icon',
             )}
             autoComplete={this.autocomplete}
             autoFocus={this.autofocus}
@@ -843,10 +1012,11 @@ export class MdsInput {
             readOnly={this.readonly}
             ref={(input) => (this.nativeInput = input)}
             required={this.required}
+            spellcheck={this.isColor() ? false : undefined}
             step={this.step}
             tabIndex={this.tabindex}
-            type={this.type === 'password' && this.isPasswordVisible ? 'text' : this.type}
-            value={this.value}
+            type={this.nativeType()}
+            value={this.isColor() ? this.colorText : this.value}
           />
         )}
         {this.type === 'number' && this.controlsLayout === 'vertical' && (
@@ -913,7 +1083,7 @@ export class MdsInput {
             </div>
           </div>
         )}
-        {this.mic && (
+        {this.mic && !this.isColor() && (
           <mds-button
             class={clsx('mic-toggle-button', this.isRecording && 'mic-toggle-button--recording')}
             size={this.buttonSize()}
@@ -958,7 +1128,7 @@ export class MdsInput {
             })}
           </datalist>
         )}
-        {this.icon && !this.await && (
+        {this.icon && !this.await && !this.isColor() && (
           <mds-icon class={clsx('icon', this.variant)} name={this.icon} />
         )}
         <mds-spinner running={this.await} class={clsx('await', this.variant)} />

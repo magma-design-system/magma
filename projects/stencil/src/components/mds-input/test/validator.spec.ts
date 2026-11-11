@@ -3,6 +3,7 @@ import {
   MdsValidatorFn,
   Validator,
   ccValidatorFn,
+  colorValidatorFn,
   emailValidatorFn,
   isbnValidatorFn,
   maxLengthValidator,
@@ -194,6 +195,23 @@ describe('urlValidatorFn', () => {
 
   it('leaves an empty value to required', () => {
     expect(urlValidatorFn('')).toBeNull();
+  });
+});
+
+// the code of type="color" (#1260)
+describe('colorValidatorFn', () => {
+  it.each(['#2f6fd0', '#2F6FD0', '2f6fd0', '#abc', 'ABC', ' #abc '])('accepts %s', (color) => {
+    expect(colorValidatorFn(color)).toBeNull();
+  });
+
+  it.each(['red', '#abcd', '#aabbccdd', 'rgb(0 0 0)', '#12345', '#'])('rejects %s', (text) => {
+    expect(colorValidatorFn(text)).toEqual({
+      color: 'Enter a hex colour code, such as #2f6fd0',
+    });
+  });
+
+  it('leaves an empty value to required', () => {
+    expect(colorValidatorFn('')).toBeNull();
   });
 });
 

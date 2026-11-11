@@ -11,8 +11,9 @@ export interface ValidityConstraints {
 /**
  * The problem reported to the form for the errors of a value. The first validator that fails
  * decides it: the ones of the type come first, then required, max, min, maxlength, minlength,
- * pattern and the custom ones last. The codice fiscale and ISBN validators, like the custom ones,
- * give the form their own message, already in the language of the page.
+ * pattern and the custom ones last. A colour field whose text is not a colour reports `color`.
+ * The codice fiscale and ISBN validators, like the custom ones, give the form their own message,
+ * already in the language of the page.
  */
 export const validityProblem = (
   errors: MdsValidationErrors,
@@ -36,6 +37,8 @@ export const validityProblem = (
       return { rule: 'email' };
     case 'url':
       return { rule: 'url' };
+    case 'color':
+      return { rule: 'color' };
     case 'piva':
       return { rule: 'vatNumber' };
     case 'cc':
