@@ -359,7 +359,8 @@ Colors can also declare an optional `hueShift` field (`{ "dark": -18, "light": 1
 | `dist/css/colors-rgb-{tones,status,label,brand,brand-rnd,default,theme}.css` | CSS RGB vars, one export group each (`default` holds `--variant-*`, `theme` the surface / border / text families) | custom setups |
 | `dist/css/colors-hex*.css` | CSS HEX vars | Plain CSS only |
 | `dist/css/tailwind-theme-color.css` | Tailwind 4 `@theme` | `styles` sub-project |
-| `dist/css/tailwind-theme-typography.css`, `dist/css/typography.css` | Tailwind 4 `@theme` / CSS vars: type, spacing, radius tokens | `styles` sub-project |
+| `dist/css/tailwind-theme-typography.css` | Tailwind 4 `@theme` and `@utility`: the non-color tokens, the Tailwind bridges of the roles | `styles` sub-project (`tailwind/theme.css`) |
+| `dist/css/typography.css` | CSS vars in `:root`: the same non-color tokens and the roles of the design language, no Tailwind | plain CSS and every page, through `styles/dist/css/typography.css` |
 | `dist/css/transitions.css` | CSS vars | `styles` sub-project |
 | `dist/js/*.js` | the Tailwind 3 preset sources (`tailwind-colors-css-vars.js` is the package `main`) | `styles/tailwind.config.js` |
 | `dist/dtcg/*.tokens.json`, `dist/dtcg/magma.resolver.json` | DTCG 2025.10 (format + resolver): every global token, the semantic layer, dark / theme / contrast sets (README, "Token data (DTCG)") | documentation, design tools, other platforms |
@@ -375,6 +376,30 @@ Colors can also declare an optional `hueShift` field (`{ "dark": -18, "light": 1
 | `dist/gimp/colors.gpl` | GIMP palette | GIMP, Inkscape (light) |
 | `dist/config/magma-design-tokensrc.schema.json` | JSON Schema | editors, the studio |
 | `dist/config/magma-theme.schema.json` | JSON Schema of a theme (#694) | the `magma/themes/<name>.json` of a product |
+
+### The two typography sheets
+
+`typography.css` is the plain-CSS twin of `tailwind-theme-typography.css` (#513): two entries
+of the `css` platform of `tailwind4.json`, with the same source, transforms and filter, and two
+templates,
+`css/vars-typography` (one `:root {}`) and `css/tailwind-theme-typography` (`@theme {}` and the
+`@utility` rules, which a browser ignores outside a Tailwind build). The templates differ where
+Tailwind needs what plain CSS does not, and only there:
+
+- **A name both declare has the same value**, except where the theme gives a `var()` the literal
+  of the property it names as fallback (the titles by role: a sheet that only references the
+  theme, as the components do, gets the literal, #1200).
+- **The theme alone declares what only Tailwind reads**: the bridges of the roles, `var()` of the
+  role with its value as fallback (`--spacing-<rhythm>`, `--container-form`), or its literal
+  where Tailwind reads no `var()` (`--container-actions`, a container query); and the size
+  namespaces `--width-*`, `--min-width-*`, `--max-width-*`, `--flex-basis-*`, which point at a
+  container size (#1057).
+- **`typography.css` alone declares the roles** (`--magma-rhythm-*`, `--magma-width-*`,
+  `--magma-container-*`), and keeps as CSS variables the named steps of spacing the theme may
+  leave out (#1061).
+
+`test/typography-root.test.mts` holds the three rules on the built sheets, the values of the
+roles are in `test/roles.test.mts`. styles ships the file unchanged (`scripts/copy.ts`).
 
 ## Anti-patterns
 

@@ -15,7 +15,6 @@ import { ThemeVariantType } from '@type/variant';
 import { ToneMinimalBoxVariantType } from '@type/tone';
 
 import miBaselineClose from '@icon/mi/baseline/close.svg';
-import { KeyboardManager } from '@common/keyboard-manager';
 import { Locale } from '@common/locale';
 import { preferenceStore } from '@common/preference';
 import localeEl from './meta/locale.el.json';
@@ -39,7 +38,6 @@ import { BannerTypographyType } from './meta/types';
 })
 export class MdsBanner {
   @Element() host: HTMLMdsBannerElement;
-  private km = new KeyboardManager();
   private t: Locale = new Locale({
     el: localeEl,
     en: localeEn,
@@ -114,16 +112,6 @@ export class MdsBanner {
 
   private isDismissible = (): boolean => this.dismissible === true || this.deletable === true;
 
-  private dismissibleHandler = (): void => {
-    if (this.isDismissible()) {
-      const closeIcon = this.host.shadowRoot?.querySelector('.close-button') as HTMLElement;
-      this.km.addElement(closeIcon);
-      this.km.attachClickBehavior();
-      return;
-    }
-    this.km.detachClickBehavior();
-  };
-
   // The place of the banner (#1192): the window of a dialog is a child of mds-modal with
   // slot="window", the child mds-modal takes as its window (hasChildWithSlot). A banner moved in
   // or out of a modal is disconnected and connected again without loading again, so the place
@@ -158,16 +146,7 @@ export class MdsBanner {
     this.setCloseButtonVariant(this.variant);
   }
 
-  componentDidLoad(): void {
-    this.dismissibleHandler();
-  }
-
-  componentDidUpdate(): void {
-    this.dismissibleHandler();
-  }
-
   disconnectedCallback(): void {
-    this.km.detachClickBehavior();
     this.placeObserver?.disconnect();
     this.placeObserver = undefined;
   }
@@ -229,6 +208,8 @@ export class MdsBanner {
               <slot />
             </div>
           </div>
+          {/* mds-button clicks on Enter and Space by itself, and gives that back when the banner
+              is moved in the page: a handler of the banner on top of it clicked twice (#1356) */}
           {this.isDismissible() && (
             <mds-button
               class="close-button"

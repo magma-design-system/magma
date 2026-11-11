@@ -103,7 +103,7 @@ try: Look at the end of the line of the summary: 2 practices arrived while the q
     // the line empties but keeps its place (Mostra hidden, not removed): the items never move
     document.getElementById('quante').textContent = '';
     document.getElementById('punto').dismissed = true;
-    document.getElementById('mostra').style.visibility = 'hidden';
+    document.getElementById('mostra').classList.add('invisible');
     // Mostra is gone: the focus goes to the heading of the list, in page-header, outside this block
   });
 </script>

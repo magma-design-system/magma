@@ -234,6 +234,39 @@ describe('mds-banner', () => {
       await vi.waitFor(() => expect(close).toHaveReceivedEventTimes(1));
     });
 
+    // #1356: mds-button clicks on Enter by itself, a handler of the banner on top of it clicked
+    // a second time
+    it('dismisses once with Enter on the close button', async () => {
+      const { root, spyOnEvent, waitForChanges } = await render(
+        '<mds-banner dismissible>Text</mds-banner>',
+      );
+      const close = spyOnEvent('mdsBannerClose');
+
+      closeButton(root)!.focus();
+      await userEvent.keyboard('{Enter}');
+      await waitForChanges();
+
+      expect(close).toHaveReceivedEventTimes(1);
+    });
+
+    // a node moved in the page is disconnected and connected again, without loading again: the
+    // close button keeps its Enter, once (#1356)
+    it('dismisses once with Enter on the close button of a banner moved in the page', async () => {
+      const { root, spyOnEvent, waitForChanges } = await render(
+        '<div><mds-banner dismissible>Text</mds-banner><section></section></div>',
+      );
+      const banner = root.querySelector('mds-banner')!;
+      const close = spyOnEvent('mdsBannerClose');
+
+      root.querySelector('section')!.append(banner);
+      await waitForChanges();
+      closeButton(banner)!.focus();
+      await userEvent.keyboard('{Enter}');
+      await waitForChanges();
+
+      expect(close).toHaveReceivedEventTimes(1);
+    });
+
     // #1145: the button dismisses the message, it deletes nothing; the old name still works
     it('keeps deletable as a deprecated name of dismissible', async () => {
       const { root } = await render('<mds-banner deletable>Text</mds-banner>');

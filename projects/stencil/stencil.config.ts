@@ -32,8 +32,16 @@ const srcDir = './src';
 export const config: Config = {
   namespace: packageName,
   // globalStyle: `${srcDir}/globals.css`,
+  // The lazy loader injects `<tags>{visibility:hidden}[hydrated]{visibility:<hydratedValue>}` in
+  // an unlayered sheet, which beats every rule in a cascade layer. The default `inherit` so beat
+  // the page's `@layer utilities` too: `invisible` never hid a hydrated host (#1229).
+  // `revert-layer` keeps the hiding before hydration as strong as before (still unlayered), and
+  // once the flag is set it hands visibility back to the layers, the host's own :host rules
+  // included; with none, the host inherits, as `inherit` did. It ships with cascade layers, which
+  // every browser of .browserslistrc has, and hydrated.css already relies on it.
   hydratedFlag: {
     selector: 'attribute',
+    hydratedValue: 'revert-layer',
   },
   taskQueue: 'async',
   transformAliasedImportPaths: true,

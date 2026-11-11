@@ -58,6 +58,11 @@ names, from the preview every theme publishes on the page (`--magma-preview-<nam
 semantic roles; a raw palette step stays as it is. Defining your own theme is not a
 consumer feature yet.
 
+The studio of Magma shows the themes on a page of a product, in light and dark mode,
+with every contrast checked: its Theme page is
+<https://magma-design-system.github.io/magma/studio/#/theme>. Its address is `studio` at
+the top of `documentation.json` (a page of the studio is that address and its hash).
+
 A theme can be made for one colour mode only (`color.modes` of its file; `business` and
 `editorial` take both). `mds-pref-theme` applies such a theme in its mode, whatever the
 person picked, and `mds-pref-mode` shows that mode with its other choices locked; the
