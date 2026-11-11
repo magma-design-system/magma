@@ -84,45 +84,65 @@ export const config: Config = {
       esModules: true,
       directivesProxyFile: '../stencil-angular/magma-angular/src/stencil-generated/components.ts',
       directivesArrayFile: '../stencil-angular/magma-angular/src/stencil-generated/index.ts',
-      // Genera un ControlValueAccessor per i componenti input, così sono
-      // usabili con formControlName/[formControl] nei Reactive Form Angular:
-      // writeValue imposta la prop di valore (`value`, o `checked` per i
-      // boolean), l'`event` propaga il valore letto da `event.target[targetAttr]`
-      // al controllo e il `focusout` marca il touched.
-      // NB: i componenti restano fuori da qui finché non emettono un @Event con
-      // valore singolo: mds-input-otp (nessun evento), mds-input-date-range
-      // (valore composito) e mds-input-upload (FileList) richiedono un CVA custom.
+      // A ControlValueAccessor per form component, so [formControl], formControlName and
+      // [(ngModel)] bind it: writeValue sets `targetAttr` on the element, `event` reports
+      // `event.target[targetAttr]` to the control, focusout marks it touched and
+      // setDisabledState sets the `disabled` prop, which the component reads with
+      // formDisabledCallback in isDisabled(), as a disabled fieldset. One accessor class per
+      // `type`: the configs of a type share its selectors and its events. The accessor of each
+      // component follows the type of its value prop and the JSDoc of its change event, never
+      // its name (tests: magma-angular/src/lib/value-accessors.spec.ts; guide:
+      // docs/agents/angular.md, "Forms").
+      // Left out, as they hold no single value a control can write and read back:
+      // - mds-input-date-range: `startDate` and `endDate`, and `mdsInputDateRangeValueChange`
+      //   carries both; the range writes them into its two slotted mds-input-date fields, which
+      //   each take their own control;
+      // - mds-input-upload: `mdsInputUploadChange` carries a FileList, which no prop takes back
+      //   (Angular has no accessor for a native file input either);
+      // - mds-input-otp: `value` has no change event of its own;
+      // - mds-calendar: its `startDate` and `endDate` are readonly, the component never writes
+      //   them, and the selection travels only in the detail of `mdsCalendarChange`;
+      // - mds-input-date-range-preselection: `selected` marks a preset of its range, not a value.
+      // The radio of mds-input-switch has a hand-written accessor
+      // (magma-angular/src/lib/radio-value-accessor.ts): the `radio` type writes the control value
+      // into `value`, which a group cannot hold.
       valueAccessorConfigs: [
-        // text: writeValue -> el.value ; legge event.target.value
+        // `value: string` for every `type`, `number` included ("Specifies the value of the input
+        // element"); mdsInputChange "Emits ... when the value of the input element changes"
         {
           elementSelectors: ['mds-input'],
           event: 'mdsInputChange',
           targetAttr: 'value',
           type: 'text',
         },
+        // `value: string`, an ISO date (YYYY-MM-DD); mdsInputDateSelect "Emitted when the selected
+        // date value changes"
         {
           elementSelectors: ['mds-input-date'],
           event: 'mdsInputDateSelect',
           targetAttr: 'value',
           type: 'text',
         },
-        // select: writeValue -> el.value
+        // `value?: string | number | null`; mdsInputSelectChange: "`value` is the first selected
+        // option, `values` every selected one". A value selects its option alone, `multiple` too
+        // (applySelection), so a multiple select reports its first option only
         {
           elementSelectors: ['mds-input-select'],
           event: 'mdsInputSelectChange',
           targetAttr: 'value',
           type: 'select',
         },
-        // number: writeValue -> el.value, parsing numerico in registerOnChange
+        // `value: number`; mdsInputRangeChange is an EventEmitter<number>
         {
           elementSelectors: ['mds-input-range'],
           event: 'mdsInputRangeChange',
           targetAttr: 'value',
           type: 'number',
         },
-        // boolean: writeValue -> el.checked
+        // `checked?: boolean` for type switch and checkbox; mdsInputSwitchChange "Emits when the
+        // value changes". A radio takes RadioValueAccessor instead, see above
         {
-          elementSelectors: ['mds-input-switch'],
+          elementSelectors: ['mds-input-switch:not([type=radio])'],
           event: 'mdsInputSwitchChange',
           targetAttr: 'checked',
           type: 'boolean',

@@ -4,17 +4,21 @@ import { TextValueAccessor } from '../stencil-generated/text-value-accessor';
 import { SelectValueAccessor } from '../stencil-generated/select-value-accessor';
 import { NumericValueAccessor } from '../stencil-generated/number-value-accessor';
 import { BooleanValueAccessor } from '../stencil-generated/boolean-value-accessor';
+import { RadioValueAccessor } from './radio-value-accessor';
 
-// Direttive ControlValueAccessor standalone generate da valueAccessorConfigs:
+// The standalone ControlValueAccessor directives, generated from valueAccessorConfigs except
+// the radio one (see public-api.ts):
 // TextValueAccessor -> mds-input, mds-input-date
 // SelectValueAccessor -> mds-input-select
 // NumericValueAccessor -> mds-input-range
-// BooleanValueAccessor -> mds-input-switch
+// BooleanValueAccessor -> mds-input-switch (switch, checkbox)
+// RadioValueAccessor -> mds-input-switch type="radio"
 const VALUE_ACCESSORS = [
   TextValueAccessor,
   SelectValueAccessor,
   NumericValueAccessor,
   BooleanValueAccessor,
+  RadioValueAccessor,
 ];
 
 /**
