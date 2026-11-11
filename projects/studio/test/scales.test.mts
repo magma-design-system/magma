@@ -259,16 +259,15 @@ test('the usage panel picks a scale and samples its first color', () => {
   const select = root.querySelector('.scales-usage mds-input-select')!
   emit(select, 'mdsInputSelectChange', { value: 'tint' })
   expect(spies.onSelectColor).toHaveBeenCalledWith(config.colors[0].name)
-  const chips = [...root.querySelectorAll<HTMLElement>('.scales-usage mds-chip.scales-chip')]
+  const chips = [...root.querySelectorAll<HTMLElement>('.scales-usage mds-chip')]
   expect(chips).toHaveLength(1)
   const [chip] = chips
   const [color] = config.colors
-  // a selectable chip with the swatch of the colour as its icon
+  // a selectable chip with the swatch of the colour, and no icon
   expect(chip.getAttribute('label')).toBe(color.name.split('.')[1])
   expect(chip.hasAttribute('selectable')).toBe(true)
-  expect((chip as unknown as { icon: string }).icon ?? chip.getAttribute('icon')).toContain(
-    `fill="${color.color}"`,
-  )
+  expect(chip.getAttribute('swatch')).toBe(color.color)
+  expect(chip.hasAttribute('icon')).toBe(false)
   emit(chip, 'mdsChipSelect', { element: chip, selected: true })
   expect(spies.onSelectColor).toHaveBeenLastCalledWith(color.name)
   // the sample clicked again stays selected, though mds-chip unselects itself

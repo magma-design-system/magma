@@ -32,4 +32,13 @@
   ::slotted(*) {
     align-self: stretch;
   }
+
+  /* one action has no order to keep: it stays at its own width at the end of the row (place),
+     as above the threshold. A card is narrow in a grid on any screen, where a stretched action
+     repeats in every card (#1250). The footer has one slot, so its children are its actions: a
+     selector counts them, where a container query cannot */
+
+  ::slotted(:only-child) {
+    align-self: flex-end;
+  }
 }

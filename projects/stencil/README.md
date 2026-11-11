@@ -225,10 +225,10 @@ For more details see the [library](https://www.npmjs.com/package/@maggioli-desig
 
 
 ## Icon
-Tell the `mds-icon` component where to load the SVG icons from. The recommended way is the shared `IconsSetService` singleton, imported from the package's `services` entry point. It sets the path in memory (no `sessionStorage`) and makes every mounted icon (re)load - so it works even where storage is blocked (incognito, sandboxed iframes, storage partitioning).
+Tell the `mds-icon` component where to load the SVG icons from. The recommended way is the shared `IconsSetService` singleton, imported from the package root (`@maggioli-design-system/magma/services` is the same module). It sets the path in memory (no `sessionStorage`), wins over the `sessionStorage` key below and makes every mounted icon (re)load - so it works even where storage is blocked (incognito, sandboxed iframes, storage partitioning).
 
 ```js
-import { IconsSetService } from '@maggioli-design-system/magma/services';
+import { IconsSetService } from '@maggioli-design-system/magma';
 
 IconsSetService.setSvgPath('/assets/img/svg/');
 ```
@@ -238,10 +238,10 @@ Pass an absolute path (starting with `/`, resolved against the origin) or a full
 Alternatively, set the `mdsIconSvgPath` key in `sessionStorage` before any icon mounts. This is optional and **may be blocked** by some browsers/contexts - prefer `IconsSetService` above.
 
 ```js
-window.sessionStorage.setItem('mdsIconSvgPath', 'assets/img/svg/');
+window.sessionStorage.setItem('mdsIconSvgPath', '/assets/img/svg/');
 ```
 
-If you are using React, set either inside `useEffect`, otherwise `window` is not defined.
+On a server (no `window`) `setSvgPath()` stores nothing: with SSR, call it in code the browser runs (in React, inside `useEffect`).
 
 
 For greater interoperability between components and frameworks, see the specific libraries for [Angular](https://www.npmjs.com/package/@maggioli-design-system/magma-angular) and [React](https://www.npmjs.com/package/@maggioli-design-system/magma-react)

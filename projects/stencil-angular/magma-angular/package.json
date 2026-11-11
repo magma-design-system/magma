@@ -5,6 +5,7 @@
   "peerDependencies": {
     "@angular/common": ">=20.0.0",
     "@angular/core": ">=20.0.0",
+    "@angular/forms": ">=20.0.0",
     "@maggioli-design-system/magma": "2.12.0"
   },
   "dependencies": {

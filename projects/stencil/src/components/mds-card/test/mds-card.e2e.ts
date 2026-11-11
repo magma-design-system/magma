@@ -159,6 +159,35 @@ describe('mds-card', () => {
       for (const action of [first, second]) expect(action.width).toBeCloseTo(footer.width, 0);
     });
 
+    // #1250: one action has no order to keep, so the stack would change only its width: it keeps
+    // its own width at the end of the row (place), a split button too, whose host would otherwise
+    // paint its fill past its two buttons
+    it.each([
+      ['mds-button', '<mds-button label="Leggi" tone="text"></mds-button>'],
+      ['mds-button-dropdown', '<mds-button-dropdown label="Scarica"></mds-button-dropdown>'],
+    ])('keeps a lone %s of a narrow footer at its own width, at the end', async (tag, action) => {
+      const { root } = await render(`
+        <mds-card style="width: 20rem">
+          <mds-card-footer>${action}</mds-card-footer>
+        </mds-card>`);
+      const footer = rect(root.querySelector('mds-card-footer')!);
+      const lone = rect(root.querySelector(tag)!);
+
+      expect(footer.width).toBeLessThan(380);
+      expect(lone.width).toBeLessThan(footer.width / 2);
+      expect(lone.right).toBeCloseTo(footer.right, 0);
+    });
+
+    it('still stacks a narrow footer whose lone action stands beside a text', async () => {
+      const { root } = await render(`
+        <mds-card style="width: 20rem">
+          <mds-card-footer><mds-text>3 allegati</mds-text><mds-button label="Apri"></mds-button></mds-card-footer>
+        </mds-card>`);
+      const footer = rect(root.querySelector('mds-card-footer')!);
+
+      expect(rect(root.querySelector('mds-button')!).width).toBeCloseTo(footer.width, 0);
+    });
+
     it('takes the media to the side edges of a narrow card, 12px from the title and the content', async () => {
       const { root } = await render(
         `<mds-card style="width: 20rem">${header}${media}${content}</mds-card>`,

@@ -32,7 +32,9 @@
   justify-content: center;
   padding: --spacing(200);
   transition-duration: var(--duration-500);
-  transition-property: background-color, --mds-radial-progress-color, --mds-radial-progress;
+
+  /* not --mds-radial-progress: the tween moves the ring, a transition on top would lag it (#1177) */
+  transition-property: background-color, --mds-radial-progress-color;
   transition-timing-function: ease-out;
   width: --spacing(1200);
 }

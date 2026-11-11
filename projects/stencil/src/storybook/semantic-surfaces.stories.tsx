@@ -1065,10 +1065,10 @@ const ExamplePageTemplate = () => (
               alt="Maggioli logo"
               class="w-full max-w-[240px]"
             />
-            <mds-text typography="h5" tag="p" slot="content">
+            <mds-text typography="part" tag="h3" slot="content">
               Create your first article
             </mds-text>
-            <mds-text typography="detail" slot="content">
+            <mds-text typography="detail" tag="p" slot="content">
               Contribute reference editorial content for public administration.
             </mds-text>
             <mds-button slot="action" size="lg" label="New" />

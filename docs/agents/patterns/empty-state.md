@@ -122,9 +122,10 @@ The panel, `mds-zero`:
 
 - the default slot: an illustration, only in `add-the-first` and optional; Magma has none to
   give, the product brings its own;
-- `slot="content"`: a title that says what is missing ("No requests match"), with the heading
-  level of its place (`h1` when it takes the place of the page), then one sentence with why and
-  what comes next;
+- `slot="content"`: a title that says what is missing ("No requests match"), in the style of a
+  part (`typography="part"`, `titles/part`) with the heading level of its place (`h1` with
+  `typography="page"` when it takes the place of the page), then one sentence with why and what
+  comes next; straight in the slot, which sets them `gap-title-content` apart;
 - `slot="action"`: one `mds-button`, when the person has something to do; none in
   `filled-by-others` and `all-done`.
 
@@ -183,10 +184,6 @@ Situations every application has, each with its case: they give the examples, th
 
 ## Magma gaps
 
-- `mds-zero`, example "Illustration Only (No Action)": its text is "Nessun risultato", a
-  search, which has Clear filters and no illustration; to rewrite as `filled-by-others`.
-- `mds-zero`, example "Full Empty-State Panel": the text mixes "edit the filters" and
-  "create", the action is only Create; to rewrite as `add-the-first`.
 - No illustration for empty states in `identity` (only a logo set of Maggioli Editore): the
   product brings its own.
 
@@ -199,3 +196,4 @@ Situations every application has, each with its case: they give the examples, th
 | 2026-10-28 | "Always a way out" becomes `says-what-next`: an action when there is something to do, otherwise who or what fills the part (`filled-by-others`, `all-done`) | A button with nothing to do sends the person away from where they are. |
 | 2026-10-28 | A search with no results offers Clear filters only, even when the person may create | One action that answers the cause; Create stays in the header of the page. |
 | 2026-10-28 | An illustration only on first use, optional | It welcomes; where the person is working, the space belongs to the data (Illustration guide of the docs site). |
+| 2026-11-10 | `mds-zero` takes the roles of the design language: `p-inset` around its zones, `gap-title-content` in its content, `gap-content-actions` between the zones, `gap-inline` between the actions, no footer with no action; its fill is `surface-muted` in both modes, and its examples title the panel `typography="part"` (#1231). | The previews corrected the panel by hand. The fill is a step under the page in light and in dark, where the items would stand (`surfaces/tints-in-components`); the wash it had stood under the page in light and over it in dark, a light card. Rejected: `surface-sunken`, a hole in dark, and `surface-raised` with a shadow, a card, which `surfaces` keeps for an item of a set. Chosen by vittorio on the render. |

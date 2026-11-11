@@ -943,6 +943,11 @@ export namespace Components {
          */
         "selected"?: boolean;
         /**
+          * A colour drawn as a round swatch where the icon goes, in place of `icon`: any CSS colour (`#2f6fd0`, `rgb(47 111 208)`, `oklch(55% 0.2 260)`). It is a value of the product, the colour the label names (a family of colours, a category, a calendar), not a role of Magma: the chip draws it as it is given in every mode and theme, inside a ring that keeps it visible on the chip, at rest and selected. Decorative: hidden from assistive technologies, since the label names it. A value that is not a colour draws the empty ring.
+          * @example '#2f6fd0'
+         */
+        "swatch"?: string;
+        /**
           * Sets the color variant tone of the component
           * @default 'strong'
          */
@@ -6413,6 +6418,11 @@ declare namespace LocalJSX {
          */
         "selected"?: boolean;
         /**
+          * A colour drawn as a round swatch where the icon goes, in place of `icon`: any CSS colour (`#2f6fd0`, `rgb(47 111 208)`, `oklch(55% 0.2 260)`). It is a value of the product, the colour the label names (a family of colours, a category, a calendar), not a role of Magma: the chip draws it as it is given in every mode and theme, inside a ring that keeps it visible on the chip, at rest and selected. Decorative: hidden from assistive technologies, since the label names it. A value that is not a colour draws the empty ring.
+          * @example '#2f6fd0'
+         */
+        "swatch"?: string;
+        /**
           * Sets the color variant tone of the component
           * @default 'strong'
          */
@@ -8694,7 +8704,7 @@ declare namespace LocalJSX {
          */
         "interactive"?: boolean;
         /**
-          * Emits when the selection of a `selectable` table changes, with the index and the value of each selected row
+          * Emits when the selection of a `selectable` table changes, with the index and the value of each selected row. It announces changes only: not the rows that arrive already `selected` (in the markup on load, or rendered later), which the table counts all the same, as a native control fires no `change` for its initial value
          */
         "onMdsTableSelectionChange"?: (event: MdsTableCustomEvent<MdsTableSelectionEventDetail>) => void;
         /**
@@ -9323,6 +9333,7 @@ declare namespace LocalJSX {
         "label": string;
         "selected": boolean;
         "selectable": boolean;
+        "swatch": string;
         "variant": ChipVariantType;
         "tone": ToneMinimalVariantType;
     }

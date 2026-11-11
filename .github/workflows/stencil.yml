@@ -246,6 +246,8 @@ jobs:
   # compiles tsconfig.stencil.json, which leaves them out, so their errors showed only
   # in the editor (#946). Runs tsc on tsconfig.json, the editor's program; it imports
   # src/fixtures/icons.json and the svg-icons dist, so it needs the build artifact.
+  # Then guards the types magma publishes: no .d.ts of dist/ or loader/ may name a module
+  # through a path alias of the stencil tsconfig, which no consumer resolves (#1357).
   types:
     needs: [magma]
     if: ${{ needs.magma.outputs.changed == 'true' }}
@@ -262,6 +264,7 @@ jobs:
           name: stencil-build
           path: projects
       - run: npx nx run stencil:check.types
+      - run: npx nx run stencil:check.public-types
 
   # The consumer lint (projects/lint, #1102) and the MCP server (projects/mcp, #1107,
   # #1244) ship inside magma: stencil:build compiles them into dist/lint and dist/mcp and

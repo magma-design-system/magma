@@ -121,6 +121,24 @@
   width: --spacing(400);
 }
 
+/* The swatch: the colour of the product (the swatch prop, set inline), at the size of the glyph
+ * of the icon and where the glyph goes, centred in the width of the disc of the icon, so a row of
+ * chips with swatches and with icons keeps its labels in line (the size chosen with vittorio on
+ * the render of both, 2026-11-10: the glyph, lighter than a disc as wide as the icon's). The ring
+ * is a functional outline (border-default, docs/agents/color.md): it keeps a swatch as light or as
+ * dark as the chip visible, in both modes and selected, and the global palette flips and promotes
+ * it (pref-contrast-more) without a rule of its own here. */
+
+.swatch {
+  border: --spacing(25) solid rgb(var(--magma-border-default));
+  border-radius: var(--magma-radius-full);
+  box-sizing: border-box;
+  flex-shrink: 0;
+  height: --spacing(400);
+  margin-inline: --spacing(150);
+  width: --spacing(400);
+}
+
 .button-delete {
   align-self: center;
   border-radius: var(--magma-radius-full);

@@ -16,9 +16,7 @@ try: Press Paga: the button waits and a sentence beside it says the payment is u
     </dl>
     <div class="flex items-center justify-end gap-inline">
       <div role="status" class="min-w-0 flex-1">
-        <div id="waiting" class="invisible">
-          <mds-text id="say" typography="detail" tag="p">Pagamento in corso: può richiedere fino a un minuto.</mds-text>
-        </div>
+        <mds-text id="say" typography="detail" tag="p" class="invisible">Pagamento in corso: può richiedere fino a un minuto.</mds-text>
       </div>
       <mds-button id="pay">Paga</mds-button>
     </div>
@@ -26,13 +24,12 @@ try: Press Paga: the button waits and a sentence beside it says the payment is u
 </div>
 <script>
   const pay = document.getElementById('pay');
-  const waiting = document.getElementById('waiting');
   const say = document.getElementById('say');
   document.getElementById('form').addEventListener('submit', (event) => {
     event.preventDefault();
     pay.await = true;
     // the line keeps its place while hidden, so its arrival moves nothing
-    waiting.classList.remove('invisible');
+    say.classList.remove('invisible');
     setTimeout(() => {
       pay.await = undefined;
       say.textContent = 'Pagamento eseguito.';

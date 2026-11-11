@@ -124,38 +124,6 @@
   margin-block-start: calc(var(--magma-rhythm-between-groups) - var(--magma-rhythm-between-fields));
 }
 
-/* a family to opt in: the look of mds-chip, with the swatch of its colour (#1263) */
-
-.surfaces-family {
-  align-items: center;
-  background-color: rgb(var(--magma-surface-overlay));
-  border: calc(var(--spacing) * 50) solid transparent;
-  border-radius: var(--magma-radius-full);
-  box-shadow: var(--shadow-sm-sharp);
-  color: rgb(var(--magma-text-subtle));
-  cursor: pointer;
-  display: inline-flex;
-  font: inherit;
-  gap: calc(var(--spacing) * 200);
-  min-block-size: calc(var(--spacing) * 800);
-  padding-inline: calc(var(--spacing) * 300);
-}
-
-.surfaces-family:hover {
-  border-color: rgb(var(--magma-border-default));
-}
-
-.surfaces-family[aria-pressed='true'] {
-  border-color: rgb(var(--magma-accent-emphasis));
-  color: rgb(var(--magma-text-default));
-}
-
-/* a family with no flag of its own, following its group's opt-in */
-
-.surfaces-family[data-inherited] {
-  border-style: dashed;
-}
-
 /* the levels beside the preview where the page has room, one under the other where it has not */
 
 .surfaces-workbench {

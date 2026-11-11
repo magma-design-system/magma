@@ -175,11 +175,13 @@ Asset categories:
 
 ### 2.3 `svg-icons`
 
-The full SVG icon library. Icons are referenced by filename slug inside components via the `icon` prop. The `mds-icon` component fetches them at runtime from a path configured via `sessionStorage`.
+The full SVG icon library. Icons are referenced by filename slug inside components via the `icon` prop. The `mds-icon` component fetches them at runtime from a path the consumer sets once with `IconsSetService.setSvgPath()` (the `mdsIconSvgPath` key of `sessionStorage` still works where the browser allows storage).
 
 ```javascript
 // Required setup in every consumer application
-window.sessionStorage.setItem('mdsIconSvgPath', 'assets/img/svg/');
+import { IconsSetService } from '@maggioli-design-system/magma';
+
+IconsSetService.setSvgPath('/svg/');
 ```
 
 Icons follow a semantic slug naming convention (e.g. `action-email-send`, `status-warning`). See `projects/svg-icons/svg/` for the full list.
@@ -226,6 +228,13 @@ CSS cascade layer order (consumer apps must respect this):
 ```
 reset → vendor → theme → base → components → utilities → overrides
 ```
+
+One sheet stays out of the layers: the hydrated flag of the lazy loader (`hydratedFlag` in
+`projects/stencil/stencil.config.ts`), for the pages that do not import `hydrated.css` too.
+Unlayered, it beats every layer: before hydration it hides each component whatever the page
+says; once the flag is set it hands `visibility` back to the layers (`revert-layer`), so a
+utility such as `invisible` decides it, as `hidden` decides `display`, and with no rule the host
+inherits it (#1229). `src/test/hydrated-visibility.e2e.ts` holds both halves.
 
 Dark mode is handled via palette-level CSS custom properties. Activation classes on `<html>`:
 - `pref-mode-light / dark` - manual mode

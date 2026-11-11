@@ -15,7 +15,7 @@ This file only covers package install and Angular-specific registration.
 npm i @maggioli-design-system/magma-angular @maggioli-design-system/magma
 ```
 
-Peer dependencies: `@angular/common` and `@angular/core` `>=20.0.0`, and the exact
+Peer dependencies: `@angular/common`, `@angular/core` and `@angular/forms` `>=20.0.0`, and the exact
 `@maggioli-design-system/magma` version the wrapper was generated against. `magma-angular`
 follows the same major version as `magma` (see [`SPEC.md`](SPEC.md) matrix). Then
 install the assets from [`assets.md`](assets.md):
@@ -48,10 +48,75 @@ Then use them in templates like native elements:
 <mds-icon name="mi/baseline/email"></mds-icon>
 ```
 
-For Reactive Forms, import the matching `ControlValueAccessor` alongside the
-component (`TextValueAccessor` for `mds-input` / `mds-input-date`,
-`SelectValueAccessor` for `mds-input-select`, `NumericValueAccessor` for
-`mds-input-range`, `BooleanValueAccessor` for `mds-input-switch`).
+### Forms
+
+The form components bind to Angular forms, reactive (`[formControl]`, `formControlName`) and
+template-driven (`[(ngModel)]`), through a `ControlValueAccessor` directive. Import it next to
+the component (`MagmaModule` brings every one):
+
+| Component                                   | Accessor               | The control holds                            |
+|---------------------------------------------|------------------------|----------------------------------------------|
+| `mds-input`, every `type`                   | `TextValueAccessor`    | a string, with `type="number"` too           |
+| `mds-input-date`                            | `TextValueAccessor`    | an ISO date string, `YYYY-MM-DD`             |
+| `mds-input-select`                          | `SelectValueAccessor`  | the `value` of the selected option, a string |
+| `mds-input-range`                           | `NumericValueAccessor` | a number                                     |
+| `mds-input-switch`, `switch` and `checkbox` | `BooleanValueAccessor` | a boolean                                    |
+| `mds-input-switch type="radio"`             | `RadioValueAccessor`   | the `value` of the checked radio, a string   |
+
+```typescript
+import { Component } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import {
+  MdsInput,
+  MdsInputField,
+  MdsInputSwitch,
+  RadioValueAccessor,
+  TextValueAccessor,
+} from '@maggioli-design-system/magma-angular';
+
+@Component({
+  selector: 'app-delivery',
+  imports: [
+    ReactiveFormsModule,
+    MdsInput,
+    MdsInputField,
+    MdsInputSwitch,
+    TextValueAccessor,
+    RadioValueAccessor,
+  ],
+  templateUrl: './delivery.component.html',
+})
+export class DeliveryComponent {
+  readonly address = new FormControl('');
+  readonly slot = new FormControl('morning');
+}
+```
+
+```html
+<mds-input-field label="Indirizzo">
+  <mds-input [formControl]="address"></mds-input>
+</mds-input-field>
+<mds-input-switch type="radio" name="slot" value="morning" [formControl]="slot">Mattina</mds-input-switch>
+<mds-input-switch type="radio" name="slot" value="evening" [formControl]="slot">Sera</mds-input-switch>
+```
+
+Inside a `[formGroup]`, `formControlName` binds them the same way.
+
+- `disable()` and `enable()` set the `disabled` prop of the component, which turns it off as a
+  disabled `<fieldset>` does, its native control included. Do not bind `[disabled]` on a bound
+  component as well: the control owns it.
+- A radio group is one control on every radio of the group. Give the radios the same `name`, as
+  native radios, so the component unchecks the others; write `type="radio"` as a static
+  attribute, since a bound `[type]` gets the boolean accessor. The `value` of a radio is a string:
+  a control value of `1` checks no radio of `value="1"`.
+- `mds-input-select` with `multiple` reports its first selected option only: read the whole
+  selection from `(mdsInputSelectChange)`, in `$event.detail.values`.
+- `mds-input-range` always holds a number: `reset()` without a value leaves the control at the
+  midpoint of the range, marked dirty. Reset it to a number (`reset(0)`) instead.
+- `mds-input-date-range` holds two dates: bind its two slotted `mds-input-date`, one control each.
+  The range writes the dates it picks into them, and their controls follow.
+- `mds-input-upload` (a `FileList`, from `(mdsInputUploadChange)`) and `mds-input-otp` (no change
+  event: read its `value`) take no accessor.
 
 ### `MagmaModule` (convenience)
 
@@ -80,16 +145,19 @@ of every component.
 
 ## 3. Set the icon path
 
-Set `mdsIconSvgPath` once at app startup, before the first `mds-icon` renders - e.g.
-in the root component constructor or an `APP_INITIALIZER`:
+Set the icon path once at app startup, before the first `mds-icon` renders - e.g.
+in the root component constructor or in `provideAppInitializer()`:
 
 ```typescript
-sessionStorage.setItem('mdsIconSvgPath', '/svg/');
+import { IconsSetService } from '@maggioli-design-system/magma';
+
+IconsSetService.setSvgPath('/svg/');
 ```
 
-For Angular Universal (SSR), guard against the server where `sessionStorage` is
-undefined - set it inside a browser-platform check (`isPlatformBrowser`) or in a
-client-only initializer.
+With SSR it needs no guard: on the server (no `window`) the call stores nothing, and
+the browser makes it again when the app boots there. The `mdsIconSvgPath` key of
+`sessionStorage` still works where the browser allows storage
+([`assets.md`](assets.md), "Tell mds-icon where the icons are").
 
 ## 4. Serve the icon SVGs and styles
 

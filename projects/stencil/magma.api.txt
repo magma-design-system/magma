@@ -1,6 +1,7 @@
 # Public API of @maggioli-design-system/magma: one sorted line per member.
-# Generated from dist/documentation.json by the stencil build (nx run stencil:build.api-snapshot),
-# checked in CI (nx run stencil:check.api-snapshot). Its diff is what a change does to the contract.
+# Generated from dist/documentation.json and dist/types/index.d.ts by the stencil build
+# (nx run stencil:build.api-snapshot), checked in CI (nx run stencil:check.api-snapshot).
+# Its diff is what a change does to the contract.
 mds-accordion encapsulation shadow
 mds-accordion prop disableClose (attr disable-close): boolean | undefined = false
 mds-accordion prop multiple (attr multiple): boolean | undefined = false
@@ -383,6 +384,7 @@ mds-chip prop icon (attr icon): string | undefined
 mds-chip prop label (attr label) [reflect, required]: string
 mds-chip prop selectable (attr selectable) [reflect]: boolean | undefined = false
 mds-chip prop selected (attr selected) [reflect, mutable]: boolean | undefined
+mds-chip prop swatch (attr swatch): string | undefined
 mds-chip prop tone (attr tone) [reflect]: "strong" | "weak" | undefined = 'strong'
 mds-chip prop variant (attr variant) [reflect]: "ai" | "amaranth" | "aqua" | "blue" | "dark" | "error" | "green" | "info" | "lime" | "orange" | "orchid" | "primary" | "purple" | "red" | "secondary" | "sky" | "success" | "violet" | "warning" | "yellow" | undefined = 'primary'
 mds-chip event mdsChipClickLabel: MdsChipEvent [bubbles, cancelable, composed]
@@ -1748,6 +1750,12 @@ mds-zero slot content
 mds-zero part actions
 mds-zero part contents
 mds-zero css --mds-zero-contents-max-width
+IconsSetService export const
+IconsSetService method getSvgPath() => string
+IconsSetService method setSvgPath(svgPath: string) => void
+NavigationHandler export type
+NavigationService export const
+NavigationService method setHandler(handler?: NavigationHandler) => () => void
 type AnimationModeType = 'reduce' | 'no-preference' | 'system';
 type AttachmentSort = 'status' | 'date';
 type AutocompleteType = "address" | "email" | "additional-name" | "address-level1" | "address-level2" | "address-level3" | "address-level4" | "address-line1" | "address-line2" | "address-line3" | "bday" | "bday-day" | "bday-month" | "bday-year" | "cc-additional-name" | "cc-csc" | "cc-exp" | "cc-exp-month" | "cc-exp-year" | "cc-family-name" | "cc-given-name" | "cc-name" | "cc-number" | "cc-type" | "country" | "country-name" | "current-password" | "family-name" | "given-name" | "honorific-prefix" | "honorific-suffix" | "impp" | "language" | "name" | "new-password" | "nickname" | "off" | "on" | "one-time-code" | "organization" | "organization-title" | "photo" | "postal-code" | "sex" | "street-address" | "tel" | "tel-area-code" | "tel-country-code" | "tel-extension" | "tel-local" | "tel-national" | "transaction-amount" | "transaction-currency" | "url" | "username"
@@ -1845,6 +1853,7 @@ type ModalAnimationStyleType = 'slide' | 'custom' | '3d';
 type ModalInteractionType = 'strict' | 'relaxed';
 type ModalOverflowType = 'auto' | 'manual';
 type ModalPositionType = | 'bottom' | 'bottom-left' | 'bottom-right' | 'center' | 'left' | 'right' | 'top' | 'top-left' | 'top-right';
+type NavigationHandler = (href: string, event: MouseEvent) => boolean | void
 type NavigationType = 'none' | 'scrollbar' | 'position';
 type NoiseType = 'classic' | 'none' | 'sharp' | 'soft' | 'tv';
 type NotificationItemDateFormatType = string

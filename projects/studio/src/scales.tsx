@@ -16,7 +16,7 @@ import {
 } from '@maggioli-design-system/design-tokens/src/lib/easing.mjs';
 import { COLOR_MODES } from '@maggioli-design-system/design-tokens/src/lib/theme-manifest.mjs';
 import { applyFrame, type Scheme } from './frame.js';
-import { Field, Select, TextInput, swatchIcon, type Option } from './magma.js';
+import { Field, Select, TextInput, type Option } from './magma.js';
 import { paintedBy, type Painted } from './paints.js';
 import { sceneStyle, type ConfigTheme } from './scene-css.js';
 import { forceHover, settled, statesMarkup, statesPlan } from './states.js';
@@ -30,7 +30,7 @@ import './scales.css';
   docs/agents/patterns/actions.md, destructive-in-menu), the fields of Magma for the stops and the
   distribution, mds-modal for the rename and for the confirmation of a delete. The axis of the
   stops stays native: Magma has no range of several values yet (#1261). The colours of the usage
-  panel are selectable mds-chips, their swatch the icon (swatchIcon, until #1263).
+  panel are selectable mds-chips with the swatch of their colour.
 
   Beside each card, where the page has the room, the sample colour solved on the scale paints the
   components it paints in every state (states.ts, #1308), in one mode at a time, chosen once for
@@ -779,9 +779,9 @@ export function ScalesManager({
                       {colors.map((color) => (
                         <mds-chip
                           key={color.name}
-                          class="scales-chip"
                           label={color.name.split('.')[1]}
-                          icon={swatchIcon(color.color)}
+                          // an alias has no colour of its own: the empty ring, as before
+                          swatch={color.color ?? 'transparent'}
                           selectable
                           selected={color.name === selectedName}
                           title={t('{name} ({color}) - click to use it as the sample color', {

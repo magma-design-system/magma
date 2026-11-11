@@ -41,6 +41,15 @@ Common settings:
 
 - **`@typescript-eslint/no-unused-vars` is `warn`, not error** - drift won't block commits, but should be cleaned up.
 
+- **A re-export takes a relative path, never a path alias** (`no-restricted-syntax` on `src/**/*.{ts,tsx}`). Stencil rewrites the aliases of `tsconfig.json` (`@type/*`, `@dictionary/*`, ...) in the `.d.ts` it ships for an import, not for an `export ... from`, so the alias reaches the consumer as a module it cannot resolve (#1357). The rule reads the aliases from `paths`; imports keep using them.
+
+  ```ts
+  // ❌ ships as is in dist/types: TS2307 for a consumer with skipLibCheck false
+  export * from '@dictionary/file-extensions';
+  // ✅
+  export * from '../dictionary/file-extensions';
+  ```
+
 - **Stencil plugin (`@stencil/eslint-plugin`)** - its `flat/recommended` rule set applies to `src/components/**/*.tsx` (excluding `.storybook/**` and `*.stories.*`).
 
 - **`stencil/strict-mutable` is off** - mutable `@Prop()` is allowed when needed.

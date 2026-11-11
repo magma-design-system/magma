@@ -29,7 +29,7 @@ try: Look at the two rows selected: the bar of the table says how many and offer
         <mds-text typography="detail" tag="p" role="status">11-14 di 14 pratiche</mds-text>
         <mds-button variant="dark" tone="text" size="sm">Rimuovi i filtri</mds-button>
       </div>
-      <mds-table id="pratiche" selectable sorting="external" class="w-full [&_mds-table-cell]:text-nowrap [&_mds-text]:text-nowrap">
+      <mds-table selectable sorting="external" class="w-full [&_mds-table-cell]:text-nowrap [&_mds-text]:text-nowrap">
         <mds-table-header>
           <mds-table-header-cell label="Numero" sortable sort-key="numero"></mds-table-header-cell>
           <mds-table-header-cell label="Oggetto"></mds-table-header-cell>
@@ -43,13 +43,13 @@ try: Look at the two rows selected: the bar of the table says how many and offer
             <mds-table-cell><mds-text typography="detail">Giulia Bianchi</mds-text></mds-table-cell>
             <mds-table-cell><mds-text typography="detail">16 febbraio 2026</mds-text></mds-table-cell>
           </mds-table-row>
-          <mds-table-row value="2026/0097">
+          <mds-table-row value="2026/0097" selected>
             <mds-table-cell><mds-text typography="detail"><mds-link href="#">2026/0097</mds-link></mds-text></mds-table-cell>
             <mds-table-cell><mds-text typography="detail">Iscrizione anagrafica</mds-text></mds-table-cell>
             <mds-table-cell><mds-text typography="detail">Luca Ferri</mds-text></mds-table-cell>
             <mds-table-cell><mds-text typography="detail">13 febbraio 2026</mds-text></mds-table-cell>
           </mds-table-row>
-          <mds-table-row value="2026/0094">
+          <mds-table-row value="2026/0094" selected>
             <mds-table-cell><mds-text typography="detail"><mds-link href="#">2026/0094</mds-link></mds-text></mds-table-cell>
             <mds-table-cell><mds-text typography="detail">Certificato di residenza</mds-text></mds-table-cell>
             <mds-table-cell><mds-text typography="detail">Marco Rossi</mds-text></mds-table-cell>
@@ -69,12 +69,3 @@ try: Look at the two rows selected: the bar of the table says how many and offer
     <mds-paginator pages="2" current-page="2" class="justify-self-start"></mds-paginator>
   </div>
 </div>
-<script>
-  // two rows the person has ticked; a row selected in the markup is not counted by the table
-  const table = document.getElementById('pratiche');
-  customElements.whenDefined('mds-table-row').then(async () => {
-    const rows = ['2026/0097', '2026/0094'].map((value) => table.querySelector(`mds-table-row[value="${value}"]`));
-    await Promise.all(rows.map((row) => row.componentOnReady()));
-    rows.forEach((row) => (row.selected = true));
-  });
-</script>

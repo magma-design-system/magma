@@ -5,3 +5,16 @@
   display: inline-flex;
   gap: --spacing(50);
 }
+
+/* a host stretched by its row (actions/stacked: align-self in mds-card-footer and mds-status-bar,
+   a flex-basis in mds-banner, a width) gives its free width to its labelled members, each at its
+   own width plus the same share, the label in the middle (mds-button centres it): members of one
+   width would cut a long label (actions, 2026-10-30), and a basis of 0 cuts it in a row of one
+   line too. An icon-only member keeps its size, as the icon-only menu of stacked and the chevron
+   of mds-button-dropdown do; [label] is reflected, from a label written as text too. At its own
+   width the host has no free width to give, so nothing moves (#1340) */
+
+::slotted(mds-button[label]),
+::slotted(mds-button-dropdown) {
+  flex-grow: 1;
+}

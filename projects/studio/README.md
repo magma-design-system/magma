@@ -226,7 +226,6 @@ with its issue until the component lands:
 | --- | --- | --- |
 | a range of several values | the axis of a contrast scale | #1261 |
 | a list and its detail | the families of the Palette (each an `mds-button`, its swatch the icon `mdi/circle` painted through `::part(icon)`) | #1262 |
-| a chip with a colour swatch | the families of Semantic surface (the usage of a scale draws the swatch as the icon of an `mds-chip`, `swatchIcon`) | #1263 |
 
 ## Magma from the installed one
 

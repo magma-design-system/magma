@@ -61,4 +61,4 @@ export const extensionSuffixDictionary = [
 ] as const;
 export type ExtensionSuffixType = (typeof extensionSuffixDictionary)[number];
 
-export * from '@dictionary/file-extensions';
+export * from '../dictionary/file-extensions';
