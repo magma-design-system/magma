@@ -1,5 +1,7 @@
-import { Component, Host, h } from '@stencil/core';
+import { Component, Element, Host, State, h } from '@stencil/core';
+import { hasChildWithSlot } from '@common/slot';
 import { preferenceStore } from '@common/preference';
+import clsx from 'clsx';
 
 /**
  * @slot - Add `HTML elements` or `components` to this slot, it is **recommended** to use `mds-img` or `img` element.
@@ -16,6 +18,17 @@ import { preferenceStore } from '@common/preference';
   shadow: true,
 })
 export class MdsZero {
+  @Element() private host: HTMLMdsZeroElement;
+  @State() hasActions: boolean;
+
+  private onActionSlotChange = (): void => {
+    this.hasActions = hasChildWithSlot(this.host, 'action');
+  };
+
+  componentWillLoad(): void {
+    this.hasActions = hasChildWithSlot(this.host, 'action');
+  }
+
   render() {
     return (
       <Host
@@ -28,8 +41,9 @@ export class MdsZero {
         <div class="contents" part="contents">
           <slot name="content" />
         </div>
-        <footer class="actions" part="actions">
-          <slot name="action" />
+        {/* with no action the footer takes no room: the gap before it would add to the inset */}
+        <footer class={clsx('actions', !this.hasActions && 'actions--hidden')} part="actions">
+          <slot name="action" onSlotchange={this.onActionSlotChange} />
         </footer>
       </Host>
     );

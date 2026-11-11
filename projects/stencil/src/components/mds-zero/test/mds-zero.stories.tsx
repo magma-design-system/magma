@@ -8,10 +8,10 @@ export default {
 const Template = (args) => (
   <mds-zero {...args}>
     <mds-img src="./icon-newspaper-03.png" class="w-full max-w-[280px]" />
-    <mds-text typography="h5" slot="content">
+    <mds-text typography="part" tag="h2" slot="content">
       Crea il tuo primo articolo
     </mds-text>
-    <mds-text typography="detail" slot="content">
+    <mds-text typography="detail" tag="p" slot="content">
       Contribuisci alla creazione contenuti editoriali di riferimento per la pubblica amminstrazione
       in Italia.
     </mds-text>

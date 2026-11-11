@@ -1,19 +1,4 @@
-/* Theme preference. The component reflects the resolved theme mode and scheme
- * from <html> onto its host as pref-mode + pref-theme-scheme (see
- * subscribePreference in @common/preference); these plain shadow selectors refine
- * for dark. `dark` is the explicit choice; `system` and no controller follow the
- * OS via @media; the scheme axis gates it. Cross-browser, no :host-context. */
-
-:host([pref-mode='dark']:not([pref-theme-scheme='light'])),
-:host([pref-theme-scheme='dark']) {
-  background-color: rgb(var(--magma-wash-base));
-  box-shadow: var(--shadow-ring);
-}
-
-@media (prefers-color-scheme: dark) {
-  :host([pref-mode='system']:not([pref-theme-scheme='light'])),
-  :host(:not([pref-mode]):not([pref-theme-scheme='light'])) {
-    background-color: rgb(var(--magma-wash-base));
-    box-shadow: var(--shadow-ring);
-  }
-}
+/* Theme preference. The fill of the panel is a surface role (--magma-surface-muted, spec 6.1),
+ * which flips per mode at :root and inherits into the shadow DOM: a step under the page in light
+ * and in dark, so this component needs no per-mode dark refinement. The former dark override
+ * (--magma-wash-base with a ring, a light card on the dark page, #1231) is intentionally gone. */

@@ -22,12 +22,10 @@ try: Look at the search for Rossini among the open requests: the summary and the
     <div class="grid gap-title-content">
       <mds-text typography="detail" tag="p" role="status">Nessuna richiesta corrisponde</mds-text>
       <mds-zero>
-        <div slot="content" class="grid gap-title-content">
-          <mds-text typography="part" tag="h2">Nessuna richiesta trovata</mds-text>
-          <mds-text typography="detail" tag="p">
-            Prova con altre parole, o rimuovi i filtri per vedere tutte le richieste.
-          </mds-text>
-        </div>
+        <mds-text slot="content" typography="part" tag="h2">Nessuna richiesta trovata</mds-text>
+        <mds-text slot="content" typography="detail" tag="p">
+          Prova con altre parole, o rimuovi i filtri per vedere tutte le richieste.
+        </mds-text>
         <mds-button slot="action" variant="primary" tone="outline">Rimuovi i filtri</mds-button>
       </mds-zero>
     </div>
