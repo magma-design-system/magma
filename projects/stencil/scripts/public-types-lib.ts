@@ -1,7 +1,7 @@
 /**
  * The pure part of check-public-types.ts: the module specifiers of a published `.d.ts` that are
  * path aliases of the stencil tsconfig (`@type/*`, `@dictionary/*`, ...), which no consumer can
- * resolve (#1357).
+ * resolve (#1357), and the packages it names that a consumer cannot type (#1360, below).
  *
  * Why they can get there: `transformAliasedImportPaths` (stencil.config.ts) has Stencil rewrite
  * the aliases of the declarations it emits, but its transformer (`rewriteAliasedDTSImportPaths`
@@ -10,6 +10,7 @@
  * consumer with `skipLibCheck: false`, the re-exported names typed `any` for everyone else. A
  * type the declaration emit writes inline (`import("@type/x").Y`) is not rewritten either.
  */
+import { isBuiltin } from 'node:module';
 import ts from 'typescript';
 
 export interface AliasPattern {
@@ -79,23 +80,125 @@ const moduleName = (node: ts.Node): ts.StringLiteral | undefined => {
   return undefined;
 };
 
-/** Every module specifier of a declaration file that goes through one of the aliases. */
-export const findAliasedSpecifiers = (
-  fileName: string,
-  text: string,
-  patterns: readonly AliasPattern[],
-): AliasHit[] => {
+export interface SpecifierHit {
+  /** 1-based */
+  line: number;
+  specifier: string;
+}
+
+/** Every module specifier of a declaration file, in each form `moduleName` reads, in order. */
+export const findModuleSpecifiers = (fileName: string, text: string): SpecifierHit[] => {
   const source = ts.createSourceFile(fileName, text, ts.ScriptTarget.Latest, true);
-  const hits: AliasHit[] = [];
+  const hits: SpecifierHit[] = [];
   const visit = (node: ts.Node): void => {
     const name = moduleName(node);
-    const alias = name && matchAlias(name.text, patterns);
-    if (name && alias) {
+    if (name) {
       const { line } = source.getLineAndCharacterOfPosition(name.getStart(source));
-      hits.push({ line: line + 1, specifier: name.text, alias: alias.key });
+      hits.push({ line: line + 1, specifier: name.text });
     }
     ts.forEachChild(node, visit);
   };
   visit(source);
   return hits;
+};
+
+/** Every module specifier of a declaration file that goes through one of the aliases. */
+export const findAliasedSpecifiers = (
+  fileName: string,
+  text: string,
+  patterns: readonly AliasPattern[],
+): AliasHit[] =>
+  findModuleSpecifiers(fileName, text).flatMap(({ line, specifier }) => {
+    const alias = matchAlias(specifier, patterns);
+    return alias ? [{ line, specifier, alias: alias.key }] : [];
+  });
+
+/*
+ * The packages of the published types (#1360). A bare specifier that is not an alias names a
+ * package, which the consumer's TypeScript has to find with its declarations, in the folder of
+ * magma, among what the install of magma brought. Three things can miss:
+ *
+ * - the package is not there: npm installs the `dependencies` and `peerDependencies` of a package
+ *   for its consumer, never its `devDependencies` (docs.npmjs.com, package.json);
+ * - the package has no declarations (luxon): TS7016 with `skipLibCheck: false`, `any` otherwise;
+ * - its declarations come from `@types/<name>`, which the consumer has only if magma depends on it
+ *   (TypeScript handbook, "Publishing": the `@types` packages a declaration needs go in
+ *   `dependencies`). In the monorepo a devDependency `@types/x` resolves all the same, which is
+ *   why the package that holds the declarations is read, not only whether there are any.
+ *
+ * Whether a package has declarations, and in which package, is what TypeScript resolves
+ * (`ts.resolveModuleName`, in check-public-types.ts), not a reading of its manifest here.
+ */
+
+/**
+ * The package a bare specifier names, as Node's PACKAGE_RESOLVE splits it (nodejs.org, "Modules:
+ * ECMAScript modules", resolution algorithm): up to the first `/`, or the second for a name that
+ * starts with `@`. Undefined for a relative or absolute path and for a `node:` built-in.
+ */
+export const packageOf = (specifier: string): string | undefined => {
+  if (/^(\.|\/|[a-zA-Z]:[\\/])/.test(specifier) || specifier.startsWith('node:')) return undefined;
+  const parts = specifier.split('/');
+  return specifier.startsWith('@') ? parts.slice(0, 2).join('/') : parts[0];
+};
+
+/** What TypeScript resolves a bare specifier to, read off its `ResolvedModuleFull`. */
+export interface ResolvedTypes {
+  /** the extension of the resolved file: `.d.ts` and the other TypeScript ones are declarations */
+  extension: string;
+  /** `packageId.name`: the package that holds the file, undefined when TypeScript gives none */
+  holder?: string;
+}
+
+export interface PackageScope {
+  /** the name of the package that publishes the types: it resolves itself through its exports */
+  self: string;
+  /** the names of its `dependencies` and `peerDependencies`: what its consumer installs */
+  installed: ReadonlySet<string>;
+}
+
+export type PackageProblem =
+  'not-installed' | 'unresolved' | 'no-declarations' | 'declarations-not-installed';
+
+/**
+ * The reason a consumer cannot type a package a declaration file names, or undefined when it can.
+ * `resolved` is what TypeScript found for the specifier from that file; undefined when it found
+ * nothing. A resolved file with no package (`holder` undefined) is not one of the cases above:
+ * it answers `unresolved` rather than passing.
+ */
+export const packageProblem = (
+  pkg: string,
+  resolved: ResolvedTypes | undefined,
+  scope: PackageScope,
+): PackageProblem | undefined => {
+  if (pkg === scope.self) return undefined;
+  if (!scope.installed.has(pkg)) return 'not-installed';
+  if (!resolved || !resolved.holder) return 'unresolved';
+  // .d.ts, .d.mts, .d.cts, and a package that ships its .ts sources; .js, .mjs, .cjs and .json
+  // are JavaScript or data, which TypeScript reports as TS7016 (or reads as any)
+  if (!/\.(c|m)?tsx?$/.test(resolved.extension)) return 'no-declarations';
+  if (resolved.holder !== pkg && !scope.installed.has(resolved.holder)) {
+    return 'declarations-not-installed';
+  }
+  return undefined;
+};
+
+/**
+ * The reason a consumer cannot type a module a published declaration file names, for a specifier
+ * that is not an alias, or undefined when it can (a relative path, an installed package with its
+ * declarations, magma itself).
+ *
+ * A Node built-in (`node:stream`, or `stream`: `isBuiltin` of node:module) is typed by
+ * `@types/node`, which the consumer brings only for code that runs in Node: `nodeEntry` says the
+ * file is one, and the script sets it for the hydrate app alone, the server-side renderer Stencil
+ * builds (stencilJS docs, "Hydrate App"). Anywhere else a built-in is `node-built-in`.
+ */
+export const specifierProblem = (
+  specifier: string,
+  file: { nodeEntry: boolean },
+  scope: PackageScope,
+  resolve: (specifier: string) => ResolvedTypes | undefined,
+): PackageProblem | 'node-built-in' | undefined => {
+  if (isBuiltin(specifier)) return file.nodeEntry ? undefined : 'node-built-in';
+  const pkg = packageOf(specifier);
+  return pkg === undefined ? undefined : packageProblem(pkg, resolve(specifier), scope);
 };

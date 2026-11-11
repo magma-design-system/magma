@@ -44,7 +44,23 @@ const PREFERENCE_VALUES: Record<PreferenceName, string[]> = {
   'theme-scheme': ['light', 'dark', 'all'],
 };
 
-const preferenceStore = createStore<PreferenceState>({ language: 'en' });
+/**
+ * The part of the @stencil/store map the components use, written here so that the declaration of
+ * `preferenceStore` names no type of @stencil/store, a devDependency the build bundles and a
+ * consumer does not install (#1360, `nx run stencil:check.public-types`). A member of the map
+ * this file does not list is a member to add here first.
+ */
+interface PreferenceStore {
+  /** read during render to subscribe the component, written by the `mds-pref-*` controllers */
+  readonly state: PreferenceState;
+  /** `cb` runs on every change of `propName`; the function returned unsubscribes it */
+  onChange<Key extends keyof PreferenceState>(
+    propName: Key,
+    cb: (newValue: PreferenceState[Key]) => void,
+  ): () => void;
+}
+
+const preferenceStore: PreferenceStore = createStore<PreferenceState>({ language: 'en' });
 
 const MODE_VALUES = PREFERENCE_VALUES.mode;
 

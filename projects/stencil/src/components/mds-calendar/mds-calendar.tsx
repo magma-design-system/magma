@@ -57,8 +57,12 @@ export class MdsCalendar {
   @Element() private host: HTMLMdsCalendarElement;
 
   @State() hasPreselection: boolean = false;
-  @State() currentDate: DateTime = DateTime.now();
-  @State() weekDaysinMonth: DateTime[] = [];
+  // Private, as every member typed with luxon (#1360): the declaration emit of TypeScript writes
+  // a private member with its name only, so `DateTime` stays out of the published .d.ts. luxon
+  // ships no types and magma does not depend on @types/luxon: a public member typed with it is
+  // TS7016 for a consumer with skipLibCheck false, and `any` for everyone else.
+  @State() private currentDate: DateTime = DateTime.now();
+  @State() private weekDaysinMonth: DateTime[] = [];
   @State() weekdays: string[] = [];
   @State() currentView: 'calendar' | 'years' | 'months' = 'calendar';
   @State() selectedYear: number = this.currentDate.year;
