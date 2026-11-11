@@ -1,5 +1,5 @@
 import { render, vi } from '@stencil/vitest';
-import { userEvent } from 'vitest/browser';
+import { page, userEvent } from 'vitest/browser';
 import { describeConditionalSlot } from '@test/slot';
 import { useLanguage } from '@test/language';
 
@@ -181,16 +181,29 @@ describe('mds-toast', () => {
       </mds-toast>
       <button id="away">Away</button>`;
 
+    // the pointer stays where the last case left it: on the hide button of the closing cases, or
+    // over the toast when a case of this group fails, right where the next toast shows, so it
+    // would hold the countdown of every case after it. Park it in the top left corner, away from
+    // the toast at the bottom (mds-input-select.e2e.ts says why userEvent.unhover is no help)
+    beforeEach(async () => {
+      const corner = document.createElement('span');
+      corner.style.cssText = 'position: fixed; left: 0; top: 0; width: 8px; height: 8px';
+      document.body.append(corner);
+      await userEvent.hover(corner);
+      corner.remove();
+    });
+
     // a real pointer: the hover of the browser driver can take some hundred milliseconds on a
-    // busy machine, so the duration leaves it room to land before the time is up
+    // busy machine, so the duration leaves it room to land before the time is up. The action is
+    // found by its visible name, not handed over as an element (see "Keep in mind" in
+    // projects/stencil/HOWTO.md: mds-button copies its slotted text into its shadow root)
     it('waits while the pointer is over the toast, and goes on once it leaves', async () => {
       const { waitForChanges } = await render<HTMLMdsToastElement>(
         html.replace('duration="300"', 'duration="1500"'),
       );
       const toast = document.querySelector<HTMLMdsToastElement>('mds-toast')!;
-      const action = toast.querySelector<HTMLElement>('[slot="action"]')!;
 
-      await userEvent.hover(action);
+      await userEvent.hover(page.getByRole('button', { name: 'Retry' }));
       await wait(1800);
       expect(toast.visible).toBe(true);
 

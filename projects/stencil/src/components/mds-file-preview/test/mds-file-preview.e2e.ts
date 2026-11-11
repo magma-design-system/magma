@@ -1,5 +1,5 @@
 import { render } from '@stencil/vitest';
-import { userEvent } from 'vitest/browser';
+import { page, userEvent } from 'vitest/browser';
 import { mockIconFetch } from '@test/fetch';
 import { themeLabelVariantDictionary } from '@type/variant';
 
@@ -49,7 +49,9 @@ describe('mds-file-preview', () => {
 
       expect(card(root)).toEqualAttributes({ role: 'button', tabindex: '0' });
 
-      await userEvent.click(card(root));
+      // the card found by its visible name, not handed over as an element: its name holds the
+      // text its badge copies into its shadow root (see "Keep in mind" in projects/stencil/HOWTO.md)
+      await userEvent.click(page.getByRole('button', { name: 'report.pdf' }));
       card(root).focus();
       await userEvent.keyboard('{Enter}');
       await userEvent.keyboard('{Space}');

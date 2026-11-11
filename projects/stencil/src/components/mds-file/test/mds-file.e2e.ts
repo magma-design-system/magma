@@ -1,5 +1,5 @@
 import { render } from '@stencil/vitest';
-import { userEvent } from 'vitest/browser';
+import { page, userEvent } from 'vitest/browser';
 
 const getText = (host: HTMLElement, selector: string): string | null =>
   host.shadowRoot!.querySelector(selector)?.textContent?.trim() ?? null;
@@ -100,12 +100,16 @@ describe('mds-file downloaded indicator', () => {
   const REPORT_KEY = 'mdsFile/9ba50147';
   const OTHER_KEY = 'mdsFile/4fd11d19';
 
+  // the file found by its visible name, not handed over as an element: its name holds the text
+  // its badge copies into its shadow root (see "Keep in mind" in projects/stencil/HOWTO.md)
+  const report = () => page.getByRole('button', { name: 'report' });
+
   // #940: a small in-house hash of the filename as the key, instead of the crypto-js MD5
   it('records the click in localStorage under the hash of the filename', async () => {
     const { root, waitForChanges } = await render('<mds-file filename="report.pdf"></mds-file>');
     expect(indicator(root)).toBeNull();
 
-    await userEvent.click(root);
+    await userEvent.click(report());
     await waitForChanges();
 
     expect(indicator(root)).not.toBeNull();
@@ -116,7 +120,7 @@ describe('mds-file downloaded indicator', () => {
   // #830: it wrote `mdsFile<hash>` and read `mdsFile/<hash>`, so the indicator never came back
   it('shows the indicator from the first paint of a filename downloaded before', async () => {
     const first = await render('<mds-file filename="report.pdf"></mds-file>');
-    await userEvent.click(first.root);
+    await userEvent.click(report());
     await first.waitForChanges();
     expect(indicator(first.root)).not.toBeNull();
 
