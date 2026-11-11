@@ -1,8 +1,8 @@
 import { render, vi } from '@stencil/vitest';
 import { userEvent } from 'vitest/browser';
 
-// type="color" (#1260): a text field where a colour code is typed and validated, with a swatch at
-// its start that opens the colour picker of the platform. The value, in the event and in the
+// type="color" (#1260): a text field where a colour code is typed and validated, with a swatch of
+// the colour at its start and a button at its end that opens the colour picker of the platform. The value, in the event and in the
 // form, is the colour as #rrggbb in lower case, or '' while the text names none.
 
 const COLOR_MESSAGE = 'Enter a hex colour code, such as #2f6fd0';
@@ -26,8 +26,9 @@ const setup = async <T extends HTMLElement = HTMLElement>(html: string): Promise
 };
 
 const text = (): HTMLInputElement => field.shadowRoot!.querySelector<HTMLInputElement>('.input')!;
-const swatch = (): HTMLButtonElement =>
-  field.shadowRoot!.querySelector<HTMLButtonElement>('.swatch')!;
+const swatch = (): HTMLElement => field.shadowRoot!.querySelector<HTMLElement>('.swatch')!;
+const action = (): HTMLMdsButtonElement =>
+  field.shadowRoot!.querySelector<HTMLMdsButtonElement>('.color-picker-button')!;
 const picker = (): HTMLInputElement =>
   field.shadowRoot!.querySelector<HTMLInputElement>('.color-picker')!;
 
@@ -41,6 +42,13 @@ const typeText = async (value: string): Promise<void> => {
 const leave = async (): Promise<void> => {
   await userEvent.click(document.querySelector<HTMLElement>('button.after')!);
   await waitForChanges();
+};
+
+/** Whether the box of `inner` lies within the box of `outer`. */
+const isInside = (inner: Element, outer: Element): boolean => {
+  const a = inner.getBoundingClientRect();
+  const b = outer.getBoundingClientRect();
+  return a.top >= b.top && a.bottom <= b.bottom && a.left >= b.left && a.right <= b.right;
 };
 
 /** Picks a colour in the picker of the platform, as the browser does: its value, then input. */
@@ -305,7 +313,7 @@ describe('type color', () => {
     });
   });
 
-  describe('the swatch', () => {
+  describe('the swatch and the picker button', () => {
     let showPicker: ReturnType<typeof vi.spyOn>;
     let opened: HTMLInputElement[];
 
@@ -345,19 +353,28 @@ describe('type color', () => {
       expect(getComputedStyle(swatch()).borderTopWidth).not.toBe('0px');
     });
 
-    it('is a button named after what it does and the field it does it for', async () => {
+    it('keeps the swatch out of assistive technologies and of the order of the keyboard', async () => {
+      await setup('<mds-input type="color" value="#2f6fd0"></mds-input>');
+
+      expect(swatch().tagName).toBe('DIV');
+      expect(swatch()).toEqualAttribute('aria-hidden', 'true');
+      expect(swatch().tabIndex).toBe(-1);
+    });
+
+    it('has a button at its end, named after what it does and the field it does it for', async () => {
       await setup('<mds-input type="color"></mds-input>');
-      expect(swatch().tagName).toBe('BUTTON');
-      expect(swatch()).toEqualAttribute('type', 'button');
-      expect(swatch()).toEqualAttribute('aria-label', 'Choose a colour');
+
+      expect(action().tagName).toBe('MDS-BUTTON');
+      expect(action().icon).toBeTruthy();
+      expect(action()).toEqualAttribute('title', 'Choose a colour');
 
       field.setAttribute('aria-label', 'Base colour');
       await waitForChanges();
 
-      expect(swatch()).toEqualAttribute('aria-label', 'Choose a colour for Base colour');
+      expect(action()).toEqualAttribute('title', 'Choose a colour for Base colour');
     });
 
-    it('takes the label of mds-input-field in its name', async () => {
+    it('takes the label of mds-input-field in the name of its button', async () => {
       const root = await setup(
         '<mds-input-field label="Colore di base"><mds-input type="color"></mds-input></mds-input-field>',
       );
@@ -365,32 +382,42 @@ describe('type color', () => {
       await waitForChanges();
 
       expect(root.tagName).toBe('MDS-INPUT-FIELD');
-      expect(swatch()).toEqualAttribute('aria-label', 'Choose a colour for Colore di base');
+      expect(action()).toEqualAttribute('title', 'Choose a colour for Colore di base');
     });
 
-    it('opens the picker of the platform, holding the colour of the value', async () => {
+    it('opens the picker of the platform from its button, holding the colour of the value', async () => {
       await setup('<mds-input type="color" value="#2f6fd0"></mds-input>');
 
-      await userEvent.click(swatch());
+      await userEvent.click(action());
 
       expect(opened).toEqual([picker()]);
       expect(picker().type).toBe('color');
       expect(picker().value).toBe('#2f6fd0');
     });
 
+    it('opens the picker from a click on the swatch too, a shortcut of the pointer', async () => {
+      await setup('<mds-input type="color" value="#2f6fd0"></mds-input>');
+
+      await userEvent.click(swatch());
+
+      expect(opened).toEqual([picker()]);
+    });
+
     it('opens the picker on black when the field is empty, the default of the platform', async () => {
       await setup('<mds-input type="color"></mds-input>');
 
-      await userEvent.click(swatch());
+      await userEvent.click(action());
 
       expect(opened).toHaveLength(1);
       expect(picker().value).toBe('#000000');
     });
 
-    it('opens from the keyboard', async () => {
+    it('reaches the button with Tab after the text, and opens it with Enter', async () => {
       await setup('<mds-input type="color"></mds-input>');
 
-      swatch().focus();
+      text().focus();
+      await userEvent.keyboard('{Tab}');
+      expect(field.shadowRoot!.activeElement).toBe(action());
       await userEvent.keyboard('{Enter}');
 
       expect(opened).toHaveLength(1);
@@ -400,7 +427,7 @@ describe('type color', () => {
       const form = await setup<HTMLFormElement>(
         '<form><mds-input type="color" name="base" value="#2f6fd0"></mds-input></form>',
       );
-      await userEvent.click(swatch());
+      await userEvent.click(action());
 
       await pick('#a89586');
 
@@ -426,7 +453,8 @@ describe('type color', () => {
     it.each(['readonly', 'disabled'])('opens nothing on a %s field', async (attribute) => {
       await setup(`<mds-input type="color" value="#2f6fd0" ${attribute}></mds-input>`);
 
-      expect(swatch().disabled).toBe(true);
+      expect(action()).toHaveAttribute('disabled');
+      action().click();
       swatch().click();
       await pick('#ff0000');
 
@@ -437,13 +465,14 @@ describe('type color', () => {
       expect(getComputedStyle(swatch()).backgroundColor).toBe('rgb(47, 111, 208)');
     });
 
-    it('hides the picker under it, out of reach of the keyboard and of assistive technologies', async () => {
+    it('hides the picker under its button, out of reach of the keyboard and of assistive technologies', async () => {
       await setup('<mds-input type="color"></mds-input>');
 
       expect(picker()).toEqualAttribute('aria-hidden', 'true');
       expect(picker().tabIndex).toBe(-1);
       expect(getComputedStyle(picker()).opacity).toBe('0');
       expect(getComputedStyle(picker()).pointerEvents).toBe('none');
+      expect(isInside(picker(), action())).toBe(true);
     });
   });
 
@@ -479,6 +508,21 @@ describe('type color', () => {
       expect(parseFloat(getComputedStyle(text()).paddingLeft)).toBeGreaterThan(left + width);
     });
 
+    it.each(['lg', 'md', 'sm'])(
+      'keeps the picker button inside a %s field, after the text',
+      async (size) => {
+        await setup(`<mds-input type="color" size="${size}"></mds-input>`);
+
+        // the size of the buttons inside the field: the default one at lg, sm in the smaller ones
+        if (size === 'lg') expect(action().getAttribute('size')).not.toBe('sm');
+        else expect(action()).toEqualAttribute('size', 'sm');
+        expect(isInside(action(), field)).toBe(true);
+        expect(parseFloat(getComputedStyle(text()).paddingRight)).toBeGreaterThanOrEqual(
+          box(action()).right + box(action()).width,
+        );
+      },
+    );
+
     it('stands where the icon goes, and ignores icon', async () => {
       await setup('<mds-input type="color" icon="mi/baseline/pets"></mds-input>');
 
@@ -492,23 +536,27 @@ describe('type color', () => {
       expect(field.shadowRoot!.querySelector('mds-icon.icon')).toBeNull();
     });
 
-    it('stays while awaiting, the spinner at the end of the field', async () => {
+    it('keeps the swatch while awaiting, the spinner at the end before the picker button', async () => {
       await setup('<mds-input type="color" value="#2f6fd0" await></mds-input>');
 
       const spinner = field.shadowRoot!.querySelector('.await')!;
       expect(swatch()).not.toBeNull();
-      expect(box(spinner).right).toBe(box(swatch()).left);
-      expect(text()).toHaveClass('has-right-icon');
-      expect(parseFloat(getComputedStyle(text()).paddingRight)).toBeGreaterThan(
+      expect(spinner.getBoundingClientRect().width).toBeGreaterThan(0);
+      expect(spinner.getBoundingClientRect().right).toBeLessThanOrEqual(
+        action().getBoundingClientRect().left,
+      );
+      // the text stops before the spinner
+      expect(parseFloat(getComputedStyle(text()).paddingRight)).toBeGreaterThanOrEqual(
         box(spinner).right + box(spinner).width,
       );
     });
 
-    it('ignores mic: a colour code is typed or picked', async () => {
+    it('ignores mic: its end holds the picker button', async () => {
       await setup('<mds-input type="color" mic></mds-input>');
 
       expect(field.shadowRoot!.querySelector('.mic-toggle-button')).toBeNull();
-      expect(text()).not.toHaveClass('has-right-icon');
+      expect(field.shadowRoot!.querySelectorAll('mds-button')).toHaveLength(1);
+      expect(action()).not.toBeNull();
     });
 
     it('becomes a colour field when its type changes after load', async () => {

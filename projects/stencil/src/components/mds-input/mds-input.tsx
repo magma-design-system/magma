@@ -8,6 +8,7 @@ import miBaselineVisible from '@icon/mi/baseline/visibility.svg';
 import miBaselineVisibleOff from '@icon/mi/baseline/visibility-off.svg';
 import miOutlineMic from '@icon/mi/outline/mic.svg';
 import miOutlineMicOff from '@icon/mi/outline/mic-off.svg';
+import miOutlinePalette from '@icon/mi/outline/palette.svg';
 import miBaselineDone from '@icon/mi/baseline/done.svg';
 import {
   AttachInternals,
@@ -87,6 +88,7 @@ export interface MdsInputInterface {
 }
 
 /**
+ * @part color-picker-button - Selects the button that opens the colour picker of a `color` field
  * @part counter-button-decrease - Selects the button used to decrease the input value
  * @part counter-button-increase - Selects the button used to increase the input value
  * @part field - Selects the native input field used by the component
@@ -169,7 +171,7 @@ export class MdsInput {
 
   /**
    * Specifies if the spinner icon is shown, replacing the icon if present. A `color` field keeps
-   * its swatch, the value and the way to the picker, and shows the spinner at its end
+   * its swatch, which shows the value, and shows the spinner at its end, before the picker button
    */
   @Prop({ reflect: true }) readonly await: boolean = false;
 
@@ -216,7 +218,7 @@ export class MdsInput {
 
   /**
    * Toggles text recognition. A `color` field ignores it: a colour code is typed or picked, not
-   * dictated
+   * dictated, and its end holds the button of the picker
    */
   @Prop({ reflect: true }) readonly mic?: boolean;
 
@@ -284,8 +286,9 @@ export class MdsInput {
 
   /**
    * Specifies the type of input element. `color` holds a colour: the field stays a text field,
-   * where the code is typed and validated, with a swatch at its start that opens the colour
-   * picker of the platform. Its value, in the change event and in the form, is the colour as
+   * where the code is typed and validated, with a swatch of the colour at its start and a button
+   * at its end that opens the colour picker of the platform. Its value, in the change event and
+   * in the form, is the colour as
    * `#rrggbb` in lower case, or `''` while the text is empty or names no colour, which is a
    * validation error; the text also takes `#rgb` and the code without `#`, in any case, and is
    * written back as `#rrggbb` when the field is left
@@ -731,8 +734,9 @@ export class MdsInput {
   }
 
   /**
-   * Opens the colour picker of the platform from the swatch, on a field the user can change. The
-   * picker always holds a colour: black for an empty field, the default of a native colour input.
+   * Opens the colour picker of the platform from its button, or from the swatch with the pointer,
+   * on a field the user can change. The picker always holds a colour: black for an empty field,
+   * the default of a native colour input.
    */
   private openColorPicker = (): void => {
     const picker = this.colorPicker;
@@ -900,14 +904,14 @@ export class MdsInput {
     return this.isColor() || Boolean(this.icon ?? this.await);
   }
 
-  /** The mark at the end of the field: the microphone, or the spinner of a colour field. */
+  /** The mark at the end of the field: the microphone, or the picker button of a colour field. */
   private hasTrailingMark(): boolean {
-    return this.isColor() ? this.await : Boolean(this.mic);
+    return this.isColor() || Boolean(this.mic);
   }
 
   /**
-   * The name of the swatch of a colour field: what it does, and for which field, since a form can
-   * hold more than one colour field and each swatch is a button of its own.
+   * The name of the picker button of a colour field: what it does, and for which field, since a
+   * form can hold more than one colour field and each has a button of its own.
    */
   private colorPickerName(): string {
     return this.accessibleName
@@ -936,29 +940,17 @@ export class MdsInput {
             part="counter-button-decrease"
           ></mds-button>
         )}
-        {/* The swatch of a colour field, where the icon goes: the colour of the value, and the
-            button that opens the picker of the platform, hidden under it. It comes before the
-            field, in the order it is seen, as the decrease button of a horizontal number does. */}
+        {/* The swatch of a colour field, where the icon goes: the colour of the value. A click
+            opens the picker, a shortcut for the pointer; the picker button at the end is the
+            control, in the order of the keyboard and with its name, so the swatch is hidden from
+            assistive technologies instead of being a second button that does the same. */}
         {this.isColor() && (
-          <input
+          <div
             aria-hidden="true"
-            class="color-picker"
-            disabled={!this.canEdit()}
-            onInput={this.onColorPick}
-            ref={(input) => (this.colorPicker = input)}
-            tabIndex={-1}
-            type="color"
-          />
-        )}
-        {this.isColor() && (
-          <button
-            aria-label={this.colorPickerName()}
-            class="swatch"
-            disabled={!this.canEdit()}
+            class={clsx('swatch', !this.canEdit() && 'swatch--still')}
             onClick={this.openColorPicker}
             style={{ backgroundColor: this.value || undefined }}
-            type="button"
-          ></button>
+          ></div>
         )}
         {this.type === 'textarea' ? (
           <textarea
@@ -1082,6 +1074,33 @@ export class MdsInput {
               ))}
             </div>
           </div>
+        )}
+        {/* The picker button of a colour field, where the microphone goes, with the picker of the
+            platform hidden under it, so that the popup of the browser opens next to it. */}
+        {this.isColor() && (
+          <input
+            aria-hidden="true"
+            class="color-picker"
+            disabled={!this.canEdit()}
+            onInput={this.onColorPick}
+            ref={(input) => (this.colorPicker = input)}
+            tabIndex={-1}
+            type="color"
+          />
+        )}
+        {this.isColor() && (
+          <mds-button
+            class="color-picker-button"
+            size={this.buttonSize()}
+            icon={miOutlinePalette}
+            disabled={!this.canEdit()}
+            onClick={this.openColorPicker}
+            tabindex="0"
+            title={this.colorPickerName()}
+            variant="dark"
+            tone="text"
+            part="color-picker-button"
+          ></mds-button>
         )}
         {this.mic && !this.isColor() && (
           <mds-button

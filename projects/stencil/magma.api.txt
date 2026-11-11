@@ -696,6 +696,7 @@ mds-input method getInputElement() => Promise<HTMLInputElement | HTMLTextAreaEle
 mds-input method hasValidator(validator?: MdsValidatorFn) => Promise<boolean>
 mds-input method removeValidator(validator: MdsValidatorFn) => Promise<void>
 mds-input method setFocus() => Promise<void>
+mds-input part color-picker-button
 mds-input part counter-button-decrease
 mds-input part counter-button-increase
 mds-input part field

@@ -376,8 +376,8 @@ export const TextRecognition = {
 
 /**
  * A colour field (#1260): the code is typed in the field and validated, the swatch at its start
- * shows the colour and opens the picker of the platform. The value is `#rrggbb`: `#ABC` is written
- * `#aabbcc` at load, as a code typed is when the field is left.
+ * shows the colour, the button at its end opens the picker of the platform. The value is
+ * `#rrggbb`: `#ABC` is written `#aabbcc` at load, as a code typed is when the field is left.
  */
 export const Color = {
   render: Template,
@@ -393,9 +393,10 @@ export const Color = {
     const field = canvasElement.querySelector('mds-input') as HTMLMdsInputElement;
     await waitFor(() => expect(field).toHaveAttribute('hydrated'));
     await expect(field.value).toBe('#2f6fd0');
-    const swatch = field.shadowRoot!.querySelector('.swatch') as HTMLButtonElement;
-    await expect(swatch).toHaveAttribute('aria-label', 'Choose a colour for Colore di base');
+    const swatch = field.shadowRoot!.querySelector('.swatch') as HTMLElement;
     await expect(getComputedStyle(swatch).backgroundColor).toBe('rgb(47, 111, 208)');
+    const action = field.shadowRoot!.querySelector('.color-picker-button') as HTMLElement;
+    await expect(action).toHaveAttribute('title', 'Choose a colour for Colore di base');
   },
 };
 

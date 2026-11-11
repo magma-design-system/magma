@@ -184,8 +184,8 @@ const playColor = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
   await waitFor(() =>
     expect(wrong).toHaveProperty('message', 'Enter a hex colour code, such as #2f6fd0'),
   );
-  const swatch = field.shadowRoot!.querySelector('.swatch') as HTMLButtonElement;
-  await expect(swatch).toHaveAttribute('aria-label', 'Choose a colour for Colore del bordo');
+  const action = field.shadowRoot!.querySelector('.color-picker-button') as HTMLElement;
+  await expect(action).toHaveAttribute('title', 'Choose a colour for Colore del bordo');
 };
 
 export const Color = {

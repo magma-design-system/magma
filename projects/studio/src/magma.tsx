@@ -185,8 +185,8 @@ const fieldColor = (text: string): string => {
 };
 
 /**
- * A colour field (`mds-input` with `type="color"`, #1260): the code typed, or picked from its
- * swatch with the picker of the platform. Each colour is handed back as it comes, as `#rrggbb`:
+ * A colour field (`mds-input` with `type="color"`, #1260): the code typed, or picked with its
+ * button in the picker of the platform. Each colour is handed back as it comes, as `#rrggbb`:
  * a code typed, each step of a drag in the picker. The `''` the field holds while its text names
  * no colour, or is empty, is never handed back: a colour of the studio always has one, and keeps
  * the last while the field shows its error (`required`, and the message of `mds-input-field`).

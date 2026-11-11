@@ -1,18 +1,20 @@
-/* A colour field (type color, #1260): a text field with a swatch where the icon goes. */
+/* A colour field (type color, #1260): a text field with a swatch of the colour where the icon goes
+ * and, where the microphone goes, the button that opens the colour picker of the platform. */
 
 /* The swatch: the colour of the value, set inline, as large as the glyph of an icon, where the
  * icon goes, so it scales with the field (--spacing(600) at lg, --spacing(400) at sm) and the text
  * starts after it as after an icon (.has-icon). It is the swatch of mds-chip (#1263), a disc in a
- * ring, but the ring here is border-strong, not border-default: it outlines a control, the button
- * that opens the picker, and border-default gave it 1.7:1 on the fill of the field, under the 3:1
- * WCAG 1.4.11 asks of the boundary of a control; border-strong gives 3.4:1 in light and 3.9:1 in
+ * ring, but the ring here is border-strong, not border-default: on the fill of the field
+ * border-default gave it 1.7:1, under the 3:1 WCAG 1.4.11 asks of a graphic needed to read the
+ * value (a white or a black colour on the field); border-strong gives 3.4:1 in light and 3.9:1 in
  * dark (measured on the render, chosen with vittorio 2026-11-11). The global palette flips the
  * role in dark and promotes it under pref-contrast-more: no rule in the pref sheets. While the
- * text names no colour the value is empty, and so is the disc: the ring alone. */
+ * text names no colour the value is empty, and so is the disc: the ring alone.
+ * A click on it opens the picker too, a shortcut for the pointer: the button at the end is the
+ * control, with its name and its place in the order of the keyboard (vittorio 2026-11-11: the
+ * swatch alone did not say it opened anything). */
 
 .swatch {
-  @apply focus-bounce;
-
   background-color: transparent;
   border: --spacing(25) solid rgb(var(--magma-border-strong));
   border-radius: var(--magma-radius-full);
@@ -20,56 +22,53 @@
   cursor: pointer;
   height: var(--private-input-icon-size);
   left: var(--private-input-icon-offset-inline);
-  margin: 0;
-  padding: 0;
   position: absolute;
   top: var(--private-input-icon-offset-block);
-
-  /* the outline of the focus moves, the colour does not: it is the value, at once, also while a
-     drag in the picker changes it */
-  transition-property: outline, outline-offset;
   width: var(--private-input-icon-size);
-}
-
-/* the target of the pointer reaches --spacing(600) where the disc is smaller (sm, 16px): the
- * minimum of WCAG 2.5.8, centred on the disc */
-
-.swatch::before {
-  content: '';
-  inset: calc(min(var(--private-input-icon-size), --spacing(600)) / 2 - --spacing(300));
-  position: absolute;
-}
-
-.swatch:focus-visible {
-  @apply focus-bounce--focused;
 }
 
 /* read-only or disabled, the swatch shows the colour and opens nothing */
 
-.swatch:disabled {
+.swatch--still {
   cursor: default;
 }
 
-/* The picker of the platform, opened by the swatch: rendered under it, so that the popup of the
- * browser opens next to the swatch, but invisible, out of reach of the pointer and of the
- * keyboard (tabindex -1), and hidden from assistive technologies, which reach it from the swatch. */
+/* the button of the picker stands where the microphone of a text field does */
+
+.color-picker-button {
+  fill: var(--mds-input-controls-color);
+  position: absolute;
+  right: var(--private-input-toggle-offset);
+  top: var(--private-input-toggle-offset);
+}
+
+/* The picker of the platform, opened by the button: rendered under it, so that the popup of the
+ * browser opens next to the button, but invisible, out of reach of the pointer and of the keyboard
+ * (tabindex -1), and hidden from assistive technologies, which reach it from the button. */
 
 .color-picker {
   border: 0;
   height: var(--private-input-icon-size);
-  left: var(--private-input-icon-offset-inline);
   margin: 0;
   opacity: 0;
   padding: 0;
   pointer-events: none;
   position: absolute;
+  right: var(--private-input-toggle-offset);
   top: var(--private-input-icon-offset-block);
   width: var(--private-input-icon-size);
 }
 
-/* the swatch keeps the start of the field: the spinner of await waits at its end */
+/* the swatch keeps the start of the field: the spinner of await waits at its end, before the
+ * button of the picker, and the text stops before both */
 
 :host([type='color']) .await {
   left: auto;
-  right: var(--private-input-icon-offset-inline);
+  right: var(--private-input-toggle-area);
+}
+
+:host([type='color'][await]) .input {
+  padding-right: calc(
+    var(--private-input-toggle-area) + var(--private-input-icon-size) + --spacing(200)
+  );
 }

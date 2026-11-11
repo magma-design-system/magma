@@ -423,7 +423,7 @@ test('a new colour is named after the colour picked until the person types a nam
   const nameOf = () => field('Name', modal).querySelector('mds-input')!.getAttribute('value')
   expect(nameOf()).toBe(nearestColorName('#4f8fd9'))
 
-  // the colour field of Magma (#1260): a code typed or a colour picked from its swatch
+  // the colour field of Magma (#1260): a code typed or a colour picked with its button
   const colorField = () => field('Color', modal).querySelector('mds-input[type="color"]')!
   const pick = async (hex: string) => {
     emit(colorField(), 'mdsInputChange', { value: hex })

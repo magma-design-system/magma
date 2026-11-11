@@ -1455,7 +1455,7 @@ export namespace Components {
          */
         "autofocus": boolean;
         /**
-          * Specifies if the spinner icon is shown, replacing the icon if present. A `color` field keeps its swatch, the value and the way to the picker, and shows the spinner at its end
+          * Specifies if the spinner icon is shown, replacing the icon if present. A `color` field keeps its swatch, which shows the value, and shows the spinner at its end, before the picker button
           * @default false
          */
         "await": boolean;
@@ -1507,7 +1507,7 @@ export namespace Components {
          */
         "maxlength"?: number;
         /**
-          * Toggles text recognition. A `color` field ignores it: a colour code is typed or picked, not dictated
+          * Toggles text recognition. A `color` field ignores it: a colour code is typed or picked, not dictated, and its end holds the button of the picker
          */
         "mic"?: boolean;
         /**
@@ -1566,7 +1566,7 @@ export namespace Components {
          */
         "tip"?: string;
         /**
-          * Specifies the type of input element. `color` holds a colour: the field stays a text field, where the code is typed and validated, with a swatch at its start that opens the colour picker of the platform. Its value, in the change event and in the form, is the colour as `#rrggbb` in lower case, or `''` while the text is empty or names no colour, which is a validation error; the text also takes `#rgb` and the code without `#`, in any case, and is written back as `#rrggbb` when the field is left
+          * Specifies the type of input element. `color` holds a colour: the field stays a text field, where the code is typed and validated, with a swatch of the colour at its start and a button at its end that opens the colour picker of the platform. Its value, in the change event and in the form, is the colour as `#rrggbb` in lower case, or `''` while the text is empty or names no colour, which is a validation error; the text also takes `#rgb` and the code without `#`, in any case, and is written back as `#rrggbb` when the field is left
           * @default 'text'
          */
         "type"?: InputTextType;
@@ -6922,7 +6922,7 @@ declare namespace LocalJSX {
          */
         "autofocus"?: boolean;
         /**
-          * Specifies if the spinner icon is shown, replacing the icon if present. A `color` field keeps its swatch, the value and the way to the picker, and shows the spinner at its end
+          * Specifies if the spinner icon is shown, replacing the icon if present. A `color` field keeps its swatch, which shows the value, and shows the spinner at its end, before the picker button
           * @default false
          */
         "await"?: boolean;
@@ -6963,7 +6963,7 @@ declare namespace LocalJSX {
          */
         "maxlength"?: number;
         /**
-          * Toggles text recognition. A `color` field ignores it: a colour code is typed or picked, not dictated
+          * Toggles text recognition. A `color` field ignores it: a colour code is typed or picked, not dictated, and its end holds the button of the picker
          */
         "mic"?: boolean;
         /**
@@ -7037,7 +7037,7 @@ declare namespace LocalJSX {
          */
         "tip"?: string;
         /**
-          * Specifies the type of input element. `color` holds a colour: the field stays a text field, where the code is typed and validated, with a swatch at its start that opens the colour picker of the platform. Its value, in the change event and in the form, is the colour as `#rrggbb` in lower case, or `''` while the text is empty or names no colour, which is a validation error; the text also takes `#rgb` and the code without `#`, in any case, and is written back as `#rrggbb` when the field is left
+          * Specifies the type of input element. `color` holds a colour: the field stays a text field, where the code is typed and validated, with a swatch of the colour at its start and a button at its end that opens the colour picker of the platform. Its value, in the change event and in the form, is the colour as `#rrggbb` in lower case, or `''` while the text is empty or names no colour, which is a validation error; the text also takes `#rgb` and the code without `#`, in any case, and is written back as `#rrggbb` when the field is left
           * @default 'text'
          */
         "type"?: InputTextType;
