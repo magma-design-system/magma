@@ -583,6 +583,15 @@ const playTipOnTheBorder = async ({ canvasElement }: { canvasElement: HTMLElemen
     canvasElement.querySelectorAll('mds-input, mds-input-date, mds-input-select'),
   );
   await waitFor(() => fields.forEach((field) => expect(field).toHaveAttribute('hydrated')));
+  // the closed calendar of a date hides once its dropdown hydrates: until then the three calendars
+  // of the page show the same month to axe, as landmarks of the same name
+  await waitFor(() =>
+    fields.forEach((field) =>
+      field
+        .shadowRoot!.querySelectorAll('mds-dropdown')
+        .forEach((dropdown) => expect(getComputedStyle(dropdown).display).toBe('none')),
+    ),
+  );
   await waitFor(() =>
     fields.forEach((field) => {
       const top = field.getBoundingClientRect().top;
