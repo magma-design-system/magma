@@ -2,6 +2,7 @@ import { h } from '@stencil/core';
 import { iconsDictionary } from '@type/icon';
 import { themeVariantDictionary } from '@type/variant';
 import { toneMinimalBoxVariantDictionary } from '@type/tone';
+import { bannerTypographyDictionary } from '../meta/dictionary';
 
 export default {
   title: 'UI / Feedback / Banner',
@@ -24,6 +25,13 @@ export default {
       description:
         'The name of the icon set. The icon set is strictly realted to @maggioli-design-system/icons',
       options: iconsDictionary,
+      control: { type: 'select' },
+    },
+    typography: {
+      type: { name: 'string' },
+      description:
+        'The style of the headline. Left out, it follows the place: h6 in the page, h5 as the window of a dialog',
+      options: bannerTypographyDictionary,
       control: { type: 'select' },
     },
     tone: {

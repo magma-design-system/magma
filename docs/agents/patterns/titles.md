@@ -41,13 +41,13 @@ cases:
     carried-by: [text-title-section, --text-size-title-section, mds-text typography=section]
   - id: dialog
     role: dialog
-    where: "the style `h5`, the headline of the window; the dialog takes its name from aria-label on mds-modal, since the headline is hidden from screen readers. mds-banner draws its headline in h6 today (#1192)"
+    where: "the style `h5`, the headline of the window: mds-banner draws it by default as the window of mds-modal, with no attribute to write; the dialog takes its name from aria-label on mds-modal, since the headline is hidden from screen readers"
     use: ["mds-modal aria-label", "mds-banner slot=window headline"]
     serves: intuitive
-    carried-by: [text-title-dialog, --text-size-title-dialog, mds-text typography=dialog]
+    carried-by: [mds-banner slot=window, text-title-dialog, --text-size-title-dialog, mds-text typography=dialog]
   - id: part
     role: part
-    where: "the style `h6` (16px, weight 700), the tag of its place (`h2` under the page, `h3` in a section); the components that draw a part give it already (the headline of mds-banner, mds-push-notification-item, mds-file); an item of an accordion is a part, `h6` by default, its `tag` the level of its place (`h3` under a section `h2`)"
+    where: "the style `h6` (16px, weight 700), the tag of its place (`h2` under the page, `h3` in a section); the components that draw a part give it already (the headline of mds-banner in the page, mds-push-notification-item, mds-file); an item of an accordion is a part, `h6` by default, its `tag` the level of its place (`h3` under a section `h2`)"
     use: ["mds-text typography=part", "mds-accordion-item tag"]
     serves: intuitive
     carried-by: [mds-banner, mds-push-notification-item, mds-file, text-title-part, --text-size-title-part, mds-text typography=part]
@@ -120,8 +120,8 @@ A case that leaves a variable out holds for any of its values.
 | --- | --- | --- | --- | --- | --- |
 | `page` | role: page | the style `h3` (30px), the tag `h1` | `mds-text typography=page tag=h1` | intuitive | `text-title-page`, `--text-size-title-page`, `mds-text typography=page` |
 | `section` | role: section | the style `h5` (20px), the tag of its place in the outline (`h2` under the page) | `mds-text typography=section tag=h2` | intuitive | `text-title-section`, `--text-size-title-section`, `mds-text typography=section` |
-| `dialog` | role: dialog | the style `h5`, the headline of the window; the dialog takes its name from aria-label on mds-modal, since the headline is hidden from screen readers. mds-banner draws its headline in h6 today (#1192) | `mds-modal aria-label`, `mds-banner slot=window headline` | intuitive | `text-title-dialog`, `--text-size-title-dialog`, `mds-text typography=dialog` |
-| `part` | role: part | the style `h6` (16px, weight 700), the tag of its place (`h2` under the page, `h3` in a section); the components that draw a part give it already (the headline of mds-banner, mds-push-notification-item, mds-file); an item of an accordion is a part, `h6` by default, its `tag` the level of its place (`h3` under a section `h2`) | `mds-text typography=part`, `mds-accordion-item tag` | intuitive | `mds-banner`, `mds-push-notification-item`, `mds-file`, `text-title-part`, `--text-size-title-part`, `mds-text typography=part` |
+| `dialog` | role: dialog | the style `h5`, the headline of the window: mds-banner draws it by default as the window of mds-modal, with no attribute to write; the dialog takes its name from aria-label on mds-modal, since the headline is hidden from screen readers | `mds-modal aria-label`, `mds-banner slot=window headline` | intuitive | `mds-banner slot=window`, `text-title-dialog`, `--text-size-title-dialog`, `mds-text typography=dialog` |
+| `part` | role: part | the style `h6` (16px, weight 700), the tag of its place (`h2` under the page, `h3` in a section); the components that draw a part give it already (the headline of mds-banner in the page, mds-push-notification-item, mds-file); an item of an accordion is a part, `h6` by default, its `tag` the level of its place (`h3` under a section `h2`) | `mds-text typography=part`, `mds-accordion-item tag` | intuitive | `mds-banner`, `mds-push-notification-item`, `mds-file`, `text-title-part`, `--text-size-title-part`, `mds-text typography=part` |
 | `group` | role: group | a `fieldset` with no border and no inset of its own, its title the `legend` in the style `h6`: not a heading of the page; `field-group` on the fieldset draws it, the legend `gap-title-content` (300) from its first field |  | inclusive, intuitive | `field-group`, `text-title-group`, `--text-size-title-group` |
 
 No gaps: every combination has a case or is not applicable.
@@ -134,7 +134,7 @@ The ladder at the default theme, and how to write each role:
 | --- | --- | --- | --- | --- |
 | `page` | `h3` (30px) | `h1` | `typography="page" tag="h1"` | `text-title-page` |
 | `section` | `h5` (20px) | `h2` | `typography="section" tag="h2"` | `text-title-section` |
-| `dialog` | `h5` | the headline of the window | drawn by `mds-banner` (`h6` until #1192) | `text-title-dialog` |
+| `dialog` | `h5` | the headline of the window | drawn by `mds-banner slot="window"`, its default there | `text-title-dialog` |
 | `part` | `h6` (16px, weight 700) | the level of its place | `typography="part"` with the tag of its place | `text-title-part` |
 | `group` | `h6` | `legend` | `field-group` on the `fieldset` | `text-title-group` |
 
@@ -188,8 +188,6 @@ Situations every application has, each with its case: they give the examples, th
 
 ## Magma gaps
 
-- `mds-banner` draws its headline in `h6`, always: the window of a dialog needs `h5`, a choice
-  of the style of the headline (#1192).
 - The examples of `mds-card-header` give 13 titles `h5` with no `tag`, so a card renders an
   `<h5>` and skips the levels in between; `mds-note` does the same in 4 of its 7: they take
   `h6` with the tag of their place (#1189, the examples of the components aligned).
@@ -209,3 +207,4 @@ Situations every application has, each with its case: they give the examples, th
 | 2026-10-31 | The file of the domain: a case per role, `one-h1` and `tag-is-structure` written here from the Typography page of the docs site, which keeps the reasons around them. | The issue of the five domains (#1197): the rules the agents do not read on the docs site move into the package. |
 | 2026-11-05 | The kind of the domain is `design-language`, no longer `foundation`. | Named after what the file is, a domain of the design language, not after the item of the docs site that holds it: Foundation there is the umbrella of the decisions Magma stands on (principles, accessibility, color, typography, illustration, content), and the design language is one group of it. The design language, the building blocks and the patterns together are Behavior, as the header of the studio names them (#1253). |
 | 2026-11-07 | The title of an item of an accordion is a heading of the page only with `tag`, the level of its place: the heading wraps the button that opens the item, and the label is a `span` whatever its style. Left out, the item is a button, out of the outline. | The Accordion pattern of the WAI-ARIA Authoring Practices, and the button holds phrasing content only: the `h6` the label rendered inside it was invalid HTML, and Chromium listed it among the headings at the level of its style (h2 then h6, axe `heading-order`). No default level: only the page knows the place of the item. Rejected: the items never headings, where whoever navigates by headings cannot reach them. Chosen on the real component, with its proof (the accessibility tree of Chromium). https://github.com/magma-design-system/magma/issues/1304 |
+| 2026-11-10 | The headline of `mds-banner` takes the title of its place: `dialog` (`h5`) as the window of `mds-modal`, `part` (`h6`) in the page; its `typography` writes `h6` or `h5` instead, nothing larger. | The default of a component is the strongest carrier of a rule: `dialog` costs no attribute and a dialog cannot forget it. The default is the role, not the level, so a theme that moves a role moves the headline too (`by-role`). Rejected: `h4`, too large for a banner (vittorio, on #1189). https://github.com/magma-design-system/magma/issues/1192 |
