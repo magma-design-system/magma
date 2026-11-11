@@ -1,16 +1,26 @@
 name: codemods-ci
 
 # Dedicated CI for @maggioli-design-system/magma-codemods, independent of the
-# shared package pipeline. Runs only when the package changes.
+# shared package pipeline. Runs only when the package changes, or the root
+# package.json, package-lock.json and .nvmrc: the toolchain it builds and tests
+# with (the Node version, the installed jest, ts-jest, ts-morph, typescript), as
+# in the `changes` job of _package-pipeline.yml. Without them a root-only bump
+# (Renovate) ran it neither on the pull request nor on main.
 on:
   push:
     branches: [main]
     paths:
       - 'projects/codemod/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.nvmrc'
       - '.github/workflows/codemods-ci.yml'
   pull_request:
     paths:
       - 'projects/codemod/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.nvmrc'
       - '.github/workflows/codemods-ci.yml'
 
 jobs:

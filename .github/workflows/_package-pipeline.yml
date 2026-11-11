@@ -4,7 +4,8 @@
 #
 # Path filtering happens in the `changes` job instead of the caller's trigger:
 # GitHub evaluates trigger `paths` only on the first 300 files of the diff, so
-# big merges silently skip workflows.
+# big merges silently skip workflows. Every pipeline also counts the root
+# package.json, package-lock.json and .nvmrc (see the `changes` job).
 #
 # The callers run on pull requests and in the merge queue. A commit landed by
 # the queue keeps the SHA of its merge-group run, so that run is the CI of the
@@ -62,7 +63,7 @@ on:
         default: false
     outputs:
       changed:
-        description: Whether files matching `path` changed in this event
+        description: Whether files matching `path`, `extra-path` or the root toolchain (package.json, package-lock.json, .nvmrc) changed in this event; always true in a merge group
         value: ${{ jobs.changes.outputs.changed }}
 
 env:
@@ -92,10 +93,25 @@ jobs:
         if: ${{ github.event_name != 'merge_group' }}
         id: filter
         with:
+          # Besides the files of its project, every pipeline counts the root package.json,
+          # package-lock.json and .nvmrc: they are the toolchain every package builds and tests
+          # with (the Node version, the installed version of every dependency: vitest,
+          # playwright, typescript, stencil). A pull request that changes only those, a Renovate
+          # bump, otherwise skips every build and test job on the pull request, and a skipped job
+          # satisfies a required check: it looks green and fails for the first time in the merge
+          # queue, taking the pull requests grouped behind it out too (#1291, #1369). This file
+          # counts too, so that a change to the pipeline runs it before the queue. The patterns
+          # match from the root (picomatch with `dot` only, no `matchBase`, in
+          # dorny/paths-filter src/filter.ts): the package.json of a project counts only
+          # through `path`.
           filters: |
             project:
               - '${{ inputs.path }}'
               ${{ inputs.extra-path && format('- ''{0}''', inputs.extra-path) || '' }}
+              - 'package.json'
+              - 'package-lock.json'
+              - '.nvmrc'
+              - '.github/workflows/_package-pipeline.yml'
 
   build:
     needs: [changes]

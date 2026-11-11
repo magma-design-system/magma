@@ -365,7 +365,7 @@ Caveats when producing the two `documentation.json`:
 
 Two dedicated, independent GitHub Actions workflows (not part of the shared semantic-release flow):
 
-- **`codemods-ci.yml`** — build + test, on push to `main` and on pull requests touching `projects/codemod/**`.
+- **`codemods-ci.yml`** — build + test, on push to `main` and on pull requests touching `projects/codemod/**` or the root toolchain (`package.json`, `package-lock.json`, `.nvmrc`).
 - **`codemods-publish.yml`** — manual (`workflow_dispatch`): build + test → bump (`patch|minor|major|pre*`,
   with a selectable prerelease id) → `npm publish` via OIDC trusted publishing → push the tag
   `magma-codemods@<version>`. No commit is pushed to `main` (tag-only). Run it with `dry-run: true` first.

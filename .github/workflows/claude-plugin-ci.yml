@@ -2,7 +2,11 @@ name: claude-plugin-ci
 
 # The Claude Code plugin of Magma (projects/claude-plugin, #1114): its skills are generated
 # from templates and from what they list (the tools of the MCP server, the rules of the lint,
-# the install guide, the codemod), so the check runs when any of those change.
+# the install guide, the codemod), so the check runs when any of those change. So it does
+# when the root package.json, package-lock.json or .nvmrc change: the toolchain it runs with
+# (the Node version, the installed tsx and typescript that run the generator), as in the
+# `changes` job of _package-pipeline.yml; without them a root-only bump (Renovate) ran it
+# neither on the pull request nor on main.
 on:
   push:
     branches: [main]
@@ -14,6 +18,9 @@ on:
       - 'projects/lint/src/**'
       - 'docs/agents/**'
       - 'projects/codemod/package.json'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.nvmrc'
       - '.github/workflows/claude-plugin-ci.yml'
   pull_request:
     paths:
@@ -24,6 +31,9 @@ on:
       - 'projects/lint/src/**'
       - 'docs/agents/**'
       - 'projects/codemod/package.json'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.nvmrc'
       - '.github/workflows/claude-plugin-ci.yml'
 
 jobs:
