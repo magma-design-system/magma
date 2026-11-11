@@ -146,7 +146,7 @@
     "@floating-ui/dom": "1.8.0",
     "@maggioli-design-system/design-tokens": "^16.0.0",
     "@maggioli-design-system/styles": "^17.7.0",
-    "@stencil/core": "4.45.2",
+    "@stencil/core": "4.45.3",
     "clsx": "2.1.1",
     "dayjs": "1.11.23",
     "filesize": "10.1.6",
