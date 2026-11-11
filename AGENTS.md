@@ -78,7 +78,7 @@ nx run stencil:test                                  # run the unit and browser 
 nx run stencil:test-storybook                        # run the stories' play functions and a11y checks headless (Vitest project `storybook`)
 nx run stencil:check.api-snapshot                    # after a build: fail if the committed magma.api.txt differs from the built component API
 nx run stencil:check.types                           # after a build: tsc on the tests and stories too (tsconfig.json), as the CI types job
-nx run stencil:check.public-types                    # after a build: fail if a published .d.ts names a module through a tsconfig path alias (CI types job)
+nx run stencil:check.public-types                    # after a build: fail if a published .d.ts names a module a consumer cannot type: a tsconfig path alias, a package it does not install or that has no types (CI types job)
 nx run stencil:check.pr-risk                         # the review level of your branch and its semver check against main (what the pr-risk workflow posts)
 nx run stencil:check.patterns                        # after a build: the patterns of docs/agents/patterns, their cases, components, lint rules and links (docs/PATTERNS.md)
 nx run stencil:generate.pattern <id> --group <g>     # a new pattern from the template; with -- --sync, the sections written from the frontmatter

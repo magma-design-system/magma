@@ -247,7 +247,8 @@ jobs:
   # in the editor (#946). Runs tsc on tsconfig.json, the editor's program; it imports
   # src/fixtures/icons.json and the svg-icons dist, so it needs the build artifact.
   # Then guards the types magma publishes: no .d.ts of dist/ or loader/ may name a module
-  # through a path alias of the stencil tsconfig, which no consumer resolves (#1357).
+  # a consumer cannot type: a path alias of the stencil tsconfig (#1357), a package it does
+  # not install or that has no types for it (#1360).
   types:
     needs: [magma]
     if: ${{ needs.magma.outputs.changed == 'true' }}

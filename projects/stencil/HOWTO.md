@@ -173,14 +173,27 @@ What it asks of a test or a story:
 The same job then checks the types magma publishes, which a consumer type-checks:
 
 ```
-nx run stencil:check.public-types    # no path alias in the published .d.ts, after a build
+nx run stencil:check.public-types    # every module the published .d.ts name is typed for a consumer, after a build
 ```
 
-It reads every `.d.ts` of `dist/` and `loader/` and fails on a module named through a path alias of
-the stencil tsconfig (`@type/*`, `@dictionary/*`, ...): Stencil rewrites the alias of an import, not
-the one of a re-export, and a consumer cannot resolve it (TS2307 with `skipLibCheck: false`, `any`
-otherwise, #1357). Its pure part is tested in `scripts/public-types-lib.spec.ts`; ESLint stops the
-re-export in the source (`docs/CODING_STANDARDS.md`, Stencil project).
+It reads every `.d.ts` of `dist/` and `loader/` and fails on a module a consumer's TypeScript cannot
+type (TS2307 or TS7016 with `skipLibCheck: false`, `any` otherwise):
+
+- a module named through a path alias of the stencil tsconfig (`@type/*`, `@dictionary/*`, ...):
+  Stencil rewrites the alias of an import, not the one of a re-export (#1357). ESLint stops the
+  re-export in the source (`docs/CODING_STANDARDS.md`, Stencil project);
+- a package the install of magma does not give its consumer with types (#1360): one outside
+  `dependencies` and `peerDependencies` (`@stencil/store` is a devDependency the build bundles),
+  one that ships no types (`luxon`), one typed by an `@types` package magma does not depend on
+  (`@types/mustache`, which resolves in the monorepo only), and a Node built-in outside the hydrate
+  app. TypeScript says whether and where a package has types (`ts.resolveModuleName`, `bundler`).
+
+A type of such a package reaches the `.d.ts` through a public member: a `@State()` or another
+member without `private` (a private one is emitted with its name only), or a type the declaration
+emit infers (`createStore(...)` writes `import("@stencil/store").ObservableMap<...>`). Make the member
+private or give it a type of our own; shipping the types instead (the package or its `@types` in
+`dependencies`) changes what every consumer installs. The pure part of the check is tested in
+`scripts/public-types-lib.spec.ts`.
 
 ### Wrapper tests
 
