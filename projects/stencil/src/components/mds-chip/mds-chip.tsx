@@ -68,6 +68,17 @@ export class MdsChip {
   @Prop({ reflect: true }) readonly selectable?: boolean = false;
 
   /**
+   * A colour drawn as a round swatch where the icon goes, in place of `icon`: any CSS colour
+   * (`#2f6fd0`, `rgb(47 111 208)`, `oklch(55% 0.2 260)`). It is a value of the product, the
+   * colour the label names (a family of colours, a category, a calendar), not a role of Magma:
+   * the chip draws it as it is given in every mode and theme, inside a ring that keeps it visible
+   * on the chip, at rest and selected. Decorative: hidden from assistive technologies, since the
+   * label names it. A value that is not a colour draws the empty ring.
+   * @example '#2f6fd0'
+   */
+  @Prop() readonly swatch?: string;
+
+  /**
    * Sets the color variant of the component
    */
   @Prop({ reflect: true }) readonly variant?: ChipVariantType = 'primary';
@@ -160,6 +171,7 @@ export class MdsChip {
 
   render() {
     const interactive = !!this.clickable;
+    const swatch = this.swatch?.trim();
     return (
       <Host
         aria-disabled={this.disabled ? 'true' : 'false'}
@@ -168,10 +180,17 @@ export class MdsChip {
         pref-mode={preferenceStore.state.mode}
         pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
-        {this.icon && (
-          <div aria-hidden="true" class="icon-area">
-            <mds-icon class="icon" name={this.icon} />
-          </div>
+        {/* The swatch takes the place of the icon: one leading mark, never two. Its colour goes
+         * through background-color, which takes a colour and nothing else (no url(), no
+         * gradient), and a value the browser cannot read as one leaves the ring empty. */}
+        {swatch ? (
+          <div aria-hidden="true" class="swatch" style={{ backgroundColor: swatch }} />
+        ) : (
+          this.icon && (
+            <div aria-hidden="true" class="icon-area">
+              <mds-icon class="icon" name={this.icon} />
+            </div>
+          )
         )}
         <div class="label-wrapper">
           {/* While clickable, the label is a button, and a toggle button states its state

@@ -73,11 +73,6 @@
   gap: var(--magma-rhythm-inline);
 }
 
-/* a colour of the panel: its swatch is the icon of the chip, on no background of its own */
-.scales-chip {
-  --mds-chip-icon-background: transparent;
-}
-
 /* a scale card: the title, its badge and its count in one row, the menu at the end */
 
 .scales-card-title {

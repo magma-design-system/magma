@@ -11,8 +11,8 @@ import { SurfaceManager } from '../src/surfaces.js'
 import { LangProvider } from '../src/i18n.js'
 import { textOf } from './text.mjs'
 
-// The Semantic surface page, written in Magma: the groups are chips, the families toggle
-// buttons, the levels sliders, the preview two selects and two tabs. jsdom does not upgrade the
+// The Semantic surface page, written in Magma: the groups are chips, the families chips with
+// the swatch of their colour, the levels sliders, the preview two selects and two tabs. jsdom does not upgrade the
 // components: the test dispatches the events they emit and reads what the page writes back.
 
 const root = document.createElement('div')
@@ -77,28 +77,38 @@ test('a group is a Magma chip: choosing it hands back the group, status stays on
   expect(onToggleGroupSurface).toHaveBeenLastCalledWith('tone', false)
 })
 
-test('a family is a toggle button with the swatch of its colour', async () => {
-  const families = [...root.querySelectorAll<HTMLButtonElement>('button.surfaces-family')]
+// the families of a list, as the chips of their row
+const familiesOf = (label: string) => [
+  ...root.querySelectorAll(`.surfaces-choices[aria-label="${label}"] mds-chip`),
+]
+
+test('a family is a selectable Magma chip with the swatch of its colour', async () => {
+  const families = [...familiesOf('Surface families'), ...familiesOf('Status families')]
   expect(families.length).toBeGreaterThan(4)
-  for (const family of families) expect(family.querySelector('.studio-swatch')).not.toBeNull()
+  const colors = (initialConfig as MagmaConfig).colors
+  for (const family of families) {
+    expect(family.hasAttribute('selectable')).toBe(true)
+    const color = colors.find((one) => one.name.endsWith(`.${family.getAttribute('label')}`))!
+    expect(family.getAttribute('swatch')).toBe(color.color)
+  }
 
-  const porcelain = families.find((family) => family.textContent?.includes('porcelain'))!
-  expect(porcelain.getAttribute('aria-pressed')).toBe('true')
-  await act(() => porcelain.click())
-  expect(onToggleSurface).toHaveBeenCalledWith('tone.porcelain', false)
+  const porcelain = families.find((family) => family.getAttribute('label') === 'porcelain')!
+  expect(porcelain.hasAttribute('selected')).toBe(true)
+  await emit(porcelain, 'mdsChipSelect', { selected: undefined })
+  expect(onToggleSurface).toHaveBeenLastCalledWith('tone.porcelain', false)
+  const kaolin = families.find((family) => family.getAttribute('label') === 'kaolin')!
+  await emit(kaolin, 'mdsChipSelect', { selected: true })
+  expect(onToggleSurface).toHaveBeenLastCalledWith('tone.kaolin', true)
 
-  // a status family follows its group, which is on: it says so
-  const info = families.find((family) => family.textContent?.includes('info'))!
-  expect(info.hasAttribute('data-inherited')).toBe(true)
-  expect(info.querySelector('mds-badge')?.getAttribute('label')).toBe('via status')
+  // a status family follows its group, which is on: the badge beside it says so
+  const info = families.find((family) => family.getAttribute('label') === 'info')!
+  expect(info.hasAttribute('selected')).toBe(true)
+  expect(info.parentElement?.querySelector('mds-badge')?.getAttribute('label')).toBe('via status')
+  expect(info.parentElement?.getAttribute('title')).toBe('status.info (follows the status group)')
 })
 
 test('the status families sit in a row of their own, under the others, saying they are never a theme', () => {
-  const lists = [...root.querySelectorAll('.surfaces-choices[role="group"]')]
-  const names = (label: string) =>
-    [...lists.find((list) => list.getAttribute('aria-label') === label)!.querySelectorAll('button.surfaces-family')].map(
-      (family) => family.textContent?.replace('via status', '').trim(),
-    )
+  const names = (label: string) => familiesOf(label).map((family) => family.getAttribute('label'))
 
   const status = (initialConfig as MagmaConfig).colors
     .filter((color) => color.name.startsWith('status.'))

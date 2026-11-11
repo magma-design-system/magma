@@ -39,6 +39,12 @@ export default {
       type: { name: 'boolean' },
       description: 'Sets if the component change is status to selected when is clicked',
     },
+    swatch: {
+      type: { name: 'string' },
+      control: { type: 'color' },
+      description:
+        'A colour of the product drawn as a round swatch where the icon goes, in place of `icon`',
+    },
     tone: {
       type: { name: 'string' },
       options: toneMinimalVariantDictionary,
@@ -104,6 +110,28 @@ export const Icon = {
     label: 'Bovaro del Bernese',
     icon: 'mi/baseline/pets',
   },
+};
+
+/** Colours of the product, not roles: a swatch as light and as dark as the chip keeps its ring. */
+const families = [
+  { label: 'porcelain', swatch: '#f4f1ec', selected: true },
+  { label: 'kaolin', swatch: '#9aa3ad' },
+  { label: 'fireclay', swatch: '#a89586' },
+  { label: 'ink', swatch: '#1b1d22' },
+  { label: 'blue', swatch: '#2f6fd0', selected: true },
+  { label: 'orange', swatch: 'oklch(70% 0.19 50)' },
+];
+
+const SwatchTemplate = () => (
+  <div class="flex flex-wrap gap-200">
+    {families.map(({ label, swatch, selected }) => (
+      <mds-chip key={label} label={label} swatch={swatch} selectable selected={selected}></mds-chip>
+    ))}
+  </div>
+);
+
+export const Swatch = {
+  render: SwatchTemplate,
 };
 
 export const Deletable = {

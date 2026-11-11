@@ -1,4 +1,5 @@
 import { render } from '@stencil/vitest';
+import { mockIconFetch } from '@test/fetch';
 import { themeLabelVariantDictionary } from '@type/variant';
 import { userEvent } from 'vitest/browser';
 
@@ -191,6 +192,109 @@ describe('mds-chip', () => {
     expect(getLabel(root)).not.toHaveAttribute('role');
     expect(getLabel(root)).not.toHaveAttribute('aria-pressed');
   });
+  // the colour of a family, a category, a calendar where the icon goes (#1263)
+  describe('swatch', () => {
+    beforeEach(() => mockIconFetch());
+
+    const swatchOf = (host: HTMLElement): HTMLElement | null =>
+      host.shadowRoot!.querySelector<HTMLElement>('.swatch');
+
+    /** What makes the ring visible: its width, its style and its colour. */
+    const ringOf = (swatch: HTMLElement) => {
+      const style = getComputedStyle(swatch);
+      return {
+        color: style.borderTopColor,
+        style: style.borderTopStyle,
+        width: style.borderTopWidth,
+      };
+    };
+
+    it('draws the colour it is given, round, in the place of the icon', async () => {
+      const { root } = await render('<mds-chip label="kaolin" swatch="#2f6fd0"></mds-chip>');
+
+      const swatch = swatchOf(root)!;
+      expect(swatch).not.toBeNull();
+      expect(getComputedStyle(swatch).backgroundColor).toBe('rgb(47, 111, 208)');
+      expect(getComputedStyle(swatch).borderRadius).not.toBe('0px');
+      // before the label, as the icon is
+      expect(swatch.nextElementSibling).toHaveClass('label-wrapper');
+    });
+
+    it('is hidden from assistive technologies: the label names it', async () => {
+      const { root } = await render(
+        '<mds-chip label="kaolin" swatch="#2f6fd0" selectable></mds-chip>',
+      );
+
+      expect(swatchOf(root)).toHaveAttribute('aria-hidden', 'true');
+      expect(swatchOf(root)!.textContent).toBe('');
+      expect(getLabel(root).textContent?.trim()).toBe('kaolin');
+    });
+
+    it('keeps its colour and its ring when the chip is selected', async () => {
+      const { root, waitForChanges } = await render(
+        '<mds-chip label="kaolin" swatch="#2f6fd0" selectable></mds-chip>',
+      );
+      const resting = ringOf(swatchOf(root)!);
+      expect(resting.style).toBe('solid');
+      expect(resting.width).not.toBe('0px');
+      expect(resting.color).not.toBe('rgba(0, 0, 0, 0)');
+
+      getLabel(root).click();
+      await waitForChanges();
+
+      expect(root).toHaveAttribute('selected');
+      expect(getLabel(root)).toHaveAttribute('aria-pressed', 'true');
+      expect(getComputedStyle(swatchOf(root)!).backgroundColor).toBe('rgb(47, 111, 208)');
+      expect(ringOf(swatchOf(root)!)).toEqual(resting);
+    });
+
+    it('takes the place of the icon when both are set', async () => {
+      const { root } = await render(
+        '<mds-chip label="kaolin" swatch="#2f6fd0" icon="mi/baseline/pets"></mds-chip>',
+      );
+
+      expect(swatchOf(root)).not.toBeNull();
+      expect(root.shadowRoot!.querySelector('.icon-area')).toBeNull();
+      expect(root.shadowRoot!.querySelector('mds-icon')).toBeNull();
+    });
+
+    it('draws the empty ring for a value that is not a colour', async () => {
+      const { root } = await render('<mds-chip label="kaolin" swatch="not-a-colour"></mds-chip>');
+
+      expect(getComputedStyle(swatchOf(root)!).backgroundColor).toBe('rgba(0, 0, 0, 0)');
+      expect(ringOf(swatchOf(root)!).width).not.toBe('0px');
+    });
+
+    it('follows the prop set by code, and gives the icon back once removed', async () => {
+      const { root, waitForChanges } = await render<HTMLMdsChipElement>(
+        '<mds-chip label="kaolin" icon="mi/baseline/pets"></mds-chip>',
+      );
+
+      root.swatch = 'rgb(200 40 40)';
+      await waitForChanges();
+      expect(getComputedStyle(swatchOf(root)!).backgroundColor).toBe('rgb(200, 40, 40)');
+      expect(root.shadowRoot!.querySelector('.icon-area')).toBeNull();
+
+      root.swatch = undefined;
+      await waitForChanges();
+      expect(swatchOf(root)).toBeNull();
+      expect(root.shadowRoot!.querySelector('.icon-area')).not.toBeNull();
+    });
+
+    it('leaves the chip as it is without one, or with an empty one', async () => {
+      const plain = await render('<mds-chip label="kaolin" icon="mi/baseline/pets"></mds-chip>');
+      const markup = plain.root.shadowRoot!.innerHTML;
+      expect(swatchOf(plain.root)).toBeNull();
+
+      for (const empty of ['', '   ']) {
+        const { root } = await render(
+          `<mds-chip label="kaolin" icon="mi/baseline/pets" swatch="${empty}"></mds-chip>`,
+        );
+        expect(root.shadowRoot!.innerHTML).toBe(markup);
+      }
+    });
+  });
+
   describe('the label color variants', () => {
     /** The value that drives the paint; a variant with no block of its own never reaches it. */
     const painted = async (variant: string): Promise<string> => {

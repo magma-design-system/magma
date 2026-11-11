@@ -4,7 +4,7 @@ import { h, render } from 'preact'
 import { useState } from 'preact/hooks'
 
 import { LangProvider } from '../src/i18n.js'
-import { Check, Field, Range, Select, TextInput, swatchIcon } from '../src/magma.js'
+import { Check, Field, Range, Select, TextInput } from '../src/magma.js'
 
 // The form controls of Magma hand back the next value, as a native control of Preact does, and
 // never the echo of the value the page set: mds-input, mds-input-select and mds-input-range emit
@@ -189,12 +189,4 @@ test('what the person types right after a commit is kept, not reset by the value
   await new Promise((resolve) => setTimeout(resolve, 150))
   expect(calls).toEqual(['city, palette', ''])
   expect((root.querySelector('mds-input') as unknown as { value: string }).value).toBe('')
-})
-
-test('the swatch of a chip draws the colour, and nothing that is not a colour', () => {
-  expect(swatchIcon('#4f8fd9')).toContain('fill="#4f8fd9"')
-  expect(swatchIcon('rgb(10 20 30 / 0.5)')).toContain('fill="rgb(10 20 30 / 0.5)"')
-  expect(swatchIcon(undefined)).toContain('fill="none"')
-  // a colour from a loaded file goes into the markup mds-icon draws: no way out of the attribute
-  expect(swatchIcon('red"/><script>alert(1)</script>')).toContain('fill="none"')
 })
