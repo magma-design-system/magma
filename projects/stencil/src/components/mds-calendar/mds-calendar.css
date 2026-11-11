@@ -35,6 +35,10 @@
 }
 
 .calendar-view {
+
+  /* two calendars side by side are stretched to the taller one: a month of five weeks next to one
+     of six spread the extra height between its rows and started its grid lower (#341) */
+  align-content: start;
   background-color: var(--mds-calendar-background);
   border-radius: inherit;
   box-sizing: border-box;

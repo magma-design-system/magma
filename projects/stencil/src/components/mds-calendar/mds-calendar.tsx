@@ -22,6 +22,20 @@ import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
 import localeIt from './meta/locale.it.json';
+import { CalendarRangeEndType } from './meta/types';
+import { CalendarCellSelectionPositionType } from '@component/mds-calendar-cell/meta/types';
+
+/** How a day cell draws the selection. */
+interface CellMark {
+  selection: CalendarCellSelectionPositionType;
+  preview: boolean;
+}
+
+const isSet = (value: string | null | undefined): value is string =>
+  value !== null && value !== undefined && value !== '';
+
+/** An ISO date as the midnight that starts it, the time of the days of the grid. */
+const toDay = (iso: string): DateTime => DateTime.fromISO(iso).startOf('day');
 
 /**
  * @slot preselection - Add `HTML elements` or `components` shown in the calendar preselection area.
@@ -46,9 +60,6 @@ export class MdsCalendar {
   @State() currentDate: DateTime = DateTime.now();
   @State() weekDaysinMonth: DateTime[] = [];
   @State() weekdays: string[] = [];
-  @State() startDateIdentifier: string | null = null;
-  @State() endDateIdentifier: string | null = null;
-  @State() isFirstClick: boolean = true;
   @State() currentView: 'calendar' | 'years' | 'months' = 'calendar';
   @State() selectedYear: number = this.currentDate.year;
 
@@ -112,6 +123,17 @@ export class MdsCalendar {
   @Prop({ reflect: true }) readonly endDate: string | null = null;
 
   /**
+   * Specifies the end of the range the next click picks, `start` or `end`, for a parent that
+   * lets the user choose it, as `mds-input-date-range` does from its fields and from the header
+   * of its panel. A click never puts the range backwards: a day after the end, picked as the
+   * start, becomes the new start and empties the end; a day before the start, picked as the end,
+   * becomes the new start and leaves the end to pick. With no start, a click picks the start.
+   * Left unset, the calendar picks the start, then the end, and a click on a complete range
+   * starts a new one.
+   */
+  @Prop({ reflect: true }) readonly activeEnd?: CalendarRangeEndType;
+
+  /**
    * Specifies the minimum date of the selection
    * @description It's in ISO format (YYYY-MM-DD).
    * @example '2023-10-01'
@@ -153,56 +175,13 @@ export class MdsCalendar {
   @Event({ eventName: 'mdsCalendarPreselect' }) checkPreselectionsEmitter: EventEmitter<void>;
 
   @Watch('startDate')
-  handleStartDate(newValue: string | null): void {
-    const startDate = this.parseDateProp(newValue, 'start-date');
-
-    if (startDate !== null) {
-      this.internalStartDate = startDate;
-      this.startDateTime = DateTime.fromISO(startDate);
-      this.startDateIdentifier = this.startDateTime.toISODate();
-
-      if (this.internalEndDate !== null && this.internalEndDate !== '') {
-        this.orderRange();
-      } else if (!this.singlePicker) {
-        this.isFirstClick = false;
-      }
-
-      this.updateDates();
-    } else {
-      this.internalStartDate = null;
-      this.startDateIdentifier = null;
-      this.startDateTime = null;
-      this.isFirstClick = true;
-      this.updateDates();
-    }
+  handleStartDate(): void {
+    this.queueRangeProps('start');
   }
 
   @Watch('endDate')
-  handleEndDate(newValue: string | null): void {
-    if (this.singlePicker) {
-      console.warn('singlePicker is enabled, endDate cannot be set');
-      this.internalEndDate = null;
-      return;
-    }
-
-    const endDate = this.parseDateProp(newValue, 'end-date');
-
-    if (endDate !== null) {
-      this.internalEndDate = endDate;
-      this.endDateTime = DateTime.fromISO(endDate);
-      this.endDateIdentifier = this.endDateTime.toISODate();
-
-      if (this.internalStartDate !== null && this.internalStartDate !== '') {
-        this.orderRange();
-      }
-
-      this.updateDates();
-    } else {
-      this.internalEndDate = null;
-      this.endDateIdentifier = null;
-      this.endDateTime = null;
-      this.updateDates();
-    }
+  handleEndDate(): void {
+    this.queueRangeProps('end');
   }
 
   @Watch('viewDate')
@@ -220,9 +199,45 @@ export class MdsCalendar {
   }
 
   @Watch('hoverDate')
+  @Watch('activeEnd')
   handleHoverDate(): void {
     requestAnimationFrame(() => this.setDates());
   }
+
+  /** The ends whose prop changed since the range was last read from the props. */
+  private pendingRangeProps = new Set<CalendarRangeEndType>();
+
+  /**
+   * A parent sets `start-date` and `end-date` one after the other: the range is read once both
+   * have arrived, in a microtask. Read at the first of the two, a start moved past the old end
+   * looked like a range given backwards, and the calendar swapped the new start with the old end
+   * and warned (the second calendar of `mds-input-date-range`, #341).
+   */
+  private queueRangeProps(end: CalendarRangeEndType): void {
+    if (this.pendingRangeProps.size === 0) queueMicrotask(this.applyRangeProps);
+    this.pendingRangeProps.add(end);
+  }
+
+  private readonly applyRangeProps = (): void => {
+    const pending = this.pendingRangeProps;
+    this.pendingRangeProps = new Set();
+
+    if (pending.has('start')) {
+      this.internalStartDate = this.parseDateProp(this.startDate, 'start-date');
+    }
+
+    if (pending.has('end')) {
+      if (this.singlePicker) {
+        if (isSet(this.endDate)) console.warn('singlePicker is enabled, endDate cannot be set');
+        this.internalEndDate = null;
+      } else {
+        this.internalEndDate = this.parseDateProp(this.endDate, 'end-date');
+      }
+    }
+
+    this.orderRange();
+    this.updateDates();
+  };
 
   /**
    * A range given backwards, a start after its end, is put in order. The warning always said
@@ -230,21 +245,17 @@ export class MdsCalendar {
    * and at load the order was not checked at all.
    */
   private orderRange(): void {
-    if (this.internalStartDate === null || this.internalEndDate === null) return;
-    const start = DateTime.fromISO(this.internalStartDate);
-    const end = DateTime.fromISO(this.internalEndDate);
-    if (start <= end) return;
+    const { internalStartDate: start, internalEndDate: end } = this;
+    if (!isSet(start) || !isSet(end) || toDay(start) <= toDay(end)) return;
     console.warn('mds-calendar: startDate is after endDate, swapping values');
-    [this.internalStartDate, this.internalEndDate] = [this.internalEndDate, this.internalStartDate];
-    this.startDateTime = end;
-    this.endDateTime = start;
-    this.startDateIdentifier = end.toISODate();
-    this.endDateIdentifier = start.toISODate();
+    this.internalStartDate = end;
+    this.internalEndDate = start;
   }
 
   /**
-   * Normalizes a date prop to ISO 8601, treating an empty or invalid value as unset (`null`).
-   * An invalid value is reported with a warning instead of breaking the component lifecycle.
+   * Normalizes a date prop to an ISO 8601 date, treating an empty or invalid value as unset
+   * (`null`). An invalid value is reported with a warning instead of breaking the component
+   * lifecycle.
    */
   private parseDateProp(value: string | null, name: 'start-date' | 'end-date'): string | null {
     if (value === null || value === '') {
@@ -258,11 +269,10 @@ export class MdsCalendar {
       return null;
     }
 
-    return date;
+    return DateTime.fromISO(date).toISODate();
   }
 
-  private startDateTime: DateTime;
-  private endDateTime: DateTime;
+  /** The day under the pointer in this calendar, while a range waits for its end. */
   private internalHoverDate: string | null = null;
 
   @State() currentMonth: string = '';
@@ -286,12 +296,7 @@ export class MdsCalendar {
         this.currentDate = viewDate;
       }
     } else if (this.internalStartDate !== null) {
-      this.startDateTime = DateTime.fromISO(this.internalStartDate);
-      this.currentDate = this.startDateTime;
-    }
-
-    if (this.internalEndDate !== null) {
-      this.endDateTime = DateTime.fromISO(this.internalEndDate);
+      this.currentDate = DateTime.fromISO(this.internalStartDate);
     }
 
     this.updateCalendar();
@@ -336,16 +341,15 @@ export class MdsCalendar {
     return Promise.resolve();
   }
 
+  /** A range with its start and still without its end, the one a pointer previews. */
+  private waitsForEnd(): boolean {
+    return !this.singlePicker && isSet(this.internalStartDate) && !isSet(this.internalEndDate);
+  }
+
   private readonly handleMouseOver = (event: Event): void => {
     const target = event.target as HTMLElement;
 
-    if (
-      !target.matches('mds-calendar-cell') ||
-      this.singlePicker ||
-      this.internalStartDate === null ||
-      this.internalStartDate === '' ||
-      (this.internalEndDate !== null && this.internalEndDate !== '')
-    ) {
+    if (!target.matches('mds-calendar-cell') || !this.waitsForEnd()) {
       return;
     }
 
@@ -363,12 +367,7 @@ export class MdsCalendar {
     const hadInternalHover = this.internalHoverDate !== null;
     this.internalHoverDate = null;
 
-    if (
-      this.singlePicker ||
-      this.internalStartDate === null ||
-      this.internalStartDate === '' ||
-      (this.internalEndDate !== null && this.internalEndDate !== '')
-    ) {
+    if (!this.waitsForEnd()) {
       return;
     }
 
@@ -391,6 +390,40 @@ export class MdsCalendar {
     }
 
     return this.internalHoverDate;
+  }
+
+  /**
+   * The end the next click picks: the one the parent names in `active-end`, the start while the
+   * range has none, and otherwise the end, then a new range, as two clicks alternate.
+   */
+  private resolveActiveEnd(): CalendarRangeEndType | 'new' {
+    if (!isSet(this.internalStartDate)) return 'start';
+    if (this.activeEnd === 'start' || this.activeEnd === 'end') return this.activeEnd;
+    return isSet(this.internalEndDate) ? 'new' : 'end';
+  }
+
+  /**
+   * The range a click on `day` leaves. Criterion (#341, decided with vittorio on 2026-11-11): a
+   * click changes the end being picked and never puts the range backwards, nor swaps its ends.
+   * Picking the end, a day before the start becomes the new start and the end is still to pick.
+   * Picking the start, a day after the end becomes the new start and the end is emptied, the
+   * symmetric case: the day clicked is the one the user wants, and it can only be a start.
+   */
+  private nextRange(day: DateTime): { start: string; end: string | null } {
+    const clicked = day.toISODate() as string;
+    const start = this.internalStartDate as string;
+    const end = isSet(this.internalEndDate) ? this.internalEndDate : null;
+
+    switch (this.resolveActiveEnd()) {
+      case 'end':
+        return day < toDay(start) ? { start: clicked, end: null } : { start, end: clicked };
+      case 'start':
+        return end !== null && day > toDay(end)
+          ? { start: clicked, end: null }
+          : { start: clicked, end };
+      default:
+        return { start: clicked, end: null };
+    }
   }
 
   private updateDates(): void {
@@ -416,167 +449,74 @@ export class MdsCalendar {
     }
   }
 
+  /**
+   * Draws the selection on the day cells. A chosen day, either end of a range or the day of a
+   * single picker, is `start`, `end` or `single` with no `preview`; the days between the ends are
+   * `middle`. While a range waits for its end, the day under the pointer is previewed: when a
+   * click there would pick the end, the band from the start to that day is drawn as a `preview`,
+   * the start still drawn as chosen; when it would pick a new start, that day alone is a
+   * `single` `preview` and the start keeps its mark.
+   */
   private setDates(): void {
-    const calendar: HTMLMdsCalendarElement = this.host;
-    if (calendar == null) return;
-
-    const { shadowRoot } = calendar;
-
+    const shadowRoot = this.host?.shadowRoot;
     if (!shadowRoot) return;
 
-    const calendarCells = shadowRoot.querySelectorAll(
-      'mds-calendar-cell[selection], mds-calendar-cell[preview]',
-    );
+    const markOf = this.singlePicker ? this.singleMark : this.rangeMark();
 
-    if (!this.singlePicker) {
-      const hoverDate = this.resolveHoverDate();
+    shadowRoot.querySelectorAll('mds-calendar-cell').forEach((cell) => {
+      const date = cell.getAttribute('date');
+      const mark = date !== null && date !== '' ? markOf(date) : null;
 
-      if (hoverDate !== null && (this.internalEndDate === null || this.internalEndDate === '')) {
-        this.setHoverSelection(calendarCells, shadowRoot, hoverDate);
-      } else {
-        this.setRangeSelection(calendarCells, shadowRoot);
+      if (mark === null) {
+        cell.removeAttribute('selection');
+        cell.removeAttribute('preview');
+        return;
       }
-    } else {
-      this.setSingleSelection(calendarCells, shadowRoot);
-    }
-  }
-  private clearSelectionState(calendarCells: NodeListOf<Element>): void {
-    calendarCells.forEach((day) => {
-      day.removeAttribute('selection');
-      day.removeAttribute('preview');
+
+      cell.setAttribute('selection', mark.selection);
+      if (mark.preview) cell.setAttribute('preview', 'true');
+      else cell.removeAttribute('preview');
     });
   }
 
-  private setRangeSelection(calendarCells: NodeListOf<Element>, shadowRoot: ShadowRoot): void {
-    this.clearSelectionState(calendarCells);
+  private readonly singleMark = (date: string): CellMark | null =>
+    date === this.internalStartDate ? { selection: 'single', preview: false } : null;
 
-    if (this.internalStartDate === null || this.internalStartDate === '') return;
+  private rangeMark(): (date: string) => CellMark | null {
+    const start = this.internalStartDate;
+    const end = this.internalEndDate;
 
-    this.startDateTime = DateTime.fromISO(this.internalStartDate.toString());
+    if (!isSet(start)) return () => null;
 
-    if (this.internalEndDate === null || this.internalEndDate === '') {
-      this.startDateIdentifier = this.startDateTime.toISODate();
-      this.isFirstClick = false;
-
-      const cells = shadowRoot.querySelectorAll('mds-calendar-cell');
-      cells.forEach((cell) => {
-        if (cell.getAttribute('date') === this.startDateTime.toFormat('yyyy-MM-dd')) {
-          cell.setAttribute('selection', 'single');
-          cell.setAttribute('preview', 'true');
-        }
-      });
-      return;
+    if (isSet(end)) {
+      return (date) => {
+        if (date === start) return { selection: date === end ? 'single' : 'start', preview: false };
+        if (date === end) return { selection: 'end', preview: false };
+        return date > start && date < end ? { selection: 'middle', preview: false } : null;
+      };
     }
 
-    this.endDateTime = DateTime.fromISO(this.internalEndDate.toString());
-    this.startDateIdentifier = this.startDateTime.toISODate();
-    this.endDateIdentifier = this.endDateTime.toISODate();
+    const hovered = this.resolveHoverDate();
+    const hover = hovered !== null ? DateTime.fromISO(hovered).toISODate() : null;
 
-    const cells = shadowRoot.querySelectorAll('mds-calendar-cell');
-    if (cells != null) {
-      let isBetweenDates: boolean;
-
-      for (let i = 0; i < cells.length; i++) {
-        const cellDate = cells[i].getAttribute('date');
-
-        if (cellDate !== null && cellDate !== '') {
-          const currentDate = DateTime.fromISO(cellDate);
-
-          if (currentDate.toFormat('yyyy-MM-dd') === this.startDateTime.toFormat('yyyy-MM-dd')) {
-            cells[i].setAttribute('selection', 'start');
-          }
-
-          if (currentDate.toFormat('yyyy-MM-dd') === this.endDateTime.toFormat('yyyy-MM-dd')) {
-            if (this.startDateTime.equals(this.endDateTime)) {
-              cells[i].setAttribute('selection', 'single');
-            } else {
-              cells[i].setAttribute('selection', 'end');
-            }
-          }
-
-          isBetweenDates = currentDate > this.startDateTime && currentDate < this.endDateTime;
-          if (isBetweenDates) {
-            cells[i].setAttribute('selection', 'middle');
-          }
-        }
-      }
-    }
-  }
-
-  private setHoverSelection(
-    calendarCells: NodeListOf<Element>,
-    shadowRoot: ShadowRoot,
-    hoverDateString: string,
-  ): void {
-    this.clearSelectionState(calendarCells);
-
-    if (this.internalStartDate === null || this.internalStartDate === '') {
-      this.setRangeSelection(calendarCells, shadowRoot);
-      return;
+    if (hover === null || hover === start) {
+      return (date) => (date === start ? { selection: 'single', preview: false } : null);
     }
 
-    const startDate = DateTime.fromISO(this.internalStartDate);
-    const hoverDate = DateTime.fromISO(hoverDateString);
-
-    if (!startDate.isValid || !hoverDate.isValid) {
-      this.setRangeSelection(calendarCells, shadowRoot);
-      return;
+    // a click on the day under the pointer would end the range there: preview the band
+    if (this.resolveActiveEnd() === 'end' && hover > start) {
+      return (date) => {
+        if (date === start) return { selection: 'start', preview: true };
+        if (date === hover) return { selection: 'end', preview: true };
+        return date > start && date < hover ? { selection: 'middle', preview: true } : null;
+      };
     }
 
-    const isForwardSelection = startDate <= hoverDate;
-    const cells = Array.from(
-      shadowRoot.querySelectorAll('mds-calendar-cell'),
-    ) as HTMLMdsCalendarCellElement[];
-
-    cells.forEach((cell) => {
-      const cellDateString = cell.getAttribute('date');
-      if (cellDateString === null || cellDateString === '') return;
-
-      const cellDate = DateTime.fromISO(cellDateString);
-      if (!cellDate.isValid) return;
-
-      const isInRange = isForwardSelection
-        ? cellDate >= startDate && cellDate <= hoverDate
-        : cellDate >= hoverDate && cellDate <= startDate;
-
-      if (!isInRange) return;
-
-      cell.setAttribute('preview', 'true');
-
-      let selectionType = 'middle';
-      if (startDate.equals(hoverDate) && cellDate.equals(startDate)) {
-        selectionType = 'single';
-      } else if (cellDate.equals(startDate)) {
-        selectionType = isForwardSelection ? 'start' : 'end';
-      } else if (cellDate.equals(hoverDate)) {
-        selectionType = isForwardSelection ? 'end' : 'start';
-      }
-
-      cell.setAttribute('selection', selectionType);
-    });
-  }
-
-  private setSingleSelection(calendarCells: NodeListOf<Element>, shadowRoot: ShadowRoot) {
-    this.clearSelectionState(calendarCells);
-
-    if (this.internalStartDate === null || this.internalStartDate === '') return;
-
-    this.startDateTime = DateTime.fromISO(this.internalStartDate.toString());
-    const cells = shadowRoot.querySelectorAll('mds-calendar-cell');
-
-    if (cells != null) {
-      for (let i = 0; i < cells.length; i++) {
-        const cellDate = cells[i].getAttribute('date');
-
-        if (cellDate !== null && cellDate !== '') {
-          const currentDate = DateTime.fromISO(cellDate);
-
-          if (currentDate.toFormat('yyyy-MM-dd') === this.startDateTime.toFormat('yyyy-MM-dd')) {
-            cells[i].setAttribute('selection', 'single');
-          }
-        }
-      }
-    }
+    // it would make that day the new start: preview it alone, the start keeps its mark
+    return (date) => {
+      if (date === start) return { selection: 'single', preview: false };
+      return date === hover ? { selection: 'single', preview: true } : null;
+    };
   }
 
   private changeMonth(delta: number): void {
@@ -650,124 +590,32 @@ export class MdsCalendar {
     this.weekDaysinMonth = allDays;
   }
 
-  private handleRange(element: HTMLElement, dayInfo: DateTime): void {
-    if (
-      !this.singlePicker &&
-      (this.endDate === null || this.endDate === '') &&
-      (this.internalEndDate === null || this.internalEndDate === '') &&
-      this.isFirstClick
-    ) {
-      const pendingStartDate = this.parseDateProp(
-        this.startDate || this.host.getAttribute('start-date'),
-        'start-date',
-      );
+  /**
+   * Picks an end of the range with a click on `day`, as `nextRange` decides, and redraws it: a
+   * standalone calendar has no parent echoing the range through start-date / end-date, so
+   * nothing else would mark the two ends. The preview left by the pointer is dropped with the
+   * old range: it starts again from the next day the pointer reaches.
+   */
+  private handleRange(day: DateTime): void {
+    const { start, end } = this.nextRange(day);
+    this.internalStartDate = start;
+    this.internalEndDate = end;
+    this.internalHoverDate = null;
+    requestAnimationFrame(() => this.setDates());
 
-      if (pendingStartDate !== null) {
-        this.internalStartDate = pendingStartDate;
-        this.startDateTime = DateTime.fromISO(pendingStartDate);
-        this.startDateIdentifier = this.startDateTime.toISODate();
-        this.isFirstClick = false;
-      }
-    }
-
-    const resetSelection = (): void => {
-      this.internalStartDate = null;
-      this.internalEndDate = null;
-      this.startDateIdentifier = null;
-      this.startDateTime = null;
-      this.endDateIdentifier = null;
-      this.endDateTime = null;
-      this.isFirstClick = true;
-
-      const calendar: HTMLMdsCalendarElement = this.host;
-      requestAnimationFrame(() => {
-        calendar?.shadowRoot?.querySelectorAll('mds-calendar-cell[selection]').forEach((day) => {
-          day.removeAttribute('selection');
-          day.removeAttribute('preview');
-        });
-      });
-    };
-
-    if (
-      this.startDateIdentifier !== null &&
-      this.startDateIdentifier !== '' &&
-      this.endDateIdentifier !== null &&
-      this.endDateIdentifier !== ''
-    ) {
-      resetSelection();
-    }
-
-    if (this.isFirstClick) {
-      this.startDateIdentifier = dayInfo.toISODate();
-      this.startDateTime = dayInfo;
-      this.internalStartDate = this.startDateTime.toISO().split('T')[0];
-      this.isFirstClick = false;
-      const calendar: HTMLMdsCalendarElement = this.host;
-
-      requestAnimationFrame(() => {
-        calendar?.shadowRoot?.querySelectorAll('mds-calendar-cell[selection]').forEach((day) => {
-          day.removeAttribute('selection');
-        });
-      });
-
-      requestAnimationFrame(() => {
-        element.setAttribute('selection', 'single');
-        element.setAttribute('preview', 'true');
-      });
-
-      this.datesEmitter.emit({ startDate: this.internalStartDate as string });
-
+    if (end === null) {
+      this.datesEmitter.emit({ startDate: start });
       return;
     }
 
-    if (
-      this.startDateIdentifier !== null &&
-      this.startDateIdentifier !== '' &&
-      DateTime.fromISO(this.startDateIdentifier) <
-        DateTime.fromISO(element.getAttribute('date') as string)
-    ) {
-      this.endDateIdentifier = element.getAttribute('date');
-      this.endDateTime = dayInfo;
-      this.internalEndDate = this.endDateTime.toISO().split('T')[0];
-    } else {
-      this.endDateIdentifier = this.startDateIdentifier;
-      this.endDateTime = this.startDateTime;
-      this.internalEndDate = this.internalStartDate;
-      this.startDateIdentifier = element.getAttribute('date');
-      this.startDateTime = dayInfo;
-      this.internalStartDate = this.startDateTime.toISO().split('T')[0];
-    }
-
-    // Redraw start, middle and end from the internal dates: a standalone calendar has no parent
-    // echoing the range through start-date / end-date, so nothing else would mark the two ends.
-    requestAnimationFrame(() => this.setDates());
-
-    if (
-      this.internalStartDate !== null &&
-      this.internalStartDate !== '' &&
-      this.internalEndDate !== null &&
-      this.internalEndDate !== ''
-    ) {
-      this.datesEmitter.emit({ startDate: this.internalStartDate, endDate: this.internalEndDate });
-      this.checkPreselectionsEmitter.emit();
-    }
+    this.datesEmitter.emit({ startDate: start, endDate: end });
+    this.checkPreselectionsEmitter.emit();
   }
 
-  private handleSingleSelection(element: HTMLElement, dayInfo: DateTime): void {
-    const calendar: HTMLMdsCalendarElement = this.host;
-
-    calendar?.shadowRoot?.querySelectorAll('mds-calendar-cell[selection]').forEach((day) => {
-      day.removeAttribute('selection');
-    });
-    this.startDateIdentifier = element.getAttribute('date');
-    this.startDateTime = dayInfo;
-    this.internalStartDate = this.startDateTime.toISO().split('T')[0];
-    this.isFirstClick = false;
-    element.setAttribute('selection', 'single');
-
-    if (this.internalStartDate !== null && this.internalStartDate !== '') {
-      this.datesEmitter.emit({ startDate: this.internalStartDate });
-    }
+  private handleSingleSelection(day: DateTime): void {
+    this.internalStartDate = day.toISODate();
+    requestAnimationFrame(() => this.setDates());
+    this.datesEmitter.emit({ startDate: this.internalStartDate as string });
   }
 
   private handlePrev = (event: PointerEvent) => {
@@ -808,9 +656,8 @@ export class MdsCalendar {
     (dayInfo: DateTime) =>
     (event: MouseEvent): void => {
       event.stopPropagation();
-      const target = event.currentTarget as HTMLElement;
-      if (this.singlePicker) this.handleSingleSelection(target, dayInfo);
-      else this.handleRange(target, dayInfo);
+      if (this.singlePicker) this.handleSingleSelection(dayInfo);
+      else this.handleRange(dayInfo);
     };
 
   private readonly handleMonthSelect =
@@ -851,7 +698,9 @@ export class MdsCalendar {
           <slot name="preselection" onSlotchange={this.updatePreselection}></slot>
         </div>
         <div class="calendar-view">
-          <nav>
+          {/* named after the month it shows: two calendars side by side are two navigation
+              landmarks, which need a name each (#341) */}
+          <nav aria-label={`${this.currentMonth} ${this.currentYear}`}>
             {!this.hidePreviousButton && (
               <mds-button
                 aria-label={this.t.get(

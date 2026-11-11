@@ -23,6 +23,8 @@ import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
 import localeIt from './meta/locale.it.json';
 import { InputSizeType } from '@type/input';
+import { CalendarRangeEndType } from '@component/mds-calendar/meta/types';
+import { MdsTabEventDetail } from '@component/mds-tab/meta/event-detail';
 
 export interface EventDate {
   caller: HTMLMdsInputDateRangePreselectionElement;
@@ -52,6 +54,12 @@ export class MdsInputDateRange {
   @State() visibleCalendarDate: string = '';
   @State() dropdownRef?: HTMLMdsDropdownElement;
   @State() hasPreselection: boolean = false;
+  /**
+   * The end of the range the calendar picks: the one of the field last focused or clicked, or of
+   * the voice of the header clicked; after a pick in the calendar, the end. With no start it is
+   * the start whatever this says, see effectiveActiveEnd().
+   */
+  @State() activeEnd: CalendarRangeEndType = 'start';
   // the disabled state of the host as a form control: its own disabled, or a disabled fieldset
   // around it, which disables the host but not the calendar button in its shadow root
   @State() private formDisabled = false;
@@ -98,7 +106,9 @@ export class MdsInputDateRange {
   @Prop({ reflect: true }) max: string | null = null;
 
   /**
-   * Specifies the delay in milliseconds before closing the calendar dropdown, if the value is 0 the dropdown will not close
+   * Specifies the delay in milliseconds before closing the calendar dropdown after the click that
+   * picks the end of the range, if the value is 0 the dropdown will not close; a click that picks
+   * the start leaves it open for the end
    * @description Default is 500
    */
   @Prop({ reflect: true }) readonly delay: number = 500;
@@ -184,22 +194,15 @@ export class MdsInputDateRange {
     }
   }
 
-  private syncCalendarsSelectionAttributes(): void {
-    this.host.shadowRoot?.querySelectorAll('mds-calendar').forEach((calendar) => {
-      if (this.internalStartDate !== '') {
-        calendar.setAttribute('start-date', this.internalStartDate);
-      } else {
-        calendar.removeAttribute('start-date');
-      }
+  /** Before the user names one, the calendar picks the end the range lacks, else the start. */
+  private firstMissingEnd(): CalendarRangeEndType {
+    const hasStart = DateTime.fromISO(this.internalStartDate).isValid;
+    return hasStart && !DateTime.fromISO(this.internalEndDate).isValid ? 'end' : 'start';
+  }
 
-      if (this.internalEndDate !== '') {
-        calendar.setAttribute('end-date', this.internalEndDate);
-      } else {
-        calendar.removeAttribute('end-date');
-      }
-    });
-
-    this.syncCalendarsHoverAttributes();
+  /** A range is picked from its start: with no start, the calendar picks the start. */
+  private effectiveActiveEnd(): CalendarRangeEndType {
+    return DateTime.fromISO(this.internalStartDate).isValid ? this.activeEnd : 'start';
   }
 
   private syncCalendarsHoverAttributes(): void {
@@ -329,6 +332,7 @@ export class MdsInputDateRange {
     this.internalEndDate = this.endDate ?? '';
     this.initialStartDate = this.internalStartDate;
     this.initialEndDate = this.internalEndDate;
+    this.activeEnd = this.firstMissingEnd();
     this.visibleCalendarDate = this.resolveVisibleCalendarDate(
       this.internalStartDate,
       this.internalEndDate,
@@ -346,6 +350,7 @@ export class MdsInputDateRange {
   }
 
   disconnectedCallback(): void {
+    this.host.removeEventListener('focusin', this.handleFocusIn);
     this.host.removeEventListener('focusout', this.handleFocusOut);
     this.host.shadowRoot?.removeEventListener(
       'mdsCalendarHover',
@@ -421,12 +426,29 @@ export class MdsInputDateRange {
     }
   };
 
+  /** The end of the range a slotted field covers, for an event coming from inside it. */
+  private endOfField(target: EventTarget | null): CalendarRangeEndType | null {
+    const field = (target as Element | null)?.closest?.('[slot="start"], [slot="end"]');
+    if (field == null || field.parentElement !== this.host) return null;
+    return field.getAttribute('slot') as CalendarRangeEndType;
+  }
+
+  // the field the user goes into names the end the calendar picks (#341)
+  private handleFocusIn = (event: FocusEvent): void => {
+    const end = this.endOfField(event.target);
+    if (end !== null) this.activeEnd = end;
+  };
+
   private focusInput = (element: HTMLMdsInputDateElement): void => {
     element.focusInput();
   };
 
-  private focusDateInput = (ev: MouseEvent): void => {
-    if (ev.target !== this.host) {
+  private handleHostClick = (ev: MouseEvent): void => {
+    // a click on a field already focused fires no focusin: it still names the end
+    const end = this.endOfField(ev.target);
+    if (end !== null) this.activeEnd = end;
+    // a click in the panel reaches the host too, retargeted: it is not a click on the field
+    if (ev.target !== this.host || ev.composedPath().includes(this.dropdownRef as EventTarget)) {
       return;
     }
     this.focusStartDateInput(ev);
@@ -435,6 +457,7 @@ export class MdsInputDateRange {
   private focusStartDateInput = (ev: MouseEvent): void => {
     ev.preventDefault();
     ev.stopPropagation();
+    this.activeEnd = 'start';
     this.focusInput(
       this.host.querySelector('mds-input-date[slot="start"]') as HTMLMdsInputDateElement,
     );
@@ -443,6 +466,7 @@ export class MdsInputDateRange {
   private focusEndDateInput = (ev: MouseEvent): void => {
     ev.preventDefault();
     ev.stopPropagation();
+    this.activeEnd = 'end';
     this.focusInput(
       this.host.querySelector('mds-input-date[slot="end"]') as HTMLMdsInputDateElement,
     );
@@ -477,6 +501,7 @@ export class MdsInputDateRange {
     // a preset matching the dates of load shows selected from the start
     this.checkPreselections();
     this.syncFormValue();
+    this.host.addEventListener('focusin', this.handleFocusIn);
     this.host.addEventListener('focusout', this.handleFocusOut);
     this.host.shadowRoot?.addEventListener(
       'mdsCalendarHover',
@@ -496,6 +521,7 @@ export class MdsInputDateRange {
     this.clearHoverPreview();
     this.internalStartDate = this.initialStartDate;
     this.internalEndDate = this.initialEndDate;
+    this.activeEnd = this.firstMissingEnd();
     this.visibleCalendarDate = this.resolveVisibleCalendarDate(
       this.initialStartDate,
       this.initialEndDate,
@@ -634,7 +660,14 @@ export class MdsInputDateRange {
     this.syncCalendarsHoverAttributes();
   };
 
+  /**
+   * A pick in the calendar. Whatever end it picked, the end is the one picked next: picked the
+   * start, the user goes on to the end; picked the end, a second click corrects it. The panel
+   * closes `delay` ms after a click that completes the range by picking its end, never after one
+   * that picks its start, which leaves the end to pick or to keep (#341).
+   */
   private handleCalendarChange = (ev: CustomEvent<{ startDate: string; endDate?: string }>) => {
+    const pickedEnd = this.effectiveActiveEnd() === 'end';
     this.clearHoverPreview();
     this.internalStartDate = ev.detail.startDate;
     this.updateInputValue('start', this.internalStartDate);
@@ -647,14 +680,70 @@ export class MdsInputDateRange {
       this.updateInputValue('end', this.internalEndDate);
     }
 
+    this.activeEnd = 'end';
     this.syncFormValue();
-    this.syncCalendarsSelectionAttributes();
 
     if (this.internalStartDate !== '' && this.internalEndDate !== '') {
       this.emitValueChanged();
-      this.closeDropdownAfterSelection();
+      if (pickedEnd) this.closeDropdownAfterSelection();
     }
   };
+
+  // the header names the end the calendar picks; its change stays inside the range
+  private readonly handleEndTabChange = (ev: CustomEvent<MdsTabEventDetail>): void => {
+    ev.stopPropagation();
+    if (ev.detail.value === 'start' || ev.detail.value === 'end') this.activeEnd = ev.detail.value;
+  };
+
+  // the dropdown closes on a click that reaches the document from outside its host, and from
+  // this shadow root every click looks outside: the header keeps its clicks, as the calendar does
+  private readonly keepPanelOpen = (ev: MouseEvent): void => {
+    ev.stopPropagation();
+  };
+
+  /** The voice of an end in the header: its name and its date, or the invitation to pick one. */
+  private endVoice(end: CalendarRangeEndType): string {
+    const date = DateTime.fromISO(end === 'start' ? this.internalStartDate : this.internalEndDate);
+    return this.t.get('endValue', {
+      end: this.t.get(end),
+      date: date.isValid
+        ? date.setLocale(preferenceStore.state.language).toLocaleString(DateTime.DATE_MED)
+        : this.t.get('pickDate'),
+    });
+  }
+
+  /**
+   * The header of the panel: the two ends of the range, each with its date, the one the calendar
+   * picks selected. A strip of mds-tab, as Magma has no segmented control and mds-button-group
+   * groups actions with no selected state. The end has nothing to pick until the start is set.
+   */
+  private renderEnds() {
+    const active = this.effectiveActiveEnd();
+    return (
+      <mds-tab
+        class="ends"
+        fill
+        onMdsTabChange={this.handleEndTabChange}
+        onClick={this.keepPanelOpen}
+      >
+        <mds-tab-item
+          class="end-start"
+          type="button"
+          value="start"
+          selected={active === 'start'}
+          label={this.endVoice('start')}
+        ></mds-tab-item>
+        <mds-tab-item
+          class="end-end"
+          type="button"
+          value="end"
+          selected={active === 'end'}
+          disabled={!DateTime.fromISO(this.internalStartDate).isValid}
+          label={this.endVoice('end')}
+        ></mds-tab-item>
+      </mds-tab>
+    );
+  }
 
   private handleCalendarNavigate = (ev: CustomEvent<{ currentDate: string }>) => {
     if (!this.dualCalendar) return;
@@ -705,6 +794,7 @@ export class MdsInputDateRange {
           hideToday={this.hideToday}
           onMdsCalendarChange={this.handleCalendarChange}
           onMdsCalendarPreselect={this.handleCalendarPreselect}
+          activeEnd={this.effectiveActiveEnd()}
           startDate={this.internalStartDate}
           endDate={this.internalEndDate}
           {...(this.min !== null && this.min !== '' ? { min: this.min } : {})}
@@ -727,6 +817,7 @@ export class MdsInputDateRange {
           onMdsCalendarNavigate={this.handleCalendarNavigate}
           onMdsCalendarChange={this.handleCalendarChange}
           onMdsCalendarPreselect={this.handleCalendarPreselect}
+          activeEnd={this.effectiveActiveEnd()}
           startDate={this.internalStartDate}
           endDate={this.internalEndDate}
           {...(this.min !== null && this.min !== '' ? { min: this.min } : {})}
@@ -741,6 +832,7 @@ export class MdsInputDateRange {
           onMdsCalendarNavigate={this.handleCalendarNavigate}
           onMdsCalendarChange={this.handleCalendarChange}
           onMdsCalendarPreselect={this.handleCalendarPreselect}
+          activeEnd={this.effectiveActiveEnd()}
           startDate={this.internalStartDate}
           endDate={this.internalEndDate}
           {...(this.min !== null && this.min !== '' ? { min: this.min } : {})}
@@ -753,7 +845,7 @@ export class MdsInputDateRange {
   render() {
     return (
       <Host
-        onClick={this.focusDateInput}
+        onClick={this.handleHostClick}
         pref-animation={preferenceStore.state.animation}
         pref-contrast={preferenceStore.state.contrast}
         pref-mode={preferenceStore.state.mode}
@@ -801,7 +893,10 @@ export class MdsInputDateRange {
           placement="bottom-end"
           role="group"
         >
-          {this.dualCalendar ? this.renderDualCalendars() : this.renderSingleCalendar()}
+          <div class="panel">
+            {this.renderEnds()}
+            {this.dualCalendar ? this.renderDualCalendars() : this.renderSingleCalendar()}
+          </div>
         </mds-dropdown>
       </Host>
     );

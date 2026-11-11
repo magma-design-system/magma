@@ -407,17 +407,71 @@ describe('mds-calendar standalone range selection', () => {
     expect(calendar.shadowRoot!.querySelectorAll('mds-calendar-cell[preview]')).toHaveLength(0);
   });
 
-  it('swaps the ends when the second click is before the first', async () => {
+  // the ends were swapped, a range the user had not drawn (#341)
+  it('makes a second click before the first the new start, the end still to pick', async () => {
     const { calendar, waitForChanges } = await setupStandalone();
+    const change = { events: [] as CustomEvent[] };
+    calendar.addEventListener('mdsCalendarChange', (event) =>
+      change.events.push(event as CustomEvent),
+    );
 
     await userEvent.click(cell(calendar, '2026-06-14'));
     await userEvent.click(cell(calendar, '2026-06-10'));
     await waitForChanges();
 
     await vi.waitFor(() => {
-      expect(selection(calendar, '2026-06-10')).toBe('start');
-      expect(selection(calendar, '2026-06-14')).toBe('end');
+      expect(selection(calendar, '2026-06-10')).toBe('single');
+      expect(selection(calendar, '2026-06-14')).toBeNull();
     });
+
+    await userEvent.click(cell(calendar, '2026-06-12'));
+    await waitForChanges();
+
+    expect(change.events.map((event) => event.detail)).toEqual([
+      { startDate: '2026-06-14' },
+      { startDate: '2026-06-10' },
+      { startDate: '2026-06-10', endDate: '2026-06-12' },
+    ]);
+  });
+
+  // the preview kept the last day the pointer previewed, and drew it again after the click that
+  // started a new range (#341)
+  it('drops the preview of the pointer with the click that starts a new range', async () => {
+    const { calendar, waitForChanges } = await setupStandalone();
+
+    await userEvent.click(cell(calendar, '2026-06-10'));
+    await userEvent.hover(cell(calendar, '2026-06-14'));
+    await userEvent.click(cell(calendar, '2026-06-14'));
+    await userEvent.hover(cell(calendar, '2026-06-20'));
+    await userEvent.click(cell(calendar, '2026-06-20'));
+    await waitForChanges();
+
+    await vi.waitFor(() => expect(selection(calendar, '2026-06-20')).toBe('single'));
+    expect(calendar.shadowRoot!.querySelectorAll('mds-calendar-cell[selection]')).toHaveLength(1);
+    expect(calendar.shadowRoot!.querySelectorAll('mds-calendar-cell[preview]')).toHaveLength(0);
+  });
+
+  it('draws the start as chosen while the pointer previews the end, and a day before it alone', async () => {
+    const { calendar, waitForChanges } = await setupStandalone();
+
+    await userEvent.click(cell(calendar, '2026-06-10'));
+    await waitForChanges();
+
+    // the start alone is a chosen day, not a preview
+    await vi.waitFor(() => expect(selection(calendar, '2026-06-10')).toBe('single'));
+    expect(cell(calendar, '2026-06-10')).not.toHaveAttribute('preview');
+
+    // a day before it would be a new start, not the end of a range drawn backwards
+    await userEvent.hover(cell(calendar, '2026-06-05'));
+    await waitForChanges();
+
+    await vi.waitFor(() => {
+      expect(selection(calendar, '2026-06-05')).toBe('single');
+      expect(cell(calendar, '2026-06-05')).toHaveAttribute('preview');
+    });
+    expect(selection(calendar, '2026-06-10')).toBe('single');
+    expect(cell(calendar, '2026-06-10')).not.toHaveAttribute('preview');
+    expect(selection(calendar, '2026-06-07')).toBeNull();
   });
 
   it('replaces a preset range with the newly clicked one', async () => {
@@ -485,6 +539,139 @@ describe('mds-calendar standalone range selection', () => {
       { hoverDate: '2026-06-10' },
       { hoverDate: null },
     ]);
+  });
+});
+
+// #341: a parent names the end a click picks; a click never puts the range backwards
+describe('mds-calendar active-end', () => {
+  const cell = (calendar: HTMLElement, date: string): HTMLElement =>
+    calendar.shadowRoot!.querySelector<HTMLElement>(`mds-calendar-cell[date="${date}"]`)!;
+
+  const setup = async (attributes: string) => {
+    const { root, spyOnEvent, waitForChanges } = await render<HTMLMdsCalendarElement>(
+      `<mds-calendar view-date="2026-06-01" ${attributes}></mds-calendar>`,
+    );
+    return { calendar: root, change: spyOnEvent('mdsCalendarChange'), waitForChanges };
+  };
+
+  const details = (spy: { events: CustomEvent[] }) => spy.events.map((event) => event.detail);
+
+  it('changes only the end of a complete range, after it or before it', async () => {
+    const { calendar, change, waitForChanges } = await setup(
+      'start-date="2026-06-10" end-date="2026-06-20" active-end="end"',
+    );
+
+    await userEvent.click(cell(calendar, '2026-06-25'));
+    await userEvent.click(cell(calendar, '2026-06-15'));
+    await waitForChanges();
+
+    expect(details(change)).toEqual([
+      { startDate: '2026-06-10', endDate: '2026-06-25' },
+      { startDate: '2026-06-10', endDate: '2026-06-15' },
+    ]);
+  });
+
+  it('changes only the start of a complete range', async () => {
+    const { calendar, change, waitForChanges } = await setup(
+      'start-date="2026-06-10" end-date="2026-06-20" active-end="start"',
+    );
+
+    await userEvent.click(cell(calendar, '2026-06-05'));
+    await waitForChanges();
+
+    expect(details(change)).toEqual([{ startDate: '2026-06-05', endDate: '2026-06-20' }]);
+    await vi.waitFor(() =>
+      expect(cell(calendar, '2026-06-05')).toHaveAttribute('selection', 'start'),
+    );
+    expect(cell(calendar, '2026-06-20')).toHaveAttribute('selection', 'end');
+  });
+
+  it('makes a day before the start the new start while the end is picked', async () => {
+    const { calendar, change, waitForChanges } = await setup(
+      'start-date="2026-06-10" end-date="2026-06-20" active-end="end"',
+    );
+
+    await userEvent.click(cell(calendar, '2026-06-03'));
+    await waitForChanges();
+
+    expect(details(change)).toEqual([{ startDate: '2026-06-03' }]);
+  });
+
+  // criterion: the day clicked is the one the user wants, and after the end it can only start a
+  // range, so it becomes the start and the end is emptied rather than swapped in
+  it('makes a day after the end the new start, the end emptied, while the start is picked', async () => {
+    const { calendar, change, waitForChanges } = await setup(
+      'start-date="2026-06-10" end-date="2026-06-20" active-end="start"',
+    );
+
+    await userEvent.click(cell(calendar, '2026-06-25'));
+    await waitForChanges();
+
+    expect(details(change)).toEqual([{ startDate: '2026-06-25' }]);
+    await vi.waitFor(() =>
+      expect(cell(calendar, '2026-06-25')).toHaveAttribute('selection', 'single'),
+    );
+    expect(cell(calendar, '2026-06-20')).not.toHaveAttribute('selection');
+  });
+
+  it('picks the start while there is none, whatever end is named', async () => {
+    const { calendar, change, waitForChanges } = await setup('active-end="end"');
+
+    await userEvent.click(cell(calendar, '2026-06-12'));
+    await waitForChanges();
+
+    expect(details(change)).toEqual([{ startDate: '2026-06-12' }]);
+  });
+
+  it('previews no band while the start is picked: the day under the pointer stands alone', async () => {
+    const { calendar, waitForChanges } = await setup('start-date="2026-06-10" active-end="start"');
+
+    await userEvent.hover(cell(calendar, '2026-06-14'));
+    await waitForChanges();
+
+    await vi.waitFor(() => {
+      expect(cell(calendar, '2026-06-14')).toHaveAttribute('selection', 'single');
+      expect(cell(calendar, '2026-06-14')).toHaveAttribute('preview');
+    });
+    expect(cell(calendar, '2026-06-12')).not.toHaveAttribute('selection');
+  });
+
+  // a parent sets start-date, then end-date: read at the first, the new start past the old end
+  // looked like a range given backwards, was swapped with it and warned (#341)
+  it('reads the range once both props have arrived', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const { calendar, waitForChanges } = await setup(
+      'start-date="2026-06-10" end-date="2026-06-14"',
+    );
+
+    calendar.setAttribute('start-date', '2026-06-20');
+    calendar.removeAttribute('end-date');
+    await waitForChanges();
+
+    await vi.waitFor(() =>
+      expect(cell(calendar, '2026-06-20')).toHaveAttribute('selection', 'single'),
+    );
+    expect(cell(calendar, '2026-06-14')).not.toHaveAttribute('selection');
+    expect(warn).not.toHaveBeenCalled();
+  });
+});
+
+// two calendars side by side were two navigation landmarks with no name (#341)
+describe('mds-calendar navigation', () => {
+  useLanguage('it');
+
+  it('is named after the month it shows, and follows it', async () => {
+    const { root, waitForChanges } = await render(
+      '<mds-calendar view-date="2026-03-01"></mds-calendar>',
+    );
+    const nav = root.shadowRoot!.querySelector('nav')!;
+
+    expect(nav).toEqualAttribute('aria-label', 'marzo 2026');
+
+    await userEvent.click(root.shadowRoot!.querySelector('.action-forward')!);
+    await waitForChanges();
+
+    expect(nav).toEqualAttribute('aria-label', 'aprile 2026');
   });
 });
 
@@ -583,7 +770,10 @@ describe('mds-calendar arrows', () => {
       const start = root.shadowRoot!.querySelector('mds-calendar-cell[date="2025-09-10"]')!;
 
       expect(start).toHaveAttribute('selection', 'start');
-      expect(paint(start).color).toBe('rgb(13, 14, 15)');
+      // the text of an end is the text of its dot, on the day button
+      expect(getComputedStyle(start.shadowRoot!.querySelector('.action')!).color).toBe(
+        'rgb(13, 14, 15)',
+      );
     });
   });
 });

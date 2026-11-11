@@ -136,6 +136,21 @@
   margin-left: 0;
 }
 
+/* the panel: the header with the two ends of the range over the calendars */
+
+.panel {
+  display: grid;
+  gap: --spacing(200);
+}
+
+/* the two ends share the width of the header, each growing from its own text: split in equal
+   halves, "End: Pick a date" lost its last word beside a short start in a single calendar */
+
+.ends mds-tab-item {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
 .calendars {
   display: flex;
   flex-wrap: nowrap;

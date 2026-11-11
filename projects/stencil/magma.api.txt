@@ -283,6 +283,7 @@ mds-button-dropdown css --mds-button-dropdown-radius
 mds-button-group encapsulation shadow
 mds-button-group slot (default)
 mds-calendar encapsulation shadow
+mds-calendar prop activeEnd (attr active-end) [reflect]: "end" | "start" | undefined
 mds-calendar prop disableMonthYearSelection (attr disable-month-year-selection): boolean = false
 mds-calendar prop endDate (attr end-date) [reflect]: null | string = null
 mds-calendar prop hideNextButton (attr hide-next-button): boolean = false
@@ -330,10 +331,12 @@ mds-calendar-cell css --mds-calendar-cell-other-month-background INTERNAL
 mds-calendar-cell css --mds-calendar-cell-other-month-color INTERNAL
 mds-calendar-cell css --mds-calendar-cell-preselection-current-month-background INTERNAL
 mds-calendar-cell css --mds-calendar-cell-preselection-current-month-boundaries-background INTERNAL
+mds-calendar-cell css --mds-calendar-cell-preselection-current-month-boundaries-border-color INTERNAL
 mds-calendar-cell css --mds-calendar-cell-preselection-current-month-boundaries-color INTERNAL
 mds-calendar-cell css --mds-calendar-cell-preselection-current-month-color INTERNAL
 mds-calendar-cell css --mds-calendar-cell-preselection-other-month-background INTERNAL
 mds-calendar-cell css --mds-calendar-cell-preselection-other-month-boundaries-background INTERNAL
+mds-calendar-cell css --mds-calendar-cell-preselection-other-month-boundaries-border-color INTERNAL
 mds-calendar-cell css --mds-calendar-cell-preselection-other-month-boundaries-color INTERNAL
 mds-calendar-cell css --mds-calendar-cell-preselection-other-month-color INTERNAL
 mds-calendar-cell css --mds-calendar-cell-preselection-today-background INTERNAL
@@ -1781,6 +1784,7 @@ type ButtonVariantType = 'apple' | 'google' | ThemeLuminanceVariantType | ThemeB
 type CalendarCellSelectionOrieintationType = 'both' | 'horizontal' | 'vertical';
 type CalendarCellSelectionPositionType = 'end' | 'middle' | 'none' | 'start' | 'single';
 type CalendarCellType = 'other' | 'current' | 'weekend';
+type CalendarRangeEndType = 'start' | 'end';
 type ChipVariantType = "info" | "error" | "success" | "warning" | "amaranth" | "red" | "aqua" | "blue" | "green" | "lime" | "orange" | "orchid" | "purple" | "sky" | "violet" | "yellow" | "dark" | "ai" | "primary" | "secondary"
 type ConsumptionModeType = "low" | "medium" | "high"
 type ContrastModeType = 'more' | 'no-preference' | 'system';

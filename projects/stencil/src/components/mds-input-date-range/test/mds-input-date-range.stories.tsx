@@ -1,4 +1,5 @@
 import { h } from '@stencil/core';
+import { expect, waitFor } from 'storybook/test';
 
 export default {
   title: 'UI / Forms / Input Date Range',
@@ -160,10 +161,115 @@ export const Preselection = {
   render: TemplatePreselection,
 };
 
+// The flow of #341, walked by the play of the stories below: the calendar picks the start, passes
+// to the end by itself, picks the end; then the voice of the start in the header changes the start
+// alone. delay 0 keeps the panel open, so that the a11y check audits the header and the calendar.
+const pad = (value: number): string => String(value).padStart(2, '0');
+
+const dayOfMonth = (n: number): string => {
+  const now = new Date();
+  return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(n)}`;
+};
+
+const walkTheRange = async ({ canvasElement, userEvent }) => {
+  const host = canvasElement.querySelector('mds-input-date-range') as HTMLMdsInputDateRangeElement;
+  await host.componentOnReady();
+  const root = host.shadowRoot as ShadowRoot;
+  const dropdown = root.querySelector('mds-dropdown') as HTMLMdsDropdownElement;
+  await dropdown.componentOnReady();
+
+  const cell = (date: string): HTMLElement =>
+    Array.from(root.querySelectorAll('mds-calendar'))
+      .map((calendar) =>
+        calendar.shadowRoot?.querySelector<HTMLElement>(
+          `mds-calendar-cell[date="${date}"][month="current"]`,
+        ),
+      )
+      .find((found) => found != null) as HTMLElement;
+  const voice = (end: 'start' | 'end'): HTMLMdsTabItemElement =>
+    root.querySelector(`mds-tab-item[value="${end}"]`) as HTMLMdsTabItemElement;
+  const dates = (): string[] =>
+    ['start', 'end'].map(
+      (end) => (host.querySelector(`[slot="${end}"]`) as HTMLMdsInputDateElement).value ?? '',
+    );
+
+  await userEvent.click(root.querySelector('#calendar-dropdown') as HTMLElement);
+  await waitFor(() => expect(dropdown).toHaveAttribute('visible'), { timeout: 5000 });
+  await waitFor(() => expect(voice('start')).toHaveAttribute('selected'));
+
+  await userEvent.click(cell(dayOfMonth(10)));
+  await waitFor(() => expect(dates()).toEqual([dayOfMonth(10), '']));
+  await waitFor(() => expect(voice('end')).toHaveAttribute('selected'));
+
+  await userEvent.click(cell(dayOfMonth(14)));
+  await waitFor(() => expect(dates()).toEqual([dayOfMonth(10), dayOfMonth(14)]));
+
+  // the voice listens on its inner button, which a synthetic click on the host never reaches
+  await userEvent.click(voice('start').shadowRoot?.querySelector('mds-button') as HTMLElement);
+  await waitFor(() => expect(voice('start')).toHaveAttribute('selected'));
+
+  await userEvent.click(cell(dayOfMonth(5)));
+  await waitFor(() => expect(dates()).toEqual([dayOfMonth(5), dayOfMonth(14)]));
+  await waitFor(() => expect(voice('end')).toHaveAttribute('selected'));
+};
+
+// The palette flips on the classes of <html>, which the components watch: the dark stories set
+// the mode for themselves and give the previous one back when they end.
+const inDarkMode = () => {
+  const html = document.documentElement;
+  const previous = Array.from(html.classList).filter((name) => name.startsWith('pref-mode-'));
+  const previousVariable = html.style.getPropertyValue('--magma-pref-mode');
+  html.classList.remove(...previous);
+  html.classList.add('pref-mode-dark');
+  html.style.setProperty('--magma-pref-mode', 'dark');
+  return () => {
+    html.classList.remove('pref-mode-dark');
+    html.classList.add(...previous);
+    if (previousVariable !== '') html.style.setProperty('--magma-pref-mode', previousVariable);
+    else html.style.removeProperty('--magma-pref-mode');
+  };
+};
+
+export const PickARange = {
+  render: Template,
+
+  args: {
+    delay: 0,
+  },
+
+  play: walkTheRange,
+};
+
+export const PickARangeDark = {
+  render: Template,
+
+  args: {
+    delay: 0,
+  },
+
+  beforeEach: inDarkMode,
+  play: walkTheRange,
+};
+
 export const DualCalendar = {
   render: Template,
 
   args: {
     'dual-calendar': true,
+    delay: 0,
   },
+
+  play: walkTheRange,
+};
+
+export const DualCalendarDark = {
+  render: Template,
+
+  args: {
+    'dual-calendar': true,
+    delay: 0,
+  },
+
+  beforeEach: inDarkMode,
+  play: walkTheRange,
 };

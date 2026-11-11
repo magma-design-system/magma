@@ -229,7 +229,9 @@ describe('mds-input-date-range', () => {
     host.remove();
   });
 
-  it('treats the first click in the last visible calendar as the end date when hovering left', async () => {
+  // a day before the start, while the end is picked, would become the new start: it is previewed
+  // alone, not as the start of a range drawn backwards to the old start (#341)
+  it('previews a day before the start, in the first visible calendar, as a new start', async () => {
     const { host, waitForChanges } = await setupRange('dual-calendar="true"');
 
     dispatch(getCalendars(host)[0], 'mdsCalendarNavigate', { currentDate: '2026-06-01' });
@@ -240,24 +242,20 @@ describe('mds-input-date-range', () => {
     await waitForChanges();
 
     const [firstCalendar, secondCalendar] = getCalendars(host);
-    const startCell = firstCalendar.shadowRoot!.querySelector(
+    const hovered = firstCalendar.shadowRoot!.querySelector(
       'mds-calendar-cell[date="2026-06-02"]',
-    );
-    const endCell = secondCalendar.shadowRoot!.querySelector(
-      'mds-calendar-cell[date="2026-07-24"]',
-    );
+    )!;
+    const start = secondCalendar.shadowRoot!.querySelector('mds-calendar-cell[date="2026-07-24"]')!;
 
-    expect({
-      startSelection: startCell?.getAttribute('selection'),
-      startPreview: startCell?.hasAttribute('preview'),
-      endSelection: endCell?.getAttribute('selection'),
-      endPreview: endCell?.hasAttribute('preview'),
-    }).toEqual({
-      startSelection: 'start',
-      startPreview: true,
-      endSelection: 'end',
-      endPreview: true,
+    await vi.waitFor(() => {
+      expect(hovered).toHaveAttribute('selection', 'single');
+      expect(hovered).toHaveAttribute('preview');
     });
+    expect(start).toHaveAttribute('selection', 'single');
+    expect(start).not.toHaveAttribute('preview');
+    expect(
+      firstCalendar.shadowRoot!.querySelector('mds-calendar-cell[date="2026-06-10"]'),
+    ).not.toHaveAttribute('selection');
   });
 
   it('does not emit selected range when a preselection contains invalid dates', async () => {
@@ -576,5 +574,291 @@ describe('mds-input-date-range calendar toggle', () => {
       role: 'button',
       'aria-label': 'Apri il calendario',
     });
+  });
+});
+
+// #341: the calendar picks the end of the field the user is in, shown by the header of the panel
+describe('the end the calendar picks', () => {
+  // the days of the month shown when the range has no date: the current one
+  const now = new Date();
+  const month = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  const day = (n: number): string => `${month}-${String(n).padStart(2, '0')}`;
+
+  const fieldOf = (host: HTMLElement, end: 'start' | 'end'): HTMLMdsInputDateElement =>
+    host.querySelector<HTMLMdsInputDateElement>(`mds-input-date[slot="${end}"]`)!;
+
+  // the field draws its native input in its own shadow root, which is what a click reaches
+  const inputOf = (host: HTMLElement, end: 'start' | 'end'): HTMLInputElement =>
+    fieldOf(host, end).shadowRoot!.querySelector('input')!;
+
+  const voiceOf = (host: HTMLElement, end: 'start' | 'end'): HTMLMdsTabItemElement =>
+    host.shadowRoot!.querySelector<HTMLMdsTabItemElement>(`mds-tab-item[value="${end}"]`)!;
+
+  const dropdownOf = (host: HTMLElement): HTMLMdsDropdownElement =>
+    host.shadowRoot!.querySelector<HTMLMdsDropdownElement>('mds-dropdown')!;
+
+  /** The end the calendars pick, as the range tells them and as its header shows. */
+  const activeEnd = (host: HTMLElement) => ({
+    calendars: getCalendars(host).map((calendar) => calendar.getAttribute('active-end')),
+    header: voiceOf(host, 'start').selected ? 'start' : voiceOf(host, 'end').selected && 'end',
+  });
+
+  const expectActive = async (host: HTMLElement, end: 'start' | 'end'): Promise<void> =>
+    vi.waitFor(() =>
+      expect(activeEnd(host)).toEqual({
+        calendars: getCalendars(host).map(() => end),
+        header: end,
+      }),
+    );
+
+  /** The dates of the two fields. */
+  const dates = (host: HTMLElement): [string, string] => [
+    fieldOf(host, 'start').value ?? '',
+    fieldOf(host, 'end').value ?? '',
+  ];
+
+  const pick = async (range: Range, date: string): Promise<void> => {
+    const cell = getCalendars(range.host)
+      .map((calendar) =>
+        calendar.shadowRoot!.querySelector<HTMLElement>(
+          `mds-calendar-cell[date="${date}"][month="current"]`,
+        ),
+      )
+      .find((found) => found !== null)!;
+    await userEvent.click(cell);
+    await range.waitForChanges();
+  };
+
+  const setup = async (attributes = '') => {
+    const { root, spyOnEvent, waitForChanges } = await render<HTMLMdsInputDateRangeElement>(
+      `<mds-input-date-range delay="0" ${attributes}>${SLOTTED_INPUTS}</mds-input-date-range>`,
+    );
+    return {
+      range: { host: root, waitForChanges },
+      valueChange: spyOnEvent('mdsInputDateRangeValueChange'),
+    };
+  };
+
+  it('picks the start first, then passes to the end by itself', async () => {
+    const { range } = await setup();
+    await openCalendar(range);
+    await expectActive(range.host, 'start');
+
+    await pick(range, day(10));
+
+    await vi.waitFor(() => expect(dates(range.host)).toEqual([day(10), '']));
+    await expectActive(range.host, 'end');
+
+    await pick(range, day(14));
+
+    await vi.waitFor(() => expect(dates(range.host)).toEqual([day(10), day(14)]));
+  });
+
+  it('picks the end of the field the user goes into', async () => {
+    const { range } = await setup(`start-date="${day(10)}" end-date="${day(20)}"`);
+    await expectActive(range.host, 'start');
+
+    await userEvent.click(inputOf(range.host, 'end'));
+    await expectActive(range.host, 'end');
+    await openCalendar(range);
+    await pick(range, day(15));
+
+    await vi.waitFor(() => expect(dates(range.host)).toEqual([day(10), day(15)]));
+
+    await userEvent.click(inputOf(range.host, 'start'));
+    await expectActive(range.host, 'start');
+  });
+
+  it('starts on the end the range lacks', async () => {
+    const { range } = await setup(`start-date="${day(10)}"`);
+
+    await expectActive(range.host, 'end');
+  });
+
+  it('changes only the active end of a complete range, and leaves the panel open for the end', async () => {
+    const { range, valueChange } = await setup(`start-date="${day(10)}" end-date="${day(20)}"`);
+    await openCalendar(range);
+
+    await pick(range, day(5));
+
+    await vi.waitFor(() => expect(dates(range.host)).toEqual([day(5), day(20)]));
+    await expectActive(range.host, 'end');
+
+    await pick(range, day(25));
+
+    await vi.waitFor(() => expect(dates(range.host)).toEqual([day(5), day(25)]));
+    expect(valueChanges(valueChange)).toEqual([
+      { startDate: day(5), endDate: day(20) },
+      { startDate: day(5), endDate: day(25) },
+    ]);
+  });
+
+  it('makes a day before the start the new start while the end is picked, the end still to pick', async () => {
+    const { range } = await setup(`start-date="${day(10)}" end-date="${day(20)}"`);
+    await userEvent.click(inputOf(range.host, 'end'));
+    await openCalendar(range);
+
+    await pick(range, day(3));
+
+    await vi.waitFor(() => expect(dates(range.host)).toEqual([day(3), '']));
+    await expectActive(range.host, 'end');
+  });
+
+  it('makes a day after the end the new start while the start is picked, the end emptied', async () => {
+    const { range } = await setup(`start-date="${day(10)}" end-date="${day(15)}"`);
+    await openCalendar(range);
+
+    await pick(range, day(20));
+
+    await vi.waitFor(() => expect(dates(range.host)).toEqual([day(20), '']));
+    await expectActive(range.host, 'end');
+  });
+
+  it('closes the panel after the click that picks the end, not after the one that picks the start', async () => {
+    const { root, waitForChanges } = await render<HTMLMdsInputDateRangeElement>(
+      `<mds-input-date-range delay="50">${SLOTTED_INPUTS}</mds-input-date-range>`,
+    );
+    const range = { host: root, waitForChanges };
+    await openCalendar(range);
+
+    await pick(range, day(10));
+    await new Promise((resolve) => setTimeout(resolve, 200));
+    expect(dropdownOf(root)).toHaveAttribute('visible');
+
+    await pick(range, day(14));
+    await vi.waitFor(() => expect(dropdownOf(root)).not.toHaveAttribute('visible'));
+  });
+
+  describe('the header', () => {
+    it('shows each end with its date, or asks for one', async () => {
+      const { range } = await setup('start-date="2026-03-10"');
+
+      expect(voiceOf(range.host, 'start')).toEqualAttribute('label', 'Start: Mar 10, 2026');
+      expect(voiceOf(range.host, 'end')).toEqualAttribute('label', 'End: Pick a date');
+    });
+
+    it('leaves the end out of reach until the range has a start', async () => {
+      const { range } = await setup();
+
+      expect(voiceOf(range.host, 'end')).toHaveAttribute('disabled');
+
+      await openCalendar(range);
+      await pick(range, day(10));
+
+      await vi.waitFor(() => expect(voiceOf(range.host, 'end')).not.toHaveAttribute('disabled'));
+    });
+
+    it('changes the end the calendar picks with a click on a voice', async () => {
+      const { range } = await setup(`start-date="${day(10)}" end-date="${day(20)}"`);
+      await openCalendar(range);
+
+      await userEvent.click(voiceOf(range.host, 'end'));
+      await expectActive(range.host, 'end');
+
+      await userEvent.click(voiceOf(range.host, 'start'));
+      await expectActive(range.host, 'start');
+
+      await pick(range, day(12));
+      await vi.waitFor(() => expect(dates(range.host)).toEqual([day(12), day(20)]));
+    });
+
+    it('changes it from the keyboard, Enter or Space on a voice', async () => {
+      const { range } = await setup(`start-date="${day(10)}" end-date="${day(20)}"`);
+      await openCalendar(range);
+      const button = (end: 'start' | 'end'): HTMLElement =>
+        voiceOf(range.host, end).shadowRoot!.querySelector<HTMLElement>('mds-button')!;
+
+      button('end').focus();
+      await userEvent.keyboard('{Enter}');
+      await expectActive(range.host, 'end');
+
+      button('start').focus();
+      await userEvent.keyboard(' ');
+      await expectActive(range.host, 'start');
+    });
+
+    it('keeps its change inside the range', async () => {
+      const { range } = await setup(`start-date="${day(10)}"`);
+      const changes: Event[] = [];
+      const listen = (event: Event): number => changes.push(event);
+      document.addEventListener('mdsTabChange', listen);
+      await openCalendar(range);
+
+      await userEvent.click(voiceOf(range.host, 'start'));
+      await expectActive(range.host, 'start');
+      document.removeEventListener('mdsTabChange', listen);
+
+      expect(changes).toEqual([]);
+    });
+  });
+
+  it('warns nothing when a click in the second calendar moves the start past the end', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const { range } = await setup(`dual-calendar start-date="${day(10)}" end-date="${day(14)}"`);
+    await openCalendar(range);
+
+    const next = new Date(now.getFullYear(), now.getMonth() + 1, 5);
+    const nextDay = `${next.getFullYear()}-${String(next.getMonth() + 1).padStart(2, '0')}-05`;
+    await pick(range, nextDay);
+
+    await vi.waitFor(() => expect(dates(range.host)).toEqual([nextDay, '']));
+    const [first] = getCalendars(range.host);
+    await vi.waitFor(() =>
+      expect(
+        first.shadowRoot!.querySelector('mds-calendar-cell[month="current"][selection]'),
+      ).toBeNull(),
+    );
+    expect(warn).not.toHaveBeenCalled();
+  });
+
+  it('leaves no preview behind after the click that empties the end', async () => {
+    const { range } = await setup(`start-date="${day(10)}"`);
+    await openCalendar(range);
+    const [calendar] = getCalendars(range.host);
+    const cellOf = (date: string) =>
+      calendar.shadowRoot!.querySelector<HTMLElement>(
+        `mds-calendar-cell[date="${date}"][month="current"]`,
+      )!;
+
+    await userEvent.hover(cellOf(day(14)));
+    await vi.waitFor(() => expect(cellOf(day(12))).toHaveAttribute('preview'));
+    await pick(range, day(14));
+    await userEvent.hover(cellOf(day(3)));
+    await pick(range, day(3));
+
+    await vi.waitFor(() => expect(dates(range.host)).toEqual([day(3), '']));
+    await vi.waitFor(() =>
+      expect(calendar.shadowRoot!.querySelectorAll('mds-calendar-cell[preview]')).toHaveLength(0),
+    );
+    expect(cellOf(day(3))).toHaveAttribute('selection', 'single');
+  });
+
+  it('submits the range as the same JSON string', async () => {
+    const { root: form, waitForChanges } = await render<HTMLFormElement>(
+      `<form><mds-input-date-range name="period" delay="0">${SLOTTED_INPUTS}</mds-input-date-range></form>`,
+    );
+    const range = { host: form.querySelector('mds-input-date-range')!, waitForChanges };
+    await openCalendar(range);
+
+    await pick(range, day(10));
+    await pick(range, day(14));
+
+    await vi.waitFor(() =>
+      expect(new FormData(form).get('period')).toBe(
+        JSON.stringify({ startDate: day(10), endDate: day(14) }),
+      ),
+    );
+  });
+
+  it('aligns the grids of two calendars, a month of five weeks next to one of six', async () => {
+    const range = await setupRange('dual-calendar start-date="2026-03-25" end-date="2026-04-08"');
+    await openCalendar(range);
+
+    const tops = getCalendars(range.host).map(
+      (calendar) =>
+        calendar.shadowRoot!.querySelector('.month-view__cells')!.getBoundingClientRect().top,
+    );
+
+    expect(tops[0]).toBeCloseTo(tops[1], 0);
   });
 });

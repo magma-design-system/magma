@@ -407,6 +407,7 @@ A strip is either a `tablist` of tabs, each controlling a panel, or a navigation
 
 ### Used by
 
+ - [mds-input-date-range](../mds-input-date-range)
  - [mds-input-upload](../mds-input-upload)
  - [mds-pref-animation](../mds-pref-animation)
  - [mds-pref-consumption](../mds-pref-consumption)
@@ -426,6 +427,7 @@ graph TD;
   mds-button --> mds-icon
   mds-button --> mds-spinner
   mds-button --> mds-text
+  mds-input-date-range --> mds-tab-item
   mds-input-upload --> mds-tab-item
   mds-pref-animation --> mds-tab-item
   mds-pref-consumption --> mds-tab-item

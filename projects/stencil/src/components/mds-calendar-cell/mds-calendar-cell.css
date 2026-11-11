@@ -17,26 +17,28 @@
  * @prop --mds-calendar-cell-selection-week-boundaries-border-radius: Border radius for week selection boundaries.
  * @prop --mds-calendar-cell-preselection-today-background: Background for today's date in preselection state.
  * @prop --mds-calendar-cell-preselection-today-color: Text color for today's date in preselection state.
- * @prop --mds-calendar-cell-preselection-current-month-background: Background for preselected days (current month).
- * @prop --mds-calendar-cell-preselection-current-month-color: Text color for preselected days (current month).
- * @prop --mds-calendar-cell-preselection-current-month-boundaries-color: Boundary color for preselected days (current month).
- * @prop --mds-calendar-cell-preselection-current-month-boundaries-background: Boundary background for preselected days (current month).
- * @prop --mds-calendar-cell-preselection-other-month-background: Background for preselected days (other months).
- * @prop --mds-calendar-cell-preselection-other-month-color: Text color for preselected days (other months).
- * @prop --mds-calendar-cell-preselection-other-month-boundaries-color: Boundary color for preselected days (other months).
- * @prop --mds-calendar-cell-preselection-other-month-boundaries-background: Boundary background for preselected days (other months).
- * @prop --mds-calendar-cell-selection-current-month-background: Background for selected days (current month).
- * @prop --mds-calendar-cell-selection-current-month-color: Text color for selected days (current month).
- * @prop --mds-calendar-cell-selection-current-month-boundaries-background: Boundary background for selected days (current month).
- * @prop --mds-calendar-cell-selection-current-month-boundaries-color: Boundary color for selected days (current month).
- * @prop --mds-calendar-cell-selection-current-month-weekend-background: Background for selected weekend days (current month).
- * @prop --mds-calendar-cell-selection-current-month-weekend-color: Text color for selected weekend days (current month).
- * @prop --mds-calendar-cell-selection-current-month-weekend-boundaries-background: Boundary background for selected weekend days.
- * @prop --mds-calendar-cell-selection-current-month-weekend-boundaries-color: Boundary color for selected weekend days.
- * @prop --mds-calendar-cell-selection-other-month-background: Background for selected days (other months).
- * @prop --mds-calendar-cell-selection-other-month-color: Text color for selected days (other months).
- * @prop --mds-calendar-cell-selection-other-month-boundaries-background: Boundary background for selected days (other months).
- * @prop --mds-calendar-cell-selection-other-month-boundaries-color: Boundary color for selected days (other months).
+ * @prop --mds-calendar-cell-preselection-current-month-background: Background of the band of a preview, from the start to the day under the pointer (current month).
+ * @prop --mds-calendar-cell-preselection-current-month-color: Text color of the band of a preview (current month).
+ * @prop --mds-calendar-cell-preselection-current-month-boundaries-color: Text color of the day under the pointer, the end a click there would pick (current month).
+ * @prop --mds-calendar-cell-preselection-current-month-boundaries-background: Fill of the ring of the day under the pointer (current month).
+ * @prop --mds-calendar-cell-preselection-current-month-boundaries-border-color: Ring of the day under the pointer, not chosen yet (current month).
+ * @prop --mds-calendar-cell-preselection-other-month-background: Background of the band of a preview (other months).
+ * @prop --mds-calendar-cell-preselection-other-month-color: Text color of the band of a preview (other months).
+ * @prop --mds-calendar-cell-preselection-other-month-boundaries-color: Text color of the day under the pointer (other months).
+ * @prop --mds-calendar-cell-preselection-other-month-boundaries-background: Fill of the ring of the day under the pointer (other months).
+ * @prop --mds-calendar-cell-preselection-other-month-boundaries-border-color: Ring of the day under the pointer, not chosen yet (other months).
+ * @prop --mds-calendar-cell-selection-current-month-background: Background of the band of a range, between and behind its ends (current month).
+ * @prop --mds-calendar-cell-selection-current-month-color: Text color of the band of a range (current month).
+ * @prop --mds-calendar-cell-selection-current-month-boundaries-background: Fill of the dot of a chosen day: either end of a range, or the day of a single picker (current month).
+ * @prop --mds-calendar-cell-selection-current-month-boundaries-color: Text color of the dot of a chosen day (current month).
+ * @prop --mds-calendar-cell-selection-current-month-weekend-background: Background of the band of a range on weekend days (current month).
+ * @prop --mds-calendar-cell-selection-current-month-weekend-color: Text color of the band of a range on weekend days (current month).
+ * @prop --mds-calendar-cell-selection-current-month-weekend-boundaries-background: Background of the band behind an end of a range on a weekend day.
+ * @prop --mds-calendar-cell-selection-current-month-weekend-boundaries-color: Text color of the dot of an end of a range on a weekend day.
+ * @prop --mds-calendar-cell-selection-other-month-background: Background of the band of a range (other months).
+ * @prop --mds-calendar-cell-selection-other-month-color: Text color of the band of a range (other months).
+ * @prop --mds-calendar-cell-selection-other-month-boundaries-background: Fill of the dot of a chosen day (other months).
+ * @prop --mds-calendar-cell-selection-other-month-boundaries-color: Text color of the dot of a chosen day (other months).
  */
 
 /*
@@ -107,81 +109,92 @@
     rgb(var(--magma-accent-fg))
   );
 
-  /* preselection */
+  /* preview: the band from the start to the day under the pointer, paler than a range, and that
+   * day drawn as a ring, not chosen yet; the start keeps the dot of a chosen day (#341) */
 
   --private-calendar-cell-preselection-current-month-background: var(
     --mds-calendar-cell-preselection-current-month-background,
-    rgb(var(--magma-accent-surface-hover))
+    rgb(var(--magma-accent-surface-subtle))
   );
   --private-calendar-cell-preselection-current-month-color: var(
     --mds-calendar-cell-preselection-current-month-color,
-    rgb(var(--magma-text-disabled))
+    rgb(var(--magma-text-default))
   );
   --private-calendar-cell-preselection-current-month-boundaries-color: var(
     --mds-calendar-cell-preselection-current-month-boundaries-color,
-    rgb(var(--magma-text-disabled))
+    rgb(var(--magma-text-default))
   );
   --private-calendar-cell-preselection-current-month-boundaries-background: var(
     --mds-calendar-cell-preselection-current-month-boundaries-background,
-    rgb(var(--magma-accent-surface-subtle))
+    transparent
+  );
+  --private-calendar-cell-preselection-current-month-boundaries-border-color: var(
+    --mds-calendar-cell-preselection-current-month-boundaries-border-color,
+    rgb(var(--magma-accent-emphasis))
   );
   --private-calendar-cell-preselection-other-month-background: var(
     --mds-calendar-cell-preselection-other-month-background,
-    rgb(var(--magma-accent-surface))
+    rgb(var(--magma-accent-surface-subtle))
   );
   --private-calendar-cell-preselection-other-month-color: var(
     --mds-calendar-cell-preselection-other-month-color,
-    rgb(var(--magma-text-disabled))
+    rgb(var(--magma-text-subtle))
   );
   --private-calendar-cell-preselection-other-month-boundaries-color: var(
     --mds-calendar-cell-preselection-other-month-boundaries-color,
-    rgb(var(--magma-text-disabled))
+    rgb(var(--magma-text-default))
   );
   --private-calendar-cell-preselection-other-month-boundaries-background: var(
     --mds-calendar-cell-preselection-other-month-boundaries-background,
-    rgb(var(--magma-surface-raised))
+    transparent
+  );
+  --private-calendar-cell-preselection-other-month-boundaries-border-color: var(
+    --mds-calendar-cell-preselection-other-month-boundaries-border-color,
+    rgb(var(--magma-accent-emphasis))
   );
 
-  /* selection */
+  /* selection: a pale band on the days of a range and a full dot on each chosen day, the start
+   * and the end alike; the dot used to be a pale hole in a strong band, which read as a day left
+   * out where a start fell on a Sunday, alone at the end of its row (#341). Inside the band the
+   * weekend keeps a step of its own (#1142). The band takes the accent surface at rest, a step
+   * over the subtle one of a preview: the selected role has the subtle value today, and would
+   * draw a range and its preview alike */
 
   --private-calendar-cell-selection-current-month-background: var(
     --mds-calendar-cell-selection-current-month-background,
-    rgb(var(--magma-accent-emphasis))
+    rgb(var(--magma-accent-surface))
   );
   --private-calendar-cell-selection-current-month-color: var(
     --mds-calendar-cell-selection-current-month-color,
-    rgb(var(--magma-text-on-emphasis))
+    rgb(var(--magma-text-default))
   );
   --private-calendar-cell-selection-current-month-boundaries-background: var(
     --mds-calendar-cell-selection-current-month-boundaries-background,
-    rgb(var(--magma-surface-raised))
+    rgb(var(--magma-accent-emphasis))
   );
   --private-calendar-cell-selection-current-month-boundaries-color: var(
     --mds-calendar-cell-selection-current-month-boundaries-color,
-    rgb(var(--magma-text-muted))
+    rgb(var(--magma-text-on-emphasis))
   );
   --private-calendar-cell-selection-current-month-weekend-background: var(
     --mds-calendar-cell-selection-current-month-weekend-background,
-    rgb(var(--magma-accent-emphasis-hover))
+    rgb(var(--magma-accent-surface-hover))
   );
-
-  /* inside a range the weekend keeps its step of the band and takes the text of the selection:
-   * the muted accent-border it took read 3.15:1 in light, 2.16:1 in dark (#1142) */
   --private-calendar-cell-selection-current-month-weekend-color: var(
     --mds-calendar-cell-selection-current-month-weekend-color,
-    rgb(var(--magma-text-on-emphasis))
+    rgb(var(--magma-text-default))
   );
   --private-calendar-cell-selection-current-month-weekend-boundaries-background: var(
     --mds-calendar-cell-selection-current-month-weekend-boundaries-background,
-    rgb(var(--magma-accent-emphasis-hover))
+    rgb(var(--magma-accent-surface-hover))
   );
   --private-calendar-cell-selection-current-month-weekend-boundaries-color: var(
     --mds-calendar-cell-selection-current-month-weekend-boundaries-color,
-    rgb(var(--magma-text-muted))
+    rgb(var(--magma-text-on-emphasis))
   );
   --private-calendar-cell-selection-other-month-background: var(
     --mds-calendar-cell-selection-other-month-background,
-    rgb(var(--magma-accent-surface-hover))
+    rgb(var(--magma-accent-surface-subtle))
   );
   --private-calendar-cell-selection-other-month-color: var(
     --mds-calendar-cell-selection-other-month-color,
@@ -189,11 +202,11 @@
   );
   --private-calendar-cell-selection-other-month-boundaries-background: var(
     --mds-calendar-cell-selection-other-month-boundaries-background,
-    rgb(var(--magma-accent-surface-subtle))
+    rgb(var(--magma-accent-emphasis))
   );
   --private-calendar-cell-selection-other-month-boundaries-color: var(
     --mds-calendar-cell-selection-other-month-boundaries-color,
-    rgb(var(--magma-text-disabled))
+    rgb(var(--magma-text-on-emphasis))
   );
 
   align-items: center;
@@ -212,6 +225,9 @@
   aspect-ratio: 1 / 1;
   background-color: var(--private-calendar-cell-inner-background);
   border-radius: var(--private-calendar-cell-selection-boundaries-border-radius);
+
+  /* the ring of a day not chosen yet, set by the selection states */
+  box-shadow: inset 0 0 0 --spacing(50) var(--private-calendar-cell-dot-ring, transparent);
   display: flex;
   min-height: 0;
   min-width: 0;
@@ -231,7 +247,9 @@
   align-items: center;
   background-color: transparent;
   border-radius: 0;
-  color: var(--private-calendar-cell-color);
+
+  /* the text of a dot, where a selection state draws one, else the text of the cell */
+  color: var(--private-calendar-cell-dot-color, var(--private-calendar-cell-color));
   display: flex;
   inset: calc(var(--mds-calendar-cell-gap) * -1);
   justify-content: center;
