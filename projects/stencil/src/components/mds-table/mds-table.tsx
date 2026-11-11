@@ -86,7 +86,9 @@ export class MdsTable {
 
   /**
    * Emits when the selection of a `selectable` table changes, with the index and the value of each
-   * selected row
+   * selected row. It announces changes only: not the rows that arrive already `selected` (in the
+   * markup on load, or rendered later), which the table counts all the same, as a native control
+   * fires no `change` for its initial value
    */
   @Event({ bubbles: true, composed: true, eventName: 'mdsTableSelectionChange' })
   selectionEvent: EventEmitter<MdsTableSelectionEventDetail>;
@@ -105,6 +107,7 @@ export class MdsTable {
     if (this.footer) {
       this.footer.selectable = newValue;
     }
+    this.countSelection();
   }
 
   /**
@@ -112,33 +115,58 @@ export class MdsTable {
    */
   @Method()
   async updateSelection(): Promise<void> {
+    // the count behind the header box, the bar of the batch actions and `selection`. It stays in
+    // the body of this method: Stencil exports the types a method refers to, and
+    // MdsTableRowSelection is public only through it
     if (!this.selectable || !this.rows) {
       return;
     }
-    // the rows ask for it at every change of their `selected`: selecting them all at once asks
-    // as many times, and the table announces the outcome once, in the next microtask
+    // the rows ask at every change of their `selected`, and that count is announced; the table
+    // asking on its own (countSelection) is not. Selecting every row at once asks as many times:
+    // the calls of one microtask make one count, announced if any of them asked for it
+    this.selectionAnnounced ||= !this.countingOnItsOwn;
     if (this.selectionQueued) return;
     this.selectionQueued = true;
     await Promise.resolve();
     this.selectionQueued = false;
-    this.selectedRows = [];
-    this.rows.forEach((row: HTMLMdsTableRowElement, index: number) => {
+    const announced = this.selectionAnnounced;
+    this.selectionAnnounced = false;
+    const rows = this.rows;
+    const selectedRows: MdsTableRowSelection[] = [];
+    rows.forEach((row: HTMLMdsTableRowElement, index: number) => {
       if (row.selected) {
-        this.selectedRows.push({ index, value: row.value } as MdsTableRowSelection);
+        selectedRows.push({ index, value: row.value } as MdsTableRowSelection);
       }
     });
-    this.selectionEvent.emit({ rows: this.selectedRows });
-    this.header?.setSelection(this.selectedRows.length, this.rows.length);
+    this.selectedRows = selectedRows;
+    if (announced) {
+      this.selectionEvent.emit({ rows: this.selectedRows });
+    }
+    // a header not upgraded yet (its definition loaded after the table's) has no method: the
+    // table counts again when it loads
+    void this.header?.setSelection?.(this.selectedRows.length, rows.length);
     this.selection = this.selectedRows.length > 0;
     if (this.body) {
       this.body.selection = this.selection;
     }
-    this.rows.forEach((row: HTMLMdsTableRowElement) => {
+    rows.forEach((row: HTMLMdsTableRowElement) => {
       row.selection = this.selection;
     });
   }
 
   private selectionQueued = false;
+  private selectionAnnounced = false;
+  private countingOnItsOwn = false;
+
+  // A row that arrives already selected has not changed, so it never asked for a count and was
+  // never counted (#1230): the table counts on its own when it loads, when rows come and go and
+  // when it becomes selectable, and does not announce it, as a native control fires no `change`
+  // for its initial value. updateSelection reads the flag before its first await.
+  private countSelection = (): void => {
+    this.countingOnItsOwn = true;
+    void this.updateSelection();
+    this.countingOnItsOwn = false;
+  };
 
   /**
    * `internal` Reads again whether the rows have `slot="action"` content: shows or hides the
@@ -272,6 +300,7 @@ export class MdsTable {
       this.header.selectable = this.selectable;
     }
     this.updateActions();
+    this.countSelection();
   }
 
   private updateSlottedElements = (): void => {
@@ -279,6 +308,7 @@ export class MdsTable {
     this.updateInteractive();
     this.handleSelection();
     this.updateActions();
+    this.countSelection();
   };
 
   connectedCallback(): void {

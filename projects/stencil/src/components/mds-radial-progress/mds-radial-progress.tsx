@@ -71,7 +71,10 @@ export class MdsRadialProgress {
     const start = performance.now();
 
     const tick = (now: number) => {
-      const t = Math.min(1, (now - start) / durationMs);
+      // `now` is the start of the frame: when `progress` changes inside a frame (a scroll or
+      // resize handler), the first tick gets a time earlier than `start`. Clamp at 0, or
+      // easeOutExpo goes below 0 and the ring steps back past `from` before moving (#1177).
+      const t = Math.min(1, Math.max(0, (now - start) / durationMs));
       const eased = this.easeOutExpo(t);
       this.animatedProgress = from + (to - from) * eased;
 

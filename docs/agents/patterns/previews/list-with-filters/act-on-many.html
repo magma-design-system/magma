@@ -70,13 +70,13 @@ whole-page: true
               <mds-table-cell><mds-text typography="detail">Giulia Bianchi</mds-text></mds-table-cell>
               <mds-table-cell><mds-text typography="detail">16 febbraio 2026</mds-text></mds-table-cell>
             </mds-table-row>
-            <mds-table-row value="2026/0097">
+            <mds-table-row value="2026/0097" selected>
               <mds-table-cell><mds-text typography="detail"><mds-link href="#">2026/0097</mds-link></mds-text></mds-table-cell>
               <mds-table-cell><mds-text typography="detail">Iscrizione anagrafica</mds-text></mds-table-cell>
               <mds-table-cell><mds-text typography="detail">Luca Ferri</mds-text></mds-table-cell>
               <mds-table-cell><mds-text typography="detail">13 febbraio 2026</mds-text></mds-table-cell>
             </mds-table-row>
-            <mds-table-row value="2026/0094">
+            <mds-table-row value="2026/0094" selected>
               <mds-table-cell><mds-text typography="detail"><mds-link href="#">2026/0094</mds-link></mds-text></mds-table-cell>
               <mds-table-cell><mds-text typography="detail">Certificato di residenza</mds-text></mds-table-cell>
               <mds-table-cell><mds-text typography="detail">Marco Rossi</mds-text></mds-table-cell>
@@ -102,15 +102,8 @@ whole-page: true
 </mds-toast-region>
 <script>
   const table = document.getElementById('pratiche');
-  // two rows the person has ticked; a row selected in the markup is not counted by the table
-  customElements.whenDefined('mds-table-row').then(async () => {
-    const rows = ['2026/0097', '2026/0094'].map((value) => table.querySelector(`mds-table-row[value="${value}"]`));
-    await Promise.all(rows.map((row) => row.componentOnReady()));
-    rows.forEach((row) => (row.selected = true));
-  });
   document.getElementById('archivia').addEventListener('click', () => {
     const gone = [...table.querySelectorAll('mds-table-row[selected]')];
-    table.selectAll(false);
     gone.forEach((row) => row.remove());
     const left = 14 - gone.length;
     document.getElementById('summary').textContent = `11-${left} di ${left} pratiche`;

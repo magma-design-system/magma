@@ -22,7 +22,7 @@ import { MdsInputSwitchEventDetail } from '@component/mds-input-switch/meta/even
 export class MdsTableHeader {
   @Element() host: HTMLMdsTableHeaderElement;
   private table: HTMLMdsTableElement;
-  private checkboxEl: HTMLMdsInputSwitchElement;
+  private checkboxEl?: HTMLMdsInputSwitchElement;
   @State() selectAll: boolean = false;
   @State() hasActions: boolean = false;
   @State() indeterminate: boolean = false;
@@ -47,17 +47,15 @@ export class MdsTableHeader {
   @Method()
   async setSelection(selectedItems: number, totalItems: number): Promise<void> {
     this.indeterminate = selectedItems !== 0 && selectedItems !== totalItems;
-    // the reference used to be looked up only on the indeterminate branch, so the first
-    // call that was NOT indeterminate - select all, or unselect the last row - threw on an
-    // undefined checkbox; and a header that is not selectable renders none at all
-    this.checkboxEl ??= this.host.shadowRoot?.querySelector(
-      '.checkbox',
-    ) as HTMLMdsInputSwitchElement;
-    if (!this.checkboxEl) {
-      return;
-    }
     // totalItems 0 would otherwise read as "all of them are selected"
-    this.checkboxEl.checked = totalItems > 0 && selectedItems === totalItems;
+    this.selectAll = totalItems > 0 && selectedItems === totalItems;
+    // the checkbox is rendered from this state, which keeps a count made before it exists: the
+    // table counts on load, a frame before the header it makes selectable draws its checkbox
+    // (#1230). A click changes the checkbox's own `checked`, which a render with the same state
+    // does not set back, so the count sets it here too; a header that is not selectable has none
+    if (this.checkboxEl) {
+      this.checkboxEl.checked = this.selectAll;
+    }
   }
 
   /**
@@ -94,8 +92,10 @@ export class MdsTableHeader {
             <div class="checkbox-wrapper">
               <mds-input-switch
                 class="checkbox"
+                ref={(el) => (this.checkboxEl = el)}
                 title={this.t.get(this.selectAll ? 'selectNoneRows' : 'selectAllRows')}
                 type="checkbox"
+                checked={this.selectAll}
                 onMdsInputSwitchChange={this.handleSelectAllChange}
                 indeterminate={this.indeterminate}
               ></mds-input-switch>
