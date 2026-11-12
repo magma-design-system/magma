@@ -91,7 +91,9 @@ changed since the person saw it, and an approved pull request that is no longer 
   run it would turn auto-merge on instead: say so and wait.
 
 Never pass `--auto`, `--admin` (it merges around the queue), `--squash` or `--rebase`. After the
-merge, run step 1 again and show the new table.
+merge, run step 1 again and show the new table. Once the merge has landed, the worktree of the
+merged branch goes to the trash: `npx nx run magma:worktree.clean --output-style=static`, from the
+main checkout (`docs/WORKFLOW.md` rule 9).
 
 ## 4. Sync the branch of the epic with `main`
 
