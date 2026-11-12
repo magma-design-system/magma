@@ -660,6 +660,167 @@ describe('several values', () => {
       expect(thumbs(root)[1]).toEqualAttribute('aria-valuetext', '4.5');
     });
   });
+
+  // the header holds the values at its end, far from the thumb that moves: each thumb shows its
+  // own over it, the one value too
+  describe('the tip of a value', () => {
+    const tips = (range: HTMLElement): HTMLElement[] =>
+      Array.from(range.shadowRoot!.querySelectorAll<HTMLElement>('.tip'));
+    const tipTexts = (range: HTMLElement): string[] =>
+      tips(range).map((tip) => tip.textContent?.trim() ?? '');
+    const shown = (range: HTMLElement): boolean[] =>
+      tips(range).map((tip) => getComputedStyle(tip).opacity === '1');
+
+    /** A range of 320 px, and the centre of a thumb at a value from 0 to 100 on its track. */
+    const renderWide = async (markup: string) => {
+      const result = await render(`<div style="width: 320px">${markup}</div>`);
+      const range = result.root.querySelector('mds-input-range')!;
+      await vi.waitFor(() => expect(range).toHaveAttribute('hydrated'));
+      await vi.waitFor(() => expect(tips(range).length).toBeGreaterThan(0));
+      const track = range.shadowRoot!.querySelector('.track-total')!.getBoundingClientRect();
+      // the centre of a thumb travels the track less one thumb, which is as large as the track
+      const centre = (value: number): number =>
+        track.left + track.height / 2 + (track.width - track.height) * (value / 100);
+      return { ...result, centre, range, track };
+    };
+
+    /** Puts the pointer on the thumb at `index`, at its value. */
+    const hoverThumb = async (range: HTMLElement, index: number): Promise<void> => {
+      const input = thumbs(range)[index];
+      const { height, width } = input.getBoundingClientRect();
+      const ratio = Number(input.value) / 100;
+      await userEvent.hover(input, {
+        position: { x: height / 2 + (width - height) * ratio, y: height / 2 },
+      });
+    };
+
+    it('shows the value of each thumb, formatted, and leaves it out of the accessibility tree', async () => {
+      const { range, waitForChanges } = await renderPrice();
+      expect(tipTexts(range)).toEqual(['20', '80']);
+      for (const tip of tips(range)) expect(tip).toEqualAttribute('aria-hidden', 'true');
+
+      (range as HTMLMdsInputRangeElement).formatValue = (value) => `${value} \u20ac`;
+      await waitForChanges();
+      expect(tipTexts(range)).toEqual(['20 \u20ac', '80 \u20ac']);
+    });
+
+    it('is drawn for one thumb too, with one child or without children', async () => {
+      const { root: one } = await render(
+        '<mds-input-range><mds-input-range-value value="20"></mds-input-range-value></mds-input-range>',
+      );
+      await vi.waitFor(() => expect(thumbs(one)).toHaveLength(1));
+      expect(tipTexts(one)).toEqual(['20']);
+
+      const { root: none } = await render('<mds-input-range value="30"></mds-input-range>');
+      expect(tipTexts(none)).toEqual(['30']);
+      expect(tips(none)[0]).toEqualAttribute('aria-hidden', 'true');
+    });
+
+    it('shows the tip of the one value with the pointer anywhere on the track, and follows it', async () => {
+      const { centre, range, waitForChanges } = await renderWide(
+        '<mds-input-range value="30">Volume</mds-input-range>',
+      );
+      const arrow = (): DOMRect =>
+        tips(range)[0].querySelector('.tip-arrow')!.getBoundingClientRect();
+      expect(shown(range)).toEqual([false]);
+
+      // the input of the one value takes the whole track: far from the thumb shows the tip too
+      const input = readField(range);
+      const { height, width } = input.getBoundingClientRect();
+      await userEvent.hover(input, { position: { x: width * 0.8, y: height / 2 } });
+      await vi.waitFor(() => expect(shown(range)).toEqual([true]));
+      expect(arrow().left + arrow().width / 2).toBeCloseTo(centre(30), 0);
+
+      // the native keys move the thumb, and the tip with it
+      input.focus();
+      await userEvent.keyboard('{ArrowRight}');
+      await waitForChanges();
+      expect((range as HTMLMdsInputRangeElement).value).toBe(31);
+      expect(tipTexts(range)).toEqual(['31']);
+      expect(arrow().left + arrow().width / 2).toBeCloseTo(centre(31), 0);
+
+      (range as HTMLMdsInputRangeElement).formatValue = (value) => `${value} %`;
+      await waitForChanges();
+      expect(tipTexts(range)).toEqual(['31 %']);
+    });
+
+    it('shows the tip of the thumb under the pointer, and of the thumb focused from the keyboard', async () => {
+      const { range, waitForChanges } = await renderWide(
+        `<mds-input-range>
+          Prezzo
+          <mds-input-range-value value="20"></mds-input-range-value>
+          <mds-input-range-value value="80"></mds-input-range-value>
+        </mds-input-range>`,
+      );
+      expect(shown(range)).toEqual([false, false]);
+
+      await hoverThumb(range, 0);
+      await vi.waitFor(() => expect(shown(range)).toEqual([true, false]));
+
+      await userEvent.hover(range.shadowRoot!.querySelector('.header')!);
+      await vi.waitFor(() => expect(shown(range)).toEqual([false, false]));
+
+      await press(range, 1, '{ArrowLeft}');
+      await waitForChanges();
+      await vi.waitFor(() => expect(shown(range)).toEqual([false, true]));
+      thumbs(range)[1].blur();
+
+      // a disabled range shows no tip
+      (range as HTMLMdsInputRangeElement).disabled = true;
+      await waitForChanges();
+      await hoverThumb(range, 0);
+      await vi.waitFor(() => expect(shown(range)).toEqual([false, false]));
+    });
+
+    it('follows its thumb, the arrow on its centre and the bubble inside the track', async () => {
+      const { centre, range, track, waitForChanges } = await renderWide(
+        `<mds-input-range>
+          <mds-input-range-value value="0"></mds-input-range-value>
+          <mds-input-range-value value="50"></mds-input-range-value>
+          <mds-input-range-value value="100"></mds-input-range-value>
+        </mds-input-range>`,
+      );
+      // a value wider than the thumb, which the ends of the track would cut
+      (range as HTMLMdsInputRangeElement).formatValue = (value) => `${value * 10000} \u20ac`;
+      await waitForChanges();
+
+      const boxes = (index: number) => {
+        const tip = tips(range)[index];
+        return {
+          arrow: tip.querySelector('.tip-arrow')!.getBoundingClientRect(),
+          bubble: tip.querySelector('.tip-bubble')!.getBoundingClientRect(),
+        };
+      };
+      const arrowCentre = (index: number): number => {
+        const { arrow } = boxes(index);
+        return arrow.left + arrow.width / 2;
+      };
+
+      [0, 50, 100].forEach((value, index) => {
+        const { bubble } = boxes(index);
+        expect(arrowCentre(index)).toBeCloseTo(centre(value), 0);
+        expect(bubble.width).toBeGreaterThan(track.height);
+        expect(bubble.left).toBeGreaterThanOrEqual(track.left - 0.5);
+        expect(bubble.right).toBeLessThanOrEqual(track.right + 0.5);
+      });
+      // away from the ends the bubble is centred on its thumb
+      const middle = boxes(1).bubble;
+      expect(middle.left + middle.width / 2).toBeCloseTo(centre(50), 0);
+      // the tip is over the track, its value on the line of the values of the header, so that it
+      // covers what of the header lies under it whole
+      expect(middle.bottom).toBeLessThan(track.top);
+      const headerValue = range.shadowRoot!.querySelector('.value')!.getBoundingClientRect();
+      const tipValue = tips(range)[1].querySelector('.tip-value')!.getBoundingClientRect();
+      expect(tipValue.top).toBeCloseTo(headerValue.top, 0);
+      expect(tipValue.bottom).toBeCloseTo(headerValue.bottom, 0);
+
+      await press(range, 1, '{PageUp}');
+      await waitForChanges();
+      expect(thumbValues(range)).toEqual([0, 60, 100]);
+      expect(arrowCentre(1)).toBeCloseTo(centre(60), 0);
+      expect(tipTexts(range)[1]).toBe('600000 \u20ac');
+    });
+  });
 });
 
 // The one value, without children: what #1261 added around it

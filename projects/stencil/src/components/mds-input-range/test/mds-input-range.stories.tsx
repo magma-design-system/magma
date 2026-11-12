@@ -196,7 +196,8 @@ const PriceTemplate = () => (
   </div>
 );
 
-// each thumb has its own name and its own ring; the keys stop the minimum at the maximum
+// each thumb has its own name and its own ring; the keys stop the minimum at the maximum; the
+// thumb moved from the keyboard shows its value in a tip over it
 const playPrice = async ({ canvasElement, userEvent }) => {
   const range = canvasElement.querySelector('mds-input-range') as HTMLMdsInputRangeElement;
   const [minimum, maximum] = await hydratedThumbs(range, 2);
@@ -206,6 +207,9 @@ const playPrice = async ({ canvasElement, userEvent }) => {
   minimum.focus();
   await userEvent.keyboard('{ArrowRight}');
   await expect(valuesOf(range)).toEqual([110, 400]);
+  const tip = range.shadowRoot?.querySelector<HTMLElement>('.tip');
+  await waitFor(() => expect(tip?.textContent?.trim()).toBe(euro(110)));
+  await waitFor(() => expect(getComputedStyle(tip as HTMLElement).opacity).toBe('1'));
 
   await userEvent.keyboard('{End}');
   await expect(valuesOf(range)).toEqual([400, 400]);
