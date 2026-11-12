@@ -328,7 +328,10 @@ proposed for the default.
 
 The products learn the format from the section "A product's layer" of the shipped catalogue
 (`agents/patterns.md`, written by `sync-agent-docs.ts`), and write a layer with the plugin
-skill `/magma:pattern-layer`. They check it with `get_pattern` without arguments, whose
+skill `/magma:pattern-layer`, in the file `get_pattern` names: `layerFile` with the id,
+`layerDir` without arguments, absolute when the project is not the folder the client started
+the server in (a project in a sub-folder of the repository, #1387), so the layer lands where it
+is read. They check it with `get_pattern` without arguments, whose
 `layerErrors` lists what is wrong in their folder (`projectErrors` of the core): a file that
 does not parse is named and leaves the others readable; of two layers of one pattern, the first
 file by name is applied and the second reported; a pattern of the product under an id Magma has

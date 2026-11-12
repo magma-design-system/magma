@@ -2,12 +2,24 @@
 // the magma-mcp command of the package, reaching the lint through the exports of magma (with no
 // tsconfig, as in a consumer project). On the build of this repository: skipped when there is
 // none, required on CI.
-import { accessSync, constants, existsSync, readFileSync } from 'node:fs';
+import {
+  accessSync,
+  constants,
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  realpathSync,
+  symlinkSync,
+  writeFileSync,
+} from 'node:fs';
+import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 import { CallToolResultSchema } from '@modelcontextprotocol/sdk/types.js';
 import { afterAll, beforeAll, describe, expect, test } from 'vitest';
+import { BIN_FILE } from '../src/root.js';
 import { toolsList } from '../src/server.js';
 
 /** The package magma in this repository, and its build. */
@@ -24,7 +36,8 @@ describe.skipIf(!existsSync(CLI) && !process.env.CI)('the server as magma ships 
   };
 
   test('magma-mcp is the compiled server, executable', () => {
-    expect(manifest.bin).toEqual({ 'magma-mcp': 'dist/mcp/cli.js' });
+    // BIN_FILE: the file check_setup recognises in a client configuration that runs node on it
+    expect(manifest.bin).toEqual({ 'magma-mcp': BIN_FILE });
     expect(() =>
       accessSync(path.join(MAGMA, manifest.bin['magma-mcp']!), constants.X_OK),
     ).not.toThrow();
@@ -87,4 +100,70 @@ describe.skipIf(!existsSync(CLI) && !process.env.CI)('the server as magma ships 
       expect(component.structuredContent).toMatchObject({ tag: 'mds-button' });
     });
   });
+
+  test('finds the project it is installed in when the client starts it elsewhere (#1387)', async () => {
+    // the layout of the issue: a repository with no package.json, a lab with its own install of
+    // magma (here a symlink to the build), and node run on that copy from the repository
+    const start = realpathSync(mkdtempSync(path.join(tmpdir(), 'magma-start-')));
+    const lab = path.join(start, 'tools/asset_lab');
+    mkdirSync(path.join(lab, 'node_modules/@maggioli-design-system'), { recursive: true });
+    symlinkSync(MAGMA, path.join(lab, 'node_modules/@maggioli-design-system/magma'), 'dir');
+    writeFileSync(
+      path.join(lab, 'package.json'),
+      JSON.stringify({ dependencies: { '@maggioli-design-system/magma': '*' } }),
+    );
+    const entry = path.join('tools/asset_lab/node_modules/@maggioli-design-system/magma', BIN_FILE);
+    writeFileSync(
+      path.join(start, '.mcp.json'),
+      JSON.stringify({ mcpServers: { magma: { command: 'node', args: [entry] } } }),
+    );
+    const client = new Client({ name: 'magma-test', version: '1.0.0' });
+    await client.connect(
+      new StdioClientTransport({
+        command: process.execPath,
+        args: [entry],
+        cwd: start,
+        stderr: 'pipe',
+      }),
+    );
+    try {
+      const setup = await client.callTool(
+        { name: 'check_setup', arguments: {} },
+        CallToolResultSchema,
+      );
+      expect(setup.isError).toBeFalsy();
+      expect(setup.structuredContent).toMatchObject({
+        root: lab,
+        rootFrom: 'install',
+        checks: expect.arrayContaining([
+          expect.objectContaining({
+            id: 'mcp',
+            ok: true,
+            detail: `${path.join(start, '.mcp.json')} starts magma-mcp.`,
+          }),
+        ]),
+      });
+      // the patterns and the blocks read the same project: the layer goes into the lab, and
+      // every path an answer names opens from the folder the client works in (absolute)
+      const call = async (args: Record<string, unknown>) =>
+        (await client.callTool({ name: 'get_pattern', arguments: args }, CallToolResultSchema))
+          .structuredContent as Record<string, unknown> & {
+          pattern: { situations?: Array<{ preview?: string }> };
+        };
+      expect((await call({ id: 'message-placement' })).layerFile).toBe(
+        path.join(lab, 'magma/patterns/message-placement.md'),
+      );
+      expect((await call({})).layerDir).toBe(path.join(lab, 'magma/patterns'));
+      const previews = (await call({ id: 'page-header' })).pattern.situations!.flatMap(
+        (one) => one.preview ?? [],
+      );
+      expect(previews.length).toBeGreaterThan(0);
+      for (const file of previews) {
+        expect(path.isAbsolute(file), file).toBe(true);
+        expect(existsSync(file), file).toBe(true);
+      }
+    } finally {
+      await client.close();
+    }
+  }, 30_000);
 });

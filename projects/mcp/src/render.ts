@@ -39,7 +39,14 @@ import {
   type Preview,
   type PreviewImageMode,
 } from '@maggioli-design-system/magma/lint';
-import { packageDir, readJsonFile, resolvePackage, type ToolContext } from './context.js';
+import {
+  packageDir,
+  pathFor,
+  projectFolder,
+  readJsonFile,
+  resolvePackage,
+  type ToolContext,
+} from './context.js';
 import { folderOf, slugFile } from './icons.js';
 import { ToolError, withImages, type Tool } from './protocol.js';
 import { inPage, PREVIEW_ID, type Inspection, type PageProblem, type Step } from './render-page.js';
@@ -593,7 +600,7 @@ const browserFor = async (context: ToolContext): Promise<Browser> => {
   const chromium = await chromiumOf(context);
   if (!chromium)
     throw new ToolError(
-      'render_preview needs playwright-core in the project: npm i -D playwright-core. It drives the Google Chrome or Microsoft Edge of the machine and downloads no browser (agents/mcp.md, "Show the person what you mean").',
+      `render_preview needs playwright-core in ${projectFolder(context)}: npm i -D playwright-core there. It drives the Google Chrome or Microsoft Edge of the machine and downloads no browser (agents/mcp.md, "Show the person what you mean").`,
     );
   if (!existsSync(loaderOf(context)))
     throw new ToolError(`The installed magma has no ${LOADER}: the components cannot load.`);
@@ -706,7 +713,7 @@ export const renderPreviewImages = async (
       } catch (error) {
         // a page that does not load (a timeout): the preview it is, not only the driver's words
         throw new Error(
-          `${path.relative(context.root, preview.file)}: ${error instanceof Error ? error.message : String(error)}`,
+          `${pathFor(context, preview.file)}: ${error instanceof Error ? error.message : String(error)}`,
         );
       }
       images[at] = made;
@@ -973,7 +980,7 @@ export const renderPreview = (context: ToolContext): Tool => ({
                 pattern: shipped.pattern,
                 [rule !== undefined ? 'rule' : 'case']: shipped.id,
                 ...(shipped.example > 1 ? { example: shipped.example } : {}),
-                file: path.relative(context.root, shipped.file),
+                file: pathFor(context, shipped.file),
                 ...(shipped.try ? { try: shipped.try } : {}),
               },
             }

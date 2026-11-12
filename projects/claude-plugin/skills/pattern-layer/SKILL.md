@@ -20,7 +20,7 @@ A layer narrows, it never overrides: the "Always true" rules and the cases of a 
 `get_pattern` with the need in words, or with the id if the person named one; then `get_pattern` with the id for the whole pattern: its variables, cases, "Always true" rules, open choices (each with its `default` and what a product `may`) and situations, with the layer of this project already applied if there is one (`layers`).
 
 - A candidate, or no pattern for the need: there is nothing to narrow. Go to step 5.
-- A layer already exists (`magma/patterns/<id>.md`): change that file, never write a second one.
+- A layer already exists (the file the answer names in `layerFile`): change that file, never write a second one.
 
 ## 2. What the product decides
 
@@ -33,7 +33,7 @@ A wish that changes an "Always true" rule, a case, or a choice the pattern does 
 
 ## 3. The file
 
-Write `magma/patterns/<id>.md` at the root of the project: `id` and `extends: magma:<id>` of the Magma pattern, `layer` with the name of the product, `narrows` with the choices that differ from the default, `situations` with the cases they map to. In the body, under `## Why`, one line per choice with its reason and today's date: the history whoever changes it next reads first.
+Write the file the answer of step 1 names in `layerFile` (`magma/patterns/<id>.md` of the project, which may be a folder below the one you work in): `id` and `extends: magma:<id>` of the Magma pattern, `layer` with the name of the product, `narrows` with the choices that differ from the default, `situations` with the cases they map to. In the body, under `## Why`, one line per choice with its reason and today's date: the history whoever changes it next reads first.
 
 ## 4. The check
 
@@ -43,7 +43,7 @@ Write `magma/patterns/<id>.md` at the root of the project: `id` and `extends: ma
 
 ## 5. A need Magma does not cover
 
-Tell the person no Magma default covers it, and propose an issue on Magma (`get_guide` reporting, a flow no pattern covers). If the product cannot wait, offer a pattern of its own in the same folder: the shape of a Magma pattern (read one in `node_modules/@maggioli-design-system/magma/agents/patterns/`), its own `layer`, no `extends`, never an id Magma has; then the check of step 4, which holds it to the format, the cases and the components of this release. A pattern that comes back in two or three products is the one to propose to Magma.
+Tell the person no Magma default covers it, and propose an issue on Magma (`get_guide` reporting, a flow no pattern covers). If the product cannot wait, offer a pattern of its own in the same folder (`layerDir` of `get_pattern` without arguments): the shape of a Magma pattern (read one in `node_modules/@maggioli-design-system/magma/agents/patterns/`), its own `layer`, no `extends`, never an id Magma has; then the check of step 4, which holds it to the format, the cases and the components of this release. A pattern that comes back in two or three products is the one to propose to Magma.
 
 ## 6. The report
 

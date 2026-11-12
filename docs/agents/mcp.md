@@ -91,10 +91,18 @@ neither, `npx playwright install chromium`.
 `npx --no magma-mcp` runs the installed version, so the answers always match the components
 the project uses. Keep `--no`: without it, a client that starts the server before
 `npm install` (a fresh clone with the configuration committed) lets `npx` download and run
-whatever package the npm registry has under that name; with it, `npx` stops instead. When the
+whatever package the npm registry has under that name; with it, `npx` stops instead.
+
+The project is the folder the client starts the server in. When that folder does not declare
+`@maggioli-design-system/magma` in its `package.json` and the command runs the magma a project
+inside it installed, that project is the one: a repository whose Magma project sits in a
+sub-folder names that copy, `"command": "node", "args":
+["tools/lab/node_modules/@maggioli-design-system/magma/dist/mcp/cli.js"]`. Otherwise, when the
 client starts servers elsewhere than the project's root, pass it:
 `"args": ["--no", "magma-mcp", "--root", "<the project's folder>"]` (in OpenCode, at the end
-of `command`).
+of `command`). `check_setup` names the folder it read as the project and how the server found
+it (`root`, `rootFrom`); when the project is not the folder the server started in, every path
+an answer names (a preview, the layer of a pattern) is absolute.
 
 ## The tools
 
@@ -108,9 +116,9 @@ of `command`).
 | `explain_class` | what a class does with the Magma theme | the trap of the scale: `p-4` is 0.01rem, `p-400` is 1rem |
 | `find_icon` | a slug that exists, by meaning, or whether a slug exists | an `icon="..."` that renders nothing |
 | `get_guide` | one section of a guide, or of a domain of the design language, the rules of composition (`rhythm`, `density`, `actions`, `titles`, `surfaces`, `widths`) | reading the whole file |
-| `get_pattern` | how a task across components is solved in every product (where a message goes, confirming an action, an empty, a loading or a failed part): the list, the patterns for a need, or, with the values of the variables of a pattern, the one case to follow, with its preview (the stage, live, what to try in it and in `images` the paths of its light and dark images, to show where the stage cannot run) when Magma has one and in `rules` the rules of the domains it relies on; the layer of the project (`magma/patterns/<id>.md`) applied; the domains of the design language first in the list, then the building blocks (`kind: block`, the page header), which answer with the regions to lay out, in order | inventing the flow, or reading [`patterns.md`](patterns.md) and each pattern by hand |
+| `get_pattern` | how a task across components is solved in every product (where a message goes, confirming an action, an empty, a loading or a failed part): the list, the patterns for a need, or, with the values of the variables of a pattern, the one case to follow, with its preview (the stage, live, what to try in it and in `images` the paths of its light and dark images, to show where the stage cannot run) when Magma has one and in `rules` the rules of the domains it relies on; the layer of the project (`magma/patterns/<id>.md`) applied, and in `layerFile` the file to write it in; the domains of the design language first in the list, then the building blocks (`kind: block`, the page header), which answer with the regions to lay out, in order | inventing the flow, or reading [`patterns.md`](patterns.md) and each pattern by hand |
 | `check_markup` | whether a snippet passes the lint, before it is written | a lint run after the fact |
-| `check_setup` | what the Magma integration of the project misses | checking the install steps by hand |
+| `check_setup` | what the Magma integration of the project misses, and which folder it read as the project | checking the install steps by hand |
 | `render_preview` | an image of markup with Magma components, or of the preview Magma ships for a case of a pattern (`pattern` and `case`), at the widths (pixels or Magma breakpoints), the mode and the theme you give, with a report of what in it is not representative | describing an interface in words, or a wireframe of your own |
 
 `check_markup` uses the ESLint, Stylelint and template parsers the project installed with

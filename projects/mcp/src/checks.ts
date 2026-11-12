@@ -11,7 +11,8 @@ import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import magma from '@maggioli-design-system/magma/eslint';
 import { magmaRoot } from '@maggioli-design-system/magma/lint';
-import { packageDir, readJsonFile, type ToolContext } from './context.js';
+import { packageDir, pathFor, projectFolder, readJsonFile, type ToolContext } from './context.js';
+import { BIN_FILE } from './root.js';
 import { tokensOf } from './tokens.js';
 import { ToolError, type Tool } from './protocol.js';
 
@@ -201,13 +202,13 @@ export const checkMarkup = (context: ToolContext): Tool => ({
       | undefined;
     if (!eslint?.Linter)
       throw new ToolError(
-        'check_markup needs ESLint in the project: npm i -D eslint (agents/lint.md).',
+        `check_markup needs ESLint in ${projectFolder(context)}: npm i -D eslint there (agents/lint.md).`,
       );
     const { parser, file } = TEMPLATES[lang];
     const parserModule = parser ? await importFromProject(context, parser) : undefined;
     if (parser && !parserModule)
       throw new ToolError(
-        `check_markup needs ${parser} in the project for ${lang}: npm i -D ${parser} (agents/lint.md).`,
+        `check_markup needs ${parser} in ${projectFolder(context)} for ${lang}: npm i -D ${parser} there (agents/lint.md).`,
       );
     const linter = new eslint.Linter({ cwd: context.root });
     const messages = linter.verify(
@@ -368,6 +369,15 @@ const opencodeServers = (mcp: Record<string, unknown> = {}): OpencodeServer[] =>
   });
 
 /**
+ * A part of a command that starts magma-mcp: the command (`magma-mcp`, the bin of magma), or
+ * the file the bin runs inside the installed package, which a client that runs node on it
+ * names (`node <project>/node_modules/@maggioli-design-system/magma/dist/mcp/cli.js`, #1387).
+ */
+const BIN_PATH = `@maggioli-design-system/magma/${BIN_FILE}`;
+const startsMagmaMcp = (part: string | undefined): boolean =>
+  Boolean(part && (part.includes('magma-mcp') || part.replaceAll('\\', '/').endsWith(BIN_PATH)));
+
+/**
  * The entries of a client configuration that start magma-mcp, each safe unless it runs npx
  * without `--no`: `mcpServers` of Claude Code and Cursor and `servers` of VS Code, a
  * `command` and its `args`; the `mcp` servers of OpenCode, a `command` that lists the
@@ -393,7 +403,7 @@ export const mcpEntries = (file: string, { jsonc = false } = {}): Array<{ safe: 
       .map((server) => server.command ?? []),
   ];
   return commands
-    .filter((command) => command.some((part) => part?.includes('magma-mcp')))
+    .filter((command) => command.some(startsMagmaMcp))
     .map(([program, ...args]) => ({
       safe: !/(^|\/)npx$/.test(program ?? '') || args.includes('--no'),
     }));
@@ -403,12 +413,18 @@ export const checkSetup = (context: ToolContext): Tool => ({
   name: 'check_setup',
   title: 'Check the Magma integration of the project',
   description:
-    "Look at the project and list what its Magma integration misses, each with the guide that fixes it: design-tokens and styles installed in the range magma depends on, the React or Angular wrapper at magma's version, the fonts of the typography, an icon set, the icon path, the lint in ESLint and Stylelint, this server in the client configuration. Read-only.",
+    "Look at the project and list what its Magma integration misses, each with the guide that fixes it: design-tokens and styles installed in the range magma depends on, the React or Angular wrapper at magma's version, the fonts of the typography, an icon set, the icon path, the lint in ESLint and Stylelint, this server in the client configuration. Names the folder it read as the project and how the server found it. Read-only.",
   inputSchema: { type: 'object', properties: {} },
   outputSchema: {
     type: 'object',
     properties: {
-      root: { type: 'string' },
+      root: { type: 'string', description: 'The folder read as the project.' },
+      rootFrom: {
+        type: 'string',
+        enum: ['option', 'start', 'install'],
+        description:
+          'How the server found it: named by --root (option), the folder the client started it in (start), the project the command runs magma from, inside that folder (install).',
+      },
       magma: { type: 'string' },
       ok: { type: 'boolean' },
       checks: {
@@ -436,7 +452,7 @@ export const checkSetup = (context: ToolContext): Tool => ({
     }>(path.join(root, 'package.json'));
     if (!project)
       throw new ToolError(
-        `No package.json in ${root}: start the server in the project, or pass --root.`,
+        `No package.json in ${projectFolder(context)}: start the server in the project, or pass --root <the project's folder>.`,
       );
     const declared = { ...project.devDependencies, ...project.dependencies };
     const magmaManifest = readJsonFile<{ version: string; dependencies?: Record<string, string> }>(
@@ -538,9 +554,9 @@ export const checkSetup = (context: ToolContext): Tool => ({
       id: 'icon-path',
       ok: Boolean(setter),
       detail: setter
-        ? `${path.relative(root, setter.file)} sets the icon path.`
+        ? `${pathFor(context, setter.file)} sets the icon path.`
         : stray
-          ? `${path.relative(root, stray.file)} names mdsIconSvgPath, but mds-icon reads the path only from IconsSetService.setSvgPath() and from sessionStorage.setItem('mdsIconSvgPath', ...).`
+          ? `${pathFor(context, stray.file)} names mdsIconSvgPath, but mds-icon reads the path only from IconsSetService.setSvgPath() and from sessionStorage.setItem('mdsIconSvgPath', ...).`
           : 'Nothing in the sources sets the icon path: mds-icon does not know where the icons are. Call IconsSetService.setSvgPath() from @maggioli-design-system/magma before the first mds-icon renders.',
       guide: 'agents/assets.md (Tell mds-icon where the icons are)',
     });
@@ -572,30 +588,40 @@ export const checkSetup = (context: ToolContext): Tool => ({
         : 'The Stylelint configuration does not extend @maggioli-design-system/magma/stylelint.',
       guide: 'agents/lint.md',
     });
-    const entries = [
-      '.mcp.json',
-      '.vscode/mcp.json',
-      '.cursor/mcp.json',
-      ...OPENCODE_CONFIGS,
-    ].flatMap((name) =>
-      mcpEntries(path.join(root, name), { jsonc: OPENCODE_CONFIGS.includes(name) }).map(
-        (entry) => ({ name, ...entry }),
-      ),
+    // the client reads its configuration in the folder it starts the server in: another folder
+    // than the project when --root names it or the project was found from the install (#1387)
+    const folders = [...new Set([root, context.start ?? root])];
+    const shown = (file: string) => pathFor(context, file);
+    const entries = folders.flatMap((folder) =>
+      ['.mcp.json', '.vscode/mcp.json', '.cursor/mcp.json', ...OPENCODE_CONFIGS].flatMap((name) => {
+        const opencode = OPENCODE_CONFIGS.includes(name);
+        const file = path.join(folder, name);
+        return mcpEntries(file, { jsonc: opencode }).map((entry) => ({
+          name: shown(file),
+          folder,
+          claude: name === '.mcp.json',
+          opencode,
+          ...entry,
+        }));
+      }),
     );
     // npx without --no installs and runs whatever the registry has under the name (#1112)
     const unsafe = entries.filter((entry) => !entry.safe);
     const fixes = [
       ...new Set(
         unsafe.map((entry) =>
-          OPENCODE_CONFIGS.includes(entry.name)
+          entry.opencode
             ? `"command": ["npx", "--no", "magma-mcp"] in ${entry.name}`
             : `"args": ["--no", "magma-mcp"] in ${entry.name}`,
         ),
       ),
     ];
     // in Claude Code the Magma plugin starts the server: with an .mcp.json entry too it runs twice
-    const plugin = pluginEnabled(path.join(root, '.claude/settings.json'));
-    const twice = plugin && entries.some((entry) => entry.name === '.mcp.json');
+    const plugins = folders.filter((folder) =>
+      pluginEnabled(path.join(folder, '.claude/settings.json')),
+    );
+    const plugin = plugins.length > 0;
+    const twice = entries.some((entry) => entry.claude && plugins.includes(entry.folder));
     checks.push({
       id: 'mcp',
       ok: (plugin || entries.length > 0) && !unsafe.length && !twice,
@@ -605,13 +631,22 @@ export const checkSetup = (context: ToolContext): Tool => ({
           ? 'Both the Magma plugin (.claude/settings.json) and .mcp.json start magma-mcp: Claude Code runs the server twice. Keep the plugin and drop the .mcp.json entry.'
           : plugin || entries.length
             ? [
-                ...(plugin ? ['the Magma plugin of .claude/settings.json'] : []),
+                ...plugins.map(
+                  (folder) =>
+                    `the Magma plugin of ${shown(path.join(folder, '.claude/settings.json'))}`,
+                ),
                 ...entries.map((entry) => entry.name),
               ].join(', ') + ' starts magma-mcp.'
             : 'No client configuration starts magma-mcp: the Magma plugin in .claude/settings.json for Claude Code, .vscode/mcp.json for VS Code, .cursor/mcp.json for Cursor, opencode.json for OpenCode.',
       guide: 'agents/mcp.md',
     });
 
-    return { root, magma: version, ok: checks.every((check) => check.ok), checks };
+    return {
+      root,
+      ...(context.rootFrom ? { rootFrom: context.rootFrom } : {}),
+      magma: version,
+      ok: checks.every((check) => check.ok),
+      checks,
+    };
   },
 });

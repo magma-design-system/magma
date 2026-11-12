@@ -17,7 +17,7 @@ import {
 } from '@maggioli-design-system/magma/lint';
 import { ToolError, type Tool } from './protocol.js';
 import { patternsDir } from './patterns.js';
-import type { ToolContext } from './context.js';
+import { pathFor, type ToolContext } from './context.js';
 
 interface Guide {
   name: string;
@@ -62,7 +62,7 @@ const guidesOf = (context: ToolContext): Guide[] => {
         .map((one) => ({
           id: one.id,
           kind: rules.includes(one.id) ? 'rule' : 'case',
-          file: path.relative(context.root, one.file),
+          file: pathFor(context, one.file),
           ...(one.example > 1 ? { example: one.example } : {}),
         }));
       guides.push({

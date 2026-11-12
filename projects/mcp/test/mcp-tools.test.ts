@@ -748,6 +748,109 @@ describe('the pattern tool', () => {
     expect(rule('step-ratio')).not.toHaveProperty('preview');
   });
 
+  test('a pattern names the file its layer is read from, the list the folder of the layers', async () => {
+    const { layerFile } = await run('get_pattern', { id: 'message-placement' });
+    expect(layerFile).toBe('magma/patterns/message-placement.md');
+    // where the layer of a pattern with none yet goes
+    expect((await run('get_pattern', { id: 'confirm-action' })).layerFile).toBe(
+      'magma/patterns/confirm-action.md',
+    );
+    expect((await run('get_pattern')).layerDir).toBe('magma/patterns');
+    // a domain of the design language takes a layer too (its open choices, density.md)
+    expect((await run('get_pattern', { id: 'rhythm' })).layerFile).toBe('magma/patterns/rhythm.md');
+  });
+
+  test('when the project is not where the client started the server, an answer names absolute paths (#1387)', async () => {
+    // the layout of the issue: the client works in the folder above the project
+    const root = mkdtempSync(path.join(tmpdir(), 'magma-sub-'));
+    const project = path.join(root, 'tools/asset_lab');
+    cpSync(context.root, project, { recursive: true });
+    // a magma that ships a block with the preview of a situation, beside its patterns
+    const magma = mkdtempSync(path.join(tmpdir(), 'magma-block-'));
+    cpSync(fakeMagma, magma, { recursive: true });
+    writeFileSync(
+      path.join(magma, 'agents/patterns/head.md'),
+      [
+        '---',
+        'id: head',
+        'kind: block',
+        'title: Head',
+        'group: navigation',
+        'layer: magma',
+        'status: decided',
+        'need: The person sees what the page is about.',
+        'principle: The head names the page.',
+        'keywords: [head]',
+        'used-by: [confirm-action, message-placement]',
+        'validated-on: []',
+        'variables:',
+        '  level: { values: [top, nested], means: "where the page sits" }',
+        'regions:',
+        '  - { id: title, required: true, what: "the heading of the page" }',
+        'always-true: []',
+        'situations:',
+        '  - { id: list, situation: A list, level: top }',
+        '---',
+        '',
+        '# Head',
+        '',
+      ].join('\n'),
+    );
+    const previews = path.join(magma, 'agents/patterns/previews');
+    mkdirSync(path.join(previews, 'head'), { recursive: true });
+    writeFileSync(path.join(previews, 'head/list.html'), '<mds-text tag="h1">list</mds-text>\n');
+    const away = {
+      ...context,
+      root: project,
+      start: root,
+      rootFrom: 'install' as const,
+      settings: { ...context.settings, documentation: path.join(magma, 'data/documentation.json') },
+    };
+    const tool = (name: string) => toolsOf(away).find((one) => one.name === name)!;
+    const pattern = async (args: Record<string, unknown>) =>
+      (await tool('get_pattern').run(args)) as Result;
+
+    // the layer and its folder, in the project: the agent writes the file the server reads
+    expect((await pattern({})).layerDir).toBe(path.join(project, 'magma/patterns'));
+    const placement = await pattern({ id: 'message-placement' });
+    expect(placement.layerFile).toBe(path.join(project, 'magma/patterns/message-placement.md'));
+    expect(placement.pattern.layers).toEqual(['magma', 'example-backoffice']);
+    // a pattern: the previews of its cases, the stage and the images of a situation
+    const byId = (id: string) =>
+      placement.pattern.cases.find((one: { id: string }) => one.id === id);
+    expect(byId('region-info')).toMatchObject({
+      preview: path.join(previews, 'message-placement/region-info.html'),
+      examples: [path.join(previews, 'message-placement/region-info.2.html')],
+    });
+    const { answer } = await pattern({
+      id: 'message-placement',
+      situation: { about: 'action', outcome: 'failure', place: 'on-screen', timing: 'now' },
+    });
+    expect(answer.preview).toMatchObject({
+      file: path.join(previews, 'message-placement/action-failed-in-place.html'),
+      images: {
+        light: path.join(previews, 'message-placement/action-failed-in-place.light.webp'),
+        dark: path.join(previews, 'message-placement/action-failed-in-place.dark.webp'),
+      },
+    });
+    // a building block: the preview of the situation its values match, in the block and its answer
+    const head = await pattern({ id: 'head' });
+    expect(head.pattern.situations[0].preview).toBe(path.join(previews, 'head/list.html'));
+    expect((await pattern({ id: 'head', situation: { level: 'top' } })).answer.preview.file).toBe(
+      path.join(previews, 'head/list.html'),
+    );
+    // a domain of the design language, through get_guide: the previews of its rules
+    const rhythm = (await tool('get_guide').run({ guide: 'rhythm' })) as Result;
+    expect(rhythm.previews[0].file).toBe(path.join(previews, 'rhythm/shared-inset.html'));
+    // what is wrong in a layer, named by the file the agent opens to fix it
+    writeFileSync(path.join(project, 'magma/patterns/loading.md'), '---\nid: [\n---\n');
+    expect((await pattern({})).layerErrors).toEqual([
+      expect.stringMatching(
+        new RegExp(`^${path.join(project, 'magma/patterns/loading.md').replaceAll('.', '\\.')}: `),
+      ),
+    ]);
+  });
+
   test('one section, a candidate as a gap, an unknown id', async () => {
     const section = await run('get_pattern', { id: 'confirm-action', section: 'behaviour' });
     expect(section).toMatchObject({ id: 'confirm-action', section: 'Behaviour over time' });
@@ -1216,6 +1319,76 @@ describe('the check tools', () => {
       ok: false,
       detail: expect.stringContaining('opencode.json for OpenCode'),
     });
+  });
+
+  test('an entry that runs node on the installed magma starts magma-mcp (#1387)', () => {
+    const dir = mkdtempSync(path.join(tmpdir(), 'magma-node-'));
+    const file = path.join(dir, '.mcp.json');
+    const entries = (...args: string[]) => {
+      writeFileSync(file, JSON.stringify({ mcpServers: { magma: { command: 'node', args } } }));
+      return mcpEntries(file);
+    };
+    // the .mcp.json of the issue, and the same path on Windows
+    expect(
+      entries('tools/asset_lab/node_modules/@maggioli-design-system/magma/dist/mcp/cli.js'),
+    ).toEqual([{ safe: true }]);
+    expect(
+      entries('C:\\lab\\node_modules\\@maggioli-design-system\\magma\\dist\\mcp\\cli.js'),
+    ).toEqual([{ safe: true }]);
+    // the server of another package
+    expect(entries('node_modules/@other/magma/dist/mcp/cli.js')).toEqual([]);
+  });
+
+  test('check_setup reads the client configuration in the folder the client starts it in (#1387)', async () => {
+    // the layout of the issue: .mcp.json at the root of the repository runs node on the magma a
+    // lab in tools/asset_lab installed, and the command found the project from it
+    const start = mkdtempSync(path.join(tmpdir(), 'magma-start-'));
+    const root = path.join(start, 'tools/asset_lab');
+    mkdirSync(root, { recursive: true });
+    writeFileSync(path.join(root, 'package.json'), '{}');
+    writeFileSync(
+      path.join(start, '.mcp.json'),
+      JSON.stringify({
+        mcpServers: {
+          magma: {
+            command: 'node',
+            args: ['tools/asset_lab/node_modules/@maggioli-design-system/magma/dist/mcp/cli.js'],
+          },
+        },
+      }),
+    );
+    const setupIn = async () =>
+      (await checkSetup({ ...context, root, rootFrom: 'install', start }).run({})) as Result;
+    const mcpOf = (setup: Result) =>
+      setup.checks.find((check: { id: string }) => check.id === 'mcp');
+    const setup = await setupIn();
+    expect(setup).toMatchObject({ root, rootFrom: 'install' });
+    expect(mcpOf(setup)).toMatchObject({
+      ok: true,
+      // absolute: the client's folder is not the project (pathFor of src/context.ts)
+      detail: `${path.join(start, '.mcp.json')} starts magma-mcp.`,
+    });
+    // with the Magma plugin enabled in the start folder too, Claude Code runs the server twice
+    mkdirSync(path.join(start, '.claude'));
+    writeFileSync(
+      path.join(start, '.claude/settings.json'),
+      JSON.stringify({ enabledPlugins: { 'magma@magma': true } }),
+    );
+    expect(mcpOf(await setupIn())).toMatchObject({
+      ok: false,
+      detail: expect.stringMatching(/runs the server twice/),
+    });
+    // a context with no start folder reads the root only, and reports no rootFrom
+    const alone = (await checkSetup({ ...context, root }).run({})) as Result;
+    expect(alone.rootFrom).toBeUndefined();
+    expect(mcpOf(alone).ok).toBe(false);
+  });
+
+  test('check_setup names the folder it found no package.json in, and how it found it', () => {
+    const root = mkdtempSync(path.join(tmpdir(), 'magma-empty-'));
+    expect(() => checkSetup({ ...context, root, rootFrom: 'start' }).run({})).toThrow(
+      `No package.json in ${root} (the folder the client started the server in): start the server in the project, or pass --root <the project's folder>.`,
+    );
   });
 
   test('the Magma plugin counts as enabled only from enabledPlugins', () => {
