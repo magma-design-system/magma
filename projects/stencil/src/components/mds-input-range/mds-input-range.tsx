@@ -57,6 +57,15 @@ interface Thumb {
  *   value outside `min` and `max`, or off the step, is brought inside and onto the step, as a
  *   native input sanitizes it, and written back on its child; a child without a value starts in
  *   the middle, as a native range input.
+ * - Each thumb shows its value in a tip over it while the pointer is on it, while it is dragged
+ *   and while it has the focus of the keyboard: the header holds the value, or lists them all, at
+ *   its end, far from the thumb that moves. One thumb has its tip too: the distance is the same,
+ *   a range that loses all but one value keeps it, and a range with its header hidden still shows
+ *   its value. The pointer finds the input, and the input of the one value takes the whole track
+ *   (a press on the track moves its thumb natively): there the tip shows with the pointer anywhere
+ *   on the track, with several thumbs on the thumb alone. The tip is drawn, not announced: the
+ *   input already names its value (aria-valuetext). It follows the thumb by its value alone, in
+ *   CSS, as the fill does: nothing is measured.
  */
 
 /**
@@ -449,10 +458,13 @@ export class MdsInputRange {
    * between spaces.
    */
   private displayValues(): string {
-    const texts = this.thumbs.map(({ value }) =>
-      this.formatValue ? this.formatValue(value) : String(value),
-    );
+    const texts = this.thumbs.map(({ value }) => this.formatted(value));
     return texts.join(texts.length === 2 ? ' \u2013 ' : ' \u00b7 ');
+  }
+
+  /** A value as the range shows it: through `formatValue`, or as it is. */
+  private formatted(value: number): string {
+    return this.formatValue ? this.formatValue(value) : String(value);
   }
 
   @Watch('disabled')
@@ -587,10 +599,34 @@ export class MdsInputRange {
     this.calculateProgress();
   }
 
+  /**
+   * The tip of a value, right after the input of its thumb: the CSS shows it while that input is
+   * under the pointer, pressed or focused from the keyboard (`.field:hover + .tip`), and places it
+   * from `position`, where the value sits on the track (0 to 100).
+   */
+  private renderTip(position: number, text: string, key?: string) {
+    return (
+      <div
+        key={key}
+        class="tip"
+        aria-hidden="true"
+        style={{ '--private-input-range-tip-position': `${position}` }}
+      >
+        <span class="tip-bubble">
+          <mds-text class="tip-value" typography="label">
+            {text}
+          </mds-text>
+        </span>
+        <span class="tip-arrow"></span>
+      </div>
+    );
+  }
+
+  /** A native input per thumb, each followed by the tip of its value. */
   private renderThumbs() {
     return this.thumbs.map((thumb, index) => {
       const [low, high] = this.bounds(index);
-      return (
+      return [
         <input
           key={thumb.key}
           class={{ field: true, 'field--held': low === high }}
@@ -604,8 +640,9 @@ export class MdsInputRange {
           onKeyDown={this.onThumbKeyDown}
           step={this.allowedStep()}
           value={thumb.value}
-        />
-      );
+        />,
+        this.renderTip(this.percent(thumb.value), this.formatted(thumb.value), `tip-${thumb.key}`),
+      ];
     });
   }
 
@@ -654,24 +691,28 @@ export class MdsInputRange {
               ></div>
             </div>
           </div>
-          {children ? (
-            this.renderThumbs()
-          ) : (
-            <input
-              ref={(el) => (this.inputElement = el as HTMLInputElement)}
-              class="field"
-              aria-label={this.label}
-              aria-valuetext={this.formatValue ? this.formatValue(this.value) : undefined}
-              disabled={this.isDisabled()}
-              max={this.max}
-              min={this.min}
-              onInput={this.onInput}
-              step={this.step}
-              type="range"
-              value={this.value}
-              name={this.name}
-            />
-          )}
+          {children
+            ? this.renderThumbs()
+            : [
+                <input
+                  ref={(el) => (this.inputElement = el as HTMLInputElement)}
+                  class="field"
+                  aria-label={this.label}
+                  aria-valuetext={this.formatValue ? this.formatValue(this.value) : undefined}
+                  disabled={this.isDisabled()}
+                  max={this.max}
+                  min={this.min}
+                  onInput={this.onInput}
+                  step={this.step}
+                  type="range"
+                  value={this.value}
+                  name={this.name}
+                />,
+                this.renderTip(
+                  this.progress ?? 0,
+                  this.value == null ? '' : this.formatted(this.value),
+                ),
+              ]}
         </div>
       </Host>
     );

@@ -31,6 +31,14 @@
   );
   --private-thumb-size: calc(var(--mds-input-range-thumb-size) + var(--private-border-width) * 2);
 
+  /* the shadow of the tip of a value, as the one of mds-tooltip; high contrast trades it for a
+   * glow (css/mds-input-range-pref-contrast.css) */
+  --private-input-range-tip-shadow: drop-shadow(
+      0 --spacing(250) --spacing(200) rgb(var(--magma-shadow-ink) / 0.04)
+    )
+    drop-shadow(0 --spacing(100) --spacing(75) rgb(var(--magma-shadow-ink) / 0.1))
+    drop-shadow(0 0 1px rgb(var(--magma-shadow-ink) / 0.1));
+
   display: grid;
   gap: --spacing(200);
 
@@ -183,6 +191,92 @@
 
 .range--several .field:focus {
   z-index: 30;
+}
+
+/* The value of a thumb in a tip over it, one thumb or several: the header holds the values at its
+ * end, far from the thumb that moves. It shows while the input of its thumb is under the pointer,
+ * pressed (a drag keeps it, wherever the pointer goes) or focused from the keyboard, and follows
+ * the thumb at once. The input of the one value takes the whole track, so its tip shows with the
+ * pointer anywhere on the track; the inputs of several thumbs let the pointer through but on the
+ * thumb (.range--several), so each tip shows with the pointer on its thumb.
+ *
+ * Nothing is measured: the tip is a strip as wide as the track, over it, and a container, so that
+ * its parts know that width (100cqi). Its centre is the centre of the thumb, from the same value
+ * the fill takes (--private-input-range-tip-position, 0 to 100). The arrow stays on that centre;
+ * the bubble is centred on it, and slides back inside the track near its ends. It looks like
+ * mds-tooltip: overlay surface, radius, drop shadow.
+ *
+ * The bubble lies on the line of the header, its value on the line of the values of the header:
+ * the header is as tall as its capitals (mds-text trims the label) and ends --spacing(200) over
+ * the track (the gap of the host), so a bubble padded by --spacing(100) ends --spacing(100) over
+ * the track. It covers what of the header lies under it whole: a tip set higher covered the top
+ * of the letters and left their foot out. The arrow fills the --spacing(100) left, down to the
+ * thumb. */
+
+.tip {
+  --private-input-range-tip-centre: calc(
+    (100cqi - var(--mds-input-range-track-size)) *
+      (var(--private-input-range-tip-position, 0) * 0.01) + (var(--mds-input-range-track-size) / 2)
+  );
+
+  bottom: 100%;
+  container-type: inline-size;
+  filter: var(--private-input-range-tip-shadow);
+  height: 0;
+  inset-inline: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  transition-duration: var(--private-input-range-transition-duration);
+  transition-property: opacity;
+  transition-timing-function: var(--ease-out-sine);
+  z-index: 40;
+}
+
+.field:hover:not(:disabled) + .tip,
+.field:active:not(:disabled) + .tip,
+.field:focus-visible + .tip {
+  opacity: 1;
+}
+
+.tip-bubble {
+  background-color: rgb(var(--magma-surface-overlay));
+  border-radius: var(--magma-radius-3xs);
+  bottom: --spacing(100);
+  box-sizing: border-box;
+  color: rgb(var(--magma-text-default));
+  corner-shape: var(--magma-corner-shape);
+  display: flex;
+  left: var(--private-input-range-tip-centre);
+  padding-block: --spacing(100);
+  padding-inline: --spacing(200);
+  position: absolute;
+
+  /* centred on the thumb, inside the track: its left edge from 0 to the track less the bubble */
+  translate: clamp(
+      calc(var(--private-input-range-tip-centre) * -1),
+      -50%,
+      calc(100cqi - 100% - var(--private-input-range-tip-centre))
+    )
+    0;
+  white-space: nowrap;
+
+  /* as wide as its value: an absolute box near the end of the track would wrap it */
+  width: max-content;
+}
+
+/* the arrow of mds-tooltip is --spacing(225) tall: here it has --spacing(100), and a triangle
+ * drawn in CSS keeps its point where a squeezed copy of that shape would round it off */
+
+.tip-arrow {
+  background-color: rgb(var(--magma-surface-overlay));
+  bottom: 0;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  height: --spacing(100);
+  left: var(--private-input-range-tip-centre);
+  position: absolute;
+  translate: -50% 0;
+  width: --spacing(250);
 }
 
 .track-total {
