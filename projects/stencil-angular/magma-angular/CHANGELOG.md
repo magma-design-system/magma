@@ -7,6 +7,78 @@ package.
 It is released together with `magma`, at the same version: the sections are the
 releases of `magma`.
 
+## [magma@2.13.0] - 2026-11-12
+
+### Bug Fixes
+
+- *(mds-button-dropdown)* A stretched host gives its width to the main action
+- *(mds-input-range)* Take the width of a narrow host
+- *(stencil)* Place a floating panel against the part of a shadow tree that holds it
+- *(mds-tab)* Guard the teardown of a strip removed before its first load
+- *(mds-dropdown,mds-tooltip)* No error when set or taken out before load
+- *(mds-radial-progress)* Clamp the tween time so the ring never steps back
+- *(mds-radial-progress,styles)* Let the tween alone move the ring, no transition on top
+- *(stencil)* The invisible utility hides a hydrated component
+- *(mds-table,mds-table-header)* Count the rows that arrive already selected
+- *(mds-banner,mds-url-view)* Emit the close event once on Enter
+- *(stencil)* Drop the internal path aliases from the published types
+- *(mds-card-footer)* Keep a lone action at its own width in a narrow footer
+- *(mds-zero)* Take the inset, the rhythm and a muted fill of the design language
+- *(mds-stepper-bar)* Keep the id of its items
+- *(mds-stepper-bar-item)* Give the room of the row to the bars
+- *(mds-button-group)* Share the width of a stretched group among its labelled members
+- *(mds-button-dropdown)* Take the outer corners of its two buttons from the host
+- *(stencil,magma-angular)* Declare @angular/forms as a peer dependency of magma-angular
+- *(mcp)* Suggest IconsSetService from the package root in check_setup
+- *(mds-tab)* Leave the focus alone when an item is selected from code
+- *(mds-calendar-cell)* Draw both ends of a range as the same full dot
+- *(mds-calendar)* Keep luxon out of the published types
+- *(stencil)* Keep @stencil/store out of the published types
+- *(stencil)* The end action of a field clear of its top tip, none on a locked field
+- *(mds-input)* Paint the password mask with the fill of a disabled field
+- *(mds-filter-item)* Keep the label and the count apart in the text of an item
+
+### Changes
+
+- *(mds-input)* Hide the end actions of a field the user cannot change
+
+### Documentation
+
+- *(magma)* Write every component where a count of them would go stale
+- *(magma)* Copy the project scopes of commitlint whole for copilot
+- *(magma)* Number the section of the studio 2.11 in the architecture
+- *(magma)* Review the agent context at the end of every unit of work
+- *(magma)* A person approves every merge, and an agent carries it out
+- *(stencil)* Add the lifecycle rule of a teardown without a load
+- *(stencil)* Lifecycle authoring rule for watchers before the load
+- *(magma)* The previews hide with invisible, not an inline style or a wrapper
+- *(magma)* Select the rows of the batch previews in the markup
+- *(mds-table-header,mds-table-row)* Rows selected in the markup are counted
+- *(magma)* The previews of empty-state without the hand-made gap of mds-zero
+- *(mds-icon)* Import IconsSetService from the package root, before sessionStorage
+- *(magma)* Set the icon path with IconsSetService in the install guides
+- *(magma)* The title of a dialog is carried by the default of mds-banner (titles/dialog)
+- *(magma)* The Public. mark is for the custom properties of the sheets only
+- *(magma)* Count 118 components and list mds-input-range-value
+
+### Features
+
+- *(mds-accordion-item,mds-accordion-timer-item)* A tag gives the title the level of its place
+- *(magma)* The band that introduces a page takes colour (surfaces/intro-band)
+- *(mds-card)* Set the text of its own surface, public as --mds-card-color
+- *(mds-pref)* Ask for no reload after a change of language with live-language
+- *(stencil)* Say where the studio is published, in documentation.json
+- *(stencil,magma-angular)* Bind a group of mds-input-switch radios to one form control
+- *(magma)* Type IconsSetService and NavigationService on the package root
+- *(stencil)* List the exports of the package root in magma.api.txt
+- *(mds-chip)* A colour swatch where the icon goes
+- *(mds-banner)* The style of the headline follows its place, h5 as the window of a dialog
+- *(mds-input-range,mds-input-range-value)* Hold several values on one track
+- *(mds-calendar)* Let a parent name the end a click picks, and never swap the ends
+- *(mds-input-date-range)* Pick the end of the active field, shown in a header
+- *(mds-input)* Add type color, a colour code with a swatch and the picker
+- *(mds-input)* Open the colour picker from a button at the end of the field
+
 ## [magma@2.12.0] - 2026-11-06
 
 ### Bug Fixes
