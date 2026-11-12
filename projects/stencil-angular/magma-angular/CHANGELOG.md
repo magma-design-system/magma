@@ -7,6 +7,13 @@ package.
 It is released together with `magma`, at the same version: the sections are the
 releases of `magma`.
 
+## [magma@2.14.0] - 2026-11-12
+
+### Features
+
+- *(mds-input-range)* Show the value of a thumb in a tip over it
+- *(mcp)* Find the project magma-mcp runs from when the client starts it elsewhere
+
 ## [magma@2.13.0] - 2026-11-12
 
 ### Bug Fixes

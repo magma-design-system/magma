@@ -4,6 +4,13 @@ Every release of `@maggioli-design-system/magma`, newest first. Each section is 
 release with the same tag, written by git-cliff from the conventional commits of the
 package.
 
+## [magma@2.14.0] - 2026-11-12
+
+### Features
+
+- *(mds-input-range)* Show the value of a thumb in a tip over it
+- *(mcp)* Find the project magma-mcp runs from when the client starts it elsewhere
+
 ## [magma@2.13.0] - 2026-11-12
 
 ### Bug Fixes
