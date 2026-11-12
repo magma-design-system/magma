@@ -1,5 +1,6 @@
 import { render } from '@stencil/vitest';
 import { userEvent } from 'vitest/browser';
+import axe from 'axe-core';
 import { mockIconFetch } from '@test/fetch';
 import { useLanguage } from '@test/language';
 
@@ -96,6 +97,30 @@ describe('mds-filter-item', () => {
       );
 
       expect(items[0]).toEqualAttribute('aria-label', 'grid view');
+    });
+
+    // WCAG 2.5.3 (Label in Name), axe `label-content-name-mismatch`, on by default since axe-core
+    // 4.14 (#1376): the text an item shows must be a run of words of its name. axe reads that text
+    // joining the text nodes with nothing between them, so the label and the count need a word
+    // boundary in the DOM, or "Nuove" and "11" read as the one word "Nuove11"
+    it('contains the text the item shows, label and count', async () => {
+      const { items } = await filter(
+        '<mds-filter-item label="Nuove" value="new" count="11"></mds-filter-item>' +
+          '<mds-filter-item label="Chiuse" value="closed" count="1"></mds-filter-item>',
+      );
+
+      const { violations, passes } = await axe.run(document, {
+        runOnly: { type: 'rule', values: ['label-content-name-mismatch'] },
+      });
+      expect(violations.flatMap(({ nodes }) => nodes.map(({ html }) => html))).toEqual([]);
+      expect(passes.flatMap(({ nodes }) => nodes)).toHaveLength(2);
+
+      // the word boundary is not drawn: the count stays one gap away from the label
+      const label = items[0].shadowRoot!.querySelector('mds-text')!.getBoundingClientRect();
+      const count = items[0].shadowRoot!.querySelector('.count')!.getBoundingClientRect();
+      expect(count.left - label.right).toBeCloseTo(
+        parseFloat(getComputedStyle(items[0]).columnGap),
+      );
     });
 
     it('keeps an aria-label written by the author', async () => {
