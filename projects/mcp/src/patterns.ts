@@ -51,7 +51,7 @@ import {
   type Preview,
 } from '@maggioli-design-system/magma/lint';
 import { ToolError, type Tool } from './protocol.js';
-import { GAP, GAP_SCHEMA, wordsOf, type ToolContext } from './context.js';
+import { GAP, GAP_SCHEMA, pathFor, wordsOf, type ToolContext } from './context.js';
 
 /** Where a product keeps its layer, in its own repository (#1174, "The code: the plan"). */
 export const PRODUCT_LAYER_DIR = 'magma/patterns';
@@ -128,11 +128,11 @@ const previewIn = (context: ToolContext, preview: Preview) => {
   const images = Object.fromEntries(
     PREVIEW_IMAGE_MODES.flatMap((mode) => {
       const file = previewImageFile(preview.file, mode);
-      return existsSync(file) ? [[mode, path.relative(context.root, file)]] : [];
+      return existsSync(file) ? [[mode, pathFor(context, file)]] : [];
     }),
   );
   return {
-    file: path.relative(context.root, preview.file),
+    file: pathFor(context, preview.file),
     ...(Object.keys(images).length ? { images } : {}),
     try: preview.try,
     ...(preview.height ? { height: preview.height } : {}),
@@ -152,7 +152,7 @@ export const previewPaths = (
   id: string,
 ): { preview?: string; examples?: string[] } => {
   const [first, ...more] = examplesOf(previews, pattern, id).map((one) =>
-    path.relative(context.root, one.file),
+    pathFor(context, one.file),
   );
   return first ? { preview: first, ...(more.length ? { examples: more } : {}) } : {};
 };
@@ -160,7 +160,7 @@ export const previewPaths = (
 /** The problems of the project's files, each with the file it is in. */
 const problemsIn = (context: ToolContext, problems: Map<string, string[]>, files: string[]) => {
   const found = files.flatMap((file) =>
-    (problems.get(file) ?? []).map((one) => `${path.relative(context.root, file)}: ${one}`),
+    (problems.get(file) ?? []).map((one) => `${pathFor(context, file)}: ${one}`),
   );
   return found.length ? { layerErrors: found } : {};
 };
@@ -187,7 +187,7 @@ export const getPattern = (context: ToolContext): Tool => ({
   name: 'get_pattern',
   title: 'Read a Magma pattern',
   description:
-    'The patterns Magma ships: the solution to a task across components (where a message goes, confirming an action, an empty, a loading or a failed part), the same in every product; first the domains of the design language (kind design-language), the rules of composition every pattern stands on (the space between elements, ...), then the building blocks (kind block), the sections of a page that come back in several patterns (the page header). Without arguments the list, and in layerErrors what is wrong in the layer this project keeps in magma/patterns/; with need the patterns for it; with id the pattern (its variables, cases, always-true rules and open choices, with the layer of this project applied); with id and situation, the values of its variables you know, the one case to follow (with its preview when Magma has one: the stage, as markup, what to try in it and the paths of its images, light and dark, to show where the stage cannot run, and in rules the rules of the domains it relies on, each with its domain, its text and the path of its preview; the other examples of the case in examples), or which variables are still to settle; for a block, the regions that show, in the order of the page, and when the values match one of its situations, every variable given, the preview of that situation as for a case (the stage, what to try, the other examples); with id and section the text of that section. Ask before building a flow or the head of a page, and follow the case or the regions it gives and its rules.',
+    'The patterns Magma ships: the solution to a task across components (where a message goes, confirming an action, an empty, a loading or a failed part), the same in every product; first the domains of the design language (kind design-language), the rules of composition every pattern stands on (the space between elements, ...), then the building blocks (kind block), the sections of a page that come back in several patterns (the page header). Without arguments the list, in layerDir the folder of the layers of this project (its magma/patterns/) and in layerErrors what is wrong in them; with need the patterns for it; with id the pattern (its variables, cases, always-true rules and open choices, with the layer of this project applied, and in layerFile the file that layer is read from, to write or change); with id and situation, the values of its variables you know, the one case to follow (with its preview when Magma has one: the stage, as markup, what to try in it and the paths of its images, light and dark, to show where the stage cannot run, and in rules the rules of the domains it relies on, each with its domain, its text and the path of its preview; the other examples of the case in examples), or which variables are still to settle; for a block, the regions that show, in the order of the page, and when the values match one of its situations, every variable given, the preview of that situation as for a case (the stage, what to try, the other examples); with id and section the text of that section. Ask before building a flow or the head of a page, and follow the case or the regions it gives and its rules.',
   inputSchema: {
     type: 'object',
     properties: {
@@ -232,6 +232,16 @@ export const getPattern = (context: ToolContext): Tool => ({
       pattern: object,
       id: string,
       renamedFrom: string,
+      layerDir: {
+        type: 'string',
+        description:
+          "The folder of this project's layers and own patterns, where get_pattern reads them.",
+      },
+      layerFile: {
+        type: 'string',
+        description:
+          "The file this project's layer of the pattern is read from, written or not yet: write or change the layer there.",
+      },
       layerErrors: strings,
       answer: object,
       candidates: { type: 'array', items: object },
@@ -279,6 +289,8 @@ export const getPattern = (context: ToolContext): Tool => ({
       }
       return {
         patterns: listPatterns(all),
+        // the folder as the agent opens it, also when the project is not where it works (#1387)
+        layerDir: pathFor(context, path.join(context.root, PRODUCT_LAYER_DIR)),
         ...problemsIn(context, problems, [...problems.keys()].sort()),
       };
     }
@@ -367,9 +379,7 @@ export const getPattern = (context: ToolContext): Tool => ({
             regions: regions.regions,
             ...(rules.length ? { rules } : {}),
             ...(stage ? { preview: previewIn(context, stage) } : {}),
-            ...(more.length
-              ? { examples: more.map((one) => path.relative(context.root, one.file)) }
-              : {}),
+            ...(more.length ? { examples: more.map((one) => pathFor(context, one.file)) } : {}),
           },
           ...(regions.missing.length
             ? { candidates: regions.depends, missing: missingOf(regions.missing) }
@@ -439,6 +449,8 @@ export const getPattern = (context: ToolContext): Tool => ({
         sections: sections.map((one) => one.heading),
       },
       ...renamed,
+      // where the layer of a Magma pattern goes, so the agent writes it where it is read (#1387)
+      ...(base.layer === MAGMA_LAYER ? { layerFile: pathFor(context, projectFile) } : {}),
       ...mine,
     };
   },

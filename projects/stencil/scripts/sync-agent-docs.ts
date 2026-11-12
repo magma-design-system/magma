@@ -310,9 +310,10 @@ ${renderPatternCatalogue(entries, PATTERN_GROUPS)}
 ## A product's layer
 
 A product adapts a pattern in its own repository, one file per pattern, named after it:
-\`magma/patterns/<id>.md\` under the project's root. The layer fixes the open choices the pattern
-leaves to the products, within what each one \`may\`, and maps the situations of the product's
-domain to the cases of the pattern. It never changes an "Always true" rule nor a case: a product
+\`magma/patterns/<id>.md\` under the project's root, the file \`get_pattern\` with the id names in
+\`layerFile\` (also when the project is a folder below the one you work in). The layer fixes the
+open choices the pattern leaves to the products, within what each one \`may\`, and maps the
+situations of the product's domain to the cases of the pattern. It never changes an "Always true" rule nor a case: a product
 that needs one changed asks Magma for it (\`reporting.md\`).
 
 \`\`\`markdown

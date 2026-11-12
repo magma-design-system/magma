@@ -8,10 +8,18 @@ import { createRequire } from 'node:module';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { MagmaSettings } from '@maggioli-design-system/magma/lint';
+import type { RootFrom } from './root.js';
 
 export interface ToolContext {
-  /** The project the agent works in: the directory the client starts the server in by default. */
+  /** The project the agent works in, as the command finds it (projectRoot of ./root.ts). */
   root: string;
+  /** How the command found the root: `--root`, the start folder, or where magma runs from. */
+  rootFrom?: RootFrom;
+  /**
+   * The folder the client started the server in, where its configuration is (check_setup reads
+   * it there too): the root when unset.
+   */
+  start?: string;
   /** Where the Magma data is read from: the installed packages when empty. */
   settings: MagmaSettings;
   /** The folders of the icon sets, by set (mi, mdi, mgg): the installed packages when unset. */
@@ -37,6 +45,32 @@ export const resolvePackage = (context: ToolContext, id: string): string | undef
     }
   return undefined;
 };
+
+/** How each way of finding the root reads in a message. */
+const FOUND: Record<RootFrom, string> = {
+  option: 'named by --root',
+  start: 'the folder the client started the server in',
+  install: 'the project the command runs magma from',
+};
+
+/**
+ * The project folder as an error names it, with how the command found it: a message that says
+ * "the project" leaves the agent to guess which folder was read (#1387).
+ */
+export const projectFolder = (context: ToolContext): string =>
+  context.rootFrom ? `${context.root} (${FOUND[context.rootFrom]})` : context.root;
+
+/**
+ * A file as an answer names it (a preview, the layer of a pattern, a file check_setup read):
+ * relative to the project when the client started the server in it, absolute when the project
+ * is another folder (#1387). The server cannot know where the agent's relative paths start then
+ * (the folder the client opened, as Claude Code, or another), and an absolute path reads the
+ * same from any of them, so the agent opens or writes the file the server reads.
+ */
+export const pathFor = (context: ToolContext, file: string): string =>
+  !context.start || context.start === context.root
+    ? path.relative(context.root, file)
+    : path.resolve(file);
 
 /** The folder of an installed package, from its package.json. */
 export const packageDir = (context: ToolContext, name: string): string | undefined => {

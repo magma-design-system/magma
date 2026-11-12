@@ -122,6 +122,25 @@ enforces, not only on fixtures picked by hand. The choices of the core the tools
 through, and of the patterns, are in [`projects/lint/README.md`](../lint/README.md), "Where each
 answer comes from".
 
+- **The project** (what `check_setup`, `check_markup`, `render_preview` and the layers of
+  `get_pattern` read, #1387): one folder for every tool, chosen once by the command
+  (`projectRoot` of `src/root.ts`). `--root` when given; else the folder the client starts the
+  server in, when its `package.json` declares `@maggioli-design-system/magma` (every install
+  track of the guides installs it: `agents/web-components.md`, `react.md`, `angular.md`, step
+  1); else the project the command runs magma from: the folder above the outermost
+  `node_modules` of `process.argv[1]` (node keeps it as given, so npm's `.bin` and pnpm's store
+  still name the project; `import.meta.url` is the real file), when it lies inside the start
+  folder and declares magma. A client opens a workspace and starts its servers there, so a
+  project inside it is one of its projects; an install outside it (a global one, the cache of
+  `npx -p` or `pnpm dlx`) says nothing about it. Otherwise the start folder, and `check_setup`
+  says it has no `package.json`. `check_setup` reports the root and the way (`rootFrom`), and an
+  error that depends on the project names its folder and the way (`projectFolder`).
+- **The paths of an answer** (previews, images and examples of `get_pattern` and `get_guide`,
+  `layerFile`, `layerDir`, `layerErrors`, the files `check_setup` names): relative to the
+  project when the client started the server in it, absolute otherwise (`pathFor` of
+  `src/context.ts`). The server cannot know where the agent's relative paths start when the
+  project is another folder (the one the client opened, as Claude Code, or yet another), and an
+  absolute path reads the same from any of them.
 - **Icon slugs** (`find_icon`, the copy script of `agents/assets.md`): the slug is what
   iconsauce writes, as `mds-icon` documents, not the name of the file in the package.
   `@iconsauce/material-icons` turns the underscores of a Material folder into hyphens
@@ -138,14 +157,19 @@ answer comes from".
   else; the test collects those lines from the code blocks of the guides. The lint
   configuration is the first file the tool loads: ESLint 9 `FLAT_CONFIG_FILENAMES`, then for
   Stylelint 16 the `stylelint` key of `package.json` and the search places of cosmiconfig 9.
-  The MCP server is started by the file each client reads in the project: `.mcp.json`
-  (`mcpServers`) or the Magma plugin in `.claude/settings.json` for Claude Code,
+  The MCP server is started by the file each client reads, in the project and in the folder the
+  client starts the server in, where the client keeps it when the project is another folder:
+  `.mcp.json` (`mcpServers`) or the Magma plugin in `.claude/settings.json` for Claude Code,
   `.vscode/mcp.json` (`servers`), `.cursor/mcp.json` (`mcpServers`), and for OpenCode
   `opencode.json` and `opencode.jsonc`, in the root and in `.opencode/` (`names` of its
   `ConfigDiscovery`), these read as JSONC as OpenCode reads them, with the servers where its
   `normalizeMcp` finds them: `mcp.servers` (OpenCode 2) and right under `mcp` (OpenCode 1).
   magma-mcp serves on stdio only, so an OpenCode server counts when `local` and not turned
-  off (`disabled`, or `enabled: false` in OpenCode 1).
+  off (`disabled`, or `enabled: false` in OpenCode 1). An entry starts magma-mcp when it names
+  the command or the file its bin runs in the package
+  (`@maggioli-design-system/magma/dist/mcp/cli.js`, `BIN_FILE` of `src/root.ts`, held to the
+  `bin` of magma by `test/shipped.test.ts`), which a client running node on the installed copy
+  names.
 - **Token values** (`list_tokens`, `explain_class`): the value is what the CSS writes. Where the
   package records a `cssValue` (the CSS writes the quantity differently from the JSON:
   `em` letter spacing, ratios, elevations on `--depth`, design-tokens README, "Token data")
@@ -279,7 +303,9 @@ icons and a stand-in loader. The server finds the root of magma two folders abov
 `documentation.json` (`magmaRoot` of the core), so `test/mcp-context.ts` puts the fake magma
 together in a temporary folder, with the `documentation.json` of the lint in its `data/`, once
 per test file (`magma`). `test/mcp-tools.test.ts` calls each tool, `test/mcp-stdio.test.ts` the command through
-the official MCP client, which checks each result against the output schema of its tool.
+the official MCP client, which checks each result against the output schema of its tool, and
+`test/root.test.ts` the way the command finds the project, on the layouts npm, pnpm and npx
+write.
 
 Some tests need more than the fixtures: the render ones a Chrome or an Edge on the machine (the
 runners of GitHub have Chrome) and the build of `styles`; the ones on the build of magma
@@ -291,10 +317,11 @@ tests of the lint, on the `mcp:build` of the same run and its build artifact.
 ## The MCP server
 
 `src/server.ts` puts the twelve tools behind the protocol of `src/protocol.ts`; the
-command, `src/cli.ts`, serves them on stdio from the project it starts in (`--root`
-points elsewhere; `--documentation`, `--tokens`, `--consumption`, `--globals`,
+command, `src/cli.ts`, serves them on stdio for one project, the one `src/root.ts` finds
+("Where each answer comes from": `--root`, the start folder, or the project it runs magma
+from); `--documentation`, `--tokens`, `--consumption`, `--globals`,
 `--icons-<set>` and `--loader`, the loader of the components `render_preview` loads, point
-the data elsewhere). The server writes only protocol messages to
+the data elsewhere. The server writes only protocol messages to
 stdout. The icon it shows its clients is the Magma mark of identity, copied into
 `dist/mcp/icon.svg` by the stencil build, which also writes the tools as data into
 `dist/mcp/tools.json` (and, for the documentation site, `dist/lint/mcp/tools.json`): the answer
