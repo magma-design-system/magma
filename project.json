@@ -50,6 +50,13 @@
         "command": "tsx scripts/epic-preview.ts"
       }
     },
+    "worktree.clean": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "command": "tsx scripts/worktree-clean.ts"
+      }
+    },
     "test.urls": {
       "executor": "nx:run-commands",
       "cache": false,
@@ -62,7 +69,7 @@
       "cache": false,
       "options": {
         "commands": [
-          "tsx --test scripts/epic.spec.ts scripts/epic-preview.spec.ts",
+          "tsx --test scripts/epic.spec.ts scripts/epic-preview.spec.ts scripts/worktree-clean.spec.ts",
           "tsx --tsconfig projects/mcp/tsconfig.json --test scripts/test-urls.spec.ts"
         ],
         "parallel": false

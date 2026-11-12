@@ -133,6 +133,14 @@ The context agents read is part of the work: a branch that changes what a docume
 - **What needs judgement** is a review of the diff of the branch: the index, the contracts (`docs/CONTRACTS.md`), the mistakes of `AGENTS.md`, the READMEs, SPECs and guides that describe what changed, and how the context is split (a procedure for one kind of task out of what every session loads, one fact in one place, no count written by hand that a change will make wrong). In Claude Code the skill `/context-review` runs it; its steps (`.claude/skills/context-review/SKILL.md`) are written for any agent, and the others follow them by hand.
 - The pull request says what the review changed, with the line the check printed (what every session loads, against the budget). A restructuring larger than the branch is a proposal to the maintainer, not a change on the branch.
 
+## 9. The worktree of a merged branch goes to the trash
+
+A worktree is the folder of one unit of work. Once the pull request of its branch is merged (into `main`, or a part into the branch of its epic), the folder holds nothing the repository has not, and left beside the main checkout it looks like work still in progress (#693). It goes to the trash of the OS, never deleted for good, so whatever was left in it can still be recovered; then git forgets it and the local branch goes (the repository already deleted the remote one).
+
+- `nx run magma:worktree.clean` does it for every worktree whose branch has landed: a merged pull request, none still open, and no local commit the merged head has not. Run it from the main checkout, after a merge or whenever; `-- --dry-run` only lists. It moves the folder to the Recycle Bin on Windows (a folder too large for the bin stops on a warning, never deleted), to the Trash on macOS, with `gio trash` on Linux, then runs `git worktree prune` and deletes the local branch; it prints a table of what it moved and what it kept, and why.
+- It keeps a worktree with uncommitted changes, commits after the merge, a pull request still open or none merged, a detached or locked head, and the one it runs in: the person decides. The preview of an epic (`<epic>-preview`, rule 2) goes once the epic issue is closed.
+- By hand, never `rm -rf`, `Remove-Item -Recurse` or `git worktree remove --force`: a worktree carries links to the `node_modules` of the main checkout, and a recursive delete that follows them (PowerShell 5.1 does) empties it, while `--force` deletes for good what was left uncommitted. Remove the links as links first, move the folder to the trash, then `git worktree prune`.
+
 ## Summary for agents
 
 | Action                                          | Allowed for an agent?                                    |
@@ -162,3 +170,5 @@ The context agents read is part of the work: a branch that changes what a docume
 | Merge `main` into a branch only to make it mergeable | No need - the merge queue tests it on top of `main` (rule 1) |
 | Fix a pull request the merge queue removed      | Yes - merge `main`, resolve, rebuild, lint and test, push (rule 1) |
 | Start a release (`publish` workflow), approve it | No - a maintainer's decision; a dry-run is fine (rule 1) |
+| Move the worktree of a merged branch to the trash | Yes - `nx run magma:worktree.clean`: the landed ones only, to the trash, never deleted (rule 9) |
+| Delete a worktree for good (`rm -rf`, `Remove-Item -Recurse`, `git worktree remove --force`) | No - it can follow the `node_modules` links into the main checkout, and loses what was uncommitted (rule 9) |
