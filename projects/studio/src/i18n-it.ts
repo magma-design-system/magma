@@ -124,8 +124,8 @@ export const IT_SHELL: Record<string, string> = {
   'The contrast issues are fixed: the gate of Magma passes.':
     'I problemi di contrasto sono risolti: la verifica di Magma passa.',
   Replay: 'Rivedi',
-  'A banner painted with the configuration Magma builds with, drawn pale: its text targets under the floors of the contrast gate and the ramp of its accent faded, so its text, its icon and its main action read poorly. Then the studio brings both back step by step, solving the colours again at each one, until every pair the gate judges meets its floor.':
-    "Un banner dipinto con la configurazione con cui si compila Magma, resa pallida: i suoi obiettivi per il testo sotto le soglie della verifica del contrasto e la rampa del suo accento sbiadita, così il testo, l'icona e l'azione principale si leggono male. Poi lo studio li riporta indietro gradino per gradino, risolvendo di nuovo i colori a ogni passo, finché ogni coppia giudicata dalla verifica raggiunge la sua soglia.",
+  'A banner painted with the configuration Magma builds with, drawn pale: its text pinned to pale steps of its ramp, under the floors of the contrast gate, and the ramp of its accent faded, so its text, its icon and its main action read poorly. Then the studio brings both back step by step, solving the colours again at each one, until every pair the gate judges meets its floor.':
+    "Un banner dipinto con la configurazione con cui si compila Magma, resa pallida: il suo testo fissato su gradini chiari della sua rampa, sotto le soglie della verifica del contrasto, e la rampa del suo accento sbiadita, così il testo, l'icona e l'azione principale si leggono male. Poi lo studio li riporta indietro gradino per gradino, risolvendo di nuovo i colori a ogni passo, finché ogni coppia giudicata dalla verifica raggiunge la sua soglia.",
   'How the work goes': 'Come si lavora',
   'Start from a configuration': 'Parti da una configurazione',
   'The studio opens on the configuration Magma builds with. Import your own from the Config menu of the bar: your edits stay in this browser as a draft until you reset them.':
