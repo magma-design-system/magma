@@ -707,6 +707,43 @@ describe('the pattern tool', () => {
     expect(answer.preview.markup).not.toMatch(/<!--/);
   });
 
+  // #1396: the parts of the case with their role, in the order of the preview, before its stage
+  test('the answer for a situation gives the parts of its case with their role', async () => {
+    const { answer } = await run('get_pattern', {
+      id: 'confirm-action',
+      situation: {
+        reversible: 'no',
+        'reaches-others': 'no',
+        items: 'one',
+        frequency: 'occasional',
+        stakes: 'normal',
+      },
+    });
+    expect(answer.id).toBe('ask-first');
+    expect(answer.use).toEqual([
+      {
+        role: 'the dialog, named by its question',
+        use: 'mds-modal aria-label=<the question, naming the item>',
+      },
+      {
+        role: 'the window of the dialog, its headline the question',
+        use: 'mds-banner slot=window variant=light tone=box dismissible headline=<the question, naming the item>',
+      },
+      { role: 'the consequence, in a sentence', use: 'mds-text' },
+      {
+        role: 'Cancel, the safe choice, focused on opening',
+        use: 'mds-button slot=action variant=dark tone=outline autofocus',
+      },
+      {
+        role: 'the action, last, named by its verb, in the colour of what destroys',
+        use: 'mds-button slot=action variant=error tone=strong',
+      },
+    ]);
+    // this magma has no preview of the case: the parts stand alone (the shipped test asks the
+    // real ones, which give the parts before the stage)
+    expect(answer.preview).toBeUndefined();
+  });
+
   // #1243: the images the build makes beside each preview, by path, for a client with no browser
   test('the preview of an answer names its images when the package has them', async () => {
     const previews = `${MAGMA}/agents/patterns/previews/message-placement`;

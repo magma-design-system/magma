@@ -43,6 +43,13 @@ export interface PropInfo {
   values?: string[];
   /** What to use instead, when the prop is deprecated (its `@deprecated` text). */
   deprecation?: string;
+  /**
+   * The component changes it itself (Stencil's `mutable`): on a boolean, a state the component
+   * moves through (`opened`, `visible`, `await`), not a choice of the markup (#1396).
+   */
+  mutable?: true;
+  /** A number (`duration`), which an attribute gives as text. */
+  number?: true;
 }
 
 export interface ComponentInfo {
@@ -166,6 +173,7 @@ interface DocsProp {
   attr?: string;
   values?: DocsValue[];
   deprecation?: string;
+  mutable?: boolean;
 }
 interface DocsStyle {
   name: string;
@@ -182,11 +190,15 @@ interface DocsComponent {
 /** The types a union may hold next to its literals and still be closed. */
 const EMPTY = new Set(['undefined', 'null']);
 
-export const propInfo = ({ name, attr, values = [], deprecation }: DocsProp): PropInfo => {
+export const propInfo = ({ name, attr, values = [], deprecation, mutable }: DocsProp): PropInfo => {
   const literals = values.filter((value) => value.value !== undefined);
+  // a boolean next to literals (`current`: true, 'page' or 'section') keeps them: bare is true,
+  // a value is one of them (#1396); the template rules still read it as a boolean
   const closed =
     literals.length > 0 &&
-    values.every((value) => value.value !== undefined || EMPTY.has(value.type));
+    values.every(
+      (value) => value.value !== undefined || EMPTY.has(value.type) || value.type === 'boolean',
+    );
   return {
     name,
     ...(attr ? { attr } : {}),
@@ -194,6 +206,8 @@ export const propInfo = ({ name, attr, values = [], deprecation }: DocsProp): Pr
     ...(closed ? { values: literals.map((value) => String(value.value)) } : {}),
     // the JSDoc wraps it over several lines
     ...(deprecation != null ? { deprecation: deprecation.replace(/\s+/g, ' ').trim() } : {}),
+    ...(mutable ? { mutable: true as const } : {}),
+    ...(values.some((value) => value.type === 'number') ? { number: true as const } : {}),
   };
 };
 

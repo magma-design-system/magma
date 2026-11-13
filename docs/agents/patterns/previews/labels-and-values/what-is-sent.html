@@ -2,8 +2,8 @@
 try: Look at the dialog that asks before sending the reminder: Destinatario and Testo as labels and values in the window, with no title of their own; the text takes the whole row.
 height: 480
 -->
-<mds-modal opened aria-label="Inviare il sollecito a Marco Bianchi?">
-  <mds-banner slot="window" variant="light" tone="box" dismissible headline="Inviare il sollecito a Marco Bianchi?">
+<mds-modal opened aria-label="Inviare il sollecito a Marco Bianchi?" data-stage="frame">
+  <mds-banner slot="window" variant="light" tone="box" dismissible headline="Inviare il sollecito a Marco Bianchi?" data-stage="frame">
     <div class="@container">
       <dl class="m-0 grid items-start gap-between-fields @md:grid-cols-2">
         <div class="grid gap-label-control">
@@ -19,7 +19,7 @@ height: 480
         </div>
       </dl>
     </div>
-    <mds-button slot="action" variant="dark" tone="outline" autofocus>Annulla</mds-button>
-    <mds-button slot="action">Invia sollecito</mds-button>
+    <mds-button slot="action" variant="dark" tone="outline" autofocus data-stage>Annulla</mds-button>
+    <mds-button slot="action" data-stage>Invia sollecito</mds-button>
   </mds-banner>
 </mds-modal>

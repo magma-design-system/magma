@@ -2,7 +2,7 @@
 try: Look at the two rows selected on the page: the bar of the table says how many and offers Assegna and Archivia. Press Archivia: the list loads again on the same page without them, and a toast says how many went.
 whole-page: true
 -->
-<mds-header>
+<mds-header data-stage>
   <mds-header-bar>
     <mds-text typography="h6" tag="p">Servizi demografici</mds-text>
     <mds-button slot="nav" href="#" variant="dark" tone="text" current>Pratiche</mds-button>
@@ -18,14 +18,14 @@ whole-page: true
     <mds-button href="#" variant="dark" tone="text" class="w-full justify-start">Esci</mds-button>
   </nav>
 </mds-header>
-<mds-dropdown target="#persona" placement="bottom-end" strategy="fixed">
+<mds-dropdown target="#persona" placement="bottom-end" strategy="fixed" data-stage>
   <mds-text typography="detail" tag="p" class="text-fg-muted">Mario Rossi</mds-text>
   <mds-button href="#" icon="mi/baseline/person" variant="dark" tone="text" label="Profilo"></mds-button>
   <mds-separator></mds-separator>
   <mds-button href="#" icon="mi/baseline/logout" variant="dark" tone="text" label="Esci"></mds-button>
 </mds-dropdown>
 <main class="page-frame grid gap-between-sections py-between-sections">
-  <header class="@container flex flex-wrap items-start justify-between gap-inline">
+  <header class="@container flex flex-wrap items-start justify-between gap-inline" data-stage>
     <div class="grid min-w-0 grow basis-actions gap-title-content">
       <mds-text typography="page" tag="h1">Pratiche</mds-text>
       <mds-text typography="detail" tag="p" class="text-fg-muted">Le pratiche che i cittadini inviano agli uffici.</mds-text>
@@ -36,7 +36,7 @@ whole-page: true
     </div>
   </header>
   <div class="grid gap-between-groups">
-    <form role="search" class="grid gap-between-fields">
+    <form role="search" class="grid gap-between-fields" data-stage>
       <div class="field-group max-w-form">
         <mds-input-field label="Cerca">
           <mds-input type="search" name="q" placeholder="Numero o oggetto"></mds-input>
@@ -52,18 +52,18 @@ whole-page: true
     </form>
     <div class="grid gap-between-fields">
       <div class="grid gap-title-content">
-        <div class="flex flex-wrap items-center gap-inline">
+        <div class="flex flex-wrap items-center gap-inline" data-stage>
           <mds-text id="summary" typography="detail" tag="p" role="status">11-14 di 14 pratiche</mds-text>
           <mds-button variant="dark" tone="text" size="sm">Rimuovi i filtri</mds-button>
         </div>
         <mds-table id="pratiche" selectable sorting="external" class="w-full [&_mds-table-cell]:text-nowrap [&_mds-text]:text-nowrap">
-          <mds-table-header>
+          <mds-table-header data-stage>
             <mds-table-header-cell label="Numero" sortable sort-key="numero"></mds-table-header-cell>
             <mds-table-header-cell label="Oggetto"></mds-table-header-cell>
             <mds-table-header-cell label="Richiedente"></mds-table-header-cell>
             <mds-table-header-cell label="Ricevuta il" sortable sort-key="ricevuta" direction="descending"></mds-table-header-cell>
           </mds-table-header>
-          <mds-table-body>
+          <mds-table-body data-stage>
             <mds-table-row value="2026/0101">
               <mds-table-cell><mds-text typography="detail"><mds-link href="#">2026/0101</mds-link></mds-text></mds-table-cell>
               <mds-table-cell><mds-text typography="detail">Cambio di residenza</mds-text></mds-table-cell>
@@ -93,7 +93,7 @@ whole-page: true
           <mds-button id="archivia" slot="batch-action" variant="primary" tone="outline" size="sm">Archivia</mds-button>
         </mds-table>
       </div>
-      <mds-paginator pages="2" current-page="2" class="justify-self-start"></mds-paginator>
+      <mds-paginator pages="2" current-page="2" class="justify-self-start" data-stage></mds-paginator>
     </div>
   </div>
 </main>

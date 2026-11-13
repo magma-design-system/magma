@@ -2,9 +2,9 @@
 try: Press Salva: the button waits with its spinner and keeps the focus, a second press does nothing, and after three seconds it is ready again.
 -->
 <div class="grid gap-between-sections">
-  <mds-text typography="page" tag="h1">Recapiti</mds-text>
+  <mds-text typography="page" tag="h1" data-stage>Recapiti</mds-text>
   <form id="form" class="@container grid max-w-form gap-content-actions">
-    <div class="grid gap-between-fields">
+    <div class="grid gap-between-fields" data-stage>
       <mds-input-field label="PEC">
         <mds-input type="email" value="giulia.bianchi@pec.it"></mds-input>
       </mds-input-field>
@@ -13,7 +13,7 @@ try: Press Salva: the button waits with its spinner and keeps the focus, a secon
       </mds-input-field>
     </div>
     <div class="flex justify-end gap-inline @max-actions:flex-col @max-actions:*:self-stretch">
-      <mds-button type="button" variant="dark" tone="outline">Annulla</mds-button>
+      <mds-button type="button" variant="dark" tone="outline" data-stage>Annulla</mds-button>
       <mds-button id="save">Salva</mds-button>
     </div>
   </form>

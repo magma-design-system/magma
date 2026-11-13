@@ -574,6 +574,7 @@
     },
     {
      "name": "await",
+     "mutable": true,
      "attr": "await",
      "type": "boolean | undefined",
      "values": [

@@ -2,7 +2,7 @@
 try: Look at the end of the line of the summary: 2 practices arrived while the list was open, and nothing above or below moved. Wait a few seconds: a third arrives, the count in the dot grows and the dot pulses three times. Press Mostra: the list loads again with the same search, and the line empties without giving up its place.
 whole-page: true
 -->
-<mds-header>
+<mds-header data-stage>
   <mds-header-bar>
     <mds-text typography="h6" tag="p">Servizi demografici</mds-text>
     <mds-button slot="nav" href="#" variant="dark" tone="text" current>Pratiche</mds-button>
@@ -18,7 +18,7 @@ whole-page: true
     <mds-button href="#" variant="dark" tone="text" class="w-full justify-start">Esci</mds-button>
   </nav>
 </mds-header>
-<mds-dropdown target="#persona" placement="bottom-end" strategy="fixed">
+<mds-dropdown target="#persona" placement="bottom-end" strategy="fixed" data-stage>
   <mds-text typography="detail" tag="p" class="text-fg-muted">Mario Rossi</mds-text>
   <mds-button href="#" icon="mi/baseline/person" variant="dark" tone="text" label="Profilo"></mds-button>
   <mds-separator></mds-separator>
@@ -28,15 +28,15 @@ whole-page: true
   <header class="@container flex flex-wrap items-start justify-between gap-inline">
     <div class="grid min-w-0 grow basis-actions gap-title-content">
       <mds-text id="titolo" typography="page" tag="h1" tabindex="-1">Pratiche</mds-text>
-      <mds-text typography="detail" tag="p" class="text-fg-muted">Le pratiche che i cittadini inviano agli uffici.</mds-text>
+      <mds-text typography="detail" tag="p" class="text-fg-muted" data-stage>Le pratiche che i cittadini inviano agli uffici.</mds-text>
     </div>
-    <div class="flex gap-inline @max-actions:basis-full @max-actions:flex-col @max-actions:*:self-stretch">
+    <div class="flex gap-inline @max-actions:basis-full @max-actions:flex-col @max-actions:*:self-stretch" data-stage>
       <mds-button variant="dark" tone="outline">Esporta</mds-button>
       <mds-button>Nuova pratica</mds-button>
     </div>
   </header>
   <div class="grid gap-between-groups">
-    <form role="search" class="grid gap-between-fields">
+    <form role="search" class="grid gap-between-fields" data-stage>
       <div class="field-group max-w-form">
         <mds-input-field label="Cerca">
           <mds-input type="search" name="q" placeholder="Numero o oggetto"></mds-input>
@@ -52,7 +52,7 @@ whole-page: true
     </form>
     <div class="@container grid gap-title-content">
       <div class="flex flex-wrap items-center gap-inline @2xl:justify-between">
-        <div class="flex flex-wrap items-center gap-inline">
+        <div class="flex flex-wrap items-center gap-inline" data-stage>
           <mds-text id="summary" typography="detail" tag="p" role="status">4 pratiche</mds-text>
           <mds-button variant="dark" tone="text" size="sm">Rimuovi i filtri</mds-button>
         </div>
@@ -64,7 +64,7 @@ whole-page: true
           <mds-button id="mostra" variant="info" tone="outline" size="sm">Mostra</mds-button>
         </div>
       </div>
-      <mds-table sorting="external" class="w-full [&_mds-table-cell]:text-nowrap [&_mds-text]:text-nowrap">
+      <mds-table sorting="external" class="w-full [&_mds-table-cell]:text-nowrap [&_mds-text]:text-nowrap" data-stage>
         <mds-table-header>
           <mds-table-header-cell label="Numero" sortable sort-key="numero"></mds-table-header-cell>
           <mds-table-header-cell label="Oggetto"></mds-table-header-cell>

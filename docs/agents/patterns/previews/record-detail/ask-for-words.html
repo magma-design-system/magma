@@ -3,7 +3,7 @@ try: Press Richiedi documenti with the note empty: the field says what is missin
 height: 640
 whole-page: true
 -->
-<mds-header>
+<mds-header data-stage>
   <mds-header-bar>
     <mds-text typography="h6" tag="p">Servizi demografici</mds-text>
     <mds-button slot="nav" href="#" variant="dark" tone="text" current="section">Pratiche</mds-button>
@@ -19,13 +19,13 @@ whole-page: true
     <mds-button href="#" variant="dark" tone="text" class="w-full justify-start">Esci</mds-button>
   </nav>
 </mds-header>
-<mds-dropdown target="#persona" placement="bottom-end" strategy="fixed">
+<mds-dropdown target="#persona" placement="bottom-end" strategy="fixed" data-stage>
   <mds-text typography="detail" tag="p" class="text-fg-muted">Mario Rossi</mds-text>
   <mds-button href="#" icon="mi/baseline/person" variant="dark" tone="text" label="Profilo"></mds-button>
   <mds-separator></mds-separator>
   <mds-button href="#" icon="mi/baseline/logout" variant="dark" tone="text" label="Esci"></mds-button>
 </mds-dropdown>
-<main class="page-frame grid gap-between-sections py-between-sections">
+<main class="page-frame grid gap-between-sections py-between-sections" data-stage>
   <header class="@container grid gap-title-content">
     <mds-button href="#" icon="mi/baseline/arrow-back" variant="dark" tone="text" size="sm" class="justify-self-start">Pratiche</mds-button>
     <div class="flex flex-wrap items-start justify-between gap-inline">

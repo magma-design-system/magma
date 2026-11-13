@@ -2,7 +2,7 @@
 try: Type Ferr in Cerca: the field waits with its spinner while the three requests stay on screen, then the list narrows to the two that match, with what was searched marked in each.
 -->
 <div class="grid gap-between-sections">
-  <mds-text typography="page" tag="h1">Richieste</mds-text>
+  <mds-text typography="page" tag="h1" data-stage>Richieste</mds-text>
   <div class="grid gap-between-groups">
     <form id="find" role="search" class="grid gap-between-fields">
       <div class="field-group max-w-form">
@@ -11,7 +11,7 @@ try: Type Ferr in Cerca: the field waits with its spinner while the three reques
         </mds-input-field>
       </div>
     </form>
-    <div class="grid gap-title-content">
+    <div class="grid gap-title-content" data-stage>
       <mds-text id="summary" typography="detail" tag="p" role="status">3 richieste</mds-text>
       <mds-table id="results" class="w-full [&_mds-table-cell]:text-nowrap [&_mds-text]:text-nowrap">
         <mds-table-header>

@@ -4,11 +4,13 @@
 import { mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
+import * as htmlParser from '@html-eslint/parser';
 import { describe, expect, test } from 'vitest';
 
 import { loadComponents, loadStyles, loadThemeNames, loadTokenNames } from '../src/core/data.js';
 import {
   answer,
+  attributeKind,
   bodyErrors,
   carrierErrors,
   componentErrors,
@@ -19,6 +21,7 @@ import {
   linkErrors,
   lintErrors,
   listPatterns,
+  magmaUseErrors,
   missingPreviews,
   parseCarrier,
   parsePatternFile,
@@ -29,6 +32,7 @@ import {
   previewImageFile,
   previewLinkErrors,
   previewOf,
+  previewUseErrors,
   projectErrors,
   readPatternDir,
   readPreviews,
@@ -38,10 +42,12 @@ import {
   rulesOfCase,
   rulesOfComponent,
   situationsMatching,
+  solutionOf,
   syncBody,
   coverageErrors,
   webpSize,
   type Layer,
+  type MarkupNode,
   type Pattern,
   type PatternFile,
   type Situation,
@@ -1584,5 +1590,353 @@ describe('the images of the previews', () => {
         path.join(source, 'previews/small/ask.html'),
       ),
     ).toEqual([`no dark image in ${at('ask.dark.webp')}: build magma`]);
+  });
+});
+
+// #1396: the parts of a case with their role, held against the solution its preview shows
+describe('the parts of a case', () => {
+  const components = loadComponents({ documentation: data.documentation });
+  const parse = (markup: string) =>
+    (htmlParser.parseForESLint(markup, {}) as unknown as { ast: MarkupNode }).ast;
+
+  test('a use may write the text of the application as <what it holds>', () => {
+    expect(
+      parseUse('mds-banner variant=light headline=<the question, naming the item> dismissible'),
+    ).toEqual({
+      tag: 'mds-banner',
+      attributes: [
+        { name: 'variant', value: 'light' },
+        { name: 'headline', value: '<the question, naming the item>', placeholder: true },
+        { name: 'dismissible' },
+      ],
+    });
+    expect(parseUse('mds-banner headline=<a question>s')).toBeUndefined();
+    expect(parseUse('mds-banner headline=<a <nested> one>')).toBeUndefined();
+    expect(parseUse('mds-banner, a banner')).toBeUndefined();
+  });
+
+  test('an entry of use is { role, use } or the bare use', () => {
+    const one = small({
+      cases: [
+        {
+          id: 'on-field',
+          about: 'field',
+          where: 'w',
+          use: [{ role: 'the message', use: 'mds-text' }, 'mds-banner'],
+        },
+        {
+          id: 'on-action',
+          about: 'action',
+          where: 'w',
+          use: [
+            { role: '', use: 'mds-text' },
+            { role: 'r', use: 'a toast' },
+            { role: 'r', use: 'mds-text', why: 'x' } as never,
+            3 as never,
+          ],
+        },
+        { id: 'ask', about: 'action', decision: 'needed', where: 'w', use: 'mds-text' as never },
+      ],
+    });
+    expect(formatErrors(file(one))).toEqual([
+      'case on-action: use 1: role is required: what the part does in the case',
+      'case on-action: use 2: "a toast" is not "mds-tag attribute=value ..."',
+      'case on-action: use 3 has an unknown field why',
+      'case on-action: use 4 is { role, use }, or "tag attribute=value"',
+      'case ask: use is a list of { role, use }, or of "tag attribute=value"',
+    ]);
+  });
+
+  test('what an attribute is to a case comes from its type in the release', () => {
+    const kind = (tag: string, name: string) => attributeKind(tag, name, components);
+    // a closed set of values, a number, a boolean the component never changes, a global the case sets
+    expect(kind('mds-button', 'variant')).toBe('case');
+    expect(kind('mds-button', 'disabled')).toBe('case');
+    expect(kind('mds-banner', 'slot')).toBe('case');
+    expect(kind('mds-button', 'autofocus')).toBe('case');
+    expect(kind('mds-text', 'aria-live')).toBe('case');
+    // the words of the application
+    expect(kind('mds-banner', 'headline')).toBe('text');
+    expect(kind('mds-button', 'icon')).toBe('text');
+    expect(kind('mds-button', 'aria-label')).toBe('text');
+    expect(kind('mds-button', 'not-a-prop')).toBe('text');
+    // its wiring
+    expect(kind('mds-button', 'id')).toBe('application');
+    expect(kind('mds-button', 'name')).toBe('application');
+    expect(kind('mds-button', 'value')).toBe('application');
+    expect(kind('mds-button', 'aria-controls')).toBe('application');
+    // a moment of the stage: a boolean the component changes itself (await is mutable), an ARIA state
+    expect(kind('mds-button', 'await')).toBe('state');
+    expect(kind('mds-button', 'aria-expanded')).toBe('state');
+    expect(kind('mds-button', 'hidden')).toBe('state');
+    // the layout of the stage, and its marker
+    expect(kind('mds-button', 'class')).toBe('layout');
+    expect(kind('mds-button', 'data-stage')).toBe('layout');
+  });
+
+  test('a pattern of Magma gives each part its role, and each attribute as its kind asks', () => {
+    const one = small({
+      components: ['mds-banner', 'mds-button', 'mds-text'],
+      cases: [
+        {
+          id: 'on-field',
+          about: 'field',
+          where: 'w',
+          use: [
+            {
+              role: 'the message',
+              use: 'mds-banner variant=error dismissible headline=<what failed>',
+            },
+            { role: 'the retry', use: 'mds-button slot=action await' },
+          ],
+        },
+        {
+          id: 'on-action',
+          about: 'action',
+          where: 'w',
+          use: [
+            'mds-text',
+            { role: 'a', use: 'mds-banner headline=Salvato id=x class=mt-2' },
+            { role: 'b', use: 'mds-button variant tone=<a tone> await=<busy> slot=<a slot>' },
+            { role: 'c', use: 'mds-text hidden=<when>' },
+          ],
+        },
+      ],
+    });
+    // a placeholder on a prop with values: the application chooses it (the tone of a status)
+    expect(componentErrors(one, components)).toEqual([
+      'case on-action: mds-banner has no attribute class',
+      'case on-action: await of mds-button is a boolean: write it bare',
+    ]);
+    expect(magmaUseErrors(one, components)).toEqual([
+      'case on-action: use 1 has no role: write { role, use }, what the part does in the case',
+      "case on-action: headline of mds-banner is the application's text: write headline=<what it holds>, or leave it out",
+      "case on-action: id of mds-banner is the application's: a use leaves it out",
+      'case on-action: class of mds-banner belongs to the stage: a use leaves it out',
+      "case on-action: variant of mds-button is the case's to decide: write its value",
+      "case on-action: slot of mds-button is the case's to decide: write its value",
+      'case on-action: hidden of mds-text is a state: write it, or leave it out',
+    ]);
+    // a product's own pattern and a domain keep the bare use
+    expect(magmaUseErrors({ ...one, layer: 'acme' }, components)).toEqual([]);
+    expect(magmaUseErrors(domain(), components)).toEqual([]);
+  });
+
+  test('the solution of a stage is every component outside data-stage; a frame keeps what it holds', () => {
+    expect(
+      solutionOf(
+        parse(`<mds-modal opened data-stage="frame"><mds-banner slot="window" data-stage="frame">
+<mds-text typography="label" tag="dt">Destinatario</mds-text></mds-banner></mds-modal>`),
+      ),
+    ).toEqual([
+      {
+        tag: 'mds-text',
+        attributes: [
+          { name: 'typography', value: 'label' },
+          { name: 'tag', value: 'dt' },
+        ],
+      },
+    ]);
+    const odd = parsePreview(
+      '<!--\ntry: Look.\n-->\n<div data-stage="page"><mds-text>A</mds-text></div>',
+      '/p/previews/small/on-field.html',
+    );
+    expect(
+      previewUseErrors([small()], [odd], parse, components).get('/p/previews/small/on-field.html'),
+    ).toContain(
+      'data-stage="page" on <div>: write it bare (the element and what it holds) or data-stage="frame" (the element only)',
+    );
+  });
+
+  test('the solution of a stage is every component outside data-stage', () => {
+    const parts = solutionOf(
+      parse(`<section data-stage><mds-text>Pratiche</mds-text><mds-button>Archivia</mds-button></section>
+<div class="grid"><mds-banner variant="success" headline="Fatto"><mds-text>A te</mds-text>
+<mds-button slot="action" data-stage>Chiudi</mds-button></mds-banner></div>
+<script>document.querySelector('mds-banner')</script>`),
+    );
+    expect(parts).toEqual([
+      {
+        tag: 'mds-banner',
+        attributes: [
+          { name: 'variant', value: 'success' },
+          { name: 'headline', value: 'Fatto' },
+        ],
+      },
+      { tag: 'mds-text', attributes: [] },
+    ]);
+  });
+
+  test("a preview shows the parts of its case's use, in their order, outside its stage", () => {
+    const preview = (name: string, markup: string) =>
+      parsePreview(`<!--\ntry: Look.\n-->\n${markup}`, `/p/previews/small/${name}.html`);
+    const pattern = small({
+      components: ['mds-banner', 'mds-button', 'mds-text'],
+      cases: [
+        {
+          id: 'on-field',
+          about: 'field',
+          where: 'w',
+          use: [
+            { role: 'the outcome', use: 'mds-banner variant=success headline=<what went>' },
+            { role: 'what went', use: 'mds-text' },
+            { role: 'start again', use: 'mds-button slot=action variant=success await' },
+          ],
+        },
+        {
+          id: 'on-action',
+          about: 'action',
+          where: 'w',
+          use: [
+            { role: 'what went', use: 'mds-text' },
+            { role: 'the outcome', use: 'mds-banner variant=success headline=<what went>' },
+            { role: 'gone', use: 'mds-button variant=error' },
+          ],
+        },
+      ],
+    });
+    // the stage holds its own components; two parts of one kind (the rows of a list) need one entry
+    const good = preview(
+      'on-field',
+      `<form data-stage><mds-text>Testo</mds-text><mds-button type="submit">Invia</mds-button></form>
+<mds-banner id="sent" variant="success" headline="Inviato" class="hidden">
+  <mds-text>A Mario.</mds-text><mds-text>Oggi.</mds-text>
+  <mds-button id="again" slot="action" variant="success">Scrivi ancora</mds-button>
+</mds-banner>`,
+    );
+    const bad = preview(
+      'on-action',
+      `<mds-banner variant="success"><mds-text>A Mario.</mds-text>
+  <mds-button slot="action" variant="dark" tone="outline" autofocus>Annulla</mds-button>
+</mds-banner>`,
+    );
+    expect(previewUseErrors([pattern], [good, bad], parse, components)).toEqual(
+      new Map([
+        [
+          '/p/previews/small/on-action.html',
+          [
+            'case on-action: use "mds-text" comes before "mds-banner variant=success headline=<what went>", and after it in the preview: give the entries in the order of the preview',
+            'case on-action: the preview shows mds-button autofocus slot=action tone=outline variant=dark, which no entry of use names (or mark it data-stage)',
+            'case on-action: use "mds-banner variant=success headline=<what went>" writes headline, which no mds-banner of the preview has',
+            'case on-action: use "mds-button variant=error" is not in the preview, outside the stage',
+          ],
+        ],
+      ]),
+    );
+    // two entries alike take two parts in turn; a row that comes back is a repeat; a boolean
+    // the case decides and the still stage does not show (await, set by the script) is no part
+    const turn = small({
+      cases: [
+        {
+          id: 'on-field',
+          about: 'field',
+          where: 'w',
+          use: [
+            { role: 'attach', use: 'mds-button variant=dark' },
+            { role: 'the label', use: 'mds-text typography=label' },
+            { role: 'stop', use: 'mds-button variant=dark await' },
+          ],
+        },
+        ...small().cases!.slice(1),
+      ],
+    });
+    const inTurn = preview(
+      'on-field',
+      `<mds-button variant="dark">Allega</mds-button><mds-text typography="label">A</mds-text>
+<mds-button variant="dark">Interrompi</mds-button><mds-text typography="label">B</mds-text>`,
+    );
+    expect(previewUseErrors([turn], [inTurn], parse, components)).toEqual(new Map());
+    // a domain is not compared: its use names what a relation writes
+    expect(
+      previewUseErrors(
+        [domain()],
+        [
+          parsePreview(
+            `<!--\ntry: Look.\n-->\n<mds-text>A</mds-text>`,
+            '/p/previews/spacing/inline.html',
+          ),
+        ],
+        parse,
+        components,
+      ),
+    ).toEqual(new Map());
+  });
+
+  test('a situation of a block shows what the regions of its values name, a required one always', () => {
+    const head = block({
+      regions: [
+        {
+          id: 'back',
+          when: { level: 'nested' },
+          what: 'the page above',
+          use: ['mds-button variant=dark tone=text href=<the page above>'],
+        },
+        {
+          id: 'title',
+          required: true,
+          what: 'the heading',
+          use: ['mds-text typography=page tag=h1'],
+        },
+        {
+          id: 'actions',
+          what: 'the actions',
+          use: ['mds-button variant=dark tone=outline', 'mds-button tone=strong'],
+        },
+      ],
+    });
+    const at = (name: string, markup: string) =>
+      parsePreview(`<!--\ntry: Look.\n-->\n${markup}`, `/p/previews/head/${name}.html`);
+    const list = at(
+      'list',
+      '<mds-text typography="page" tag="h1">Richieste</mds-text><mds-button tone="strong">Nuova</mds-button>',
+    );
+    const item = at(
+      'item',
+      '<mds-button variant="dark" tone="text">Richieste</mds-button><mds-text typography="detail" tag="p">Arrivata ieri</mds-text>',
+    );
+    expect(previewUseErrors([head], [list, item], parse, components)).toEqual(
+      new Map([
+        [
+          '/p/previews/head/item.html',
+          [
+            'situation item: the preview shows mds-text tag=p typography=detail, which no region it shows names in its use (or mark it data-stage)',
+            'situation item: region title is required, and the preview shows none of its use',
+            'situation item: use "mds-button variant=dark tone=text href=<the page above>" writes href, which no mds-button of the preview has',
+          ],
+        ],
+      ]),
+    );
+  });
+
+  test('the generated cases give the parts of each case in a table of their own', () => {
+    const one = small({
+      cases: [
+        {
+          id: 'on-field',
+          about: 'field',
+          where: 'under the field',
+          use: [{ role: 'the message | what failed', use: 'mds-text typography=detail' }],
+        },
+        { id: 'on-action', about: 'action', where: 'a toast' },
+        { id: 'ask', about: 'action', decision: 'needed', where: 'a dialog' },
+      ],
+    });
+    const cases = syncBody(one, '').match(/## Cases\n[\s\S]*?(?=\n## )/)![0];
+    expect(cases).toContain('| Case | When | Where |\n');
+    expect(cases).toContain(
+      '`on-field`:\n\n| Role | Use |\n| --- | --- |\n| the message \\| what failed | `mds-text typography=detail` |',
+    );
+    // a pattern whose use is bare keeps the column
+    expect(
+      syncBody(
+        small({
+          cases: [
+            { id: 'on-field', about: 'field', where: 'w', use: ['mds-text'] },
+            ...small().cases!.slice(1),
+          ],
+        }),
+        '',
+      ),
+    ).toContain('| Case | When | Where | Use |');
   });
 });

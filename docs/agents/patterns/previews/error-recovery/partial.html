@@ -2,7 +2,7 @@
 try: Look at the error above the list: 9 archived, 3 not, each with its reason; Riprova acts only on the two the server did not receive.
 -->
 <section class="grid gap-title-content">
-  <mds-text typography="section" tag="h2">Pratiche concluse</mds-text>
+  <mds-text typography="section" tag="h2" data-stage>Pratiche concluse</mds-text>
   <div class="grid gap-between-fields">
     <mds-banner variant="error" tone="strong" headline="9 pratiche archiviate, 3 no">
       <mds-text>
@@ -11,7 +11,7 @@ try: Look at the error above the list: 9 archived, 3 not, each with its reason; 
       </mds-text>
       <mds-button slot="action" variant="error" tone="strong">Riprova</mds-button>
     </mds-banner>
-    <div class="grid">
+    <div class="grid" data-stage>
       <div class="flex items-center justify-between gap-inline">
         <mds-text>2026/0412, Giulia Bianchi</mds-text>
         <mds-button icon="mi/baseline/archive" variant="dark" tone="text" aria-label="Archivia la pratica 2026/0412"></mds-button>

@@ -23,12 +23,12 @@ variables:
   subject: { values: [set, item], means: "set: the page shows a set of items (a list); item: the page is about one item (a record, a profile)" }
 
 regions:
-  - { id: back, when: { level: nested }, what: "a link to the page above, named after it, with an arrow", use: ["mds-button href icon variant=dark tone=text size=sm"] }
+  - { id: back, when: { level: nested }, what: "a link to the page above, named after it, with an arrow", use: ["mds-button href=<the page above> icon=<an arrow back, mi/baseline/arrow-back> variant=dark tone=text size=sm"] }
   - { id: number, when: { subject: item }, what: "the number or code of the item, small, above the title, when it has one", use: ["mds-text typography=caption tag=p"] }
   - { id: title, required: true, what: "the heading of the page: what the set holds, in the plural, or the subject of the item", use: ["mds-text typography=page tag=h1"] }
-  - { id: status, when: { subject: item }, what: "the status of the item, next to the title, when it has one", use: ["mds-badge"] }
+  - { id: status, when: { subject: item }, what: "the status of the item, next to the title, when it has one", use: ["mds-badge variant=<the tone of its status> label=<the status>"] }
   - { id: summary, what: "one line: what the set holds, or where the item belongs and when it arrived", use: ["mds-text typography=detail tag=p"] }
-  - { id: actions, what: "the actions on what the page shows, the main one last in the strong tone, the others outlined; an action that destroys the item is never in the row: it goes last in the menu of the item, after a separator; with more than three actions the row keeps the main one, the secondary used most and the menu of the item at its start, which holds the others (actions/more-in-menu)", use: ["mds-button variant=dark tone=outline", "mds-button tone=strong", "mds-button variant=dark tone=text icon", "mds-dropdown", "mds-separator"] }
+  - { id: actions, what: "the actions on what the page shows, the main one last in the strong tone, the others outlined; an action that destroys the item is never in the row: it goes last in the menu of the item, after a separator; with more than three actions the row keeps the main one, the secondary used most and the menu of the item at its start, which holds the others (actions/more-in-menu)", use: ["mds-button variant=dark tone=outline", "mds-button", "mds-button variant=dark tone=text icon=<more_vert, mi/baseline/more-vert> aria-label=<the actions of the item, naming it>", "mds-dropdown placement=bottom-start", "mds-button variant=dark tone=text icon=<what it does> label=<its verb>", "mds-separator"] }
 
 always-true:
   - id: one-h1
@@ -98,12 +98,12 @@ A region shows where its When holds, in this order: a required one always, the o
 
 | Region | When | Required | What | Use |
 | --- | --- | --- | --- | --- |
-| `back` | level: nested |  | a link to the page above, named after it, with an arrow | `mds-button href icon variant=dark tone=text size=sm` |
+| `back` | level: nested |  | a link to the page above, named after it, with an arrow | `mds-button href=<the page above> icon=<an arrow back, mi/baseline/arrow-back> variant=dark tone=text size=sm` |
 | `number` | subject: item |  | the number or code of the item, small, above the title, when it has one | `mds-text typography=caption tag=p` |
 | `title` | any | yes | the heading of the page: what the set holds, in the plural, or the subject of the item | `mds-text typography=page tag=h1` |
-| `status` | subject: item |  | the status of the item, next to the title, when it has one | `mds-badge` |
+| `status` | subject: item |  | the status of the item, next to the title, when it has one | `mds-badge variant=<the tone of its status> label=<the status>` |
 | `summary` | any |  | one line: what the set holds, or where the item belongs and when it arrived | `mds-text typography=detail tag=p` |
-| `actions` | any |  | the actions on what the page shows, the main one last in the strong tone, the others outlined; an action that destroys the item is never in the row: it goes last in the menu of the item, after a separator; with more than three actions the row keeps the main one, the secondary used most and the menu of the item at its start, which holds the others (actions/more-in-menu) | `mds-button variant=dark tone=outline`, `mds-button tone=strong`, `mds-button variant=dark tone=text icon`, `mds-dropdown`, `mds-separator` |
+| `actions` | any |  | the actions on what the page shows, the main one last in the strong tone, the others outlined; an action that destroys the item is never in the row: it goes last in the menu of the item, after a separator; with more than three actions the row keeps the main one, the secondary used most and the menu of the item at its start, which holds the others (actions/more-in-menu) | `mds-button variant=dark tone=outline`, `mds-button`, `mds-button variant=dark tone=text icon=<more_vert, mi/baseline/more-vert> aria-label=<the actions of the item, naming it>`, `mds-dropdown placement=bottom-start`, `mds-button variant=dark tone=text icon=<what it does> label=<its verb>`, `mds-separator` |
 
 ## Layout
 
@@ -199,3 +199,4 @@ Situations every application has, each with the regions it shows: they give the 
 | 2026-11-01 | With more than three actions, the row keeps the main one, the secondary used most and the menu of the item at its start; the open choice `actions-overflow` goes | The design language, #1189: `actions/at-most-three` and `actions/more-in-menu`. The arrow of the main action (`mds-button-dropdown`) read as another way of doing it; every action visible broke the limit of three. https://github.com/magma-design-system/magma/issues/1189#issuecomment-6561221595 |
 | 2026-11-03 | A block has a preview for each situation, named after the id of the situation | The maintainer's choice for the round of the building blocks: a situation already gives every variable and the words, as a case does; one preview of the whole block would not show what goes when a variable changes. |
 | 2026-11-03 | With less room the actions go under the identity on one line and stack under 380 px of the header; the identity keeps the width of a row of actions, so a long title wraps instead of moving them; the title takes the role `page` | The previews of the round of the building blocks: the old "wrap" made a ragged row that `actions/stacked` forbids, and a long title pushed the actions under it at 1024 px; `typography=h3` was the size, `page` is the role (`titles/by-role`). |
+| 2026-11-13 | Each region names in its use every part the previews of its situations show, the texts of the application as placeholders, the stage of the previews marked `data-stage` | The `use` of the regions named part of what their previews show, and the main action as `tone=strong` where the previews write the default: the agents of the products composed the rest by hand. https://github.com/magma-design-system/magma/issues/1396 |

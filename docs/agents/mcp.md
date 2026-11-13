@@ -116,7 +116,7 @@ an answer names (a preview, the layer of a pattern) is absolute.
 | `explain_class` | what a class does with the Magma theme | the trap of the scale: `p-4` is 0.01rem, `p-400` is 1rem |
 | `find_icon` | a slug that exists, by meaning, or whether a slug exists | an `icon="..."` that renders nothing |
 | `get_guide` | one section of a guide, or of a domain of the design language, the rules of composition (`rhythm`, `density`, `actions`, `titles`, `surfaces`, `widths`) | reading the whole file |
-| `get_pattern` | how a task across components is solved in every product (where a message goes, confirming an action, an empty, a loading or a failed part): the list, the patterns for a need, or, with the values of the variables of a pattern, the one case to follow, with its preview (the stage, live, what to try in it and in `images` the paths of its light and dark images, to show where the stage cannot run) when Magma has one and in `rules` the rules of the domains it relies on; the layer of the project (`magma/patterns/<id>.md`) applied, and in `layerFile` the file to write it in; the domains of the design language first in the list, then the building blocks (`kind: block`, the page header), which answer with the regions to lay out, in order | inventing the flow, or reading [`patterns.md`](patterns.md) and each pattern by hand |
+| `get_pattern` | how a task across components is solved in every product (where a message goes, confirming an action, an empty, a loading or a failed part): the list, the patterns for a need, or, with the values of the variables of a pattern, the one case to follow, with its parts (`use`: each with its role and the component to write, in the order of its preview, a value in angle brackets the text of your application) and its preview (the stage, live, its context marked `data-stage`, what to try in it and in `images` the paths of its light and dark images, to show where the stage cannot run) when Magma has one and in `rules` the rules of the domains it relies on; the layer of the project (`magma/patterns/<id>.md`) applied, and in `layerFile` the file to write it in; the domains of the design language first in the list, then the building blocks (`kind: block`, the page header), which answer with the regions to lay out, in order | inventing the flow, or reading [`patterns.md`](patterns.md) and each pattern by hand |
 | `check_markup` | whether a snippet passes the lint, before it is written | a lint run after the fact |
 | `check_setup` | what the Magma integration of the project misses, and which folder it read as the project | checking the install steps by hand |
 | `render_preview` | an image of markup with Magma components, or of the preview Magma ships for a case of a pattern (`pattern` and `case`), at the widths (pixels or Magma breakpoints), the mode and the theme you give, with a report of what in it is not representative | describing an interface in words, or a wireframe of your own |
@@ -129,7 +129,8 @@ the lint ([`lint.md`](lint.md)). The same definitions, for a tool that documents
 
 - Before writing a component: `find_component`, then `get_component` and `get_usage`.
 - Before a colour, a spacing or a class: `list_tokens`, `suggest_role`, `explain_class`.
-- Before a flow that tells the person something or makes them wait or decide: `get_pattern`.
+- Before a flow that tells the person something or makes them wait or decide: `get_pattern`;
+  compose the case from its parts, then add what your situation needs.
 - Before the head of a page (its title, the way back, its actions): the building block
   `page-header`, `get_pattern` with its id and the values of its variables.
 - Before laying out a page, a form, a dialog or a card: the domains of the design language, which

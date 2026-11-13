@@ -203,7 +203,12 @@ answer comes from".
   without arguments the list carries the `layerErrors` of the whole folder, so a product checks
   its layer where it has no `check.patterns`. Each case of a pattern names the path of its
   preview, and the answer for a situation carries the stage with what to try, since that is
-  the one case the agent builds and its markup is short; of the other examples of a case the
+  the one case the agent builds and its markup is short. The parts of the case (`use`, #1396)
+  come before the stage, in the order of its preview, each with its role: the description of
+  the tool says to compose from them and to read the stage, whose context is marked
+  `data-stage`, as context only, since an agent that builds from the markup copies the list or
+  the form around the case too (the measure on #1396: `use` named one part in five of what a
+  preview shows). Of the other examples of a case the
   pattern names the paths in `examples`, the answer too, and `render_preview` takes `example`.
   The preview of an answer names its two images in `images` (#1243), `<case>.light.webp` and
   `<case>.dark.webp` beside it, which the build of magma makes with `renderPreviewImages`: the
