@@ -20,7 +20,7 @@ import {
 
   The hero says what the studio is and what it offers, beside a short play run by the engine of
   the studio (start-demo.ts) on a banner of a product, painted with the configuration of Magma
-  drawn pale: its text targets lowered and the ramp of its accent faded. Three trays come out from
+  drawn pale: its text pinned to pale steps and the ramp of its accent faded. Three trays come out from
   behind the banner, one at a time (vittorio, 2026-11-09):
   - the problem, over the banner: what is wrong with it;
   - the fix, under it: what the gate says of the banner, its texts, its icons and its actions
@@ -301,7 +301,7 @@ function Hero() {
           </div>
           <figcaption class="studio-hidden">
             {t(
-              'A banner painted with the configuration Magma builds with, drawn pale: its text targets under the floors of the contrast gate and the ramp of its accent faded, so its text, its icon and its main action read poorly. Then the studio brings both back step by step, solving the colours again at each one, until every pair the gate judges meets its floor.',
+              'A banner painted with the configuration Magma builds with, drawn pale: its text pinned to pale steps of its ramp, under the floors of the contrast gate, and the ramp of its accent faded, so its text, its icon and its main action read poorly. Then the studio brings both back step by step, solving the colours again at each one, until every pair the gate judges meets its floor.',
             )}
           </figcaption>
         </figure>

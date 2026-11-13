@@ -23,6 +23,9 @@
  */
 import { APCAcontrast, sRGBtoY } from 'apca-w3';
 import chroma from 'chroma-js';
+// which text roles each wash level must carry (spec 9.1): one table for the gate, the semantic
+// layer and the text-role engine, which solves the text against it (#1414)
+import { WASH_TEXT_ENFORCED } from './wash.js';
 
 export type Mode = 'light' | 'dark';
 export type Severity = 'error' | 'warn' | 'info';
@@ -95,32 +98,6 @@ const emphasisStatesOf = (aliases: AliasMap, hue: string): string[] => {
 // The colored hues (every hue that is neither an accent nor the partial neutral):
 // the ones that publish a text ladder on their own wash levels.
 const TINTED_HUES = ['info', 'success', 'warning', 'danger'] as const;
-/**
- * Which text roles are ENFORCED on each wash level (spec 9.1) - for the colored
- * hues AND for the neutral band of 6.1b. This is the contract for a pill-shaped
- * background, and it is bounded by measurement, not taste: the more marked the
- * wash, the less of the text ladder it can carry.
- *  - `soft` (the lightest wash) carries the whole ladder;
- *  - `base` carries `text-default` only (`muted` measures 73-75 Lc on it,
- *    i.e. at or just under its 75 floor);
- *  - `strong` carries NO essential text: it is the graphic wash (chips,
- *    cockades, hover) and only has to keep icons legible, which the report-only
- *    target covers (`text-default` measures 74.5-76 Lc there).
- * Roles left out of a level are still measured and reported, just not gated.
- *
- * ONE table for both bands because the measurement says so, not for symmetry.
- * Measured on the neutral band the day it was added (#624): `soft` 95.3/96.8 Lc
- * for `default` down to 60.4/61.8 for `disabled` (light/dark, all above their
- * floors); `base` 88.4/89.5 for `default` but 73.1/74.0 for `muted`, under the
- * 75 floor exactly as on a hue; `strong` 78.7/79.9 for `default`, which clears
- * the icon target but leaves no headroom for a ladder.
- */
-const WASH_TEXT_ENFORCED: Record<string, readonly string[]> = {
-  soft: ['default', 'muted', 'subtle', 'disabled'],
-  base: ['default'],
-  strong: [],
-};
-
 // APCA is reported to <1 Lc precision; round display and compare on the rounded
 // value so float noise never flips a verdict.
 const round1 = (n: number) => Math.round(n * 10) / 10;

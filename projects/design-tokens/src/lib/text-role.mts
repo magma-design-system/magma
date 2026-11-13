@@ -2,6 +2,8 @@ import chroma from "chroma-js";
 import chalk from "chalk";
 import { APCAcontrast, sRGBtoY } from "apca-w3";
 import type { ColorTokenSet, MagmaConfig } from "./color.mjs";
+import { DEFAULT_TARGETS } from "./contrast-gate.js";
+import { WASH_STEPS, WASH_TEXT_ENFORCED, type WashLevel } from "./wash.js";
 
 /**
  * Text-role generation engine (issue #591, A7; spec:
@@ -19,6 +21,13 @@ import type { ColorTokenSet, MagmaConfig } from "./color.mjs";
  * a theme author than picking a raw step (state the legibility intent, not the
  * mechanism) and it survives surface retunes. An explicit `{ step }` override is
  * available for exact control.
+ *
+ * A text also sits on the WASHES of its family (a banner, a badge, a chip: `--magma-<hue>-wash-*`,
+ * the neutral `--magma-wash-*`), which are steps of the family's own ramp, not surfaces, so they
+ * do not follow `theme.surfaces`. The engine holds each role to the floor of the contrast gate on
+ * the wash levels that carry it (`WASH_TEXT_ENFORCED`, spec 9.1): solved on the surfaces alone, a
+ * retune toward lighter surfaces moved the text to a lighter step that fell under its floor on
+ * its own wash (#1414). The step is still chosen in the same ramp: no colour is added.
  *
  * Output mirrors surface.mts (`family -> { light, dark } role sets`) so it slots
  * into `color.text` and ships as `--text-<family>-<role>`, flipping per mode
@@ -54,17 +63,43 @@ const DERIVED_GROUPS = new Set(["surface", "border", "text"]);
 const apcaLc = (fg: string, bg: string): number =>
   Math.abs(APCAcontrast(sRGBtoY(chroma(fg).rgb()), sRGBtoY(chroma(bg).rgb())) as number);
 
+/** A wash the role must be legible on, with the floor of the gate there. */
+interface Wash {
+  level: WashLevel;
+  value: string;
+  floor: number;
+}
+
+/**
+ * The washes of a family a role must be legible on, in one mode: the levels that carry the role
+ * (`WASH_TEXT_ENFORCED`), each the step `WASH_STEPS` names in the family's own ramp, with the
+ * text floor of the gate (`DEFAULT_TARGETS.text`).
+ */
+const washesFor = (tone: StepSet, role: TextRole): Wash[] =>
+  (Object.keys(WASH_STEPS) as WashLevel[])
+    .filter((level) => WASH_TEXT_ENFORCED[level].includes(role))
+    .map((level) => ({
+      level,
+      // the tree keys a step without its leading zero: `09` is `9`
+      value: tone[String(Number(WASH_STEPS[level]))]?.value,
+      floor: DEFAULT_TARGETS.text[role],
+    }))
+    .filter((wash): wash is Wash => Boolean(wash.value));
+
 /**
  * Pick the tone step for one role/mode. With an explicit `{ step }` it returns
  * that step; otherwise the least-contrast step whose APCA magnitude still meets
  * the target on the WORST-CASE surface - the surface giving the lowest contrast
  * for that step - so the role stays legible on EVERY surface it can land on, not
- * just the canvas. Clamps to the highest-contrast step (with a warning) when the
- * target is unreachable on some surface.
+ * just the canvas - and the floor of the gate on each wash of its family that carries
+ * it (#1414). Clamps to the highest-contrast step (with a warning) when the
+ * target is unreachable on some surface; keeps the choice of the surfaces (with a warning, the
+ * gate then fails on it) when no step that meets it there also meets a wash.
  */
 function pickStep(
   tone: StepSet,
   refSurfaces: string[],
+  washes: Wash[],
   level: TextLevel,
   family: string,
   role: TextRole,
@@ -86,7 +121,21 @@ function pickStep(
     .map((value) => ({ value, lc: worstLc(value) }));
 
   const meeting = candidates.filter((c) => c.lc >= level).sort((a, b) => a.lc - b.lc);
-  if (meeting.length > 0) return meeting[0].value;
+  // of those, the ones that keep the floor on every wash that carries the role
+  const onWashes = meeting.filter((c) =>
+    washes.every((wash) => apcaLc(c.value, wash.value) >= wash.floor),
+  );
+  if (onWashes.length > 0) return onWashes[0].value;
+  if (meeting.length > 0) {
+    console.warn(
+      chalk.yellow(
+        `text-role: ${family}.${role} (${mode}) meets Lc ${level} on its surfaces, but no step that ` +
+          `does keeps the floor on its ${washes.map((wash) => `wash-${wash.level}`).join(", ")}; ` +
+          `keeping the step of the surfaces.`,
+      ),
+    );
+    return meeting[0].value;
+  }
 
   const strongest = [...candidates].sort((a, b) => b.lc - a.lc)[0];
   console.warn(
@@ -147,7 +196,15 @@ export function createTextTokens(config: MagmaConfig, tree: ColorTree): TextToke
       const roleSet: StepSet = {};
       TEXT_ROLES.forEach((role) => {
         roleSet[role] = {
-          value: pickStep(candidates, refSurfaces, textConfig[role], family, role, mode),
+          value: pickStep(
+            candidates,
+            refSurfaces,
+            washesFor(candidates, role),
+            textConfig[role],
+            family,
+            role,
+            mode,
+          ),
         };
       });
       return roleSet;

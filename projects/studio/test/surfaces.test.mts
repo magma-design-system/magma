@@ -11,6 +11,10 @@ import { SurfaceManager } from '../src/surfaces.js'
 import { LangProvider } from '../src/i18n.js'
 import { textOf } from './text.mjs'
 
+// the level of the canvas in light mode as its slider shows it, read from the committed configuration
+// so a retune of the surfaces (#1416) moves it with no test to edit
+const canvasLight = String(parseFloat(initialConfig.theme.surfaces.light.default))
+
 // The Semantic surface page, written in Magma: the groups are chips, the families chips with
 // the swatch of their colour, the levels sliders, the preview two selects and two tabs. jsdom does not upgrade the
 // components: the test dispatches the events they emit and reads what the page writes back.
@@ -125,7 +129,7 @@ test('the status families sit in a row of their own, under the others, saying th
 
 test('a slider of the levels writes the level of its role and mode', async () => {
   const surface = slider('Surfaces default, light')
-  expect(surface.getAttribute('value')).toBe('96')
+  expect(surface.getAttribute('value')).toBe(canvasLight)
   await emit(surface, 'mdsInputRangeChange', 90)
   expect(theme().surfaces.light.default).toBe('90%')
   expect(surface.getAttribute('value')).toBe('90')
@@ -178,7 +182,7 @@ test('the tabs switch the preview between the step charts and the surface boxes'
 
 test('the page speaks the language of the studio', () => {
   render(h(LangProvider, { value: 'it' }, h(Page, {})), root)
-  expect(slider('Superfici default, chiaro').getAttribute('value')).toBe('96')
+  expect(slider('Superfici default, chiaro').getAttribute('value')).toBe(canvasLight)
   expect(slider('Testo muted, obiettivo')).toBeDefined()
   const status = [...root.querySelectorAll('mds-chip')].find((chip) => chip.getAttribute('label') === 'status')!
   expect(status.parentElement?.querySelector('mds-badge')?.getAttribute('label')).toBe('sempre attivo')
