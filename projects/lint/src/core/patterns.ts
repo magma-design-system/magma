@@ -161,8 +161,12 @@ export type Entry = Record<string, unknown>;
 export interface Case extends Entry, Grounded {
   id: string;
   where: string;
-  /** `tag attribute=value ...`, each checked against the components of the release. */
-  use?: string[];
+  /**
+   * The components of the solution, each checked against the release: `{ role, use }` in a
+   * pattern or a block of Magma, in the order of the case's preview (#1396); a bare
+   * `tag attribute=value ...` in a product's own pattern and in a domain of the design language.
+   */
+  use?: UseItem[];
   /** A case of the same pattern, or another pattern, that says more. */
   see?: string;
   /** What Magma lacks for this case. */
@@ -544,18 +548,48 @@ const isStringList = (value: unknown): value is string[] =>
 /** A `use` of a case: a tag and its attributes, `mds-toast variant=error dismissible`. */
 export interface Use {
   tag: string;
-  attributes: { name: string; value?: string }[];
+  /**
+   * `placeholder`: the value is the application's, `<what it holds>` (`headline=<the question,
+   * naming the item>`), not a value to write as it is (#1396).
+   */
+  attributes: { name: string; value?: string; placeholder?: true }[];
 }
 
+/**
+ * An entry of the `use` of a case (#1396): a part of the solution, what it does in the case
+ * (`role`) and the component to write (`use`, `tag attribute=value ...`). The patterns and the
+ * blocks of Magma give every entry so, in the order of the preview of the case; a product's own
+ * pattern may give the bare `use`.
+ */
+export interface UseEntry {
+  role: string;
+  use: string;
+}
+export type UseItem = string | UseEntry;
+
+/** The `tag attribute=value ...` of an entry, whichever its form. */
+export const useOf = (item: UseItem): string => (typeof item === 'string' ? item : item.use);
+
+/** An attribute of a use after the tag: a name, its value or a placeholder in angle brackets. */
+const USE_ATTRIBUTE = /\s+([a-z][a-z0-9-]*)(?:=(<[^<>|]+>|[^\s<>|]+))?(?=\s|$)/y;
+
 export const parseUse = (use: string): Use | undefined => {
-  const [tag, ...rest] = use.trim().split(/\s+/);
-  if (!tag || !/^mds-[a-z0-9-]+$/.test(tag)) return undefined;
-  const attributes = [];
-  for (const part of rest) {
-    const match = /^([a-z][a-z0-9-]*)(?:=(\S+))?$/.exec(part);
+  const text = use.trim();
+  const tag = /^mds-[a-z0-9-]+(?=\s|$)/.exec(text)?.[0];
+  if (!tag) return undefined;
+  const attributes: Use['attributes'] = [];
+  for (let at = tag.length; at < text.length;) {
+    USE_ATTRIBUTE.lastIndex = at;
+    const match = USE_ATTRIBUTE.exec(text);
     if (!match) return undefined;
+    at = USE_ATTRIBUTE.lastIndex;
+    const [, name, value] = match;
     attributes.push(
-      match[2] === undefined ? { name: match[1]! } : { name: match[1]!, value: match[2] },
+      value === undefined
+        ? { name: name! }
+        : value.startsWith('<')
+          ? { name: name!, value, placeholder: true }
+          : { name: name!, value },
     );
   }
   return { tag, attributes };
@@ -733,10 +767,24 @@ export const formatErrors = ({ file, data }: PatternFile<Pattern>): string[] => 
     else caseIds.add(one.id);
     if (!isString(one?.where)) say(`${label}: where is required`);
     if (one?.use !== undefined) {
-      if (!isStringList(one.use)) say(`${label}: use is a list of "tag attribute=value"`);
+      if (!Array.isArray(one.use))
+        say(`${label}: use is a list of { role, use }, or of "tag attribute=value"`);
       else
-        for (const use of one.use)
-          if (!parseUse(use)) say(`${label}: use "${use}" is not "mds-tag attribute=value ..."`);
+        for (const [index, item] of (one.use as unknown[]).entries()) {
+          const at = `${label}: use ${index + 1}`;
+          if (item && typeof item === 'object' && !Array.isArray(item)) {
+            const entry = item as Record<string, unknown>;
+            for (const key of Object.keys(entry))
+              if (key !== 'role' && key !== 'use') say(`${at} has an unknown field ${key}`);
+            if (!isString(entry.role))
+              say(`${at}: role is required: what the part does in the case`);
+            if (!isString(entry.use)) say(`${at}: use is required: "mds-tag attribute=value ..."`);
+            else if (!parseUse(entry.use))
+              say(`${at}: "${entry.use}" is not "mds-tag attribute=value ..."`);
+          } else if (!isString(item)) say(`${at} is { role, use }, or "tag attribute=value"`);
+          else if (!parseUse(item))
+            say(`${label}: use "${item}" is not "mds-tag attribute=value ..."`);
+        }
     }
     for (const key of ['see', 'magma-gap'] as const)
       if (one?.[key] !== undefined && !isString(one[key])) say(`${label}: ${key} is text`);
@@ -932,7 +980,7 @@ const useErrors = (use: Use, components: Map<string, ComponentInfo>): string[] =
   const component = components.get(use.tag);
   if (!component) return [`${use.tag} is not a component of this release`];
   const errors: string[] = [];
-  for (const { name, value } of use.attributes) {
+  for (const { name, value, placeholder } of use.attributes) {
     if (GLOBAL_ATTRIBUTE.test(name)) continue;
     const prop = component.props.get(name);
     if (!prop) {
@@ -942,6 +990,12 @@ const useErrors = (use: Use, components: Map<string, ComponentInfo>): string[] =
     if (prop.deprecation !== undefined)
       errors.push(`${name} of ${use.tag} is deprecated: ${prop.deprecation}`);
     if (value === undefined) continue;
+    if (placeholder) {
+      // a placeholder says what text goes in, never which of the values a prop takes
+      if (prop.values?.length || prop.boolean || prop.number)
+        errors.push(`${name} of ${use.tag} is the case's to decide: write its value, not ${value}`);
+      continue;
+    }
     if (prop.boolean && !prop.values?.length)
       errors.push(`${name} of ${use.tag} is a boolean: write it bare`);
     else if (prop.values && !prop.values.includes(value))
@@ -960,13 +1014,13 @@ export const componentErrors = (
   for (const tag of listed)
     if (!components.has(tag)) errors.push(`components: ${tag} is not a component of this release`);
   // the cases of a pattern, the regions of a block
-  const uses: [string, string[] | undefined][] = [
-    ...(pattern.cases ?? []).map((one) => [`case ${one.id}`, one.use] as [string, string[]]),
-    ...(pattern.regions ?? []).map((one) => [`region ${one.id}`, one.use] as [string, string[]]),
+  const uses: [string, UseItem[] | undefined][] = [
+    ...(pattern.cases ?? []).map((one) => [`case ${one.id}`, one.use] as [string, UseItem[]]),
+    ...(pattern.regions ?? []).map((one) => [`region ${one.id}`, one.use] as [string, UseItem[]]),
   ];
   for (const [label, list] of uses)
-    for (const text of list ?? []) {
-      const use = parseUse(text);
+    for (const item of list ?? []) {
+      const use = parseUse(useOf(item));
       if (!use) continue;
       if (components.has(use.tag) && !listed.has(use.tag))
         errors.push(`${label}: ${use.tag} is missing from components`);
@@ -1091,7 +1145,7 @@ export const domainRule = (
     id,
     from,
     rule: relation.where,
-    ...(relation.use ? { use: relation.use } : {}),
+    ...(relation.use ? { use: relation.use.map(useOf) } : {}),
     ...(relation.serves !== undefined ? { serves: relation.serves } : {}),
     ...(relation['carried-by'] ? { 'carried-by': relation['carried-by'] } : {}),
     ...(relation['carried-by-planned']
@@ -1142,7 +1196,7 @@ export const rulesOfComponent = (patterns: Pattern[], tag: string): CitedRule[] 
       const carrier = parseCarrier(text);
       return carrier?.kind === 'component' && carrier.use.tag === tag;
     });
-  const writes = (one: Case) => (one.use ?? []).some((text) => parseUse(text)?.tag === tag);
+  const writes = (one: Case) => (one.use ?? []).some((item) => parseUse(useOf(item))?.tag === tag);
   return patterns
     .filter((one) => one.kind === DESIGN_LANGUAGE && one.status !== 'candidate')
     .sort((a, b) => a.id.localeCompare(b.id))
@@ -1602,7 +1656,7 @@ export const renderSections = (
             .filter(Boolean)
             .join('; '),
         ),
-        (one.use ?? []).map(code).join(', '),
+        (one.use ?? []).map((item) => code(useOf(item))).join(', '),
         ...rulesOf(one),
         ...grounded(one),
       ]),
