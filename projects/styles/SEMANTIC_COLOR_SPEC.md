@@ -711,6 +711,12 @@ down to 60.4/61.8 for `disabled`; `base` 88.4/89.5 for `default` but 73.1/74.0 f
 `strong` 78.7/79.9 for `default`. Gate categories: `text-on-wash` for the neutral band,
 `text-on-hue` for the colored ones.
 
+The text-role engine solves against this same table (`projects/design-tokens/src/lib/wash.ts`,
+#1414): the washes are ramp steps and do not follow the surfaces, so a text chosen on the surfaces
+alone could fall under its floor on its own wash once the surfaces got lighter. Each role is now
+also held to the floor on the wash levels that carry it, so a retune of the surfaces moves the
+text only as far as its washes allow, and the gate confirms what the engine guarantees.
+
 `strong` is not a text surface by design, but it is not exempt either: `text-default` on it
 measures 74.5-76 Lc, comfortably above the report-only target, which is what makes it safe
 for the icon a status chip carries. For scale, the same icon before this contract resolved

@@ -2,16 +2,19 @@ import committedConfig from '@maggioli-design-system/design-tokens/.magma-design
 import DEFAULT_COLOR_CONFIG from '@maggioli-design-system/design-tokens/src/config/default-color.json';
 import type {
   ColorConfig,
+  ColorTokensMap,
   Formula,
   MagmaConfig,
 } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
 import {
+  createColorTokens,
   resolveFormula,
   resolveRatiosName,
 } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
 import { semantic } from '@maggioli-design-system/design-tokens/semantic.config';
 import {
   TEXT_ROLES,
+  type TextConfig,
   type TextRole,
 } from '@maggioli-design-system/design-tokens/src/lib/text-role.mjs';
 import { gateReport, type GateCell, type GateVerdict } from './gate.js';
@@ -26,25 +29,59 @@ import { msg } from './i18n.js';
   themes are printed as the frame of the Theme section paints them (scene-css.ts). Nothing is
   drawn by hand: what the hero shows is what the studio computes.
 
-  Two things are drawn pale, at two levels of the studio: the text targets (`theme.text`, the
-  balances of Semantic surface), lowered under the floors of the gate, and the ramp of the accent
-  family, its contrast ratios scaled down (a scale of Contrast scales), which pales the ink of the
-  icons and the fill of the main action. The surfaces and the borders stay the ones of Magma.
+  Two things are drawn pale, at two levels of the studio: the text (`theme.text`, the balances of
+  Semantic surface), pinned to pale steps of its ramp under the floors of the gate, and the ramp of
+  the accent family, its contrast ratios scaled down (a scale of Contrast scales), which pales the
+  ink of the icons and the fill of the main action. The surfaces and the borders stay the ones of
+  Magma.
 */
 
 type Targets = Record<TextRole, number>;
+type Steps = Record<TextRole, number>;
 
 /**
- * The targets the demo starts from, under the floors of the gate (DEFAULT_TARGETS of
- * contrast-gate.ts: 75, 75, 45 and 30) for every role: the text reads faint, and the gate counts
- * the pairs below their floor.
+ * The steps the text starts pinned to, as a colour picked by eye: pale steps of the ramp, under
+ * the floors of the gate (DEFAULT_TARGETS of contrast-gate.ts: 75, 75, 45 and 30) for every role,
+ * so the text reads faint and the gate counts the pairs below their floor. A pin, not a target:
+ * the engine holds a target to its floor on the washes of its family, so a target under the
+ * floors no longer reads faint (#1414), while a pinned step skips the search. They are the steps
+ * the targets 45, 30, 22 and 15 the demo started from landed on (the neutral ramp of the banner:
+ * Lc 48.5, 36.2, 25.0 and 15.2 on its overlay, light mode; test/start.test.mts holds each under
+ * its floor).
  */
-export const POOR_TARGETS: Targets = { default: 45, muted: 30, subtle: 22, disabled: 15 };
+export const POOR_STEPS: Steps = { default: 6, muted: 7, subtle: 8, disabled: 9 };
 
 /** The targets of Magma, from the configuration it builds with. */
 export const MAGMA_TARGETS: Targets = Object.fromEntries(
   TEXT_ROLES.map((role) => [role, Number(committedConfig.theme.text[role])]),
 ) as Targets;
+
+let magmaStepsOnce: Steps | undefined;
+
+/**
+ * The steps the engine picks for the targets of Magma on the family of the banner (the tint of
+ * the base theme, light mode): where the pins go back to, step by step, before the targets of
+ * Magma take over. Read from the engine on the committed configuration, once.
+ */
+export function magmaSteps(): Steps {
+  if (magmaStepsOnce) return magmaStepsOnce;
+  const config = JSON.parse(JSON.stringify(committedConfig)) as MagmaConfig;
+  // the tree the generator builds: color[group][family][mode][step] (contrast-gate.ts, ColorTree)
+  const color = (createColorTokens(config).tokens as unknown as { color: ColorTokensMap }).color;
+  const family = semantic.tint;
+  // the family's own ramp, in whatever group of colours it lives (text-role.mts, scaleFor)
+  const group = Object.keys(color).find(
+    (name) => !['surface', 'border', 'text'].includes(name) && color[name][family],
+  );
+  const ramp = group ? color[group][family].light : {};
+  const stepOf = (role: TextRole): number => {
+    const value = color.text?.[family]?.light[role]?.value;
+    const step = Object.keys(ramp).find((key) => ramp[key].value === value);
+    return step ? Number(step) : POOR_STEPS[role];
+  };
+  magmaStepsOnce = Object.fromEntries(TEXT_ROLES.map((role) => [role, stepOf(role)])) as Steps;
+  return magmaStepsOnce;
+}
 
 /**
  * How much of its contrast the ramp of the accent keeps at the start: 0.6 puts the ink of the
@@ -62,15 +99,21 @@ export const DEMO_STEPS = 8;
 
 const fraction = (step: number): number => Math.min(Math.max(step, 0), DEMO_STEPS) / DEMO_STEPS;
 
-/** The targets at a step, 0 the poor ones, DEMO_STEPS those of Magma; a target is a whole Lc. */
-export function targetsAt(step: number): Targets {
+/**
+ * The text at a step: at 0 the pale pins, then each pin a step nearer the one the engine picks for
+ * Magma (a whole step, never back), and at DEMO_STEPS the targets of Magma, the engine choosing
+ * again.
+ */
+export function textAt(step: number): TextConfig {
+  if (step >= DEMO_STEPS) return { ...MAGMA_TARGETS };
   const t = fraction(step);
+  const magma = magmaSteps();
   return Object.fromEntries(
     TEXT_ROLES.map((role) => [
       role,
-      Math.round(POOR_TARGETS[role] + (MAGMA_TARGETS[role] - POOR_TARGETS[role]) * t),
+      { step: Math.round(POOR_STEPS[role] + (magma[role] - POOR_STEPS[role]) * t) },
     ]),
-  ) as Targets;
+  ) as TextConfig;
 }
 
 /** How much of its contrast the ramp of the accent keeps at a step: PALE_RAMP, then all of it. */
@@ -103,15 +146,15 @@ const fade = (value: number, formula: Formula, share: number): number =>
     : Math.round(value * share);
 
 /**
- * The configuration of Magma at a step: its text targets, and the ramp of its accent faded. At
+ * The configuration of Magma at a step: its text pinned, and the ramp of its accent faded. At
  * the last step it is the committed configuration, unchanged.
  */
 export function demoConfig(step: number): MagmaConfig {
   const config = JSON.parse(JSON.stringify(committedConfig)) as MagmaConfig & {
-    theme: { text: Targets };
+    theme: { text: TextConfig };
   };
   if (step >= DEMO_STEPS) return config;
-  config.theme.text = targetsAt(step);
+  config.theme.text = textAt(step);
   const family = accentFamily(config);
   if (!family) return config;
   // the configuration is merged over the defaults of design-tokens (createColorTokens): the
@@ -163,7 +206,8 @@ export type DemoTone = 'error' | 'warning' | 'success';
 
 export interface DemoStep {
   step: number;
-  targets: Targets;
+  /** The text of the step: pinned steps, then the targets of Magma (textAt). */
+  text: TextConfig;
   /** The base theme, the one the page of the hero is painted in. */
   theme: string;
   /** The palette and the themes, for the frame (applyFrame). */
@@ -233,7 +277,7 @@ function computeStep(step: number): DemoStep | undefined {
         : 'error';
   return {
     step,
-    targets: targetsAt(step),
+    text: textAt(step),
     theme: scene.themes[0].name,
     css: scene.css,
     verdict,

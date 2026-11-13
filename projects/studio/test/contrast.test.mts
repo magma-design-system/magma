@@ -37,10 +37,15 @@ afterEach(() => {
 })
 
 const config = () => JSON.parse(JSON.stringify(initialConfig)) as MagmaConfig
-/** Text targets under the floors of the gate: the text roles fail, in both modes. */
+/**
+ * Text pinned to the least contrasting step of each ramp, under the floors of the gate: the text
+ * roles fail, in both modes. A target under the floors no longer fails: the engine holds every
+ * role to its floor on the washes of its family, which brings it over the floors of the surfaces
+ * too (#1414); a pinned step skips the search.
+ */
 const failing = () => {
   const low = config()
-  low.theme!.text = { default: 20, muted: 15, subtle: 10, disabled: 5 }
+  low.theme!.text = { default: { step: 10 }, muted: { step: 10 }, subtle: { step: 10 }, disabled: { step: 10 } }
   return low
 }
 

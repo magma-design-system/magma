@@ -12,17 +12,19 @@ import {
   MAGMA_TARGETS,
   PALE_RAMP,
   PALE_SCALE,
-  POOR_TARGETS,
+  POOR_STEPS,
   demoConfig,
   demoStep,
+  magmaSteps,
   rampAt,
-  targetsAt,
+  textAt,
 } from '../src/start-demo.js'
+import { gateReport } from '../src/gate.js'
 import { FEATURES, LEVELS, PLAY_MS, StartPage } from '../src/start.js'
 import { textOf } from './text.mjs'
 
 // The Start page (start.tsx), an introduction: a hero whose play, once, is the engine of the studio
-// on the configuration of Magma drawn pale, its text targets lowered and the ramp of its accent
+// on the configuration of Magma drawn pale, its text pinned to pale steps and the ramp of its accent
 // faded, then brought back, told by three trays around the banner it paints; the steps
 // of the work; the levels, from one colour to the whole product, each with its pages. jsdom does
 // not upgrade the Magma components: the tests read the markup the page writes.
@@ -53,16 +55,25 @@ const showHero = () => {
 }
 
 test('the demo starts under every floor of the gate and ends on the configuration of Magma', () => {
-  for (const role of TEXT_ROLES) expect(POOR_TARGETS[role]).toBeLessThan(DEFAULT_TARGETS.text[role])
-  expect(MAGMA_TARGETS).toEqual(committedConfig.theme.text)
-  expect(targetsAt(0)).toEqual(POOR_TARGETS)
-  expect(targetsAt(DEMO_STEPS)).toEqual(MAGMA_TARGETS)
-  // each step raises the targets and the contrast of the accent, never lowers one
-  for (let step = 1; step <= DEMO_STEPS; step++) {
-    for (const role of TEXT_ROLES)
-      expect(targetsAt(step)[role]).toBeGreaterThanOrEqual(targetsAt(step - 1)[role])
-    expect(rampAt(step)).toBeGreaterThan(rampAt(step - 1))
+  // the text pinned to pale steps, each under its floor on the ground of the banner (light)
+  expect(textAt(0)).toEqual(Object.fromEntries(TEXT_ROLES.map((role) => [role, { step: POOR_STEPS[role] }])))
+  const paleBase = gateReport(demoConfig(0)).themes.find((theme) => theme.base)!
+  for (const role of TEXT_ROLES) {
+    const cell = paleBase.pairs.find((pair) => pair.fg === `text-${role}` && pair.bg === 'surface-overlay')!.cells.light
+    expect(cell.achieved, role).toBeLessThan(DEFAULT_TARGETS.text[role])
   }
+  expect(MAGMA_TARGETS).toEqual(committedConfig.theme.text)
+  expect(textAt(DEMO_STEPS)).toEqual(MAGMA_TARGETS)
+  // each step moves the pins toward the steps the engine picks for Magma, never back nor past
+  // them, and raises the contrast of the accent
+  const stepOf = (step: number, role: (typeof TEXT_ROLES)[number]) => (textAt(step)[role] as { step: number }).step
+  for (let step = 1; step < DEMO_STEPS; step++) {
+    for (const role of TEXT_ROLES) {
+      expect(stepOf(step, role)).toBeLessThanOrEqual(stepOf(step - 1, role))
+      expect(stepOf(step, role)).toBeGreaterThanOrEqual(magmaSteps()[role])
+    }
+  }
+  for (let step = 1; step <= DEMO_STEPS; step++) expect(rampAt(step)).toBeGreaterThan(rampAt(step - 1))
   // the accent family, drawn from a scale of its own while it is pale
   const pale = demoConfig(0)
   const accent = pale.colors.find((color) => color.name === 'brand.maggioli')

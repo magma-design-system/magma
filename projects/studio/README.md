@@ -173,12 +173,15 @@ studio is for, the steps of the work and what each section changes, in three par
   in the code, an `mds-list`), on a band of the accent, beside a short play. A banner of a product
   (`hero.html`, an `mds-banner` of a back office with its text, its icon and its actions) in an
   iframe its own size is painted with the configuration Magma builds with, drawn pale at two
-  levels: its text targets (`theme.text`, the balances of Semantic surface) lowered under every
-  floor of the contrast gate (`POOR_TARGETS`, 45, 30, 22 and 15 against the floors 75, 75, 45 and
-  30), and the ramp of its accent family faded (`PALE_RAMP`, its contrast ratios at 0.6 of
+  levels: its text (`theme.text`, the balances of Semantic surface) pinned to pale steps of its
+  ramp under every floor of the contrast gate (`POOR_STEPS`, steps 6, 7, 8 and 9: Lc 48.5, 36.2,
+  25.0 and 15.2 on the banner against the floors 75, 75, 45 and 30; a pin and not a lowered target,
+  since the engine holds a target to its floor on the washes of its family, #1414), and the ramp of
+  its accent family faded (`PALE_RAMP`, its contrast ratios at 0.6 of
   themselves, a scale of the configuration). Three trays on the default surface come out from
   behind the banner, one at a time, with a light elastic movement: over it, the problem; under it,
-  the fix, while the targets and the ramp come back to those of Magma in eight steps; then a
+  the fix, while the pins move a step at a time to the steps the engine picks for Magma
+  (`magmaSteps`) and the ramp comes back to its own, the targets of Magma at the eighth step; then a
   smaller tray that says the issues are fixed, with **Replay**. The fix shows three indicators,
   Texts, Icons and Actions, each the pair of the gate that holds what the banner paints (`CHECKS`,
   the source of each beside it), and an `mds-progress` of the pairs brought back over their floor
