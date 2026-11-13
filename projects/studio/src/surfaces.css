@@ -410,3 +410,13 @@
   color: rgb(var(--magma-text-muted));
   text-align: end;
 }
+
+/* beside a text target, the floor the contrast gate holds the role to, and a mark when the target
+   stands under it (#1418) */
+
+.surfaces-floor {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--spacing) * 100);
+}

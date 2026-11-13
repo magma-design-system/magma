@@ -219,6 +219,47 @@ export const gateVerdict = (
   choices: ThemeChoices = NO_THEME_CHOICES,
 ): GateVerdict => gateReport(config, choices).verdict;
 
+/**
+ * The pairs that fail the gate, one entry per pair and mode over the themes it fails in: what a page
+ * that tunes the balances lists beside its controls (gate-summary.tsx, #1418). A retune moves the
+ * same pair in every theme that paints it, so one line per theme would repeat it (15 lines for 5
+ * pairs on the surfaces of 2026-11-13). Light before dark, then in the order of the report.
+ */
+export interface GateFailureGroup {
+  fg: string;
+  bg: string;
+  mode: Mode;
+  metric: Metric;
+  /** The themes the pair fails in, in the order of the report. */
+  themes: string[];
+  /** The lowest contrast the pair reaches over those themes. */
+  worst: number;
+  target: number;
+}
+
+export const gateFailureGroups = (report: GateReport): GateFailureGroup[] => {
+  const groups = new Map<string, GateFailureGroup>();
+  for (const { theme, cell } of gateFailures(report)) {
+    const key = `${cell.fgToken}|${cell.bgToken}|${cell.mode}`;
+    const group = groups.get(key);
+    if (group) {
+      if (!group.themes.includes(theme)) group.themes.push(theme);
+      group.worst = Math.min(group.worst, cell.achieved);
+    } else {
+      groups.set(key, {
+        fg: cell.fgToken,
+        bg: cell.bgToken,
+        mode: cell.mode,
+        metric: cell.metric,
+        themes: [theme],
+        worst: cell.achieved,
+        target: cell.target,
+      });
+    }
+  }
+  return MODES.flatMap((mode) => [...groups.values()].filter((group) => group.mode === mode));
+};
+
 /** Every pair that fails the gate, theme by theme, light before dark. */
 export const gateFailures = (report: GateReport): GateFailure[] =>
   report.themes.flatMap((theme) =>

@@ -184,4 +184,9 @@ export const IT_SCALES: Record<string, string> = {
   '{ratio}:1 on the surface below is under the {floor}:1 floor for a border that conveys state (WCAG 1.4.11)':
     '{ratio}:1 sulla superficie sottostante è sotto la soglia di {floor}:1 per un bordo che comunica uno stato (WCAG 1.4.11)',
   'under {ratio}:1': 'sotto {ratio}:1',
+  // the floor of the gate beside a text target (surfaces.tsx, #1418)
+  'floor {floor}': 'soglia {floor}',
+  'under the floor': 'sotto la soglia',
+  'The contrast gate holds this text to Lc {floor}, on the surfaces and on the washes that carry it.':
+    'La verifica del contrasto tiene questo testo a Lc {floor}, sulle superfici e sui fondi che lo portano.',
 };

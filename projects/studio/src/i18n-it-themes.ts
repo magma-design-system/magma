@@ -1,5 +1,6 @@
 /*
-  The Italian of Themes, Groups and Contrast check (themes.tsx, groups.tsx, contrast.tsx) (#1336), a part of the catalogue of the studio (i18n-it.ts): the English
+  The Italian of Themes, Groups and Contrast check (themes.tsx, groups.tsx, contrast.tsx, and the
+  summary of the gate, gate-summary.tsx) (#1336), a part of the catalogue of the studio (i18n-it.ts): the English
   text it translates is the key, and a key lives in one part only (test/i18n.test.mts).
 */
 export const IT_THEMES: Record<string, string> = {
@@ -116,4 +117,10 @@ export const IT_THEMES: Record<string, string> = {
     '{theme}, {mode}: {fg} su {bg}, {achieved} sotto {target}',
   'and {count} more': 'e ancora {count}',
   'See every pair': 'Vedi tutte le coppie',
+  // the verdict of the gate beside the controls of the balances (gate-summary.tsx, #1418)
+  'Contrast gate': 'Verifica del contrasto',
+  '{fg} on {bg}, {mode}: {achieved} under {target}':
+    '{fg} su {bg}, {mode}: {achieved} sotto {target}',
+  'in {count} theme': 'in {count} tema',
+  'in {count} themes': 'in {count} temi',
 };

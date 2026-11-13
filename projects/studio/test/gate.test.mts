@@ -5,7 +5,7 @@ import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/
 import { createColorTokens } from '@maggioli-design-system/design-tokens/src/lib/color.mjs'
 import { gatePairs, type ColorTree, type PairResult } from '@maggioli-design-system/design-tokens/src/lib/contrast-gate.js'
 import { semantic } from '@maggioli-design-system/design-tokens/semantic.config'
-import { gateFailures, gateReport, gateVerdict, type GateTheme } from '../src/gate.js'
+import { gateFailureGroups, gateFailures, gateReport, gateVerdict, type GateTheme } from '../src/gate.js'
 import { NO_THEME_CHOICES, type ThemeChoices } from '../src/theme-choices.js'
 
 // The studio runs the contrast gate of design-tokens on the configuration it edits (#698): the
@@ -137,4 +137,30 @@ test('a configuration whose base family has no surface is not measured, and says
   const report = gateReport(bare)
   expect(report.verdict).toEqual({ state: 'error', message: expect.stringContaining('neutral') })
   expect(report.themes).toEqual([])
+})
+
+test('the pairs below target are grouped by pair and mode over the themes they fail in', () => {
+  // the text pinned to the least contrasting step of each ramp fails in every theme and mode
+  const pale = config()
+  pale.theme!.text = { default: { step: 10 }, muted: { step: 10 }, subtle: { step: 10 }, disabled: { step: 10 } }
+  const report = gateReport(pale)
+  const failures = gateFailures(report)
+  const groups = gateFailureGroups(report)
+  // every failure in one group, each pair and mode once, fewer lines than failures
+  expect(groups.reduce((sum, group) => sum + group.themes.length, 0)).toBe(failures.length)
+  expect(new Set(groups.map((group) => `${group.fg}|${group.bg}|${group.mode}`)).size).toBe(groups.length)
+  expect(groups.length).toBeLessThan(failures.length)
+  // light before dark
+  const modes = groups.map((group) => group.mode)
+  expect(modes.lastIndexOf('light')).toBeLessThan(modes.indexOf('dark'))
+  for (const group of groups) {
+    const cells = failures.filter(
+      ({ cell }) => cell.fgToken === group.fg && cell.bgToken === group.bg && cell.mode === group.mode,
+    )
+    expect(group.themes).toEqual([...new Set(cells.map(({ theme }) => theme))])
+    expect(group.worst).toBe(Math.min(...cells.map(({ cell }) => cell.achieved)))
+    expect(group.worst).toBeLessThan(group.target)
+  }
+  // a configuration that passes has nothing to list
+  expect(gateFailureGroups(gateReport(config()))).toEqual([])
 })
