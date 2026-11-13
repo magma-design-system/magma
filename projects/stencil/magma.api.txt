@@ -1026,6 +1026,7 @@ mds-link css --mds-link-underline-color INTERNAL
 mds-link css --mds-link-underline-offset INTERNAL
 mds-link css --mds-link-underline-thickness INTERNAL
 mds-list encapsulation shadow
+mds-list prop marker (attr marker) [reflect]: "dot" | "none" = 'dot'
 mds-list slot (default)
 mds-list-item encapsulation shadow
 mds-list-item prop icon (attr icon): string | undefined
@@ -1815,6 +1816,7 @@ type KeyboardKeyName = "option" | "b" | "i" | "p" | "q" | "s" | "u" | "a" | "1" 
 type KeyboardTest = 'pass' | 'fail';
 type LinkUnderlineType = "marker" | "solid" | "dotted"
 type LinkVariantType = "primary" | "inherit"
+type ListMarkerType = "none" | "dot"
 type LoadingType = "eager" | "lazy"
 interface MdsAccordionEventDetail { children: NodeListOf<HTMLMdsAccordionItemElement>; selected: string; }
 interface MdsAccordionItemEventDetail { id: string; selected: boolean; }

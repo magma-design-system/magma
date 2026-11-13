@@ -185,8 +185,8 @@ Parts (e.g. `mds-table-cell`, `mds-card-header`) always compose inside their par
 
 | Component                       | Native analogue | Intent                                                                            |
 | ------------------------------- | --------------- | --------------------------------------------------------------------------------- |
-| `mds-list`                      | `<ul>` / `<ol>` | Vertical list container.                                                          |
-| `mds-list-item`                 | `<li>`          | Single row inside `mds-list`.                                                     |
+| `mds-list`                      | `<ul>` / `<ol>` | List of text items after a marker, or of links, cards, chips (`marker="none"`).   |
+| `mds-list-item`                 | `<li>`          | Single item inside `mds-list`: a text after its marker, or any content.           |
 | `mds-table`                     | `<table>`       | Tabular data container.                                                           |
 | `mds-table-header`              | `<thead>`       | Header section of `mds-table`.                                                    |
 | `mds-table-header-cell`         | `<th>`          | Header cell inside `mds-table-header`.                                            |
