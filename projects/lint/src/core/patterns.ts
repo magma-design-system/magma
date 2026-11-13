@@ -1134,7 +1134,7 @@ const takesBare = (tag: string, name: string, components: Map<string, ComponentI
  * What a use of a pattern or a block of Magma writes wrong (#1396): every entry of a case has
  * its role, and every attribute is written as its kind asks (attributeKind). A product's own
  * pattern and a domain of the design language are not held to it: their use stays
- * `tag attribute=value`.
+ * `tag attribute=value` (for the domains, until #1406 decides theirs).
  */
 export const magmaUseErrors = (
   pattern: Pattern,
@@ -1353,7 +1353,7 @@ const placeholderErrors = (
  * part named by one of them, a required region shown; a region that is not required shows when
  * there is something to put in it, and its entries name alternatives (the actions), so neither
  * their presence nor their order is asked. The patterns and the blocks of Magma only, never a
- * domain (their use names what a relation writes). `parse` gives the markup as MarkupNode.
+ * domain (their use names what a relation writes; #1406). `parse` gives the markup as MarkupNode.
  */
 export const previewUseErrors = (
   patterns: Pattern[],

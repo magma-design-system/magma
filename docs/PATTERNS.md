@@ -106,7 +106,7 @@ the maintainer's choice on #1396 (2026-11-13); the criterion is beside `attribut
 Two parts of one kind (the rows of a list) are one entry, unless they play two roles. A building
 block gives no role: its regions are its parts (`what`), and their `use` stays a list of
 `tag attribute=value`, with the same kinds. A product's own pattern, and a domain of the design
-language until its own issue, may give the bare `use` of before, `mds-tag attribute=value` (a
+language until #1406 decides theirs, may give the bare `use` of before, `mds-tag attribute=value` (a
 bare attribute a boolean, or a value of the application's).
 
 The body has the sections of the template, in this order: When to use it, What decides it,
