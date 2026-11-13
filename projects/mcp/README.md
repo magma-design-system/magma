@@ -170,6 +170,15 @@ answer comes from".
   (`@maggioli-design-system/magma/dist/mcp/cli.js`, `BIN_FILE` of `src/root.ts`, held to the
   `bin` of magma by `test/shipped.test.ts`), which a client running node on the installed copy
   names.
+- **The sources `check_setup` reads** (where the icon path is set, `sourceFiles` of
+  `src/checks.ts`): the files of the project's root, where Vite starts from `index.html` and a
+  page served as it is keeps its HTML, and its source folders `src` (Vite, Angular CLI),
+  `app` and `pages` (the routers of Next.js) and `components`. A project with none of them
+  keeps its code in its root, as a page without a bundler does (the "Without a bundler" route
+  of `agents/web-components.md`): then the whole root is read (#1389). Never a folder no
+  project writes its code in (`node_modules`, `dist`, `build`, `www`, `coverage`, a hidden
+  folder such as `.next`, `.storybook` or the worktrees of `.claude`), nor a link, which points
+  at code kept elsewhere (a package served from `node_modules` has a `setSvgPath()` of its own).
 - **Token values** (`list_tokens`, `explain_class`): the value is what the CSS writes. Where the
   package records a `cssValue` (the CSS writes the quantity differently from the JSON:
   `em` letter spacing, ratios, elevations on `--depth`, design-tokens README, "Token data")

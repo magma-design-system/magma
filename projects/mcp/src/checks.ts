@@ -275,21 +275,45 @@ interface Check {
   guide: string;
 }
 
-/** The files of the project that may name a configuration or a setting: its sources, a few thousand at most. */
+/**
+ * The folders a project keeps its code in: `src` (Vite, Angular CLI, and Next.js when it keeps
+ * its routers there), `app` and `pages` (the App Router and the Pages Router of Next.js),
+ * `components`.
+ */
+const SOURCE_FOLDERS = ['src', 'app', 'pages', 'components'];
+
+/**
+ * The folders no project writes its code in: what a tool installs or builds, and a hidden
+ * folder, the configuration or the cache of a tool (`.git`, `.next`, `.angular`, `.storybook`,
+ * the worktrees an agent keeps in `.claude`, copies of the sources).
+ */
+const NOT_SOURCES = /^(\..*|node_modules|dist|build|www|coverage)$/;
+
+/**
+ * The files of the project that may name a configuration or a setting, a few thousand at most:
+ * the files of its root (the `index.html` Vite starts from, and a page served as it is) and its
+ * source folders; when it has none of them, its root is its source folder, as a page without a
+ * bundler keeps its scripts next to its package.json (#1389). A link is not followed: it points
+ * at code kept elsewhere, as a package served from node_modules, whose own setSvgPath() is not
+ * the project's.
+ */
 const sourceFiles = (root: string, limit = 3000): string[] => {
   const found: string[] = [];
-  const walk = (dir: string) => {
-    for (const name of readdirSync(dir)) {
+  const walk = (dir: string, deep: boolean) => {
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
       if (found.length >= limit) return;
-      if (/^(node_modules|dist|build|www|coverage|\.git|\.next|\.angular)$/.test(name)) continue;
-      const full = path.join(dir, name);
-      const stat = statSync(full);
-      if (stat.isDirectory()) walk(full);
-      else if (/\.(m?[jt]sx?|html|vue|svelte|astro)$/.test(name)) found.push(full);
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        if (deep && !NOT_SOURCES.test(entry.name)) walk(full, true);
+      } else if (entry.isFile() && /\.(m?[jt]sx?|html|vue|svelte|astro)$/.test(entry.name))
+        found.push(full);
     }
   };
-  for (const dir of ['src', 'app', 'pages', 'components'])
-    if (existsSync(path.join(root, dir))) walk(path.join(root, dir));
+  const folders = SOURCE_FOLDERS.map((name) => path.join(root, name)).filter((dir) =>
+    statSync(dir, { throwIfNoEntry: false })?.isDirectory(),
+  );
+  walk(root, !folders.length);
+  for (const dir of folders) walk(dir, true);
   return found;
 };
 
