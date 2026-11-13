@@ -170,7 +170,7 @@ function Reading({ reading }: { reading: DemoReading }) {
 function Hero() {
   const frame = useRef<HTMLIFrameElement>(null);
   const stage = useRef<HTMLElement>(null);
-  const replayButton = useRef<HTMLElement>(null);
+  const replayButton = useRef<HTMLMdsButtonElement>(null);
   const replayed = useRef(false);
   const [loaded, setLoaded] = useState(0);
   const [painted, setPainted] = useState(false);

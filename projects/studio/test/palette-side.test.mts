@@ -1,6 +1,6 @@
-// @vitest-environment jsdom
 import { afterEach, beforeEach, expect, test, vi } from 'vitest'
 import { h, render } from 'preact'
+import { within } from '@testing-library/preact'
 
 import initialConfig from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json'
 import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs'
@@ -24,21 +24,28 @@ afterEach(() => {
   resetThemeChoices()
 })
 
+// the ramps the Palette hands to the side, a stand-in the test finds by its text
+const RAMPS = 'the ramps of the family'
 const show = (family: string) =>
-  render(h(PaletteSide, { config, family, ramps: h('div', { class: 'palette-ramps' }) }), root)
-const filters = () => [...root.querySelectorAll('.palette-side-head mds-tab')]
+  render(h(PaletteSide, { config, family, ramps: h('p', null, RAMPS) }), root)
+/** The side, a complementary region named for what it shows. */
+const side = () => within(root).getByRole('complementary', { name: 'The family, as ramps or as a theme' })
+/** The filters of the side: the tabs of Magma in its toolbar, what it shows and in which mode. */
+const filters = () => [
+  ...within(side()).getByRole('toolbar', { name: 'The side of the Palette' }).querySelectorAll('mds-tab'),
+]
 const choose = (filter: Element, value: string) =>
   filter.dispatchEvent(new CustomEvent('mdsTabChange', { detail: { id: 0, value }, bubbles: true }))
 
 test('the side shows the ramps first, the theme in a frame on request, and remembers it', async () => {
   show('tone.neutral')
-  expect(root.querySelector('.palette-ramps')).not.toBeNull()
+  expect(within(side()).queryByText(RAMPS)).not.toBeNull()
   expect(root.querySelector('iframe')).toBeNull()
-  expect(root.querySelector('.palette-side')?.getAttribute('data-show')).toBe('ramps')
+  expect(side().getAttribute('data-show')).toBe('ramps')
 
   choose(filters()[0], 'theme')
   const frame = await vi.waitFor(() => {
-    const found = root.querySelector('iframe.palette-side-frame')
+    const found = side().querySelector('iframe')
     if (!found) throw new Error('no frame yet')
     return found
   })
@@ -80,11 +87,13 @@ test('a theme of one mode is seen in that mode only', async () => {
 test('the side says what the family paints, and the elements the page puts first', async () => {
   localStorage.setItem('magma-studio:palette-side', 'theme')
   show('status.error')
+  // the line under the filters, a paragraph of the side
   await vi.waitFor(() =>
-    expect(root.querySelector('.palette-side-note')?.textContent).toBe(
+    expect(
       // jsdom loads no scene: no element of it is marked
-      'error paints the variant error, which no element of the page takes.',
-    ),
+      within(side()).getByText('error paints the variant error, which no element of the page takes.')
+        .getAttribute('tag'),
+    ).toBe('p'),
   )
   const painted = (family: string) =>
     paintedBy(family, { config, themes: sceneStyle(config)!.themes })
@@ -112,9 +121,13 @@ test('the side says what the family paints, and the elements the page puts first
 test('a family that paints nothing says so instead of a page that would not move', async () => {
   localStorage.setItem('magma-studio:palette-side', 'theme')
   show('brand.rnd')
-  await vi.waitFor(() => expect(root.querySelector('.palette-side-none')).not.toBeNull())
-  expect(root.querySelector('.palette-side-none')?.textContent?.replace(/\s+/g, ' ').trim()).toBe(
-    'brand.rnd paints no component of Magma: no variant of a component takes it, no theme points an accent at it and no theme is drawn from it.',
+  // the text matcher reads the line with its white space collapsed
+  await vi.waitFor(() =>
+    expect(
+      within(side()).getByText(
+        'brand.rnd paints no component of Magma: no variant of a component takes it, no theme points an accent at it and no theme is drawn from it.',
+      ).getAttribute('tag'),
+    ).toBe('p'),
   )
   expect(root.querySelector('iframe')).toBeNull()
   // no mode to choose for a page that is not there

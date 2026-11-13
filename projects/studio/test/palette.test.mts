@@ -1,6 +1,6 @@
-// @vitest-environment jsdom
 import { afterEach, beforeEach, expect, test, vi } from 'vitest'
 import { h, render } from 'preact'
+import { within } from '@testing-library/preact'
 
 import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs'
 import { App } from '../src/app.js'
@@ -50,6 +50,27 @@ const emit = (el: Element, type: string, detail?: unknown) =>
 
 const heading = () => root.querySelector('#palette-color-title')?.textContent?.trim()
 
+/** The list of the families: the complementary region of the page named so. */
+const list = () => within(root).getByRole('complementary', { name: 'The families of colour' })
+/** The button that folds the list where it stands above the page: the one that controls it. */
+const toggle = () => root.querySelector<HTMLElement>('mds-button[aria-controls="palette-list"]')
+/** The settings of the family shown: the region its title names. */
+const colorSection = () => within(root).getByRole('region', { name: heading() })
+/** The settings of the whole configuration: the details of Magma titled Global settings. */
+const globalSettings = () =>
+  [...root.querySelectorAll('mds-details')].find(
+    (details) => details.querySelector('mds-text[slot="title"]')?.textContent?.trim() === 'Global settings',
+  )!
+/** A group of fields of the form in the scope, by its name: the legend of a fieldset. */
+const fieldGroup = (scope: Element, name: string) =>
+  within(scope as HTMLElement).getByRole('group', { name })
+/** The hue shifting of the family shown, a group of its settings. */
+const familyHueShift = () => fieldGroup(colorSection(), 'Hue shifting')
+/** The banner of a reference that says where its hue shifting is set, a region of its own. */
+const referenceNote = () => within(root).getByRole('region', { name: 'Hue shifting' })
+/** The head of the page: the header that holds its title, the h1. */
+const pageHead = () => root.querySelector('mds-text[tag="h1"]')?.closest('header')
+
 /** The field of Magma labelled so, inside the scope. */
 function field (label: string, scope: ParentNode = root): Element {
   const found = [...scope.querySelectorAll('mds-input-field')].find(
@@ -61,7 +82,7 @@ function field (label: string, scope: ParentNode = root): Element {
 
 /** The button of a family in the list, by its name in the group. */
 function item (name: string): HTMLElement {
-  const found = root.querySelector<HTMLElement>(`.palette-list mds-button[label="${name}"]`)
+  const found = list().querySelector<HTMLElement>(`mds-button[label="${name}"]`)
   if (!found) throw new Error(`no family ${name} in the list`)
   return found
 }
@@ -73,8 +94,8 @@ const switchLabelled = (label: string, scope: ParentNode) =>
   [...scope.querySelectorAll('mds-input-switch')].find((one) => one.textContent?.trim() === label)!
 
 test('the list marks the family shown and opens another one', async () => {
-  // the variants first, at the top of the list
-  expect(root.querySelector('.palette-list-group > mds-text')?.textContent?.trim()).toBe('variant')
+  // the variants first, at the top of the list: the first heading of its groups
+  expect(list().querySelector('mds-text[tag="h2"]')?.textContent?.trim()).toBe('variant')
   // a family is a button of Magma, its swatch the icon
   expect(item('neutral').getAttribute('icon')).toBe('mdi/circle')
   expect(item('neutral').getAttribute('tone')).toBe('weak')
@@ -93,59 +114,69 @@ test('the list marks the family shown and opens another one', async () => {
 })
 
 test('where the list stands above the page, its bar names the family shown and folds the list', async () => {
-  // the bar is drawn only where the list stands above the page (palette.css, measured in a real
-  // browser by site.test.mts): here its state, which the sheet follows
-  const bar = root.querySelector<HTMLElement>('.palette-list-bar > mds-button')!
-  const list = root.querySelector('.palette-list')!
-  const open = () => list.classList.contains('palette-list-open')
+  // the bar is drawn only where the list stands above the page, and the list unfolds under it
+  // (palette.css, measured in a real browser by site.test.mts): here the state the sheet follows,
+  // which the button that controls the list declares with aria-expanded
+  const bar = toggle()!
+  const open = () => bar.getAttribute('aria-expanded')
   expect(bar.getAttribute('label')).toBe('tone.neutral')
-  expect(bar.getAttribute('aria-controls')).toBe(list.id)
-  expect(bar.getAttribute('aria-expanded')).toBe('false')
+  expect(bar.getAttribute('aria-controls')).toBe(list().id)
+  expect(open()).toBe('false')
   expect(bar.getAttribute('icon')).toBe('mi/baseline/expand-more')
-  expect(open()).toBe(false)
 
   bar.click()
-  await vi.waitFor(() => expect(bar.getAttribute('aria-expanded')).toBe('true'))
+  await vi.waitFor(() => expect(open()).toBe('true'))
   expect(bar.getAttribute('icon')).toBe('mi/baseline/expand-less')
-  expect(open()).toBe(true)
 
   // choosing a family shows it and folds the list again
   item('info').click()
   await vi.waitFor(() => expect(heading()).toBe('status.info'))
   expect(bar.getAttribute('label')).toBe('status.info')
-  expect(bar.getAttribute('aria-expanded')).toBe('false')
-  expect(open()).toBe(false)
+  expect(open()).toBe('false')
 
   // the bar alone folds it too, the family unchanged
   bar.click()
-  await vi.waitFor(() => expect(open()).toBe(true))
+  await vi.waitFor(() => expect(open()).toBe('true'))
   bar.click()
-  await vi.waitFor(() => expect(open()).toBe(false))
+  await vi.waitFor(() => expect(open()).toBe('false'))
   expect(heading()).toBe('status.info')
 })
 
 test('the pages on the whole configuration have neither the list nor its bar', async () => {
   render(h(App, { view: 'surface', onConfig: (config: MagmaConfig) => configs.push(config) }), root)
-  await vi.waitFor(() => expect(root.querySelector('.layout.no-sidebar')).not.toBeNull())
-  expect(root.querySelector('.palette-list')).toBeNull()
-  expect(root.querySelector('.palette-list-bar')).toBeNull()
+  await vi.waitFor(() => expect(pageHead()?.textContent).toContain('Semantic surface'))
+  expect(within(root).queryByRole('complementary', { name: 'The families of colour' })).toBeNull()
+  expect(toggle()).toBeNull()
 })
 
 // Semantic surface starts its first column with the head of the page, so the opt-in of the
 // surfaces can stand beside it on a wide page (surfaces.css); the other pages keep it first in
 // the region that scrolls
 test('the head of Semantic surface leads its first column, beside the opt-in; elsewhere it heads the region', async () => {
-  // the Palette of beforeEach: the head is a child of the region
-  expect(root.querySelectorAll('.studio-page-head')).toHaveLength(1)
-  expect(root.querySelector('.studio-page-head')?.parentElement?.classList.contains('content')).toBe(true)
+  // the Palette of beforeEach: the head is a child of the region, the main of the page
+  expect(root.querySelectorAll('header')).toHaveLength(1)
+  expect(pageHead()?.parentElement?.localName).toBe('main')
   render(h(App, { view: 'surface', onConfig: (config: MagmaConfig) => configs.push(config) }), root)
-  await vi.waitFor(() => expect(root.querySelector('.surfaces-lead .studio-page-head')).not.toBeNull())
-  expect(root.querySelectorAll('.studio-page-head')).toHaveLength(1)
-  const top = root.querySelector('.surfaces-top')!
-  expect([...top.children].map((one) => one.className)).toEqual(['surfaces-lead', 'surfaces-optin'])
-  expect(top.querySelectorAll('.surfaces-optin > .surfaces-card')).toHaveLength(2)
+  await vi.waitFor(() => expect(pageHead()?.textContent).toContain('Semantic surface'))
+  expect(root.querySelectorAll('header')).toHaveLength(1)
+  // the head leads the first column, still in the region; the opt-in is the second column, its
+  // two cards the surface groups and the surface families, and nothing else stands beside them
+  const head = pageHead()!
+  expect(head.closest('main')).not.toBeNull()
+  const lead = head.parentElement!
+  expect(lead.localName).not.toBe('main')
+  const top = lead.parentElement!
+  expect(top.children).toHaveLength(2)
+  expect(top.children[0]).toBe(lead)
+  const optin = top.children[1]
+  expect(optin.children).toHaveLength(2)
+  expect([...optin.children].map((card) => card.querySelector('mds-text[tag="h2"]')?.textContent?.trim())).toEqual([
+    'Surface groups',
+    'Surface families',
+  ])
   // Reset stays with the head
-  expect(root.querySelector('.surfaces-lead #studio-reset')).not.toBeNull()
+  expect(lead.querySelector('#studio-reset')).not.toBeNull()
+  expect(head.contains(root.querySelector('#studio-reset'))).toBe(true)
 })
 
 test('a name is handed over when the person leaves the field or presses Enter, not at every key', async () => {
@@ -213,7 +244,7 @@ test('the base colour follows its colour field, which hands back colours only', 
 })
 
 test('Smooth switches the colour, and the one of the global settings the configuration', async () => {
-  emit(switchLabelled('Smooth', root.querySelector('.palette-color')!), 'mdsInputSwitchChange', {
+  emit(switchLabelled('Smooth', colorSection()), 'mdsInputSwitchChange', {
     name: '',
     checked: true,
     value: '',
@@ -223,19 +254,15 @@ test('Smooth switches the colour, and the one of the global settings the configu
 
   // the global settings start closed: the page opens on the family, not on the settings of all;
   // their hue shifting says it is the global one, apart from the one of the family
-  expect(root.querySelector('.palette-global')?.hasAttribute('opened')).toBe(false)
+  expect(globalSettings().hasAttribute('opened')).toBe(false)
   // a separator sets them apart from the settings of the family
-  expect(root.querySelector('.palette-global')?.previousElementSibling?.localName).toBe(
-    'mds-separator',
-  )
-  expect(
-    root.querySelector('.palette-global .palette-group legend')?.textContent?.trim(),
-  ).toBe('Global hue shifting')
-  expect(root.querySelector('.palette-color .palette-group legend')?.textContent?.trim()).toBe(
-    'Hue shifting',
-  )
+  expect(globalSettings().previousElementSibling?.localName).toBe('mds-separator')
+  // a group of fields each, named by its legend
+  expect(fieldGroup(globalSettings(), 'Global hue shifting').querySelector('legend')).not.toBeNull()
+  expect(fieldGroup(colorSection(), 'Hue shifting').querySelector('legend')).not.toBeNull()
+  expect(within(colorSection()).queryByRole('group', { name: 'Global hue shifting' })).toBeNull()
 
-  emit(switchLabelled('Smooth', root.querySelector('.palette-global')!), 'mdsInputSwitchChange', {
+  emit(switchLabelled('Smooth', globalSettings()), 'mdsInputSwitchChange', {
     name: '',
     checked: true,
     value: '',
@@ -244,7 +271,7 @@ test('Smooth switches the colour, and the one of the global settings the configu
 })
 
 test('a custom hue shift shows its sliders and writes what they give', async () => {
-  const group = root.querySelector('.palette-color .palette-group')!
+  const group = familyHueShift()
   expect(group.querySelectorAll('mds-input-range')).toHaveLength(0)
   emit(field('Mode', group).querySelector('mds-input-select')!, 'mdsInputSelectChange', {
     value: 'custom',
@@ -255,7 +282,8 @@ test('a custom hue shift shows its sliders and writes what they give', async () 
     expect(color('tone.neutral')?.hueShift).toEqual({ dark: -18, light: 18, curve: 'smooth' }),
   )
   await vi.waitFor(() => expect(group.querySelectorAll('mds-input-range')).toHaveLength(2))
-  expect(group.querySelector('.palette-weights')).not.toBeNull()
+  // and the intensity of the shift per step, drawn
+  expect(within(group).queryByRole('img', { name: 'Shift intensity per step (10-step scale)' })).not.toBeNull()
 
   emit(field('Dark (degrees)', group).querySelector('mds-input-range')!, 'mdsInputRangeChange', -30)
   await vi.waitFor(() => expect(color('tone.neutral')?.hueShift?.dark).toBe(-30))
@@ -270,19 +298,19 @@ test('a hue shift of its own over a global one shows hs+, an inherited one hs', 
     })
 
   // the global hue shift: every family inherits it
-  custom(root.querySelector('.palette-global')!)
+  custom(globalSettings())
   await vi.waitFor(() => expect(latest().hueShift).toBeDefined())
   await vi.waitFor(() => expect(badge('info')).toBe('hs'))
 
   // a hue shift of its own on top of it
-  custom(root.querySelector('.palette-color .palette-group')!)
+  custom(familyHueShift())
   await vi.waitFor(() => expect(badge('neutral')).toBe('hs+'))
   expect(item('neutral').getAttribute('title')).toBe('hue shifting of its own, over the global one')
   expect(badge('info')).toBe('hs')
 })
 
 test('a custom curve starts with no dead zone and a linear ramp, and offers every easing', async () => {
-  const group = root.querySelector('.palette-color .palette-group')!
+  const group = familyHueShift()
   emit(field('Mode', group).querySelector('mds-input-select')!, 'mdsInputSelectChange', {
     value: 'custom',
     values: ['custom'],
@@ -309,14 +337,15 @@ test('a custom curve starts with no dead zone and a linear ramp, and offers ever
 })
 
 test('the ends of a custom hue shift move on their own, mirrored or linked', async () => {
-  const group = root.querySelector('.palette-color .palette-group')!
+  const group = familyHueShift()
   emit(field('Mode', group).querySelector('mds-input-select')!, 'mdsInputSelectChange', {
     value: 'custom',
     values: ['custom'],
   })
   await vi.waitFor(() => expect(group.querySelectorAll('mds-input-range')).toHaveLength(2))
   // the link sits in the head of the box of the two ends, named Ends
-  const link = () => group.querySelector('.palette-ends mds-input-select[aria-label="Ends"]')!
+  const link = () =>
+    within(group).getByRole('group', { name: 'The two ends' }).querySelector('mds-input-select[aria-label="Ends"]')!
   const ends = (value: string) =>
     emit(link(), 'mdsInputSelectChange', {
       value,
@@ -351,7 +380,7 @@ test('a reference says its hue shifting is the one of its source, and opens it',
   item('primary').click()
   await vi.waitFor(() => expect(heading()).toBe('variant.primary'))
   const source = color('variant.primary')!.alias!
-  const note = root.querySelector('.palette-group-note')!
+  const note = referenceNote()
   expect(note.querySelector('mds-banner')?.getAttribute('variant')).toBe('info')
 
   magmaButton(`Open ${source}`, note)!.click()
@@ -372,7 +401,7 @@ test('the source opens with the focus on its hue shifting even while the effects
   await Promise.resolve()
   expect(heading()).toBe('variant.primary')
   const source = color('variant.primary')!.alias!
-  magmaButton(`Open ${source}`, root.querySelector('.palette-group-note')!)!.click()
+  magmaButton(`Open ${source}`, referenceNote())!.click()
   await vi.waitFor(() => expect(heading()).toBe(source))
   await vi.waitFor(() =>
     expect(document.activeElement).toBe(root.querySelector('#palette-hue-shift')),
@@ -413,7 +442,7 @@ test('the menu of the colour duplicates it and deletes it', async () => {
 })
 
 test('a new colour is named after the colour picked until the person types a name', async () => {
-  magmaButton('Add color', root.querySelector('.palette-list')!)!.click()
+  magmaButton('Add color', list())!.click()
   const modal = await vi.waitFor(() => {
     const found = root.querySelector('mds-modal')
     if (!found) throw new Error('no dialog yet')
@@ -453,7 +482,7 @@ test('a new colour is named after the colour picked until the person types a nam
 })
 
 test('choosing a reference in the dialog makes a reference in the variant group', async () => {
-  magmaButton('Add color', root.querySelector('.palette-list')!)!.click()
+  magmaButton('Add color', list())!.click()
   const modal = await vi.waitFor(() => {
     const found = root.querySelector('mds-modal')
     if (!found) throw new Error('no dialog yet')
@@ -493,7 +522,7 @@ test('choosing a reference in the dialog makes a reference in the variant group'
 
 test('the head of a page keeps Reset in view; the Config menu brings the configuration in and takes it out', async () => {
   // nothing that imports or exports is left in the head, and no menu for one action
-  const head = root.querySelector('.studio-page-actions')!
+  const head = pageHead()!
   expect(head.querySelector('mds-button-dropdown')).toBeNull()
   expect([...head.querySelectorAll('mds-button')].map((one) => one.getAttribute('label'))).toEqual([
     'Reset',
@@ -554,7 +583,7 @@ test('Reset, in view, takes the configuration back to the one Magma builds with 
 })
 
 test('a page of Colors opens at its top, not at the scroll the page before it left', async () => {
-  const main = root.querySelector('main.content')!
+  const main = root.querySelector('main')!
   const set: number[] = []
   Object.defineProperty(main, 'scrollTop', { configurable: true, get: () => 0, set: (top: number) => set.push(top) })
   render(h(App, { view: 'scales', onConfig: (config: MagmaConfig) => configs.push(config) }), root)

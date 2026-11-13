@@ -5,7 +5,8 @@ import { options } from 'preact'
 // before the fallback fires leaves it to run once jsdom is torn down, where cancelAnimationFrame
 // no longer exists: an unhandled ReferenceError fails the run with every test green (seen in CI
 // on draft.test.mts). A task of the event loop needs no global of the environment and still
-// runs the effects after the render, so every file of the studio schedules them with one.
+// runs the effects after the render, so every file of the jsdom project schedules them with one
+// (vite.config.ts); the browser project keeps the frames of Chromium.
 options.requestAnimationFrame = (callback) => {
   setTimeout(callback)
 }

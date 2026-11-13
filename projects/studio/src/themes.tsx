@@ -335,8 +335,10 @@ export function ThemesManager({
       )}
 
       {/* Preview: default + derived themes, one under the other, each a row of its settings and
-          its two modes where the page has room (vittorio, 2026-11-07) */}
-      <div class="themes-list">
+          its two modes where the page has room (vittorio, 2026-11-07). The themes are a list, the
+          base first, each card an item of it (ThemeCard): the roles tell it to assistive
+          technologies, the look stays the one of the classes */}
+      <div class="themes-list" role="list">
         {previewFamilies.map((family) => (
           <ThemeCard
             family={family}
@@ -464,7 +466,8 @@ function ThemeCard({
   // role defaults to (so a theme can repoint an accent to e.g. variant-secondary).
   const variantFamilies = Object.keys(variants).map((k) => `variant-${k}`);
   return (
-    <div class="themes-card">
+    // an item of the list of the themes (ThemesManager)
+    <div class="themes-card" role="listitem">
       {/* what the theme is and its settings, the first column of its row */}
       <div class="themes-info">
         <div class="themes-head">

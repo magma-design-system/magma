@@ -1,3 +1,4 @@
+import type { JSX } from 'preact';
 import { useMemo } from 'preact/hooks';
 import chroma from 'chroma-js';
 import initialConfigJson from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json';
@@ -112,7 +113,7 @@ function DiffRow({ label, cells }: { label: string; cells: DiffCell[] }) {
 
 // the badge of a colour: how far it moved when it changed, a diff's own colours when it is new or
 // gone (added green, removed red, changed amber)
-const BADGE_VARIANT: Record<ColorDiff['status'], string> = {
+const BADGE_VARIANT: Record<ColorDiff['status'], JSX.IntrinsicElements['mds-badge']['variant']> = {
   changed: 'warning',
   new: 'success',
   removed: 'error',

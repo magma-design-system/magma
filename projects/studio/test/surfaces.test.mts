@@ -1,12 +1,13 @@
-// @vitest-environment jsdom
 import { afterEach, beforeEach, expect, test, vi } from 'vitest'
 import { h, render } from 'preact'
 import { useState } from 'preact/hooks'
 import { act } from 'preact/test-utils'
+import { within } from '@testing-library/preact'
 
 import initialConfig from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json'
 import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs'
 import type { ThemeConfig } from '@maggioli-design-system/design-tokens/src/lib/surface.mjs'
+import { TEXT_ROLES } from '@maggioli-design-system/design-tokens/src/lib/text-role.mjs'
 import { SurfaceManager } from '../src/surfaces.js'
 import { LangProvider } from '../src/i18n.js'
 import { textOf } from './text.mjs'
@@ -59,6 +60,11 @@ const theme = () => current.theme as ThemeConfig & { text: Record<string, number
 const slider = (name: string) =>
   [...root.querySelectorAll('mds-input-range')].find((one) => textOf(one) === name)!
 
+// The canvases of the preview, one per mode (SurfaceCanvas), each found by its label, which names
+// its mode and its colour: `light - canvas #f6f6f6`
+const canvasLabels = (scope: HTMLElement = root) => within(scope).queryAllByText(/^\S+ - canvas\b/)
+const canvases = (scope: HTMLElement = root) => canvasLabels(scope).map((label) => label.parentElement!)
+
 test('a group is a Magma chip: choosing it hands back the group, status stays on', async () => {
   const chips = [...root.querySelectorAll('mds-chip')]
   expect(chips.map((chip) => chip.getAttribute('label'))).toEqual(
@@ -77,9 +83,9 @@ test('a group is a Magma chip: choosing it hands back the group, status stays on
   expect(onToggleGroupSurface).toHaveBeenLastCalledWith('tone', false)
 })
 
-// the families of a list, as the chips of their row
+// the families of a list, as the chips of their row: the group named by the list
 const familiesOf = (label: string) => [
-  ...root.querySelectorAll(`.surfaces-choices[aria-label="${label}"] mds-chip`),
+  ...within(root).getByRole('group', { name: label }).querySelectorAll('mds-chip'),
 ]
 
 test('a family is a selectable Magma chip with the swatch of its colour', async () => {
@@ -117,10 +123,12 @@ test('the status families sit in a row of their own, under the others, saying th
   expect(names('Surface families')).not.toEqual(expect.arrayContaining([status[0]]))
   expect(names('Surface families')).toEqual(expect.arrayContaining(['porcelain', 'blue', 'maggioli']))
 
-  const reserved = root.querySelector('.surfaces-reserved')!
-  expect(reserved.textContent).toContain('never a theme')
-  const families = root.querySelector('.surfaces-choices[aria-label="Surface families"]')!
+  // the row of the other families, then the note that says why, then the row of the status ones
+  const families = within(root).getByRole('group', { name: 'Surface families' })
+  const reserved = within(root).getByText(/never a theme/)
+  const row = within(root).getByRole('group', { name: 'Status families' })
   expect(families.compareDocumentPosition(reserved) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+  expect(reserved.compareDocumentPosition(row) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
 })
 
 test('a slider of the levels writes the level of its role and mode', async () => {
@@ -139,20 +147,25 @@ test('a slider of the levels writes the level of its role and mode', async () =>
   expect(theme().text.muted).toBe(70)
 })
 
+// the card of the preview, which holds its tabs and the panel they show
+const preview = () => root.querySelector('mds-tab')!.parentElement!
+
 test('the preview follows the family and the shadow chosen in its selects', async () => {
-  const [family, shadow] = [...root.querySelectorAll('.surfaces-preview mds-input-select')]
+  const select = (label: string) => root.querySelector(`mds-input-field[label="${label}"] mds-input-select`)!
+  const [family, shadow] = [select('Preview family'), select('Preview shadow')]
   const first = family.getAttribute('value')
   const other = [...family.querySelectorAll('option')]
     .map((option) => option.value)
     .find((value) => value !== first)!
-  const title = () => root.querySelector('.surfaces-preview [tag="h2"]')?.textContent
+  const title = () => preview().querySelector('mds-text[tag="h2"]')?.textContent
   expect(title()).toContain(`surface-${first}`)
 
   await emit(family, 'mdsInputSelectChange', { value: other, values: [other] })
   expect(family.getAttribute('value')).toBe(other)
   expect(title()).toContain(`surface-${other}`)
 
-  const page = root.querySelector<HTMLElement>('.surfaces')!
+  // the page, which hands the shadow down to its preview
+  const page = root.firstElementChild as HTMLElement
   expect(page.style.getPropertyValue('--preview-shadow')).toBe('none')
   const lifted = [...shadow.querySelectorAll('option')].map((option) => option.value).find((v) => v !== 'none')!
   await emit(shadow, 'mdsInputSelectChange', { value: lifted, values: [lifted] })
@@ -162,18 +175,20 @@ test('the preview follows the family and the shadow chosen in its selects', asyn
 test('the tabs switch the preview between the step charts and the surface boxes', async () => {
   const tabs = root.querySelector('mds-tab')!
   const item = (value: string) => root.querySelector(`mds-tab-item[value="${value}"]`)!
+  // a step chart per mode, headed by the name of its mode
+  const charts = () => within(preview()).queryAllByText(/^(Light|Dark)$/)
   expect(item('surface').hasAttribute('selected')).toBe(true)
-  expect(root.querySelectorAll('.surfaces-canvas')).toHaveLength(2)
-  expect(root.querySelector('.surfaces-chart')).toBeNull()
+  expect(canvases(preview())).toHaveLength(2)
+  expect(charts()).toHaveLength(0)
 
   await emit(tabs, 'mdsTabChange', { id: 0, value: 'text' })
   expect(item('text').hasAttribute('selected')).toBe(true)
   expect(item('surface').hasAttribute('selected')).toBe(false)
-  expect(root.querySelectorAll('.surfaces-chart')).toHaveLength(2)
-  expect(root.querySelector('.surfaces-canvas')).toBeNull()
+  expect(charts()).toHaveLength(2)
+  expect(canvases(preview())).toHaveLength(0)
 
   await emit(tabs, 'mdsTabChange', { id: 1, value: 'surface' })
-  expect(root.querySelectorAll('.surfaces-canvas')).toHaveLength(2)
+  expect(canvases(preview())).toHaveLength(2)
 })
 
 test('the page speaks the language of the studio', () => {
@@ -182,24 +197,25 @@ test('the page speaks the language of the studio', () => {
   expect(slider('Testo muted, obiettivo')).toBeDefined()
   const status = [...root.querySelectorAll('mds-chip')].find((chip) => chip.getAttribute('label') === 'status')!
   expect(status.parentElement?.querySelector('mds-badge')?.getAttribute('label')).toBe('sempre attivo')
-  expect(root.querySelector('.surfaces-choices[aria-label="Famiglie di stato"]')).not.toBeNull()
+  expect(within(root).queryByRole('group', { name: 'Famiglie di stato' })).not.toBeNull()
   expect([...root.querySelectorAll('mds-tab-item')].map((item) => item.getAttribute('label'))).toEqual(['Testi', 'Superficie'])
   // the roles keep their names, the canvas names its mode
-  const canvas = root.querySelector('.surfaces-canvas')!
-  expect(canvas.querySelector('.surfaces-canvas-label')?.textContent).toMatch(/^chiaro - canvas #/)
-  expect(canvas.textContent).toContain('border strong')
+  const [label] = canvasLabels()
+  expect(label.textContent).toMatch(/^chiaro - canvas #/)
+  expect(label.parentElement?.textContent).toContain('border strong')
 })
 
 test('the contrast verdicts of the preview are Magma badges, not emoji', () => {
   const verdicts = ['success', 'warning', 'error']
-  for (const canvas of root.querySelectorAll('.surfaces-canvas')) {
-    // every text role carries its verdict
-    for (const text of canvas.querySelectorAll('.surfaces-text'))
-      expect(verdicts).toContain(text.querySelector('mds-badge')?.getAttribute('variant'))
+  expect(canvases()).toHaveLength(2)
+  for (const canvas of canvases()) {
+    // every text role carries its verdict: `text muted`, its colour, its Lc, its badge
+    const texts = within(canvas).getAllByText(/^text \S+$/)
+    expect(texts).toHaveLength(TEXT_ROLES.length)
+    for (const text of texts) expect(verdicts).toContain(text.querySelector('mds-badge')?.getAttribute('variant'))
     // a border of state carries one, a decorative border none
-    const borders = [...canvas.querySelectorAll('.surfaces-border')]
-    const strong = borders.find((border) => border.textContent?.includes('border strong'))!
-    const muted = borders.find((border) => border.textContent?.includes('border muted'))!
+    const strong = within(canvas).getByText('border strong')
+    const muted = within(canvas).getByText('border muted')
     expect(verdicts).toContain(strong.querySelector('mds-badge')?.getAttribute('variant'))
     expect(muted.querySelector('mds-badge')).toBeNull()
   }

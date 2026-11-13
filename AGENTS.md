@@ -71,7 +71,8 @@ nx run icons:add.icons --auto                        # map new SVG sources into 
 nx run stencil:build                                 # build web components
 nx run stencil:storybook.start                       # start Storybook
 nx run studio:serve                                  # start the studio, the tokens playground (port 5177)
-nx run studio:test                                   # the studio's tests (Vitest, jsdom)
+nx run studio:test                                   # the studio's tests (Vitest: node, jsdom, the bridges in Chromium)
+nx run studio:check.types                            # after a build: tsc on the studio, as its CI types job
 
 nx run stencil:generate mds-component-name           # scaffold a new component
 nx run stencil:test                                  # run the unit and browser tests (Vitest)

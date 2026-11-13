@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { afterEach, beforeEach, expect, test, vi } from 'vitest'
 import { h, render } from 'preact'
 import { act } from 'preact/test-utils'
@@ -66,7 +65,7 @@ const openOn = async (draft: MagmaConfig, view = 'colors') => {
   actions = []
   render(h(App, { onConfigActions: (handed: ConfigAction[]) => (actions = handed) }), root)
   await vi.waitFor(() => {
-    if (!root.querySelector('.studio-page-name')) throw new Error('no page yet')
+    if (!root.querySelector('mds-text[tag="h1"]')) throw new Error('no page yet')
     // handed by an effect, after the paint
     if (!actions.length) throw new Error('no actions yet')
   })
@@ -76,10 +75,28 @@ const badgeOf = (scope: ParentNode | null | undefined) => {
   const badge = scope?.querySelector('mds-badge')
   return { variant: badge?.getAttribute('variant'), label: badge?.getAttribute('label') }
 }
+/** The card of a theme on the Contrast check page: the one its heading names. */
+const themeCard = (theme: string) =>
+  [...root.querySelectorAll('mds-card')].find(
+    (card) => card.querySelector('mds-text[tag="h2"]')?.textContent === theme,
+  )
+/** The verdict of a theme per mode: the group of badges named after the theme. */
+const themeVerdicts = (theme: string) =>
+  [...root.querySelectorAll(`[role="group"][aria-label="The contrast gate on ${theme}"] mds-badge`)]
+/** The row of a pair in the card of a theme, found by the pair its first cell names. */
 const row = (theme: string, pair: string) =>
-  root.querySelector(`.contrast-theme[data-theme="${theme}"] mds-table-row[data-pair="${pair}"]`)
-const cell = (theme: string, pair: string, mode: string) =>
-  badgeOf(row(theme, pair)?.querySelector(`mds-table-cell[data-mode="${mode}"]`))
+  [...(themeCard(theme)?.querySelectorAll('mds-table-row') ?? [])].find(
+    (one) => one.querySelector('mds-table-cell')?.textContent === pair,
+  )
+/** The verdict of a pair in a mode: its cell in the column the table heads with the mode. */
+const cell = (theme: string, pair: string, mode: 'Light' | 'Dark') => {
+  const found = row(theme, pair)
+  const heads = [...(found?.closest('mds-table')?.querySelectorAll('mds-table-header-cell') ?? [])]
+  const column = heads.findIndex((head) => head.getAttribute('label') === mode)
+  return badgeOf(found?.querySelectorAll('mds-table-cell')[column])
+}
+/** The head of the page of Colors shown: the header that holds its title. */
+const pageHead = () => root.querySelector('mds-text[tag="h1"]')?.closest('header')
 const show = (report: GateReport) => render(h(ContrastCheck, { report }), root)
 // over the whole document: the dialog of the gate opens on document.body
 const magmaButton = (label: string) =>
@@ -88,11 +105,15 @@ const magmaButton = (label: string) =>
 test('the Contrast check page shows every pair of every theme, its two modes side by side', () => {
   const report = gateReport(config())
   show(report)
-  const cards = [...root.querySelectorAll('.contrast-theme')]
-  expect(cards.map((card) => card.getAttribute('data-theme'))).toEqual(['business', 'porcelain', 'editorial'])
+  const cards = [...root.querySelectorAll('mds-card')]
+  expect(cards.map((card) => card.querySelector('mds-text[tag="h2"]')?.textContent)).toEqual([
+    'business',
+    'porcelain',
+    'editorial',
+  ])
   // a table per category of the gate, a row per pair, in the order the gate measures them
-  const business = cards[0]
-  expect([...business.querySelectorAll('.contrast-category h3, .contrast-category [tag="h3"]')].map(
+  const business = themeCard('business')!
+  expect([...business.querySelectorAll('h3, [tag="h3"]')].map(
     (title) => title.textContent,
   )).toEqual([
     'Text on the surfaces',
@@ -104,14 +125,14 @@ test('the Contrast check page shows every pair of every theme, its two modes sid
   ])
   expect(business.querySelectorAll('mds-table-row').length).toBe(report.themes[0].pairs.length)
   // the measure and the verdict of a pair in each mode, the target it is held to
-  expect(cell('business', 'text-muted|surface-raised', 'light')).toEqual({ variant: 'success', label: 'OK' })
-  expect(cell('business', 'text-muted|surface-raised', 'dark')).toEqual({ variant: 'success', label: 'OK' })
-  const muted = row('business', 'text-muted|surface-raised')!
-  expect(muted.textContent).toContain('Lc 75, enforced')
-  expect(row('business', 'accent-on-emphasis|accent-emphasis')!.textContent).toContain(
+  const muted = 'text-muted on surface-raised'
+  expect(cell('business', muted, 'Light')).toEqual({ variant: 'success', label: 'OK' })
+  expect(cell('business', muted, 'Dark')).toEqual({ variant: 'success', label: 'OK' })
+  expect(row('business', muted)!.textContent).toContain('Lc 75, enforced')
+  expect(row('business', 'accent-on-emphasis on accent-emphasis')!.textContent).toContain(
     'Lc 75 light, 70 dark, enforced',
   )
-  expect(row('business', 'border-muted|surface-default')!.textContent).toContain('no floor')
+  expect(row('business', 'border-muted on surface-default')!.textContent).toContain('no floor')
   expect(root.querySelector('[role="status"]')?.textContent).toMatch(/^Every enforced pair meets its target/)
 })
 
@@ -121,12 +142,13 @@ test('a pair under its target says so in the mode it fails, and the switch keeps
   expect(root.querySelector('[role="status"]')?.textContent).toMatch(
     /pairs below target: the build of Magma would refuse this configuration/,
   )
-  expect(cell('business', 'text-muted|surface-raised', 'light')).toEqual({
+  expect(cell('business', 'text-muted on surface-raised', 'Light')).toEqual({
     variant: 'error',
     label: 'under Lc 75',
   })
   // each card says how many pairs fail, per mode
-  const verdicts = [...root.querySelectorAll('.contrast-theme[data-theme="business"] [aria-label^="The contrast gate"] mds-badge')]
+  const verdicts = themeVerdicts('business')
+  expect(themeCard('business')?.contains(verdicts[0] ?? null)).toBe(true)
   expect(verdicts.map((badge) => badge.getAttribute('label'))).toEqual([
     `light: ${report.themes[0].failing.light} below target`,
     `dark: ${report.themes[0].failing.dark} below target`,
@@ -149,19 +171,22 @@ test('a pair under its target says so in the mode it fails, and the switch keeps
 
 test('a mode a theme is not offered in is measured, not judged', () => {
   show(gateReport(failing(), { ...NO_THEME_CHOICES, modes: { neutral: ['light'] } }))
-  expect(cell('business', 'text-muted|surface-raised', 'light').variant).toBe('error')
-  expect(cell('business', 'text-muted|surface-raised', 'dark')).toEqual({ variant: 'dark', label: 'not offered' })
-  const verdicts = [...root.querySelectorAll('.contrast-theme[data-theme="business"] [aria-label^="The contrast gate"] mds-badge')]
+  expect(cell('business', 'text-muted on surface-raised', 'Light').variant).toBe('error')
+  expect(cell('business', 'text-muted on surface-raised', 'Dark')).toEqual({
+    variant: 'dark',
+    label: 'not offered',
+  })
+  const verdicts = themeVerdicts('business')
   expect(verdicts.at(-1)?.getAttribute('label')).toBe('dark: not offered')
 })
 
 test('the title of every page of Colors carries the verdict of the gate on the configuration edited', async () => {
   await openOn(config(), 'surface')
-  expect(badgeOf(root.querySelector('.studio-page-name'))).toEqual({ variant: 'success', label: 'All contrasts are OK' })
+  expect(badgeOf(pageHead())).toEqual({ variant: 'success', label: 'All contrasts are OK' })
   render(null, root)
 
   await openOn(failing(), 'surface')
-  const { variant, label } = badgeOf(root.querySelector('.studio-page-name'))
+  const { variant, label } = badgeOf(pageHead())
   expect(variant).toBe('error')
   expect(label).toMatch(/^\d+ contrasts below target$/)
 })
@@ -187,7 +212,9 @@ test('the Colors section counts the pairs that fail, in the bar, in view whereve
     localStorage.clear()
     render(h(Studio, {}), root)
     await vi.waitFor(() => {
-      if (!root.querySelector('.studio-dropdown-head mds-badge')) throw new Error('no verdict yet')
+      // the verdict at the head of the Colors menu
+      if (!root.querySelector('mds-dropdown[target="#studio-colors"] mds-badge'))
+        throw new Error('no verdict yet')
     })
     expect(root.querySelector('#studio-colors mds-notification')).toBeNull()
   } finally {
@@ -215,7 +242,7 @@ test('while the gate fails, an export asks first: Cancel never exports, the verb
     expect(dialog.getAttribute('aria-label')).toMatch(/^Export with \d+ contrasts below target\?$/)
     expect(dialog.textContent).toContain('Download all tokens hands out a configuration that fails')
     // the first pairs, named by their theme, mode and measure
-    expect(dialog.querySelector('.contrast-failures mds-list-item')?.textContent).toMatch(
+    expect(dialog.querySelector('mds-list mds-list-item')?.textContent).toMatch(
       /^business, light: text-\w+ on surface-\w+, Lc [\d.]+ under \d+$/,
     )
     expect(files).toEqual([])
@@ -249,7 +276,7 @@ test('the dialog leads to every pair, on the Contrast check page', async () => {
   await act(() => magmaButton('See every pair')!.click())
   expect(document.querySelector('mds-modal')).toBeNull()
   expect(root.querySelector('h1, [tag="h1"]')?.textContent).toBe('Contrast check')
-  expect(root.querySelectorAll('.contrast-theme').length).toBeGreaterThan(0)
+  for (const { name } of gateReport(failing()).themes) expect(themeCard(name), name).toBeDefined()
 })
 
 test('the Themes page says the verdict of each theme per mode, and its export asks through the gate', async () => {
@@ -263,8 +290,7 @@ test('the Themes page says the verdict of each theme per mode, and its export as
     }),
     root,
   )
-  const card = root.querySelector('.themes-list > .themes-card')!
-  expect([...card.querySelectorAll('[aria-label^="The contrast gate"] mds-badge')].map((badge) => badge.getAttribute('label'))).toEqual([
+  expect(themeVerdicts(report.themes[0].name).map((badge) => badge.getAttribute('label'))).toEqual([
     `light: ${report.themes[0].failing.light} below target`,
     `dark: ${report.themes[0].failing.dark} below target`,
   ])

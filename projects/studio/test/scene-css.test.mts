@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { expect, test } from 'vitest'
 
 import initialConfig from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json'

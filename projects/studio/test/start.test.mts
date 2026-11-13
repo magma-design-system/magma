@@ -1,6 +1,6 @@
-// @vitest-environment jsdom
 import { afterEach, expect, test, vi } from 'vitest'
 import { h, render } from 'preact'
+import { isInaccessible, within } from '@testing-library/preact'
 import committedConfig from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json'
 import { DEFAULT_TARGETS } from '@maggioli-design-system/design-tokens/src/lib/contrast-gate.js'
 import { TEXT_ROLES } from '@maggioli-design-system/design-tokens/src/lib/text-role.mjs'
@@ -25,7 +25,8 @@ import { textOf } from './text.mjs'
 // on the configuration of Magma drawn pale, its text targets lowered and the ramp of its accent
 // faded, then brought back, told by three trays around the banner it paints; the steps
 // of the work; the levels, from one colour to the whole product, each with its pages. jsdom does
-// not upgrade the Magma components: the tests read the markup the page writes.
+// not upgrade the Magma components: the tests read the markup the page writes, the native elements
+// by their role and name, the Magma ones by their tag and attributes.
 
 const root = document.createElement('div')
 document.body.append(root)
@@ -34,22 +35,34 @@ afterEach(() => {
   vi.unstubAllGlobals()
 })
 
-// the moment of the play; the trays out; what the gate says over the bar; the bar; Replay
-const phase = () => root.querySelector<HTMLElement>('.start-stage')?.dataset.phase
+// the hero, the region its title names; the stage of the play, its figure; the banner on it
+const TITLE = 'The theme of your product, readable by everyone'
+const hero = () => within(root).getByRole('region', { name: TITLE })
+const stage = () => within(root).getByRole<HTMLElement>('figure')
+const banner = () =>
+  root.querySelector('iframe[title="A banner of a product, painted with the configuration of the animation"]')!
+// the trays, the boxes of the stage that come out from behind the banner; the one over it
+const trays = () => [...stage().querySelectorAll(':scope > div')]
+const over = (tray: Element) => !!(tray.compareDocumentPosition(banner()) & Node.DOCUMENT_POSITION_FOLLOWING)
+// the moment of the play; the trays out: over the banner the problem, under it the fix with its
+// bar, or the banner fixed; what the gate says over the bar; the bar; the indicators; Replay, the
+// one control of the stage
+const phase = () => stage().dataset.phase
 const open = () =>
-  [...root.querySelectorAll('.start-tray[data-open]')].map((tray) =>
-    tray.classList.contains('start-tray-over') ? 'problem' : tray.querySelector('.start-meter') ? 'fix' : 'fixed',
-  )
-const verdict = () => root.querySelector('.start-meter-label')?.textContent ?? undefined
-const bar = () => root.querySelector('.start-meter mds-progress')!
-const readings = () =>
-  [...root.querySelectorAll('.start-reading mds-badge')].map((one) => one.getAttribute('variant'))
-const replay = () => root.querySelector<HTMLElement>('.start-stage mds-button')!
+  trays()
+    .filter((tray) => tray.hasAttribute('data-open'))
+    .map((tray) => (over(tray) ? 'problem' : tray.querySelector('mds-progress') ? 'fix' : 'fixed'))
+const bar = () => root.querySelector('mds-progress')!
+const verdict = () => bar().previousElementSibling?.textContent ?? undefined
+const readings = () => [...stage().querySelectorAll('dl mds-badge')].map((one) => one.getAttribute('variant'))
+const replay = () => stage().querySelector<HTMLElement>('mds-button')!
+// the line under the levels, the checks of every level
+const checks = () => within(root).getByText(/^At every level,/)
 const motion = (less: boolean) => vi.stubGlobal('matchMedia', () => ({ matches: less }))
 // the banner loaded, as the browser says it: jsdom loads no iframe, and the play waits for it
 const showHero = () => {
   render(h(StartPage, {}), root)
-  root.querySelector('iframe.start-stage-frame')!.dispatchEvent(new Event('load'))
+  banner().dispatchEvent(new Event('load'))
 }
 
 test('the demo starts under every floor of the gate and ends on the configuration of Magma', () => {
@@ -112,21 +125,18 @@ test('the bar fills with the pairs brought back over their floor, red, then yell
 test('the hero says what the studio is for and what it offers, beside a banner it paints, pale at first', async () => {
   motion(false)
   showHero()
-  expect(root.querySelector('mds-text[tag="h1"]')?.textContent?.trim()).toBe(
-    'The theme of your product, readable by everyone',
-  )
-  expect(root.querySelector('.start-hero-head mds-text[tag="p"]')?.textContent).toContain(
+  expect(root.querySelector('mds-text[tag="h1"]')?.textContent?.trim()).toBe(TITLE)
+  // the head of the hero: what the studio is, then what it offers
+  expect(hero().querySelector('header mds-text[tag="p"]')?.textContent).toContain(
     'Magma Studio is where a product shapes its theme',
   )
-  expect([...root.querySelectorAll('.start-features mds-list-item')].map((one) => one.textContent?.trim())).toEqual(
-    FEATURES,
-  )
-  expect(root.querySelector('iframe.start-stage-frame')?.getAttribute('src')).toBe('hero.html')
+  expect([...hero().querySelectorAll('header mds-list-item')].map((one) => one.textContent?.trim())).toEqual(FEATURES)
+  expect(banner().getAttribute('src')).toBe('hero.html')
   // the problem first, over the banner, which the gate judges under its floors
   await vi.waitFor(() => expect(open()).toEqual(['problem']))
-  expect(root.querySelector('.start-tray-over')?.textContent).toContain('under their contrast targets')
+  expect(trays().find(over)?.textContent).toContain('under their contrast targets')
   await vi.waitFor(() => expect(verdict()).toMatch(/^\d+ contrasts below target$/))
-  expect([...root.querySelectorAll('.start-reading mds-text[tag="dt"]')].map((one) => one.textContent?.trim())).toEqual(
+  expect([...stage().querySelectorAll('dl mds-text[tag="dt"]')].map((one) => one.textContent?.trim())).toEqual(
     ['Texts', 'Icons', 'Actions'],
   )
   expect(readings()).toEqual(['error', 'error', 'error'])
@@ -143,15 +153,18 @@ test('the play runs once in under five seconds, announces nothing, and keeps its
   motion(false)
   showHero()
   await vi.waitFor(() => expect(phase()).toBe('problem'))
-  const hero = root.querySelector('.start-hero')!
-  expect(hero.querySelector('[role="status"], [aria-live]')).toBeNull()
-  for (const figures of hero.querySelectorAll('.start-readings, .start-meter'))
-    expect(figures.getAttribute('aria-hidden')).toBe('true')
-  for (const tray of hero.querySelectorAll('.start-tray:not([data-open])'))
+  expect(hero().querySelector('[role="status"], [aria-live]')).toBeNull()
+  // the figures, the indicators and what the gate says with its bar, out of reach of assistive
+  // technologies
+  const figures = [stage().querySelector('dl')!, bar().previousElementSibling!, bar()]
+  expect(figures.map((one) => isInaccessible(one))).toEqual([true, true, true])
+  for (const tray of trays().filter((one) => !one.hasAttribute('data-open')))
     expect(tray.hasAttribute('inert')).toBe(true)
-  expect(hero.querySelector('.start-tray[data-open]')?.hasAttribute('inert')).toBe(false)
-  // what the play shows, told in words
-  expect(hero.querySelector('figcaption')?.textContent).toContain('drawn pale')
+  expect(trays().find((one) => one.hasAttribute('data-open'))?.hasAttribute('inert')).toBe(false)
+  // what the play shows, told in words, within their reach
+  const caption = stage().querySelector('figcaption')!
+  expect(caption.textContent).toContain('drawn pale')
+  expect(isInaccessible(caption)).toBe(false)
 })
 
 test('the play shows the problem, fixes it step by step, and ends on the banner fixed, with Replay', async () => {
@@ -181,7 +194,7 @@ test('Replay plays it again from the problem, and the focus comes back to it at 
   replay().attachShadow({ mode: 'open' }).append(document.createElement('button'))
   replay().click()
   // the focus waits on the stage while the tray of Replay is back
-  expect(document.activeElement).toBe(root.querySelector('.start-stage'))
+  expect(document.activeElement).toBe(stage())
   await vi.waitFor(() => expect(open()).toEqual(['problem']))
   await vi.waitFor(() => expect(verdict()).toMatch(/below target$/))
   await vi.waitFor(() => expect(open()).toEqual(['fixed']), { timeout: 10_000 })
@@ -197,8 +210,7 @@ test('with less motion asked, the play does not run by itself: the banner stands
   expect(open()).toEqual(['fixed'])
   expect(phase()).toBe('fixed')
   // the one control of the hero
-  const hero = root.querySelector('.start-hero')!
-  expect([...hero.querySelectorAll('mds-button, input, button')]).toEqual([replay()])
+  expect([...hero().querySelectorAll('mds-button, input, button')]).toEqual([replay()])
   await new Promise((done) => setTimeout(done, 600))
   expect(open()).toEqual(['fixed'])
 })
@@ -206,10 +218,13 @@ test('with less motion asked, the play does not run by itself: the banner stands
 test('the levels go from one colour to the whole product, and lead to every page of the bar', () => {
   expect(LEVELS.map(({ name }) => name)).toEqual(['Colour', 'Role', 'Theme', 'Product', 'Composition'])
   render(h(StartPage, {}), root)
+  // the pages of each level, a navigation named after it
+  const levels = within(root).getByRole('region', { name: 'Where each change is made' })
+  const pages = within(levels).getAllByRole('navigation', { name: /^The pages of / })
   const linked = [
-    ...[...root.querySelectorAll('.start-level-pages mds-button')].map((one) => one.getAttribute('href')),
+    ...pages.flatMap((nav) => [...nav.querySelectorAll('mds-button')].map((one) => one.getAttribute('href'))),
     // the checks, in the line under the levels
-    ...[...root.querySelectorAll('.start-checks mds-link')].map((one) => one.getAttribute('href')),
+    ...[...checks().querySelectorAll('mds-link')].map((one) => one.getAttribute('href')),
   ]
   const every = [
     ...COLORS_PAGES.map(({ id }) => hrefOf({ section: 'colors', view: id })),
@@ -227,13 +242,18 @@ test('the Start page uses the lists and the links of Magma where they hold what 
   motion(true)
   render(h(StartPage, {}), root)
   expect(root.querySelectorAll('ul, a')).toHaveLength(0)
-  expect(root.querySelector('.start-features')?.localName).toBe('mds-list')
-  expect(root.querySelectorAll('.start-checks mds-link')).toHaveLength(2)
+  // what the studio offers, lines of text: the items of an mds-list
+  const features = FEATURES.map((feature) => within(root).getByText(feature))
+  expect(features.map((one) => [one.localName, one.parentElement?.localName])).toEqual(
+    FEATURES.map(() => ['mds-list-item', 'mds-list']),
+  )
+  expect(checks().querySelectorAll('mds-link')).toHaveLength(2)
 })
 
 test('the steps of the work, in their order, each with the page it starts on', () => {
   render(h(StartPage, {}), root)
-  const steps = [...root.querySelectorAll('.start-step')]
+  const work = within(root).getByRole('region', { name: 'How the work goes' })
+  const steps = within(work).getAllByRole('listitem')
   expect(steps.map((one) => one.querySelector('mds-text[tag="h3"]')?.textContent?.trim())).toEqual([
     'Start from a configuration',
     'Change it where the change belongs',

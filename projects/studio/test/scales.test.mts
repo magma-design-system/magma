@@ -1,8 +1,8 @@
-// @vitest-environment jsdom
 import { afterEach, expect, test, vi } from 'vitest'
 import { h, render } from 'preact'
 import { useState } from 'preact/hooks'
 import { act } from 'preact/test-utils'
+import { within } from '@testing-library/preact'
 
 import initialConfig from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json'
 import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs'
@@ -83,33 +83,50 @@ const emit = (element: Element, type: string, detail?: unknown) =>
     element.dispatchEvent(new CustomEvent(type, { detail, bubbles: true }))
   })
 
+/** The titles of the cards of the page: the h2 in the head of each mds-card. */
+const titles = () => [...root.querySelectorAll('mds-card mds-card-header mds-text[tag="h2"]')]
+/** The card of a scale, the mds-card its title heads. */
 const card = (name: string) =>
-  [...root.querySelectorAll('.scales-card')].find(
-    (el) => el.querySelector('mds-card-header mds-text[tag="h2"]')?.textContent === name,
-  )!
+  titles()
+    .find((title) => title.textContent === name)!
+    .closest('mds-card')!
+/** The button of the actions of a scale, in the head of its card. */
+const more = (name: string) => card(name).querySelector('mds-card-header mds-button[slot="action"]')!
+/** The menu of a scale: the dropdown the button of its card opens, outside the card. */
+const menu = (name: string) => root.querySelector(`mds-dropdown[target="#${more(name).id}"]`)!
+/** The steps of a scale, the group of its stops. */
+const steps = (name: string, label = `The steps of ${name}`) =>
+  within(card(name) as HTMLElement).getByRole('group', { name: label })
 const stops = (name: string) =>
-  [...card(name).querySelectorAll('.scales-stops mds-input')].map((input) =>
-    input.getAttribute('value'),
-  )
+  [...steps(name).querySelectorAll('mds-input')].map((input) => input.getAttribute('value'))
 const stop = (name: string, step: number) =>
   card(name).querySelector(`mds-input[aria-label="Step ${step}"]`)!
 const menuItem = (name: string, label: string) =>
-  [...card(name).querySelectorAll<HTMLElement>('mds-dropdown mds-button')].find(
+  [...menu(name).querySelectorAll<HTMLElement>('mds-button')].find(
     (button) => textOf(button) === label,
   )!
+/** The select of the distribution of a scale, in its field. */
+const distribution = (name: string, label = 'Distribution') =>
+  card(name).querySelector(`mds-input-field[label="${label}"] mds-input-select`)!
 const click = (element: HTMLElement) => act(() => element.click())
 
 test('a card per scale: its title, its badge, its count, its menu with Delete last', () => {
   show()
-  expect([...root.querySelectorAll('.scales-card mds-card-header mds-text')].map((t) => t.getAttribute('tag'))).toContain('h2')
+  // after the card of the usage, a card per scale, titled by its name in an h2
+  expect(titles().map((title) => title.textContent)).toEqual([
+    'The colors of a scale, by group',
+    ...Object.keys(SCALES),
+  ])
   const tint = card('tint')
   expect(tint.querySelector('mds-badge')?.getAttribute('label')).toBe('Built-in')
   expect(card('custom-1').querySelector('mds-badge')).toBeNull()
   expect(tint.textContent).toContain('5 steps, used by 1 color')
-  // the menu opens from the button of the card it names
-  const more = tint.querySelector('mds-card-header mds-button[slot="action"]')!
-  expect(tint.querySelector('mds-dropdown')?.getAttribute('target')).toBe(`#${more.id}`)
-  expect([...tint.querySelectorAll('mds-dropdown mds-button')].map(textOf))
+  // the menu opens from the button in the head of the card it names, one menu per button
+  expect(more('tint').getAttribute('aria-label')).toBe('Actions of the scale tint')
+  expect(root.querySelectorAll(`mds-dropdown[target="#${more('tint').id}"]`)).toHaveLength(1)
+  // beside the card, outside it: mds-card clips what overflows it
+  expect(tint.querySelector('mds-dropdown')).toBeNull()
+  expect([...menu('tint').querySelectorAll('mds-button')].map(textOf))
     .toEqual(['Rename', 'Duplicate', 'Delete'])
   expect(menuItem('tint', 'Delete').getAttribute('variant')).toBe('error')
   // the default scale is mandatory, a built-in keeps its name
@@ -123,10 +140,11 @@ test('the page speaks the language of the studio', () => {
   const tint = card('tint')
   expect(tint.querySelector('mds-badge')?.getAttribute('label')).toBe('Integrata')
   expect(tint.textContent).toContain('5 gradini, usata da 1 colore')
-  expect([...tint.querySelectorAll('mds-dropdown mds-button')].map(textOf)).toEqual(['Rinomina', 'Duplica', 'Elimina'])
-  expect(tint.querySelector('mds-input[aria-label="Gradino 1"]')).not.toBeNull()
+  expect(more('tint').getAttribute('aria-label')).toBe('Azioni della scala tint')
+  expect([...menu('tint').querySelectorAll('mds-button')].map(textOf)).toEqual(['Rinomina', 'Duplica', 'Elimina'])
+  expect(steps('tint', 'I gradini di tint').querySelector('mds-input[aria-label="Gradino 1"]')).not.toBeNull()
   // the option a distribution starts on, translated; the easings keep their names
-  const options = [...tint.querySelectorAll('.scales-distribution mds-input-select option')].map((option) => option.textContent)
+  const options = [...distribution('tint', 'Distribuzione').querySelectorAll('option')].map((option) => option.textContent)
   expect(options).toEqual(expect.arrayContaining(['manuale', 'sine-in-out']))
   click(menuItem('tint', 'Elimina'))
   const dialog = root.querySelector('mds-modal')!
@@ -178,7 +196,8 @@ test('a step is removed and added from its buttons', () => {
   expect(stops('custom-1')).toEqual(['20', '60'])
   // two steps at least: their remove buttons are off
   expect(card('custom-1').querySelector('mds-button[aria-label="Remove step 1"]')?.hasAttribute('disabled')).toBe(true)
-  const add = [...card('custom-1').querySelectorAll<HTMLElement>('.scales-stops > mds-button')].find(
+  // Add step closes the group of the steps
+  const add = [...steps('custom-1').querySelectorAll<HTMLElement>(':scope > mds-button')].find(
     (button) => textOf(button) === 'Add step',
   )!
   click(add)
@@ -187,12 +206,12 @@ test('a step is removed and added from its buttons', () => {
 
 test('choosing an easing regenerates the stops, and its fields regenerate them again', () => {
   const spies = show()
-  const select = card('custom-1').querySelector('.scales-distribution mds-input-select')!
+  const select = distribution('custom-1')
   expect(select.getAttribute('value')).toBe('manual')
   expect([...select.querySelectorAll('option')].map((option) => option.value)).toContain('sine-in-out')
   emit(select, 'mdsInputSelectChange', { value: 'linear' })
   expect(spies.onChangeScale).toHaveBeenLastCalledWith('custom-1', [20, 40, 60])
-  expect(card('custom-1').querySelector('.scales-distribution mds-input-select')?.getAttribute('value')).toBe('linear')
+  expect(distribution('custom-1').getAttribute('value')).toBe('linear')
   // the fields of the easing show up, labelled; five steps from 20 to 60
   const steps = card('custom-1').querySelector('mds-input-field[label="Steps"] mds-input')!
   emit(steps, 'mdsInputChange', { value: '5' })
@@ -201,7 +220,7 @@ test('choosing an easing regenerates the stops, and its fields regenerate them a
   expect(stops('custom-1')).toEqual(['20', '23', '30', '43', '60'])
   // dragging or typing a stop goes back to manual
   emit(stop('custom-1', 1), 'mdsInputChange', { value: '21' })
-  expect(card('custom-1').querySelector('.scales-distribution mds-input-select')?.getAttribute('value')).toBe('manual')
+  expect(distribution('custom-1').getAttribute('value')).toBe('manual')
   expect(card('custom-1').querySelector('mds-input-field[label="Steps"]')).toBeNull()
 })
 
@@ -211,7 +230,7 @@ test('Duplicate in the menu adds a copy of the scale', () => {
   expect(spies.onAddScale).toHaveBeenCalledWith('tint')
   expect(stops('custom-2')).toEqual(['10', '30', '50', '70', '90'])
   // Add scale copies the default one
-  click([...root.querySelectorAll<HTMLElement>('mds-button.scales-add')][0])
+  click(root.querySelector<HTMLElement>('mds-button[label="Add scale"]')!)
   expect(spies.onAddScale).toHaveBeenLastCalledWith('default')
   expect(stops('custom-3')).toEqual(SCALES.default.map(String))
 })
@@ -256,10 +275,12 @@ test('Rename opens a dialog that refuses an empty name or one taken', () => {
 
 test('the usage panel picks a scale and samples its first color', () => {
   const spies = show()
-  const select = root.querySelector('.scales-usage mds-input-select')!
+  // the card of the usage: the scale it inspects and the colors on it, by group
+  const usage = card('The colors of a scale, by group')
+  const select = usage.querySelector('mds-input-field[label="Scale"] mds-input-select')!
   emit(select, 'mdsInputSelectChange', { value: 'tint' })
   expect(spies.onSelectColor).toHaveBeenCalledWith(config.colors[0].name)
-  const chips = [...root.querySelectorAll<HTMLElement>('.scales-usage mds-chip')]
+  const chips = [...usage.querySelectorAll<HTMLElement>('mds-chip')]
   expect(chips).toHaveLength(1)
   const [chip] = chips
   const [color] = config.colors
@@ -274,14 +295,16 @@ test('the usage panel picks a scale and samples its first color', () => {
   emit(chip, 'mdsChipSelect', { element: chip, selected: undefined })
   expect((chip as unknown as { selected?: boolean }).selected).toBe(true)
   // the formula is a Magma select too
-  emit(root.querySelector('.scales-formula mds-input-select')!, 'mdsInputSelectChange', { value: 'wcag2' })
+  emit(root.querySelector('mds-input-field[label="Formula"] mds-input-select')!, 'mdsInputSelectChange', { value: 'wcag2' })
   expect(spies.onFormulaChange).toHaveBeenCalledWith('wcag2')
 })
 
 // the states beside each scale (#1308): jsdom loads no page in the frames, the test reads the
 // line over the cards and the frames the page writes
-const frames = () => [...root.querySelectorAll('iframe.scales-states')].map((frame) => frame.getAttribute('title'))
-const statesLine = () => root.querySelector('.scales-states-head mds-text')?.textContent
+const frames = () => [...root.querySelectorAll('iframe')].map((frame) => frame.getAttribute('title'))
+/** The toolbar over the cards: the line that says what the states show, and their mode. */
+const statesHead = () => within(root).getByRole('toolbar', { name: 'The states beside the scales' })
+const statesLine = () => statesHead().querySelector('mds-text')?.textContent
 
 test('beside each scale, the states of the sample colour, in one mode for the page', () => {
   show('status.error')
@@ -293,8 +316,11 @@ test('beside each scale, the states of the sample colour, in one mode for the pa
     'The states of status.error on the scale tint, light mode',
     'The states of status.error on the scale custom-1, light mode',
   ])
-  expect(card('tint').querySelector('.scales-card-pair > iframe.scales-states')).not.toBeNull()
-  emit(root.querySelector('.scales-states-head mds-tab')!, 'mdsTabChange', { id: 1, value: 'dark' })
+  // the states of a scale stand beside its card
+  const beside = card('tint').nextElementSibling
+  expect(beside?.localName).toBe('iframe')
+  expect(beside?.getAttribute('title')).toBe('The states of status.error on the scale tint, light mode')
+  emit(statesHead().querySelector('mds-tab[aria-label="Mode"]')!, 'mdsTabChange', { id: 1, value: 'dark' })
   expect(frames().every((title) => title?.endsWith('dark mode'))).toBe(true)
 })
 
@@ -310,16 +336,15 @@ test('an alias follows no scale, and a family that paints nothing has no states'
     'brand.rnd paints no component of Magma: no variant of a component takes it, no theme points an accent at it and no theme is drawn from it.',
   )
   expect(frames()).toEqual([])
-  expect(root.querySelector('.scales-states-head mds-tab')).toBeNull()
+  expect(statesHead().querySelector('mds-tab')).toBeNull()
 })
 
 // Reset beside the distribution (#1330): back to the steps of the configuration loaded, on manual
 const reset = (name: string) =>
-  [...card(name).querySelectorAll<HTMLElement>('.scales-distribution mds-button')].find(
-    (button) => textOf(button) === 'Reset',
+  [...distribution(name).closest('mds-input-field')!.parentElement!.children].find(
+    (one): one is HTMLElement => one.localName === 'mds-button' && textOf(one) === 'Reset',
   )!
-const easing = (name: string) =>
-  card(name).querySelector('.scales-distribution mds-input-select')?.getAttribute('value')
+const easing = (name: string) => distribution(name).getAttribute('value')
 
 test('Reset takes a scale back to the steps it was loaded with, once they changed', () => {
   const spies = show()
@@ -345,7 +370,7 @@ test('Reset takes a scale back to the steps it was loaded with, once they change
 test('Reset takes a scale back to manual after an easing regenerated it', () => {
   show()
   // linear from 10 to 90 in five steps gives the same stops: the easing alone turns Reset on
-  emit(card('tint').querySelector('.scales-distribution mds-input-select')!, 'mdsInputSelectChange', { value: 'linear' })
+  emit(distribution('tint'), 'mdsInputSelectChange', { value: 'linear' })
   expect(stops('tint')).toEqual(SCALES.tint.map(String))
   expect(reset('tint').hasAttribute('disabled')).toBe(false)
   emit(card('tint').querySelector('mds-input-field[label="Steps"] mds-input')!, 'mdsInputChange', { value: '3' })
@@ -356,7 +381,7 @@ test('Reset takes a scale back to manual after an easing regenerated it', () => 
   expect(card('tint').querySelector('mds-input-field[label="Steps"]')).toBeNull()
   expect(reset('tint').hasAttribute('disabled')).toBe(true)
   // an easing picked again starts from the five stops on screen, not from the three typed before
-  emit(card('tint').querySelector('.scales-distribution mds-input-select')!, 'mdsInputSelectChange', { value: 'quad-in' })
+  emit(distribution('tint'), 'mdsInputSelectChange', { value: 'quad-in' })
   expect(stops('tint')).toEqual(['10', '15', '30', '55', '90'])
   expect(card('tint').querySelector('mds-input-field[label="Steps"] mds-input')?.getAttribute('value')).toBe('5')
 })

@@ -188,9 +188,9 @@ function StudioBar({
   verdict: GateVerdict | null;
   configActions: ConfigAction[];
 }) {
-  const colorsMenu = useRef<HTMLElement & { visible?: boolean }>(null);
-  const behaviorMenu = useRef<HTMLElement & { visible?: boolean }>(null);
-  const configMenu = useRef<HTMLElement & { visible?: boolean }>(null);
+  const colorsMenu = useRef<HTMLMdsDropdownElement>(null);
+  const behaviorMenu = useRef<HTMLMdsDropdownElement>(null);
+  const configMenu = useRef<HTMLMdsDropdownElement>(null);
   // an action of the Config menu closes it, unless the action keeps it open to say what it did
   const ranConfig = (action: ConfigAction) => {
     if (!action.keepOpen && configMenu.current) configMenu.current.visible = false;
@@ -508,7 +508,7 @@ function ThemePage({
   mode?: ModeView;
 }) {
   const frames = useRef<Array<HTMLIFrameElement | null>>([]);
-  const select = useRef<HTMLElement>(null);
+  const select = useRef<HTMLMdsInputSelectElement>(null);
   const t = useT();
   // the choices of the Themes page (names, accents, modes) shape the themes the frame paints
   const choices = useThemeChoices();
@@ -620,7 +620,9 @@ function ThemePage({
       <div class="studio-frames" data-width={width}>
         {schemes.map((scheme, index) => (
           <iframe
-            ref={(frame) => (frames.current[index] = frame)}
+            ref={(frame) => {
+              frames.current[index] = frame;
+            }}
             class="studio-scene"
             src={page.page}
             title={t(scheme === 'light' ? '{title}, light mode' : '{title}, dark mode', {

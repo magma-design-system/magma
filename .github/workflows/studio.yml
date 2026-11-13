@@ -35,3 +35,23 @@ jobs:
       # the static site of the studio is opened in the Playwright Chromium (test/site.test.mts)
       install-playwright-browsers: true
       test-working-directory: projects/studio
+
+  # Guards the types of the studio (#1398): Vite and Vitest strip them, so only tsc reads them.
+  # The JSX types of the mds-* tags come from the build of magma (src/shared/magma/elements.d.ts),
+  # so it needs the build artifact.
+  types:
+    needs: [studio]
+    if: ${{ needs.studio.outputs.changed == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci --prefer-offline
+      - uses: actions/download-artifact@v8
+        with:
+          name: studio-build
+          path: projects
+      - run: npx nx run studio:check.types

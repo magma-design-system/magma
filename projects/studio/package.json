@@ -11,12 +11,16 @@
     "build.site": "tsx site.ts",
     "cover": "tsx cover.ts",
     "test": "vitest --run",
+    "check.types": "tsc --noEmit -p tsconfig.json",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
   "devDependencies": {
     "@maggioli-design-system/design-tokens": "*",
     "@maggioli-design-system/identity": "*",
+    "@maggioli-design-system/magma": "*",
+    "@preact/signals": "2.11.4",
+    "@testing-library/preact": "3.2.6",
     "apca-w3": "0.1.9",
     "chroma-js": "3.3.0",
     "color-namer": "1.4.0",
