@@ -1,4 +1,5 @@
 import { expect, test } from 'vitest'
+import { within } from '@testing-library/preact'
 
 import initialConfig from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json'
 import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs'
@@ -40,9 +41,11 @@ test('a status shows its action at every state and tone, and its message at ever
 
   // in the language of the studio: the names of the states, the sections, the messages
   page.innerHTML = statesMarkup(plan, translator('it'))
-  const states = [...page.querySelectorAll('.states-grid > mds-text')].map((text) => text.textContent)
-  expect(states).toEqual(expect.arrayContaining(['Riposo', 'Premuto', 'Disabilitato']))
-  expect(page.querySelector('section')?.getAttribute('aria-label')).toBe('mds-button, variante error')
+  // the grid of the action, a region named after the component and its variant, heads its rows
+  // with the names of the states
+  const action = within(page).getByRole('region', { name: 'mds-button, variante error' })
+  for (const state of ['Riposo', 'Premuto', 'Disabilitato'])
+    expect(within(action).getByText(state).localName).toBe('mds-text')
   const banner = page.querySelector('mds-banner')!
   expect(banner.getAttribute('headline')).toBe('Tono strong')
   expect(banner.textContent).toBe('Il testo di un messaggio della pagina.')

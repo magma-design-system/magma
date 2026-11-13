@@ -89,12 +89,21 @@ const card = (title: string): HTMLElement =>
     (el) => el.querySelector('mds-text[tag="h2"]')?.textContent === title,
   )!
 
+// the checkbox of a colour, named after it: the one switch of the page is Group selected
 const colourSwitch = (scope: Element, name: string): HTMLElement =>
-  [...scope.querySelectorAll<HTMLElement>('.groups-member-check mds-input-switch')].find(
+  [...scope.querySelectorAll<HTMLElement>('mds-input-switch[type="checkbox"]')].find(
     (el) => el.textContent === name,
   )!
 
-const count = () => root.querySelector('.groups-selection [role="status"]')?.textContent?.trim()
+// the status that counts the selection, among those of the page (the app has its own)
+const count = () =>
+  [...root.querySelectorAll('[role="status"]')]
+    .map((status) => status.textContent?.trim())
+    .find((text) => text?.endsWith(' selected'))
+
+// a field of Magma by the label it shows, and the select it holds
+const selectIn = (scope: Element, label: string) =>
+  scope.querySelector(`mds-input-field[label="${label}"] mds-input-select`)
 
 const batchButton = () =>
   [...root.querySelectorAll<HTMLElement>('mds-button')].find(
@@ -104,7 +113,7 @@ const batchButton = () =>
 test('every colour has its own checkbox, always on the page and named after the colour', () => {
   show()
   const tone = card('tone')
-  const checks = [...tone.querySelectorAll('.groups-member-check mds-input-switch')]
+  const checks = [...tone.querySelectorAll('mds-input-switch')]
   expect(checks.map((el) => el.textContent)).toEqual([
     'porcelain',
     'kaolin',
@@ -142,7 +151,7 @@ test('group selected lifts the ticked colours into a card of their own, out of t
   await flush()
   expect(card('Selected colors')).toBeUndefined()
 
-  const groupSelected = root.querySelector('.groups-selection-bar mds-input-switch[type="switch"]')!
+  const groupSelected = root.querySelector('mds-input-switch[type="switch"]')!
   expect(groupSelected.textContent?.trim()).toBe('Group selected')
   emit(groupSelected, 'mdsInputSwitchChange', { name: '', checked: true, value: '' })
   await flush()
@@ -155,7 +164,7 @@ test('group selected lifts the ticked colours into a card of their own, out of t
 
 test('select by export hands the export over once, then goes back to its placeholder', async () => {
   const calls = show()
-  const select = root.querySelector('.groups-selection-export mds-input-select')!
+  const select = selectIn(root, 'Select by export')!
   expect(select.getAttribute('placeholder')).toBe('Choose an export')
   expect([...select.querySelectorAll('option')].map((option) => option.value)).toEqual([
     'default',
@@ -175,14 +184,14 @@ test('select by export hands the export over once, then goes back to its placeho
 
 test('the formula and the ratios of a group are written to its settings', async () => {
   const calls = show()
-  const [formula, ratios] = [...card('status').querySelectorAll('.groups-settings mds-input-select')]
+  const [formula, ratios] = [...card('status').querySelectorAll('mds-input-select')]
   expect(formula.closest('mds-input-field')?.getAttribute('label')).toBe('Formula')
   expect(formula.getAttribute('size')).toBe('md')
 
   emit(formula, 'mdsInputSelectChange', { value: 'wcag2', values: ['wcag2'] })
   await flush()
   expect(calls.update.at(-1)).toEqual(['status', { surface: true, formula: 'wcag2' }])
-  expect(card('status').querySelector('.groups-settings mds-input-select')?.getAttribute('value')).toBe('wcag2')
+  expect(selectIn(card('status'), 'Formula')?.getAttribute('value')).toBe('wcag2')
 
   // inherit again: the field goes away from the settings
   emit(formula, 'mdsInputSelectChange', { value: '', values: [] })
@@ -196,7 +205,7 @@ test('the formula and the ratios of a group are written to its settings', async 
 
 test('the export of a group is written when the field is left or Enter is pressed, not per keystroke', async () => {
   const calls = show()
-  const field = () => card('label').querySelector('.groups-settings-export mds-input')!
+  const field = () => card('label').querySelector('mds-input-field[label="Export"] mds-input')!
 
   // the person types in the field, which has the focus
   emit(field(), 'mdsInputFocus', undefined)
@@ -238,7 +247,7 @@ test('in the app, select by export selects the colours of the export and opens t
   render(h(App, { view: 'groups' }), root)
 
   const select = await vi.waitFor(() => {
-    const el = root.querySelector('.groups-selection-export mds-input-select')
+    const el = selectIn(root, 'Select by export')
     if (!el) throw new Error('no groups page yet')
     return el
   })

@@ -163,9 +163,14 @@ test('a slider is named by its text, which mds-input-range reads, hidden from th
   render(h(Range, { value: 40, onValue: () => undefined, min: 0, max: 100, label: 'Disabled' }), root)
   const slider = await ready('mds-input-range')
   expect(slider.textContent).toBe('Disabled')
-  expect(slider.querySelector('span')?.className).toBe('studio-hidden')
   expect(slider.hasAttribute('aria-label')).toBe(false)
   await expect.element(page.getByRole('slider', { name: 'Disabled' })).toBeInTheDocument()
+  // the text takes no room on the page: a box of one pixel, clipped
+  const text = slider.querySelector('span')!
+  const box = text.getBoundingClientRect()
+  expect(box.width).toBeLessThanOrEqual(1)
+  expect(box.height).toBeLessThanOrEqual(1)
+  expect(getComputedStyle(text).clipPath).toBe('inset(50%)')
 })
 
 test('what the person types right after a commit is kept, not reset by the value of the page', async () => {

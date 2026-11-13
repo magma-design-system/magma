@@ -120,6 +120,9 @@ function button (label: string): HTMLElement | undefined {
 const isDisabled = (el: HTMLElement | undefined): boolean =>
   Boolean(el?.hasAttribute('disabled') || (el as HTMLButtonElement | undefined)?.disabled)
 
+// the banner of the conflict: the banner of Magma that offers to keep the draft
+const conflict = (): Element | null | undefined => button('Keep the draft')?.closest('mds-banner')
+
 test('the app asks before a draft with edits wins over a changed file, and can take the file', async () => {
   localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(
     draftOf(edits, { path: PATH, hash: hashText(diskJson) }, true),
@@ -128,10 +131,12 @@ test('the app asks before a draft with edits wins over a changed file, and can t
   render(h(App, {}), root)
 
   const banner = await vi.waitFor(() => {
-    const el = root.querySelector('.draft-conflict')
+    const el = conflict()
     if (!el) throw new Error('no conflict banner yet')
     return el
   })
+  // a warning: the draft and the file disagree, nothing is lost yet
+  expect(banner.getAttribute('variant')).toBe('warning')
   expect(banner.textContent).toContain(`${PATH} changed after this draft was saved`)
   // saving now would write the draft over the file that changed
   expect(isDisabled(button('Save *'))).toBe(true)
@@ -140,7 +145,7 @@ test('the app asks before a draft with edits wins over a changed file, and can t
 
   button('Use the file on disk')!.click()
   await vi.waitFor(() => {
-    if (root.querySelector('.draft-conflict')) throw new Error('banner still shown')
+    if (conflict()) throw new Error('banner still shown')
   })
   await vi.waitFor(() => {
     const draft = storedDraft()
@@ -168,7 +173,7 @@ test('keeping the draft restamps it on the file now on disk, with its edits unsa
     expect(draft.source).toEqual({ path: PATH, hash: hashText(changedJson) })
     expect(draft.edited).toBe(true)
   })
-  expect(root.querySelector('.draft-conflict')).toBeNull()
+  expect(conflict()).toBeUndefined()
   expect(isDisabled(button('Save *'))).toBe(false)
 })
 
@@ -182,7 +187,7 @@ test('a draft made on the file still on disk is restored without asking', async 
   await vi.waitFor(() => {
     if (!button('Save *')) throw new Error('server mode not adopted yet')
   })
-  expect(root.querySelector('.draft-conflict')).toBeNull()
+  expect(conflict()).toBeUndefined()
   expect(storedDraft().config).toEqual(edits)
 })
 

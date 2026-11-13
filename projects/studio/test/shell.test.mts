@@ -3,6 +3,7 @@ import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { afterEach, beforeEach, expect, test, vi } from 'vitest'
 import { h, render } from 'preact'
+import { within } from '@testing-library/preact'
 
 import initialConfig from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json'
 import { DRAFT_STORAGE_KEY, hashText, type StudioDraft } from '../src/draft.js'
@@ -12,7 +13,8 @@ import { textOf } from './text.mjs'
 
 // The shell of the studio: the bar names the three sections, each page is a link with the
 // current one marked (app-shell), and the Theme section shows the theme in its own document.
-// jsdom does not upgrade the Magma components: the test reads the markup the shell writes.
+// jsdom does not upgrade the Magma components: the test reads the markup the shell writes, the
+// native elements by their role and name, the Magma ones by their tag and attributes.
 
 // the folder of this file: the URL global of jsdom is no file URL readFileSync takes
 const here = dirname(fileURLToPath(import.meta.url))
@@ -38,6 +40,15 @@ const at = async (hash: string) => {
     if (!root.querySelector('mds-header-bar')) throw new Error('no bar yet')
   })
 }
+// the name of the studio, a link to the Start page
+const product = () => within(root).getByRole('link', { name: /^Magma Studio/ })
+// the Start page, the main landmark its hero is in, the region its title names
+const START_TITLE = 'The theme of your product, readable by everyone'
+const startPage = () => within(root).queryByRole('region', { name: START_TITLE })?.closest('main') ?? null
+// the bar of the Theme section, a toolbar named after it
+const themeBar = () => within(root).getByRole('toolbar', { name: 'Theme' })
+// the frames of the Theme section, in the box whose width the preview sets
+const scenes = () => [...root.querySelectorAll('[data-width] > iframe')]
 const links = (scope: Element | null) =>
   [...(scope?.querySelectorAll('mds-button[href]') ?? [])].map((link) => ({
     text: textOf(link),
@@ -82,10 +93,11 @@ test('the Config menu of the bar imports and exports the configuration from any 
   const menu = [...root.querySelectorAll('mds-dropdown')].find(
     (one) => String((one as { target?: string }).target ?? one.getAttribute('target')) === '#studio-config',
   )!
+  // each action a button, the badge of its format right after it
   const items = () =>
-    [...menu.querySelectorAll('.studio-config-item')].map((item) => [
-      item.querySelector('mds-button')?.getAttribute('label'),
-      item.querySelector('mds-badge')?.getAttribute('label') ?? null,
+    [...menu.querySelectorAll('mds-button')].map((button) => [
+      button.getAttribute('label'),
+      button.nextElementSibling?.localName === 'mds-badge' ? button.nextElementSibling.getAttribute('label') : null,
     ])
   await vi.waitFor(() => expect(items().length).toBeGreaterThan(0))
   expect(items()).toEqual([
@@ -104,8 +116,8 @@ test('the Config menu of the bar imports and exports the configuration from any 
   // the take-outs after a separator
   expect(menu.querySelectorAll('mds-separator').length).toBe(1)
   // and in the menu of a narrow window
-  const narrow = root.querySelector('nav.studio-menu-nav')!
-  expect([...narrow.querySelectorAll('.studio-config-item mds-button')].map((one) => one.getAttribute('label')))
+  const narrow = within(root).getByRole('navigation', { name: 'Studio' })
+  expect([...narrow.querySelectorAll('mds-button[data-action]')].map((one) => one.getAttribute('label')))
     .toContain('Import config')
   // a download from the Theme section hands over its file
   const files: string[] = []
@@ -133,9 +145,9 @@ test('the Config menu of the bar imports and exports the configuration from any 
 test('a start with no address opens the Start page, which the name of the studio links to', async () => {
   await at('')
   await vi.waitFor(() => expect(location.hash).toBe('#/start'))
-  const start = root.querySelector('main.start')
-  expect(start?.querySelector('mds-text[tag="h1"]')?.textContent?.trim()).toBe('The theme of your product, readable by everyone')
-  expect(root.querySelector('a.studio-product')?.getAttribute('href')).toBe('#/start')
+  const start = startPage()
+  expect(start?.querySelector('mds-text[tag="h1"]')?.textContent?.trim()).toBe(START_TITLE)
+  expect(product().getAttribute('href')).toBe('#/start')
   // no section of the bar is the one on screen, and Config is no section
   const nav = [...root.querySelectorAll('mds-header-bar > mds-button[slot="nav"]')]
   expect(nav.map((one) => one.getAttribute('tone'))).toEqual(['text', 'text', 'text', 'text'])
@@ -151,7 +163,8 @@ test('the Start page offers to continue on the page of Colors the draft was on',
   }
   localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft))
   await at('#/start')
-  const start = root.querySelector('main.start')
+  const start = startPage()
+  expect(start).not.toBeNull()
   expect(links(start).find(({ text }) => text?.startsWith('Continue on'))).toEqual({
     text: 'Continue on Contrast scales',
     href: '#/colors/contrast-scales',
@@ -159,32 +172,31 @@ test('the Start page offers to continue on the page of Colors the draft was on',
   })
   // the page last opened, once the person has opened one
   location.hash = '#/colors/groups'
-  await vi.waitFor(() => expect(root.querySelector('main.start')).toBeNull())
+  await vi.waitFor(() => expect(startPage()).toBeNull())
   location.hash = '#/start'
   await vi.waitFor(() =>
-    expect(links(root.querySelector('main.start')).map(({ text }) => text)).toContain('Continue on Groups'),
+    expect(links(startPage()).map(({ text }) => text)).toContain('Continue on Groups'),
   )
 })
 
 test('the Theme section shows the theme in a document of its own, its controls in a bar over it', async () => {
   await at('#/theme')
-  const page = await vi.waitFor(() => {
-    const found = root.querySelector('.studio-theme')
-    if (!found) throw new Error('no theme page yet')
-    return found
-  })
-  expect(root.querySelector('iframe.studio-scene')?.getAttribute('src')).toBe('scene.html')
-  // nothing over the frames: what the theme is checked under opens from the bar at the bottom too
-  expect(page.firstElementChild?.classList.contains('studio-frames')).toBe(true)
+  const bar = await vi.waitFor(themeBar)
+  expect(scenes().map((frame) => frame.getAttribute('src'))).toEqual(['scene.html'])
+  // nothing over the frames: what the theme is checked under opens from the bar at the bottom too.
+  // The box of the frames is the first of the section that holds the bar
+  const frames = scenes()[0].parentElement!
+  expect(frames.parentElement).toBe(bar.parentElement)
+  expect(frames.parentElement?.firstElementChild).toBe(frames)
   // the themes of the configuration, once it is loaded: porcelain is one, though Magma ships none
   // by that name
   await vi.waitFor(() => {
-    const options = [...root.querySelectorAll('.studio-toolbar mds-input-select option')]
+    const options = [...themeBar().querySelectorAll('mds-input-select option')]
     expect(options.map((option) => option.getAttribute('value'))).toEqual(['business', 'porcelain', 'editorial'])
   })
   // only the axes with something to set: the others wait for their panel, out of sight (#696);
   // then the ruler of the preview
-  const buttons = [...root.querySelectorAll('.studio-toolbar mds-button')]
+  const buttons = [...bar.querySelectorAll('mds-button')]
   expect(buttons.map((button) => button.getAttribute('aria-label'))).toEqual(['Preferences of the person', 'Preview'])
   expect(buttons.map((button) => button.getAttribute('icon'))).toEqual(['mi/baseline/accessibility', 'mi/outline/straighten'])
   expect(buttons.some((button) => button.hasAttribute('disabled'))).toBe(false)
@@ -193,14 +205,14 @@ test('the Theme section shows the theme in a document of its own, its controls i
 test('an axis opens its controls in a dropdown from its button, and says which one is open', async () => {
   await at('#/theme')
   const button = await vi.waitFor(() => {
-    const found = root.querySelector('.studio-toolbar mds-button[aria-label="Preferences of the person"]')
+    const found = themeBar().querySelector('mds-button[aria-label="Preferences of the person"]')
     if (!found) throw new Error('no bar yet')
     return found
   })
   // the dropdown is not inside the bar, a toolbar of controls, and anchors to the button
   const dropdown = root.querySelector(`mds-dropdown[target="#${button.id}"]`)!
   expect(dropdown).not.toBeNull()
-  expect(dropdown.closest('.studio-toolbar')).toBeNull()
+  expect(dropdown.closest('[role="toolbar"]')).toBeNull()
   expect(dropdown.getAttribute('placement')).toBe('top')
   // a panel of controls, not a menu: mds-dropdown leaves its contents alone; its title names it
   expect(dropdown.getAttribute('role')).toBe('group')
@@ -228,8 +240,7 @@ test('a theme of one mode is seen in that mode only, the other modes of the pref
   await at('#/theme')
   // the base theme, business, locked to dark on the Themes page
   await vi.waitFor(() => {
-    const frames = [...root.querySelectorAll('iframe.studio-scene')]
-    expect(frames.map((frame) => frame.getAttribute('title'))).toEqual(['The theme on a page of a product, dark mode'])
+    expect(scenes().map((frame) => frame.getAttribute('title'))).toEqual(['The theme on a page of a product, dark mode'])
   })
   const modes = root.querySelector('mds-dropdown[target="#studio-axis-preferences"] mds-tab[aria-label="Mode"]')!
   expect(modes.previousElementSibling?.textContent).toBe('Mode Dark')
@@ -244,7 +255,7 @@ test('a theme of one mode is seen in that mode only, the other modes of the pref
 test('an address that names a theme and a mode opens the section on them, and follows the choices made there', async () => {
   await at('#/theme/editorial/dark')
   const select = await vi.waitFor(() => {
-    const found = root.querySelector('.studio-toolbar mds-input-select')
+    const found = themeBar().querySelector('mds-input-select')
     expect(found?.getAttribute('value')).toBe('editorial')
     return found!
   })
@@ -252,7 +263,7 @@ test('an address that names a theme and a mode opens the section on them, and fo
   const modes = root.querySelector('mds-dropdown[target="#studio-axis-preferences"] mds-tab[aria-label="Mode"]')!
   expect([...modes.querySelectorAll('mds-tab-item')].map((item) => item.hasAttribute('selected')))
     .toEqual([false, true, false])
-  expect([...root.querySelectorAll('iframe.studio-scene')].map((frame) => frame.getAttribute('title')))
+  expect(scenes().map((frame) => frame.getAttribute('title')))
     .toEqual(['The theme on a page of a product, dark mode'])
 
   // a choice made in the section goes into the address in place: no page to go back to
@@ -282,8 +293,8 @@ test('the preferences set the mode and the contrast: both modes are two frames',
   expect([...modes.querySelectorAll('mds-tab-item')].map((item) => [item.getAttribute('value'), item.getAttribute('icon')]))
     .toEqual([['light', 'mi/baseline/light-mode'], ['dark', 'mi/baseline/dark-mode'], ['both', 'mi/baseline/compare']])
   modes.dispatchEvent(new CustomEvent('mdsTabChange', { detail: { id: 2, value: 'both' }, bubbles: true }))
-  await vi.waitFor(() => expect(root.querySelectorAll('iframe.studio-scene')).toHaveLength(2))
-  expect([...root.querySelectorAll('iframe.studio-scene')].map((frame) => frame.getAttribute('title')))
+  await vi.waitFor(() => expect(scenes()).toHaveLength(2))
+  expect(scenes().map((frame) => frame.getAttribute('title')))
     .toEqual(['The theme on a page of a product, light mode', 'The theme on a page of a product, dark mode'])
   expect(modes.previousElementSibling?.textContent).toBe('Mode Light and dark')
 
@@ -297,13 +308,13 @@ test('the preferences set the mode and the contrast: both modes are two frames',
 test('the ruler opens the preview: the view the frame shows, its width a breakpoint', async () => {
   await at('#/theme')
   const button = await vi.waitFor(() => {
-    const found = root.querySelector('.studio-toolbar mds-button[aria-label="Preview"]')
+    const found = themeBar().querySelector('mds-button[aria-label="Preview"]')
     if (!found) throw new Error('no bar yet')
     return found
   })
   // a panel of controls above the bar, out of it, named by its title, as the one of an axis
   const dropdown = root.querySelector(`mds-dropdown[target="#${button.id}"]`)!
-  expect(dropdown.closest('.studio-toolbar')).toBeNull()
+  expect(dropdown.closest('[role="toolbar"]')).toBeNull()
   expect([dropdown.getAttribute('placement'), dropdown.getAttribute('role')]).toEqual(['top', 'group'])
   const title = dropdown.querySelector(`#${dropdown.getAttribute('aria-labelledby')}`)!
   expect(title.textContent).toBe('Preview')
@@ -318,10 +329,10 @@ test('the ruler opens the preview: the view the frame shows, its width a breakpo
   expect([...views.querySelectorAll('mds-tab-item')].map((item) => item.getAttribute('label')))
     .toEqual(['Scenes', 'Groups'])
   views.dispatchEvent(new CustomEvent('mdsTabChange', { detail: { id: 1, value: 'groups' }, bubbles: true }))
-  await vi.waitFor(() => expect(root.querySelector('iframe.studio-scene')?.getAttribute('src')).toBe('groups.html'))
+  await vi.waitFor(() => expect(scenes()[0]?.getAttribute('src')).toBe('groups.html'))
   expect(views.previousElementSibling?.textContent).toBe('View The theme on every component')
   views.dispatchEvent(new CustomEvent('mdsTabChange', { detail: { id: 0, value: 'scenes' }, bubbles: true }))
-  await vi.waitFor(() => expect(root.querySelector('iframe.studio-scene')?.getAttribute('src')).toBe('scene.html'))
+  await vi.waitFor(() => expect(scenes()[0]?.getAttribute('src')).toBe('scene.html'))
 
   // the width: the room of the section, or a breakpoint of Magma
   const width = dropdown.querySelector('mds-tab[aria-label="Width"]')!
@@ -329,7 +340,7 @@ test('the ruler opens the preview: the view the frame shows, its width a breakpo
     .toEqual(['full', 'desktop', 'tablet', 'mobile'])
   expect(width.previousElementSibling?.textContent).toBe('Width Full width')
   width.dispatchEvent(new CustomEvent('mdsTabChange', { detail: { id: 2, value: 'tablet' }, bubbles: true }))
-  await vi.waitFor(() => expect(root.querySelector('.studio-frames')?.getAttribute('data-width')).toBe('tablet'))
+  await vi.waitFor(() => expect(scenes()[0]?.parentElement?.getAttribute('data-width')).toBe('tablet'))
 })
 
 test('the bar says the version of the Magma the studio runs on, under its name', async () => {
@@ -337,7 +348,9 @@ test('the bar says the version of the Magma the studio runs on, under its name',
   document.head.append(meta)
   try {
     await at('#/colors/palette')
-    const version = root.querySelector('.studio-product-version')!
+    // the lines of the name of the studio: its name, then the version
+    const [name, version] = [...product().querySelectorAll('mds-text')]
+    expect(name.textContent?.trim()).toBe('Magma Studio')
     expect(version.getAttribute('typography')).toBe('label')
     expect(version.textContent).toBe('for Magma v2.11.0')
   } finally {
@@ -346,7 +359,7 @@ test('the bar says the version of the Magma the studio runs on, under its name',
   // served without vendor.ts (a test, a page of its own): no version rather than a wrong one
   render(null, root)
   await at('#/colors/palette')
-  expect(root.querySelector('.studio-product-version')).toBeNull()
+  expect([...product().querySelectorAll('mds-text')].map((one) => one.textContent?.trim())).toEqual(['Magma Studio'])
 })
 
 // #1336: the menu of the bar, at every width, holds the preferences of the person: the language
@@ -354,15 +367,18 @@ test('the bar says the version of the Magma the studio runs on, under its name',
 test('the menu of the bar holds the preferences of the person, at every width', async () => {
   await at('#/start')
   expect(root.querySelector('mds-header')?.getAttribute('menu')).toBe('all')
-  const prefs = root.querySelector('.studio-menu mds-pref')!
+  // the menu of the bar: the sections, a navigation, then the preferences, a group named by its title
+  const menu = root.querySelector<HTMLElement>('mds-header > [slot="menu"]')!
+  const sections = within(menu).getByRole('navigation', { name: 'Studio' })
+  const preferences = within(menu).getByRole('group', { name: 'Preferences' })
+  expect([...menu.children]).toEqual([sections, preferences])
+  const prefs = preferences.querySelector('mds-pref')!
   // the studio follows the language at once: no reload to ask for
   expect(prefs.hasAttribute('live-language')).toBe(true)
   expect([...prefs.children].map((one) => one.localName)).toEqual([
     'mds-pref-language', 'mds-pref-mode', 'mds-pref-contrast', 'mds-pref-animation',
   ])
   expect([...prefs.querySelectorAll('mds-pref-language-item')].map((one) => one.getAttribute('code'))).toEqual(['it', 'en'])
-  const menu = root.querySelector('.studio-menu')!
-  expect([...menu.children].map((one) => one.className)).toEqual(['studio-menu-nav', 'studio-menu-prefs'])
 })
 
 test('the menu hides its sections from the width the bar shows them, the tablet breakpoint of Magma', () => {
