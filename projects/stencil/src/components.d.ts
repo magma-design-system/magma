@@ -609,6 +609,10 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
+          * With `href`, saves its file instead of opening it, as the `download` attribute of `<a>`: present with no value, or `true`, the file takes the name the server gives it; a string is the name of the saved file. Browsers apply it to the URLs of the origin of the page, `blob:` and `data:`: a link to another origin opens the file as without it. A download never goes to the router registered with `NavigationService`
+         */
+        "download"?: boolean | string;
+        /**
           * Turns the button into a link to this URL: a real anchor in its shadow root, so the browser gives it what it gives every link (new tab on a modifier or middle click, the context menu, drag). A client-side router takes the plain clicks over once registered with `NavigationService.setHandler()` (from `@maggioli-design-system/magma/services`); without one, a click listener on the host can still cancel the navigation with `preventDefault()`.
          */
         "href"?: string;
@@ -2179,6 +2183,10 @@ export namespace Components {
      * @category actions
      */
     interface MdsLink {
+        /**
+          * Saves the file of `href` instead of opening it, as the `download` attribute of `<a>`: present with no value, or `true`, the file takes the name the server gives it; a string is the name of the saved file. Browsers apply it to the URLs of the origin of the page, `blob:` and `data:`: a link to another origin opens the file as without it. A download never goes to the router registered with `NavigationService`
+         */
+        "download"?: boolean | string;
         /**
           * The URL of the link: a real anchor in its shadow root, so the browser gives it what it gives every link (new tab on a modifier or middle click, the context menu, drag). A client-side router takes the plain clicks over once registered with `NavigationService.setHandler()` (from `@maggioli-design-system/magma/services`); without one, a click listener on the host can still cancel the navigation with `preventDefault()`. Without `href` the link is an inline button: it answers to click, Enter and Space with a `click` event and never submits a form.
          */
@@ -6077,6 +6085,10 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
+          * With `href`, saves its file instead of opening it, as the `download` attribute of `<a>`: present with no value, or `true`, the file takes the name the server gives it; a string is the name of the saved file. Browsers apply it to the URLs of the origin of the page, `blob:` and `data:`: a link to another origin opens the file as without it. A download never goes to the router registered with `NavigationService`
+         */
+        "download"?: boolean | string;
+        /**
           * The `id` of a `<form>` element to associate this element with.
          */
         "form"?: string;
@@ -7740,6 +7752,10 @@ declare namespace LocalJSX {
      */
     interface MdsLink {
         /**
+          * Saves the file of `href` instead of opening it, as the `download` attribute of `<a>`: present with no value, or `true`, the file takes the name the server gives it; a string is the name of the saved file. Browsers apply it to the URLs of the origin of the page, `blob:` and `data:`: a link to another origin opens the file as without it. A download never goes to the router registered with `NavigationService`
+         */
+        "download"?: boolean | string;
+        /**
           * The URL of the link: a real anchor in its shadow root, so the browser gives it what it gives every link (new tab on a modifier or middle click, the context menu, drag). A client-side router takes the plain clicks over once registered with `NavigationService.setHandler()` (from `@maggioli-design-system/magma/services`); without one, a click listener on the host can still cancel the navigation with `preventDefault()`. Without `href` the link is an inline button: it answers to click, Enter and Space with a `click` event and never submits a form.
          */
         "href"?: string;
@@ -9343,6 +9359,7 @@ declare namespace LocalJSX {
         "await": boolean;
         "href": string;
         "target": ButtonTargetType;
+        "download": string;
         "current": string;
         "truncate": TypographyTruncateType;
     }
@@ -9666,6 +9683,7 @@ declare namespace LocalJSX {
         "label": string;
         "href": string;
         "target": ButtonTargetType;
+        "download": string;
         "icon": string;
         "iconPosition": ButtonIconPositionType;
         "variant": LinkVariantType;

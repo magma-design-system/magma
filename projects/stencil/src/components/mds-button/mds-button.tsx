@@ -18,7 +18,7 @@ import { TypographyTruncateType } from '@type/text';
 import { readSlottedLabel, sanitizeLabel } from '@common/slot';
 import { preferenceStore } from '@common/preference';
 import { requestSubmitAs } from '@common/form';
-import { NavigationService } from '@common/navigation';
+import { NavigationService, downloadAttribute } from '@common/navigation';
 import mdiApple from '@icon/mdi/apple.svg';
 import logoGoogle from './asset/logo-google.svg';
 import { TextAnimationType } from '@component/mds-text/meta/types';
@@ -154,6 +154,15 @@ export class MdsButton {
    * Specifies the target of the URL, if self or blank
    */
   @Prop() readonly target: ButtonTargetType = 'self';
+
+  /**
+   * With `href`, saves its file instead of opening it, as the `download` attribute of `<a>`:
+   * present with no value, or `true`, the file takes the name the server gives it; a string is
+   * the name of the saved file. Browsers apply it to the URLs of the origin of the page, `blob:`
+   * and `data:`: a link to another origin opens the file as without it. A download never goes to
+   * the router registered with `NavigationService`
+   */
+  @Prop() readonly download?: boolean | string;
 
   /**
    * Marks the button that leads to the view you are in, as the current section of a bar or the
@@ -300,6 +309,13 @@ export class MdsButton {
 
   private isLink = (): boolean => (this.href ?? '') !== '';
 
+  private isDownload = (): boolean =>
+    this.isLink() && downloadAttribute(this.download) !== undefined;
+
+  // set while the host hands the click of the keyboard or of a script to the anchor, for a
+  // download
+  private savingFile = false;
+
   // the button of the view you are in does nothing: going there again would only reload it. A
   // section you are inside of stays a link back to it (#1264)
   private isCurrentView = (): boolean => currentOf(this.current) === 'page';
@@ -317,9 +333,17 @@ export class MdsButton {
    * technology: the host follows the link as the anchor would, once every listener on the page
    * had its say. The timeout is what lets a listener added after this one, or delegated to the
    * document by a framework, cancel the navigation: a microtask could run between two listeners.
+   *
+   * A download is the browser's on every path: it saves the file, and a router has no view to
+   * render for it.
    */
   private handleLinkClick = (event: MouseEvent): void => {
     if (!this.isLink() || this.disabled || this.await) return;
+    if (this.savingFile) {
+      // the click the host gave the anchor: the page already had the one it answers
+      event.stopImmediatePropagation();
+      return;
+    }
     if (this.isCurrentView()) {
       // the anchor takes no pointer then (mds-button-current.css): this is the click of a script
       event.preventDefault();
@@ -327,7 +351,12 @@ export class MdsButton {
     }
     const href = this.href ?? '';
     if (this.anchor && event.composedPath().includes(this.anchor)) {
-      if (this.opensElsewhere(event) || !NavigationService.canHandle(href, event)) return;
+      if (
+        this.isDownload() ||
+        this.opensElsewhere(event) ||
+        !NavigationService.canHandle(href, event)
+      )
+        return;
       event.preventDefault();
       this.route(href, event);
       return;
@@ -339,6 +368,13 @@ export class MdsButton {
 
   private follow = (event: MouseEvent): void => {
     if (typeof window === 'undefined') return;
+    if (this.isDownload()) {
+      // only an anchor saves a file: a click of its own runs its activation, synchronously
+      this.savingFile = true;
+      this.anchor?.click();
+      this.savingFile = false;
+      return;
+    }
     const href = this.href ?? '';
     if (this.opensElsewhere(event)) {
       window.open(href, '_blank');
@@ -490,6 +526,7 @@ export class MdsButton {
           <a
             aria-hidden="true"
             class="link"
+            download={downloadAttribute(this.download)}
             href={this.href}
             onFocus={this.focusHost}
             ref={(el) => (this.anchor = el)}

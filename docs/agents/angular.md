@@ -187,7 +187,7 @@ the browser makes it again when the app boots there. The `mdsIconSvgPath` key of
 The links of the components (`href` of `mds-button`, `mds-tab-item`, ...) are real anchors
 the browser follows, loading the page. Register the Angular router once, at app startup, and
 every plain click on a component link is routed on the client instead; a modifier or middle
-click, `target="blank"` and a link to another origin stay with the browser.
+click, `target="blank"`, `download` and a link to another origin stay with the browser.
 
 ```typescript
 import { inject, provideAppInitializer } from '@angular/core';

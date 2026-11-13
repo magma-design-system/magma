@@ -172,7 +172,8 @@ SSR notes:
 The links of the components (`href` of `MdsButton`, `MdsTabItem`, ...) are real anchors
 the browser follows, loading the page. Register the router once, in the client wrapper of
 section 3, and every plain click on a component link is routed on the client instead; a
-modifier or middle click, `target="blank"` and a link to another origin stay with the browser.
+modifier or middle click, `target="blank"`, `download` and a link to another origin stay with
+the browser.
 
 ```tsx
 'use client';

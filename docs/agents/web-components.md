@@ -144,7 +144,7 @@ see [`react.md`](react.md).
 The links of the components (`href` of `mds-button`, `mds-tab-item`, ...) are real anchors
 the browser follows, loading the page. In a single-page app register the router once and every
 plain click on a component link is routed on the client instead; a modifier or middle click,
-`target="blank"` and a link to another origin stay with the browser.
+`target="blank"`, `download` and a link to another origin stay with the browser.
 
 ```javascript
 import { NavigationService } from '@maggioli-design-system/magma/services';

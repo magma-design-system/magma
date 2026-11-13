@@ -3,7 +3,7 @@ import { Component, Element, Host, h, Prop } from '@stencil/core';
 import { ToneMinimalVariantType } from '@type/tone';
 import { KeyboardManager } from '@common/keyboard-manager';
 import { Locale } from '@common/locale';
-import { NavigationService } from '@common/navigation';
+import { NavigationService, downloadAttribute } from '@common/navigation';
 import { preferenceStore } from '@common/preference';
 import { LinkUnderlineType, LinkVariantType } from './meta/types';
 import localeEl from './meta/locale.el.json';
@@ -57,6 +57,15 @@ export class MdsLink {
   @Prop() readonly target: ButtonTargetType = 'self';
 
   /**
+   * Saves the file of `href` instead of opening it, as the `download` attribute of `<a>`: present
+   * with no value, or `true`, the file takes the name the server gives it; a string is the name
+   * of the saved file. Browsers apply it to the URLs of the origin of the page, `blob:` and
+   * `data:`: a link to another origin opens the file as without it. A download never goes to the
+   * router registered with `NavigationService`
+   */
+  @Prop() readonly download?: boolean | string;
+
+  /**
    * The icon displayed in the link
    */
   @Prop({ reflect: true }) readonly icon?: string;
@@ -85,6 +94,12 @@ export class MdsLink {
 
   private isLink = (): boolean => (this.href ?? '') !== '';
 
+  private isDownload = (): boolean =>
+    this.isLink() && downloadAttribute(this.download) !== undefined;
+
+  // set while the host hands the click of a script to the anchor, for a download
+  private savingFile = false;
+
   private opensInNewTab = (): boolean => this.isLink() && this.target === 'blank';
 
   // a link the browser opens in a new tab or window: asked by the link, or by the user
@@ -99,12 +114,25 @@ export class MdsLink {
    * A click that did not land on the anchor comes from a script: the host follows the link as
    * the anchor would, once every listener on the page had its say. The timeout is what lets a
    * listener added after this one, or delegated to the document by a framework, cancel it.
+   *
+   * A download is the browser's on every path: it saves the file, and a router has no view to
+   * render for it.
    */
   private handleClick = (event: MouseEvent): void => {
     if (!this.isLink()) return;
+    if (this.savingFile) {
+      // the click the host gave the anchor: the page already had the one of the script
+      event.stopImmediatePropagation();
+      return;
+    }
     const href = this.href ?? '';
     if (this.link && event.composedPath().includes(this.link)) {
-      if (this.opensElsewhere(event) || !NavigationService.canHandle(href, event)) return;
+      if (
+        this.isDownload() ||
+        this.opensElsewhere(event) ||
+        !NavigationService.canHandle(href, event)
+      )
+        return;
       event.preventDefault();
       this.route(href, event);
       return;
@@ -116,6 +144,13 @@ export class MdsLink {
 
   private follow = (event: MouseEvent): void => {
     if (typeof window === 'undefined') return;
+    if (this.isDownload()) {
+      // only an anchor saves a file: a click of its own runs its activation, synchronously
+      this.savingFile = true;
+      this.link?.click();
+      this.savingFile = false;
+      return;
+    }
     const href = this.href ?? '';
     if (this.opensElsewhere(event)) {
       window.open(href, '_blank', 'noopener,noreferrer');
@@ -148,6 +183,7 @@ export class MdsLink {
     const blank = this.opensInNewTab();
     const attributes = this.isLink()
       ? {
+          download: downloadAttribute(this.download),
           href: this.href,
           rel: blank ? 'noopener noreferrer' : undefined,
           target: blank ? '_blank' : undefined,
