@@ -65,7 +65,7 @@ A Markdown file: the frontmatter is the data, the body is for people and agents 
 | `principle` | The rule of the pattern in one sentence: the bold line under the title. |
 | `keywords`, `not-for`, `assumptions`, `high-stakes`, `components`, `related`, `validated-on` | The words of the need; the needs another pattern answers (`{ need, use: <id> }`); what the default takes for granted; whether it is a payment, a destructive action or a legal step; the components the cases use; the neighbouring patterns; the products it was validated on. |
 | `variables` | `name: { values: [...], means: "..." }`. Values are text: quote `yes`, `no` and numbers. No variable may take the name of a key of the entries (`id`, `where`, `use`, `see`, `magma-gap`, `rules`, `serves`, `carried-by`, `carried-by-planned`, `note`, `why`). |
-| `cases` | `{ id, <variable>: <value>, where, use, see, magma-gap, rules }`. A variable left out means any of its values, except `decision`, which means `none`; a list of values means any of them. `use` names components as `mds-tag attribute=value` (a bare attribute is a boolean, or a value of the application's); `see` names a case of the pattern or another pattern; `rules` names the rules and relations of the domains the case and its preview rely on, as `<domain>/<id>` (`[rhythm/inset, rhythm/between-fields]`). |
+| `cases` | `{ id, <variable>: <value>, where, use, see, magma-gap, rules }`. A variable left out means any of its values, except `decision`, which means `none`; a list of values means any of them. `use` gives the parts of the solution (The parts of a case, below); `see` names a case of the pattern or another pattern; `rules` names the rules and relations of the domains the case and its preview rely on, as `<domain>/<id>` (`[rhythm/inset, rhythm/between-fields]`). |
 | `gaps` | `{ <variable>: <value>, note }`: a combination still open, with its question. |
 | `not-applicable` | `{ <variable>: <value>, why }`: a combination with no meaning. |
 | `always-true` | `{ id, rule, checked-by: review or lint, lint, lint-planned, note }`: what holds in every product, which a product layer cannot change. A rule of another pattern is cited as `{ id, from: <pattern> }`; a rule or a relation of a domain as `{ id, from: <domain> }`. |
@@ -75,6 +75,39 @@ A Markdown file: the frontmatter is the data, the body is for people and agents 
 | `used-by` | In a block only: the patterns it comes back in, two at least, each naming the block among its `related`. |
 | `serves` | In a domain only, on each case and each rule: the principle it serves, `inclusive`, `enabling`, `intuitive` or `flexible`, or a list of them. |
 | `carried-by`, `carried-by-planned` | In a domain only, on a case or a rule: where it lives, strongest first, and where it will live once built. |
+
+### The parts of a case
+
+The `use` of a case is the solution its preview shows, part by part (#1396): `{ role, use }`, in
+the order each part first shows in the preview. `role` says what the part does in the case, from
+its `where` and the Description of the component; `use` is the component to write,
+`mds-tag attribute=value ...`. An agent composes the case from them, then adds what its own
+situation needs.
+
+```yaml
+use:
+  - { role: "the dialog, named by its question", use: "mds-modal aria-label=<the question, naming the item>" }
+  - { role: "the consequence, in a sentence", use: mds-text }
+  - { role: "Cancel, the safe choice, focused on opening", use: "mds-button slot=action variant=dark tone=outline autofocus" }
+```
+
+What an attribute is to the case is read from its type in the release (`documentation.json`),
+the maintainer's choice on #1396 (2026-11-13); the criterion is beside `attributeKind` in
+`projects/lint/src/core/patterns.ts`:
+
+| Kind | Which | In `use` |
+| --- | --- | --- |
+| The case's | a prop with a closed set of values, a number, a boolean the component never changes itself; `slot`, `role`, `tabindex`, `autofocus`; an ARIA property of a token, a number or true/false | as it is, the same as in the preview |
+| The application's text | a prop of free text (`headline`, `label`, `href`, `icon`), `title`, `lang`, `dir`, an ARIA property of text (`aria-label`) | `<what it holds>` when the case says what goes in it (`headline=<the question, naming the item>`), else left out |
+| The application's wiring | `id`, `name`, `value`, an ARIA property that names ids | never |
+| A state | a boolean the component changes itself (`opened`, `visible`, `await`, `selected`), `hidden`, an ARIA state | bare, only when the case decides it (`await` on Send); never compared |
+| The stage's | `class`, `style`, `data-*` | never |
+
+Two parts of one kind (the rows of a list) are one entry, unless they play two roles. A building
+block gives no role: its regions are its parts (`what`), and their `use` stays a list of
+`tag attribute=value`, with the same kinds. A product's own pattern, and a domain of the design
+language until its own issue, may give the bare `use` of before, `mds-tag attribute=value` (a
+bare attribute a boolean, or a value of the application's).
 
 The body has the sections of the template, in this order: When to use it, What decides it,
 Cases, Parts, Behaviour over time, Always true, Open choices, Situations, Accessibility,
@@ -224,6 +257,14 @@ try: Press Salva: the error shows above the form, and what was written stays.
   length of the words, to show what it keeps the same and what it lets vary: `<case>.2.html`,
   `<case>.3.html`, after `<case>.html`, with no gap. A rule of a pattern has none: its cases show
   it.
+- **The stage and the solution** (#1396). What the case decides is its solution; the rest is the
+  stage, the context it needs to be shown (the list a toast speaks of, the fields of a form, the
+  page around a part). `data-stage` on the outermost element of each piece of the stage marks
+  it, and everything inside it; every other component is a part of the solution, and `use` names
+  it. A preview that is all solution (a dialog) has no marker. The marker ships with the
+  preview, so an agent that reads the markup tells the context from the solution too; it is the
+  maintainer's choice on #1396 (2026-11-13), over a wrapper around the solution, which changes
+  the layout of the stage and splits when the solution does.
 - **What to try**, required: one line, what to do in the preview ("Press Salva: ..."), or what
   to look at when there is nothing to do. The page shows it under the stage. A live preview with
   nothing said is a still form; the maintainer chose the line and no animation (#1186).
@@ -237,7 +278,8 @@ try: Press Salva: the error shows above the form, and what was written stays.
   of the page start at the edge of the document, as in an application).
 - **Who reads it.** The docs site from `node_modules`; `get_pattern` gives its path on each case
   of a pattern, on each rule of a domain and on each situation of a block, the paths of the
-  other examples in `examples`, and in the answer for a situation the stage itself with what to
+  other examples in `examples`, and in the answer for a situation the parts of the case (`use`),
+  then the stage itself with what to
   try, the paths of the other examples and of the previews of the rules the case relies on (for
   a block, the preview of the situation the values match exactly, every variable given; the
   previews of the next situations with the same values go in `examples`); `get_guide` lists the previews of
@@ -295,6 +337,12 @@ try: Press Salva: the error shows above the form, and what was written stays.
   combination, `used-by` naming two patterns or more that name the block back;
 - the release: every component and attribute named exists in `dist/documentation.json`, with a
   value it takes;
+- the parts of a case (#1396): in a pattern and a block of Magma every entry of a case with its
+  role, every attribute written as its kind asks; the components each preview shows outside its
+  `data-stage`, with the attributes the case decides, are the ones `use` names, in the order they
+  first show, each placeholder a text the preview gives; every example of a case is compared;
+  a situation of a block against the regions its values show, every part named by one of them
+  and each required one shown;
 - the lint: a rule `checked-by: lint` names a rule the lint has; a `lint-planned` one, a rule it
   does not have yet (once written, the check asks to switch it to `lint`);
 - the carriers of a domain: every one of `carried-by` is in the release, every one of

@@ -48,7 +48,9 @@ moves from `carried-by-planned` to `carried-by` (the check asks for it), with no
 ## 4. The previews
 
 A case of a pattern added or changed needs its preview again (the relations of a domain have
-none yet), a renamed case moves its file
+none yet), and its `use` the parts of that preview with their role, in its order (#1396,
+`docs/PATTERNS.md`, "The parts of a case"); a preview changed by hand changes its `use` too,
+or `check.patterns` fails. A renamed case moves its file
 (`docs/agents/patterns/previews/<id>/<case>.html`): follow
 `.claude/skills/pattern-preview/SKILL.md` for those cases.
 

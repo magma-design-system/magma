@@ -33,7 +33,10 @@ rules of "Always true" it must not break. Read the usage files of the components
 format, as drafts in `.claude/previews/<id>/<case>-1.html` and `<case>-2.html` (untracked,
 where `mcp:serve.previews` shows them; never in `docs/` before the choice):
 
-- both do what the case says, with the components and attributes of its `use`;
+- both do what the case says, with the parts of its `use` (`{ role, use }`), their components
+  and attributes; mark the context it needs to be shown (the list, the form, the page around
+  the part) with `data-stage` on the outermost element of each piece, and nothing else
+  (`docs/PATTERNS.md`, "The preview of a case");
 - they differ on something the case leaves open (where exactly, the words, what sets it off),
   never on a rule of the pattern;
 - each opens with its `try`: what to do in it ("Press Salva: ..."), or what to look at when
@@ -80,6 +83,12 @@ Then:
 
 The maintainer may answer for several cases at once ("the recommended one for all"): then save
 the recommended stage of each.
+
+Once a stage is saved, bring the `use` of its case in line with it (#1396): every component
+outside `data-stage` is a part, `{ role, use }` in the order it first shows, with the attributes
+the case decides as the stage writes them and the text of the application as `<what it holds>`
+(`docs/PATTERNS.md`, "The parts of a case"). `nx run stencil:check.patterns` names a part the
+preview shows and `use` lacks, an entry the preview does not show, and an entry out of order.
 
 ## 4. Live editing
 

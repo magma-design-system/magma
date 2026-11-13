@@ -49,7 +49,10 @@ field a question that defines a pattern:
 
 - **the variables**: the few questions about the situation that decide the case, never a
   domain (no municipality, no product); each with its values and what it means;
-- **the cases**: values of the variables; `use` names the components as `mds-tag attribute=value`;
+- **the cases**: values of the variables; `use` gives the parts of the solution, each
+  `{ role, use }`: what it does in the case, then the component as `mds-tag attribute=value`,
+  the text of the application as `<what it holds>` (`docs/PATTERNS.md`, "The parts of a case");
+  once the previews exist, in the order of their parts (step 7 of `/pattern-preview`);
 - **the situations**: actions every application has (save a form in a dialog, delete from a list,
   copy a link, export a big file, lose the connection), each with its case;
 - **what is always true**, each rule `checked-by: review` or `lint` (with `lint-planned` for a

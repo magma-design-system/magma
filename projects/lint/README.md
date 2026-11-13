@@ -145,6 +145,20 @@ picked by hand. The tools of the MCP server, which answer from this core, have t
   never a case to show. What `get_pattern` makes of them (the search by need, the errors of a
   layer, the stage and the images of an answer) is in
   [`projects/mcp/README.md`](../mcp/README.md).
+  The parts of a case (#1396) are its `use`, `{ role, use }` in the order of its preview, held
+  against the components the preview shows outside the elements marked `data-stage`
+  (`previewUseErrors`, on the tree @html-eslint/parser gives, which `check.patterns` passes in
+  so the core needs no parser). Two parts are the same when their tag and the attributes the
+  case decides are; what an attribute is to a case (`attributeKind`) is read from its type in
+  `documentation.json`, the maintainer's choice on #1396: a closed set of values, a number, a
+  boolean the component never changes itself (Stencil's `mutable` false) and the global `slot`,
+  `role`, `tabindex`, `autofocus` are the case's; a prop of free text, `title`, `lang`, `dir`
+  are the application's text, written `<what it holds>`; `id`, `name`, `value` its wiring; a
+  mutable boolean and `hidden` a state the stage sets; `class`, `style`, `data-*` the stage's.
+  ARIA attributes follow the value types of WAI-ARIA 1.2, "Definitions of States and
+  Properties": a state is a state, a string is text, an ID reference is wiring, the rest is
+  the case's. An attribute the release does not know is text, and the lint of the previews
+  names it.
 - **The domains of the design language** (`kind: design-language`, `src/core/patterns.ts`,
   #1196; `foundation` in magma 2.11 and before, #1253): the domains decided on #1189, in the
   same format, so they are listed, searched and answered as the patterns are, first in the list
@@ -182,8 +196,11 @@ picked by hand. The tools of the MCP server, which answer from this core, have t
   block in) and name the block among their `related`, so the two sides are checked against
   each other. A situation of a block gives a value of every variable, since there is no case
   to name; the regions it shows are computed for the generated table. The rules of the domains
-  a block cites in `always-true` come with the regions, as with a case. Blocks have no
-  previews yet: whether they get one, and of what, is open.
+  a block cites in `always-true` come with the regions, as with a case. The preview of a
+  situation (`previews/<block>/<situation>.html`, 2026-11-03) is held against the regions its
+  values show (#1396): every component outside `data-stage` named by the `use` of one of them,
+  each required one shown; a region that is not required shows when there is something to put
+  in it, and its `use` lists alternatives, so neither all of them nor their order is asked.
 - **What a rule says about itself** (the documentation site reads it from the installed
   package, magma-design-system/docs#1): the same fields on both plugins, a description and the
   URL of its section of `agents/lint.md` (an ESLint rule in `meta.docs`, a Stylelint rule in
