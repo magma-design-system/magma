@@ -1597,7 +1597,7 @@ describe('the images of the previews', () => {
 describe('the parts of a case', () => {
   const components = loadComponents({ documentation: data.documentation });
   const parse = (markup: string) =>
-    (htmlParser.parseForESLint(markup) as unknown as { ast: MarkupNode }).ast;
+    (htmlParser.parseForESLint(markup, {}) as unknown as { ast: MarkupNode }).ast;
 
   test('a use may write the text of the application as <what it holds>', () => {
     expect(
@@ -1703,9 +1703,9 @@ describe('the parts of a case', () => {
         },
       ],
     });
+    // a placeholder on a prop with values: the application chooses it (the tone of a status)
     expect(componentErrors(one, components)).toEqual([
       'case on-action: mds-banner has no attribute class',
-      "case on-action: tone of mds-button is the case's to decide: write its value, not <a tone>",
       'case on-action: await of mds-button is a boolean: write it bare',
     ]);
     expect(magmaUseErrors(one, components)).toEqual([
@@ -1720,6 +1720,32 @@ describe('the parts of a case', () => {
     // a product's own pattern and a domain keep the bare use
     expect(magmaUseErrors({ ...one, layer: 'acme' }, components)).toEqual([]);
     expect(magmaUseErrors(domain(), components)).toEqual([]);
+  });
+
+  test('the solution of a stage is every component outside data-stage; a frame keeps what it holds', () => {
+    expect(
+      solutionOf(
+        parse(`<mds-modal opened data-stage="frame"><mds-banner slot="window" data-stage="frame">
+<mds-text typography="label" tag="dt">Destinatario</mds-text></mds-banner></mds-modal>`),
+      ),
+    ).toEqual([
+      {
+        tag: 'mds-text',
+        attributes: [
+          { name: 'typography', value: 'label' },
+          { name: 'tag', value: 'dt' },
+        ],
+      },
+    ]);
+    const odd = parsePreview(
+      '<!--\ntry: Look.\n-->\n<div data-stage="page"><mds-text>A</mds-text></div>',
+      '/p/previews/small/on-field.html',
+    );
+    expect(
+      previewUseErrors([small()], [odd], parse, components).get('/p/previews/small/on-field.html'),
+    ).toContain(
+      'data-stage="page" on <div>: write it bare (the element and what it holds) or data-stage="frame" (the element only)',
+    );
   });
 
   test('the solution of a stage is every component outside data-stage', () => {
@@ -1789,14 +1815,37 @@ describe('the parts of a case', () => {
         [
           '/p/previews/small/on-action.html',
           [
+            'case on-action: use "mds-text" comes before "mds-banner variant=success headline=<what went>", and after it in the preview: give the entries in the order of the preview',
             'case on-action: the preview shows mds-button autofocus slot=action tone=outline variant=dark, which no entry of use names (or mark it data-stage)',
             'case on-action: use "mds-banner variant=success headline=<what went>" writes headline, which no mds-banner of the preview has',
-            'case on-action: use "mds-banner variant=success headline=<what went>" comes after "mds-text", and before it in the preview: give the entries in the order of the preview',
             'case on-action: use "mds-button variant=error" is not in the preview, outside the stage',
           ],
         ],
       ]),
     );
+    // two entries alike take two parts in turn; a row that comes back is a repeat; a boolean
+    // the case decides and the still stage does not show (await, set by the script) is no part
+    const turn = small({
+      cases: [
+        {
+          id: 'on-field',
+          about: 'field',
+          where: 'w',
+          use: [
+            { role: 'attach', use: 'mds-button variant=dark' },
+            { role: 'the label', use: 'mds-text typography=label' },
+            { role: 'stop', use: 'mds-button variant=dark await' },
+          ],
+        },
+        ...small().cases!.slice(1),
+      ],
+    });
+    const inTurn = preview(
+      'on-field',
+      `<mds-button variant="dark">Allega</mds-button><mds-text typography="label">A</mds-text>
+<mds-button variant="dark">Interrompi</mds-button><mds-text typography="label">B</mds-text>`,
+    );
+    expect(previewUseErrors([turn], [inTurn], parse, components)).toEqual(new Map());
     // a domain is not compared: its use names what a relation writes
     expect(
       previewUseErrors(
@@ -1851,8 +1900,8 @@ describe('the parts of a case', () => {
           '/p/previews/head/item.html',
           [
             'situation item: the preview shows mds-text tag=p typography=detail, which no region it shows names in its use (or mark it data-stage)',
-            'situation item: use "mds-button variant=dark tone=text href=<the page above>" writes href, which no mds-button of the preview has',
             'situation item: region title is required, and the preview shows none of its use',
+            'situation item: use "mds-button variant=dark tone=text href=<the page above>" writes href, which no mds-button of the preview has',
           ],
         ],
       ]),

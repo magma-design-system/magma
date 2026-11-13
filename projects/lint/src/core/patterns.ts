@@ -996,11 +996,11 @@ const useErrors = (use: Use, components: Map<string, ComponentInfo>): string[] =
       errors.push(`${name} of ${use.tag} is deprecated: ${prop.deprecation}`);
     if (value === undefined) continue;
     if (placeholder) {
-      // a placeholder says what text goes in, never which of the values a prop takes
+      // a placeholder says what the application writes there: its text, or the value it
+      // chooses among those a prop takes (the number of pages, the tone of a status: the
+      // maintainer's choice on #1396); a boolean is there or not
       if (prop.boolean && !prop.values?.length)
         errors.push(`${name} of ${use.tag} is a boolean: write it bare`);
-      else if (prop.values?.length || prop.number)
-        errors.push(`${name} of ${use.tag} is the case's to decide: write its value, not ${value}`);
       continue;
     }
     if (prop.boolean && !prop.values?.length)
@@ -1119,12 +1119,16 @@ export const attributeKind = (
   return 'text';
 };
 
-/** A boolean attribute of a case, written bare: one that takes no value. */
+/** A boolean attribute of a case that takes no value: written bare, compared by its presence. */
 const isBare = (tag: string, name: string, components: Map<string, ComponentInfo>) => {
   if (name === 'autofocus') return true;
   const prop = components.get(tag)?.props.get(name);
   return !!prop?.boolean && !prop.values?.length;
 };
+
+/** An attribute that may be written bare: a boolean, also one that takes values (`current`, bare or `section`). */
+const takesBare = (tag: string, name: string, components: Map<string, ComponentInfo>) =>
+  name === 'autofocus' || !!components.get(tag)?.props.get(name)?.boolean;
 
 /**
  * What a use of a pattern or a block of Magma writes wrong (#1396): every entry of a case has
@@ -1164,7 +1168,7 @@ export const magmaUseErrors = (
         case 'case':
           if (
             (placeholder && global) ||
-            (value === undefined && !isBare(use.tag, name, components))
+            (value === undefined && !takesBare(use.tag, name, components))
           )
             errors.push(`${at} is the case's to decide: write its value`);
       }
@@ -1203,8 +1207,36 @@ export interface MarkupNode {
  * toast speaks of, the fields of a form), not its solution. It goes on the outermost element
  * of each piece of the stage; a stage that is all solution (a dialog) has none. The previews
  * ship with it, so an agent that reads the markup tells the context from the solution too.
+ * With the value `frame`, only the element is the stage (STAGE_FRAME).
  */
 export const STAGE_MARKER = 'data-stage';
+/**
+ * `data-stage="frame"`: only the element is the stage, what it holds goes on as the solution
+ * (the dialog of another case around the parts of a block, the maintainer's choice on #1396).
+ */
+export const STAGE_FRAME = 'frame';
+
+/** A marker of the stage with a value it does not take: bare, or frame. */
+export const stageErrors = (root: MarkupNode): string[] => {
+  const errors: string[] = [];
+  const walk = (node: MarkupNode) => {
+    for (const child of node.children ?? node.body ?? []) {
+      for (const one of child.attributes ?? [])
+        if (
+          one.key.value.toLowerCase() === STAGE_MARKER &&
+          one.value !== undefined &&
+          one.value.value !== '' &&
+          one.value.value !== STAGE_FRAME
+        )
+          errors.push(
+            `${STAGE_MARKER}="${one.value.value}" on <${child.name}>: write it bare (the element and what it holds) or ${STAGE_MARKER}="${STAGE_FRAME}" (the element only)`,
+          );
+      walk(child);
+    }
+  };
+  walk(root);
+  return errors;
+};
 
 /** A component of the solution a stage shows: its tag and its attributes, in the order of the markup. */
 export interface Part {
@@ -1223,9 +1255,10 @@ export const solutionOf = (root: MarkupNode): Part[] => {
         const name = one.key.value.toLowerCase();
         return one.value === undefined ? { name } : { name, value: one.value.value };
       });
-      if (attributes.some((one) => one.name === STAGE_MARKER)) continue;
+      const marker = attributes.find((one) => one.name === STAGE_MARKER);
+      if (marker && marker.value !== STAGE_FRAME) continue;
       const tag = child.name.toLowerCase();
-      if (tag.startsWith('mds-')) parts.push({ tag, attributes });
+      if (!marker && tag.startsWith('mds-')) parts.push({ tag, attributes });
       walk(child);
     }
   };
@@ -1234,9 +1267,9 @@ export const solutionOf = (root: MarkupNode): Part[] => {
 };
 
 /**
- * What a part of the solution and an entry of use are compared on: the tag and the
- * attributes the case decides (attributeKind), with their values, in one order. The words of
- * the application, its wiring, the states and the layout are left out.
+ * A part as a message names it: the tag and the attributes the case decides (attributeKind),
+ * with their values, in one order; the words of the application, its wiring, the states and
+ * the layout left out.
  */
 const signatureOf = (
   tag: string,
@@ -1255,28 +1288,45 @@ const signatureOf = (
       .sort(),
   ].join(' ');
 
-/** The parts of a preview by signature, in the order each first shows. */
-const partsBySignature = (parts: Part[], components: Map<string, ComponentInfo>) => {
-  const found = new Map<string, Part[]>();
-  for (const part of parts) {
-    const signature = signatureOf(part.tag, part.attributes, components);
-    found.set(signature, [...(found.get(signature) ?? []), part]);
+/**
+ * Whether a part of the preview is the one an entry of use names: the same tag; every attribute
+ * the case decides on the part written in the entry, with its value, or as `<what it holds>`
+ * when the application chooses it; every value the entry gives the case on the part. A boolean
+ * the entry gives and the still stage does not show is a moment the case decides (`await` on
+ * Send, set by the script of the preview): it is not asked of the part. A placeholder never
+ * decides the match: what it names is asked of the parts of the entry afterwards.
+ */
+const partMatches = (entry: Use, part: Part, components: Map<string, ComponentInfo>): boolean => {
+  if (entry.tag !== part.tag) return false;
+  const given = new Map(entry.attributes.map((one) => [one.name, one]));
+  for (const { name, value } of part.attributes) {
+    if (attributeKind(part.tag, name, components) !== 'case') continue;
+    const written = given.get(name);
+    if (!written) return false;
+    if (written.placeholder || isBare(part.tag, name, components)) continue;
+    if ((written.value ?? '') !== (value ?? '')) return false;
   }
-  return found;
+  for (const { name, placeholder } of entry.attributes) {
+    if (placeholder || attributeKind(entry.tag, name, components) !== 'case') continue;
+    if (isBare(entry.tag, name, components)) continue;
+    if (!part.attributes.some((one) => one.name === name)) return false;
+  }
+  return true;
 };
 
 /** The name of a preview in a message: its case or situation, and the example after the first. */
 const previewName = (preview: Preview) =>
   `the preview${preview.example > 1 ? ` ${preview.example}` : ''}`;
 
-/** A placeholder of an entry that no part of its signature has: the preview gives no such text. */
+/** A placeholder of an entry that none of the parts it names has: the preview gives no such text. */
 const placeholderErrors = (
   text: string,
+  use: Use,
   parts: Part[],
   preview: Preview,
   label: string,
 ): string[] =>
-  (parseUse(text)?.attributes ?? [])
+  use.attributes
     .filter(
       (one) =>
         one.placeholder &&
@@ -1284,16 +1334,23 @@ const placeholderErrors = (
     )
     .map(
       (one) =>
-        `${label}: use "${text}" writes ${one.name}, which no ${parts[0]?.tag ?? 'part'} of ${previewName(preview)} has`,
+        `${label}: use "${text}" writes ${one.name}, which no ${use.tag} of ${previewName(preview)} has`,
     );
 
 /**
  * Where the use of a case and its preview part (#1396): the parts of the solution the preview
  * shows (solutionOf: every component outside the stage) and the entries of use name the same
- * components with the same attributes the case decides, in the order each first shows; a
- * placeholder names a text the preview gives. Every example of the case is compared. For a
- * situation of a building block, its preview against the regions its values show: every part
- * named by one of them, a required region shown; a region that is not required shows when
+ * components with the attributes the case decides (partMatches), in the order the parts first
+ * show; a placeholder names a text the preview gives. Every example of the case is compared.
+ *
+ * The parts are read in the order of the markup, each given to the first entry it matches that
+ * is not taken yet, at or after the last one taken: so two entries alike (Attach and Stop, two
+ * buttons of one kind) take two parts in turn, and a part that matches only entries taken
+ * before it is a repeat (the next row of a list). A part that matches only entries not taken
+ * yet, before the last one taken, shows their order is not the preview's.
+ *
+ * For a situation of a building block, its preview against the regions its values show: every
+ * part named by one of them, a required region shown; a region that is not required shows when
  * there is something to put in it, and its entries name alternatives (the actions), so neither
  * their presence nor their order is asked. The patterns and the blocks of Magma only, never a
  * domain (their use names what a relation writes). `parse` gives the markup as MarkupNode.
@@ -1315,12 +1372,13 @@ export const previewUseErrors = (
       pattern.status === 'candidate'
     )
       continue;
-    const errors: string[] = [];
-    const parts = partsBySignature(solutionOf(parse(preview.markup)), components);
-    const signatures = [...parts.keys()];
-    const entryOf = (text: string) => {
-      const use = parseUse(text);
-      return use && signatureOf(use.tag, use.attributes, components);
+    const root = parse(preview.markup);
+    const errors: string[] = stageErrors(root);
+    const parts = solutionOf(root);
+    // a part no entry names, said once for every part of its kind
+    const unnamed = (label: string, part: Part, where: string) => {
+      const message = `${label}: ${previewName(preview)} shows ${signatureOf(part.tag, part.attributes, components)}, which no ${where} (or mark it ${STAGE_MARKER})`;
+      if (!errors.includes(message)) errors.push(message);
     };
     if (pattern.kind === BLOCK) {
       const situation = situationsWithId(pattern).find((one) => one.id === preview.id);
@@ -1338,56 +1396,71 @@ export const previewUseErrors = (
       } catch {
         continue;
       }
-      const named = new Set(regions.flatMap((one) => (one.use ?? []).map(entryOf)));
-      for (const signature of signatures)
-        if (!named.has(signature))
-          errors.push(
-            `${label}: ${previewName(preview)} shows ${signature}, which no region it shows names in its use (or mark it ${STAGE_MARKER})`,
-          );
-      for (const region of regions) {
-        const uses = region.use ?? [];
-        if (region.required && uses.length && !uses.some((text) => parts.has(entryOf(text)!)))
+      const entries = regions.flatMap((region) =>
+        (region.use ?? []).flatMap((text) => {
+          const use = parseUse(text);
+          return use ? [{ region, text, use, parts: [] as Part[] }] : [];
+        }),
+      );
+      for (const part of parts) {
+        const named = entries.filter((one) => partMatches(one.use, part, components));
+        if (!named.length) unnamed(label, part, 'region it shows names in its use');
+        for (const one of named) one.parts.push(part);
+      }
+      for (const region of regions)
+        if (
+          region.required &&
+          region.use?.length &&
+          !entries.some((one) => one.region === region && one.parts.length)
+        )
           errors.push(
             `${label}: region ${region.id} is required, and ${previewName(preview)} shows none of its use`,
           );
-        for (const text of uses) {
-          const shown = parts.get(entryOf(text)!);
-          if (shown) errors.push(...placeholderErrors(text, shown, preview, label));
-        }
-      }
+      for (const one of entries)
+        if (one.parts.length)
+          errors.push(...placeholderErrors(one.text, one.use, one.parts, preview, label));
     } else {
       const one = pattern.cases?.find((each) => each.id === preview.id);
       if (!one) continue;
       const label = `case ${one.id}`;
-      const texts = (one.use ?? []).map(useOf);
-      const entries = new Set(texts.map(entryOf));
-      for (const signature of signatures)
-        if (!entries.has(signature))
-          errors.push(
-            `${label}: ${previewName(preview)} shows ${signature}, which no entry of use names (or mark it ${STAGE_MARKER})`,
-          );
-      let last = -1;
-      let previous = '';
-      for (const text of texts) {
-        const signature = entryOf(text);
-        const shown = signature === undefined ? undefined : parts.get(signature);
-        if (!shown) {
-          errors.push(
-            `${label}: use "${text}" is not in ${previewName(preview)}, outside the stage`,
-          );
+      const entries = (one.use ?? []).flatMap((item) => {
+        const text = useOf(item);
+        const use = parseUse(text);
+        return use ? [{ text, use, parts: [] as Part[] }] : [];
+      });
+      let last = 0;
+      for (const part of parts) {
+        const fits = entries.flatMap((entry, index) =>
+          partMatches(entry.use, part, components) ? [index] : [],
+        );
+        if (!fits.length) {
+          unnamed(label, part, 'entry of use names');
           continue;
         }
-        errors.push(...placeholderErrors(text, shown, preview, label));
-        const at = signatures.indexOf(signature!);
-        if (at < last)
-          errors.push(
-            `${label}: use "${text}" comes after "${previous}", and before it in ${previewName(preview)}: give the entries in the order of the preview`,
-          );
-        else {
-          last = at;
-          previous = text;
+        const next = fits.find((index) => index >= last && !entries[index]!.parts.length);
+        if (next !== undefined) {
+          last = next;
+          entries[next]!.parts.push(part);
+          continue;
         }
+        const taken = fits.filter((index) => entries[index]!.parts.length);
+        if (taken.length) {
+          for (const index of taken) entries[index]!.parts.push(part);
+          continue;
+        }
+        // it fits only entries not taken yet, before the last one taken
+        const early = entries[fits[0]!]!;
+        errors.push(
+          `${label}: use "${early.text}" comes before "${entries[last]!.text}", and after it in ${previewName(preview)}: give the entries in the order of the preview`,
+        );
+        early.parts.push(part);
       }
+      for (const entry of entries)
+        if (!entry.parts.length)
+          errors.push(
+            `${label}: use "${entry.text}" is not in ${previewName(preview)}, outside the stage`,
+          );
+        else errors.push(...placeholderErrors(entry.text, entry.use, entry.parts, preview, label));
     }
     if (errors.length) found.set(preview.file, errors);
   }

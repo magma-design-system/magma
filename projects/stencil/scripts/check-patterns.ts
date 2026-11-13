@@ -159,7 +159,7 @@ for (const preview of previews) {
 for (const [file, errors] of previewLinkErrors(previews, patterns)) report(file, errors);
 // the solution each preview shows, outside its data-stage, against the use of its case (#1396)
 const parse = (markup: string) =>
-  (htmlParser.parseForESLint(markup) as unknown as { ast: MarkupNode }).ast;
+  (htmlParser.parseForESLint(markup, {}) as unknown as { ast: MarkupNode }).ast;
 for (const [file, errors] of previewUseErrors(patterns, previews, parse, components))
   report(file, errors);
 const missing = missingPreviews(patterns, previews);

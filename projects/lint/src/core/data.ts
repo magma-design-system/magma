@@ -192,9 +192,13 @@ const EMPTY = new Set(['undefined', 'null']);
 
 export const propInfo = ({ name, attr, values = [], deprecation, mutable }: DocsProp): PropInfo => {
   const literals = values.filter((value) => value.value !== undefined);
+  // a boolean next to literals (`current`: true, 'page' or 'section') keeps them: bare is true,
+  // a value is one of them (#1396); the template rules still read it as a boolean
   const closed =
     literals.length > 0 &&
-    values.every((value) => value.value !== undefined || EMPTY.has(value.type));
+    values.every(
+      (value) => value.value !== undefined || EMPTY.has(value.type) || value.type === 'boolean',
+    );
   return {
     name,
     ...(attr ? { attr } : {}),

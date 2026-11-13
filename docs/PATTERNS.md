@@ -97,7 +97,7 @@ the maintainer's choice on #1396 (2026-11-13); the criterion is beside `attribut
 
 | Kind | Which | In `use` |
 | --- | --- | --- |
-| The case's | a prop with a closed set of values, a number, a boolean the component never changes itself; `slot`, `role`, `tabindex`, `autofocus`; an ARIA property of a token, a number or true/false | as it is, the same as in the preview |
+| The case's | a prop with a closed set of values, a number, a boolean the component never changes itself; `slot`, `role`, `tabindex`, `autofocus`; an ARIA property of a token, a number or true/false | as it is, the same as in the preview; a value the application chooses (the number of pages, the tone of a status, the format of a field) as `<what decides it>`, and the preview has the attribute |
 | The application's text | a prop of free text (`headline`, `label`, `href`, `icon`), `title`, `lang`, `dir`, an ARIA property of text (`aria-label`) | `<what it holds>` when the case says what goes in it (`headline=<the question, naming the item>`), else left out |
 | The application's wiring | `id`, `name`, `value`, an ARIA property that names ids | never |
 | A state | a boolean the component changes itself (`opened`, `visible`, `await`, `selected`), `hidden`, an ARIA state | bare, only when the case decides it (`await` on Send); never compared |
@@ -261,7 +261,9 @@ try: Press Salva: the error shows above the form, and what was written stays.
   stage, the context it needs to be shown (the list a toast speaks of, the fields of a form, the
   page around a part). `data-stage` on the outermost element of each piece of the stage marks
   it, and everything inside it; every other component is a part of the solution, and `use` names
-  it. A preview that is all solution (a dialog) has no marker. The marker ships with the
+  it. A preview that is all solution (a dialog) has no marker; a piece of stage around the
+  solution (the dialog of another case around the values of a block) takes
+  `data-stage="frame"`: the element only, not what it holds. The marker ships with the
   preview, so an agent that reads the markup tells the context from the solution too; it is the
   maintainer's choice on #1396 (2026-11-13), over a wrapper around the solution, which changes
   the layout of the stage and splits when the solution does.

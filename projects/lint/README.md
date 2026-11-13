@@ -146,13 +146,16 @@ picked by hand. The tools of the MCP server, which answer from this core, have t
   layer, the stage and the images of an answer) is in
   [`projects/mcp/README.md`](../mcp/README.md).
   The parts of a case (#1396) are its `use`, `{ role, use }` in the order of its preview, held
-  against the components the preview shows outside the elements marked `data-stage`
+  against the components the preview shows outside the elements marked `data-stage` (with
+  `data-stage="frame"`, the element only)
   (`previewUseErrors`, on the tree @html-eslint/parser gives, which `check.patterns` passes in
   so the core needs no parser). Two parts are the same when their tag and the attributes the
   case decides are; what an attribute is to a case (`attributeKind`) is read from its type in
   `documentation.json`, the maintainer's choice on #1396: a closed set of values, a number, a
   boolean the component never changes itself (Stencil's `mutable` false) and the global `slot`,
-  `role`, `tabindex`, `autofocus` are the case's; a prop of free text, `title`, `lang`, `dir`
+  `role`, `tabindex`, `autofocus` are the case's, written as they are, or as `<what decides it>`
+  when the application chooses the value (the number of pages: the same type holds a decision,
+  `duration=0`, and a datum, so the form of the entry says which); a prop of free text, `title`, `lang`, `dir`
   are the application's text, written `<what it holds>`; `id`, `name`, `value` its wiring; a
   mutable boolean and `hidden` a state the stage sets; `class`, `style`, `data-*` the stage's.
   ARIA attributes follow the value types of WAI-ARIA 1.2, "Definitions of States and
