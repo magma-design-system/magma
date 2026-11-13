@@ -2,14 +2,14 @@
 try: Press Invia promemoria a tutti in the open menu of the course: the menu closes, and a toast that stays says how many were sent and offers to send the 2 that failed again.
 height: 400
 -->
-<header class="flex flex-wrap items-start justify-between gap-inline">
+<header class="flex flex-wrap items-start justify-between gap-inline" data-stage>
   <div class="grid gap-title-content">
     <mds-text typography="page" tag="h1">Iscritti al corso</mds-text>
     <mds-text typography="detail" tag="p" class="text-fg-muted">6 iscritti, 2 senza conferma di presenza.</mds-text>
   </div>
   <mds-button id="actions" icon="mi/baseline/more-vert" variant="dark" tone="text" aria-label="Azioni del corso"></mds-button>
 </header>
-<mds-dropdown id="menu" target="#actions" placement="bottom-end" visible>
+<mds-dropdown id="menu" target="#actions" placement="bottom-end" visible data-stage>
   <mds-button id="remind" icon="mi/baseline/send" variant="dark" tone="text" label="Invia promemoria a tutti"></mds-button>
 </mds-dropdown>
 <mds-toast-region>
@@ -17,7 +17,7 @@ height: 400
     Promemoria inviati a 4 iscritti su 6, non a 2
     <mds-button id="retry" slot="action" size="sm" variant="error" tone="outline">Riprova per 2</mds-button>
   </mds-toast>
-  <mds-toast id="sent" variant="success">Promemoria inviati anche a Bianchi Anna e Neri Paola</mds-toast>
+  <mds-toast id="sent" variant="success" data-stage>Promemoria inviati anche a Bianchi Anna e Neri Paola</mds-toast>
 </mds-toast-region>
 <script>
   const menu = document.getElementById('menu');

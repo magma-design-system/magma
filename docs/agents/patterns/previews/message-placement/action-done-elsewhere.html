@@ -2,8 +2,8 @@
 try: Press Salva: the dialog closes and a toast says what was saved; Modifica azienda opens it again.
 height: 400
 -->
-<mds-button id="open">Modifica azienda</mds-button>
-<mds-modal id="dialog" opened aria-label="Modifica azienda">
+<mds-button id="open" data-stage>Modifica azienda</mds-button>
+<mds-modal id="dialog" opened aria-label="Modifica azienda" data-stage>
   <mds-banner slot="window" variant="light" tone="box" dismissible headline="Modifica azienda">
     <form class="grid gap-between-fields">
       <mds-input-field label="Ragione sociale">

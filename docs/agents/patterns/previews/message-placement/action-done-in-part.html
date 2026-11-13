@@ -4,13 +4,13 @@ try: Press Salva in Notifiche: the confirmation shows inside that card, right ab
 <div class="grid gap-between-containers">
   <form id="form">
     <mds-card>
-      <mds-card-header>
+      <mds-card-header data-stage>
         <mds-text typography="part" tag="h2">Notifiche</mds-text>
       </mds-card-header>
       <mds-card-content>
         <div class="grid gap-between-fields">
-          <mds-input-switch name="email" value="1" checked>Avvisi via email</mds-input-switch>
-          <mds-input-switch id="sms" name="sms" value="1">Avvisi via SMS</mds-input-switch>
+          <mds-input-switch name="email" value="1" checked data-stage>Avvisi via email</mds-input-switch>
+          <mds-input-switch id="sms" name="sms" value="1" data-stage>Avvisi via SMS</mds-input-switch>
           <mds-banner id="done" variant="success" tone="strong" headline="Notifiche salvate" class="hidden">
             <mds-text>Valgono da subito per i prossimi avvisi.</mds-text>
           </mds-banner>
@@ -21,7 +21,7 @@ try: Press Salva in Notifiche: the confirmation shows inside that card, right ab
       </mds-card-footer>
     </mds-card>
   </form>
-  <mds-card>
+  <mds-card data-stage>
     <mds-card-header>
       <mds-text typography="part" tag="h2">Profilo</mds-text>
     </mds-card-header>
