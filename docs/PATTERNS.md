@@ -35,6 +35,15 @@ illustration, content), and the design language is one group of it, Design langu
 
 ## The method
 
+- **The components that hold the role, first.** Before a pattern or a block is drafted, the
+  components Magma ships for its role are found (the catalogue, `find_component`), rendered in
+  the context of the pattern and checked against today's standards (the design language, the
+  color roles, accessibility). Then a decision says what the pattern stands on: the component as
+  it is, the component changed (an issue the pattern waits on or carries), a new component only
+  when none holds the role, or the simpler way that already exists, since two ways to do one
+  thing are a defect. What the new pattern makes redundant is deprecated in its favour or
+  overwritten. The steps are those of `/pattern-new`, step 2, which `/pattern-change` follows
+  when a change swaps the components of a case or replaces a pattern (#1394).
 - **The variables of the situation, never a domain.** A pattern is defined on the few questions
   that decide the case (for `message-placement`: what the message is about, its outcome, whether
   its place is on screen, now or later, whether a decision is needed, what an action changed).
@@ -342,11 +351,13 @@ check on a product's folder.
 
 With Claude Code on this repository:
 
-- `/pattern-new <the need>`: checks the list first, turns a candidate into a pattern or starts
-  a new one, researches the sources, writes the file, runs the check, asks only the decisions
-  the sources do not settle, opens the pull request;
+- `/pattern-new <the need>`: checks the list first, then the components that hold the role,
+  turns a candidate into a pattern or starts a new one, researches the sources, writes the
+  file, runs the check, asks only the decisions the sources do not settle, opens the pull
+  request;
 - `/pattern-change <id>`: shows why the current answer was decided, asks whether the change is
-  the default or one product's layer, keeps the old id on a rename;
+  the default or one product's layer, keeps the old id on a rename, checks the components that
+  hold the role when a change swaps them;
 - `/pattern-preview <id>`: for each case with no preview, shows two options live and saves the
   one the maintainer chooses; its drafts and the saved previews open in `mcp:serve.previews`,
   for the maintainer to adjust by hand;

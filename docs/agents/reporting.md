@@ -137,7 +137,11 @@ when:
   filter or an argument it does not take;
 - a flow across components that no pattern covers (`get_pattern` finds none for the need,
   or only a candidate, or its answer for your situation is a gap): the pattern is the
-  missing answer, `magma-mcp: no pattern for <the need>`.
+  missing answer, `magma-mcp: no pattern for <the need>`. Before you report it, find the
+  components that hold the role (`find_component` with the need in words) and render them
+  in your context; under "What the server answered" name each one and whether it fits. A
+  component that holds the role but not as the flow needs is the first thing to fix, so say
+  what does not fit (the render, the rule it breaks) instead of building around it.
 
 It is not a gap when the answer is right but not the one you hoped for, when your own
 input was wrong (an unknown tag, a missing argument), or when the question is about the

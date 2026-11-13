@@ -41,7 +41,14 @@ Write the file the answer of step 1 names in `layerFile` (`magma/patterns/<id>.m
 
 ## 5. A need Magma does not cover
 
-Tell the person no Magma default covers it, and propose an issue on Magma (`get_guide` reporting, a flow no pattern covers). If the product cannot wait, offer a pattern of its own in the same folder (`layerDir` of `get_pattern` without arguments): the shape of a Magma pattern (read one in `node_modules/@maggioli-design-system/magma/agents/patterns/`), its own `layer`, no `extends`, never an id Magma has; then the check of step 4, which holds it to the format, the cases and the components of this release. A pattern that comes back in two or three products is the one to propose to Magma.
+Tell the person no Magma default covers it. Before anything else, the components that hold the role the need asks (a field, a target to drop files on, a bar of actions): `find_component` with the need in words, `get_component` and `get_usage` for each, and `render_preview` of it in the context of the flow (inside a card, a row, a dialog). Then say which of these holds:
+
+- a component does the job as it is: the pattern of the product stands on it, and adds nothing it already does;
+- a component holds the role, but not as the flow needs (it does not fit the context, or breaks a rule of the design language or of accessibility): that component is the issue to propose, with what the render showed; never build a second way to do what it does;
+- an existing, simpler way already meets the need: use it, and write no pattern;
+- no component holds the role: say so in the issue.
+
+Propose the issue on Magma (`get_guide` reporting, a flow no pattern covers), naming the components you checked and what you found. If the product cannot wait, offer a pattern of its own in the same folder (`layerDir` of `get_pattern` without arguments): the shape of a Magma pattern (read one in `node_modules/@maggioli-design-system/magma/agents/patterns/`), its own `layer`, no `extends`, never an id Magma has; then the check of step 4, which holds it to the format, the cases and the components of this release. A pattern that comes back in two or three products is the one to propose to Magma.
 
 ## 6. The report
 
