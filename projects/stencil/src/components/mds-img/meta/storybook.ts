@@ -1,4 +1,5 @@
 import { loadingDictionary } from '@type/loading';
+import { decodingDictionary } from './types';
 
 const URLs = [
   '1920x1024.png',
@@ -12,6 +13,13 @@ const URLs = [
 const argTypes = {
   alt: {
     description: 'Specifies an alternate text for an image',
+    type: { name: 'string', required: false },
+  },
+  decoding: {
+    control: { type: 'select' },
+    description:
+      'Decodes the picture apart from the rest of the page (async), with it (sync), or as the browser chooses (auto)',
+    options: decodingDictionary,
     type: { name: 'string', required: false },
   },
   height: {

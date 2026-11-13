@@ -39,7 +39,7 @@ import { MdsFilterItemEventDetail } from "./components/mds-filter-item/meta/even
 import { HeaderBarMenuType, HeaderBarNavType } from "./type/header-bar";
 import { MdsHeaderEventDetail, MdsHeaderVisibilityEventDetail } from "./components/mds-header/meta/event-detail";
 import { NavigationType, SnapType, ViewportType } from "./components/mds-horizontal-scroll/meta/types";
-import { CrossoriginType, ReferrerpolicyType } from "./components/mds-img/meta/types";
+import { CrossoriginType, DecodingType, ReferrerpolicyType } from "./components/mds-img/meta/types";
 import { MdsImgEventDetail } from "./components/mds-img/meta/event-detail";
 import { AutocompleteType } from "./type/autocomplete";
 import { InputControlsIconType, InputControlsLayoutType, InputSizeType, InputTextType, MdsInputEventDetail } from "./type/input";
@@ -131,7 +131,7 @@ export { MdsFilterItemEventDetail } from "./components/mds-filter-item/meta/even
 export { HeaderBarMenuType, HeaderBarNavType } from "./type/header-bar";
 export { MdsHeaderEventDetail, MdsHeaderVisibilityEventDetail } from "./components/mds-header/meta/event-detail";
 export { NavigationType, SnapType, ViewportType } from "./components/mds-horizontal-scroll/meta/types";
-export { CrossoriginType, ReferrerpolicyType } from "./components/mds-img/meta/types";
+export { CrossoriginType, DecodingType, ReferrerpolicyType } from "./components/mds-img/meta/types";
 export { MdsImgEventDetail } from "./components/mds-img/meta/event-detail";
 export { AutocompleteType } from "./type/autocomplete";
 export { InputControlsIconType, InputControlsLayoutType, InputSizeType, InputTextType, MdsInputEventDetail } from "./type/input";
@@ -1414,7 +1414,11 @@ export namespace Components {
          */
         "crossorigin"?: CrossoriginType;
         /**
-          * The height attribute specifies the height of an image, in pixels.
+          * How the browser decodes the picture, as the `decoding` attribute of `<img>`: `async` apart from the rest of the page, which then shows without waiting for it, as a large picture lower on the page can; `sync` with it; `auto` as the browser chooses. Unset, the browser chooses
+         */
+        "decoding"?: DecodingType;
+        /**
+          * The height of the picture, in pixels, as the `height` attribute of `<img>`. With `width`, its ratio gives the host its box before the component hydrates, as a native `<img>` reserves its room before the picture loads (hydrated.css, where the browser supports typed `attr()`)
          */
         "height"?: string;
         /**
@@ -1446,7 +1450,7 @@ export namespace Components {
          */
         "srcsetConsumption"?: string;
         /**
-          * The width attribute specifies the width of an image, in pixels.
+          * The width of the picture, in pixels, as the `width` attribute of `<img>`. With `height`, its ratio gives the host its box before the component hydrates
          */
         "width"?: string;
     }
@@ -6919,7 +6923,11 @@ declare namespace LocalJSX {
          */
         "crossorigin"?: CrossoriginType;
         /**
-          * The height attribute specifies the height of an image, in pixels.
+          * How the browser decodes the picture, as the `decoding` attribute of `<img>`: `async` apart from the rest of the page, which then shows without waiting for it, as a large picture lower on the page can; `sync` with it; `auto` as the browser chooses. Unset, the browser chooses
+         */
+        "decoding"?: DecodingType;
+        /**
+          * The height of the picture, in pixels, as the `height` attribute of `<img>`. With `width`, its ratio gives the host its box before the component hydrates, as a native `<img>` reserves its room before the picture loads (hydrated.css, where the browser supports typed `attr()`)
          */
         "height"?: string;
         /**
@@ -6959,7 +6967,7 @@ declare namespace LocalJSX {
          */
         "srcsetConsumption"?: string;
         /**
-          * The width attribute specifies the width of an image, in pixels.
+          * The width of the picture, in pixels, as the `width` attribute of `<img>`. With `height`, its ratio gives the host its box before the component hydrates
          */
         "width"?: string;
     }
@@ -9503,6 +9511,7 @@ declare namespace LocalJSX {
     interface MdsImgAttributes {
         "alt": string;
         "crossorigin": CrossoriginType;
+        "decoding": DecodingType;
         "height": string;
         "loading": LoadingType;
         "referrerpolicy": ReferrerpolicyType;

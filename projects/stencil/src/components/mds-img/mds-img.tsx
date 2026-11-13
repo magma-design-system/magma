@@ -9,7 +9,12 @@ import {
   Watch,
   h,
 } from '@stencil/core';
-import { CrossoriginType, ReferrerpolicyType, ImageConsumptionType } from './meta/types';
+import {
+  CrossoriginType,
+  DecodingType,
+  ReferrerpolicyType,
+  ImageConsumptionType,
+} from './meta/types';
 import { LoadingType } from '@type/loading';
 import { MdsImgEventDetail } from './meta/event-detail';
 import { ConsumptionModeType } from '@type/preference';
@@ -71,7 +76,16 @@ export class MdsImg {
   @Prop() readonly crossorigin?: CrossoriginType;
 
   /**
-   * The height attribute specifies the height of an image, in pixels.
+   * How the browser decodes the picture, as the `decoding` attribute of `<img>`: `async` apart
+   * from the rest of the page, which then shows without waiting for it, as a large picture lower
+   * on the page can; `sync` with it; `auto` as the browser chooses. Unset, the browser chooses
+   */
+  @Prop() readonly decoding?: DecodingType;
+
+  /**
+   * The height of the picture, in pixels, as the `height` attribute of `<img>`. With `width`, its
+   * ratio gives the host its box before the component hydrates, as a native `<img>` reserves its
+   * room before the picture loads (hydrated.css, where the browser supports typed `attr()`)
    */
   @Prop() readonly height?: string;
 
@@ -116,7 +130,8 @@ export class MdsImg {
   @Prop() readonly srcsetConsumption?: string;
 
   /**
-   * The width attribute specifies the width of an image, in pixels.
+   * The width of the picture, in pixels, as the `width` attribute of `<img>`. With `height`, its
+   * ratio gives the host its box before the component hydrates
    */
   @Prop() readonly width?: string;
 
@@ -204,6 +219,26 @@ export class MdsImg {
   private hostRole = (): { role: string; 'aria-label'?: string } =>
     (this.alt ?? '') === '' ? { role: 'presentation' } : { role: 'img', 'aria-label': this.alt };
 
+  // the native image, the same in every state that shows the picture: only its source changes
+  private renderMedia = (src?: string) => (
+    <img
+      alt={this.alt ?? ''}
+      aria-hidden="true"
+      crossorigin={this.crossorigin}
+      decoding={this.decoding}
+      height={this.height}
+      loading={this.loading}
+      onError={this.onError}
+      onLoad={this.onSuccess}
+      part="media"
+      referrerPolicy={this.referrerpolicy}
+      sizes={this.sizes}
+      src={src}
+      srcset={this.srcset}
+      width={this.width}
+    />
+  );
+
   render() {
     if (this.imageError) {
       return (
@@ -244,21 +279,7 @@ export class MdsImg {
                 ></mds-button>
               </div>
             ) : (
-              <img
-                alt={this.alt ?? ''}
-                aria-hidden="true"
-                crossorigin={this.crossorigin}
-                height={this.height}
-                loading={this.loading}
-                onError={this.onError}
-                onLoad={this.onSuccess}
-                part="media"
-                referrerPolicy={this.referrerpolicy}
-                sizes={this.sizes}
-                src={this.srcsetConsumptionData[this.consumptionMode] ?? this.src}
-                srcset={this.srcset}
-                width={this.width}
-              />
+              this.renderMedia(this.srcsetConsumptionData[this.consumptionMode] ?? this.src)
             )}
           </Host>
         );
@@ -267,21 +288,7 @@ export class MdsImg {
       return (
         <Host {...this.hostRole()}>
           <div class="contrast-area-50"></div>
-          <img
-            alt={this.alt ?? ''}
-            aria-hidden="true"
-            crossorigin={this.crossorigin}
-            height={this.height}
-            loading={this.loading}
-            onError={this.onError}
-            onLoad={this.onSuccess}
-            part="media"
-            referrerPolicy={this.referrerpolicy}
-            sizes={this.sizes}
-            src={this.srcsetConsumptionData[this.consumptionMode] ?? this.src}
-            srcset={this.srcset}
-            width={this.width}
-          />
+          {this.renderMedia(this.srcsetConsumptionData[this.consumptionMode] ?? this.src)}
         </Host>
       );
     }
@@ -289,21 +296,7 @@ export class MdsImg {
     return (
       <Host {...this.hostRole()}>
         <div class="contrast-area-50"></div>
-        <img
-          alt={this.alt ?? ''}
-          aria-hidden="true"
-          crossorigin={this.crossorigin}
-          height={this.height}
-          loading={this.loading}
-          onError={this.onError}
-          onLoad={this.onSuccess}
-          part="media"
-          referrerPolicy={this.referrerpolicy}
-          sizes={this.sizes}
-          src={this.src}
-          srcset={this.srcset}
-          width={this.width}
-        />
+        {this.renderMedia(this.src)}
       </Host>
     );
   }

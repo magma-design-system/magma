@@ -321,8 +321,8 @@ keep in step.
 - **Produced by**: `docs/agents/assets.md` (the import block, and the Tailwind entry point of
   "Tailwind (optional)" with `projects/styles/dist/tailwind`); the stencil build (the loader, and
   Stencil's `appload` event and `hydrated` flag, `hydratedFlag` of `stencil.config.ts`);
-  `projects/styles` (`hydrated.css`, which hides a component until the flag, `typography.css`,
-  `themes.css`).
+  `projects/styles` (`hydrated.css`, which hides a component until the flag and gives `mds-img`
+  its box before it, `typography.css`, `themes.css`).
 - **Contract**: [`docs/agents/assets.md`](agents/assets.md), "Import order (mandatory)", "Tell
   mds-icon where the icons are" and "Tailwind (optional)";
   [`projects/mcp/README.md`](../projects/mcp/README.md), "Where each answer comes from" (what

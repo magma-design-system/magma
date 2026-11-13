@@ -1,0 +1,27 @@
+/*
+  The box of mds-img before it hydrates, on a page that does not render it on the server (#1409).
+
+  Until the component is defined, mds-img is an undefined element: inline and empty, 0 px tall,
+  while a native img with width and height reserves its room from their ratio before the picture
+  loads. Once hydrated, the host is a flex box as wide as its container, as tall as its picture
+  (mds-img.css). These rules give the host that box before: the display and the width in every
+  browser, the ratio of width and height where typed attr() is supported (Chromium 133+, css-values-5
+  "Attribute References"; elsewhere the declaration is dropped and the host stays 0 px tall, as
+  before).
+
+  This is document CSS, not shadow CSS: projects/styles/scripts/hydrated.ts collects every
+  css/<tag>-pre-hydration.css into hydrated.css, and no sheet of the component may import it.
+  Every rule matches the host only until it is hydrated: page CSS beats :host whatever its layer,
+  so a rule without the guard would override the component for good. hydrated.ts fails on one.
+*/
+
+mds-img:not(:is([hydrated], .hydrated)) {
+  display: flex;
+  width: 100%;
+}
+
+mds-img[width][height]:not(:is([hydrated], .hydrated)) {
+
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features -- dropped where unsupported, see above */
+  aspect-ratio: attr(width type(<number>)) / attr(height type(<number>));
+}

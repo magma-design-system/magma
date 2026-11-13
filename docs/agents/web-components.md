@@ -105,6 +105,11 @@ is hydrated, the same file hands back the margin, padding and border it gives it
 which a page reset such as Tailwind's preflight would zero: that works only from the
 `base` layer itself, next to the reset.
 
+Before hydration the same file gives `mds-img` the box of its picture, as a native
+`<img>` reserves its room: give it `width` and `height`, and the page below it does not
+move when it hydrates. The ratio needs typed `attr()` (Chromium 133+); where a browser
+lacks it, a page that needs the room there too sets `aspect-ratio` on the host.
+
 ## 5. Server-side rendering (SSR)
 
 `@maggioli-design-system/magma/hydrate` exposes `renderToString()`: it serializes
