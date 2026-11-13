@@ -5,6 +5,14 @@ import { expect, test } from "vitest";
 import { createTextTokens, TEXT_ROLES } from "../src/lib/text-role.mjs";
 import { createColorTokens, type MagmaConfig, type ColorTokensMap } from "../src/lib/color.mjs";
 import { getColorsConfig } from "../src/lib/utils.mjs";
+import {
+  aliasesFromConfig,
+  DEFAULT_TARGETS,
+  evaluatePairs,
+  type ColorTree,
+} from "../src/lib/contrast-gate.js";
+import { WASH_STEPS } from "../src/lib/wash.js";
+import { semantic } from "../semantic.config.js";
 
 const apca = (fg: string, bg: string) =>
   Math.abs(APCAcontrast(sRGBtoY(chroma(fg).rgb()), sRGBtoY(chroma(bg).rgb())) as number);
@@ -69,3 +77,37 @@ test("integration: the real palette generates text roles meeting their targets i
     }
   }
 })
+
+// A text sits on the washes of its family too (a banner, a badge, a chip): steps of its own ramp,
+// not surfaces, so they do not follow theme.surfaces (#1414).
+const washOf = (level: keyof typeof WASH_STEPS) => ramp[Number(WASH_STEPS[level]) - 1];
+
+test("a role keeps the floor of the gate on the washes of its family, not only on its surfaces", () => {
+  // white surfaces: the surfaces alone take the lightest step that meets the target on white
+  const { text } = createTextTokens(withText({ default: 60, muted: 60, subtle: 45, disabled: 30 }), mockTree);
+  const light = text.neutral.light;
+  const onSurfacesOnly = ramp.filter((value) => apca(value, "#ffffff") >= 60).at(-1)!;
+  // wash-soft carries the whole ladder, wash-base text-default (spec 9.1)
+  expect(apca(light.muted.value, washOf("soft"))).toBeGreaterThanOrEqual(DEFAULT_TARGETS.text.muted);
+  expect(apca(light.default.value, washOf("base"))).toBeGreaterThanOrEqual(DEFAULT_TARGETS.text.default);
+  // the wash binds: a darker step than the surfaces alone would take
+  expect(ramp.indexOf(light.muted.value)).toBeLessThan(ramp.indexOf(onSurfacesOnly));
+});
+
+test("integration: lighter surfaces keep every text over its floor on its own washes", async () => {
+  const rc = await getColorsConfig();
+  const config = structuredClone(rc!.config) as MagmaConfig;
+  // the surfaces of the retune that found it (studio, 2026-11-13): solved on the surfaces alone,
+  // the muted text of info, success, warning and danger fell 0.4 to 1.9 Lc under 75 on wash-soft
+  const theme = config.theme as unknown as { surfaces: Record<string, Record<string, string>> };
+  theme.surfaces = {
+    light: { sunken: "95%", muted: "96%", default: "98%", raised: "99%", overlay: "100%" },
+    dark: { sunken: "17%", muted: "19%", default: "27%", raised: "31%", overlay: "36%" },
+  };
+  const tree = (createColorTokens(config).tokens as { color: ColorTree }).color;
+  const failing = evaluatePairs(tree, aliasesFromConfig(semantic))
+    .filter((pair) => ["text-on-hue", "text-on-wash"].includes(pair.category))
+    .filter((pair) => pair.severity === "error" && !pair.pass)
+    .map((pair) => `${pair.key} ${pair.achieved}/${pair.target}`);
+  expect(failing).toEqual([]);
+});

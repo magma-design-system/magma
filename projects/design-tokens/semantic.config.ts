@@ -35,6 +35,7 @@ import {
   type ColorMode,
   type ThemeManifest,
 } from './src/lib/theme-manifest.mjs';
+import { WASH_STEPS } from './src/lib/wash.js';
 
 /**
  * A named theme's cosmetic override (spec 8). The string shorthand names only
@@ -316,7 +317,9 @@ export const semantic: SemanticConfig = {
   // base / `surface-hover`, #606); these are named by INTENSITY because a
   // colored chip is not an interaction state. Unifying the two vocabularies is a
   // follow-up, not part of this change.
-  washSteps: { soft: '10', base: '09', strong: '08' },
+  // the steps of the wash levels live with the text they carry (src/lib/wash.ts): the text-role
+  // engine solves the text against them, the gate measures them (#1414)
+  washSteps: { ...WASH_STEPS },
   // The ink extreme. 51 component declarations were naming it for a drop shadow
   // (dropdown 20, tooltip 18, tab 7, filter 4), 38 of them on step 01 itself.
   shadowStep: '01',
