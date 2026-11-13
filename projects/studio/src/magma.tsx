@@ -286,7 +286,9 @@ export function Check({
       value={value}
       checked={checked}
       disabled={disabled}
-      onmdsInputSwitchChange={(event) => onChecked(event.detail.checked)}
+      // unchecked, mds-input-switch writes `checked` back as undefined (its watcher drops the
+      // attribute) and emits that, though its detail declares a boolean
+      onmdsInputSwitchChange={(event) => onChecked(event.detail.checked === true)}
     >
       {children}
     </mds-input-switch>
