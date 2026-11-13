@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { afterEach, expect, test, vi } from 'vitest'
 import { h, render } from 'preact'
 import { act } from 'preact/test-utils'

@@ -8,7 +8,7 @@ not published on npm.
 nx run studio:serve       # the dev server, on http://localhost:5177 (builds the components first)
 nx run studio:build       # the static app, in dist/
 nx run studio:build.site  # the site for a static host, in dist-site/: the app and the Magma it loads
-nx run studio:test        # Vitest, jsdom; the static site in the Playwright Chromium
+nx run studio:test        # Vitest: node, jsdom, and the Playwright Chromium (*.e2e.mts, the static site)
 nx run studio:check.types # after a build: tsc on the sources, the tests and the build tools, as the CI types job
 ```
 
@@ -220,6 +220,12 @@ imports the `JSX.IntrinsicElements` its build publishes (`dist/types/components.
 renames the handlers of the events `onMds*` -> `onmds*` (the names Preact listens to) and adds the
 attributes Preact takes on any element. A prop renamed or removed in Magma fails
 `check.types`; nothing of Magma reaches the bundle.
+
+The bridges are tried against the real components: `test/magma.e2e.mts` runs in the `browser`
+project of Vitest (`vite.config.ts`), whose page loads the installed magma through `vendor.ts` as
+every page of the studio does, and the person types, chooses and moves the slider through
+Playwright. The pages are tried in jsdom (the `jsdom` project), where the tags never upgrade; the
+engine and the checks of the build in Node (the `node` project).
 
 Each page keeps its rules in the sheet beside its module (`palette.css`, `scales.css`, ...),
 from the tokens only: spaces from the rhythm, widths from the widths, colours from the semantic
