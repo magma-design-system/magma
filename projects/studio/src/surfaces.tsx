@@ -291,7 +291,7 @@ export function SurfaceManager({
   // text targets are an APCA Lc magnitude, mode-agnostic (unlike surfaces/borders)
   const setTextTarget = (role: string, target: number) => {
     onUpdateTheme((draft) => {
-      const text = (draft.text ??= { ...(DEFAULT_THEME.text as Record<string, number>) });
+      const text = (draft.text ??= { ...DEFAULT_THEME.text });
       (text as Record<string, number | { step: number }>)[role] = target;
     });
   };

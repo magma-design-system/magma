@@ -25,7 +25,11 @@ import './magma.css';
   density (docs/agents/patterns/density.md, "Not here").
 */
 
-type Detail<T> = CustomEvent<T>;
+/**
+ * The value of a text field or of a select. Magma types the value of every `mds-input` as
+ * `string | File | FormData` (a file field holds files); the fields of the studio hold text.
+ */
+const textOf = (value: unknown): string => (typeof value === 'string' ? value : '');
 
 /** The variants a field takes to say how its value stands (`mds-input-field`, `mds-input`). */
 export type FieldVariant = 'error' | 'info' | 'success' | 'warning';
@@ -133,8 +137,8 @@ export function TextInput({
       max={max}
       step={step === undefined ? undefined : String(step)}
       disabled={disabled}
-      onmdsInputChange={(event: Detail<{ value?: string }>) => {
-        const next = event.detail?.value ?? '';
+      onmdsInputChange={(event) => {
+        const next = textOf(event.detail?.value);
         if (!leave) {
           if (next !== set.current) onValue(next);
           return;
@@ -151,7 +155,7 @@ export function TextInput({
         focused.current = false;
         if (leave) handOver();
       }}
-      onmdsInputKeydown={(event: Detail<KeyboardEvent>) => {
+      onmdsInputKeydown={(event) => {
         if (leave && event.detail?.key === 'Enter') handOver();
       }}
     />
@@ -195,8 +199,8 @@ export function ColorInput({
       value={value}
       aria-label={label}
       required
-      onmdsInputChange={(event: Detail<{ value?: string }>) => {
-        const next = event.detail?.value ?? '';
+      onmdsInputChange={(event) => {
+        const next = textOf(event.detail?.value);
         if (next !== '' && next !== fieldColor(set.current)) onValue(next);
       }}
     />
@@ -236,8 +240,8 @@ export function Select({
       aria-label={label}
       placeholder={placeholder}
       disabled={disabled}
-      onmdsInputSelectChange={(event: Detail<{ value?: string }>) => {
-        const next = event.detail?.value ?? '';
+      onmdsInputSelectChange={(event) => {
+        const next = textOf(event.detail?.value);
         if (next !== set.current) onValue(next);
       }}
     >
@@ -282,9 +286,7 @@ export function Check({
       value={value}
       checked={checked}
       disabled={disabled}
-      onmdsInputSwitchChange={(event: Detail<{ checked: boolean }>) =>
-        onChecked(event.detail.checked)
-      }
+      onmdsInputSwitchChange={(event) => onChecked(event.detail.checked)}
     >
       {children}
     </mds-input-switch>
@@ -329,7 +331,7 @@ export function Range({
       max={max}
       step={step}
       disabled={disabled}
-      onmdsInputRangeChange={(event: Detail<number>) => {
+      onmdsInputRangeChange={(event) => {
         const next = Number(event.detail);
         if (next !== set.current) onValue(next);
       }}

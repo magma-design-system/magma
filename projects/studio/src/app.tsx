@@ -799,7 +799,7 @@ export function App({
   // the picker of Import config (the Config menu of the bar)
   const fileInput = useRef<HTMLInputElement>(null);
   // the menu of the colour selected, closed once one of its actions ran
-  const colorMenu = useRef<HTMLElement & { visible?: boolean }>(null);
+  const colorMenu = useRef<HTMLMdsDropdownElement>(null);
   const closeMenus = () => {
     if (colorMenu.current) colorMenu.current.visible = false;
   };
@@ -2046,7 +2046,10 @@ export function App({
                     // a name typed by the user opts the color out of auto-naming
                     if ('name' in patch) autoNamedRef.current.delete(selected.name);
                     updateConfig((draft) => {
-                      const target = draft.colors[selectedIndex] as Record<string, unknown>;
+                      const target = draft.colors[selectedIndex] as unknown as Record<
+                        string,
+                        unknown
+                      >;
                       Object.entries(patch).forEach(([key, value]) => {
                         if (value === undefined) delete target[key];
                         else target[key] = value;
@@ -2246,7 +2249,7 @@ export function App({
                   const groupOn = Boolean(draft.groups?.[colorName.split('.')[0]]?.surface);
                   if (on) (color as ColorConfig).surface = true;
                   else if (groupOn) (color as ColorConfig).surface = false;
-                  else delete (color as Record<string, unknown>).surface;
+                  else delete (color as ColorConfig).surface;
                 })
               }
               onToggleGroupSurface={(groupName, on) =>

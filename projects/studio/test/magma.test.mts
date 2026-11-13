@@ -57,7 +57,7 @@ test('a slider hands back a number, not the echo of its own value', () => {
 
 test('a checkbox hands back its state, which only the person changes', () => {
   const onChecked = vi.fn()
-  render(h(Check, { checked: false, onChecked }, 'smooth'), root)
+  render(h(Check, { checked: false, onChecked, children: 'smooth' }), root)
   const check = root.querySelector('mds-input-switch')!
   expect(check.getAttribute('type')).toBe('checkbox')
   expect(check.textContent).toBe('smooth')
@@ -144,11 +144,12 @@ test('a field that commits on leaving hands back on Enter and on blur, never at 
 
 test('a field says how its value stands, the control marked invalid on an error', () => {
   render(
-    h(Field, { label: 'Name', message: 'Magma ships editorial', variant: 'error' }, h(TextInput, {
-      value: 'editorial',
-      onValue: () => undefined,
+    h(Field, {
+      label: 'Name',
+      message: 'Magma ships editorial',
       variant: 'error',
-    })),
+      children: h(TextInput, { value: 'editorial', onValue: () => undefined, variant: 'error' }),
+    }),
     root,
   )
   expect(root.querySelector('mds-input-field')?.getAttribute('variant')).toBe('error')

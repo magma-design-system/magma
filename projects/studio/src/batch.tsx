@@ -43,16 +43,13 @@ export function BatchExportModal({
   }, [config]);
 
   // preview scales for just the picked colors; a bad config yields no scales
-  const [scales, error] = useMemo((): [
-    Map<string, ReturnType<typeof generateScales>> | null,
-    string | null,
-  ] => {
+  const [scales, error] = useMemo((): [ReturnType<typeof generateScales> | null, string | null] => {
     try {
       const subset: MagmaConfig = {
         ...config,
         colors: names.map((n) => colorsByName.get(n)!).filter(Boolean),
       };
-      return [generateScales(subset) as never, null];
+      return [generateScales(subset), null];
     } catch (e) {
       return [null, e instanceof Error ? e.message : String(e)];
     }
@@ -88,9 +85,7 @@ export function BatchExportModal({
           <div class="batch-list" role="group" aria-label={t('The colors of the batch')}>
             {names.map((name) => {
               const color = colorsByName.get(name);
-              const light = (scales as Map<string, { light: { value: string }[] }> | null)?.get(
-                name,
-              )?.light;
+              const light = scales?.get(name)?.light;
               return (
                 <div class={`batch-row ${checked.has(name) ? '' : 'dropped'}`}>
                   <Check checked={checked.has(name)} onChecked={() => toggle(name)}>

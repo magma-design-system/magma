@@ -9,6 +9,7 @@ nx run studio:serve       # the dev server, on http://localhost:5177 (builds the
 nx run studio:build       # the static app, in dist/
 nx run studio:build.site  # the site for a static host, in dist-site/: the app and the Magma it loads
 nx run studio:test        # Vitest, jsdom; the static site in the Playwright Chromium
+nx run studio:check.types # after a build: tsc on the sources, the tests and the build tools, as the CI types job
 ```
 
 The port is pinned (`strictPort`): when 5177 is busy the studio is already running, so the server
@@ -213,6 +214,12 @@ A value the page parses or sorts (a name, a stop of a scale, a list of export gr
 `commit="leave"`: it is handed back on Enter or on leaving the field, as the change of a native
 input, not at every key. Dialogs are an `mds-modal` with an `mds-banner` window, the main action
 last; destructive actions sit in the menu of their item.
+
+The `mds-*` tags are typed by the magma installed beside the studio: `src/shared/magma/elements.d.ts`
+imports the `JSX.IntrinsicElements` its build publishes (`dist/types/components.d.ts`) as a type,
+renames the handlers of the events `onMds*` -> `onmds*` (the names Preact listens to) and adds the
+attributes Preact takes on any element. A prop renamed or removed in Magma fails
+`check.types`; nothing of Magma reaches the bundle.
 
 Each page keeps its rules in the sheet beside its module (`palette.css`, `scales.css`, ...),
 from the tokens only: spaces from the rhythm, widths from the widths, colours from the semantic

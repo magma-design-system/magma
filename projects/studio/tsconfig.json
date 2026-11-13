@@ -8,6 +8,7 @@
     "jsxImportSource": "preact",
     "resolveJsonModule": true,
     "allowJs": true,
+    "allowImportingTsExtensions": true,
     "skipLibCheck": true,
     "strict": false,
     "noEmit": true
