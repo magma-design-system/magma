@@ -51,6 +51,13 @@ the pages that do not import this file: before hydration it hides the host whate
 say, and once hydrated it hands `visibility` back to them (`revert-layer`). A utility such as
 `invisible` hides a hydrated component, as `hidden` removes it (#1229).
 
+On a page that does not render the components on the server, `hydrated.css` also gives a
+component the box its host takes once hydrated, where that box would otherwise move the page:
+the `css/<tag>-pre-hydration.css` sheets of the stencil sources, which `scripts/hydrated.ts`
+appends to it after checking that every rule matches the host before hydration only
+(`scripts/hydrated-lib.ts`). `mds-img` gets its display, its width and, with `width` and
+`height`, their ratio through typed `attr()` (Chromium 133+; dropped elsewhere) (#1409).
+
 ## Tailwind 4 configuration
 
 Magma's Tailwind 4 layer is CSS-first: the theme (palette, typography tokens and the

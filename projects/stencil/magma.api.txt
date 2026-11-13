@@ -647,6 +647,7 @@ mds-icon part svg
 mds-img encapsulation shadow
 mds-img prop alt (attr alt) [reflect, mutable]: string
 mds-img prop crossorigin (attr crossorigin): "anonymous" | "use-credentials" | undefined
+mds-img prop decoding (attr decoding): "async" | "auto" | "sync" | undefined
 mds-img prop height (attr height): string | undefined
 mds-img prop loading (attr loading): "eager" | "lazy" | undefined = 'lazy'
 mds-img prop referrerpolicy (attr referrerpolicy): "no-referrer" | "no-referrer-when-downgrade" | "origin" | "origin-when-cross-origin" | "unsafe-url" | undefined
@@ -1790,6 +1791,7 @@ type ChipVariantType = "info" | "error" | "success" | "warning" | "amaranth" | "
 type ConsumptionModeType = "low" | "medium" | "high"
 type ContrastModeType = 'more' | 'no-preference' | 'system';
 type CrossoriginType = 'anonymous' | 'use-credentials';
+type DecodingType = "auto" | "async" | "sync"
 type Direction = 'clockwise' | 'counterclockwise';
 type DirectionType = 'horizontal' | 'vertical' | 'radial';
 type DirectionType = 'horizontal' | 'vertical';
