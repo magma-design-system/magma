@@ -2,11 +2,11 @@
 try: Press Allega file: the button waits, a bar beside it fills as the file is sent and a sentence under it says how much; Interrompi stops the upload, and the sentence says the file is not attached.
 -->
 <form class="grid max-w-form gap-between-fields">
-  <mds-input-field label="Oggetto">
+  <mds-input-field label="Oggetto" data-stage>
     <mds-input value="Agibilità dell'immobile in via Emilia 12"></mds-input>
   </mds-input-field>
   <div class="grid gap-label-control">
-    <mds-text typography="label" tag="p">Planimetria</mds-text>
+    <mds-text typography="label" tag="p" data-stage>Planimetria</mds-text>
     <div class="flex items-center gap-inline">
       <mds-button id="upload" type="button" variant="dark" tone="outline" icon="mi/baseline/upload">Allega file</mds-button>
       <mds-progress
