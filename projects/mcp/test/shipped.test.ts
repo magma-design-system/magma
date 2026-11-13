@@ -99,6 +99,47 @@ describe.skipIf(!existsSync(CLI) && !process.env.CI)('the server as magma ships 
       expect(component.isError).toBeFalsy();
       expect(component.structuredContent).toMatchObject({ tag: 'mds-button' });
     });
+
+    // #1396, on the patterns the package ships: every case of a decided pattern gives the parts
+    // of its solution with their role, and the answer for a situation gives them before its stage
+    test('answers each case of a pattern with its parts and their role, before the stage', async () => {
+      // the structured content of the tool, read freely
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      type Result = Record<string, any>;
+      const call = async (args: Record<string, unknown>) =>
+        (await client.callTool({ name: 'get_pattern', arguments: args }, CallToolResultSchema))
+          .structuredContent as Result;
+      const decided = ((await call({})).patterns as Array<Record<string, string>>).filter(
+        (one) => one.kind === 'pattern' && one.status === 'decided',
+      );
+      expect(decided.length).toBeGreaterThan(0);
+      for (const { id } of decided)
+        for (const one of (await call({ id })).pattern.cases as Result[])
+          for (const entry of one.use ?? [])
+            expect(entry, `${id}/${one.id}`).toEqual({
+              role: expect.any(String),
+              use: expect.stringMatching(/^mds-[a-z0-9-]+/),
+            });
+      const { answer } = await call({
+        id: 'confirm-action',
+        situation: {
+          reversible: 'no',
+          'reaches-others': 'no',
+          items: 'one',
+          frequency: 'occasional',
+          stakes: 'normal',
+        },
+      });
+      expect(answer.use.map((one: { use: string }) => one.use.split(' ')[0])).toEqual([
+        'mds-modal',
+        'mds-banner',
+        'mds-text',
+        'mds-button',
+        'mds-button',
+      ]);
+      const keys = Object.keys(answer);
+      expect(keys.indexOf('use')).toBeLessThan(keys.indexOf('preview'));
+    });
   });
 
   test('finds the project it is installed in when the client starts it elsewhere (#1387)', async () => {
