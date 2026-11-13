@@ -7,6 +7,7 @@ import {
   mkdtempSync,
   readdirSync,
   readFileSync,
+  symlinkSync,
   writeFileSync,
 } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -1159,13 +1160,15 @@ describe('the check tools', () => {
     expect(byId.mcp.ok).toBe(true);
   });
 
-  /** The checks of check_setup on a project made of `files`. */
-  const setupOf = async (files: Record<string, string>) => {
+  /** The checks of check_setup on a project made of `files`, and of `links` to its paths. */
+  const setupOf = async (files: Record<string, string>, links: Record<string, string> = {}) => {
     const root = mkdtempSync(path.join(tmpdir(), 'magma-setup-'));
     for (const [name, text] of Object.entries({ 'package.json': '{}', ...files })) {
       mkdirSync(path.dirname(path.join(root, name)), { recursive: true });
       writeFileSync(path.join(root, name), text);
     }
+    for (const [name, target] of Object.entries(links))
+      symlinkSync(path.join(root, target), path.join(root, name));
     const { checks } = (await checkSetup({ ...context, root }).run({})) as Result;
     return Object.fromEntries(
       checks.map((check: { id: string; ok: boolean; detail: string }) => [check.id, check]),
@@ -1201,6 +1204,54 @@ describe('the check tools', () => {
       ok: false,
       detail: expect.stringMatching(/reads the path only from IconsSetService.setSvgPath\(\)/),
     });
+  });
+
+  const setsThePath = 'IconsSetService.setSvgPath("/svg/");';
+
+  test('check_setup reads the root of the project, all of it when it has no source folder', async () => {
+    // a page without a bundler keeps its scripts next to its package.json, or in a folder (#1389)
+    for (const name of ['hub.js', 'js/hub.js'])
+      expect(
+        (
+          await setupOf({
+            'index.html': '<script type="module" src="/hub.js"></script>',
+            [name]: setsThePath,
+          })
+        )['icon-path'],
+        name,
+      ).toMatchObject({
+        ok: true,
+        detail: expect.stringContaining(`${path.normalize(name)} sets the icon path`),
+      });
+    // Vite starts from the index.html of the root, next to src
+    expect(
+      (
+        await setupOf({
+          'index.html': "<script>sessionStorage.setItem('mdsIconSvgPath', '/svg/');</script>",
+          'src/main.ts': "import '@maggioli-design-system/magma';",
+        })
+      )['icon-path'],
+    ).toMatchObject({ ok: true, detail: expect.stringContaining('index.html sets the icon path') });
+    // with a source folder, a folder beside it is not the app: a test, a script
+    expect(
+      (await setupOf({ 'src/main.ts': '', 'e2e/setup.ts': setsThePath }))['icon-path'].ok,
+    ).toBe(false);
+  });
+
+  test('check_setup reads no folder a tool writes, no hidden folder and no link', async () => {
+    const served = 'node_modules/@maggioli-design-system/magma/dist';
+    const iconPath = await setupOf(
+      {
+        'hub.js': "import { defineCustomElements } from '/magma/esm/loader.js';",
+        'build/hub.js': setsThePath,
+        '.storybook/preview.ts': setsThePath,
+        '.claude/worktrees/icons/hub.js': setsThePath,
+        // magma itself, served to the page from node_modules
+        [`${served}/esm/index.js`]: 'class IconsSetService { static setSvgPath(path) {} }',
+      },
+      { magma: served, 'icons.js': `${served}/esm/index.js` },
+    );
+    expect(iconPath['icon-path'].ok).toBe(false);
   });
 
   test('check_setup reads the lint preset from every file ESLint and Stylelint load', async () => {
