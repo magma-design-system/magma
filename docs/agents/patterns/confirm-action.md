@@ -19,7 +19,7 @@ not-for:
 assumptions:
   - The action starts from a control the person chose (a button, a menu item).
 high-stakes: true
-components: [mds-modal, mds-button, mds-banner, mds-toast]
+components: [mds-modal, mds-banner, mds-text, mds-button, mds-toast-region, mds-toast]
 related: [message-placement, error-recovery, notification-center, labels-and-values]
 validated-on: []
 
@@ -32,12 +32,75 @@ variables:
   preview: { values: [seen, unseen], means: "does the person see what goes and to whom when acting" }
 
 cases:
-  - { id: act-then-undo, reversible: "yes", reaches-others: "no", stakes: normal, where: "act at once, then a toast with Undo, the default light toast, which stays until closed", use: ["mds-toast duration=0 dismissible", "mds-button slot=action size=sm variant=dark tone=outline"] }
-  - { id: ask-first, reversible: "no", reaches-others: "no", items: one, frequency: occasional, stakes: normal, where: "a dialog before acting: the question names the item, the text says the consequence", use: ["mds-modal"] }
-  - { id: make-reversible, reversible: "no", reaches-others: "no", items: one, frequency: frequent, stakes: normal, where: "make it reversible: act at once, then a toast with Undo; the item is kept for a while to restore it", use: ["mds-toast duration=0 dismissible", "mds-button slot=action size=sm variant=dark tone=outline"], see: act-then-undo }
-  - { id: ask-first-many, reversible: "no", reaches-others: "no", items: many, stakes: normal, where: "a dialog before acting that says how many", use: ["mds-modal"] }
-  - { id: send-as-shown, reaches-others: "yes", preview: seen, stakes: normal, where: "no dialog: the Send button, with what and to whom in front of the person, is the confirmation; once sent, a success banner takes the place of the form, so nothing goes twice, and its action brings back an empty form", use: ["mds-button type=submit await", "mds-banner variant=success tone=strong", "mds-button slot=action"] }
-  - { id: ask-before-sending, reaches-others: "yes", preview: unseen, stakes: normal, where: "a dialog that shows what goes and to whom before sending", use: ["mds-modal"] }
+  - id: act-then-undo
+    reversible: "yes"
+    reaches-others: "no"
+    stakes: normal
+    where: "act at once, then a toast with Undo, the default light toast, which stays until closed"
+    use:
+      - { role: "the place of the toasts of the application, once in its shell", use: mds-toast-region }
+      - { role: "the toast that names what went; it stays until closed, its action with it", use: "mds-toast duration=0 dismissible" }
+      - { role: "Undo, named by the verb that puts the item back", use: "mds-button slot=action size=sm variant=dark tone=outline" }
+  - id: ask-first
+    reversible: "no"
+    reaches-others: "no"
+    items: one
+    frequency: occasional
+    stakes: normal
+    where: "a dialog before acting: the question names the item, the text says the consequence"
+    use:
+      - { role: "the dialog, named by its question", use: "mds-modal aria-label=<the question, naming the item>" }
+      - { role: "the window of the dialog, its headline the question", use: "mds-banner slot=window variant=light tone=box dismissible headline=<the question, naming the item>" }
+      - { role: "the consequence, in a sentence", use: mds-text }
+      - { role: "Cancel, the safe choice, focused on opening", use: "mds-button slot=action variant=dark tone=outline autofocus" }
+      - { role: "the action, last, named by its verb, in the colour of what destroys", use: "mds-button slot=action variant=error tone=strong" }
+  - id: make-reversible
+    reversible: "no"
+    reaches-others: "no"
+    items: one
+    frequency: frequent
+    stakes: normal
+    where: "make it reversible: act at once, then a toast with Undo; the item is kept for a while to restore it"
+    use:
+      - { role: "the place of the toasts of the application, once in its shell", use: mds-toast-region }
+      - { role: "the toast that names what went; it stays until closed, its action with it", use: "mds-toast duration=0 dismissible" }
+      - { role: "Undo, named by the verb that brings the item back", use: "mds-button slot=action size=sm variant=dark tone=outline" }
+    see: act-then-undo
+  - id: ask-first-many
+    reversible: "no"
+    reaches-others: "no"
+    items: many
+    stakes: normal
+    where: "a dialog before acting that says how many"
+    use:
+      - { role: "the dialog, named by its question", use: "mds-modal aria-label=<the question, saying how many>" }
+      - { role: "the window of the dialog, its headline the question", use: "mds-banner slot=window variant=light tone=box dismissible headline=<the question, saying how many>" }
+      - { role: "the consequence, in a sentence", use: mds-text }
+      - { role: "Cancel, the safe choice, focused on opening", use: "mds-button slot=action variant=dark tone=outline autofocus" }
+      - { role: "the action, last, named by its verb and how many, in the colour of what destroys", use: "mds-button slot=action variant=error tone=strong" }
+  - id: send-as-shown
+    reaches-others: "yes"
+    preview: seen
+    stakes: normal
+    where: "no dialog: the Send button, with what and to whom in front of the person, is the confirmation; once sent, a success banner takes the place of the form, so nothing goes twice, and its action brings back an empty form"
+    use:
+      - { role: "the title of the page, which takes the focus when the form goes", use: "mds-text typography=page tag=h1 tabindex=-1" }
+      - { role: "Send, the confirmation itself, waiting while the message goes", use: "mds-button type=submit await" }
+      - { role: "the outcome, in place of the form", use: "mds-banner variant=success tone=strong headline=<what went>" }
+      - { role: "what went and to whom", use: mds-text }
+      - { role: "the way back to an empty form", use: "mds-button slot=action variant=success tone=strong" }
+  - id: ask-before-sending
+    reaches-others: "yes"
+    preview: unseen
+    stakes: normal
+    where: "a dialog that shows what goes and to whom before sending"
+    use:
+      - { role: "the dialog, named by its question", use: "mds-modal aria-label=<the question, naming what goes and to whom>" }
+      - { role: "the window of the dialog, its headline the question", use: "mds-banner slot=window variant=light tone=box dismissible headline=<the question, naming what goes and to whom>" }
+      - { role: "the label of what goes, or of whom it goes to", use: "mds-text typography=label tag=dt" }
+      - { role: "its value: the recipient, the text", use: "mds-text tag=dd" }
+      - { role: "Cancel, the safe choice, focused on opening", use: "mds-button slot=action variant=dark tone=outline autofocus" }
+      - { role: "Send, named by its verb, in the default primary strong: sending destroys nothing", use: "mds-button slot=action" }
 gaps: []
 not-applicable:
   - { stakes: legal, why: "payments, signatures and consent have legal rules of their own: the candidate consent-and-legal" }
@@ -103,14 +166,14 @@ sees what goes and to whom when acting.
 
 A case that leaves a variable out holds for any of its values.
 
-| Case | When | Where | Use |
-| --- | --- | --- | --- |
-| `act-then-undo` | reversible: yes; reaches-others: no; stakes: normal | act at once, then a toast with Undo, the default light toast, which stays until closed | `mds-toast duration=0 dismissible`, `mds-button slot=action size=sm variant=dark tone=outline` |
-| `ask-first` | reversible: no; reaches-others: no; items: one; frequency: occasional; stakes: normal | a dialog before acting: the question names the item, the text says the consequence | `mds-modal` |
-| `make-reversible` | reversible: no; reaches-others: no; items: one; frequency: frequent; stakes: normal | make it reversible: act at once, then a toast with Undo; the item is kept for a while to restore it; see `act-then-undo` | `mds-toast duration=0 dismissible`, `mds-button slot=action size=sm variant=dark tone=outline` |
-| `ask-first-many` | reversible: no; reaches-others: no; items: many; stakes: normal | a dialog before acting that says how many | `mds-modal` |
-| `send-as-shown` | reaches-others: yes; stakes: normal; preview: seen | no dialog: the Send button, with what and to whom in front of the person, is the confirmation; once sent, a success banner takes the place of the form, so nothing goes twice, and its action brings back an empty form | `mds-button type=submit await`, `mds-banner variant=success tone=strong`, `mds-button slot=action` |
-| `ask-before-sending` | reaches-others: yes; stakes: normal; preview: unseen | a dialog that shows what goes and to whom before sending | `mds-modal` |
+| Case | When | Where |
+| --- | --- | --- |
+| `act-then-undo` | reversible: yes; reaches-others: no; stakes: normal | act at once, then a toast with Undo, the default light toast, which stays until closed |
+| `ask-first` | reversible: no; reaches-others: no; items: one; frequency: occasional; stakes: normal | a dialog before acting: the question names the item, the text says the consequence |
+| `make-reversible` | reversible: no; reaches-others: no; items: one; frequency: frequent; stakes: normal | make it reversible: act at once, then a toast with Undo; the item is kept for a while to restore it; see `act-then-undo` |
+| `ask-first-many` | reversible: no; reaches-others: no; items: many; stakes: normal | a dialog before acting that says how many |
+| `send-as-shown` | reaches-others: yes; stakes: normal; preview: seen | no dialog: the Send button, with what and to whom in front of the person, is the confirmation; once sent, a success banner takes the place of the form, so nothing goes twice, and its action brings back an empty form |
+| `ask-before-sending` | reaches-others: yes; stakes: normal; preview: unseen | a dialog that shows what goes and to whom before sending |
 
 Not applicable:
 
@@ -119,6 +182,65 @@ Not applicable:
 | stakes: legal | payments, signatures and consent have legal rules of their own: the candidate consent-and-legal |
 
 No gaps: every combination has a case or is not applicable.
+
+The parts of each case, in the order of its preview: what each does in the case, and the component to write. A value in angle brackets is the text of the application, written as it says; the rest of the preview is its stage, the context of the case.
+
+`act-then-undo`:
+
+| Role | Use |
+| --- | --- |
+| the place of the toasts of the application, once in its shell | `mds-toast-region` |
+| the toast that names what went; it stays until closed, its action with it | `mds-toast duration=0 dismissible` |
+| Undo, named by the verb that puts the item back | `mds-button slot=action size=sm variant=dark tone=outline` |
+
+`ask-first`:
+
+| Role | Use |
+| --- | --- |
+| the dialog, named by its question | `mds-modal aria-label=<the question, naming the item>` |
+| the window of the dialog, its headline the question | `mds-banner slot=window variant=light tone=box dismissible headline=<the question, naming the item>` |
+| the consequence, in a sentence | `mds-text` |
+| Cancel, the safe choice, focused on opening | `mds-button slot=action variant=dark tone=outline autofocus` |
+| the action, last, named by its verb, in the colour of what destroys | `mds-button slot=action variant=error tone=strong` |
+
+`make-reversible`:
+
+| Role | Use |
+| --- | --- |
+| the place of the toasts of the application, once in its shell | `mds-toast-region` |
+| the toast that names what went; it stays until closed, its action with it | `mds-toast duration=0 dismissible` |
+| Undo, named by the verb that brings the item back | `mds-button slot=action size=sm variant=dark tone=outline` |
+
+`ask-first-many`:
+
+| Role | Use |
+| --- | --- |
+| the dialog, named by its question | `mds-modal aria-label=<the question, saying how many>` |
+| the window of the dialog, its headline the question | `mds-banner slot=window variant=light tone=box dismissible headline=<the question, saying how many>` |
+| the consequence, in a sentence | `mds-text` |
+| Cancel, the safe choice, focused on opening | `mds-button slot=action variant=dark tone=outline autofocus` |
+| the action, last, named by its verb and how many, in the colour of what destroys | `mds-button slot=action variant=error tone=strong` |
+
+`send-as-shown`:
+
+| Role | Use |
+| --- | --- |
+| the title of the page, which takes the focus when the form goes | `mds-text typography=page tag=h1 tabindex=-1` |
+| Send, the confirmation itself, waiting while the message goes | `mds-button type=submit await` |
+| the outcome, in place of the form | `mds-banner variant=success tone=strong headline=<what went>` |
+| what went and to whom | `mds-text` |
+| the way back to an empty form | `mds-button slot=action variant=success tone=strong` |
+
+`ask-before-sending`:
+
+| Role | Use |
+| --- | --- |
+| the dialog, named by its question | `mds-modal aria-label=<the question, naming what goes and to whom>` |
+| the window of the dialog, its headline the question | `mds-banner slot=window variant=light tone=box dismissible headline=<the question, naming what goes and to whom>` |
+| the label of what goes, or of whom it goes to | `mds-text typography=label tag=dt` |
+| its value: the recipient, the text | `mds-text tag=dd` |
+| Cancel, the safe choice, focused on opening | `mds-button slot=action variant=dark tone=outline autofocus` |
+| Send, named by its verb, in the default primary strong: sending destroys nothing | `mds-button slot=action` |
 
 ## Parts
 
@@ -214,3 +336,4 @@ Situations every application has, each with its case: they give the examples, th
 | 2026-11-01 | The toast of a removal, with Undo or after a confirmation, is the default `light` toast, not `success` (`act-then-undo`, `make-reversible`) | A removal is a loss the person wanted, and green celebrates it; on the neutral toast no colour judges the removal or Undo (`removal-toast-neutral` of `message-placement`). https://github.com/magma-design-system/magma/issues/1189#issuecomment-6556983924 |
 | 2026-11-03 | Cancel is `dark outline`, the error banner of the dialog `tone="strong"` right above the row; the action of the toast with Undo is `size="sm" variant="dark" tone="outline"` | The rules of the domain Actions (`secondary`, `failed`, `toast`), which are newer than this pattern. Applied in review round 2 of the previews: https://github.com/magma-design-system/magma/issues/1233 |
 | 2026-11-03 | After `send-as-shown`, a success banner takes the place of the form, and its action brings back an empty form; no toast | With the text still on screen and a toast that goes, the person may send the same message again in a few seconds without knowing it went. Asked in review round 2 of the previews: https://github.com/magma-design-system/magma/issues/1233 |
+| 2026-11-13 | Each case gives the parts of its solution with their role, in the order of its preview, the stage of the preview marked `data-stage` | The `use` of a case named one part in five of what its preview shows, and no role: the agents of the products composed the rest by hand. https://github.com/magma-design-system/magma/issues/1396 |
