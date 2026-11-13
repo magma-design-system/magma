@@ -15,6 +15,7 @@ The `<mds-link>` web component is the inline link of Magma: a word or a phrase i
 - **A real anchor with `href`**: the link is an `<a href>` in the shadow root, and it is the element that takes the focus. The browser gives it what it gives every link: a new tab on a modifier or middle click, the context menu, drag. A click listener on the host can cancel the navigation with `preventDefault()`, and a client-side router registered with `NavigationService.setHandler()` (from `@maggioli-design-system/magma/services`) takes the plain clicks over. A `click()` from a script follows the link too, unless a listener cancels it.
 - **An inline button without `href`**: the link becomes an element with `role="button"` in the tab order; a click, Enter and Space each fire one native `click` on the host. It never submits the form it sits in. It is not a native `<button>`, which cannot wrap across lines.
 - **New tab**: `target="blank"` opens the URL in a new tab without giving it access to the page (`rel="noopener noreferrer"`) and adds a hidden "(opens in a new tab)", in the language of the page, to the name the assistive technology reads. No icon is added: pick one with `icon` if the design wants it.
+- **Download**: `download` saves the file of `href` instead of opening it, as on a native `<a download>`: with no value the file keeps the name the server gives it, a value names the saved file. A file the browser can show (JSON, XML, a PDF) opens in the tab without it. Browsers apply it to the URLs of the origin of the page, `blob:` and `data:` only: a link to another origin opens the file. A download never goes to the router: the browser saves the file on a click, on Enter and on the `click()` of a script.
 - **Icon**: `icon` draws an icon, hidden from the assistive technology, sized on a step of the spacing scale, the same in every typography. It stays on the line of the word next to it: it never wraps to a line of its own.
 - **Underline always visible**: the underline is what tells the link from the text without its color (WCAG 1.4.1), so every style keeps one, and its weight never changes. Under the pointer every link fills with a faint background that rises from the bottom, and a `weak` one also gives its line the whole color; under high contrast the tints take the full color.
 
@@ -83,6 +84,17 @@ With `target="blank"` the component adds `rel="noopener noreferrer"` and tells t
 </mds-text>
 ```
 
+#### A Link That Downloads Its File
+
+`download` saves the file instead of showing it in the tab; its value is the name of the saved file. The URL has to be on the origin of the page.
+
+```html
+<mds-text typography="detail">
+  Scarica i colori come
+  <mds-link href="/downloads/colors.xml" download="colors.xml" icon="mi/baseline/download">file XML</mds-link>.
+</mds-text>
+```
+
 #### An Icon Before the Text
 
 Use `icon-position="left"` for an icon that leads, such as a back arrow.
@@ -107,7 +119,7 @@ On a status or filled surface the accent loses contrast: `variant="inherit"` tak
 
 #### Routing in a Single-Page App
 
-Register the router once: plain clicks on every `mds-link` (and `mds-button` with `href`) go to it, with the browser navigation already cancelled; modifier clicks, other origins and `target="blank"` stay with the browser.
+Register the router once: plain clicks on every `mds-link` (and `mds-button` with `href`) go to it, with the browser navigation already cancelled; modifier clicks, other origins, `target="blank"` and `download` stay with the browser.
 
 ```javascript
 import { NavigationService } from '@maggioli-design-system/magma/services';
@@ -222,6 +234,7 @@ mds-link::part(link) {
 
 | Property       | Attribute       | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | Type                                           | Default     |
 | -------------- | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- | ----------- |
+| `download`     | `download`      | Saves the file of `href` instead of opening it, as the `download` attribute of `<a>`: present with no value, or `true`, the file takes the name the server gives it; a string is the name of the saved file. Browsers apply it to the URLs of the origin of the page, `blob:` and `data:`: a link to another origin opens the file as without it. A download never goes to the router registered with `NavigationService`                                                                                                                                            | `boolean \| string \| undefined`               | `undefined` |
 | `href`         | `href`          | The URL of the link: a real anchor in its shadow root, so the browser gives it what it gives every link (new tab on a modifier or middle click, the context menu, drag). A client-side router takes the plain clicks over once registered with `NavigationService.setHandler()` (from `@maggioli-design-system/magma/services`); without one, a click listener on the host can still cancel the navigation with `preventDefault()`. Without `href` the link is an inline button: it answers to click, Enter and Space with a `click` event and never submits a form. | `string \| undefined`                          | `undefined` |
 | `icon`         | `icon`          | The icon displayed in the link                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | `string \| undefined`                          | `undefined` |
 | `iconPosition` | `icon-position` | Specifies the horizontal position of the icon, which never wraps to a line of its own                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | `"left" \| "right" \| undefined`               | `'right'`   |

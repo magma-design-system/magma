@@ -223,6 +223,7 @@ mds-button prop autoFocus (attr auto-focus): boolean
 mds-button prop await (attr await) [reflect, mutable]: boolean | undefined
 mds-button prop current (attr current) [reflect]: "page" | "section" | boolean | undefined
 mds-button prop disabled (attr disabled) [reflect, mutable]: boolean | undefined
+mds-button prop download (attr download): boolean | string | undefined
 mds-button prop href (attr href) [reflect]: string | undefined
 mds-button prop icon (attr icon) [reflect, mutable]: string | undefined
 mds-button prop iconCurrent (attr icon-current): string | undefined
@@ -1006,6 +1007,7 @@ mds-label css --mds-label-icon-color INTERNAL
 mds-label css --mds-label-selection-background INTERNAL
 mds-label css --mds-label-selection-color INTERNAL
 mds-link encapsulation shadow
+mds-link prop download (attr download): boolean | string | undefined
 mds-link prop href (attr href) [reflect]: string | undefined
 mds-link prop icon (attr icon) [reflect]: string | undefined
 mds-link prop iconPosition (attr icon-position) [reflect]: "left" | "right" | undefined = 'right'

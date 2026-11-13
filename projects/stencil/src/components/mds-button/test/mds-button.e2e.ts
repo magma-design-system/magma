@@ -735,6 +735,103 @@ describe('mds-button', () => {
     });
   });
 
+  // a file the browser can show (JSON, XML) opens in the tab without it (#1407)
+  describe('as a link that downloads its file, with download', () => {
+    // the host follows a click of its own on the next task: wait past it to see nothing happen
+    const settle = () => new Promise((resolve) => setTimeout(resolve, 50));
+    const link = (attributes = '') =>
+      render<HTMLMdsButtonElement>(
+        `<mds-button href="#colors.xml" label="Download" ${attributes}></mds-button>`,
+      );
+    const anchorOf = (root: HTMLElement): HTMLAnchorElement => root.shadowRoot!.querySelector('a')!;
+
+    afterEach(() => {
+      NavigationService.setHandler(undefined);
+      // the links are fragments, so the page stays: leave its URL as it was found
+      window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    });
+
+    it('passes download on to the anchor, as the attribute of a native one', async () => {
+      const named = await link('download="colors.xml"');
+      expect(anchorOf(named.root)).toEqualAttribute('download', 'colors.xml');
+
+      // the attribute with no value saves the file under the name the server gives it
+      const bare = await link('download');
+      expect(anchorOf(bare.root)).toEqualAttribute('download', '');
+
+      const plain = await link();
+      expect(anchorOf(plain.root)).not.toHaveAttribute('download');
+    });
+
+    it('takes true and false from a framework binding', async () => {
+      const button = await mountButton((element) => {
+        element.href = '#colors.xml';
+        element.download = true;
+      });
+      expect(anchorOf(button)).toEqualAttribute('download', '');
+
+      button.download = false;
+      await vi.waitFor(() => expect(anchorOf(button)).not.toHaveAttribute('download'));
+    });
+
+    it('leaves a click on the anchor to the browser, never to the router', async () => {
+      const router = vi.fn();
+      NavigationService.setHandler(router);
+      // the document stands in for the browser, which gets the click uncancelled and saves the
+      // file; cancelled here, so the test runner saves nothing
+      const cancelled: boolean[] = [];
+      const browser = (event: MouseEvent) => {
+        cancelled.push(event.defaultPrevented);
+        event.preventDefault();
+      };
+      const { root } = await link('download="colors.xml"');
+
+      document.addEventListener('click', browser, { once: true });
+      anchorOf(root).dispatchEvent(
+        new MouseEvent('click', { bubbles: true, cancelable: true, composed: true }),
+      );
+      await settle();
+
+      expect(router).not.toHaveBeenCalled();
+      expect(cancelled).toEqual([false]);
+      expect(window.location.hash).toBe('');
+    });
+
+    it('hands Enter and the click of a script to the anchor, one click each for the page', async () => {
+      const router = vi.fn();
+      NavigationService.setHandler(router);
+      const { root } = await link('download="colors.xml"');
+      const onHost = vi.fn();
+      root.addEventListener('click', onHost);
+      // what the anchor gets, cancelled so that the test runner saves nothing
+      const onAnchor = vi.fn((event: MouseEvent) => event.preventDefault());
+      anchorOf(root).addEventListener('click', onAnchor);
+
+      root.focus();
+      await userEvent.keyboard('{Enter}');
+      await vi.waitFor(() => expect(onAnchor).toHaveBeenCalledTimes(1));
+
+      root.click();
+      await vi.waitFor(() => expect(onAnchor).toHaveBeenCalledTimes(2));
+      await settle();
+
+      expect(onHost).toHaveBeenCalledTimes(2);
+      expect(router).not.toHaveBeenCalled();
+      expect(window.location.hash).toBe('');
+    });
+
+    it('saves nothing while disabled', async () => {
+      const { root } = await link('download="colors.xml" disabled');
+      const onAnchor = vi.fn((event: MouseEvent) => event.preventDefault());
+      anchorOf(root).addEventListener('click', onAnchor);
+
+      root.click();
+      await settle();
+
+      expect(onAnchor).not.toHaveBeenCalled();
+    });
+  });
+
   itReadsTheSlottedLabelWhenLabelIsNull('mds-button');
 
   // #913: past half its height the browser clamps the radius; where corner-shape cannot be

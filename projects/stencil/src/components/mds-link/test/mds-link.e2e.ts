@@ -189,6 +189,95 @@ describe('mds-link', () => {
     });
   });
 
+  // a file the browser can show (JSON, XML) opens in the tab without it (#1407)
+  describe('with href and download', () => {
+    const link = (attributes = '') =>
+      render<HTMLMdsLinkElement>(
+        `<mds-link href="#colors.xml" ${attributes}>colors.xml</mds-link>`,
+      );
+
+    it('passes download on to the anchor, as the attribute of a native one', async () => {
+      const named = await link('download="colors.xml"');
+      expect(linkOf(named.root)).toEqualAttribute('download', 'colors.xml');
+
+      // the attribute with no value saves the file under the name the server gives it
+      const bare = await link('download');
+      expect(linkOf(bare.root)).toEqualAttribute('download', '');
+
+      // a string is a name, "false" too, as on a native anchor
+      const literal = await link('download="false"');
+      expect(linkOf(literal.root)).toEqualAttribute('download', 'false');
+
+      const plain = await link();
+      expect(linkOf(plain.root)).not.toHaveAttribute('download');
+    });
+
+    it('takes true and false from a framework binding, and follows a change', async () => {
+      const { root, waitForChanges } = await link();
+
+      root.download = true;
+      await waitForChanges();
+      expect(linkOf(root)).toEqualAttribute('download', '');
+
+      root.download = 'report.json';
+      await waitForChanges();
+      expect(linkOf(root)).toEqualAttribute('download', 'report.json');
+
+      root.download = false;
+      await waitForChanges();
+      expect(linkOf(root)).not.toHaveAttribute('download');
+    });
+
+    it('drops download without href: the inline button saves nothing', async () => {
+      const { root } = await render<HTMLMdsLinkElement>(
+        '<mds-link download="colors.xml">colors.xml</mds-link>',
+      );
+
+      expect(linkOf(root).tagName).toBe('SPAN');
+      expect(linkOf(root)).not.toHaveAttribute('download');
+    });
+
+    it('leaves a click on the anchor to the browser, never to the router', async () => {
+      const router = vi.fn();
+      NavigationService.setHandler(router);
+      // the document stands in for the browser, which gets the click uncancelled and saves the
+      // file; cancelled here, so the test runner saves nothing
+      const cancelled: boolean[] = [];
+      const browser = (event: MouseEvent) => {
+        cancelled.push(event.defaultPrevented);
+        event.preventDefault();
+      };
+      const { root } = await link('download="colors.xml"');
+
+      document.addEventListener('click', browser, { once: true });
+      linkOf(root).dispatchEvent(click());
+      await settle();
+
+      expect(router).not.toHaveBeenCalled();
+      expect(cancelled).toEqual([false]);
+      expect(window.location.hash).toBe('');
+    });
+
+    it('hands the click of a script to the anchor, and the page gets one click only', async () => {
+      const router = vi.fn();
+      NavigationService.setHandler(router);
+      const { root } = await link('download="colors.xml"');
+      const onHost = vi.fn();
+      root.addEventListener('click', onHost);
+      // what the anchor gets, cancelled so that the test runner saves nothing
+      const onAnchor = vi.fn((event: MouseEvent) => event.preventDefault());
+      linkOf(root).addEventListener('click', onAnchor);
+
+      root.click();
+      await vi.waitFor(() => expect(onAnchor).toHaveBeenCalledTimes(1));
+      await settle();
+
+      expect(onHost).toHaveBeenCalledTimes(1);
+      expect(router).not.toHaveBeenCalled();
+      expect(window.location.hash).toBe('');
+    });
+  });
+
   describe('without href, an inline button', () => {
     it('renders a focusable button and no anchor', async () => {
       const { root } = await render<HTMLMdsLinkElement>('<mds-link>Ask for help</mds-link>');
