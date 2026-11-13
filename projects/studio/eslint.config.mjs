@@ -4,7 +4,8 @@ import { baseConfig } from '../../eslint.config.mjs'
 
 export default defineConfig([
   ...baseConfig,
-  globalIgnores(['**/node_modules/*', '**/dist/*']),
+  // the builds: the app (dist) and the static site (dist-site, build.site)
+  globalIgnores(['**/node_modules/*', '**/dist/*', '**/dist-site/*']),
   {
     languageOptions: {
       globals: {
