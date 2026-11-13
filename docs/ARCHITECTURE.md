@@ -217,7 +217,7 @@ CSS and Tailwind 4 styles consumed by the web component library and consumer app
 | `dist/css/globals.css` | Global CSS custom properties (`--magma-*` design decisions) |
 | `dist/css/reset.css` | Opinionated CSS reset |
 | `dist/css/colors-rgb-*.css` | RGB color tokens (required for Tailwind and web components) |
-| `dist/css/hydrated.css` | FOUC prevention for StencilJS, and the box of the hydrated components kept against page resets (Tailwind's preflight) |
+| `dist/css/hydrated.css` | FOUC prevention for StencilJS, the box of the hydrated components kept against page resets (Tailwind's preflight), and the box some components take before they hydrate (`mds-img`), collected from their `css/<tag>-pre-hydration.css` |
 | `dist/css/animations.css` | Shared animations |
 | `dist/tailwind/` | Tailwind 4 layers: base, typography, utilities (the titles by role and the composition utilities `page-frame` and `field-group` of #1189 included) |
 | `dist/tailwind/dark-mode.css` | The `dark:` variant on the Magma mode, imported by `dist/tailwind/theme.css`; generated from the selectors the palette turns dark on |

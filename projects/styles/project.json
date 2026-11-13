@@ -9,7 +9,8 @@
       "inputs": [
         "default",
         "^default",
-        "{workspaceRoot}/projects/stencil/src/components/**/*-property.css"
+        "{workspaceRoot}/projects/stencil/src/components/**/*-property.css",
+        "{workspaceRoot}/projects/stencil/src/components/**/*-pre-hydration.css"
       ]
     }
   }

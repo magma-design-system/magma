@@ -6,9 +6,10 @@
  * edited as if it were live, and `check.tokens` scans every `.css` under `src`, so a dead
  * sheet can also keep a name alive in its baseline (`mds-tooltip-variants.css`, #1000).
  *
- * `<component>/css/<component>-property.css` is the one exception: those registrations
- * must never be imported (they would be inert in a shadow root) and
- * `projects/styles/scripts/properties.ts` collects them into globals.css directly.
+ * `<component>/css/<component>-property.css` and `<component>/css/<component>-pre-hydration.css`
+ * are the exceptions: document CSS that must never be imported (inert in a shadow root), which
+ * `projects/styles/scripts/properties.ts` collects into globals.css (the registrations) and
+ * `projects/styles/scripts/hydrated.ts` into hydrated.css (the box before hydration, #1409).
  *
  * Kept free of anything but reads, so scripts/unreachable-sheets.spec.ts can run it on
  * fixtures and on the real tree.
@@ -17,6 +18,7 @@ import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
 
 export const PROPERTY_SUFFIX = '-property.css';
+export const PRE_HYDRATION_SUFFIX = '-pre-hydration.css';
 
 const walk = (dir: string, ext: RegExp): string[] =>
   readdirSync(dir).flatMap((entry) => {
@@ -46,7 +48,8 @@ export const sheetImports = (css: string): string[] =>
 
 /**
  * Every `.css` under `componentsDir` that no component's `styleUrl(s)` reaches, directly or
- * through a chain of relative `@import`/`@reference`, outside the `-property.css` files.
+ * through a chain of relative `@import`/`@reference`, outside the `-property.css` and
+ * `-pre-hydration.css` files.
  * Paths are relative to `componentsDir`, sorted.
  */
 export const unreachableSheets = (componentsDir: string): string[] => {
@@ -65,7 +68,12 @@ export const unreachableSheets = (componentsDir: string): string[] => {
   }
 
   return walk(componentsDir, /\.css$/)
-    .filter((sheet) => !sheet.endsWith(PROPERTY_SUFFIX) && !reached.has(sheet))
+    .filter(
+      (sheet) =>
+        !sheet.endsWith(PROPERTY_SUFFIX) &&
+        !sheet.endsWith(PRE_HYDRATION_SUFFIX) &&
+        !reached.has(sheet),
+    )
     .map((sheet) => relative(componentsDir, sheet))
     .sort();
 };
