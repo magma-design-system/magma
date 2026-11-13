@@ -3,13 +3,13 @@ try: Press Invia: the connection drops, Invia waits while the application asks t
 height: 560
 -->
 <div class="grid gap-between-sections">
-  <mds-text typography="page" tag="h1">Nuova comunicazione</mds-text>
+  <mds-text typography="page" tag="h1" data-stage>Nuova comunicazione</mds-text>
   <form id="form" class="@container grid max-w-form gap-content-actions">
     <div class="grid gap-between-fields">
-      <mds-input-field label="Destinatario">
+      <mds-input-field label="Destinatario" data-stage>
         <mds-input type="email" value="m.bianchi@pec.esempio.it"></mds-input>
       </mds-input-field>
-      <mds-input-field label="Oggetto">
+      <mds-input-field label="Oggetto" data-stage>
         <mds-input value="Documenti mancanti, pratica 2026/0412"></mds-input>
       </mds-input-field>
       <mds-banner id="error" variant="error" tone="strong" headline="Comunicazione non inviata" class="hidden">
@@ -20,7 +20,7 @@ height: 560
       </mds-banner>
     </div>
     <div class="flex justify-end gap-inline @max-actions:flex-col @max-actions:*:self-stretch">
-      <mds-button type="button" variant="dark" tone="outline">Annulla</mds-button>
+      <mds-button type="button" variant="dark" tone="outline" data-stage>Annulla</mds-button>
       <mds-button id="send">Invia</mds-button>
     </div>
   </form>

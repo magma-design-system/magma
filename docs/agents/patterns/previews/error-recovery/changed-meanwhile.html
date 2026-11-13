@@ -2,13 +2,13 @@
 try: Look at the error above the row: it says who changed the request and when, and that nothing was saved; the changes written here stay in their fields.
 -->
 <div class="grid gap-between-sections">
-  <mds-text typography="page" tag="h1">Modifica pratica</mds-text>
+  <mds-text typography="page" tag="h1" data-stage>Modifica pratica</mds-text>
   <form class="@container grid max-w-form gap-content-actions">
     <div class="grid gap-between-fields">
-      <mds-input-field label="Oggetto">
+      <mds-input-field label="Oggetto" data-stage>
         <mds-input value="Rinnovo concessione suolo pubblico"></mds-input>
       </mds-input-field>
-      <mds-input-field label="Durata in giorni">
+      <mds-input-field label="Durata in giorni" data-stage>
         <mds-input value="120"></mds-input>
       </mds-input-field>
       <mds-banner variant="error" tone="strong" headline="Modifiche non salvate">
@@ -18,7 +18,7 @@ try: Look at the error above the row: it says who changed the request and when, 
         </mds-text>
       </mds-banner>
     </div>
-    <div class="flex justify-end gap-inline @max-actions:flex-col @max-actions:*:self-stretch">
+    <div class="flex justify-end gap-inline @max-actions:flex-col @max-actions:*:self-stretch" data-stage>
       <mds-button type="button" variant="dark" tone="outline">Annulla</mds-button>
       <mds-button>Salva</mds-button>
     </div>
