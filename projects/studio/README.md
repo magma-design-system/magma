@@ -340,7 +340,14 @@ mode (#1274) is never painted in the other, since `mds-pref-theme` locks it, so 
 The verdict is in view while the configuration is edited: beside the title of every page of
 Colors (the status of the page-header block), as a count on the Colors button of the bar, which
 stays in view wherever the page scrolls (`mds-notification`), at the head of the Colors menu, and
-per mode on each card of the Themes page. The **Contrast check** page lists every pair of every
+per mode on each card of the Themes page. On **Semantic surface**, where the balances are tuned,
+the pairs themselves head the column of the preview (`src/gate-summary.tsx`, #1418), which stays in
+view while the levels scroll: one line per pair and mode over the themes it fails in
+(`gateFailureGroups`), how far under its target, and the way to Contrast check; the preview below
+judges one family, the summary every theme. Beside each text target stands the floor the gate
+holds the role to, marked when the target is under it: the engine keeps a text over its floor on
+the washes of its family (#1414), so a slider moved under the floor does not make the text weaker.
+The **Contrast check** page lists every pair of every
 theme, the two modes side by side with the sample of the two colours, the measure and its badge,
 one table per category of the gate; a switch keeps only the pairs below their target. The badges
 read as the previews of Semantic surface: `error` fails the build, `warning` is under a target the

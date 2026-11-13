@@ -1,0 +1,27 @@
+/*
+  The verdict of the contrast gate beside the controls of the balances (gate-summary.tsx, #1418), at
+  the head of the column of the preview of Semantic surface. Spaces from the rhythm, colours from
+  the semantic roles.
+*/
+
+.gate-summary {
+  border-block-end: thin solid rgb(var(--magma-border-muted));
+  display: grid;
+  gap: var(--magma-rhythm-title-content);
+  padding-block-end: var(--magma-rhythm-between-fields);
+}
+
+.gate-summary-head {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--spacing) * 200);
+}
+
+.gate-summary-themes {
+  color: rgb(var(--magma-text-muted));
+}
+
+.gate-summary code {
+  font-family: var(--font-code);
+}

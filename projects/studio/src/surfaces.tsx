@@ -22,6 +22,8 @@ import {
 import boxShadowTokens from '@maggioli-design-system/design-tokens/tokens/cosmetic/box-shadow.json';
 import committedConfig from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json';
 import { Field, Range, Select } from './magma.js';
+import type { GateReport } from './gate.js';
+import { GateSummary } from './gate-summary.js';
 import { msg, rich, useT, type T } from './i18n.js';
 import './surfaces.css';
 
@@ -202,6 +204,8 @@ interface SurfaceManagerProps {
    */
   head?: ComponentChildren;
   config: MagmaConfig;
+  /** The report of the contrast gate on the configuration edited (app.tsx), summed up beside the controls (#1418). */
+  report?: GateReport;
   /** toggle the per-color surface opt-in flag */
   onToggleSurface: (colorName: string, on: boolean) => void;
   /** toggle the group-level opt-in (groups.<group>.surface) */
@@ -217,6 +221,7 @@ type FamilyModes = { light: RoleSet; dark: RoleSet };
 export function SurfaceManager({
   head,
   config,
+  report,
   onToggleSurface,
   onToggleGroupSurface,
   onUpdateTheme,
@@ -472,6 +477,8 @@ export function SurfaceManager({
 
         {/* Section 3: preview (sticky right column) */}
         <div class="surfaces-preview">
+          {/* the verdict of the gate on every theme, beside the preview of one family (#1418) */}
+          {report && <GateSummary report={report} />}
           {genError && <mds-banner variant="error">{genError}</mds-banner>}
           {!genError && optedFamilies.length === 0 && (
             <mds-text typography="detail" tag="p" class="surfaces-muted">
@@ -875,7 +882,10 @@ interface TextTargetsProps {
 /**
  * Text targets are an APCA Lc magnitude, mode-agnostic (one value, applied to
  * both modes), so this is a single-column editor - unlike the per-mode surface
- * and border levels. A `{ step }` override is shown read-only.
+ * and border levels. A `{ step }` override is shown read-only. Beside each target, the floor the
+ * contrast gate holds the role to (DEFAULT_TARGETS of contrast-gate.ts), marked when the target
+ * is under it (#1418): the engine keeps a text over its floor on the washes of its family (#1414),
+ * so the part of a slider under the floor does not make the text weaker.
  */
 function TextTargets({ targets, onChange }: TextTargetsProps) {
   const t = useT();
@@ -908,12 +918,44 @@ function TextTargets({ targets, onChange }: TextTargetsProps) {
                   onValue={(value) => onChange(role, value)}
                 />
               )}
-              <span />
+              <TextFloor role={role} level={level} />
             </>
           );
         })}
       </div>
     </fieldset>
+  );
+}
+
+/** The floor of the gate for a text role, and whether the target stands under it. */
+function TextFloor({
+  role,
+  level,
+}: {
+  role: string;
+  level: number | { step: number } | undefined;
+}) {
+  const t = useT();
+  const floor = DEFAULT_TARGETS.text[role as keyof typeof DEFAULT_TARGETS.text];
+  if (floor === undefined) return <span />;
+  const under = typeof level === 'number' && level < floor;
+  return (
+    <span class="surfaces-floor">
+      <mds-text typography="caption" tag="span" class="surfaces-muted">
+        {t('floor {floor}', { floor })}
+      </mds-text>
+      {under && (
+        <mds-badge
+          variant="dark"
+          tone="weak"
+          label={t('under the floor')}
+          title={t(
+            'The contrast gate holds this text to Lc {floor}, on the surfaces and on the washes that carry it.',
+            { floor },
+          )}
+        ></mds-badge>
+      )}
+    </span>
   );
 }
 

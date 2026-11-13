@@ -8,6 +8,10 @@ import initialConfig from '@maggioli-design-system/design-tokens/.magma-design-t
 import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs'
 import type { ThemeConfig } from '@maggioli-design-system/design-tokens/src/lib/surface.mjs'
 import { SurfaceManager } from '../src/surfaces.js'
+import { DEFAULT_TARGETS } from '@maggioli-design-system/design-tokens/src/lib/contrast-gate.js'
+import { TEXT_ROLES } from '@maggioli-design-system/design-tokens/src/lib/text-role.mjs'
+import { gateFailureGroups, gateReport } from '../src/gate.js'
+import { hrefOf } from '../src/routes.js'
 import { LangProvider } from '../src/i18n.js'
 import { textOf } from './text.mjs'
 
@@ -204,4 +208,59 @@ test('the contrast verdicts of the preview are Magma badges, not emoji', () => {
     expect(muted.querySelector('mds-badge')).toBeNull()
   }
   expect(root.textContent).not.toMatch(/\u2705|\u26a0/u)
+})
+
+/** The page on a configuration, with the report of the gate the App hands it. */
+const showWithReport = (config: MagmaConfig) => {
+  render(null, root)
+  render(
+    h(SurfaceManager, {
+      config,
+      report: gateReport(config),
+      onToggleSurface,
+      onToggleGroupSurface,
+      onUpdateTheme: () => undefined,
+    }),
+    root,
+  )
+  return root.querySelector<HTMLElement>('section[aria-label="Contrast gate"]')!
+}
+
+test('the verdict of the gate heads the preview: the pairs below target, grouped, and the way to every pair', () => {
+  const pale = JSON.parse(JSON.stringify(initialConfig)) as MagmaConfig
+  pale.theme!.text = { default: { step: 10 }, muted: { step: 10 }, subtle: { step: 10 }, disabled: { step: 10 } }
+  const summary = showWithReport(pale)
+  expect(summary.querySelector('mds-badge')?.getAttribute('variant')).toBe('error')
+  const groups = gateFailureGroups(gateReport(pale))
+  const items = [...summary.querySelectorAll('mds-list-item')]
+  expect(items).toHaveLength(Math.min(groups.length, 6))
+  expect(items[0].textContent).toContain(`${groups[0].fg} on ${groups[0].bg}, ${groups[0].mode}:`)
+  expect(items[0].textContent).toMatch(/ under [\d.]+ in \d+ themes?$/)
+  expect(summary.textContent).toContain(`and ${groups.length - 6} more`)
+  expect(summary.querySelector('mds-button')?.getAttribute('href')).toBe(hrefOf({ section: 'colors', view: 'contrast' }))
+  // at the head of the column of the preview, over the choice of the family it previews
+  const family = root.querySelector('mds-input-field[label="Preview family"]')!
+  expect(summary.compareDocumentPosition(family) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+  expect(summary.parentElement).toBe(family.closest('mds-input-field')!.parentElement!.parentElement)
+})
+
+test('a configuration that passes the gate says so, with nothing to list', () => {
+  const summary = showWithReport(JSON.parse(JSON.stringify(initialConfig)) as MagmaConfig)
+  expect(summary.querySelector('mds-badge')?.getAttribute('variant')).toBe('success')
+  expect(summary.querySelector('mds-list')).toBeNull()
+})
+
+test('beside each text target, the floor of the gate, and a mark when the target is under it', async () => {
+  const floors = [...root.querySelectorAll('mds-text')]
+    .map((text) => text.textContent)
+    .filter((text) => /^floor \d+$/.test(text ?? ''))
+  expect(floors).toEqual(TEXT_ROLES.map((role) => `floor ${DEFAULT_TARGETS.text[role]}`))
+  const marks = () => root.querySelectorAll('mds-badge[label="under the floor"]').length
+  const under = TEXT_ROLES.filter((role) => Number(theme().text[role]) < DEFAULT_TARGETS.text[role]).length
+  expect(marks()).toBe(under)
+  // a target moved under its floor is marked, moved back over it is not
+  await emit(slider('Text default, target'), 'mdsInputRangeChange', DEFAULT_TARGETS.text.default - 10)
+  expect(marks()).toBe(under + 1)
+  await emit(slider('Text default, target'), 'mdsInputRangeChange', DEFAULT_TARGETS.text.default)
+  expect(marks()).toBe(under)
 })

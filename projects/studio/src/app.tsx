@@ -2234,6 +2234,7 @@ export function App({
             <SurfaceManager
               head={pageTop}
               config={config}
+              report={report}
               onToggleSurface={(colorName, on) =>
                 updateConfig((draft) => {
                   const color = draft.colors.find((c) => c.name === colorName);
