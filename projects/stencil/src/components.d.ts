@@ -57,6 +57,7 @@ import { KeyboardTest } from "./components/mds-keyboard/meta/type";
 import { KeyboardKeyName } from "./type/keyboard";
 import { MdsLabelVariantType } from "./components/mds-label/mds-label";
 import { LinkUnderlineType, LinkVariantType } from "./components/mds-link/meta/types";
+import { ListMarkerType } from "./components/mds-list/meta/types";
 import { MentionSize } from "./components/mds-mention/meta/type";
 import { MdsMentionEvent } from "./components/mds-mention/meta/interface";
 import { ModalAnimationStyleType, ModalInteractionType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
@@ -149,6 +150,7 @@ export { KeyboardTest } from "./components/mds-keyboard/meta/type";
 export { KeyboardKeyName } from "./type/keyboard";
 export { MdsLabelVariantType } from "./components/mds-label/mds-label";
 export { LinkUnderlineType, LinkVariantType } from "./components/mds-link/meta/types";
+export { ListMarkerType } from "./components/mds-list/meta/types";
 export { MentionSize } from "./components/mds-mention/meta/type";
 export { MdsMentionEvent } from "./components/mds-mention/meta/interface";
 export { ModalAnimationStyleType, ModalInteractionType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
@@ -2221,17 +2223,22 @@ export namespace Components {
      * @category data
      */
     interface MdsList {
+        /**
+          * The marker of the items: `dot` draws a glyph before the text of each item (the `icon` of the item, a dot without it); `none` draws nothing and indents nothing, for a list whose items are links, cards or chips: each item then takes any content, and the page lays the items out (a column, a row that wraps, a grid) with classes on the list
+          * @default 'dot'
+         */
+        "marker": ListMarkerType;
     }
     /**
      * @parent mds-list
      */
     interface MdsListItem {
         /**
-          * Specifies the icon displayed in the element
+          * Specifies the icon displayed in the element, in place of the dot; none in a list with `marker="none"`
          */
         "icon"?: string;
         /**
-          * Specifies the typography of the element
+          * Specifies the typography of the element; none in a list with `marker="none"`, where the content brings its own
           * @default 'detail'
          */
         "typography": TypographyInfoType | TypographyReadType;
@@ -7781,17 +7788,22 @@ declare namespace LocalJSX {
      * @category data
      */
     interface MdsList {
+        /**
+          * The marker of the items: `dot` draws a glyph before the text of each item (the `icon` of the item, a dot without it); `none` draws nothing and indents nothing, for a list whose items are links, cards or chips: each item then takes any content, and the page lays the items out (a column, a row that wraps, a grid) with classes on the list
+          * @default 'dot'
+         */
+        "marker"?: ListMarkerType;
     }
     /**
      * @parent mds-list
      */
     interface MdsListItem {
         /**
-          * Specifies the icon displayed in the element
+          * Specifies the icon displayed in the element, in place of the dot; none in a list with `marker="none"`
          */
         "icon"?: string;
         /**
-          * Specifies the typography of the element
+          * Specifies the typography of the element; none in a list with `marker="none"`, where the content brings its own
           * @default 'detail'
          */
         "typography"?: TypographyInfoType | TypographyReadType;
@@ -9672,6 +9684,9 @@ declare namespace LocalJSX {
         "tone": ToneMinimalVariantType;
         "underline": LinkUnderlineType;
     }
+    interface MdsListAttributes {
+        "marker": ListMarkerType;
+    }
     interface MdsListItemAttributes {
         "typography": TypographyInfoType | TypographyReadType;
         "variant": TypographyReadingVariants;
@@ -10056,7 +10071,7 @@ declare namespace LocalJSX {
         "mds-kpi-item": Omit<MdsKpiItem, keyof MdsKpiItemAttributes> & { [K in keyof MdsKpiItem & keyof MdsKpiItemAttributes]?: MdsKpiItem[K] } & { [K in keyof MdsKpiItem & keyof MdsKpiItemAttributes as `attr:${K}`]?: MdsKpiItemAttributes[K] } & { [K in keyof MdsKpiItem & keyof MdsKpiItemAttributes as `prop:${K}`]?: MdsKpiItem[K] };
         "mds-label": Omit<MdsLabel, keyof MdsLabelAttributes> & { [K in keyof MdsLabel & keyof MdsLabelAttributes]?: MdsLabel[K] } & { [K in keyof MdsLabel & keyof MdsLabelAttributes as `attr:${K}`]?: MdsLabelAttributes[K] } & { [K in keyof MdsLabel & keyof MdsLabelAttributes as `prop:${K}`]?: MdsLabel[K] };
         "mds-link": Omit<MdsLink, keyof MdsLinkAttributes> & { [K in keyof MdsLink & keyof MdsLinkAttributes]?: MdsLink[K] } & { [K in keyof MdsLink & keyof MdsLinkAttributes as `attr:${K}`]?: MdsLinkAttributes[K] } & { [K in keyof MdsLink & keyof MdsLinkAttributes as `prop:${K}`]?: MdsLink[K] };
-        "mds-list": MdsList;
+        "mds-list": Omit<MdsList, keyof MdsListAttributes> & { [K in keyof MdsList & keyof MdsListAttributes]?: MdsList[K] } & { [K in keyof MdsList & keyof MdsListAttributes as `attr:${K}`]?: MdsListAttributes[K] } & { [K in keyof MdsList & keyof MdsListAttributes as `prop:${K}`]?: MdsList[K] };
         "mds-list-item": Omit<MdsListItem, keyof MdsListItemAttributes> & { [K in keyof MdsListItem & keyof MdsListItemAttributes]?: MdsListItem[K] } & { [K in keyof MdsListItem & keyof MdsListItemAttributes as `attr:${K}`]?: MdsListItemAttributes[K] } & { [K in keyof MdsListItem & keyof MdsListItemAttributes as `prop:${K}`]?: MdsListItem[K] };
         "mds-mention": Omit<MdsMention, keyof MdsMentionAttributes> & { [K in keyof MdsMention & keyof MdsMentionAttributes]?: MdsMention[K] } & { [K in keyof MdsMention & keyof MdsMentionAttributes as `attr:${K}`]?: MdsMentionAttributes[K] } & { [K in keyof MdsMention & keyof MdsMentionAttributes as `prop:${K}`]?: MdsMention[K] };
         "mds-modal": Omit<MdsModal, keyof MdsModalAttributes> & { [K in keyof MdsModal & keyof MdsModalAttributes]?: MdsModal[K] } & { [K in keyof MdsModal & keyof MdsModalAttributes as `attr:${K}`]?: MdsModalAttributes[K] } & { [K in keyof MdsModal & keyof MdsModalAttributes as `prop:${K}`]?: MdsModal[K] };

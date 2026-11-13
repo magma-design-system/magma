@@ -6,6 +6,12 @@
   padding-left: --spacing(400);
 }
 
+/* the indent is the room of the markers: a list without them has none */
+
+:host([marker='none']) {
+  padding-left: 0;
+}
+
 ul {
   margin: 0;
   padding: 0;
