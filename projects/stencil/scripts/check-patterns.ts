@@ -11,6 +11,10 @@
  *   naming the block among their related;
  * - the release: every component and attribute named exists in dist/documentation.json, with a
  *   value it takes;
+ * - the parts of a case (#1396): in a pattern and a block of Magma, every entry of use with its
+ *   role, every attribute written as its kind asks (the case's value, the application's text as
+ *   <what it holds>, never its wiring); the solution each preview shows outside its data-stage
+ *   names the same components as use, in its order (a block: the regions its situation shows);
  * - the lint: every "Always true" rule checked by lint names a rule the lint has; a planned one
  *   names a rule it does not have yet;
  * - the carriers of a domain of the design language (kind design-language, #1196): each
@@ -59,12 +63,15 @@ import {
   formatErrors,
   lintErrors,
   linkErrors,
+  magmaUseErrors,
   missingPreviews,
   previewImageErrors,
   previewLinkErrors,
+  previewUseErrors,
   projectErrors,
   readPreviews,
   readProjectDir,
+  type MarkupNode,
   type PatternFile,
   type Release,
 } from '../../lint/src/core/patterns';
@@ -117,6 +124,8 @@ for (const file of files) {
     combinations += covered.total;
     errors.push(...coverageErrors(covered));
     errors.push(...componentErrors(data, components), ...lintErrors(data, lintRules));
+    // a pattern and a block of Magma give each part of a case with its role (#1396)
+    errors.push(...magmaUseErrors(data, components));
     if (data.kind === DESIGN_LANGUAGE) errors.push(...carrierErrors(data, release));
     errors.push(...bodyErrors(data, file.body, patterns));
   }
@@ -148,6 +157,11 @@ for (const preview of previews) {
   report(preview.file, errors);
 }
 for (const [file, errors] of previewLinkErrors(previews, patterns)) report(file, errors);
+// the solution each preview shows, outside its data-stage, against the use of its case (#1396)
+const parse = (markup: string) =>
+  (htmlParser.parseForESLint(markup) as unknown as { ast: MarkupNode }).ast;
+for (const [file, errors] of previewUseErrors(patterns, previews, parse, components))
+  report(file, errors);
 const missing = missingPreviews(patterns, previews);
 // the images the build made of them (scripts/preview-images.ts), in the package
 for (const [file, errors] of previewImageErrors(previews, join(PROJECT_DIR, 'agents/patterns')))

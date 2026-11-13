@@ -972,8 +972,13 @@ const situationErrors = (
 
 /* ---- the data of the release -------------------------------------------------------- */
 
-/** Global attributes a `use` may set on any component. */
-const GLOBAL_ATTRIBUTE = /^(slot|role|id|title|lang|dir|hidden|tabindex|aria-[a-z]+|data-[a-z-]+)$/;
+/**
+ * Global attributes a `use` may set on any component: those of the HTML Living Standard,
+ * "Global attributes", a case writes (`autofocus` on the safe choice of a dialog, #1396), ARIA
+ * and `data-*`.
+ */
+const GLOBAL_ATTRIBUTE =
+  /^(slot|role|id|title|lang|dir|hidden|tabindex|autofocus|aria-[a-z]+|data-[a-z-]+)$/;
 
 /** What a component and its attributes lack in the release: the tag, an attribute, a value it takes; a deprecated attribute. */
 const useErrors = (use: Use, components: Map<string, ComponentInfo>): string[] => {
@@ -992,7 +997,9 @@ const useErrors = (use: Use, components: Map<string, ComponentInfo>): string[] =
     if (value === undefined) continue;
     if (placeholder) {
       // a placeholder says what text goes in, never which of the values a prop takes
-      if (prop.values?.length || prop.boolean || prop.number)
+      if (prop.boolean && !prop.values?.length)
+        errors.push(`${name} of ${use.tag} is a boolean: write it bare`);
+      else if (prop.values?.length || prop.number)
         errors.push(`${name} of ${use.tag} is the case's to decide: write its value, not ${value}`);
       continue;
     }
@@ -1027,6 +1034,364 @@ export const componentErrors = (
       errors.push(...useErrors(use, components).map((error) => `${label}: ${error}`));
     }
   return errors;
+};
+
+/* ---- the parts of a case and its preview (#1396) ------------------------------------------ */
+
+/**
+ * What an attribute of a component is to a case (#1396, the maintainer's choice on
+ * 2026-11-13), read from its type in documentation.json, as the release declares it:
+ *
+ * - `case`: the case decides it, and a use writes it as it is, the same as in the preview: a
+ *   prop with a closed set of values, a number, a boolean the component never changes itself;
+ *   the global `slot`, `role`, `tabindex` and `autofocus`; an ARIA property whose value is a
+ *   token, a number or true/false (`aria-live`, `aria-level`);
+ * - `text`: the application's words, written `<what it holds>` when the case says what goes in
+ *   it (`headline=<the question, naming the item>`), else left out: a prop of free text
+ *   (`label`, `href`, `icon`), `title`, `lang`, `dir`, an ARIA property of text (`aria-label`);
+ * - `application`: the application's wiring, never in a use: `id`, `name`, `value`, an ARIA
+ *   property that names ids (`aria-controls`);
+ * - `state`: a moment the stage sets to show it, never compared with a use: a boolean the
+ *   component changes itself (Stencil's `mutable`: `opened`, `visible`, `await`, `selected`),
+ *   `hidden`, an ARIA state (`aria-expanded`); a use may write one the case decides (`await`);
+ * - `layout`: the stage's own, never in a use: `class`, `style`, `data-*` (the marker of the
+ *   stage among them).
+ *
+ * The ARIA kinds follow WAI-ARIA 1.2, "Definitions of States and Properties"
+ * (https://www.w3.org/TR/wai-aria-1.2/#state_prop_def): the attributes it calls states are a
+ * moment, a property of value type string is text, one of type ID reference (list) is wiring,
+ * and the others (token, true/false, integer, number) are the case's. An attribute the release
+ * does not know is text: the lint of the previews names it.
+ */
+export type AttributeKind = 'case' | 'text' | 'application' | 'state' | 'layout';
+
+/** The states of WAI-ARIA 1.2: the attributes it calls "state" rather than "property". */
+const ARIA_STATES = new Set([
+  'aria-busy',
+  'aria-checked',
+  'aria-current',
+  'aria-disabled',
+  'aria-expanded',
+  'aria-grabbed',
+  'aria-hidden',
+  'aria-invalid',
+  'aria-pressed',
+  'aria-selected',
+]);
+/** The properties of WAI-ARIA 1.2 whose value type is string. */
+const ARIA_TEXT = new Set([
+  'aria-keyshortcuts',
+  'aria-label',
+  'aria-placeholder',
+  'aria-roledescription',
+  'aria-valuetext',
+]);
+/** The properties of WAI-ARIA 1.2 whose value type is ID reference or ID reference list. */
+const ARIA_IDS = new Set([
+  'aria-activedescendant',
+  'aria-controls',
+  'aria-describedby',
+  'aria-details',
+  'aria-errormessage',
+  'aria-flowto',
+  'aria-labelledby',
+  'aria-owns',
+]);
+/** The global attributes a case decides. */
+const CASE_GLOBALS = new Set(['slot', 'role', 'tabindex', 'autofocus']);
+/** The attributes that wire the application, whatever the component. */
+const APPLICATION = new Set(['id', 'name', 'value']);
+
+export const attributeKind = (
+  tag: string,
+  name: string,
+  components: Map<string, ComponentInfo>,
+): AttributeKind => {
+  if (name === 'class' || name === 'style' || name.startsWith('data-')) return 'layout';
+  if (APPLICATION.has(name) || ARIA_IDS.has(name)) return 'application';
+  if (ARIA_STATES.has(name) || name === 'hidden') return 'state';
+  if (ARIA_TEXT.has(name)) return 'text';
+  if (CASE_GLOBALS.has(name) || name.startsWith('aria-')) return 'case';
+  const prop = components.get(tag)?.props.get(name);
+  if (!prop) return 'text';
+  if (prop.values?.length || prop.number) return 'case';
+  if (prop.boolean) return prop.mutable ? 'state' : 'case';
+  return 'text';
+};
+
+/** A boolean attribute of a case, written bare: one that takes no value. */
+const isBare = (tag: string, name: string, components: Map<string, ComponentInfo>) => {
+  if (name === 'autofocus') return true;
+  const prop = components.get(tag)?.props.get(name);
+  return !!prop?.boolean && !prop.values?.length;
+};
+
+/**
+ * What a use of a pattern or a block of Magma writes wrong (#1396): every entry of a case has
+ * its role, and every attribute is written as its kind asks (attributeKind). A product's own
+ * pattern and a domain of the design language are not held to it: their use stays
+ * `tag attribute=value`.
+ */
+export const magmaUseErrors = (
+  pattern: Pattern,
+  components: Map<string, ComponentInfo>,
+): string[] => {
+  if (pattern.layer !== MAGMA_LAYER || pattern.kind === DESIGN_LANGUAGE) return [];
+  const errors: string[] = [];
+  const attributes = (label: string, text: string) => {
+    const use = parseUse(text);
+    if (!use) return;
+    for (const { name, value, placeholder } of use.attributes) {
+      const at = `${label}: ${name} of ${use.tag}`;
+      // a placeholder on a prop is reported by componentErrors, for a product's pattern too
+      const global = !components.get(use.tag)?.props.has(name);
+      switch (attributeKind(use.tag, name, components)) {
+        case 'layout':
+          errors.push(`${at} belongs to the stage: a use leaves it out`);
+          break;
+        case 'application':
+          errors.push(`${at} is the application's: a use leaves it out`);
+          break;
+        case 'text':
+          if (!placeholder)
+            errors.push(
+              `${at} is the application's text: write ${name}=<what it holds>, or leave it out`,
+            );
+          break;
+        case 'state':
+          if (placeholder && global) errors.push(`${at} is a state: write it, or leave it out`);
+          break;
+        case 'case':
+          if (
+            (placeholder && global) ||
+            (value === undefined && !isBare(use.tag, name, components))
+          )
+            errors.push(`${at} is the case's to decide: write its value`);
+      }
+    }
+  };
+  for (const one of pattern.cases ?? [])
+    for (const [index, item] of (one.use ?? []).entries()) {
+      if (typeof item === 'string')
+        errors.push(
+          `case ${one.id}: use ${index + 1} has no role: write { role, use }, what the part does in the case`,
+        );
+      attributes(`case ${one.id}`, useOf(item));
+    }
+  for (const one of pattern.regions ?? [])
+    for (const text of one.use ?? []) attributes(`region ${one.id}`, text);
+  return errors;
+};
+
+/**
+ * A node of the markup of a stage, in the shape @html-eslint/parser gives it (a `Tag` has a
+ * name, its attributes and its children; a script, a style, a comment and a text are other
+ * types): check.patterns parses the previews with it, the core reads only this shape.
+ */
+export interface MarkupNode {
+  type: string;
+  name?: string;
+  attributes?: { key: { value: string }; value?: { value: string } }[];
+  children?: MarkupNode[];
+  /** The root (`Program`) holds the document in its body. */
+  body?: MarkupNode[];
+}
+
+/**
+ * The marker of the stage in a preview (#1396, the maintainer's choice on 2026-11-13): the
+ * element that carries it, and everything inside it, is the context of the case (the list a
+ * toast speaks of, the fields of a form), not its solution. It goes on the outermost element
+ * of each piece of the stage; a stage that is all solution (a dialog) has none. The previews
+ * ship with it, so an agent that reads the markup tells the context from the solution too.
+ */
+export const STAGE_MARKER = 'data-stage';
+
+/** A component of the solution a stage shows: its tag and its attributes, in the order of the markup. */
+export interface Part {
+  tag: string;
+  attributes: { name: string; value?: string }[];
+}
+
+/** The solution a stage shows: every component outside the elements marked as the stage. */
+export const solutionOf = (root: MarkupNode): Part[] => {
+  const parts: Part[] = [];
+  const walk = (node: MarkupNode) => {
+    for (const child of node.children ?? node.body ?? []) {
+      if (child.type === 'Document') walk(child);
+      if (child.type !== 'Tag' || !child.name) continue;
+      const attributes = (child.attributes ?? []).map((one) => {
+        const name = one.key.value.toLowerCase();
+        return one.value === undefined ? { name } : { name, value: one.value.value };
+      });
+      if (attributes.some((one) => one.name === STAGE_MARKER)) continue;
+      const tag = child.name.toLowerCase();
+      if (tag.startsWith('mds-')) parts.push({ tag, attributes });
+      walk(child);
+    }
+  };
+  walk(root);
+  return parts;
+};
+
+/**
+ * What a part of the solution and an entry of use are compared on: the tag and the
+ * attributes the case decides (attributeKind), with their values, in one order. The words of
+ * the application, its wiring, the states and the layout are left out.
+ */
+const signatureOf = (
+  tag: string,
+  attributes: { name: string; value?: string }[],
+  components: Map<string, ComponentInfo>,
+): string =>
+  [
+    tag,
+    ...attributes
+      .filter((one) => attributeKind(tag, one.name, components) === 'case')
+      .map((one) =>
+        one.value === undefined || one.value === '' || isBare(tag, one.name, components)
+          ? one.name
+          : `${one.name}=${one.value}`,
+      )
+      .sort(),
+  ].join(' ');
+
+/** The parts of a preview by signature, in the order each first shows. */
+const partsBySignature = (parts: Part[], components: Map<string, ComponentInfo>) => {
+  const found = new Map<string, Part[]>();
+  for (const part of parts) {
+    const signature = signatureOf(part.tag, part.attributes, components);
+    found.set(signature, [...(found.get(signature) ?? []), part]);
+  }
+  return found;
+};
+
+/** The name of a preview in a message: its case or situation, and the example after the first. */
+const previewName = (preview: Preview) =>
+  `the preview${preview.example > 1 ? ` ${preview.example}` : ''}`;
+
+/** A placeholder of an entry that no part of its signature has: the preview gives no such text. */
+const placeholderErrors = (
+  text: string,
+  parts: Part[],
+  preview: Preview,
+  label: string,
+): string[] =>
+  (parseUse(text)?.attributes ?? [])
+    .filter(
+      (one) =>
+        one.placeholder &&
+        !parts.some((part) => part.attributes.some((each) => each.name === one.name)),
+    )
+    .map(
+      (one) =>
+        `${label}: use "${text}" writes ${one.name}, which no ${parts[0]?.tag ?? 'part'} of ${previewName(preview)} has`,
+    );
+
+/**
+ * Where the use of a case and its preview part (#1396): the parts of the solution the preview
+ * shows (solutionOf: every component outside the stage) and the entries of use name the same
+ * components with the same attributes the case decides, in the order each first shows; a
+ * placeholder names a text the preview gives. Every example of the case is compared. For a
+ * situation of a building block, its preview against the regions its values show: every part
+ * named by one of them, a required region shown; a region that is not required shows when
+ * there is something to put in it, and its entries name alternatives (the actions), so neither
+ * their presence nor their order is asked. The patterns and the blocks of Magma only, never a
+ * domain (their use names what a relation writes). `parse` gives the markup as MarkupNode.
+ */
+export const previewUseErrors = (
+  patterns: Pattern[],
+  previews: Preview[],
+  parse: (markup: string) => MarkupNode,
+  components: Map<string, ComponentInfo>,
+): Map<string, string[]> => {
+  const { byId } = indexPatterns(patterns);
+  const found = new Map<string, string[]>();
+  for (const preview of previews) {
+    const pattern = byId.get(preview.pattern);
+    if (
+      !pattern ||
+      pattern.layer !== MAGMA_LAYER ||
+      pattern.kind === DESIGN_LANGUAGE ||
+      pattern.status === 'candidate'
+    )
+      continue;
+    const errors: string[] = [];
+    const parts = partsBySignature(solutionOf(parse(preview.markup)), components);
+    const signatures = [...parts.keys()];
+    const entryOf = (text: string) => {
+      const use = parseUse(text);
+      return use && signatureOf(use.tag, use.attributes, components);
+    };
+    if (pattern.kind === BLOCK) {
+      const situation = situationsWithId(pattern).find((one) => one.id === preview.id);
+      if (!situation) continue;
+      const label = `situation ${situation.id}`;
+      const known = Object.fromEntries(
+        variableNames(pattern).flatMap((name) => {
+          const value = (situation as unknown as Entry)[name];
+          return typeof value === 'string' ? [[name, value]] : [];
+        }),
+      );
+      let regions: Region[];
+      try {
+        regions = regionsFor(pattern, known).regions;
+      } catch {
+        continue;
+      }
+      const named = new Set(regions.flatMap((one) => (one.use ?? []).map(entryOf)));
+      for (const signature of signatures)
+        if (!named.has(signature))
+          errors.push(
+            `${label}: ${previewName(preview)} shows ${signature}, which no region it shows names in its use (or mark it ${STAGE_MARKER})`,
+          );
+      for (const region of regions) {
+        const uses = region.use ?? [];
+        if (region.required && uses.length && !uses.some((text) => parts.has(entryOf(text)!)))
+          errors.push(
+            `${label}: region ${region.id} is required, and ${previewName(preview)} shows none of its use`,
+          );
+        for (const text of uses) {
+          const shown = parts.get(entryOf(text)!);
+          if (shown) errors.push(...placeholderErrors(text, shown, preview, label));
+        }
+      }
+    } else {
+      const one = pattern.cases?.find((each) => each.id === preview.id);
+      if (!one) continue;
+      const label = `case ${one.id}`;
+      const texts = (one.use ?? []).map(useOf);
+      const entries = new Set(texts.map(entryOf));
+      for (const signature of signatures)
+        if (!entries.has(signature))
+          errors.push(
+            `${label}: ${previewName(preview)} shows ${signature}, which no entry of use names (or mark it ${STAGE_MARKER})`,
+          );
+      let last = -1;
+      let previous = '';
+      for (const text of texts) {
+        const signature = entryOf(text);
+        const shown = signature === undefined ? undefined : parts.get(signature);
+        if (!shown) {
+          errors.push(
+            `${label}: use "${text}" is not in ${previewName(preview)}, outside the stage`,
+          );
+          continue;
+        }
+        errors.push(...placeholderErrors(text, shown, preview, label));
+        const at = signatures.indexOf(signature!);
+        if (at < last)
+          errors.push(
+            `${label}: use "${text}" comes after "${previous}", and before it in ${previewName(preview)}: give the entries in the order of the preview`,
+          );
+        else {
+          last = at;
+          previous = text;
+        }
+      }
+    }
+    if (errors.length) found.set(preview.file, errors);
+  }
+  return found;
 };
 
 /** What a release offers the carriers of a domain: its components, their public custom properties, the names of its theme, its lint rules. */
@@ -1639,11 +2004,25 @@ export const renderSections = (
       return '';
     }
   };
+  // the parts of each case with their role (#1396): a table of its own after the cases, in the
+  // order of the preview; a pattern whose use is still bare (a domain) keeps the Use column
+  const withRoles = (pattern.cases ?? []).some((one) =>
+    (one.use ?? []).some((item) => typeof item !== 'string'),
+  );
+  const useColumn = (one: Case) =>
+    withRoles ? [] : [(one.use ?? []).map((item) => code(useOf(item))).join(', ')];
   const cases = [
     variablesTable,
     `A case that leaves a variable out holds for any of its values${NONE_WHEN_LEFT_OUT in variables ? `, except \`${NONE_WHEN_LEFT_OUT}\`, which then means \`none\`` : ''}.`,
     table(
-      ['Case', 'When', 'Where', 'Use', ...(cites ? ['Rules'] : []), ...groundedHead],
+      [
+        'Case',
+        'When',
+        'Where',
+        ...(withRoles ? [] : ['Use']),
+        ...(cites ? ['Rules'] : []),
+        ...groundedHead,
+      ],
       (pattern.cases ?? []).map((one) => [
         code(one.id),
         cell(whenOf(pattern, one)),
@@ -1656,7 +2035,7 @@ export const renderSections = (
             .filter(Boolean)
             .join('; '),
         ),
-        (one.use ?? []).map((item) => code(useOf(item))).join(', '),
+        ...useColumn(one),
         ...rulesOf(one),
         ...grounded(one),
       ]),
@@ -1680,6 +2059,23 @@ export const renderSections = (
     );
   if (!pattern.gaps?.length)
     cases.push('No gaps: every combination has a case or is not applicable.');
+  if (withRoles) {
+    cases.push(
+      'The parts of each case, in the order of its preview: what each does in the case, and the component to write. A value in angle brackets is the text of the application, written as it says; the rest of the preview is its stage, the context of the case.',
+    );
+    for (const one of pattern.cases ?? [])
+      if (one.use?.length)
+        cases.push(
+          `${code(one.id)}:`,
+          table(
+            ['Role', 'Use'],
+            one.use.map((item) => [
+              typeof item === 'string' ? '' : cell(item.role),
+              code(useOf(item)),
+            ]),
+          ),
+        );
+  }
 
   const rules = (pattern['always-true'] ?? []).map((one) => ruleOf(one, byId));
   const checkedBy = (rule: Rule) =>
