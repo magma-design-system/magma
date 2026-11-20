@@ -690,6 +690,24 @@
    "namespace": "--color",
    "key": "wash-strong"
   },
+  "--magma-band": {
+   "theme": "--color-band",
+   "description": "The band that holds the options you pick from: tabs, filters, the pages of a paginator.",
+   "namespace": "--color",
+   "key": "band"
+  },
+  "--magma-band-selected": {
+   "theme": "--color-band-selected",
+   "description": "The selected option on a band.",
+   "namespace": "--color",
+   "key": "band-selected"
+  },
+  "--magma-track": {
+   "theme": "--color-track",
+   "description": "The track of a quantity: progress, range, the line of a stepper, a scrollbar guide.",
+   "namespace": "--color",
+   "key": "track"
+  },
   "--magma-shadow-ink": {
    "theme": "--color-shadow-ink",
    "description": "The colour of a projected shadow, to compose with your own geometry and alpha.",

@@ -94,16 +94,18 @@ keep in step.
   [`projects/design-tokens/SPEC.md`](../projects/design-tokens/SPEC.md) for the levels and the
   naming.
 - **Read by**: the token tools of the MCP server (`projects/mcp/src/tokens.ts`: the value
-  is `cssValue`, else the DTCG value by its type), the lint core (the raw palette steps; the
-  custom properties a domain of the design language names as carriers, `css` of the tokens that
-  are not internal and of the `cssOnly` entries), the DTCG globals of styles (their aliases), the
-  docs site, the codemod (`generate.colors`: the custom properties of the tokens typed `color`,
-  every tier, which the v2 -> v3 colour rule rewrites; `projects/codemod/README.md`,
-  "Regenerating the colour list").
+  is `cssValue`, else the DTCG value by its type; the `cssOnly` entries with their `value` as
+  written, on the path of their group, the tier by the custom property), the lint core (the raw
+  palette steps; the custom properties a domain of the design language names as carriers, `css`
+  of the tokens that are not internal and of the `cssOnly` entries), the DTCG globals of styles
+  (their aliases), the docs site, the codemod (`generate.colors`: the custom properties of the
+  tokens typed `color`, every tier, which the v2 -> v3 colour rule rewrites;
+  `projects/codemod/README.md`, "Regenerating the colour list").
 - **Held by**: the design-tokens build fails on a group with no `$description` or a stale one
   (`describeGroups`, `staleDescriptions`); the lint tests run every value of the built data
-  when it is there; the codemod's `manifest-v3.test.ts` fails when its committed colour list
-  differs from the built sets.
+  when it is there; the MCP tests hold the token tools to every `cssOnly` entry of the fixtures
+  and of the built sets; the codemod's `manifest-v3.test.ts` fails when its committed colour
+  list differs from the built sets.
 
 ## The DTCG globals and the consumption map of styles
 
@@ -114,7 +116,8 @@ keep in step.
 - **Contract**: [`projects/styles/README.md`](../projects/styles/README.md), "Token data" and
   "consumption.json"; [`projects/styles/SPEC.md`](../projects/styles/SPEC.md).
 - **Read by**: the lint core (the colour utilities of `no-raw-palette-classes`), the token tools
-  of the MCP server (`explain_class`; `suggest_role`, whose `USE_OF_UTILITY` says what each
+  of the MCP server (`list_tokens` and `explain_class`, with the `cssOnly` entries of the
+  globals as those of design-tokens; `suggest_role`, whose `USE_OF_UTILITY` says what each
   colour utility paints), the docs site, the codemod (`generate.colors` reads the colours of
   the DTCG globals, `--magma-backdrop-color` and the others, with those of design-tokens).
 - **Held by**: the lint tests hold `USE_OF_UTILITY` to the roots of the `--color` namespace, in

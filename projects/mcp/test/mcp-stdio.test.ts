@@ -72,6 +72,8 @@ test.each([
   ['get_component', { tag: 'mds-banner' }],
   ['get_usage', { tag: 'mds-input', framework: 'angular' }],
   ['list_tokens', { query: 'radius', tier: 'all' }],
+  // cssOnly entries: no DTCG type
+  ['list_tokens', { query: 'band', tier: 'all' }],
   ['suggest_role', { color: 'bg-tone-neutral-03' }],
   ['explain_class', { class: 'p-4' }],
   ['find_icon', { query: 'send' }],

@@ -331,7 +331,7 @@ describe('the token tools', () => {
   const expectCssValues = (entries: ReturnType<typeof tokensOf>) => {
     const bad = entries.filter(
       (entry) =>
-        (entry.value === undefined && !['typography', 'gradient'].includes(entry.type)) ||
+        (entry.value === undefined && !['typography', 'gradient'].includes(entry.type ?? '')) ||
         /\[object|undefined|NaN/.test(entry.value ?? ''),
     );
     expect(bad.map((entry) => `${entry.path} (${entry.type}): ${entry.value}`)).toEqual([]);
@@ -341,21 +341,130 @@ describe('the token tools', () => {
     expectCssValues(tokensOf(context));
   });
 
+  /** Every `cssOnly` entry of the DTCG files, with the dotted path of the group that lists it. */
+  const cssOnlyOf = (files: string[]) => {
+    const found: Array<{ group: string; css: string; value: string; description?: string }> = [];
+    const walk = (node: Result, at: string[]) => {
+      for (const [key, child] of Object.entries(node)) {
+        if (key.startsWith('$') || !child || typeof child !== 'object' || '$value' in child)
+          continue;
+        for (const entry of child.$extensions?.['it.maggioli.magma']?.cssOnly ?? [])
+          found.push({ group: [...at, key].join('.'), ...entry });
+        walk(child, [...at, key]);
+      }
+    };
+    for (const file of files) walk(JSON.parse(readFileSync(file, 'utf8')), []);
+    return found;
+  };
+
+  /** Each `cssOnly` entry listed once, on its group, its CSS as written, with no type nor colour. */
+  const expectCssOnly = (files: string[], entries: ReturnType<typeof tokensOf>) => {
+    const listed = cssOnlyOf(files);
+    expect(listed.length).toBeGreaterThan(0);
+    for (const { group, css, value, description } of listed) {
+      const found = entries.filter((entry) => entry.css === css);
+      expect(found, css).toHaveLength(1);
+      expect(found[0]).toMatchObject({
+        path: group,
+        value,
+        ...(description ? { description } : {}),
+      });
+      expect(found[0]).not.toHaveProperty('type');
+      expect(found[0]).not.toHaveProperty('rgb');
+    }
+  };
+
+  // #1472: what DTCG has no type for stays CSS on its group (design-tokens README, "Token data")
+  test('list_tokens lists the cssOnly entries, as the CSS writes them, on their group', async () => {
+    expectCssOnly([data.tokens, data.globals], tokensOf(context));
+    const band = (await run('list_tokens', { query: 'band' })).tokens[0];
+    expect(band).toMatchObject({
+      css: '--magma-band',
+      path: 'magma.band',
+      tier: 'semantic',
+      description: expect.stringMatching(/^The band that holds the options you pick from/),
+      value: expect.stringMatching(
+        /^color-mix\(in oklab, var\(--magma-text-default\) calc\(var\(--magma-band-alpha\) \* var\(--magma-wash-intensity\)\), transparent\)$/,
+      ),
+      classes: ['bg-band'],
+    });
+    expect(band).not.toHaveProperty('type');
+    const track = await run('list_tokens', { query: 'track' });
+    expect(track.tokens[0]).toMatchObject({ css: '--magma-track', classes: ['bg-track'] });
+    // the light value: the base set, where the selected option is the overlay surface
+    const selected = (await run('list_tokens', { query: 'band selected' })).tokens.find(
+      (token: Result) => token.css === '--magma-band-selected',
+    );
+    expect(selected).toMatchObject({
+      value: 'var(--magma-surface-overlay)',
+      classes: ['bg-band-selected'],
+    });
+    // the tier by the custom property: a measure that is no --magma-* role is a primitive
+    const prose = await run('list_tokens', { query: 'prose', tier: 'all' });
+    expect(prose.tokens.find((token: Result) => token.css === '--spacing-prose')).toMatchObject({
+      path: 'spacing',
+      tier: 'primitive',
+      value: '65ch',
+    });
+    expect(
+      (await run('list_tokens', { query: 'prose' })).tokens.map((token: Result) => token.css),
+    ).not.toContain('--spacing-prose');
+    // a width written from other roles, as the CSS writes it
+    expect(
+      (await run('list_tokens', { query: 'column of a form' })).tokens.find(
+        (token: Result) => token.css === '--magma-width-form',
+      ),
+    ).toMatchObject({ path: 'magma.width', tier: 'semantic', value: 'var(--magma-width-reading)' });
+    // explain_class reads the same entry
+    expect(await run('explain_class', { class: 'bg-band' })).toMatchObject({
+      kind: 'token',
+      tokens: [{ css: '--magma-band', value: band.value, description: band.description }],
+    });
+  });
+
+  test('suggest_role never proposes a cssOnly role: it has no colour of its own', async () => {
+    // about the band over the page (ink at 4.51% over white): a surface, never the band
+    for (const color of ['#f6f6f6', '#e5e5e5', 'bg-gray-100']) {
+      const { roles } = await run('suggest_role', { color, use: 'background' });
+      expect(roles.length).toBeGreaterThan(0);
+      expect(
+        roles.filter((role: Result) => /^--magma-(band|track)/.test(role.css)),
+        color,
+      ).toEqual([]);
+    }
+  });
+
   // the build of design-tokens and styles, when there is one: a shape the fixtures miss fails here
   const built = {
     tokens: path.join(import.meta.dirname, '../../design-tokens/dist/dtcg/base.tokens.json'),
     globals: path.join(import.meta.dirname, '../../styles/dist/dtcg/globals.tokens.json'),
     consumption: path.join(import.meta.dirname, '../../styles/dist/tailwind/consumption.json'),
   };
-  test.skipIf(!Object.values(built).every((file) => existsSync(file)))(
-    'every token of the built data reads as CSS',
-    () => {
-      expectCssValues(tokensOf({ ...context, settings: { ...context.settings, ...built } }));
-      const roots = JSON.parse(readFileSync(built.consumption, 'utf8')).namespaces['--color']
-        .utilities as string[];
-      expect(roots.filter((root) => !USE_OF_UTILITY[root] && !root.startsWith('mask-'))).toEqual(
-        [],
-      );
+  const isBuilt = Object.values(built).every((file) => existsSync(file));
+  const builtContext = { ...context, settings: { ...context.settings, ...built } };
+  test.skipIf(!isBuilt)('every token of the built data reads as CSS', () => {
+    expectCssValues(tokensOf(builtContext));
+    const roots = JSON.parse(readFileSync(built.consumption, 'utf8')).namespaces['--color']
+      .utilities as string[];
+    expect(roots.filter((root) => !USE_OF_UTILITY[root] && !root.startsWith('mask-'))).toEqual([]);
+  });
+
+  test.skipIf(!isBuilt)(
+    'list_tokens lists every cssOnly entry of the built data, the band and track roles too',
+    async () => {
+      expectCssOnly([built.tokens, built.globals], tokensOf(builtContext));
+      const list = toolsOf(builtContext).find((tool) => tool.name === 'list_tokens')!;
+      const { tokens } = (await list.run({ query: 'band track', limit: 100 })) as Result;
+      for (const css of ['--magma-band', '--magma-band-selected', '--magma-track'])
+        expect(
+          tokens.find((token: Result) => token.css === css),
+          css,
+        ).toMatchObject({
+          tier: 'semantic',
+          description: expect.stringMatching(/\w/),
+          value: expect.stringMatching(/\w/),
+          classes: [`bg-${css.slice('--magma-'.length)}`],
+        });
     },
   );
 

@@ -3024,6 +3024,86 @@
       "tier": "semantic"
      }
     }
+   },
+   "intensity": {
+    "$type": "number",
+    "$value": 1,
+    "$description": "The number every alpha of the transparent backgrounds is multiplied by: 1 is the default.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-wash-intensity",
+      "tier": "semantic"
+     }
+    }
+   }
+  },
+  "band": {
+   "$description": "The band that holds the options you pick from, transparent over the surface beneath.",
+   "alpha": {
+    "$type": "number",
+    "$value": 0.0451,
+    "$description": "How much ink the band takes, as a percentage; the wash intensity multiplies it.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-band-alpha",
+      "tier": "semantic",
+      "cssValue": "4.51%"
+     }
+    }
+   },
+   "selected-alpha": {
+    "$type": "number",
+    "$value": 0.0882,
+    "$description": "How much ink the selected option takes over the band, where it is transparent (dark).",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-band-selected-alpha",
+      "tier": "semantic",
+      "cssValue": "8.82%"
+     }
+    }
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "cssOnly": [
+      {
+       "css": "--magma-band",
+       "value": "color-mix(in oklab, var(--magma-text-default) calc(var(--magma-band-alpha) * var(--magma-wash-intensity)), transparent)",
+       "description": "The band that holds the options you pick from: tabs, filters, the pages of a paginator."
+      },
+      {
+       "css": "--magma-band-selected",
+       "value": "var(--magma-surface-overlay)",
+       "description": "The selected option on a band."
+      }
+     ]
+    }
+   }
+  },
+  "track": {
+   "$description": "The track of a quantity, transparent over the surface beneath.",
+   "alpha": {
+    "$type": "number",
+    "$value": 0.1039,
+    "$description": "How much ink the track takes, as a percentage; the wash intensity multiplies it.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-track-alpha",
+      "tier": "semantic",
+      "cssValue": "10.39%"
+     }
+    }
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "cssOnly": [
+      {
+       "css": "--magma-track",
+       "value": "color-mix(in oklab, var(--magma-text-default) calc(var(--magma-track-alpha) * var(--magma-wash-intensity)), transparent)",
+       "description": "The track of a quantity: progress, range, the line of a stepper, a scrollbar guide."
+      }
+     ]
+    }
    }
   },
   "border": {

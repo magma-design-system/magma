@@ -111,8 +111,8 @@ an answer names (a preview, the layer of a pattern) is absolute.
 | `find_component` | which component fits a need ("a date range picker") | reading the catalogue |
 | `get_component` | the API of one component: props with their values and default, events, methods, slots, parts, public CSS custom properties; and in `rules` the rules of the design language that govern it (the inset `mds-banner` draws, from the rhythm) | reading its `AGENTS.md` |
 | `get_usage` | how HTML, React or Angular writes it: import, props, events (`onMdsInputChange`, `(mdsInputChange)`) | guessing the names |
-| `list_tokens` | the role for a need ("secondary text"), with its value and class | reading [`color.md`](color.md) |
-| `suggest_role` | the role for a colour, a raw class or a palette step, as a class of the same utility (`shadow-*/80` stays a shadow class) | picking a role by eye |
+| `list_tokens` | the role for a need ("secondary text"), with its value and class; a role with no DTCG type (the band, the track, a width) comes with its CSS as written and no `type` | reading [`color.md`](color.md) |
+| `suggest_role` | the role for a colour, a raw class or a palette step, as a class of the same utility (`shadow-*/80` stays a shadow class); never a transparent role (`--magma-band`, `--magma-track`), which has no colour of its own: ask `list_tokens` for it | picking a role by eye |
 | `explain_class` | what a class does with the Magma theme | the trap of the scale: `p-4` is 0.01rem, `p-400` is 1rem |
 | `find_icon` | a slug that exists, by meaning, or whether a slug exists | an `icon="..."` that renders nothing |
 | `get_guide` | one section of a guide, or of a domain of the design language, the rules of composition (`rhythm`, `density`, `actions`, `titles`, `surfaces`, `widths`) | reading the whole file |

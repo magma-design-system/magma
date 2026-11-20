@@ -188,6 +188,23 @@ answer comes from".
   (`typography`, `gradient`) has none, and so does a part with no serialiser: never
   `[object Object]`. The fixtures hold one token of every `$type` and shape the published
   data has, and a test runs every value of the built data when there is one.
+- **The custom properties DTCG has no type for** (`list_tokens`, `explain_class`, #1472): the
+  transparent roles that mix where they are used (`--magma-band`, `--magma-band-selected`,
+  `--magma-track`), the measures in `ch`, the widths written from other roles
+  (`--magma-width-form`), the `--transition-property-*` lists and the preferences of styles. The
+  data keeps them in the `cssOnly` extension of their group, each `{ css, value, description? }`
+  (design-tokens README, "Token data (DTCG)"; styles README, "Token data"), and the tools list
+  each one as the data gives it: its `css`, its `value` as the CSS writes it (not resolved: a
+  mix or a `calc()` of other roles has its value where it is used), its description, the
+  description of its group. Its path is the group that lists it (`magma.band`), since DTCG gives
+  it none, and it has no `type`. Its tier, which the entry does not record, follows the
+  definition of the tiers in the design-tokens README, by the custom property, the rule its
+  build gives the semantic layer by: a `--magma-tint-*` pointer is internal, another `--magma-*`
+  a role (semantic), the rest a raw value or scale (primitive: `--container-prose`). It has no
+  colour, so `suggest_role` never proposes it: the colour of a transparent role is its ink mixed
+  over whatever surface lies beneath, which no distance from one colour can match; `list_tokens`
+  finds it by what it is for. A test checks every `cssOnly` entry of the fixtures and of the
+  built data, when there is one, against what the tools list.
 - **What a colour paints** (`suggest_role`): each root of the `--color` namespace of the
   consumption map is classified by the CSS property Tailwind writes for it (text, border,
   background, shadow; the masks read only the alpha, no role), in a table a test holds to the

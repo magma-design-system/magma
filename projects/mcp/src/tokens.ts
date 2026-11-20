@@ -1,8 +1,9 @@
 /*
   The token tools: list the roles and tokens with what each one is for, find the role for a
   colour, explain a class. The data is the DTCG of design-tokens and of styles (the values,
-  the descriptions, the aliases) and the consumption map of styles (how Tailwind reads each
-  token): the light values of the base sets, the ones a role is matched on.
+  the descriptions, the aliases, the custom properties DTCG has no type for) and the
+  consumption map of styles (how Tailwind reads each token): the light values of the base
+  sets, the ones a role is matched on.
 */
 import { loadPalette, readData, utilityOf } from '@maggioli-design-system/magma/lint';
 import { readFileSync } from 'node:fs';
@@ -10,18 +11,38 @@ import { distance, parseColor, toHex, type Rgb } from './color.js';
 import { GAP, GAP_SCHEMA, resolvePackage, wordsOf, type ToolContext } from './context.js';
 import { ToolError, type Tool } from './protocol.js';
 
+/**
+ * A custom property DTCG has no type for (a mix that resolves where it is used, a measure in
+ * `ch`, a list of properties), which the data keeps in the `cssOnly` extension of its group:
+ * the design-tokens README, "Token data (DTCG)", and the styles README for its globals.
+ */
+interface CssOnly {
+  css?: string;
+  value?: string;
+  description?: string;
+}
+
+interface MagmaExtension {
+  css?: string;
+  tier?: string;
+  cssValue?: string;
+  cssOnly?: CssOnly[];
+}
+
 interface DtcgToken {
   $type: string;
   $value: unknown;
   $description?: string;
   $deprecated?: string | boolean;
-  $extensions?: Record<string, { css?: string; tier?: string; cssValue?: string }>;
+  $extensions?: Record<string, MagmaExtension>;
 }
 
 export interface TokenEntry {
   css?: string;
+  /** The DTCG path; for a `cssOnly` entry, which has none, the group that lists it. */
   path: string;
-  type: string;
+  /** The DTCG type; none for a `cssOnly` entry. */
+  type?: string;
   tier: string;
   description?: string;
   /** The description of its group, for a token described by its family. */
@@ -171,7 +192,46 @@ export const cssValueOf = (type: string, value: unknown): string | undefined =>
 
 const indexCache = new WeakMap<object, TokenEntry[]>();
 
-/** Every token of the base sets of design-tokens and styles, with its light value. */
+/*
+  The tier of a `cssOnly` entry, which the entry does not record: the definition of the tiers in
+  the design-tokens README ("Token data (DTCG)"), by the custom property, the rule its build
+  gives the semantic layer by (`semanticToken` of scripts/dtcg/sets.ts). A `--magma-tint-*`
+  pointer is internal, another `--magma-*` is a role (semantic: `--magma-band`, the widths of
+  the design language, the globals of styles), the rest a raw value or scale (primitive:
+  `--container-prose`, the `--transition-property-*` lists).
+*/
+const tierOfCss = (css: string): string =>
+  css.startsWith('--magma-tint-')
+    ? 'internal'
+    : css.startsWith('--magma-')
+      ? 'semantic'
+      : 'primitive';
+
+/*
+  A `cssOnly` entry as the tools list it (#1472): its `css`, its `value` as the CSS writes it
+  (not resolved: a transparent role mixes where it is used, a width is a calc() of other roles),
+  its description, the description of its group, its tier by `tierOfCss`. It has no DTCG path,
+  so its path is the group that lists it (`magma.band` for `--magma-band` and
+  `--magma-band-selected`), no type, and no rgb: a transparent role has no colour of its own.
+*/
+const cssOnlyEntries = (node: object, path: string[], group?: string): TokenEntry[] => {
+  const { $extensions } = node as { $extensions?: Record<string, MagmaExtension> };
+  return ($extensions?.[NAMESPACE]?.cssOnly ?? [])
+    .filter((entry): entry is CssOnly & { css: string } => typeof entry?.css === 'string')
+    .map((entry) => ({
+      css: entry.css,
+      path: path.join('.'),
+      tier: tierOfCss(entry.css),
+      ...(entry.description ? { description: entry.description } : {}),
+      ...(group ? { group } : {}),
+      ...(typeof entry.value === 'string' ? { value: entry.value } : {}),
+    }));
+};
+
+/**
+ * Every token of the base sets of design-tokens and styles, with its light value, and the
+ * custom properties of their `cssOnly` entries.
+ */
 export const tokensOf = (context: ToolContext): TokenEntry[] => {
   const base = readData<Record<string, unknown>>('tokens', context.settings);
   const cached = indexCache.get(base);
@@ -184,6 +244,8 @@ export const tokensOf = (context: ToolContext): TokenEntry[] => {
   }
   const byPath = new Map<string, DtcgToken>();
   const entries: TokenEntry[] = [];
+  // the cssOnly entries come with their value: no alias to resolve
+  const cssOnly: TokenEntry[] = [];
   const walk = (node: Record<string, unknown>, path: string[], group?: string) => {
     for (const [key, child] of Object.entries(node)) {
       if (key.startsWith('$') && key !== '$root') continue;
@@ -201,12 +263,11 @@ export const tokensOf = (context: ToolContext): TokenEntry[] => {
           ...(group ? { group } : {}),
           ...(child.$deprecated ? { deprecated: true } : {}),
         });
-      } else
-        walk(
-          child as Record<string, unknown>,
-          at,
-          (child as { $description?: string }).$description ?? group,
-        );
+      } else {
+        const described = (child as { $description?: string }).$description ?? group;
+        cssOnly.push(...cssOnlyEntries(child, at, described));
+        walk(child as Record<string, unknown>, at, described);
+      }
     }
   };
   walk(base, []);
@@ -225,14 +286,15 @@ export const tokensOf = (context: ToolContext): TokenEntry[] => {
   for (const entry of entries) {
     const token = byPath.get(entry.path)!;
     const value = resolve(token.$value);
-    const text = token.$extensions?.[NAMESPACE]?.cssValue ?? cssValueOf(entry.type, value);
+    const text = token.$extensions?.[NAMESPACE]?.cssValue ?? cssValueOf(token.$type, value);
     if (text) entry.value = text;
     const components = (value as { components?: number[] })?.components;
     if (entry.type === 'color' && Array.isArray(components))
       entry.rgb = components.slice(0, 3) as Rgb;
   }
-  indexCache.set(base, entries);
-  return entries;
+  const all = [...entries, ...cssOnly];
+  indexCache.set(base, all);
+  return all;
 };
 
 const consumptionOf = (context: ToolContext) =>
@@ -362,14 +424,22 @@ export const listTokens = (context: ToolContext): Tool => ({
           type: 'object',
           properties: {
             css: { type: 'string' },
-            path: { type: 'string' },
+            path: {
+              type: 'string',
+              description:
+                'The DTCG path; for a custom property DTCG has no type for, the group that lists it.',
+            },
             tier: { type: 'string' },
-            type: { type: 'string' },
+            type: {
+              type: 'string',
+              description:
+                'The DTCG type; none for a custom property DTCG has no type for (a transparent role that mixes where it is used, a measure in ch, a list), whose value is its CSS as written.',
+            },
             description: { type: 'string' },
             value: { type: 'string' },
             classes: { type: 'array', items: { type: 'string' } },
           },
-          required: ['path', 'tier', 'type', 'classes'],
+          required: ['path', 'tier', 'classes'],
         },
       },
       total: { type: 'number' },
@@ -408,7 +478,7 @@ export const listTokens = (context: ToolContext): Tool => ({
         ...(entry.css ? { css: entry.css } : {}),
         path: entry.path,
         tier: entry.tier,
-        type: entry.type,
+        ...(entry.type ? { type: entry.type } : {}),
         ...((entry.description ?? entry.group)
           ? { description: (entry.description ?? entry.group)! }
           : {}),
@@ -513,6 +583,9 @@ export const suggestRole = (context: ToolContext): Tool => ({
     const target = kind ?? 'background';
     // a shadow takes the shadow ink or, for a glow, a fill
     const family: Use[] = target === 'shadow' ? ['shadow', 'background'] : [target];
+    // A candidate has a colour of its own to be matched on. A cssOnly role has none (#1472):
+    // the colour of --magma-band or --magma-track is its ink mixed over whatever surface lies
+    // beneath, so no distance from a colour can pick it; list_tokens finds it by what it is for.
     const roles = tokens
       .filter(
         (entry) =>
