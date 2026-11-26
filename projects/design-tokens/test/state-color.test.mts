@@ -11,6 +11,7 @@ import { keyColorOf, midpoint, washedColors } from '../src/lib/state-color.mjs';
 import { parseLightness, taper } from '../src/lib/surface.mjs';
 import { getColorsConfig } from '../src/lib/utils.mjs';
 import { WASH_LEVELS } from '../src/lib/wash.js';
+import { ACCENT_FG_STEPS } from '../src/lib/emphasis.js';
 
 type Tree = Record<string, Record<string, Record<'light' | 'dark', Record<string, { value: string }>>>>;
 
@@ -124,3 +125,33 @@ test('the schema takes the emphasis opt-in on a group and on a color', async () 
   wrong.groups.variant.emphasis = { dark: 'contrast' };
   expect(validateConfig(wrong).valid).toBe(false);
 });
+
+// The ink of an accent on a neutral surface (#1496): a step of its ramp per mode, ACCENT_FG_STEPS,
+// that keeps the hue-fg floor on every surface of every tint a theme can put under it (the
+// neutral page of business, the bisque one of editorial), and in dark takes more hue than the
+// step 03 it replaced, which read as body text.
+test('the ink of an accent is its step of ACCENT_FG_STEPS and keeps Lc 60 on every tint', async () => {
+  const { tree } = await load();
+  const accents = Object.keys(tree.fg);
+  expect(accents).toEqual(expect.arrayContaining(['primary', 'secondary', 'ai']));
+  // the tints: the families with surfaces and no solid fill of their own
+  const tints = Object.keys(tree.surface).filter((family) => !tree.emphasis[family]);
+  expect(tints).toEqual(expect.arrayContaining(['neutral', 'bisque']));
+  for (const family of accents) {
+    const ramp = Object.keys(tree).find((group) => tree[group][family]?.light?.['1'] && group !== 'fg');
+    for (const mode of ['light', 'dark'] as const) {
+      const ink = tree.fg[family][mode].default.value;
+      expect(ink).toBe(tree[ramp!][family][mode][String(Number(ACCENT_FG_STEPS[mode]))].value);
+      for (const tint of tints) {
+        for (const surface of Object.values(tree.surface[tint][mode])) {
+          expect(lc(ink, surface.value), `${family} ${mode} on ${tint}`).toBeGreaterThanOrEqual(
+            DEFAULT_TARGETS.hueFg,
+          );
+        }
+      }
+    }
+    // in dark the ink carries more hue than step 03 did
+    expect(C(tree.fg[family].dark.default.value)).toBeGreaterThan(C(tree[ramp!][family].dark['3'].value));
+  }
+});
+

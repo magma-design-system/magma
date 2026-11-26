@@ -309,7 +309,10 @@ distance from the page of the family (`WASH_LEVELS` in `src/lib/wash.ts`), below
 above it in dark, with the chroma of the key colour bounded by the paler end;
 `--emphasis-<name>-{default,hover,active,selected}`, the solid fill and its states (ramp steps,
 `selected` at the OKLCH midpoint of rest and hover; `{ "dark": "lightness" }` places the dark
-band by lightness); and, for a tint, `--inverse-<name>-selected`. The text roles of these
+band by lightness); for an accent (a solid fill with no surfaces of its own),
+`--fg-<name>-default`, its ink on a neutral surface, a step of its ramp per mode
+(`ACCENT_FG_STEPS` in `src/lib/emphasis.ts`, #1496: no single step carries the hue in both);
+and, for a tint, `--inverse-<name>-selected`. The text roles of these
 families are solved on their washes too, so a label holds the floor of the contrast gate on the
 wash it sits on.
 

@@ -619,13 +619,14 @@ export function createColorTokens(magmaConfig: MagmaConfig) {
   // family with surfaces or a solid fill, the emphasis band of the solid fills, the selected
   // level of the inverse pair of the tints. After the aliases and the ramps, which the band
   // reads; before the text, which is solved against the washes. They ship as
-  // `--wash-<family>-<level>`, `--emphasis-<family>-<state>`, `--inverse-<family>-selected`.
+  // `--wash-<family>-<level>`, `--emphasis-<family>-<state>`, `--inverse-<family>-selected`,
+  // and the ink of an accent on a neutral surface as `--fg-<family>-default` (#1496).
   const wash = createWashTokens(config);
-  const { emphasis, inverse } = createEmphasisTokens(
+  const { emphasis, inverse, fg } = createEmphasisTokens(
     config,
     tokens.color as unknown as Parameters<typeof createEmphasisTokens>[1],
   );
-  const states = { wash, emphasis, inverse };
+  const states = { wash, emphasis, inverse, fg };
   Object.entries(states).forEach(([group, families]) => {
     if (Object.keys(families).length === 0) return;
     tokens.color[group] = families as unknown as DesignTokens;

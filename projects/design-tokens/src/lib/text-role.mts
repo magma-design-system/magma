@@ -64,7 +64,7 @@ type ColorTree = {
 };
 
 /** Derived groups, not candidate colour scales. */
-const DERIVED_GROUPS = new Set(["surface", "border", "text", "wash", "emphasis", "inverse"]);
+const DERIVED_GROUPS = new Set(["surface", "border", "text", "wash", "emphasis", "inverse", "fg"]);
 
 const apcaLc = (fg: string, bg: string): number =>
   Math.abs(APCAcontrast(sRGBtoY(chroma(fg).rgb()), sRGBtoY(chroma(bg).rgb())) as number);

@@ -11,7 +11,7 @@ import {
   taper,
 } from "./surface.mjs";
 import { WASH_LEVELS, type WashLevel } from "./wash.js";
-import { EMPHASIS_STEPS, INVERSE_STEPS } from "./emphasis.js";
+import { ACCENT_FG_STEPS, EMPHASIS_STEPS, INVERSE_STEPS } from "./emphasis.js";
 
 /**
  * The colours of the states of a family (#1427): its wash levels, the band of its solid fill and
@@ -191,6 +191,8 @@ export interface StateTokens {
   emphasis: Record<string, ColorTokenSet>;
   /** family -> { light, dark } inverse pair: selected */
   inverse: Record<string, ColorTokenSet>;
+  /** accent family -> { light, dark } ink on a neutral surface: default (#1496) */
+  fg: Record<string, ColorTokenSet>;
 }
 
 /**
@@ -217,6 +219,7 @@ export interface StateTokens {
 export function createEmphasisTokens(config: MagmaConfig, tree: ColorTree): StateTokens {
   const emphasis: Record<string, ColorTokenSet> = {};
   const inverse: Record<string, ColorTokenSet> = {};
+  const fg: Record<string, ColorTokenSet> = {};
   // the pages a fill can sit on in dark, which are its ink: the page of every tint
   const darkPages = washedColors(config)
     .filter((one) => resolveEmphasisOptIn(config, one) === undefined)
@@ -272,6 +275,15 @@ export function createEmphasisTokens(config: MagmaConfig, tree: ColorTree): Stat
     });
     console.info(`Creating ${chalk.magenta("emphasis")} ${family}`);
     emphasis[family] = set;
+
+    // an accent (a solid fill with no surfaces of its own, as text-role.mts reads it): its ink on
+    // a neutral surface takes the step of ACCENT_FG_STEPS in each mode (#1496)
+    if (!tree.surface?.[family]) {
+      fg[family] = {
+        light: { default: { value: stepOf(scale, "light", ACCENT_FG_STEPS.light) } },
+        dark: { default: { value: stepOf(scale, "dark", ACCENT_FG_STEPS.dark) } },
+      };
+    }
   });
-  return { emphasis, inverse };
+  return { emphasis, inverse, fg };
 }

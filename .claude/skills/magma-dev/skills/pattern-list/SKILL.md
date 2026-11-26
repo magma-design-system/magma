@@ -21,4 +21,4 @@ list the `get_pattern` tool of the MCP server gives with no argument, read from
 
 Show it as it comes, by group. Then, in one line each: how many are candidates (needs Magma knows
 and has not defined), and which defined ones were validated on no product yet. To define a
-candidate: `/pattern-new`; to change a pattern: `/pattern-change <id>`.
+candidate: `/magma-dev:pattern-new`; to change a pattern: `/magma-dev:pattern-change <id>`.
