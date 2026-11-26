@@ -28,7 +28,8 @@ npm i @fontsource/karla @fontsource/merriweather @fontsource/roboto @fontsource/
 ## 2. Register the components
 
 The `mds-*` proxies are Angular standalone components. Import the ones you use -
-each registers its own custom element on load, so there is nothing else to wire up:
+each registers its own custom element on load, so the tags of your templates need nothing
+else to wire up (for tags created from code, see below):
 
 ```typescript
 import { MdsButton, MdsIcon } from '@maggioli-design-system/magma-angular';
@@ -47,6 +48,62 @@ Then use them in templates like native elements:
 <mds-button variant="primary" tone="strong">Save</mds-button>
 <mds-icon name="mi/baseline/email"></mds-icon>
 ```
+
+### Elements you create outside a template
+
+A proxy registers its tag when a component that imports it loads. A tag you create from code
+(DOM APIs, a Markdown renderer or a library that writes the DOM itself) is registered only if
+some loaded component imports its proxy. Otherwise it never upgrades and stays hidden, with no
+error. Register it yourself, per component as in [`web-components.md`](web-components.md), from
+the same `dist/components` build the proxies import (`magma/components` is its barrel). Register
+every tag the code creates, all seven for this markup:
+
+```html
+<mds-table>
+  <mds-table-header>
+    <mds-table-header-cell label="Nome"></mds-table-header-cell>
+  </mds-table-header>
+  <mds-table-body>
+    <mds-table-row>
+      <mds-table-cell><mds-text typography="detail">Mario Rossi</mds-text></mds-table-cell>
+    </mds-table-row>
+  </mds-table-body>
+</mds-table>
+```
+
+```typescript
+import {
+  defineCustomElementMdsTable,
+  defineCustomElementMdsTableBody,
+  defineCustomElementMdsTableCell,
+  defineCustomElementMdsTableHeader,
+  defineCustomElementMdsTableHeaderCell,
+  defineCustomElementMdsTableRow,
+  defineCustomElementMdsText,
+} from '@maggioli-design-system/magma/components';
+
+defineCustomElementMdsTable();
+defineCustomElementMdsTableHeader();
+defineCustomElementMdsTableHeaderCell();
+defineCustomElementMdsTableBody();
+defineCustomElementMdsTableRow();
+defineCustomElementMdsTableCell();
+defineCustomElementMdsText();
+```
+
+Each `defineCustomElement*` also registers the components its tag renders inside itself, not
+the ones you nest in it: list every tag of the markup. One tag can be imported on its own too,
+from `@maggioli-design-system/magma/components/mds-table.js` (`defineCustomElement`).
+Don't use the lazy loader (`magma/loader`) for this: it registers the tags from a second build.
+
+`[innerHTML]` cannot create these elements at all. Angular sanitizes the bound value
+(`ɵɵsanitizeHtml`), and the sanitizer keeps only the standard HTML tags of its allow-list:
+every `mds-*` tag is dropped, its text kept, before registration matters (`@angular/core` 20.3
+and 22.3). Build the elements with the DOM APIs (`Renderer2`, `document.createElement`, or
+`innerHTML` set on an element you hold), or, for HTML you trust only, bind a value passed
+through `DomSanitizer.bypassSecurityTrustHtml`. Setting `innerHTML` yourself and the bypass
+both skip the sanitizer: never use them for HTML a user or a model wrote, unless a sanitizer
+of yours that allows the `mds-*` tags you expect has cleaned it first.
 
 ### Forms
 
@@ -222,7 +279,8 @@ merging into what the project already has, and run both after every change.
 - Use the generated proxies rather than raw custom elements. If you ever use `mds-*`
   tags without importing the matching proxy, add `CUSTOM_ELEMENTS_SCHEMA` to the
   module/component so Angular does not error on unknown elements - but the proxies are
-  the supported path, and skipping them also skips the custom element registration.
+  the supported path, and skipping them also skips the custom element registration
+  (register those tags yourself, as in "Elements you create outside a template").
 - Keep `magma` and `magma-angular` on the exact same version; the wrapper is
   generated against a specific `magma` build.
 - Bind boolean inputs as properties: `[disabled]="isDisabled"` sets the property

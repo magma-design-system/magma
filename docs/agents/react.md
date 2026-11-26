@@ -53,6 +53,57 @@ import { MdsButton } from '@maggioli-design-system/magma-react/mds-button.js';
 The per-component event types (`MdsButtonEvents`, ...) live in those per-component
 modules, not in the root barrel - import them from the deep path.
 
+### Elements you create outside JSX
+
+A wrapper registers its tag when its module loads, and only a wrapper the app renders is sure
+to load: the package declares `sideEffects: false`, so a bundler drops one that is imported but
+never used. A tag you create from code (`dangerouslySetInnerHTML`, DOM APIs, a Markdown renderer
+or a library that writes the DOM itself) is registered only if some loaded module renders its
+wrapper. Otherwise it never upgrades and stays hidden, with no error. Register it yourself, per
+component as in [`web-components.md`](web-components.md), from the same `dist/components` build
+the wrappers import (`magma/components` is its barrel). Register every tag the code creates, all
+seven for this markup:
+
+```html
+<mds-table>
+  <mds-table-header>
+    <mds-table-header-cell label="Nome"></mds-table-header-cell>
+  </mds-table-header>
+  <mds-table-body>
+    <mds-table-row>
+      <mds-table-cell><mds-text typography="detail">Mario Rossi</mds-text></mds-table-cell>
+    </mds-table-row>
+  </mds-table-body>
+</mds-table>
+```
+
+```tsx
+import {
+  defineCustomElementMdsTable,
+  defineCustomElementMdsTableBody,
+  defineCustomElementMdsTableCell,
+  defineCustomElementMdsTableHeader,
+  defineCustomElementMdsTableHeaderCell,
+  defineCustomElementMdsTableRow,
+  defineCustomElementMdsText,
+} from '@maggioli-design-system/magma/components';
+
+defineCustomElementMdsTable();
+defineCustomElementMdsTableHeader();
+defineCustomElementMdsTableHeaderCell();
+defineCustomElementMdsTableBody();
+defineCustomElementMdsTableRow();
+defineCustomElementMdsTableCell();
+defineCustomElementMdsText();
+```
+
+Each `defineCustomElement*` also registers the components its tag renders inside itself, not
+the ones you nest in it: list every tag of the markup. One tag can be imported on its own too,
+from `@maggioli-design-system/magma/components/mds-table.js` (`defineCustomElement`).
+Don't use the lazy loader (`magma/loader`) for this: it registers the tags from a second build.
+React does not sanitize `dangerouslySetInnerHTML`: HTML a user or a model wrote needs
+a sanitizer of yours that allows the `mds-*` tags you expect.
+
 ## 3. Set the icon path
 
 Set the icon path once, near the app root, in a client effect: on the server
