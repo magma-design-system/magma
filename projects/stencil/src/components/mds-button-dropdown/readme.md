@@ -14,15 +14,15 @@ The `<mds-button-dropdown>` web component is a split-button control of the Magma
 #### Semantic Behavior
 
 - **Default slot is the menu**: Whatever you place in the default slot becomes the dropdown panel content; it is not treated as the button label (the visible label comes from the `label` prop).
-- **Chevron trigger**: The second button is icon-only (chevron) and toggles the dropdown; it carries `aria-haspopup` and `aria-expanded` for the menu it opens. It is named in the page language (the `lang` of `<html>`) after the label ("More actions for Export", or "More actions" without a label), so two split buttons of one page name their chevrons apart; `dropdown-label` gives it a name of the page's instead.
+- **Chevron trigger**: The second button is icon-only (chevron) and toggles the dropdown; it carries `aria-haspopup` and `aria-expanded` for the menu it opens. It is named in the page language (the `lang` of `<html>`) after the label ("More actions for Export", or "More actions" without a label), so two split buttons of one page name their chevrons apart; `dropdown-label` gives it a name of the page's instead. Its icon is an arrow; `dropdown-icon` gives another one, as three dots for the menu of the options of an item, and the chevron keeps its name.
 - **Shared configuration**: `active`, `disabled`, `size`, `tone` and `variant` are forwarded identically to both internal buttons, so the two halves always stay visually and behaviorally in sync. `await` belongs to the primary action, the one in progress. `href`, `target` and `autoFocus` belong to the primary action alone: the chevron only opens the menu.
 - **Current state**: `current` marks the primary action as the one that leads to the view you are in, as on `<mds-button>`. Both halves take the look of the current button; only the primary action is announced with `aria-current` and, with `current` (or `current="page"`), neither navigates, nor submits, nor fires `mdsButtonDropdownClick`. With `current="section"`, a view inside it, the primary action stays a link back. The chevron keeps opening the menu either way. A menu item that leads to the view you are in takes `current` itself.
 - **Form association**: The host is form-associated. With `type="submit"` the primary action submits the enclosing `<form>` (or the one its `form` attribute names) and sends `name=value`, like a native submit button; with `type="reset"` it resets it. The chevron never submits. Unlike `<mds-button>`, `type` defaults to `'button'`: a dropdown in a form submits it only when asked. The menu items are slotted `<mds-button>`, so they follow their own `type` (default `'submit'`), `name` and `value`, and the receiver tells all the actions apart by `name`.
-- **Disabled / await states**: `disabled` passes through to both buttons, so it disables the action and the trigger together; a disabled `<fieldset>` around the component disables both halves the same way, without setting `disabled`. `await` shows one spinner, on the primary action, which alone is announced as busy; the chevron keeps its arrow and is disabled until the component stops awaiting, so the menu does not open meanwhile.
+- **Disabled / await states**: `disabled` passes through to both buttons, so it disables the action and the trigger together; a disabled `<fieldset>` around the component disables both halves the same way, without setting `disabled`. `await` shows one spinner, on the primary action, which alone is announced as busy; the chevron keeps its icon and is disabled until the component stops awaiting, so the menu does not open meanwhile.
 - **Primary action event**: `mdsButtonDropdownClick` fires when the primary action is clicked or activated from the keyboard, and not while the component is `disabled` or awaiting. The chevron and the menu items do not fire it. A native `click` listener on the component also runs for the menu items, whose clicks bubble to it, so listen for `mdsButtonDropdownClick` to run the primary action in JavaScript.
 - **Dropdown part**: The internal dropdown is exposed as the `dropdown` shadow part for external styling of the menu surface.
 - **Corners**: The two halves take their outer corners from the host, the radius of `--mds-button-dropdown-radius`, and meet with flat inner corners. A row that joins the component flattens its corners on the host: in an `<mds-button-group>` the side that touches the next member is flat, on the primary action or on the chevron.
-- **Width**: The component keeps its own width, its primary action as wide as an `<mds-button>` with the same label. A row that stretches it, as `actions/stacked` does under `--magma-container-actions` (380px) in `<mds-card-footer>`, `<mds-banner>`, `<mds-status-bar>` or a row of your own (`align-self: stretch`, a `width`, a `flex-basis`), gives the free width to the primary action, its label in the middle, and keeps the chevron at its own size at the end: the two halves still read as one button, with no fill past them.
+- **Width**: The component keeps its own width, its primary action as wide as an `<mds-button>` with the same label. A row that stretches it, as `actions/stacked` does under `--magma-container-actions` (380px) in `<mds-card-footer>`, `<mds-banner>`, `<mds-status-bar>` or a row of your own (`align-self: stretch`, a `width`, a `flex-basis`), gives the free width to the primary action, its label at the start, and keeps the chevron at its own size at the end: the two halves still read as one button, with no fill past them. The label starts at the start edge, where a stretched `<mds-button>` centres it, so that a column of split buttons (the conversations with an agent, each name with its three dots) reads down one edge.
 
 #### Properties & Visual Configurations
 
@@ -35,8 +35,9 @@ The shared `variant` / `tone` / `size` ladders are defined in [`docs/agents/vari
 #### Other behavioral props
 
 - **`autoFocus`** focuses the primary action once the component is loaded.
-- **`icon`** is an SVG filename slug from the Magma icon library, applied to the primary action button (the chevron icon on the trigger is fixed and not configurable).
-- **`iconCurrent`** and **`iconHover`** take the place of `icon` on the primary action, when it is current and under the pointer, as on `<mds-button>`: `iconHover` falls back on `iconCurrent`, and both need `icon`. The chevron keeps its arrow.
+- **`icon`** is an SVG filename slug from the Magma icon library, applied to the primary action button; the chevron takes its own from `dropdownIcon`.
+- **`iconCurrent`** and **`iconHover`** take the place of `icon` on the primary action, when it is current and under the pointer, as on `<mds-button>`: `iconHover` falls back on `iconCurrent`, and both need `icon`. The chevron keeps its icon.
+- **`dropdownIcon`** is the icon of the chevron, a slug of the Magma icon library or SVG markup, in place of the arrow (default). Three dots (`mi/baseline/more-horiz`) turn the component into an item with the menu of its options, as the name of a conversation with an agent: the label opens the item, the dots its menu. An empty value keeps the arrow.
 - **`truncate`** sets how the label of the primary action truncates, as on `mds-button` (default `'word'`).
 
 
@@ -97,7 +98,7 @@ Use the `size` prop. Both internal buttons track it automatically.
 
 #### Primary Action with an Icon
 
-Supply the `icon` prop to add an icon to the primary action button. The chevron trigger icon is fixed and not configurable.
+Supply the `icon` prop to add an icon to the primary action button. The chevron keeps its arrow, unless `dropdown-icon` gives it another one (see below).
 
 ```html
 <mds-button-dropdown
@@ -119,6 +120,24 @@ The chevron is named after the label in the language of the page ("Altre azioni 
 <mds-button-dropdown label="Esporta" dropdown-label="Formati di esportazione">
   <mds-button variant="dark" tone="text" label="PDF"></mds-button>
   <mds-button variant="dark" tone="text" label="CSV"></mds-button>
+</mds-button-dropdown>
+```
+
+#### An Item with the Menu of Its Options
+
+`dropdown-icon` puts another icon on the chevron in place of the arrow. With three dots the component is an item and the menu of its options, as the name of a conversation with an agent: the label opens the conversation, the dots its menu. The dots keep the name of the chevron ("Altre azioni per Riunione di lunedi").
+
+```html
+<mds-button-dropdown
+  label="Riunione di lunedi"
+  href="/chat/42"
+  dropdown-icon="mi/baseline/more-horiz"
+  variant="dark"
+  tone="weak"
+>
+  <mds-button icon="mi/baseline/edit" variant="dark" tone="text" label="Rinomina"></mds-button>
+  <mds-button icon="mi/baseline/share" variant="dark" tone="text" label="Condividi"></mds-button>
+  <mds-button icon="mi/baseline/delete" variant="error" tone="text" label="Elimina"></mds-button>
 </mds-button-dropdown>
 ```
 
@@ -352,23 +371,22 @@ The menu items are slotted `<mds-button>`, whose `type` defaults to `'submit'`: 
 </mds-button-dropdown>
 ```
 
-#### Do Not Try to Customize the Chevron Icon
+#### Do Not Change the Chevron Icon from CSS
 
-The chevron trigger icon is internal and fixed. There is no prop to change it. Do not attempt to override it with CSS property hacks or shadow-DOM selectors.
+The chevron is inside the shadow root: a selector that reaches for its icon matches nothing, and a hack that does would break with the next release. Give the icon with `dropdown-icon`.
 
 ```css
 /* INCORRECT */
 mds-button-dropdown .dropdown-action mds-icon {
   content: url('custom-arrow.svg');
 }
+```
 
-/* CORRECT - style only through documented custom properties and the dropdown part */
-mds-button-dropdown {
-  --mds-button-dropdown-radius: var(--magma-radius-md);
-}
-mds-button-dropdown::part(dropdown) {
-  box-shadow: var(--shadow-lg);
-}
+```html
+<!-- CORRECT -->
+<mds-button-dropdown label="Riunione di lunedi" dropdown-icon="mi/baseline/more-horiz">
+  <mds-button variant="dark" tone="text" label="Rinomina"></mds-button>
+</mds-button-dropdown>
 ```
 
 #### Do Not Name the Chevron with `aria-label` on the Host
@@ -412,6 +430,7 @@ The host has no role, so an `aria-label` on it names nothing, and it never reach
 | `await`         | `await`          | Specifies if the button is awaiting for a response                                                                                                                                                                                                                                                                                                                                                                                                          | `boolean \| undefined`                                                                                              | `undefined` |
 | `current`       | `current`        | Marks the primary action as the one that leads to the view you are in, as `current` does on `mds-button`: `current` (or `current="page"`) is that view, and the primary action neither navigates nor submits nor emits `mdsButtonDropdownClick`; `current="section"` is a view inside it, and the primary action stays a link back. Both halves take the look; only the primary action is announced with `aria-current`, the chevron keeps opening the menu | `"page" \| "section" \| boolean \| undefined`                                                                       | `undefined` |
 | `disabled`      | `disabled`       | Specifies if the component is disabled or not                                                                                                                                                                                                                                                                                                                                                                                                               | `boolean \| undefined`                                                                                              | `undefined` |
+| `dropdownIcon`  | `dropdown-icon`  | The icon of the chevron, the button that opens the menu, in place of the arrow: a slug of the Magma icon library or SVG markup, as `icon`. Three dots (`mi/baseline/more-horiz`) make the component an item with the menu of its options, as the name of a conversation with an agent. The chevron keeps its name, `dropdownLabel` or the one the component builds                                                                                          | `string \| undefined`                                                                                               | `undefined` |
 | `dropdownLabel` | `dropdown-label` | The accessible name of the chevron, the button that opens the menu, in place of the one the component builds in the language of the page: "More actions for" and `label`, or "More actions" without a label. Two split buttons of one page then name their chevrons apart                                                                                                                                                                                   | `string \| undefined`                                                                                               | `undefined` |
 | `href`          | `href`           | The URL the primary action navigates to, instead of submitting; the chevron only opens the menu                                                                                                                                                                                                                                                                                                                                                             | `string \| undefined`                                                                                               | `undefined` |
 | `icon`          | `icon`           | The icon displayed in the button; `iconCurrent` and `iconHover` take its place in their states                                                                                                                                                                                                                                                                                                                                                              | `string \| undefined`                                                                                               | `undefined` |
