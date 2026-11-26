@@ -26,6 +26,8 @@ The studio speaks to the person with "tu", as the Italian of Magma does (README,
 | 9a | "pesi" / "bilanciamenti" for one thing | rename: **pesi** / **weights**; "bilanciare" stays the verb | register; i18n ("balances"); model; README |
 | 9b | "candidato" / "proposta" for one thing | rename: **candidato** / **candidate** for both | register; model |
 | 10 | none (2026-11-26): a new concept, **compatibile con Magma** / **Magma-compatible**, and the built-in mark the interface already shows ("Integrata") | new rows; a scale that is not built-in gets no name of its own, so the words do not grow | register; model |
+| 11 | "eccezione" (IT): the person said "eccezioni" for the colours exported for a use outside Magma (2026-11-26); the register's exception is the background of a function | no rename: those colours are **casi fuori da Magma** / **cases outside Magma**, a phrase, not a concept of the studio | model |
+| 12 | "gruppo" (IT): a group of families and an export group meet on the Groups page | qualify: the export group is always **gruppo di export** / **export group** (the interface says "export"); **gruppo** alone is the group of families | register; model |
 
 ## Taxonomy register
 
@@ -33,7 +35,8 @@ The studio speaks to the person with "tu", as the Italian of Magma does (README,
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `preset` | preset | preset | everything a project's colour is compiled from: families, contrast scales, weights, themes; Magma ships one, a product exports its own and installs it (person) | a theme, which is one file inside it | (root) | | | `config` (alias: the file name and `--config` of the design-tokens CLI are public) |
 | `family` | family | famiglia | one colour of the palette and its ramp | a group | preset (config `colors[]`) | | contrast-scale (config `colors[].ratios`); family (config `colors[].alias`) | `colors[]`, `name` = `<group>.<name>` |
-| `family-group` | group | gruppo | the families of one kind | a family; an export group | preset (config `groups`, the prefix of `colors[].name`) | | | `groups` |
+| `family-group` | group | gruppo | the families of one kind, with the settings they share (ratios, formula, export); created freely, born with its first family, never named as a group the engine derives (`DERIVED_GROUPS` in `projects/design-tokens/src/lib/text-role.mts`: surface, border, text, wash, emphasis, inverse, fg); its families in chromatic order (person, 2026-11-26) | a family; an export group | preset (config `groups`, the prefix of `colors[].name`) | | | `groups` |
+| `export-group` | export group | gruppo di export | a name in the `export` field of a family or a group: the output files (JSON, CSS, GIMP) that hold its families | a group of families | preset (config `colors[].export`, `groups.<group>.export`) | | family | `export`; one file per export group in the exits (`src/engine/exports.ts`) |
 | `neutrals` | neutrals | neutri | the group of neutral families: porcelain, kaolin, neutral, fireclay, bisque (person) | the `tone` of a component | preset (config `colors[].name` `tone.*`) | family-group (config prefix) | | `tone` (alias: `--tone-*` tokens are public) |
 | `feedback-colours` | status colours | colori di feedback | info, success, warning, danger: the families that carry the outcome of a message (person) | a component state | preset (config `colors[].name` `status.*`) | family-group (config prefix) | | `status` (alias: `--status-*` tokens are public) |
 | `ramp` | ramp | rampa | the steps of a family in one mode, ordered by contrast, as many as its contrast scale has: ten on a Magma-compatible scale | a contrast scale | family (`createColorTokens`, `color[group][name][mode]`) | | contrast-scale | `tokens.color` |
