@@ -157,7 +157,7 @@ export const STORYBOOK_URL = `${PAGES_URL}storybook/`;
  * The published studio (projects/studio, #1288, #1294): deploy-site.yml assembles the studio
  * of `main` into the `studio/` folder of the Pages site. Its build does not decide where it
  * lives, since it loads everything by relative paths (`base: './'` of its vite.config.ts), and
- * its pages are addressed by the hash (`#/theme`, `#/colors/palette`, src/routes.ts), so this
+ * its pages are addressed by the hash (`#/theme`, `#/colors/palette`, src/app/router.ts), so this
  * root is all a link needs. story-titles-lib.spec.ts holds the folder to the workflow and the
  * address to the `og:url` of projects/studio/index.html.
  */

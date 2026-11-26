@@ -36,19 +36,22 @@ Before them comes the **Start page** (`#/start`, below): a start with no address
 the name of the studio at the start of the bar links to it.
 
 Every page is a link with an address in the hash (`#/colors/palette`, `#/theme`,
-`#/behavior/patterns`, `src/routes.ts`), so the studio works from whatever folder serves it. The
-Theme section may name the theme and the mode it opens on, `#/theme/editorial/dark`, and its
+`#/behavior/patterns`, `src/app/router.ts`), so the studio works from whatever folder serves it.
+The Theme section may name the theme and the mode it opens on, `#/theme/editorial/dark`, and its
 address follows the choices made there, replaced in place, so a reload or a link shows the same
-theme in the same mode. The
-Colors pages stay mounted under the other sections, so their work is not lost; each opens with the
+theme in the same mode. A hash that does not start with `#/` is left alone: the anchor of a
+heading of a page that hosts the studio. The work is the state's, not a page's (`src/state/`,
+#1400): the Colors pages are mounted only under Colors, and the bar, the Theme section and the
+Start page read the same state. Each page of Colors opens with the
 head of the page-header block, the first thing of the region that scrolls (it scrolls with the
 page, and beside the list of the Palette it heads the larger column): the title with the verdict
 of the contrast gate beside it, one line, then the actions: Reset, in view since it is the only
 one left, and Save, last, when a command serves the studio. Under 380 px of the head (on a phone)
 the actions stack at the full width, as `actions/stacked` has them, Save at the bottom. What brings a configuration in and takes it out is not an action of a page but the
-**Config** menu of the bar, after the sections (`src/config-menu.tsx`): the actions are the App's,
-which holds the configuration, and the bar draws them, in its dropdown and in the menu of a narrow
-window, each with the format it reads or hands over in a badge.
+**Config** menu of the bar, after the sections (`src/app/config-menu.tsx`): the actions are the
+state's (`src/state/work.ts`, `src/state/exports.ts`), so the menu works from any section, and the
+bar draws them, in its dropdown and in the menu of a narrow window, each with the format it reads
+or hands over in a badge.
 
 The Theme section shows the scene (`scene.html`) in an iframe, a document of its own: the theme is
 set on its `<html>` (`data-theme-name`), and so are the preferences of the person, as the
@@ -70,11 +73,12 @@ over the stylesheets of the installed Magma, the palette of the configuration an
 each theme, printed by the code that writes the files Magma ships (`colors-rgb.css` and
 `themes.css`, `src/engine/scene-css.ts`). So `porcelain` is a theme of the bundled configuration
 though Magma ships none by that name. The choices made on the Themes page, the name of a theme, the
-accents it repoints and the colour modes it is used in, are the studio's (`src/theme-choices.ts`):
-the frame paints the themes as that page exports them, and a theme of one mode is seen in that
-mode only, the other modes of the preferences off and `pref-theme-scheme-<mode>` on the frame, as
-mds-pref-theme writes it. They are kept in the storage of the studio beside the draft, so a reload
-keeps them, until the configuration keeps the themes itself (#694).
+accents it repoints and the colour modes it is used in, are the studio's
+(`src/state/theme-choices.ts`): the frame paints the themes as that page exports them, and a
+theme of one mode is seen in that mode only, the other modes of the preferences off and
+`pref-theme-scheme-<mode>` on the frame, as mds-pref-theme writes it. They are kept in the
+storage of the studio beside the draft, so a reload keeps them, until the configuration keeps the
+themes itself (#694).
 
 What the theme is checked under, not what is edited (#697), opens from the same bar, so the frame
 takes the whole section (2026-11-06): the mode (light, dark, or both side by side, two frames that
@@ -386,21 +390,23 @@ flowchart LR
   WC["stencil<br/>dist/magma-components"]
   ID["identity<br/>logo-magma.svg, logo-magma-white.svg"]
   subgraph stu["studio<br/>an app, not on npm"]
-    SHELL["src/shell.tsx, src/routes.ts, src/start.tsx<br/>the bar, Start, Colors, Theme, Behavior"]
+    SHELL["src/shell.tsx, src/app/, src/start.tsx<br/>the bar, the router, Start, Colors, Theme, Behavior"]
+    STATE["src/state/<br/>the work in signals, the draft, the actions"]
     APP["src/app.tsx<br/>the pages of Colors"]
     SURF["src/surfaces.tsx, src/themes.tsx<br/>balances, themes, names"]
     GATE["src/engine/gate.ts, src/contrast.tsx<br/>the contrast gate, Contrast check"]
-    OUT["src/engine/formats.ts, src/batch.tsx<br/>zip, DTCG, CSS, GIMP, config"]
+    OUT["src/engine/formats.ts, src/engine/exports.ts, src/batch.tsx<br/>zip, DTCG, CSS, GIMP, config"]
     VEN["build/vendor.ts<br/>serves Magma to the pages"]
     API["build/magma-api.ts<br/>the variant and tone of each component"]
     SITE["build/site.ts<br/>the static site, dist-site/"]
     SCENE["scene.html, states.html, hero.html<br/>the pages the frames show"]
     SHELL --> APP
+    SHELL --> STATE
     SHELL --> SCENE
-    SHELL --> GATE
+    APP --> STATE
     APP --> SURF
-    APP --> GATE
-    APP --> OUT
+    STATE --> GATE
+    STATE --> OUT
     SURF --> GATE
     API --> APP
   end
@@ -417,7 +423,7 @@ flowchart LR
   SITE -.->|"deploy-site.yml"| PAGES(["GitHub Pages<br/>magma/studio/"])
   OUT -.->|"download"| AUTHOR(["the author of a theme"])
   MI(["@material-icons/svg<br/>check_circle, warning, cancel"]) -.->|"the icons of a verdict, inlined at build"| APP
-  class DT,APP,SURF,GATE,OUT,SHELL,VEN,API,SITE,SCENE visual
+  class DT,APP,STATE,SURF,GATE,OUT,SHELL,VEN,API,SITE,SCENE visual
   class MCP ai
   class WC components
   class ID assets
@@ -437,7 +443,8 @@ dashed: where the package is installed. Labels: the file, export or command that
 Colours: purple ai, amber assets, teal visual, blue components, grey tooling, white outside
 ([convention](../../docs/ARCHITECTURE.md#diagrams-of-the-projects)).
 
-The folders of the studio (#1397; #1399 moved the files into them):
+The folders of the studio (#1397; #1399 moved the files into them, #1400 added `state/` and
+`app/`):
 
 - `build/`: what runs in Node, never in a page: the plugins of Vite (`vendor.ts`, `magma-api.ts`,
   `favicons.ts`) and the commands (`site.ts`, `cover.ts`).
@@ -448,15 +455,27 @@ The folders of the studio (#1397; #1399 moved the files into them):
 - `src/shared/`: what several pages use: `magma/` (the bridges to the components and the types of
   their tags), `frames/` (the previews in a frame, `states`, their texts), `i18n/` (the languages;
   `text.ts` is the part with no Preact), `ui/` (`verdict.tsx`).
-- the rest of `src/`: the shell and the pages, until #1400-#1404 give them `state/`, `features/`
-  and `app/`.
+- `src/state/`: the work in Preact Signals, one state per studio mounted (`studio.ts`,
+  `createStudio`, read through `StudioContext`): the configuration, the scales last loaded, the
+  family selected, the theme choices and where the work comes from as signals; the gate, its
+  verdict, the CSS of the scene and the ramps as computed values; the draft written by an effect,
+  checked against its source (`draft.ts`, `work.ts`). The actions are named functions, one file
+  per area (`palette`, `scales`, `surfaces`, `groups`, `theme-choices`, `exports`, `work`), each
+  tested in Node.
+- `src/app/`: the router (`router.ts`: one table of the pages for the menus and the addresses,
+  `navigate(route, { replace })`, a location in the hash or in memory, a hash that does not start
+  with `#/` left alone) and the Config menu of the bar (`config-menu.tsx`).
+- the rest of `src/`: the shell and the pages, until #1401-#1404 give the pages `features/` and
+  move the shell into `app/`.
 
 Imports go one way, and ESLint holds it (`no-restricted-imports` in `eslint.config.mjs`): a file
 of `engine` imports no other file of the studio but `shared/i18n/text.ts`, and types alone from
-`build/`; a file of `shared` imports nothing of the pages. A test sits beside its module and may
-import what it is tested with. `test/` keeps the checks of the build, of the site and of the
-translations, and the tests of the pages until the pages move. Vitest runs `src/engine/` and the
-checks of the build in Node, every other `*.test.mts` in jsdom, every `*.e2e.mts` in Chromium.
+`build/`; a file of `shared` imports nothing of the pages; a file of `state` imports the engine
+and `shared/i18n/text.ts`, never a page, `app/` or another part of `shared`. A test sits beside
+its module and may import what it is tested with. `test/` keeps the checks of the build, of the
+site and of the translations, and the tests of the pages until the pages move. Vitest runs
+`src/engine/`, `src/state/`, the router and the checks of the build in Node, every other
+`*.test.mts` in jsdom, every `*.e2e.mts` in Chromium.
 
 The engine, `semantic.config.ts` and the theme files stay in `design-tokens`: the builds of
 `design-tokens` and `styles` read them, and moving them here would make `design-tokens` depend on
