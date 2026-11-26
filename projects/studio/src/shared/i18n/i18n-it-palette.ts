@@ -123,7 +123,7 @@ export const IT_PALETTE: Record<string, string> = {
   'The palette against the configuration Magma builds with.':
     'La palette a confronto con la configurazione con cui si compila Magma.',
 
-  // the head of the pages, its saving and the draft restored (app.tsx, draft.ts)
+  // the head of the pages, its saving and the draft restored (app.tsx, state/draft.ts, state/work.ts)
   'Discard the loaded configuration and every local change, back to the one Magma builds with':
     'Scarta la configurazione caricata e ogni modifica locale, e torna a quella con cui si compila Magma',
   Save: 'Salva',
@@ -146,7 +146,7 @@ export const IT_PALETTE: Record<string, string> = {
   'Use the bundled config': 'Usa la configurazione inclusa',
   'Keep the draft': 'Tieni la bozza',
   'the bundled config': 'la configurazione inclusa',
-  // the places of these sentences are never after a preposition (draft.ts, DraftReason)
+  // the places of these sentences are never after a preposition (state/draft.ts, DraftReason)
   'this draft comes from an older studio and may not match {source}':
     'questa bozza viene da una versione precedente dello studio e la sua base potrebbe non essere {source}',
   'this draft was made on {from}, the studio now shows {source}':
@@ -158,7 +158,7 @@ export const IT_PALETTE: Record<string, string> = {
   '{source} changed after this draft was saved':
     '{source} ha subito modifiche dopo il salvataggio di questa bozza',
 
-  // what brings a configuration in and takes it out (app.tsx, config-menu.tsx), and the button of
+  // what brings a configuration in and takes it out (app/config-menu.tsx, state/exports.ts), and the button of
   // the gate dialog that runs it anyway (contrast.tsx)
   'Import config': 'Importa configurazione',
   'it does not match the schema': 'non corrisponde allo schema',

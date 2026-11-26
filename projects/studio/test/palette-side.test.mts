@@ -8,7 +8,9 @@ import { translator } from '../src/shared/i18n/i18n.js'
 import { PaletteSide, paintsLine } from '../src/palette-side.js'
 import { paintedBy } from '../src/engine/paints.js'
 import { sceneStyle } from '../src/engine/scene-css.js'
-import { resetThemeChoices, updateThemeChoices } from '../src/theme-choices.js'
+import { createStudio, type StudioState } from '../src/state/studio.js'
+import { setThemeModes } from '../src/state/theme-choices.js'
+import { inStudio } from './studio.mjs'
 
 // The side of the Palette: the ramps of the family, or the theme on a page of a product, small as
 // a phone, painted with the configuration at every change, what the family paints first (#1308).
@@ -18,16 +20,20 @@ import { resetThemeChoices, updateThemeChoices } from '../src/theme-choices.js'
 const config = initialConfig as unknown as MagmaConfig
 const root = document.createElement('div')
 document.body.append(root)
-beforeEach(() => localStorage.clear())
+// the state the side is drawn in, with the choices of the person: one per test, kept nowhere
+let studio: StudioState
+beforeEach(() => {
+  localStorage.clear()
+  studio = createStudio({ storage: null, api: false })
+})
 afterEach(() => {
   render(null, root)
-  resetThemeChoices()
 })
 
 // the ramps the Palette hands to the side, a stand-in the test finds by its text
 const RAMPS = 'the ramps of the family'
 const show = (family: string) =>
-  render(h(PaletteSide, { config, family, ramps: h('p', null, RAMPS) }), root)
+  render(inStudio(studio, h(PaletteSide, { config, family, ramps: h('p', null, RAMPS) })), root)
 /** The side, a complementary region named for what it shows. */
 const side = () => within(root).getByRole('complementary', { name: 'The family, as ramps or as a theme' })
 /** The filters of the side: the tabs of Magma in its toolbar, what it shows and in which mode. */
@@ -69,7 +75,7 @@ test('the frame shows the theme the family edited backs, else the base one', asy
 
 test('a theme of one mode is seen in that mode only', async () => {
   localStorage.setItem('magma-studio:palette-side', 'theme')
-  updateThemeChoices((prev) => ({ ...prev, modes: { bisque: ['dark'] } }))
+  setThemeModes(studio, 'bisque', ['dark'])
   show('tone.bisque')
   await vi.waitFor(() =>
     expect(root.querySelector('iframe')?.getAttribute('title')).toBe(

@@ -11,7 +11,7 @@ import {
   type ColorsView,
   type MenuItem,
   type Route,
-} from './routes.js';
+} from './app/router.js';
 
 /*
   The Start page (#693): an introduction, not a tool. It says what the studio is for, in a hero

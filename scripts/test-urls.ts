@@ -22,10 +22,10 @@
     `ui-chip--docs`), so no address is written without the index. Storybook's address: the port
     the `start` script of projects/stencil/package.json pins (`storybook dev -p <port>`);
   - the studio (`projects/studio/`): its pages and their addresses from
-    projects/studio/src/routes.ts (`COLORS_PAGES`, `BEHAVIOR_PAGES`, `hrefOf`), at the port of
-    `server.port` in projects/studio/vite.config.ts;
+    projects/studio/src/app/router.ts (`COLORS_PAGES`, `BEHAVIOR_PAGES`, `hrefOf`), at the port
+    of `server.port` in projects/studio/vite.config.ts;
   - design tokens and styles (`projects/design-tokens/`, `projects/styles/`): no page of their
-    own; the Colors pages of the studio are the views of the tokens (routes.ts), the components
+    own; the Colors pages of the studio are the views of the tokens (router.ts), the components
     show the styles in Storybook;
   - a preview of a case (`<SOURCES.previews>/<folder>/<name>.html`): `/view/previews/<folder>/<name>`
     of serve.previews (`SOURCES`, `PORT` and the routes of projects/mcp/scripts/serve-previews.ts);
@@ -36,7 +36,12 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { PORT as PREVIEWS_PORT, SOURCES } from '../projects/mcp/scripts/serve-previews.ts';
-import { BEHAVIOR_PAGES, COLORS_PAGES, hrefOf, type Route } from '../projects/studio/src/routes.ts';
+import {
+  BEHAVIOR_PAGES,
+  COLORS_PAGES,
+  hrefOf,
+  type Route,
+} from '../projects/studio/src/app/router.ts';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 

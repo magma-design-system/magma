@@ -22,7 +22,8 @@ import { sceneStyle, type ConfigTheme } from './engine/scene-css.js';
 import { forceHover, settled, statesMarkup, statesPlan } from './shared/frames/states.js';
 import { msg, plural, rich, useT, type T } from './shared/i18n/i18n.js';
 import type { ThemeChoices } from './engine/theme-choices.js';
-import { useThemeChoices } from './theme-choices.js';
+import { useStudio } from './state/studio.js';
+import type { RatioSet } from './state/scales.js';
 import './scales.css';
 
 /*
@@ -39,9 +40,7 @@ import './scales.css';
   the states go under the card.
 */
 
-export interface RatioSet {
-  [scaleName: string]: number[];
-}
+export type { RatioSet };
 
 /**
  * Origin of a scale relative to the generator's built-in defaults:
@@ -698,7 +697,7 @@ export function ScalesManager({
   }));
 
   // what the sample paints, in the theme it is seen in (paints.ts), and the mode of its states
-  const choices = useThemeChoices();
+  const choices = useStudio().themeChoices.value;
   const themes = useMemo(() => sceneStyle(config, choices)?.themes ?? [], [config, choices]);
   const painted = useMemo(
     () => paintedBy(selectedName, { config, themes, choices }),

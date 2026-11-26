@@ -1,18 +1,20 @@
-import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
-import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
+import { useEffect, useRef, useState } from 'preact/hooks';
+// the portal of the core: preact/compat would rewrite the events of the whole studio
+// (onChange of an input into onInput, onFocus into onfocusin) the moment it is imported
+import { createPortal } from 'preact';
 import { semantic } from '@maggioli-design-system/design-tokens/semantic.config';
 import { COLOR_MODES } from '@maggioli-design-system/design-tokens/src/lib/theme-manifest.mjs';
 import logo from '@maggioli-design-system/identity/dist/internal/magma-design-system/logo-magma.svg?url';
 import logoWhite from '@maggioli-design-system/identity/dist/internal/magma-design-system/logo-magma-white.svg?url';
 import { App } from './app.js';
 import { useDarkMode } from './dark-mode.js';
-import { readDraft } from './draft.js';
-import type { GateVerdict } from './engine/gate.js';
 import { GateBadge } from './shared/ui/verdict.js';
-import { ConfigItems, type ConfigAction } from './config-menu.js';
-import { sceneStyle } from './engine/scene-css.js';
+import { ConfigItems, useConfigMenu, type ConfigAction } from './app/config-menu.js';
+import { GateDialog } from './contrast.js';
 import { StartPage } from './start.js';
-import { useThemeChoices } from './theme-choices.js';
+import { createStudio, StudioContext, useStudio, type StudioState } from './state/studio.js';
+import { cancelExport, confirmExport } from './state/exports.js';
+import { checkSource } from './state/work.js';
 import { applyFrame, type Scheme } from './shared/frames/frame.js';
 import { LANGS, LangProvider, msg, useLang, useT, type T } from './shared/i18n/i18n.js';
 
@@ -31,15 +33,16 @@ import {
 import {
   BEHAVIOR_PAGES,
   COLORS_PAGES,
+  createRouter,
   HOME,
   hrefOf,
-  navigate,
-  useRoute,
+  THEME_PAGE,
   type BehaviorPage,
   type ColorsView,
   type MenuItem,
   type Route,
-} from './routes.js';
+  type Router,
+} from './app/router.js';
 
 /*
   The shell of the studio (#695): the bar of the application and its three sections, the Start
@@ -53,61 +56,102 @@ import {
   first.
 */
 
-/**
- * The view of the Colors section the draft was on, if any: the Colors pages start on it, and the
- * Start page offers to continue there. A start with no address opens the Start page (HOME).
- */
-function draftView(): ColorsView | undefined {
-  const view = readDraft()?.view as ColorsView | undefined;
-  return COLORS_PAGES.some((page) => page.id === view) ? view : undefined;
-}
-
 /** The version of the Magma the studio runs on, written into the page by vendor.ts. */
 const magmaVersionOf = () =>
   document.querySelector<HTMLMetaElement>('meta[name="magma-version"]')?.content || undefined;
 
-export function Studio() {
+/**
+ * What the studio is given, or makes for itself: a host (#695) hands in the state it keeps and a
+ * router on the location it owns.
+ */
+export interface StudioProps {
+  /** The state of the work; without it the studio makes one and checks its source (work.ts). */
+  state?: StudioState;
+  /** The router; without it the studio follows the hash of the window. */
+  router?: Router;
+}
+
+/** A value handed in, or one made at the first render and dropped when the studio goes. */
+function useOwned<T>(given: T | undefined, make: () => T, drop: (made: T) => void): T {
+  const [made] = useState(() => (given ? undefined : make()));
+  useEffect(
+    () => () => {
+      if (made) drop(made);
+    },
+    [],
+  );
+  return given ?? made!;
+}
+
+export function Studio({ state, router }: StudioProps = {}) {
   // the language of <html lang>, which mds-pref-language of the menu writes: the pages follow it
   const lang = useLang();
-  const route = useRoute(HOME);
-  // the page of Colors to continue on: the one of the draft, then the last one opened
-  const [resume, setResume] = useState<ColorsView | undefined>(draftView);
-  // the Colors view stays mounted under the other sections, so its work is not lost; under the
-  // Start page it stays on the view of the draft, which it keeps saving
-  const [colorsView, setColorsView] = useState<ColorsView>(
-    route.section === 'colors' ? route.view : (resume ?? 'colors'),
-  );
+  // the work is the state's, not a page's (#1400): the pages of Colors are mounted only under
+  // Colors, and the bar, the Theme section and the Start page read the same state
+  const studio = useOwned(state, createStudio, (made) => made.dispose());
+  const nav = useOwned(router, createRouter, (made) => made.dispose());
   useEffect(() => {
-    if (route.section !== 'colors') return;
-    setColorsView(route.view);
-    setResume(route.view);
-  }, [route]);
-  const [config, setConfig] = useState<MagmaConfig | null>(null);
-  // the App judges the working config with the contrast gate at every edit (gate.ts)
-  const [verdict, setVerdict] = useState<GateVerdict | null>(null);
-  // what the Config menu of the bar runs, the App's, which holds the configuration
-  const [configActions, setConfigActions] = useState<ConfigAction[]>([]);
+    if (!state) void checkSource(studio);
+  }, []);
+  const route = nav.route.value;
+  const openColors = (view: ColorsView) => nav.navigate({ section: 'colors', view });
 
   return (
     <LangProvider value={lang}>
-      <div class="studio">
-        <StudioBar route={route} verdict={verdict} configActions={configActions} />
-        <div class="studio-section" hidden={route.section !== 'colors'}>
-          <App
-            view={colorsView}
-            onNavigate={(view) => navigate({ section: 'colors', view })}
-            onConfig={setConfig}
-            onGate={setVerdict}
-            onConfigActions={setConfigActions}
+      <StudioContext.Provider value={studio}>
+        <div class="studio">
+          <StudioBar
+            route={route}
+            // an import opens the pages of Colors: the configuration loaded on the Palette, or
+            // the notice of why it was not on the page of Colors the work is on
+            onImported={(loaded) =>
+              openColors(loaded ? 'colors' : (studio.colorsView.peek() ?? 'colors'))
+            }
           />
+          {route.section === 'colors' && (
+            <div class="studio-section">
+              <App view={route.view} onNavigate={openColors} />
+            </div>
+          )}
+          {route.section === 'start' && <StartPage draftView={studio.colorsView.value} />}
+          {route.section === 'theme' && (
+            <ThemePage
+              theme={route.theme}
+              mode={route.mode}
+              onChoose={(theme, mode) =>
+                nav.navigate({ section: 'theme', theme, mode }, { replace: true })
+              }
+            />
+          )}
+          {route.section === 'behavior' && <BehaviorPageView page={route.page} />}
+          <PendingExport onReview={() => openColors('contrast')} />
         </div>
-        {route.section === 'start' && <StartPage draftView={resume} />}
-        {route.section === 'theme' && (
-          <ThemePage config={config} theme={route.theme} mode={route.mode} />
-        )}
-        {route.section === 'behavior' && <BehaviorPageView page={route.page} />}
-      </div>
+      </StudioContext.Provider>
     </LangProvider>
+  );
+}
+
+/**
+ * The dialog of the contrast gate, over the whole studio, while an export waits for an answer
+ * (state/exports.ts): the Config menu of the bar exports from any section. On document.body, as
+ * the modals of Magma stand.
+ */
+function PendingExport({ onReview }: { onReview: () => void }) {
+  const studio = useStudio();
+  const action = studio.pendingExport.value;
+  if (!action) return null;
+  return createPortal(
+    <GateDialog
+      action={action}
+      report={studio.report.value}
+      onCancel={() => cancelExport(studio)}
+      onConfirm={() => confirmExport(studio)}
+      onReview={() => {
+        cancelExport(studio);
+        onReview();
+      }}
+    />,
+    document.body,
   );
 }
 
@@ -183,13 +227,16 @@ const behaviorRoute = (page: BehaviorPage): Route => ({ section: 'behavior', pag
 
 function StudioBar({
   route,
-  verdict,
-  configActions,
+  onImported,
 }: {
   route: Route;
-  verdict: GateVerdict | null;
-  configActions: ConfigAction[];
+  /** After Import config read a file: whether it was loaded. */
+  onImported: (loaded: boolean) => void;
 }) {
+  // the verdict of the contrast gate on the work, wherever it is edited (#698)
+  const verdict = useStudio().verdict.value;
+  // what the Config menu runs, on the state; the picker of Import config drawn once
+  const { actions: configActions, input: configPicker } = useConfigMenu(onImported);
   const colorsMenu = useRef<HTMLMdsDropdownElement>(null);
   const behaviorMenu = useRef<HTMLMdsDropdownElement>(null);
   const configMenu = useRef<HTMLMdsDropdownElement>(null);
@@ -285,12 +332,12 @@ function StudioBar({
             <mds-separator></mds-separator>
             <mds-button
               href={hrefOf({ section: 'theme' })}
-              icon="mi/baseline/format-size"
+              icon={THEME_PAGE.icon}
               variant="dark"
               tone={sectionTone('theme')}
               aria-current={route.section === 'theme' ? 'page' : undefined}
               class="studio-menu-link"
-              label={t('Theme')}
+              label={t(THEME_PAGE.label)}
             ></mds-button>
             <mds-separator></mds-separator>
             <mds-text typography="detail" tag="p" class="studio-menu-title">
@@ -336,6 +383,7 @@ function StudioBar({
           <ConfigItems actions={configActions} onRun={ranConfig} />
         </div>
       </mds-dropdown>
+      {configPicker}
     </>
   );
 }
@@ -496,32 +544,34 @@ function PreviewPanel({
  * dogfooding constraint"). Both modes are two frames side by side, scrolled together; an axis, and
  * the preview, open their controls in a dropdown from their button, and the choices of the
  * preferences reach every frame (scene-prefs.tsx). The select offers the
- * themes of the configuration the person edits, which the frame paints (scene-css.ts); until the
- * configuration is loaded, the themes Magma ships. The address may name the theme and the mode
- * the section opens on (a link of the Themes page, routes.ts), and it follows the choices made
- * here, so it always names the theme in view.
+ * themes of the configuration the person edits, which the frame paints (scene-css.ts); while the
+ * generator refuses the configuration, the themes Magma ships. The theme and the mode are those of
+ * the address (a link of the Themes page, app/router.ts), the first theme in light when it names
+ * none: a choice made here writes its address in place, and back, forward or a link typed choose
+ * again. One source, so the echo of an address written here never undoes a choice made after it.
  */
 function ThemePage({
-  config,
   theme: askedTheme,
   mode: askedMode,
+  onChoose,
 }: {
-  config: MagmaConfig | null;
   /** The theme the address names. */
   theme?: string;
   /** The mode the address names. */
   mode?: ModeView;
+  /** A theme or a mode chosen here: the router writes its address in place. */
+  onChoose: (theme: string, mode: ModeView) => void;
 }) {
   const frames = useRef<Array<HTMLIFrameElement | null>>([]);
   const select = useRef<HTMLMdsInputSelectElement>(null);
   const t = useT();
-  // the choices of the Themes page (names, accents, modes) shape the themes the frame paints
-  const choices = useThemeChoices();
-  const scene = useMemo(() => (config ? sceneStyle(config, choices) : null), [config, choices]);
+  // the palette and the themes of the work, the choices of the Themes page (names, accents,
+  // modes) in them: a computed of the state, which the frame paints
+  const scene = useStudio().scene.value;
   const names = scene?.themes.map((one) => one.name) ?? PREVIEW_THEMES;
   // the theme asked for is kept while the configuration loads: a theme of the person is among the
   // names only then
-  const [chosen, setTheme] = useState(askedTheme ?? PREVIEW_THEMES[0]);
+  const chosen = askedTheme ?? PREVIEW_THEMES[0];
   const theme = names.includes(chosen) ? chosen : names[0];
   // a theme of one mode is seen in that mode only: the other is no way to check it (#1274)
   const themeModes: readonly Scheme[] =
@@ -543,33 +593,28 @@ function ThemePage({
   const [prefs, setPrefs] = useState<ScenePrefs>(DEFAULT_PREFS);
   const [view, setView] = useState<View>('scenes');
   const page = VIEWS.find((one) => one.id === view)!;
-  const [picked, setMode] = useState<ModeView>(askedMode ?? 'light');
+  const picked: ModeView = askedMode ?? 'light';
   const mode: ModeView = offers(picked) ? picked : themeModes[0];
   const [contrast, setContrast] = useState<ContrastMode>('no-preference');
   const [width, setWidth] = useState<Width>('full');
   const [loaded, setLoaded] = useState(0);
   const schemes: Scheme[] = mode === 'both' ? ['light', 'dark'] : [mode];
 
-  // another address while the section is open (back, forward, a link typed) chooses again. Only
-  // another one: the address the section opened on is its first state already, and an effect runs
-  // after a paint, so applying that one again would undo a choice made before it
-  const seen = useRef({ theme: askedTheme, mode: askedMode });
-  useEffect(() => {
-    if (askedTheme && askedTheme !== seen.current.theme) setTheme(askedTheme);
-    if (askedMode && askedMode !== seen.current.mode) setMode(askedMode);
-    seen.current = { theme: askedTheme, mode: askedMode };
-  }, [askedTheme, askedMode]);
-  // the address names what was chosen, replaced in place: a choice is no page to go back to
-  useEffect(() => {
-    history.replaceState(null, '', hrefOf({ section: 'theme', theme: chosen, mode: picked }));
-  }, [chosen, picked, askedTheme, askedMode]);
+  // a choice writes the address, replaced in place (a choice is no page to go back to), with the
+  // other half of it as the last render has it: the listener of the select is added once
+  const choice = {
+    theme: (next: string) => onChoose(next, picked),
+    mode: (next: ModeView) => onChoose(chosen, next),
+  };
+  const choose = useRef(choice);
+  choose.current = choice;
 
   useEffect(() => {
     const element = select.current;
     if (!element) return;
     const change = (event: Event) => {
       const { value } = (event as CustomEvent<{ value?: string }>).detail ?? {};
-      if (value) setTheme(value);
+      if (value) choose.current.theme(value);
     };
     element.addEventListener('mdsInputSelectChange', change);
     return () => element.removeEventListener('mdsInputSelectChange', change);
@@ -674,7 +719,7 @@ function ThemePage({
       >
         <ScenePrefsPanel
           mode={mode}
-          onMode={setMode}
+          onMode={(next) => choose.current.mode(next)}
           modeOff={modeOff}
           contrast={contrast}
           onContrast={setContrast}

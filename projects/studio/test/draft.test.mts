@@ -8,9 +8,11 @@ import {
   reasonText,
   reconcileDraft,
   type StudioDraft,
-} from '../src/draft.js'
+} from '../src/state/draft.js'
 import { App } from '../src/app.js'
+import type { ConfigAction } from '../src/app/config-menu.js'
 import { translator } from '../src/shared/i18n/i18n.js'
+import { ConfigMenu, inStudio, startStudio } from './studio.mjs'
 
 // The studio mirrors its working config to localStorage. A restored draft
 // used to win over the config on disk even after the file changed or was
@@ -128,7 +130,7 @@ test('the app asks before a draft with edits wins over a changed file, and can t
     draftOf(edits, { path: PATH, hash: hashText(diskJson) }, true),
   ))
   serve(changed)
-  render(h(App, {}), root)
+  render(inStudio(startStudio(), h(App, {})), root)
 
   const banner = await vi.waitFor(() => {
     const el = conflict()
@@ -161,7 +163,7 @@ test('keeping the draft restamps it on the file now on disk, with its edits unsa
     draftOf(edits, { path: PATH, hash: hashText(diskJson) }, true),
   ))
   serve(changed)
-  render(h(App, {}), root)
+  render(inStudio(startStudio(), h(App, {})), root)
 
   await vi.waitFor(() => {
     if (!button('Keep the draft')) throw new Error('no conflict banner yet')
@@ -182,7 +184,7 @@ test('a draft made on the file still on disk is restored without asking', async 
     draftOf(edits, { path: PATH, hash: hashText(diskJson) }, true),
   ))
   serve(disk)
-  render(h(App, {}), root)
+  render(inStudio(startStudio(), h(App, {})), root)
 
   await vi.waitFor(() => {
     if (!button('Save *')) throw new Error('server mode not adopted yet')
@@ -201,8 +203,11 @@ test('on the static site the studio asks no API and edits in memory', async () =
     return new Response(JSON.stringify({ path: PATH, config: changed, readOnly: null }))
   })
   try {
-    let actions: Array<{ id: string }> = []
-    render(h(App, { onConfigActions: (handed: Array<{ id: string }>) => (actions = handed) }), root)
+    let actions: ConfigAction[] = []
+    render(
+      inStudio(startStudio(), h(App, {}), h(ConfigMenu, { take: (handed: ConfigAction[]) => (actions = handed) })),
+      root,
+    )
     // the start-up check ran on the bundled config, the source of a studio with no API
     await vi.waitFor(() => {
       expect(storedDraft().source).toEqual({ path: null, hash: hashText(diskJson) })

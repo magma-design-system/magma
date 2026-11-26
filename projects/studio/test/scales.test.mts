@@ -9,6 +9,9 @@ import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/
 import { ScalesManager, type RatioSet } from '../src/scales.js'
 import { App } from '../src/app.js'
 import { LangProvider, type Lang } from '../src/shared/i18n/i18n.js'
+import { createStudio } from '../src/state/studio.js'
+import { importConfig } from '../src/state/work.js'
+import { inStudio, startStudio } from './studio.mjs'
 import { textOf } from './text.mjs'
 
 // The Contrast scales page is written in Magma: its stops, its distribution and its menus are
@@ -74,7 +77,9 @@ function show (selectedName = config.colors[1].name, lang: Lang = 'en') {
       onDeleteScale: spies.onDeleteScale,
     })
   }
-  act(() => render(h(LangProvider, { value: lang }, h(Page, {})), root))
+  // the theme the sample is seen in comes from the choices of the state
+  const studio = createStudio({ storage: null, api: false })
+  act(() => render(inStudio(studio, h(LangProvider, { value: lang }, h(Page, {}))), root))
   return spies
 }
 
@@ -403,7 +408,9 @@ test('after an import, Reset takes a scale back to the steps of the file importe
   vi.stubGlobal('fetch', () => Promise.reject(new Error('no server')))
   localStorage.clear()
   try {
-    const studio = () => h(App, { view: 'scales' })
+    // the studio as the shell makes it, on what the storage keeps: a reload makes a new one
+    let state = startStudio()
+    const studio = () => inStudio(state, h(App, { view: 'scales' }))
     act(() => render(studio(), root))
     const builtin = ['8', '16', '23', '34', '45', '66', '74', '84', '92', '100']
     await vi.waitFor(() => expect(stops('default')).toEqual(builtin), SLOW)
@@ -414,10 +421,8 @@ test('after an import, Reset takes a scale back to the steps of the file importe
     // the File of jsdom has no text(): the studio reads only the name and the text of the file
     const json = JSON.stringify({ ...base, ratios: { wcag3: { default: imported } } })
     const file = { name: 'product.json', text: async () => json }
-    const picker = root.querySelector<HTMLInputElement>('input[type="file"]')!
-    Object.defineProperty(picker, 'files', { configurable: true, value: [file] })
     await act(async () => {
-      picker.dispatchEvent(new Event('change'))
+      await importConfig(state, file)
     })
     await vi.waitFor(() => expect(stops('default')).toEqual(imported.map(String)), SLOW)
     expect(reset('default').hasAttribute('disabled')).toBe(true)
@@ -434,6 +439,7 @@ test('after an import, Reset takes a scale back to the steps of the file importe
     // the draft is written by an effect, after the paint
     await vi.waitFor(() => expect(localStorage.getItem('magma-design-tokens:playground:draft')).toContain('"loadedRatios"'), SLOW)
     act(() => render(null, root))
+    state = startStudio()
     act(() => render(studio(), root))
     await vi.waitFor(() => expect(stops('default')[0]).toBe('9'), SLOW)
     click(reset('default'))

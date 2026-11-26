@@ -1,11 +1,46 @@
 import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
-import { msg, type T } from './shared/i18n/i18n.js';
+import { msg, type T } from '../shared/i18n/text.js';
 
 // the working state is mirrored to localStorage so a reload keeps the edited
 // or loaded configuration instead of falling back to the source config. The key
 // is the one of the tokens playground the studio comes from, so a draft made
 // there survives the move (same origin, same port)
 export const DRAFT_STORAGE_KEY = 'magma-design-tokens:playground:draft';
+
+/**
+ * Where the studio keeps what outlives a reload: the storage of the browser, or one in memory (a
+ * test in Node, a host that keeps nothing). Null keeps nothing.
+ */
+export type KeptIn = Pick<Storage, 'getItem' | 'setItem' | 'removeItem'> | null;
+
+/** The storage of the browser, or nothing where there is none (Node) or it is blocked. */
+export function browserStorage(): KeptIn {
+  try {
+    return typeof localStorage === 'undefined' ? null : localStorage;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * The pages of the Colors section, by the id a saved draft carries (`view`): the router gives each
+ * its address and its name (app/router.ts). 'colors' is the Palette and 'surface' Semantic surface:
+ * ids kept from before the views were split, so the drafts saved then keep working.
+ */
+export const COLORS_VIEWS = [
+  'colors',
+  'scales',
+  'surface',
+  'themes',
+  'groups',
+  'contrast',
+  'diff',
+] as const;
+export type ColorsView = (typeof COLORS_VIEWS)[number];
+
+/** The page of Colors a draft names, if it is one. */
+export const colorsViewOf = (view: unknown): ColorsView | undefined =>
+  COLORS_VIEWS.find((one) => one === view);
 
 /**
  * The config a draft was made on: the file a server serves (`path`), or the
@@ -19,7 +54,7 @@ export interface DraftSource {
 
 /**
  * The scales a configuration writes (its `ratios`), by formula, then by name: a null entry deletes
- * a built-in scale (app.tsx).
+ * a built-in scale (scales.ts).
  */
 export type LoadedRatios = Record<string, Record<string, number[] | null>>;
 
@@ -33,7 +68,7 @@ export interface StudioDraft<View extends string = string> {
   edited?: boolean;
   /**
    * The scales of the configuration last loaded, what the Reset of a scale takes it back to
-   * (app.tsx, #1330); missing in drafts written before it.
+   * (studio.ts, #1330); missing in drafts written before it.
    */
   loadedRatios?: LoadedRatios;
 }
@@ -118,9 +153,9 @@ export function reconcileDraft(
   return { use: 'ask', reason };
 }
 
-export function readDraft(): StudioDraft | null {
+export function readDraft(storage: KeptIn = browserStorage()): StudioDraft | null {
   try {
-    const raw = localStorage.getItem(DRAFT_STORAGE_KEY);
+    const raw = storage?.getItem(DRAFT_STORAGE_KEY);
     if (!raw) return null;
     const draft = JSON.parse(raw) as StudioDraft;
     if (!draft.config || !Array.isArray(draft.config.colors) || draft.config.colors.length === 0) {
@@ -132,17 +167,17 @@ export function readDraft(): StudioDraft | null {
   }
 }
 
-export function writeDraft(draft: StudioDraft): void {
+export function writeDraft(draft: StudioDraft, storage: KeptIn = browserStorage()): void {
   try {
-    localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft));
+    storage?.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft));
   } catch {
     // storage disabled or full: persistence is best-effort
   }
 }
 
-export function clearDraft(): void {
+export function clearDraft(storage: KeptIn = browserStorage()): void {
   try {
-    localStorage.removeItem(DRAFT_STORAGE_KEY);
+    storage?.removeItem(DRAFT_STORAGE_KEY);
   } catch {
     // ignore
   }

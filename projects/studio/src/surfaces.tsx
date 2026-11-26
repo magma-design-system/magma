@@ -20,7 +20,7 @@ import {
   wcag2Ratio,
 } from '@maggioli-design-system/design-tokens/src/lib/contrast-gate.js';
 import boxShadowTokens from '@maggioli-design-system/design-tokens/tokens/cosmetic/box-shadow.json';
-import committedConfig from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json';
+import { DEFAULT_THEME } from './state/surfaces.js';
 import { Field, Range, Select } from './shared/magma/magma.js';
 import type { GateReport } from './engine/gate.js';
 import { GateSummary } from './gate-summary.js';
@@ -58,11 +58,8 @@ const SHADOW_OPTIONS: { name: string; value: string }[] = [
   })),
 ];
 
-// fallback ramp when a loaded config opts a family in but carries no theme block:
-// the `theme` block of the configuration Magma builds with (design-tokens
-// `.magma-design-tokensrc.json`), its surface and border levels and the APCA Lc
-// targets of the text roles (A7, #632)
-export const DEFAULT_THEME = (committedConfig as { theme: ThemeConfig }).theme;
+// fallback ramp when a loaded config opts a family in but carries no theme block (state/surfaces.ts)
+export { DEFAULT_THEME } from './state/surfaces.js';
 
 /** APCA Lc magnitude (Magma flips the sign in dark; the preview shows the size). */
 const apcaLc = (fg: string, bg: string): number =>

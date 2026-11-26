@@ -62,7 +62,7 @@ The studio speaks to the person with "tu", as the Italian of Magma does (README,
 | `exception` | exception | eccezione | the colour or background of a function shared by several components that comes neither from the palette nor from a surface: the band of tabs and filters (person) | an accepted pair | preset (proposed: decided once, the same in every theme) | | role (band, track, field...); the components that adopt it | `transparent`, `fieldRoles` (semantic, today) |
 | `component-state` | state | stato | rest, hover, active, current, disabled of a component | a status colour | exception (proposed: the grid of its components) | | | `:hover`, `active`, `current`, `disabled` |
 | `candidate` | candidate | candidato | a generated, measured alternative, seen one at a time: of an exception, or of a theme from a brand colour (person) | a change | exception, or the start (proposed: one parent per instance) | | | (none yet) |
-| `stage` | stage | passo | one step of the balancing flow: colours, weights, themes, exceptions (person) | a ramp step; a wash level | (root of the flow) | | | `src/routes.ts` (today: sections and views) |
+| `stage` | stage | passo | one step of the balancing flow: colours, weights, themes, exceptions (person) | a ramp step; a wash level | (root of the flow) | | | `src/app/router.ts` (today: sections and views) |
 | `scene` | scene | scena | the product page a stage is judged on; it changes with the stage (person) | the verification | stage (proposed) | | theme | `scene.html`, `states.html` |
 | `condition` | condition | condizione | what the scene is judged under: mode, more contrast, breakpoint, ground (person) | | scene (`applyFrame`, `applyPrefs`) | | | `scene-prefs.tsx` |
 | `ground` | ground | fondo | what lies under an element: page, card, well, coloured fill (person) | a surface role | condition (proposed) | | surface (page, card, well) | `TRANSPARENT_SURFACES` (gate, partial) |
@@ -72,15 +72,15 @@ The studio speaks to the person with "tu", as the Italian of Magma does (README,
 | `floor` | floor | soglia | the Lc or ratio the verification holds a pair to | a target | verification (`DEFAULT_TARGETS`) | | | `GateTargets` |
 | `reported-pair` | reported pair | coppia segnalata | a pair under a target that does not block | an accepted pair | verification | pair (severity `warn`) | | `severity: 'warn'` |
 | `accepted-pair` | known offender | coppia accettata | a pair under its floor that the baseline accepts: debt in view (person) | an exception | verification (`contrast-baseline.json`) | pair | | `baseline`, `baselinedFailures` |
-| `change` | change | modifica | one edit, compared with the last exit | a candidate | preset (the draft, `draft.ts`) | | | `draft.ts` |
-| `exit` | exit | uscita | saving the preset (command) or downloading it (Pages) | | preset | | | `config-menu.tsx`, `formats.ts` |
+| `change` | change | modifica | one edit, compared with the last exit | a candidate | preset (the draft, `state/draft.ts`) | | | `state/draft.ts` |
+| `exit` | exit | uscita | saving the preset (command) or downloading it (Pages) | | preset | | | `app/config-menu.tsx`, `state/exports.ts`, `engine/exports.ts` |
 | `full-review` | full review | giro completo | judging each theme in each mode before the exit, each marked as reviewed (person) | the verification | (root of the flow) | stage (proposed) | verification | (none yet) |
 | `hue` | hue | tonalità | the hue of a colour, in OKLCH degrees | a family | family | | | `hueShift` |
 | `hue-shift` | hue shift | spostamento di tonalità | the turn of the hue at the dark and light ends of a ramp | the saturation curve | family (config `colors[].hueShift`, or the root) | | | `hueShift` |
 | `saturation` | saturation | saturazione | the curve of the saturation across a ramp, global or per family | the hue shift | family (config `colors[].saturation`, or the root) | | | `saturation` |
-| `draft` | draft | bozza | the preset being edited, kept in the browser over a reload | an exit | preset (`draft.ts`, localStorage) | | | `draft.ts` |
+| `draft` | draft | bozza | the preset being edited, kept in the browser over a reload | an exit | preset (`state/draft.ts`, localStorage) | | | `state/draft.ts` |
 | `preview` | preview | anteprima | a page of the studio drawn with the preset in a frame: the scene, the groups, the states, the hero | the scene alone | (root of the previews) | | theme | `frame.ts`, `scene.html`, `groups.html`, `states.html`, `hero.html` |
-| `rules` | rules | regole | the design language, the patterns and the blocks of Magma, read only; "Regole", not "Comportamento", which does not fit the bar beside the preset at its narrowest width (2026-11-10) | a stage of the balancing | (root; where it goes in the redesign is open) | | | `BehaviorPage` (`src/routes.ts`) |
+| `rules` | rules | regole | the design language, the patterns and the blocks of Magma, read only; "Regole", not "Comportamento", which does not fit the bar beside the preset at its narrowest width (2026-11-10) | a stage of the balancing | (root; where it goes in the redesign is open) | | | `BehaviorPage` (`src/app/router.ts`) |
 | `variant` | variant | variante | the colour choice of a component; the `variant.*` families are what those values paint with: one concept, declared homonym | | | | family | `variant` prop, `variant.*` families |
 
 ## Hierarchy checked on instances

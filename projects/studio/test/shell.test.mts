@@ -8,9 +8,11 @@ import { within } from '@testing-library/preact'
 import initialConfig from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json'
 import blueMark from '@maggioli-design-system/identity/dist/internal/magma-design-system/logo-magma.svg?url'
 import whiteMark from '@maggioli-design-system/identity/dist/internal/magma-design-system/logo-magma-white.svg?url'
-import { DRAFT_STORAGE_KEY, hashText, type StudioDraft } from '../src/draft.js'
+import { DRAFT_STORAGE_KEY, hashText, type StudioDraft } from '../src/state/draft.js'
 import { Studio, applyFrame } from '../src/shell.js'
-import { THEME_CHOICES_KEY, resetThemeChoices, updateThemeChoices } from '../src/theme-choices.js'
+import { createStudio, type StudioState } from '../src/state/studio.js'
+import { THEME_CHOICES_KEY, setThemeModes, setThemeName } from '../src/state/theme-choices.js'
+import { startStudio } from './studio.mjs'
 import { textOf } from './text.mjs'
 
 // The shell of the studio: the bar names the three sections, each page is a link with the
@@ -30,14 +32,14 @@ beforeEach(() => {
 })
 afterEach(() => {
   render(null, root)
-  resetThemeChoices()
   vi.unstubAllGlobals()
   location.hash = ''
 })
 
-const at = async (hash: string) => {
+/** The studio at an address, on the state given or on one of its own. */
+const at = async (hash: string, state?: StudioState) => {
   location.hash = hash
-  render(h(Studio, {}), root)
+  render(h(Studio, { state }), root)
   await vi.waitFor(() => {
     if (!root.querySelector('mds-header-bar')) throw new Error('no bar yet')
   })
@@ -238,8 +240,9 @@ test('an axis opens its controls in a dropdown from its button, and says which o
 })
 
 test('a theme of one mode is seen in that mode only, the other modes of the preferences off', async () => {
-  updateThemeChoices((prev) => ({ ...prev, modes: { neutral: ['dark'] } }))
-  await at('#/theme')
+  const studio = startStudio()
+  setThemeModes(studio, 'neutral', ['dark'])
+  await at('#/theme', studio)
   // the base theme, business, locked to dark on the Themes page
   await vi.waitFor(() => {
     expect(scenes().map((frame) => frame.getAttribute('title'))).toEqual(['The theme on a page of a product, dark mode'])
@@ -280,8 +283,26 @@ test('an address that names a theme and a mode opens the section on them, and fo
 })
 
 test('the choices of the Themes page outlive a reload', async () => {
-  updateThemeChoices((prev) => ({ ...prev, names: { porcelain: 'cold-desk' } }))
+  setThemeName(startStudio(), 'porcelain', 'cold-desk')
   expect(JSON.parse(localStorage.getItem(THEME_CHOICES_KEY)!).names).toEqual({ porcelain: 'cold-desk' })
+  // the studio of the next visit reads them back
+  expect(createStudio().themeChoices.value.names).toEqual({ porcelain: 'cold-desk' })
+})
+
+// The theme and the mode of the section are those of its address (#1400): a choice writes the
+// address in place, and the address the section wrote while it opened never takes it back (seen in
+// CI on #1559, where a choice made at once was undone by the echo of the first address)
+test('a choice made as the section opens stays: the address it writes follows it', async () => {
+  location.hash = '#/theme'
+  render(h(Studio, {}), root)
+  // at once, before the section has written its first address
+  const modes = root.querySelector('mds-dropdown[target="#studio-axis-preferences"] mds-tab[aria-label="Mode"]')!
+  modes.dispatchEvent(new CustomEvent('mdsTabChange', { detail: { id: 2, value: 'both' }, bubbles: true }))
+  await vi.waitFor(() => expect(location.hash).toBe('#/theme/business/both'))
+  // every effect of the opening has run: the choice is still there
+  await new Promise((resolve) => setTimeout(resolve, 100))
+  expect(location.hash).toBe('#/theme/business/both')
+  expect(scenes()).toHaveLength(2)
 })
 
 test('the preferences set the mode and the contrast: both modes are two frames', async () => {

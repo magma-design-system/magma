@@ -63,7 +63,7 @@ describe('areaOf', () => {
       kind: 'stories',
       file: 'src/storybook/box-shadows.stories.tsx',
     });
-    assert.deepEqual(areaOf('projects/studio/src/routes.ts'), { kind: 'studio' });
+    assert.deepEqual(areaOf('projects/studio/src/app/router.ts'), { kind: 'studio' });
     assert.deepEqual(areaOf('projects/design-tokens/config/x.json'), { kind: 'tokens' });
     assert.deepEqual(areaOf('projects/styles/src/a.css'), { kind: 'styles' });
     assert.deepEqual(areaOf('docs/agents/patterns/previews/actions/banner.html'), {

@@ -9,6 +9,7 @@ import type {
   MagmaConfig,
 } from '@maggioli-design-system/design-tokens/src/lib/color.mjs'
 import { GroupsManager } from '../src/groups.js'
+import { inStudio, startStudio } from './studio.mjs'
 import { textOf } from './text.mjs'
 
 // The Groups page answers to the controls of Magma: the selection of each colour, the batch
@@ -244,7 +245,7 @@ test('in the app, select by export selects the colours of the export and opens t
   })
   // loaded here, so a page of the app that does not build fails this test alone
   const { App } = await import('../src/app.js')
-  render(h(App, { view: 'groups' }), root)
+  render(inStudio(startStudio(), h(App, { view: 'groups' })), root)
 
   const select = await vi.waitFor(() => {
     const el = selectIn(root, 'Select by export')

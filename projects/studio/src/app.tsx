@@ -1,32 +1,16 @@
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
-// the portal of the core: preact/compat would rewrite the events of the whole studio
-// (onChange of an input into onInput, onFocus into onfocusin) the moment it is imported
-import { createPortal } from 'preact';
 import initialConfigJson from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json';
-import DEFAULT_COLOR_CONFIG from '@maggioli-design-system/design-tokens/src/config/default-color.json';
-import { zipSync } from 'fflate';
 import type {
   ColorConfig,
   Formula,
-  GroupConfig,
   MagmaConfig,
 } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
 import {
-  createColorTokens,
   resolveExport,
   resolveFormula,
   resolveRatiosName,
 } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
-import { cssHex, cssRgb, gimpPalette } from './engine/formats.js';
-import type { ConfigAction } from './config-menu.js';
-import {
-  COLORSPACES,
-  validateConfig,
-} from '@maggioli-design-system/design-tokens/src/lib/schema.mjs';
-import {
-  colorsToDtcg,
-  type ColorTokenTree,
-} from '@maggioli-design-system/design-tokens/src/lib/dtcg.mjs';
+import { COLORSPACES } from '@maggioli-design-system/design-tokens/src/lib/schema.mjs';
 import { GroupsManager } from './groups.js';
 import { DiffView } from './diff.js';
 import { BatchExportModal } from './batch.js';
@@ -44,28 +28,37 @@ import {
   type ColorScales,
   type Step,
 } from './engine/generator.js';
-import { ScalesManager, type RatioSet, type ScaleOrigin } from './scales.js';
-import { SurfaceManager, DEFAULT_THEME } from './surfaces.js';
-import { COLORS_PAGES, type ColorsView } from './routes.js';
+import { ScalesManager, type ScaleOrigin } from './scales.js';
+import { SurfaceManager } from './surfaces.js';
+import { COLORS_PAGES, type ColorsView } from './app/router.js';
 import { ThemesManager } from './themes.js';
-import { useThemeChoices } from './theme-choices.js';
-import { gateReport, type GateVerdict } from './engine/gate.js';
-import { ContrastCheck, GateDialog, type ExportAction } from './contrast.js';
+import { ContrastCheck } from './contrast.js';
 import { GateBadge } from './shared/ui/verdict.js';
-import type { ThemeConfig } from '@maggioli-design-system/design-tokens/src/lib/surface.mjs';
 import { nearestColorName } from './engine/color-names.js';
+import { reasonText } from './state/draft.js';
+import { clone, say, useStudio, type ExportAction } from './state/studio.js';
 import {
-  clearDraft,
-  hashText,
-  readDraft,
-  reasonText,
-  reconcileDraft,
-  writeDraft,
-  type DraftReason,
-  type DraftSource,
-  type LoadedRatios,
-  type StudioDraft,
-} from './draft.js';
+  addFamily,
+  autoNameFamily,
+  deleteFamily,
+  duplicateFamily,
+  patchFamily,
+  selectFamily,
+  setGlobal,
+} from './state/palette.js';
+import {
+  addScale,
+  builtinScalesOf,
+  changeScale,
+  deleteScale,
+  renameScale,
+  scalesOf,
+  type RatioSet,
+} from './state/scales.js';
+import { toggleGroupSurface, toggleSurface, updateBalances } from './state/surfaces.js';
+import { setExports, updateGroup } from './state/groups.js';
+import { exportSelection, guard } from './state/exports.js';
+import { resetWork, resolveConflict, saveConfig } from './state/work.js';
 import {
   Check,
   ColorInput,
@@ -89,27 +82,14 @@ import {
 import { SaturationEditor } from './saturation-editor.js';
 import { MARK, colorspaceVerdict, type ColorspaceVerdict } from './colorspace-verdict.js';
 
-type CloneableConfig = MagmaConfig & Record<string, unknown>;
-// the views of the Colors section of the studio (routes.ts); 'surface' keeps its id so the
+// the views of the Colors section of the studio (app/router.ts); 'surface' keeps its id so the
 // drafts saved before the views were split keep working
 type View = ColorsView;
-
-/**
- * Whether an API may stand beside the page. The static site of the studio (site.ts, the site
- * on GitHub Pages) says in its pages that none does, `<meta name="magma-studio-api"
- * content="none">`: asking there would only log a 404, and editing stays in memory.
- */
-const hasApi = (): boolean =>
-  document.querySelector('meta[name="magma-studio-api"]')?.getAttribute('content') !== 'none';
 
 // the color list on the left drives only the per-color views (edit a color,
 // sample its contrast scales). Surfaces, groups and diff operate on the whole
 // config, so the column - and its always-present selection - is hidden there.
 const COLOR_LIST_VIEWS = new Set<View>(['colors', 'scales']);
-
-function clone<T>(value: T): T {
-  return JSON.parse(JSON.stringify(value)) as T;
-}
 
 /** A configuration with no saturation curve, global or of a family: the ramps before the curve. */
 function withoutSaturation(config: MagmaConfig): MagmaConfig {
@@ -117,23 +97,6 @@ function withoutSaturation(config: MagmaConfig): MagmaConfig {
   delete flat.saturation;
   flat.colors.forEach((color) => delete color.saturation);
   return flat;
-}
-
-/** The scales a configuration writes, a copy of its own that later edits leave alone. */
-const ratiosOf = (config: MagmaConfig): LoadedRatios =>
-  clone((config.ratios ?? {}) as LoadedRatios);
-
-/**
- * The scales of a formula as the generator merges them: the entries a configuration writes over
- * the built-in ones, a null entry (a built-in deleted) left out.
- */
-function scalesOf(ratios: LoadedRatios | MagmaConfig['ratios'], formula: Formula): RatioSet {
-  return Object.fromEntries(
-    Object.entries({
-      ...(DEFAULT_COLOR_CONFIG.ratios as Record<Formula, RatioSet>)[formula],
-      ...(ratios?.[formula] ?? {}),
-    }).filter(([, values]) => Array.isArray(values)),
-  ) as RatioSet;
 }
 
 // an alias family references another family instead of solving its own palette:
@@ -182,13 +145,6 @@ function badgeOf(
     label: parts.map((part) => part.label).join(' '),
     title: parts.map((part) => part.title).join('; '),
   };
-}
-
-// neutral is the reference color of the system: select it when present
-function defaultSelected(colors: MagmaConfig['colors']): string {
-  return (
-    colors.find((color) => color.name.split('.')[1] === 'neutral')?.name ?? colors[0]?.name ?? ''
-  );
 }
 
 function textColorFor(hex: string): string {
@@ -802,12 +758,6 @@ interface AppProps {
   view?: View;
   /** Opens a view: the shell follows its link. */
   onNavigate?: (view: View) => void;
-  /** The working config, on every change: the Theme section paints its themes. */
-  onConfig?: (config: MagmaConfig) => void;
-  /** The verdict of the contrast gate on the working config, on every change: the Colors menu. */
-  onGate?: (verdict: GateVerdict) => void;
-  /** The actions of the Config menu of the bar, whenever one changes (config-menu.tsx). */
-  onConfigActions?: (actions: ConfigAction[]) => void;
 }
 
 /** One line under the title of each view: what it holds. */
@@ -831,35 +781,23 @@ const VIEW_SUMMARY: Record<View, string> = {
   diff: msg('The palette against the configuration Magma builds with.'),
 };
 
-export function App({
-  view: routedView,
-  onNavigate,
-  onConfig,
-  onGate,
-  onConfigActions,
-}: AppProps = {}) {
+export function App({ view: routedView, onNavigate }: AppProps = {}) {
   const t = useT();
-  // a persisted working state, restored once at mount, takes precedence over
-  // the bundled defaults
-  const bootDraft = useMemo(() => readDraft() as StudioDraft<View> | null, []);
-  const [config, setConfig] = useState<CloneableConfig>(() =>
-    bootDraft ? bootDraft.config : clone(initialConfigJson as unknown as CloneableConfig),
-  );
-  // the scales of the configuration last loaded, what the Reset of a scale takes it back to
-  // (#1330): the one the studio opens with (the bundled one, or the file a command serves), the
-  // one imported from the Config menu, the one the Reset of the page brings back. A save loads
-  // nothing: what the person saves are edits of what was loaded. The draft keeps them over a
-  // reload; a draft written before it was made on the source of the start-up check below
-  const [loadedRatios, setLoadedRatios] = useState<LoadedRatios>(
-    () => bootDraft?.loadedRatios ?? ratiosOf(initialConfigJson as unknown as MagmaConfig),
-  );
-  const [selectedName, setSelectedName] = useState<string>(() =>
-    bootDraft
-      ? bootDraft.selectedName
-      : defaultSelected((initialConfigJson as unknown as MagmaConfig).colors),
-  );
-  const [ownView, setOwnView] = useState<View>(() => bootDraft?.view ?? 'colors');
+  // the work is the state's (state/studio.ts, #1400): the pages read it and change it through its
+  // actions, so it outlives them; what is left here is the state of the page
+  const studio = useStudio();
+  const config = studio.config.value;
+  const loadedRatios = studio.loadedRatios.value;
+  const selectedName = studio.selectedName.value;
+  // the contrast gate on the working config and the themes of the Themes page, at every edit
+  // (#698): the badge beside the title, the Contrast check page, the exports
+  const report = studio.report.value;
+  const [ownView, setOwnView] = useState<View>(() => studio.colorsView.peek() ?? 'colors');
   const view = routedView ?? ownView;
+  // the page of Colors the work is on, kept in the draft: the Start page offers to continue there
+  useEffect(() => {
+    studio.colorsView.value = view;
+  }, [view]);
   // the list of the families opened where it stands folded above the page (narrow, palette.css);
   // where it stands beside the page it is always in view and this changes nothing
   const [listOpen, setListOpen] = useState(false);
@@ -870,36 +808,11 @@ export function App({
     if (content.current) content.current.scrollTop = 0;
   }, [view]);
   const setView = onNavigate ?? setOwnView;
-  // the picker of Import config (the Config menu of the bar)
-  const fileInput = useRef<HTMLInputElement>(null);
   // the menu of the colour selected, closed once one of its actions ran
   const colorMenu = useRef<HTMLMdsDropdownElement>(null);
   const closeMenus = () => {
     if (colorMenu.current) colorMenu.current.visible = false;
   };
-  const [copied, setCopied] = useState(false);
-  const [loadError, setLoadError] = useState<string | null>(null);
-  // server mode: the config is served by a command that answers /api/config
-  // (the `ui` command of design-tokens 15 did; the studio's own command comes
-  // with #695) and can be saved back to disk. On its own these stay inert.
-  const [serverMode, setServerMode] = useState(false);
-  const [savePath, setSavePath] = useState<string | null>(null);
-  // why the server refuses saves (a JavaScript config or package.json), or null
-  const [saveRefusal, setSaveRefusal] = useState<string | null>(null);
-  // the config the draft is made on (the file on disk, or the bundled default)
-  // and its JSON; null until the start-up check below has run
-  const [origin, setOrigin] = useState<(DraftSource & { json: string }) | null>(null);
-  // the source changed under a draft with edits of its own: the user picks one
-  const [draftConflict, setDraftConflict] = useState<{
-    reason: DraftReason;
-    config: CloneableConfig;
-    /** In English (msg), translated where it is drawn. */
-    label: string;
-  } | null>(null);
-  // JSON of the last-persisted config; null means nothing has been saved yet
-  const [savedConfig, setSavedConfig] = useState<string | null>(null);
-  const [saving, setSaving] = useState(false);
-  const [statusMsg, setStatusMsg] = useState<string | null>(null);
   const [scalesFormula, setScalesFormula] = useState<Formula>('wcag3');
   const [addModal, setAddModal] = useState<{
     // 'color' creates an own-palette family, 'alias' a reference to another family
@@ -918,14 +831,6 @@ export function App({
 
   const selectedIndex = config.colors.findIndex((c) => c.name === selectedName);
   const selected = selectedIndex >= 0 ? config.colors[selectedIndex] : undefined;
-
-  const updateConfig = (mutate: (draft: CloneableConfig) => void) => {
-    setConfig((prev) => {
-      const draft = clone(prev);
-      mutate(draft);
-      return draft;
-    });
-  };
 
   // the ramps of the family selected, solved by the real generator on the configuration given
   const scalesOfFamily = (
@@ -1019,17 +924,8 @@ export function App({
     return family ? scalesOfFamily(flat, family)[0] : null;
   }, selectedDeps);
 
-  const [fullScales, fullScalesError] = useMemo((): [
-    Map<string, ColorScales> | null,
-    string | null,
-  ] => {
-    if (view !== 'groups') return [null, null];
-    try {
-      return [generateScales(config), null];
-    } catch (error) {
-      return [null, String(error)];
-    }
-  }, [view, JSON.stringify(config)]);
+  // the ramps of every family, solved only for the Groups page (a computed of the state)
+  const generation = view === 'groups' ? studio.generation.value : null;
 
   // the family a reference points at, opened from the banner of the reference: once that family
   // renders, its title comes into view and takes the focus. The request names the family: the
@@ -1065,9 +961,7 @@ export function App({
   // the sentinel for a deleted built-in scale and is filtered out.
   const ratioSetFor = (formula: Formula): RatioSet => scalesOf(config.ratios, formula);
   const ratioSet = ratioSetFor(scalesFormula);
-  const builtinScales = Object.keys(
-    (DEFAULT_COLOR_CONFIG.ratios as Record<Formula, RatioSet>)[scalesFormula],
-  );
+  const builtinScales = Object.keys(builtinScalesOf(scalesFormula));
 
   const scaleNamesFor = (color: ColorConfig): string[] =>
     Object.keys(ratioSetFor(resolveFormula(color, config)));
@@ -1076,7 +970,7 @@ export function App({
   // (rather than mere presence in config.ratios) keeps the tag correct even
   // though writeScale materializes untouched built-ins back into the config.
   const scaleOrigin = (formula: Formula, name: string): ScaleOrigin => {
-    const builtin = (DEFAULT_COLOR_CONFIG.ratios as Record<Formula, RatioSet>)[formula]?.[name];
+    const builtin = builtinScalesOf(formula)[name];
     if (!Array.isArray(builtin)) return 'custom';
     const current = ratioSetFor(formula)[name];
     const overridden =
@@ -1089,20 +983,6 @@ export function App({
     if (origin === 'builtin') return t('{name} (built-in)', { name });
     if (origin === 'builtin-overridden') return t('{name} (built-in, overridden)', { name });
     return name;
-  };
-
-  const writeScale = (mutate: (draftSet: RatioSet) => void) => {
-    updateConfig((draft) => {
-      const materialized = {
-        ...(DEFAULT_COLOR_CONFIG.ratios as Record<Formula, RatioSet>)[scalesFormula],
-        ...(draft.ratios?.[scalesFormula] ?? {}),
-      };
-      mutate(materialized);
-      draft.ratios = {
-        ...(draft.ratios ?? {}),
-        [scalesFormula]: materialized,
-      } as MagmaConfig['ratios'];
-    });
   };
 
   const sampleScales = useMemo(() => {
@@ -1128,493 +1008,18 @@ export function App({
     return map;
   }, [view, scalesFormula, JSON.stringify(config), selectedName]);
 
+  // an export while the gate fails asks first: never the silent default (#698). The dialog is the
+  // shell's, so the Config menu of the bar asks it from any section
+  const ask = (action: ExportAction) => guard(studio, action);
+
+  // a dialog of the page closes when another page opens: the dialog of the gate leads from the
+  // Batch export of Groups to Contrast check
+  const shownView = useRef(view);
   useEffect(() => {
-    onConfig?.(config);
-  }, [config]);
-
-  // the contrast gate on the working config and the themes of the Themes page, at every edit
-  // (#698): the badge beside the title, the Contrast check page, the Colors menu, the exports
-  const choices = useThemeChoices();
-  const report = useMemo(() => gateReport(config, choices), [JSON.stringify(config), choices]);
-  useEffect(() => {
-    onGate?.(report.verdict);
-  }, [report]);
-
-  // an export while the gate fails asks first: never the silent default (#698)
-  const [pendingExport, setPendingExport] = useState<ExportAction | null>(null);
-  const guard = (action: ExportAction) => {
-    if (report.verdict.state === 'fail') setPendingExport(action);
-    else action.run();
-  };
-
-  // mirror the working state to localStorage on every change, stamped with
-  // the config it is made on. Until the start-up check has run, and while a
-  // conflict waits for an answer, the restored draft keeps its old stamp, so
-  // a reload asks again instead of keeping the draft silently
-  useEffect(() => {
-    if (!origin) return;
-    if (draftConflict) {
-      writeDraft({
-        config,
-        selectedName,
-        view,
-        source: bootDraft?.source,
-        edited: true,
-        loadedRatios,
-      });
-      return;
-    }
-    const edited = JSON.stringify(config) !== origin.json;
-    writeDraft({
-      config,
-      selectedName,
-      view,
-      source: { path: origin.path, hash: origin.hash },
-      edited,
-      loadedRatios,
-    });
-  }, [JSON.stringify(config), selectedName, view, origin, draftConflict, loadedRatios]);
-
-  // when served by a command, adopt the on-disk config and enable
-  // saving; in both modes, check a restored draft against the config it was
-  // made on before letting it win
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      let served: {
-        path: string;
-        config: CloneableConfig | null;
-        readOnly?: string | null;
-      } | null = null;
-      try {
-        if (hasApi()) {
-          const res = await fetch('/api/config');
-          if (res.ok) served = await res.json();
-        }
-      } catch {
-        // not served by a command: the source is the bundled default
-      }
-      if (cancelled) return;
-      const fileConfig =
-        served?.config && Array.isArray(served.config.colors) && served.config.colors.length > 0
-          ? served.config
-          : null;
-      if (served) {
-        setServerMode(true);
-        setSavePath(served.path);
-        setSaveRefusal(served.readOnly ?? null);
-        // the on-disk file is always the save baseline; with no file yet, the
-        // bundled default is unsaved
-        setSavedConfig(fileConfig ? JSON.stringify(fileConfig) : null);
-      }
-      const sourceConfig = fileConfig ?? clone(initialConfigJson as unknown as CloneableConfig);
-      const json = JSON.stringify(sourceConfig);
-      const source: DraftSource = served
-        ? { path: served.path, hash: fileConfig ? hashText(json) : null }
-        : { path: null, hash: hashText(json) };
-      const decision = reconcileDraft(bootDraft, source, json);
-      if (decision.use === 'source' && (bootDraft || fileConfig)) {
-        setConfig(sourceConfig);
-        setLoadedRatios(ratiosOf(sourceConfig));
-        setSelectedName((name) =>
-          sourceConfig.colors.some((c) => c.name === name)
-            ? name
-            : defaultSelected(sourceConfig.colors),
-        );
-      } else if (decision.use === 'ask') {
-        setDraftConflict({
-          reason: decision.reason,
-          config: sourceConfig,
-          label: fileConfig ? msg('Use the file on disk') : msg('Use the bundled config'),
-        });
-      }
-      // a draft written before drafts kept what was loaded (#1330) was made on this source
-      if (bootDraft && !bootDraft.loadedRatios) setLoadedRatios(ratiosOf(sourceConfig));
-      setOrigin({ ...source, json });
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  const resolveDraftConflict = (useSource: boolean) => {
-    if (!draftConflict) return;
-    if (useSource) {
-      const next = draftConflict.config;
-      setConfig(next);
-      setLoadedRatios(ratiosOf(next));
-      setSelectedName((name) =>
-        next.colors.some((c) => c.name === name) ? name : defaultSelected(next.colors),
-      );
-    }
-    setDraftConflict(null);
-  };
-
-  const dirty = serverMode && JSON.stringify(config) !== savedConfig;
-
-  // reset returns to the built-in default: it only does something when the
-  // current config differs from it (edited or loaded), so disable it otherwise
-  const defaultConfigString = useMemo(() => JSON.stringify(initialConfigJson), []);
-  const canReset = JSON.stringify(config) !== defaultConfigString;
-
-  const saveConfig = async () => {
-    if (!serverMode || saving || saveRefusal || draftConflict) return;
-    setSaving(true);
-    setStatusMsg(null);
-    try {
-      const res = await fetch('/api/config', {
-        method: 'PUT',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(config, null, 2) + '\n',
-      });
-      if (!res.ok) {
-        const err = (await res.json().catch(() => ({}))) as { error?: string };
-        throw new Error(err.error ?? t('save failed ({status})', { status: res.status }));
-      }
-      const written = (await res.json().catch(() => ({}))) as { path?: string };
-      const json = JSON.stringify(config);
-      setSavedConfig(json);
-      setOrigin({ path: written.path ?? savePath, hash: hashText(json), json });
-      const saved = t('saved');
-      setStatusMsg(saved);
-      setTimeout(() => setStatusMsg((shown) => (shown === saved ? null : shown)), 1500);
-    } catch (error) {
-      setStatusMsg(error instanceof Error ? error.message : t('save failed'));
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  const buildTokens = async () => {
-    setStatusMsg(t('building...'));
-    try {
-      const res = await fetch('/api/build', { method: 'POST' });
-      const data = (await res.json().catch(() => ({}))) as { error?: string };
-      if (!res.ok)
-        throw new Error(data.error ?? t('build failed ({status})', { status: res.status }));
-      const built = t('tokens generated on disk');
-      setStatusMsg(built);
-      setTimeout(() => setStatusMsg((shown) => (shown === built ? null : shown)), 2000);
-    } catch (error) {
-      setStatusMsg(error instanceof Error ? error.message : t('build failed'));
-    }
-  };
-
-  const copyJson = async () => {
-    await navigator.clipboard.writeText(JSON.stringify(config, null, 2) + '\n');
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
-  };
-
-  const loadConfigFile = async (file: File) => {
-    try {
-      const parsed = JSON.parse(await file.text()) as CloneableConfig;
-      const { valid, errors } = validateConfig(parsed);
-      if (!valid) {
-        throw new Error(errors.slice(0, 3).join('; ') || t('it does not match the schema'));
-      }
-      setConfig(parsed);
-      setLoadedRatios(ratiosOf(parsed));
-      setSelectedName(defaultSelected(parsed.colors));
-      setView('colors');
-      setLoadError(null);
-    } catch (error) {
-      setLoadError(
-        t('Could not load {file}: {error}', {
-          file: file.name,
-          error: error instanceof Error ? error.message : String(error),
-        }),
-      );
-      // the error is a banner of the pages of Colors: an import from another section opens them
-      setView(view);
-    }
-  };
-
-  // names assigned by the system during this session: only these (and the
-  // new-N placeholders) keep following the picker; a name typed by the
-  // user is never touched
-  const autoNamedRef = useRef(new Set<string>());
-
-  // at each colour of the colour field (a code typed, a step of the picker),
-  // colors still carrying an auto-assigned name get renamed after it, unique
-  // within the config; a duplicate hex only raises a warning
-  const autoNameColor = (index: number, hex: string) => {
-    const color = config.colors[index];
-    if (!color) return;
-    const duplicate = config.colors.find(
-      (other, i) => i !== index && !!other.color && other.color.toLowerCase() === hex.toLowerCase(),
-    );
-    setLoadError(
-      duplicate
-        ? t('Warning: {hex} is already used by "{name}"', { hex, name: duplicate.name })
-        : null,
-    );
-
-    const [group, baseName] = color.name.split('.');
-    const autoAssigned =
-      /^new(-\d+)?$/.test(baseName ?? '') || autoNamedRef.current.has(color.name);
-    if (!autoAssigned) return;
-    const vocabularyName = nearestColorName(hex);
-    let candidate = vocabularyName;
-    let suffix = 2;
-    while (
-      config.colors.some((other, i) => i !== index && other.name === `${group}.${candidate}`)
-    ) {
-      candidate = `${vocabularyName}-${suffix}`;
-      suffix += 1;
-    }
-    const nextName = `${group}.${candidate}`;
-    if (nextName === color.name) return;
-    autoNamedRef.current.delete(color.name);
-    autoNamedRef.current.add(nextName);
-    updateConfig((draft) => {
-      draft.colors[index].name = nextName;
-    });
-    setSelectedName(nextName);
-  };
-
-  const triggerDownload = (data: BlobPart, filename: string, type: string) => {
-    const url = URL.createObjectURL(new Blob([data], { type }));
-    const anchor = document.createElement('a');
-    anchor.href = url;
-    anchor.download = filename;
-    anchor.click();
-    URL.revokeObjectURL(url);
-  };
-
-  const downloadJson = () =>
-    triggerDownload(
-      JSON.stringify(config, null, 2) + '\n',
-      'magma-design-tokensrc.json',
-      'application/json',
-    );
-
-  type ColorTree = Parameters<typeof cssHex>[0];
-
-  // The whole palette plus one entry per export group; formats that respect
-  // export diversification (CSS, GIMP) emit one file per entry. The whole
-  // palette carries an empty suffix, groups carry "-<group>".
-  const exportTrees = (
-    tokens: ColorTree,
-    exportGroups: Record<string, unknown>,
-  ): Array<{ suffix: string; tree: ColorTree }> => [
-    { suffix: '', tree: tokens },
-    ...Object.keys(exportGroups).map((group) => ({
-      suffix: `-${group}`,
-      tree: exportGroups[group] as ColorTree,
-    })),
-  ];
-
-  const cssFiles = (
-    tokens: ColorTree,
-    exportGroups: Record<string, unknown>,
-    date: string,
-  ): Record<string, string> => {
-    const files: Record<string, string> = {};
-    exportTrees(tokens, exportGroups).forEach(({ suffix, tree }) => {
-      files[`colors-hex${suffix}.css`] = cssHex(tree, date);
-      files[`colors-rgb${suffix}.css`] = cssRgb(tree, date);
-    });
-    return files;
-  };
-
-  const gimpFiles = (
-    tokens: ColorTree,
-    exportGroups: Record<string, unknown>,
-  ): Record<string, string> => {
-    const files: Record<string, string> = {};
-    exportTrees(tokens, exportGroups).forEach(({ suffix, tree }) => {
-      // the whole palette keeps the classic name, groups take the group name
-      files[`${suffix ? suffix.slice(1) : 'colors'}.gpl`] = gimpPalette(tree);
-    });
-    return files;
-  };
-
-  // download a set of text files: a single file directly, several as a zip
-  const downloadFiles = (files: Record<string, string>, zipName: string, singleType: string) => {
-    const names = Object.keys(files);
-    if (names.length === 1) {
-      triggerDownload(files[names[0]], names[0], singleType);
-      return;
-    }
-    const encoder = new TextEncoder();
-    const zipped: Record<string, Uint8Array> = {};
-    names.forEach((name) => {
-      zipped[name] = encoder.encode(files[name]);
-    });
-    triggerDownload(zipSync(zipped), zipName, 'application/zip');
-  };
-
-  const downloadCss = () => {
-    try {
-      const { tokens, exportGroups } = createColorTokens(clone(config));
-      downloadFiles(
-        cssFiles(tokens as ColorTree, exportGroups, new Date().toUTCString()),
-        'magma-css.zip',
-        'text/css',
-      );
-      setLoadError(null);
-    } catch (error) {
-      setLoadError(
-        t('Could not build the CSS: {error}', {
-          error: error instanceof Error ? error.message : String(error),
-        }),
-      );
-    }
-  };
-
-  const downloadGimp = () => {
-    try {
-      const { tokens, exportGroups } = createColorTokens(clone(config));
-      downloadFiles(gimpFiles(tokens as ColorTree, exportGroups), 'magma-gimp.zip', 'text/plain');
-      setLoadError(null);
-    } catch (error) {
-      setLoadError(
-        t('Could not build the palette: {error}', {
-          error: error instanceof Error ? error.message : String(error),
-        }),
-      );
-    }
-  };
-
-  // DTCG color tokens for Figma: one file per theme mode, zipped together.
-  // Matches the package build output (dist/json/figma-magma-colors-*.tokens.json).
-  const downloadFigmaDtcg = () => {
-    try {
-      const { tokens } = createColorTokens(clone(config));
-      const color = (tokens as ColorTree).color as unknown as ColorTokenTree;
-      downloadFiles(
-        {
-          'figma-magma-colors-light.tokens.json':
-            JSON.stringify(colorsToDtcg(color, 'light'), null, 2) + '\n',
-          'figma-magma-colors-dark.tokens.json':
-            JSON.stringify(colorsToDtcg(color, 'dark'), null, 2) + '\n',
-        },
-        'magma-figma-dtcg.zip',
-        'application/json',
-      );
-      setLoadError(null);
-    } catch (error) {
-      setLoadError(
-        t('Could not build the Figma tokens: {error}', {
-          error: error instanceof Error ? error.message : String(error),
-        }),
-      );
-    }
-  };
-
-  // zip mirroring the dist output: the config, the generated JSON tokens
-  // (whole palette + one file per export group, byte-for-byte the CLI files)
-  // and the CSS / GIMP renders, both diversified per export group
-  const downloadZip = () => {
-    try {
-      const { tokens, exportGroups } = createColorTokens(clone(config));
-      const date = new Date().toUTCString();
-      const files: Record<string, Uint8Array> = {};
-      const encoder = new TextEncoder();
-      const add = (path: string, text: string) => {
-        files[path] = encoder.encode(text);
-      };
-      add('magma-design-tokensrc.json', JSON.stringify(config, null, 2) + '\n');
-      // token JSON files match the generator output byte-for-byte (no newline)
-      add('tokens/color/generated/base.json', JSON.stringify(tokens, null, 2));
-      Object.keys(exportGroups).forEach((group) => {
-        add(`tokens/color/generated/${group}.json`, JSON.stringify(exportGroups[group], null, 2));
-      });
-      const css = cssFiles(tokens as ColorTree, exportGroups, date);
-      Object.keys(css).forEach((name) => add(`css/${name}`, css[name]));
-      const gimp = gimpFiles(tokens as ColorTree, exportGroups);
-      Object.keys(gimp).forEach((name) => add(`gimp/${name}`, gimp[name]));
-      triggerDownload(zipSync(files), 'magma-design-tokens.zip', 'application/zip');
-      setLoadError(null);
-    } catch (error) {
-      setLoadError(
-        t('Could not build the zip: {error}', {
-          error: error instanceof Error ? error.message : String(error),
-        }),
-      );
-    }
-  };
-
-  // the actions of the Config menu of the bar (config-menu.tsx; vittorio, 2026-11-09): what
-  // brings a configuration in, then what takes it out, each through the gate before it leaves. The
-  // bar holds the list it was last handed; a click runs the action of the latest render, so the
-  // list changes only when a label or the set does
-  const configRuns = useRef<Record<string, () => void>>({});
-  configRuns.current = {
-    import: () => fileInput.current?.click(),
-    copy: () => guard({ label: msg('Copy JSON'), proceed: msg('Copy anyway'), run: copyJson }),
-    zip: () =>
-      guard({
-        label: msg('Download all tokens'),
-        proceed: msg('Download anyway'),
-        run: downloadZip,
-      }),
-    config: () =>
-      guard({ label: msg('Download config'), proceed: msg('Download anyway'), run: downloadJson }),
-    figma: () =>
-      guard({
-        label: msg('Download Figma tokens'),
-        proceed: msg('Download anyway'),
-        run: downloadFigmaDtcg,
-      }),
-    css: () =>
-      guard({
-        label: msg('Download CSS tokens'),
-        proceed: msg('Download anyway'),
-        run: downloadCss,
-      }),
-    gimp: () =>
-      guard({
-        label: msg('Download GIMP palette'),
-        proceed: msg('Download anyway'),
-        run: downloadGimp,
-      }),
-    build: () =>
-      guard({ label: msg('Build tokens on disk'), proceed: msg('Build anyway'), run: buildTokens }),
-  };
-  const configActions = useMemo<ConfigAction[]>(() => {
-    const run = (id: string) => () => configRuns.current[id]?.();
-    const download = 'mi/outline/file-download';
-    // the badge says what is read or handed over: the file (json, css, gpl), the format of the
-    // tokens (DTCG), misc for the zip of all of them (vittorio, 2026-11-09)
-    return [
-      {
-        id: 'import',
-        label: msg('Import config'),
-        format: 'json',
-        icon: 'mi/baseline/upload-file',
-      },
-      {
-        id: 'copy',
-        label: msg(copied ? 'Copied!' : 'Copy JSON'),
-        icon: 'mi/baseline/content-copy',
-        keepOpen: true,
-      },
-      {
-        id: 'zip',
-        label: msg('Download all tokens'),
-        format: 'misc',
-        icon: download,
-        apart: true,
-      },
-      { id: 'config', label: msg('Download config'), format: 'json', icon: download },
-      { id: 'figma', label: msg('Download Figma tokens'), format: 'DTCG', icon: download },
-      { id: 'css', label: msg('Download CSS tokens'), format: 'css', icon: download },
-      { id: 'gimp', label: msg('Download GIMP palette'), format: 'gpl', icon: download },
-      ...(serverMode
-        ? [
-            {
-              id: 'build',
-              label: msg('Build tokens on disk'),
-              icon: 'mi/baseline/build',
-              apart: true,
-            },
-          ]
-        : []),
-    ].map((action) => ({ ...action, run: run(action.id) }));
-  }, [copied, serverMode]);
-  useEffect(() => onConfigActions?.(configActions), [configActions]);
+    if (shownView.current === view) return;
+    shownView.current = view;
+    setBatchModal(null);
+  }, [view]);
 
   const toggleBatch = (name: string) =>
     setBatchSelection((prev) => {
@@ -1643,47 +1048,9 @@ export function App({
   };
 
   const saveBatch = (names: string[], exportList: string[] | undefined) => {
-    const target = new Set(names);
-    updateConfig((draft) => {
-      draft.colors.forEach((color) => {
-        if (!target.has(color.name)) return;
-        if (exportList) color.export = exportList;
-        else delete color.export;
-      });
-    });
+    setExports(studio, names, exportList);
     setBatchModal(null);
     setBatchSelection(new Set());
-  };
-
-  // download a zip with the generated tokens of only the selected colors
-  const exportSelection = (names: string[]) => {
-    try {
-      const target = new Set(names);
-      const subset: CloneableConfig = {
-        ...clone(config),
-        colors: config.colors.filter((color) => target.has(color.name)),
-      };
-      const { tokens, exportGroups } = createColorTokens(subset);
-      const date = new Date().toUTCString();
-      const files: Record<string, Uint8Array> = {};
-      const encoder = new TextEncoder();
-      const add = (path: string, text: string) => {
-        files[path] = encoder.encode(text);
-      };
-      add('tokens/color/generated/base.json', JSON.stringify(tokens, null, 2));
-      const css = cssFiles(tokens as ColorTree, exportGroups, date);
-      Object.keys(css).forEach((name) => add(`css/${name}`, css[name]));
-      const gimp = gimpFiles(tokens as ColorTree, exportGroups);
-      Object.keys(gimp).forEach((name) => add(`gimp/${name}`, gimp[name]));
-      triggerDownload(zipSync(files), 'magma-selection.zip', 'application/zip');
-      setLoadError(null);
-    } catch (error) {
-      setLoadError(
-        t('Could not export the selection: {error}', {
-          error: error instanceof Error ? error.message : String(error),
-        }),
-      );
-    }
   };
 
   // every export name referenced by the config, for the select-by-export control
@@ -1699,6 +1066,13 @@ export function App({
   // color, so the picker column is dropped and the content spans full width
   const showSidebar = COLOR_LIST_VIEWS.has(view);
 
+  // where the configuration comes from and goes: a command that serves it, a save under way, a
+  // conflict with its source, what kept it from loading
+  const served = studio.served.value;
+  const saving = studio.saving.value;
+  const dirty = studio.dirty.value;
+  const conflict = studio.conflict.value;
+  const notice = studio.notice.value;
   // the head of the page and what keeps the configuration from loading or saving: the first
   // things of the region that scrolls, or, on Semantic surface, the start of its first column
   // (surfaces.tsx), where the opt-in of the surfaces stands beside it on a wide page
@@ -1721,11 +1095,11 @@ export function App({
         {/* the actions of the page (the page-header block of Magma): Reset in view, the one
             action left once the menu of the others had nothing else (vittorio, 2026-11-09), then
             Save when a command serves the studio, last. What brings a configuration in and takes
-            it out is the Config menu of the bar (shell.tsx, config-menu.tsx) */}
+            it out is the Config menu of the bar (shell.tsx, app/config-menu.tsx) */}
         <div class="studio-page-actions">
-          {statusMsg && (
+          {studio.status.value && (
             <mds-text typography="caption" tag="span" class="studio-muted" role="status">
-              {statusMsg}
+              {say(t, studio.status.value)}
             </mds-text>
           )}
           <mds-button
@@ -1737,37 +1111,20 @@ export function App({
             title={t(
               'Discard the loaded configuration and every local change, back to the one Magma builds with',
             )}
-            disabled={!canReset}
+            disabled={!studio.canReset.value}
             onClick={() => {
-              clearDraft();
-              const base = clone(initialConfigJson as unknown as CloneableConfig);
-              setConfig(base);
-              setLoadedRatios(ratiosOf(base));
-              setSelectedName(defaultSelected(base.colors));
+              resetWork(studio);
               setView('colors');
-              setLoadError(null);
             }}
           ></mds-button>
-          <input
-            ref={fileInput}
-            type="file"
-            accept=".json,application/json"
-            hidden
-            onChange={(e) => {
-              const input = e.target as HTMLInputElement;
-              const file = input.files?.[0];
-              if (file) loadConfigFile(file);
-              input.value = '';
-            }}
-          />
           {/* the texts that change go in `label`: mds-button reads its slotted text only once */}
-          {serverMode &&
-            (saveRefusal ? (
+          {served &&
+            (served.readOnly ? (
               <mds-button
                 variant="dark"
                 tone="outline"
                 disabled
-                title={saveRefusal}
+                title={served.readOnly}
                 label={dirty ? t('Read-only *') : t('Read-only')}
               ></mds-button>
             ) : (
@@ -1775,10 +1132,14 @@ export function App({
                 variant="dark"
                 tone="outline"
                 onClick={() =>
-                  guard({ label: msg('Save'), proceed: msg('Save anyway'), run: saveConfig })
+                  ask({
+                    label: msg('Save'),
+                    proceed: msg('Save anyway'),
+                    run: () => saveConfig(studio),
+                  })
                 }
-                disabled={saving || !dirty || !!draftConflict}
-                title={savePath ?? undefined}
+                disabled={saving || !dirty || !!conflict}
+                title={served.path}
                 label={saving ? t('Saving...') : dirty ? t('Save *') : t('Saved')}
               ></mds-button>
             ))}
@@ -1786,34 +1147,34 @@ export function App({
       </header>
 
       {/* what keeps the configuration from loading or saving, above the page */}
-      {loadError ? (
+      {notice ? (
         <mds-banner class="studio-notice" variant="error">
-          {loadError}
+          {say(t, notice)}
         </mds-banner>
-      ) : draftConflict ? (
+      ) : conflict ? (
         <mds-banner class="studio-notice draft-conflict" variant="warning">
           {t('{reason}, and the draft restored from this browser has edits of its own.', {
-            reason: reasonText(t, draftConflict.reason),
+            reason: reasonText(t, conflict.reason),
           })}
           <mds-button
             slot="action"
             type="button"
             variant="dark"
             tone="outline"
-            label={t(draftConflict.label)}
-            onClick={() => resolveDraftConflict(true)}
+            label={t(conflict.label)}
+            onClick={() => resolveConflict(studio, true)}
           ></mds-button>
           <mds-button
             slot="action"
             type="button"
             label={t('Keep the draft')}
-            onClick={() => resolveDraftConflict(false)}
+            onClick={() => resolveConflict(studio, false)}
           ></mds-button>
         </mds-banner>
       ) : (
-        saveRefusal && (
+        served?.readOnly && (
           <mds-banner class="studio-notice" variant="info">
-            {t('Saving is off: {reason}', { reason: saveRefusal })}
+            {t('Saving is off: {reason}', { reason: served.readOnly })}
           </mds-banner>
         )
       )}
@@ -1896,7 +1257,7 @@ export function App({
                         label={color.name.split('.')[1]}
                         title={badge?.title}
                         onClick={() => {
-                          setSelectedName(color.name);
+                          selectFamily(studio, color.name);
                           setListOpen(false);
                           // the scales view works on the selected color: switching
                           // color must not leave it
@@ -2088,25 +1449,7 @@ export function App({
               disabled={!addModal.name.trim() || (addModal.kind === 'alias' && !addModal.alias)}
               label={addModal.kind === 'alias' ? t('Add reference') : t('Add color')}
               onClick={() => {
-                const base = addModal.name.trim();
-                let candidate = base;
-                let suffix = 2;
-                while (config.colors.some((c) => c.name === `${addModal.group}.${candidate}`)) {
-                  candidate = `${base}-${suffix}`;
-                  suffix += 1;
-                }
-                const fullName = `${addModal.group}.${candidate}`;
-                const { kind, alias: aliasTarget, color: colorHex, manual } = addModal;
-                if (kind === 'color' && !manual) autoNamedRef.current.add(fullName);
-                updateConfig((draft) => {
-                  // color XOR alias: emit exactly one of the two fields
-                  draft.colors.push(
-                    (kind === 'alias'
-                      ? { name: fullName, alias: aliasTarget }
-                      : { name: fullName, color: colorHex }) as ColorConfig,
-                  );
-                });
-                setSelectedName(fullName);
+                addFamily(studio, addModal);
                 setView('colors');
                 setAddModal(null);
               }}
@@ -2161,32 +1504,13 @@ export function App({
                   isBuiltin={BUILTIN_ALIAS_NAMES.has(selected.name)}
                   aliasTargets={aliasTargets}
                   resolvedColor={resolveBaseColor(config, selected)}
-                  onColorCommit={(hex) => autoNameColor(selectedIndex, hex)}
+                  onColorCommit={(hex) => autoNameFamily(studio, selected.name, hex)}
                   onOpenSource={() => {
                     if (!selected.alias) return;
                     openSourceRef.current = selected.alias;
-                    setSelectedName(selected.alias);
+                    selectFamily(studio, selected.alias);
                   }}
-                  onChange={(patch) => {
-                    // a name typed by the user opts the color out of auto-naming
-                    if ('name' in patch) autoNamedRef.current.delete(selected.name);
-                    updateConfig((draft) => {
-                      const target = draft.colors[selectedIndex] as unknown as Record<
-                        string,
-                        unknown
-                      >;
-                      Object.entries(patch).forEach(([key, value]) => {
-                        if (value === undefined) delete target[key];
-                        else target[key] = value;
-                      });
-                      // keep the schema's color XOR alias invariant: a family carries
-                      // EITHER its own base color OR a reference, never both
-                      if ('alias' in patch && patch.alias) delete target.color;
-                      if ('color' in patch && patch.color) delete target.alias;
-                      if ('name' in patch && typeof patch.name === 'string')
-                        setSelectedName(patch.name);
-                    });
-                  }}
+                  onChange={(patch) => patchFamily(studio, selected.name, patch)}
                 />
               </section>
               <mds-dropdown
@@ -2205,13 +1529,7 @@ export function App({
                     label={t('Duplicate')}
                     onClick={() => {
                       closeMenus();
-                      updateConfig((draft) => {
-                        const source = draft.colors[selectedIndex];
-                        const copy = clone(source);
-                        copy.name = `${source.name}-copy`;
-                        draft.colors.splice(selectedIndex + 1, 0, copy);
-                        setSelectedName(copy.name);
-                      });
+                      duplicateFamily(studio, selected.name);
                     }}
                   ></mds-button>
                   <mds-separator></mds-separator>
@@ -2230,10 +1548,7 @@ export function App({
                     }
                     onClick={() => {
                       closeMenus();
-                      updateConfig((draft) => {
-                        draft.colors.splice(selectedIndex, 1);
-                        setSelectedName(draft.colors[0]?.name ?? '');
-                      });
+                      deleteFamily(studio, selected.name);
                     }}
                   ></mds-button>
                 </div>
@@ -2254,22 +1569,14 @@ export function App({
                       <Select
                         value={config.colorspace ?? 'HSL'}
                         options={COLORSPACES.map((space) => ({ value: space, label: space }))}
-                        onValue={(colorspace) =>
-                          updateConfig((draft) => {
-                            draft.colorspace = colorspace;
-                          })
-                        }
+                        onValue={(colorspace) => setGlobal(studio, 'colorspace', colorspace)}
                       />
                     </Field>
                     <div class="studio-row palette-switches">
                       <Check
                         type="switch"
                         checked={config.smooth ?? false}
-                        onChecked={(checked) =>
-                          updateConfig((draft) => {
-                            draft.smooth = checked;
-                          })
-                        }
+                        onChecked={(checked) => setGlobal(studio, 'smooth', checked)}
                       >
                         {t('Smooth')}
                       </Check>
@@ -2278,13 +1585,7 @@ export function App({
                   <HueShiftEditor
                     title={t('Global hue shifting')}
                     value={config.hueShift}
-                    onChange={(hueShift) =>
-                      updateConfig((draft) => {
-                        if (hueShift === undefined)
-                          delete (draft as Record<string, unknown>).hueShift;
-                        else draft.hueShift = hueShift;
-                      })
-                    }
+                    onChange={(hueShift) => setGlobal(studio, 'hueShift', hueShift)}
                   />
                   {/* the global curve, drawn on the family in view */}
                   <SaturationEditor
@@ -2293,13 +1594,7 @@ export function App({
                     value={config.saturation}
                     before={flatScales?.light ?? null}
                     after={selectedScales?.light ?? null}
-                    onChange={(saturation) =>
-                      updateConfig((draft) => {
-                        if (saturation === undefined)
-                          delete (draft as Record<string, unknown>).saturation;
-                        else draft.saturation = saturation;
-                      })
-                    }
+                    onChange={(saturation) => setGlobal(studio, 'saturation', saturation)}
                   />
                 </div>
               </mds-details>
@@ -2317,59 +1612,12 @@ export function App({
             selectedName={selectedName}
             labelFor={(name) => scaleLabel(scalesFormula, name)}
             originFor={(name) => scaleOrigin(scalesFormula, name)}
-            onSelectColor={setSelectedName}
+            onSelectColor={(name) => selectFamily(studio, name)}
             onFormulaChange={setScalesFormula}
-            onChangeScale={(name, values) =>
-              writeScale((draftSet) => {
-                draftSet[name] = values;
-              })
-            }
-            onRenameScale={(name, nextName) => {
-              if (!nextName || nextName === name || ratioSet[nextName]) return;
-              writeScale((draftSet) => {
-                draftSet[nextName] = draftSet[name];
-                delete draftSet[name];
-              });
-              updateConfig((draft) => {
-                draft.colors.forEach((color) => {
-                  if (color.ratios === name) color.ratios = nextName;
-                });
-                Object.values(draft.groups ?? {}).forEach((group) => {
-                  if (group.ratios === name) group.ratios = nextName;
-                });
-              });
-            }}
-            onAddScale={(copyFrom) => {
-              let index = 1;
-              while (ratioSet[`custom-${index}`]) index += 1;
-              writeScale((draftSet) => {
-                draftSet[`custom-${index}`] = [...(draftSet[copyFrom] ?? draftSet.default)];
-              });
-            }}
-            onDeleteScale={(name) => {
-              // colors and groups using the deleted scale fall back to the
-              // mandatory default
-              updateConfig((draft) => {
-                draft.colors.forEach((color) => {
-                  const colorFormula = color.formula ?? draft.formula ?? 'wcag3';
-                  if (colorFormula === scalesFormula && color.ratios === name) {
-                    delete color.ratios;
-                  }
-                });
-                Object.values(draft.groups ?? {}).forEach((group) => {
-                  if (group.ratios === name) delete group.ratios;
-                });
-              });
-              writeScale((draftSet) => {
-                if (builtinScales.includes(name)) {
-                  // built-ins are merged back by the generator: a null entry
-                  // in the config marks them as deleted
-                  (draftSet as Record<string, unknown>)[name] = null;
-                } else {
-                  delete draftSet[name];
-                }
-              });
-            }}
+            onChangeScale={(name, values) => changeScale(studio, scalesFormula, name, values)}
+            onRenameScale={(name, nextName) => renameScale(studio, scalesFormula, name, nextName)}
+            onAddScale={(copyFrom) => addScale(studio, scalesFormula, copyFrom)}
+            onDeleteScale={(name) => deleteScale(studio, scalesFormula, name)}
           />
         )}
         {view === 'surface' && (
@@ -2378,79 +1626,23 @@ export function App({
               head={pageTop}
               config={config}
               report={report}
-              onToggleSurface={(colorName, on) =>
-                updateConfig((draft) => {
-                  const color = draft.colors.find((c) => c.name === colorName);
-                  if (!color) return;
-                  // With a group-level default in play, "off" is not always the
-                  // absence of the key: unchecking a family whose GROUP opts in
-                  // has to write an explicit `false`, otherwise it would just
-                  // inherit the group straight back. When the group is silent,
-                  // deleting the key keeps the config clean as before.
-                  const groupOn = Boolean(draft.groups?.[colorName.split('.')[0]]?.surface);
-                  if (on) (color as ColorConfig).surface = true;
-                  else if (groupOn) (color as ColorConfig).surface = false;
-                  else delete (color as ColorConfig).surface;
-                })
-              }
-              onToggleGroupSurface={(groupName, on) =>
-                updateConfig((draft) => {
-                  const groups = { ...(draft.groups ?? {}) };
-                  const group = { ...(groups[groupName] ?? {}) };
-                  if (on) group.surface = true;
-                  else delete (group as Record<string, unknown>).surface;
-                  // drop a group entry that carries nothing else, so toggling on
-                  // and back off leaves the config byte-identical
-                  if (Object.keys(group).length === 0) delete groups[groupName];
-                  else groups[groupName] = group;
-                  if (Object.keys(groups).length === 0) delete draft.groups;
-                  else draft.groups = groups;
-                  // a family-level `false` only exists to escape a group that opts
-                  // in; once the group is off it is noise, so clear it
-                  if (!on) {
-                    draft.colors.forEach((color) => {
-                      if (color.name.split('.')[0] === groupName && color.surface === false) {
-                        delete color.surface;
-                      }
-                    });
-                  }
-                })
-              }
-              onUpdateTheme={(mutate) =>
-                updateConfig((draft) => {
-                  if (!draft.theme) {
-                    draft.theme = JSON.parse(JSON.stringify(DEFAULT_THEME)) as ThemeConfig;
-                  }
-                  mutate(draft.theme);
-                })
-              }
+              onToggleSurface={(colorName, on) => toggleSurface(studio, colorName, on)}
+              onToggleGroupSurface={(groupName, on) => toggleGroupSurface(studio, groupName, on)}
+              onUpdateTheme={(mutate) => updateBalances(studio, mutate)}
             />
           </>
         )}
         {/* Themes are DERIVED from the surfaces opt-in of the view above - same axis, one step down. */}
-        {view === 'themes' && <ThemesManager config={config} report={report} guard={guard} />}
+        {view === 'themes' && <ThemesManager config={config} report={report} guard={ask} />}
         {view === 'groups' && (
           <GroupsManager
             config={config}
             groups={groups}
             scaleNamesFor={(formula) => Object.keys(ratioSetFor(formula))}
             labelFor={scaleLabel}
-            preview={fullScales}
-            previewError={fullScalesError}
-            onUpdateGroup={(groupName, patch) =>
-              updateConfig((draft) => {
-                const cleaned: GroupConfig = {};
-                if (patch.ratios !== undefined) cleaned.ratios = patch.ratios;
-                if (patch.formula !== undefined) cleaned.formula = patch.formula;
-                if (patch.export !== undefined) cleaned.export = patch.export;
-                const nextGroups = { ...(draft.groups ?? {}) };
-                if (Object.keys(cleaned).length === 0) delete nextGroups[groupName];
-                else nextGroups[groupName] = cleaned;
-                if (Object.keys(nextGroups).length === 0)
-                  delete (draft as Record<string, unknown>).groups;
-                else draft.groups = nextGroups;
-              })
-            }
+            preview={generation?.scales ?? null}
+            previewError={generation?.error ?? null}
+            onUpdateGroup={(groupName, patch) => updateGroup(studio, groupName, patch)}
             selected={batchSelection}
             onToggleSelect={toggleBatch}
             exportNames={allExportNames}
@@ -2469,36 +1661,15 @@ export function App({
           initialExport={batchModal.initialExport}
           onSave={saveBatch}
           onExport={(names) =>
-            guard({
+            ask({
               label: msg('Export selection'),
               proceed: msg('Export anyway'),
-              run: () => exportSelection(names),
+              run: () => exportSelection(studio, names),
             })
           }
           onClose={() => setBatchModal(null)}
         />
       )}
-
-      {/* on document.body: the Config menu of the bar exports from any section, while the App
-          stays hidden under the ones that are not Colors */}
-      {pendingExport &&
-        createPortal(
-          <GateDialog
-            action={pendingExport}
-            report={report}
-            onCancel={() => setPendingExport(null)}
-            onConfirm={() => {
-              setPendingExport(null);
-              pendingExport.run();
-            }}
-            onReview={() => {
-              setPendingExport(null);
-              setBatchModal(null);
-              setView('contrast');
-            }}
-          />,
-          document.body,
-        )}
     </div>
   );
 }

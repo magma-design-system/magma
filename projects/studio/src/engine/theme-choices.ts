@@ -6,7 +6,7 @@ import type { ColorMode } from '@maggioli-design-system/design-tokens/src/lib/th
   missing is the theme Magma ships from the family, then the base (themes.ts). They belong to the
   studio, not to one page: the Theme section shows the theme as the Themes page defines it, a
   theme of one mode in that mode only (shell.tsx). They are kept in the storage of the studio
-  beside the draft (the store of src/theme-choices.ts), so a reload keeps them, until the
+  beside the draft (a signal of the state, src/state/theme-choices.ts), so a reload keeps them, until the
   configuration keeps the themes itself (#694, the theme files of a project).
 */
 
