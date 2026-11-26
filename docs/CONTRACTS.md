@@ -244,7 +244,7 @@ keep in step.
 - **Held by**: `check.usage-docs` (every symbol a guide names exists); `component-docs.ts` fails
   the build on a relative link of a shipped guide that does not resolve inside its package;
   `agent-docs-lib.spec.ts`; `nx run claude-plugin:check`; for the studio,
-  `projects/studio/test/paints.test.mts` (the kinds and the tones it reads).
+  `projects/studio/src/engine/paints.test.mts` (the kinds and the tones it reads).
 - **The Magma block** (#1524): what the install guide writes into a consumer's root agent file
   (step 3.8), between the markers of `projects/lint/src/core/agents.ts`; `magmaBlock` of
   `agent-docs-lib.ts` writes it, `check_setup` (`agent-context`, `projects/mcp/src/checks.ts`)
@@ -375,7 +375,9 @@ keep in step.
   `fileOf` of the render, with paths relative to the page; the static site of the studio
   (`projects/studio/build/site.ts`, on GitHub Pages), which writes as files what `fileOf` serves:
   the stylesheets its pages import and what they load, the folder of the loader, and every icon slug
-  of the installed sets (`slugFiles` of `projects/mcp/src/icons.ts`).
+  of the installed sets (`slugFiles` of `projects/mcp/src/icons.ts`); the Tailwind entry of the
+  studio (`projects/studio/src/tailwind.css`, #1401), the block of the guide with the theme of
+  Magma imported as `reference`, so its utilities read the variables of the installed sheets.
 - **Held by**: the `render_preview` tests: `STYLESHEETS` and `TAILWIND` equal the blocks of the
   guide, the Magma utilities compile on the classes of the markup, the widths
   and the themes come from the installed styles, and `mds-button` renders hydrated and
@@ -383,8 +385,11 @@ keep in step.
   artifact); `projects/studio/test/vendor.test.mts` (the imports of a page of the studio in the
   order and the layers of the list, the files served from the installed packages);
   `projects/studio/test/site.test.mts` (the static site, served by a server of files only,
-  opens each page with the icons and the fonts and nothing missing); the test of `slugFiles`
-  in `projects/mcp/test/mcp-tools.test.ts` (each slug is the file `fileOf` serves).
+  opens each page with the icons and the fonts and nothing missing);
+  `projects/studio/test/tailwind.test.mts` (each name of the theme the installed sheets do not
+  define falls back on one they define, the literals listed with their reason; the bundle declares
+  none, and every class a page writes reaches it); the test of `slugFiles` in
+  `projects/mcp/test/mcp-tools.test.ts` (each slug is the file `fileOf` serves).
 
 ## The sources of the wrappers
 

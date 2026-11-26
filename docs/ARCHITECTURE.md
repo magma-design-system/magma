@@ -323,14 +323,18 @@ tests it when it or `design-tokens` changes.
 - **Magma as an external vendor** (section 1): the studio never bundles the Magma components nor
   their stylesheets. Its pages load them as a render of the MCP server does, with the code of the
   render (`stylesheetImports`, `loaderOf`, `fileOf` of `projects/mcp/src/render.ts`), from
-  the installed magma: in this repository the build of `stencil`, an implicit dependency.
+  the installed magma: in this repository the build of `stencil`, an implicit dependency. Its
+  pages are written in the Tailwind layer of `styles` (#1401), the theme imported as `reference`:
+  the bundle declares no variable of the theme, and each utility reads the installed one.
 - **The shell** follows the app-shell block: three sections, Colors (the pages of the playground,
   from a menu that opens with the verdict of the contrast gate), Theme (the theme full screen in an
   iframe, its controls over it) and Behavior (design language, patterns, blocks, from a menu). A
   section that opens its pages from a menu is a case the app-shell block does not have yet.
 - **Folders by layer** (#1397): `build/` for what runs in Node (the plugins of Vite, the static
-  site), `src/engine/` for what computes and paints with no Preact and no state, `src/shared/` for
-  what several pages use; imports go one way (`engine` <- `shared` <- the pages), held by ESLint.
+  site), `src/engine/` for what computes and paints with no Preact and no state, `src/state/` for
+  the work in Preact Signals, `src/shared/` for what several pages use (the table of the pages
+  among it), `src/features/` for a page each, `src/app/` for the shell and the router; imports go
+  one way (`engine` <- `state` <- `features` <- `app`, `shared` under the pages), held by ESLint.
 - **Two hosts, one app** (#695): the docs site mounts it with nothing to install, and a command of
   the `magma` package serves it inside a project, on its `magma/` folder.
 - **Published beside the Storybook**: the studio of `main` is on GitHub Pages at
