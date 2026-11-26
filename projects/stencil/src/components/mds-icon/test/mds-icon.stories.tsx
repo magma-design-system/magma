@@ -1,4 +1,5 @@
 import { h } from '@stencil/core';
+import { StateCell, StatesGrid } from '@fixture/states';
 import { iconsDictionary, mggIconsDictionary, svgIconsDictionary } from '@type/icon';
 import { useState } from 'react';
 import svgIconPackage from '@maggioli-design-system/svg-icons/package.json';
@@ -149,4 +150,67 @@ const ListIconsTemplate = () => {
 
 export const ListIcons = {
   render: ListIconsTemplate,
+};
+
+/**
+ * Every state of an icon once the story has opened (#1440, @fixture/states): an icon of each
+ * set, by name, and the two other sources it takes (a base64 `data:` URI and the markup of an
+ * svg); its sizes, set by the width of the host (24 px by default, `w-600`); the inks it takes,
+ * the `fill` of the roles a product paints an icon with, the last one on the solid fill it goes
+ * with; without a name, it draws nothing; with a name that is no file of the set, it draws
+ * nothing either, after the request for the file fails (a 404 in the console, the state itself).
+ * An icon has no interaction: no play function.
+ */
+interface IconState {
+  state: string;
+  icon: { name?: string; class?: string };
+  surface?: string;
+}
+
+const iconStates: IconState[] = [
+  { state: 'rest, no ink', icon: { name: 'mi/baseline/home' } },
+  { state: 'set mi, outline', icon: { name: 'mi/outline/home', class: 'fill-fg-default' } },
+  { state: 'set mi, round', icon: { name: 'mi/round/email', class: 'fill-fg-default' } },
+  { state: 'set mdi', icon: { name: 'mdi/alien', class: 'fill-fg-default' } },
+  { state: 'set mgg', icon: { name: 'mgg/abitazione-principale', class: 'fill-fg-default' } },
+  { state: 'base64', icon: { name: base64IconEncoded, class: 'fill-fg-default' } },
+  { state: 'svg markup', icon: { name: svgIconDecoded, class: 'fill-fg-default' } },
+  { state: 'size 400', icon: { name: 'mi/baseline/home', class: 'fill-fg-default w-400' } },
+  { state: 'size 600, default', icon: { name: 'mi/baseline/home', class: 'fill-fg-default' } },
+  { state: 'size 900', icon: { name: 'mi/baseline/home', class: 'fill-fg-default w-900' } },
+  { state: 'size 1200', icon: { name: 'mi/baseline/home', class: 'fill-fg-default w-1200' } },
+  { state: 'size 2400', icon: { name: 'mi/baseline/home', class: 'fill-fg-default w-2400' } },
+  { state: 'ink fg-default', icon: { name: 'mi/baseline/email', class: 'fill-fg-default' } },
+  { state: 'ink fg-muted', icon: { name: 'mi/baseline/email', class: 'fill-fg-muted' } },
+  { state: 'ink fg-subtle', icon: { name: 'mi/baseline/email', class: 'fill-fg-subtle' } },
+  { state: 'ink fg-disabled', icon: { name: 'mi/baseline/email', class: 'fill-fg-disabled' } },
+  { state: 'ink accent-fg', icon: { name: 'mi/baseline/email', class: 'fill-accent-fg' } },
+  { state: 'ink info-fg', icon: { name: 'mi/baseline/info', class: 'fill-info-fg' } },
+  { state: 'ink success-fg', icon: { name: 'mi/baseline/check-circle', class: 'fill-success-fg' } },
+  { state: 'ink warning-fg', icon: { name: 'mi/baseline/warning', class: 'fill-warning-fg' } },
+  { state: 'ink danger-fg', icon: { name: 'mi/baseline/cancel', class: 'fill-danger-fg' } },
+  {
+    state: 'ink accent-on-emphasis, on its fill',
+    icon: { name: 'mi/baseline/email', class: 'fill-accent-on-emphasis' },
+    surface: 'bg-accent-emphasis',
+  },
+  { state: 'without a name', icon: {} },
+  { state: 'a name that is no file', icon: { name: 'mi/baseline/icona-inesistente' } },
+];
+
+const TemplateStates = () => (
+  <StatesGrid>
+    {iconStates.map(({ state, icon, surface }) => (
+      <StateCell key={state} state={state}>
+        <div class={`flex p-200 rounded-md ${surface ?? ''}`}>
+          {/* `name` is required: one state leaves it out on purpose */}
+          <mds-icon {...(icon as { name: string })}></mds-icon>
+        </div>
+      </StateCell>
+    ))}
+  </StatesGrid>
+);
+
+export const States = {
+  render: TemplateStates,
 };

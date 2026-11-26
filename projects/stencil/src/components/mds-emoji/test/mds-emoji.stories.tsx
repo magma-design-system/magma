@@ -1,4 +1,5 @@
 import { h } from '@stencil/core';
+import { StateCell, StatesGrid } from '@fixture/states';
 // import clsx from 'clsx'
 import { useEffect, useState } from 'react';
 import { nameDictionary } from '../meta/dictionary';
@@ -119,4 +120,43 @@ const Template = (args) => {
 
 export const Default = {
   render: Template,
+};
+
+/**
+ * Every state of an emoji once the story has opened (#1440, @fixture/states): each `name` at
+ * rest, at the size of the host (48 px by default, `w-1200 h-1200`) and larger, and a name the
+ * component does not know, which draws no face (and warns in the console). The expressions
+ * (`agree`, `smile`, `disagree`, `startThinking`), the blinking and the pointer tracking are
+ * animations started by methods, with no property that says they were reached: they stay in
+ * the Default story, which drives them, and this story has no play function.
+ */
+interface EmojiState {
+  state: string;
+  emoji: Record<string, string>;
+}
+
+const emojiStates: EmojiState[] = [
+  { state: 'rest, mia', emoji: { name: 'mia' } },
+  { state: 'simi', emoji: { name: 'simi' } },
+  { state: 'mia, size 2400', emoji: { name: 'mia', class: 'w-2400 h-2400' } },
+  { state: 'simi, size 2400', emoji: { name: 'simi', class: 'w-2400 h-2400' } },
+  { state: 'mia, size 4800', emoji: { name: 'mia', class: 'w-4800 h-4800' } },
+  { state: 'simi, size 4800', emoji: { name: 'simi', class: 'w-4800 h-4800' } },
+  { state: 'a name it does not know', emoji: { name: 'gatto' } },
+];
+
+const TemplateStates = () => (
+  <StatesGrid>
+    {emojiStates.map(({ state, emoji }) => (
+      <StateCell key={state} state={state}>
+        <div class="flex">
+          <mds-emoji {...emoji}></mds-emoji>
+        </div>
+      </StateCell>
+    ))}
+  </StatesGrid>
+);
+
+export const States = {
+  render: TemplateStates,
 };

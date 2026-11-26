@@ -1,6 +1,7 @@
 import { usageDictionary } from '../meta/dictionary';
 import { UsageType } from '../meta/types';
 import { h } from '@stencil/core';
+import { StateCell, StatesGrid } from '@fixture/states';
 
 export default {
   title: 'UI / Content / Usage',
@@ -79,4 +80,63 @@ export const Icon = {
     icon: 'mi/baseline/account-tree',
     variant: 'do',
   },
+};
+
+/**
+ * Every state of a usage block once the story has opened (#1440, @fixture/states): each
+ * `variant` with its own label and icon (`info` is the one at rest), a label of its own
+ * (`alias`), an icon of its own, an empty `icon` that falls back to the one of the variant, and
+ * a guidance long enough to wrap over several paragraphs. A usage block has no interaction: no
+ * play function.
+ */
+interface UsageState {
+  state: string;
+  usage?: Record<string, string>;
+  text?: string[];
+}
+
+const guidance = ['Scrivi il titolo della pagina con la prima lettera maiuscola e senza punto.'];
+
+const usageStates: UsageState[] = [
+  { state: 'rest, info', text: guidance },
+  { state: 'variant do', usage: { variant: 'do' }, text: guidance },
+  { state: 'variant dont', usage: { variant: 'dont' }, text: guidance },
+  { state: 'variant warn', usage: { variant: 'warn' }, text: guidance },
+  { state: 'alias', usage: { variant: 'do', alias: 'Struttura consigliata' }, text: guidance },
+  {
+    state: 'icon of its own',
+    usage: { variant: 'do', alias: 'Struttura consigliata', icon: 'mi/baseline/account-tree' },
+    text: guidance,
+  },
+  {
+    state: 'empty icon, the one of the variant',
+    usage: { variant: 'warn', icon: '' },
+    text: guidance,
+  },
+  {
+    state: 'long guidance',
+    usage: { variant: 'dont' },
+    text: [
+      'Non usare troppi stili nello stesso paragrafo: uno per il titolo, uno per il sottotitolo e uno per il testo, più un eventuale grassetto per sottolineare un concetto.',
+      'Non modificare gli stili di testo stabiliti: usa solo quelli presenti nel design system, così che una pagina resti leggibile anche quando cambia il tema.',
+    ],
+  },
+];
+
+const TemplateStates = () => (
+  <StatesGrid>
+    {usageStates.map(({ state, usage, text }) => (
+      <StateCell key={state} state={state}>
+        <mds-usage {...usage}>
+          {text?.map((paragraph) => (
+            <mds-text key={paragraph}>{paragraph}</mds-text>
+          ))}
+        </mds-usage>
+      </StateCell>
+    ))}
+  </StatesGrid>
+);
+
+export const States = {
+  render: TemplateStates,
 };

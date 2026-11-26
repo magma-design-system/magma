@@ -1,4 +1,5 @@
 import { h } from '@stencil/core';
+import { StateCell, StatesGrid } from '@fixture/states';
 import { bindingDictionary, formatDictionary, poseDictionary } from '../meta/dictionary';
 import { loadingDictionary } from '@type/loading';
 
@@ -472,4 +473,80 @@ export const Catalogue = {
       </div>
     </div>
   ),
+};
+
+/**
+ * Every state of a book once the story has opened (#1440, @fixture/states), on the local covers
+ * of the other stories: at rest a paperback with a cover image, standing on its spine; each
+ * `pose`; each `binding`, the unbound one a document; the formats, from the image (a 17x24
+ * cover, a square one) and named, without an image, portrait and landscape; the cover drawn
+ * without an image, with the name or the mark of the publisher and a mark that does not load,
+ * which leaves the name; a cover image that does not load (a file that is deliberately missing:
+ * its 404 is in the console), which leaves the drawn cover; the spine without text, a thin
+ * book, and a thick one; decorative, with an empty `alt`. The book turns toward the pointer and
+ * follows a drag, a pose of the moment with no property to check: no play function.
+ */
+interface BookState {
+  state: string;
+  book: Record<string, string | number>;
+}
+
+const printed = { name: titles[2], publisher: 'Maggioli Editore', src: cover(3) };
+
+const bookStates: BookState[] = [
+  { state: 'rest, paperback, spine', book: printed },
+  ...poseDictionary
+    .filter((pose) => pose !== 'spine')
+    .map((pose) => ({ state: `pose ${pose}`, book: { ...printed, pose } })),
+  { state: 'binding hardcover', book: { ...printed, binding: 'hardcover', pages: 640 } },
+  {
+    state: 'binding none, a document',
+    book: {
+      binding: 'none',
+      name: 'Verbale della seduta del Consiglio comunale n. 14',
+      publisher: 'Comune di Valfiorita',
+      src: documentPage,
+      pages: 120,
+    },
+  },
+  {
+    state: 'format auto, square cover',
+    book: { src: squareCover, name: 'Codici', author: 'Redazione' },
+  },
+  { state: 'format a4, no image', book: { ...record, format: 'a4' } },
+  { state: 'format a5, no image', book: { ...record, format: 'a5' } },
+  { state: 'format b5, no image', book: { ...record, format: 'b5' } },
+  { state: 'format 29.7x21, landscape', book: { ...record, format: '29.7x21' } },
+  { state: 'drawn cover', book: { ...record, pages: 640 } },
+  {
+    state: 'drawn cover, publisher mark',
+    book: { ...record, 'publisher-logo': publisherLogo, pages: 640 },
+  },
+  {
+    state: 'publisher mark that does not load',
+    book: { ...record, 'publisher-logo': './marchio-mancante.svg', pages: 640 },
+  },
+  {
+    state: 'cover image that does not load',
+    book: { ...record, src: './copertina-mancante.webp', pages: 640 },
+  },
+  { state: 'thin, no text on the spine', book: { ...record, pages: 40 } },
+  { state: 'thick', book: { ...printed, pages: 1000 } },
+  { state: 'decorative, empty alt', book: { ...printed, alt: '' } },
+];
+
+const TemplateStates = () => (
+  <StatesGrid>
+    {bookStates.map(({ state, book }) => (
+      <StateCell key={state} state={state}>
+        <div class="p-600">
+          <mds-book class="mx-auto w-full max-w-[200px]" {...book}></mds-book>
+        </div>
+      </StateCell>
+    ))}
+  </StatesGrid>
+);
+
+export const States = {
+  render: TemplateStates,
 };

@@ -1,5 +1,6 @@
 import { loadingDictionary } from '@type/loading';
 import { h } from '@stencil/core';
+import { StateCell, StatesGrid } from '@fixture/states';
 import { useEffect, useState } from 'react';
 import { iconsDictionary, mggIconsDictionary, svgIconsDictionary } from '@type/icon';
 
@@ -97,4 +98,48 @@ export const Icon = {
     src: urlPage,
     icon: 'mgg/google-book-large',
   },
+};
+
+/**
+ * Every state of a URL view once the story has opened (#1440, @fixture/states), each a view
+ * 400 px tall (`h-10000`: on its own the view takes the height of the screen, as the window of
+ * a modal): the page of the other stories, of this same Storybook, so the frame shows a page
+ * that does not change and that axe can read; the header with the domain of the page, with a
+ * label, with an icon of its own and with a label too long for it; without a source, the frame
+ * empty. The close button emits `mdsUrlViewClose` and closes the modal around the view, which
+ * the other stories open: no state of the view, no play function.
+ */
+interface UrlViewState {
+  state: string;
+  view: { src?: string; label?: string; icon?: string };
+}
+
+const urlViewStates: UrlViewState[] = [
+  { state: 'rest, the domain', view: { src: urlPage } },
+  { state: 'label', view: { src: urlPage, label: 'Pagina di esempio' } },
+  { state: 'icon of its own', view: { src: urlPage, icon: 'mgg/google-book-large' } },
+  {
+    state: 'long label',
+    view: {
+      src: urlPage,
+      label:
+        'Regolamento per la concessione di contributi alle associazioni del territorio comunale',
+    },
+  },
+  { state: 'without a source', view: {} },
+];
+
+const TemplateStates = () => (
+  <StatesGrid>
+    {urlViewStates.map(({ state, view }) => (
+      <StateCell key={state} state={state}>
+        {/* `src` is required: one state leaves it out on purpose */}
+        <mds-url-view class="h-10000" {...(view as { src: string })}></mds-url-view>
+      </StateCell>
+    ))}
+  </StatesGrid>
+);
+
+export const States = {
+  render: TemplateStates,
 };

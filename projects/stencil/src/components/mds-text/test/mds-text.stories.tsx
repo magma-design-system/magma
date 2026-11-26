@@ -1,5 +1,6 @@
 import { typographyDictionary, typographyVariationsDictionary } from '@type/typography';
 import { h } from '@stencil/core';
+import { StateCell, StatesGrid } from '@fixture/states';
 import { useState } from 'react';
 import { tagsDictionary, textAnimateDictionary, textTitleRoleDictionary } from '../meta/dictionary';
 import { truncateDictionary } from '@type/text';
@@ -285,4 +286,84 @@ export const VariantCodeHack = {
 
 export const TextBox = {
   render: TemplateTextBox,
+};
+
+/**
+ * Every state of a text once the story has opened (#1440, @fixture/states): each `typography`
+ * once, at rest in the tag it takes (`snippet` and `hack` take `code`, the tag with a box of its
+ * own), the titles by role in the tag of their place in the outline, the reading variant of the
+ * three typographies that have one, each `truncate` on a text too long for its cell, the text
+ * given by `text` instead of the slot, and the `yugop` animation at rest (the first value is
+ * shown as it is). The headings follow each other one level at a time, as in a page. The
+ * reveal of the animation runs on a later change of `text`, frame by frame, which a check on a
+ * property cannot tell from the text at rest: it stays in the Animation story, and the story
+ * has no play function.
+ */
+interface TextState {
+  state: string;
+  text?: Record<string, string>;
+  content?: string;
+  style?: Record<string, string>;
+}
+
+const sample = 'Certificato di residenza storico';
+const paragraph =
+  "Il certificato di residenza attesta il comune in cui una persona ha la residenza anagrafica. Si richiede all'ufficio anagrafe o online, con l'identità digitale, ed è valido sei mesi dalla data del rilascio.";
+
+const textStates: TextState[] = [
+  { state: 'rest, detail', content: sample },
+  ...typographyDictionary
+    .filter((typography) => typography !== 'detail')
+    .map((typography) => ({
+      state: `typography ${typography}`,
+      text: { typography },
+      content: sample,
+    })),
+  { state: 'title page, tag h1', text: { typography: 'page', tag: 'h1' }, content: sample },
+  { state: 'title section, tag h2', text: { typography: 'section', tag: 'h2' }, content: sample },
+  { state: 'title dialog, tag h2', text: { typography: 'dialog', tag: 'h2' }, content: sample },
+  { state: 'title part, tag h3', text: { typography: 'part', tag: 'h3' }, content: sample },
+  { state: 'title group, tag h4', text: { typography: 'group', tag: 'h4' }, content: sample },
+  {
+    state: 'paragraph, variant read',
+    text: { typography: 'paragraph', variant: 'read' },
+    content: paragraph,
+  },
+  {
+    state: 'detail, variant read',
+    text: { typography: 'detail', variant: 'read' },
+    content: paragraph,
+  },
+  {
+    state: 'caption, variant read',
+    text: { typography: 'caption', variant: 'read' },
+    content: paragraph,
+  },
+  { state: 'long text, reading measure', text: { typography: 'paragraph' }, content: paragraph },
+  { state: 'truncate word', text: { truncate: 'word' }, content: paragraph },
+  {
+    state: 'truncate all, two lines',
+    text: { truncate: 'all' },
+    content: paragraph,
+    style: { '--mds-text-line-clamp': '2' },
+  },
+  { state: 'truncate none', text: { truncate: 'none' }, content: paragraph },
+  { state: 'text by the text prop', text: { text: 'Carta di identità elettronica' } },
+  { state: 'animation yugop, at rest', text: { animation: 'yugop', text: 'Pratica protocollata' } },
+];
+
+const TemplateStates = () => (
+  <StatesGrid>
+    {textStates.map(({ state, text, content, style }) => (
+      <StateCell key={state} state={state}>
+        <mds-text {...text} style={style}>
+          {content}
+        </mds-text>
+      </StateCell>
+    ))}
+  </StatesGrid>
+);
+
+export const States = {
+  render: TemplateStates,
 };
