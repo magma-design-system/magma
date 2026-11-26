@@ -11,6 +11,9 @@ Ogni risposta dice da dove viene: **(persona)** l'ha detta o scelta chi bilancia
 **(proposta)** è un'inferenza da confermare. Lo stato del tema descritto è quello di Magma 3
 (branch `1292-magma-3` più la PR #1474).
 
+Rivisto con `v2:design-reframe`: il registro dei cambi, con le risposte di ogni giro, è la sezione
+12.
+
 ## 1. Obiettivo
 
 Alla fine c'è un **tema rilasciabile**: per Magma, il suo preset, con cui si compila; per un
@@ -72,6 +75,8 @@ Domande aperte).
 - **Cosa può modificare**: tutto, comprese le rampe di tutti i token e i pesi, che
   stanno nel preset del prodotto, sopra quello di Magma. In futuro anche padding e
   scala dei componenti. Nessuna azione è riservata a chi bilancia Magma. (persona)
+- **Il numero dei gradini** cambia solo su una scala non integrata: finché una famiglia usa una
+  scala non compatibile con Magma, il preset non vale come tema di Magma. (persona, 2026-11-26)
 
 ### Fuori dallo studio
 
@@ -115,7 +120,12 @@ deciso il 2026-11-20 con `taxonomy` (persona). Quelle che toccano questo modello
   resta del componente;
 - **neutri**: il gruppo delle famiglie `tone`; **tono** resta la prop dei componenti;
 - **candidato**: un'alternativa generata e misurata, di un'eccezione o di un tema da un colore di
-  brand.
+  brand;
+- **integrata**: una scala di contrasto (o una variante) che arriva con il motore di
+  design-tokens; le altre scale non hanno un nome loro;
+- **compatibile con Magma**: una scala con tanti gradini quanti ne nominano i ruoli di Magma (oggi
+  dieci), e per estensione una famiglia su una scala così e un preset le cui famiglie lo sono
+  tutte. (persona, 2026-11-26)
 
 ## 4. Entità
 
@@ -162,10 +172,15 @@ Altre relazioni:
   - aprire: dal preset, da un tema pronto, da un colore di brand, dalla bozza;
   - salvare (nel comando di un progetto) o scaricare (su Pages);
   - annullare ogni passo. (persona)
-- **Stati**: modificato o no, rispetto a quello caricato; pronto a uscire, cioè verde e giudicato
-  sulla scena in ogni tema e modalità. (persona)
-- **Sempre visibile**: le modifiche fatte (quante, in quale passo); se l'host salva o scarica.
-  (persona)
+- **Stati**:
+  - modificato o no, rispetto a quello caricato; pronto a uscire, cioè verde e giudicato sulla
+    scena in ogni tema e modalità (persona);
+  - vale come tema di Magma o no: no finché una famiglia usa una scala non compatibile con
+    Magma; una scala che nessuna famiglia usa non conta. (proposta, 2026-11-26)
+- **Sempre visibile**: le modifiche fatte (quante, in quale passo); se l'host salva o scarica
+  (persona); quando non vale come tema di Magma (proposta, 2026-11-26).
+- **Uscire quando non vale come tema di Magma**: si può, chiedendo, come con la verifica rossa.
+  (proposta, 2026-11-26)
 
 ### Famiglia
 
@@ -173,20 +188,36 @@ Altre relazioni:
 - **Contiene**: colore chiave, colorspace, saturazione, spostamento di tonalità, scala di
   contrasto, formula, seed, adesione alle superfici, export, alias. (progetto: README di
   design-tokens)
-- **Figli**: la rampa per modalità, gradini 01..10 più il seed.
+- **Figli**: la rampa per modalità, con tanti gradini quanti ne ha la sua scala (01..10 su una
+  scala compatibile con Magma) più il seed.
 - **Azioni**: aggiungere, cambiare, eliminare (con annulla), farne un alias. (progetto, proposta)
-- **Stati**: usata da un tema, come tinta o accento, oppure no. (persona)
+- **Stati**: usata da un tema, come tinta o accento, oppure no (persona); su una scala non
+  compatibile con Magma, e allora i ruoli che nominano i suoi gradini non reggono (proposta,
+  2026-11-26; progetto: semantic `hueSteps`).
 - **Sempre visibile**: cosa dipinge (i componenti, il tema in cui si vede) e le coppie della
-  verifica che tocca. (persona)
+  verifica che tocca (persona); il badge della sua scala (proposta, 2026-11-26).
 
 ### Scala di contrasto
 
-- **Scopo**: gli obiettivi dei dieci gradini, condivisi tra le famiglie che la usano. È
-  un'entità a sé. (persona)
+- **Scopo**: gli obiettivi dei gradini, condivisi tra le famiglie che la usano. È un'entità a sé.
+  (persona)
 - **Contiene**: gradini, minimo, massimo, distribuzione (un easing o manuale). (progetto: README
   dello studio)
-- **Azioni**: aggiungere, duplicare, rinominare, eliminare (con annulla), regolare. (progetto)
-- **Sempre visibile**: le famiglie che la usano. (proposta)
+- **Tipi** (persona, 2026-11-26):
+  - integrata, cioè arrivata con il motore (`default`, `tint`, `tone`, `v1`, `v2`): gli obiettivi
+    si regolano, il numero dei gradini resta quello che ha;
+  - le altre, nuove o duplicate: anche il numero dei gradini si cambia, da 2 a 24.
+- **Azioni**: aggiungere, duplicare, rinominare, eliminare (con annulla), regolare; cambiare il
+  numero dei gradini, solo se non è integrata. (progetto; persona per l'ultima)
+- **Stati**: compatibile con Magma quando ha tanti gradini quanti ne nominano i ruoli (semantic
+  `scaleSteps`, oggi 10), altrimenti no. Integrata non vuol dire compatibile: `v1` ne ha 20.
+  (persona; progetto: `default-color.json`)
+- **Perché conta**: i ruoli di Magma nominano i gradini per numero (la superficie di un colore è
+  il `09`, il testo il `05`). Con più gradini ogni ruolo cambia valore, con meno punta a gradini
+  che non ci sono. Spostare gli obiettivi invece è sicuro: il nome resta e la verifica misura.
+  (progetto: semantic `hueSteps`, `scaleSteps`)
+- **Sempre visibile**: le famiglie che la usano (proposta); il badge "compatibile con Magma" o no,
+  con una riga di perché. (persona, 2026-11-26)
 
 ### Pesi
 
@@ -290,7 +321,8 @@ Introduzione -> Partenza -> 1. Colori (-> Scala) -> 2. Pesi -> 3. Temi -> 4. Ecc
 ```
 
 La barra dello studio porta sempre con sé:
-- le modifiche fatte e "salva o scarica", cioè ciò che del preset è sempre visibile;
+- le modifiche fatte e "salva o scarica", cioè ciò che del preset è sempre visibile, e lo stato
+  del preset quando non vale come tema di Magma (proposta, 2026-11-26);
 - l'uscita;
 - le preferenze della persona.
 
@@ -320,7 +352,7 @@ La barra dello studio porta sempre con sé:
 - **Intorno**:
   - le famiglie, in linea: elenco accanto per gruppo, menu o ricerca, oppure dalla scena;
   - tutti i campi della famiglia, in linea;
-  - la scala, in linea per sceglierla; si modifica nella sua pagina, Scala;
+  - la scala, in linea per sceglierla, con il suo badge; si modifica nella sua pagina, Scala;
   - la scena del passo, accanto: i componenti che la famiglia dipinge;
   - le coppie toccate, in linea;
   - i temi che la usano, nominati, con un link a Temi. (persona; proposta per gli ultimi due)
@@ -334,7 +366,10 @@ La barra dello studio porta sempre con sé:
   pagina sua. (persona)
 - **Intorno**:
   - le famiglie che la usano, in linea, una come campione;
-  - la distribuzione dei gradini, in linea;
+  - il badge "compatibile con Magma" o no, accanto al nome, con una riga di perché (persona,
+    2026-11-26);
+  - la distribuzione dei gradini, in linea; il loro numero solo su una scala non integrata, mentre
+    su una integrata una riga dice che per cambiarlo la si duplica (persona, 2026-11-26);
   - la scena del campione, accanto: i suoi componenti in ogni stato;
   - le coppie toccate. (progetto, proposta)
 - **Ingresso**: la scala di una famiglia. **Uscita**: torna alla famiglia, con un link che la
@@ -388,7 +423,8 @@ La barra dello studio porta sempre con sé:
 - **Intorno**:
   - ogni tema per modalità, in linea, con il segno di "guardato";
   - la sua scena e le sue coppie: che bloccano, segnalate e debito;
-  - l'uscita, salvare o scaricare, con una domanda se la verifica è rossa. (persona)
+  - l'uscita, salvare o scaricare, con una domanda se la verifica è rossa (persona) o se il
+    preset non vale come tema di Magma (proposta, 2026-11-26).
 - **Ingresso**: Eccezioni, o l'avviso di un tema rotto. **Uscita**: l'uscita, oppure il passo a
   cui appartiene una coppia.
 
@@ -421,7 +457,7 @@ principio.
 | Introduzione | `app-shell` | `surfaces` (la banda che introduce) |
 | Partenza | `page-header` | `surfaces` (un elemento di un insieme), `actions` |
 | Colori, Temi | `record-detail` con l'elenco accanto; lacuna: lista e dettaglio (#1262) | `surfaces`, `rhythm` |
-| Scala | `record-detail` | `rhythm` |
+| Scala | `record-detail`; lo stato "compatibile con Magma" come `mds-badge` con la sua etichetta (`record-detail`, `labels-and-values`) | `rhythm` |
 | Pesi | lacuna: spazio di lavoro con anteprima | `rhythm`, `titles` |
 | Eccezioni | lacuna: confrontare alternative | `density` |
 | Giro completo | lacuna: revisione a voci; `confirm-action` per uscire con la verifica rossa | `actions` |
@@ -537,8 +573,31 @@ Finché un conflitto non è risolto, si costruisce come dice il design system.
    verifica fallirebbe? (dalla nota, non chiesta)
 9. **Solo desktop** e `app-shell`, che vuole la barra a ogni larghezza: la barra resta usabile
    stretta, lo spazio di lavoro no? (proposta)
+10. **Una scala integrata ridefinita** dal preset con un altro numero di gradini
+    (`builtin-overridden` in `src/scales.tsx`): il numero resta quello della configurazione
+    caricata, come fa oggi "Reset", o torna a quello integrato? (proposta, 2026-11-26)
+11. **La compatibilità controllata anche dal motore**: dove il preset diventa tema di Magma (la
+    build di design-tokens, la CI), una famiglia su una scala non compatibile ferma la build?
+    Il badge dello studio direbbe allora la stessa cosa del controllo. (proposta, 2026-11-26)
 
 ## 11. Deroghe ai principi
 
 Nessuna per ora. (Nel formato v2 la sezione si chiama "Exceptions": rinominata per non
 confondersi con le eccezioni dei componenti.)
+
+## 12. Reframe
+
+### 2026-11-26: il numero dei gradini
+
+- **Richiesta** (persona): proteggere il sistema dei colori, che salta quando una scala di
+  contrasto cambia il numero dei gradini, lasciando la libertà di oggi.
+- **L'obiettivo è ancora quello?** Sì: il tema rilasciabile. Il numero libero resta come oggi, ma
+  la funzione dice in modo esplicito che, finché non si torna a 10 gradini, il preset non vale come
+  tema di Magma. (persona)
+- **Dove si rallenta oggi?** Sempre nell'andare avanti e indietro tra i controlli e la scena.
+  (persona)
+- **Cosa è cambiato**: le parole integrata e compatibile con Magma (sezione 3 e
+  [`GLOSSARY.md`](GLOSSARY.md)); chi fa il tema di un prodotto (2); Preset, Famiglia e Scala di
+  contrasto (4); Colori, Scala, la barra e Giro completo, ritoccate (5); il badge nel design
+  system (7); le domande 10 e 11 (10). Introduzione, Partenza, Pesi, Temi ed Eccezioni non
+  cambiano. Nessun conflitto nuovo con il design system.
