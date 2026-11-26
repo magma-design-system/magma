@@ -20,3 +20,12 @@
 @import '@maggioli-design-system/styles/dist/tailwind/theme.css' reference;
 @import '@maggioli-design-system/styles/dist/tailwind/typography.css' reference;
 @import '@maggioli-design-system/styles/dist/tailwind/utilities.css';
+
+/*
+  The thresholds of the container queries the classes write (`@max-<name>:`, `@min-<name>:`): each
+  is a `--container-<name>` in an @theme here, named after the limit it comes from, its reason
+  beside it, a literal since a container query reads no var() (as Magma's own --container-actions,
+  23.75rem, the threshold of the actions). One enters when a page written in classes needs it
+  (vittorio, 2026-11-26): the pages of #1401 need none, and the sheets that the views of
+  #1402-#1404 replace keep their literals, each with its reason beside it, until then.
+*/
