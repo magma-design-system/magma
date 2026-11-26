@@ -12,6 +12,7 @@
     "cover": "tsx build/cover.ts",
     "test": "vitest --run",
     "check.types": "tsc --noEmit -p tsconfig.json",
+    "check.lint": "eslint -c eslint.magma.config.mjs src && stylelint \"src/**/*.css\"",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },

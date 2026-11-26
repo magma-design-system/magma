@@ -10,6 +10,7 @@ nx run studio:build       # the static app, in dist/
 nx run studio:build.site  # the site for a static host, in dist-site/: the app and the Magma it loads
 nx run studio:test        # Vitest: node, jsdom, and the Playwright Chromium (*.e2e.mts, the static site)
 nx run studio:check.types # after a build: tsc on the sources, the tests and the build tools, as the CI types job
+nx run studio:check.lint  # after a build: the lint of Magma (strict) on the pages and the sheets, as the CI magma-lint job
 ```
 
 The port is pinned (`strictPort`): when 5177 is busy the studio is already running, so the server
@@ -480,12 +481,20 @@ The folders of the studio (#1397; #1399 moved the files into them, #1400 added `
 
 Imports go one way, and ESLint holds it (`no-restricted-imports` in `eslint.config.mjs`): a file
 of `engine` imports no other file of the studio but `shared/i18n/text.ts`, and types alone from
-`build/`; a file of `shared` imports nothing of the pages; a file of `state` imports the engine
-and `shared/i18n/text.ts`, never a page, `app/` or another part of `shared`. A test sits beside
-its module and may import what it is tested with. `test/` keeps the checks of the build, of the
-site and of the translations, and the tests of the pages until the pages move. Vitest runs
-`src/engine/`, `src/state/`, the router and the checks of the build in Node, every other
-`*.test.mts` in jsdom, every `*.e2e.mts` in Chromium.
+`build/`; a file of `shared` imports nothing of the pages; a file of `state` imports the engine,
+`shared/i18n/text.ts` and the table of the pages (`shared/routes/routes.ts`), never a page,
+`app/` or another part of `shared`. A test sits beside its module and may import what it is
+tested with. `test/` keeps the checks of the build, of the site and of the translations, and the
+tests of the pages until the pages move. Vitest runs `src/engine/`, `src/state/`, the table of
+the pages, the router and the checks of the build in Node, every other `*.test.mts` in jsdom,
+every `*.e2e.mts` in Chromium.
+
+The lint of Magma reads the studio as it reads a product (#1401, `docs/agents/lint.md`, preset
+`strict`): `magma/eslint` the markup of the pages, `class` included (`eslint.magma.config.mjs`),
+`magma/stylelint` their sheets (`stylelint.config.mjs`). Its rules read the Magma that is built,
+so they run in `nx run studio:check.lint` after a build, and in the `magma-lint` job of the
+studio workflow on the build artifact, not in `nx run studio:lint`, which the lint workflow runs
+with nothing built.
 
 The engine, `semantic.config.ts` and the theme files stay in `design-tokens`: the builds of
 `design-tokens` and `styles` read them, and moving them here would make `design-tokens` depend on
