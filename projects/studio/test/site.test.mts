@@ -8,7 +8,7 @@ import { chromium, type Browser, type Page } from 'playwright'
 import { afterAll, beforeAll, expect, test } from 'vitest'
 
 import { writeSite } from '../build/site.ts'
-import { COLORS_PAGES } from '../src/app/router.ts'
+import { COLORS_PAGES } from '../src/shared/routes/routes.ts'
 
 // The studio as a static site (site.ts), served as GitHub Pages serves it: files only, no Vite,
 // under the path of the project site. Each page opens with the icons and the fonts of Magma and

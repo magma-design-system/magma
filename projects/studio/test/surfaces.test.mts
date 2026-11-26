@@ -11,7 +11,7 @@ import { TEXT_ROLES } from '@maggioli-design-system/design-tokens/src/lib/text-r
 import { SurfaceManager } from '../src/surfaces.js'
 import { DEFAULT_TARGETS } from '@maggioli-design-system/design-tokens/src/lib/contrast-gate.js'
 import { gateFailureGroups, gateReport } from '../src/engine/gate.js'
-import { hrefOf } from '../src/app/router.js'
+import { hrefOf } from '../src/shared/routes/routes.js'
 import { LangProvider } from '../src/shared/i18n/i18n.js'
 import { textOf } from './text.mjs'
 

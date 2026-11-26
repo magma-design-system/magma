@@ -1,0 +1,20 @@
+/*
+  The Contrast check page (contrast-check.tsx): its layout is written in classes; here the sample
+  of a pair, the two colours the configuration generates, painted inline, so only their frame is
+  written: the text on its background, or the border around it.
+*/
+
+.contrast-sample {
+  align-items: center;
+  block-size: 1.5lh;
+  border: medium solid transparent;
+  border-radius: var(--magma-radius-sm);
+  box-sizing: border-box;
+  corner-shape: var(--magma-corner-shape);
+  display: inline-flex;
+  flex: none;
+  font-weight: 700;
+  inline-size: 3lh;
+  justify-content: center;
+  outline: thin solid rgb(var(--magma-border-muted));
+}

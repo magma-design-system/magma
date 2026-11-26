@@ -22,10 +22,10 @@
     `ui-chip--docs`), so no address is written without the index. Storybook's address: the port
     the `start` script of projects/stencil/package.json pins (`storybook dev -p <port>`);
   - the studio (`projects/studio/`): its pages and their addresses from
-    projects/studio/src/app/router.ts (`COLORS_PAGES`, `BEHAVIOR_PAGES`, `hrefOf`), at the port
+    projects/studio/src/shared/routes/routes.ts (`COLORS_PAGES`, `BEHAVIOR_PAGES`, `hrefOf`), at the port
     of `server.port` in projects/studio/vite.config.ts;
   - design tokens and styles (`projects/design-tokens/`, `projects/styles/`): no page of their
-    own; the Colors pages of the studio are the views of the tokens (router.ts), the components
+    own; the Colors pages of the studio are the views of the tokens (routes.ts), the components
     show the styles in Storybook;
   - a preview of a case (`<SOURCES.previews>/<folder>/<name>.html`): `/view/previews/<folder>/<name>`
     of serve.previews (`SOURCES`, `PORT` and the routes of projects/mcp/scripts/serve-previews.ts);
@@ -41,7 +41,7 @@ import {
   COLORS_PAGES,
   hrefOf,
   type Route,
-} from '../projects/studio/src/app/router.ts';
+} from '../projects/studio/src/shared/routes/routes.ts';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 

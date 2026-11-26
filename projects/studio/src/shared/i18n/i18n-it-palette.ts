@@ -1,5 +1,5 @@
 /*
-  The Italian of the Palette and the frame of the pages of Colors (app.tsx, the Config menu, Diffs, the batch export, the bridges of magma.tsx, the preview beside the Palette, the draft) (#1336), a part of the catalogue of the studio (i18n-it.ts): the English
+  The Italian of the Palette and the frame of the pages of Colors (app.tsx, the Config menu, the batch export, the bridges of magma.tsx, the preview beside the Palette, the draft) (#1336), a part of the catalogue of the studio (i18n-it.ts): the English
   text it translates is the key, and a key lives in one part only (test/i18n.test.mts).
 */
 export const IT_PALETTE: Record<string, string> = {
@@ -159,7 +159,7 @@ export const IT_PALETTE: Record<string, string> = {
     '{source} ha subito modifiche dopo il salvataggio di questa bozza',
 
   // what brings a configuration in and takes it out (app/config-menu.tsx, state/exports.ts), and the button of
-  // the gate dialog that runs it anyway (contrast.tsx)
+  // the gate dialog that runs it anyway (features/contrast-check/gate-dialog.tsx)
   'Import config': 'Importa configurazione',
   'it does not match the schema': 'non corrisponde allo schema',
   'Could not load {file}: {error}': 'Impossibile caricare {file}: {error}',
@@ -188,20 +188,6 @@ export const IT_PALETTE: Record<string, string> = {
   'Comma-separated, e.g. city, palette': 'Separati da virgole, es. city, palette',
   'Export selection': 'Esporta selezione',
   'Save export': 'Salva esportazione',
-
-  // the Diffs page (diff.tsx)
-  'Differences between the current palette and the one generated from the committed configuration. Changed steps are outlined; the badge shows the largest perceptual distance (deltaE) across the color.':
-    'Le differenze tra la palette attuale e quella generata dalla configurazione con cui si compila Magma. I gradini cambiati sono contornati; il badge mostra la distanza percettiva più grande (deltaE) tra i gradini del colore.',
-  'No differences from the committed configuration.':
-    'Nessuna differenza dalla configurazione con cui si compila Magma.',
-  // label and count, so Italian needs no agreement with the count
-  '{changed} changed, {added} new, {removed} removed':
-    'cambiati: {changed}, nuovi: {added}, rimossi: {removed}',
-  new: 'nuovo',
-  removed: 'rimosso',
-  '{step}: {from} to {to}': '{step}: da {from} a {to}',
-  '{step}: added ({value})': '{step}: aggiunto ({value})',
-  '{step}: {value} (unchanged)': '{step}: {value} (invariato)',
 
   // the side of the Palette: the ramps or the theme on a page (palette-side.tsx)
   Ramps: 'Rampe',

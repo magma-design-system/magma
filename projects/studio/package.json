@@ -12,6 +12,7 @@
     "cover": "tsx build/cover.ts",
     "test": "vitest --run",
     "check.types": "tsc --noEmit -p tsconfig.json",
+    "check.lint": "eslint -c eslint.magma.config.mjs src && stylelint \"src/**/*.css\"",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
@@ -19,8 +20,11 @@
     "@maggioli-design-system/design-tokens": "*",
     "@maggioli-design-system/identity": "*",
     "@maggioli-design-system/magma": "*",
+    "@maggioli-design-system/styles": "*",
     "@material-icons/svg": "1.0.33",
     "@preact/signals": "2.11.4",
+    "@tailwindcss/node": "4.3.5",
+    "@tailwindcss/vite": "4.3.5",
     "@testing-library/preact": "3.2.6",
     "apca-w3": "0.1.9",
     "chroma-js": "3.3.0",
@@ -30,6 +34,7 @@
     "jsdom": "27.4.0",
     "preact": "11.2.0",
     "sharp": "0.35.5",
+    "tailwindcss": "4.3.5",
     "vite": "8.4.0"
   },
   "repository": {

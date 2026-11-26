@@ -25,7 +25,7 @@ import { setThemeAccent, setThemeModes, setThemeName } from './state/theme-choic
 import type { GateReport, GateTheme } from './engine/gate.js';
 import { msg, rich, useT } from './shared/i18n/i18n.js';
 import { ThemeVerdict } from './shared/ui/verdict.js';
-import { hrefOf } from './app/router.js';
+import { hrefOf } from './shared/routes/routes.js';
 import './themes.css';
 
 /**

@@ -5,7 +5,7 @@ import committedConfig from '@maggioli-design-system/design-tokens/.magma-design
 import { DEFAULT_TARGETS } from '@maggioli-design-system/design-tokens/src/lib/contrast-gate.js'
 import { TEXT_ROLES } from '@maggioli-design-system/design-tokens/src/lib/text-role.mjs'
 
-import { BEHAVIOR_PAGES, COLORS_PAGES, hrefOf } from '../src/app/router.js'
+import { BEHAVIOR_PAGES, COLORS_PAGES, hrefOf } from '../src/shared/routes/routes.js'
 import {
   CHECKS,
   DEMO_STEPS,

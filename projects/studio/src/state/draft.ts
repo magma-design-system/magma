@@ -23,26 +23,6 @@ export function browserStorage(): KeptIn {
 }
 
 /**
- * The pages of the Colors section, by the id a saved draft carries (`view`): the router gives each
- * its address and its name (app/router.ts). 'colors' is the Palette and 'surface' Semantic surface:
- * ids kept from before the views were split, so the drafts saved then keep working.
- */
-export const COLORS_VIEWS = [
-  'colors',
-  'scales',
-  'surface',
-  'themes',
-  'groups',
-  'contrast',
-  'diff',
-] as const;
-export type ColorsView = (typeof COLORS_VIEWS)[number];
-
-/** The page of Colors a draft names, if it is one. */
-export const colorsViewOf = (view: unknown): ColorsView | undefined =>
-  COLORS_VIEWS.find((one) => one === view);
-
-/**
  * The config a draft was made on: the file a server serves (`path`), or the
  * bundled default when the studio runs on its own (`path` null).
  * `hash` fingerprints its content, null when the server found no file.

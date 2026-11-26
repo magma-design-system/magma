@@ -10,6 +10,7 @@ nx run studio:build       # the static app, in dist/
 nx run studio:build.site  # the site for a static host, in dist-site/: the app and the Magma it loads
 nx run studio:test        # Vitest: node, jsdom, and the Playwright Chromium (*.e2e.mts, the static site)
 nx run studio:check.types # after a build: tsc on the sources, the tests and the build tools, as the CI types job
+nx run studio:check.lint  # after a build: the lint of Magma (strict) on the pages and the sheets, as the CI magma-lint job
 ```
 
 The port is pinned (`strictPort`): when 5177 is busy the studio is already running, so the server
@@ -36,7 +37,7 @@ Before them comes the **Start page** (`#/start`, below): a start with no address
 the name of the studio at the start of the bar links to it.
 
 Every page is a link with an address in the hash (`#/colors/palette`, `#/theme`,
-`#/behavior/patterns`, `src/app/router.ts`), so the studio works from whatever folder serves it.
+`#/behavior/patterns`, `src/shared/routes/routes.ts`), so the studio works from whatever folder serves it.
 The Theme section may name the theme and the mode it opens on, `#/theme/editorial/dark`, and its
 address follows the choices made there, replaced in place, so a reload or a link shows the same
 theme in the same mode. A hash that does not start with `#/` is left alone: the anchor of a
@@ -140,11 +141,14 @@ No theme (the studio edits themes, it does not wear one) and no consumption.
   the page ships `lang="en"`, which `mds-pref-language` reads before the browser. A stored language
   the studio has no texts for is dropped: the Storybook, on the same origin, may have stored `es`.
 - **How a text is written**: in English where it is used, in `t('...')`; the Italian catalogue
-  (`src/shared/i18n/i18n-it.ts`) maps the English. A text kept in data is marked `msg('...')` and
+  (`src/shared/i18n/i18n-it.ts`) maps the English, and a page of `src/features/` keeps the Italian
+  of its own texts beside it (`i18n-it.ts`), handed to `useT` and looked up first. A text kept in data is marked `msg('...')` and
   translated where it is drawn, a count takes `plural()`, and a sentence with a link inside it takes
   `rich()`, translated whole so Italian orders its own words. `test/i18n.test.mts` reads the sources
   and fails on a text with no Italian, an Italian text no source uses, placeholders that differ and
-  a text of the interface written outside `t()`. The tests of the pages run in English.
+  a text of the interface written outside `t()`, and on a text of a page of `features/` found in
+  another page's catalogue. The tests of the pages run in English, and each page of `features/`
+  in Italian once.
 - **Components that read their text once**: `mds-button` and `mds-badge` copy the text of their
   slot into their `label` once, so the studio writes their text in `label`; `mds-input-switch` and
   `mds-input-range` read theirs once into the name of their control, so one that holds a translated
@@ -389,17 +393,19 @@ flowchart LR
   MCP["mcp<br/>src/render.ts"]
   WC["stencil<br/>dist/magma-components"]
   ID["identity<br/>logo-magma.svg, logo-magma-white.svg"]
+  ST["styles<br/>dist/tailwind"]
   subgraph stu["studio<br/>an app, not on npm"]
     SHELL["src/shell.tsx, src/app/, src/start.tsx<br/>the bar, the router, Start, Colors, Theme, Behavior"]
     STATE["src/state/<br/>the work in signals, the draft, the actions"]
     APP["src/app.tsx<br/>the pages of Colors"]
     SURF["src/surfaces.tsx, src/themes.tsx<br/>balances, themes, names"]
-    GATE["src/engine/gate.ts, src/contrast.tsx<br/>the contrast gate, Contrast check"]
+    GATE["src/engine/gate.ts, src/features/contrast-check/<br/>the contrast gate, Contrast check"]
     OUT["src/engine/formats.ts, src/engine/exports.ts, src/batch.tsx<br/>zip, DTCG, CSS, GIMP, config"]
     VEN["build/vendor.ts<br/>serves Magma to the pages"]
     API["build/magma-api.ts<br/>the variant and tone of each component"]
     SITE["build/site.ts<br/>the static site, dist-site/"]
     SCENE["scene.html, states.html, hero.html<br/>the pages the frames show"]
+    TW["src/tailwind.css<br/>the classes of the pages"]
     SHELL --> APP
     SHELL --> STATE
     SHELL --> SCENE
@@ -409,6 +415,7 @@ flowchart LR
     STATE --> OUT
     SURF --> GATE
     API --> APP
+    TW --> SHELL
   end
   DT -->|"createColorTokens, themeOf, namedThemeCss, gradeRamps"| APP
   DT -->|"gatePairs, applyBaseline, contrast-baseline.json"| GATE
@@ -419,11 +426,12 @@ flowchart LR
   WC -->|"documentation.json"| API
   WC -->|"the lazy loader"| SITE
   ID -->|"the logo of the bar"| SHELL
+  ST -->|"theme.css, typography.css as reference, utilities.css"| TW
   VEN -.->|"node_modules/, svg/, components/"| SHELL
   SITE -.->|"deploy-site.yml"| PAGES(["GitHub Pages<br/>magma/studio/"])
   OUT -.->|"download"| AUTHOR(["the author of a theme"])
   MI(["@material-icons/svg<br/>check_circle, warning, cancel"]) -.->|"the icons of a verdict, inlined at build"| APP
-  class DT,APP,STATE,SURF,GATE,OUT,SHELL,VEN,API,SITE,SCENE visual
+  class DT,ST,APP,STATE,SURF,GATE,OUT,SHELL,VEN,API,SITE,SCENE,TW visual
   class MCP ai
   class WC components
   class ID assets
@@ -465,17 +473,40 @@ The folders of the studio (#1397; #1399 moved the files into them, #1400 added `
 - `src/app/`: the router (`router.ts`: one table of the pages for the menus and the addresses,
   `navigate(route, { replace })`, a location in the hash or in memory, a hash that does not start
   with `#/` left alone) and the Config menu of the bar (`config-menu.tsx`).
-- the rest of `src/`: the shell and the pages, until #1401-#1404 give the pages `features/` and
-  move the shell into `app/`.
+- `src/tailwind.css`: the entry of Tailwind (#1401), the Tailwind layer of Magma as
+  `docs/agents/assets.md` writes it, with the theme of Magma imported as `reference`, so the
+  bundle declares none of its variables and each utility reads the one of the Magma the page
+  loads, the value of the theme only as the fallback of its `var()`. `test/tailwind.test.mts`
+  holds that every name of the theme the installed sheets do not define falls back on one they
+  define (all but two literals, each with its reason), that the bundle declares none, and that
+  every class a page of `features/` writes reaches the bundle: written whole in a string, never
+  glued to an expression (`gap-200${...}`), which the scanner of Tailwind does not read.
+- `src/features/`: one folder per page (#1401: `diffs`, `contrast-check`, and `rules`, the pages
+  of Behavior), the shape the other pages take in #1402-#1404. A page is written in the classes of
+  Magma; its short sheet keeps what classes do not write, the data its previews paint (the steps of
+  a ramp, the sample of a pair); its Italian catalogue (`i18n-it.ts`) goes to the translator
+  (`useT(IT_...)`), which looks there before the catalogue of `shared/`; its tests sit beside it.
+- the rest of `src/`: the shell and the pages not moved yet, until #1402-#1404 move them into
+  `features/` and the shell into `app/`.
 
 Imports go one way, and ESLint holds it (`no-restricted-imports` in `eslint.config.mjs`): a file
 of `engine` imports no other file of the studio but `shared/i18n/text.ts`, and types alone from
-`build/`; a file of `shared` imports nothing of the pages; a file of `state` imports the engine
-and `shared/i18n/text.ts`, never a page, `app/` or another part of `shared`. A test sits beside
-its module and may import what it is tested with. `test/` keeps the checks of the build, of the
-site and of the translations, and the tests of the pages until the pages move. Vitest runs
-`src/engine/`, `src/state/`, the router and the checks of the build in Node, every other
-`*.test.mts` in jsdom, every `*.e2e.mts` in Chromium.
+`build/`; a file of `shared` imports nothing of the pages; a file of `state` imports the engine,
+`shared/i18n/text.ts` and the table of the pages (`shared/routes/routes.ts`), never a page,
+`app/` or another part of `shared`; a page of `features/` imports the engine, the state and
+`shared`, never `app/`, the shell, a page not moved yet or another page: its links go through the
+table of the pages, its data through the state. A test sits beside its module and may import what
+it is tested with. `test/` keeps the checks of the build, of the site and of the translations, and the
+tests of the pages until the pages move. Vitest runs `src/engine/`, `src/state/`, the table of
+the pages, the router and the checks of the build in Node, every other `*.test.mts` in jsdom,
+every `*.e2e.mts` in Chromium.
+
+The lint of Magma reads the studio as it reads a product (#1401, `docs/agents/lint.md`, preset
+`strict`): `magma/eslint` the markup of the pages, `class` included (`eslint.magma.config.mjs`),
+`magma/stylelint` their sheets (`stylelint.config.mjs`). Its rules read the Magma that is built,
+so they run in `nx run studio:check.lint` after a build, and in the `magma-lint` job of the
+studio workflow on the build artifact, not in `nx run studio:lint`, which the lint workflow runs
+with nothing built.
 
 The engine, `semantic.config.ts` and the theme files stay in `design-tokens`: the builds of
 `design-tokens` and `styles` read them, and moving them here would make `design-tokens` depend on

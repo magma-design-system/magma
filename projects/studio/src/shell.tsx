@@ -10,7 +10,8 @@ import { App } from './app.js';
 import { useDarkMode } from './dark-mode.js';
 import { GateBadge } from './shared/ui/verdict.js';
 import { ConfigItems, useConfigMenu, type ConfigAction } from './app/config-menu.js';
-import { GateDialog } from './contrast.js';
+import { GateDialog } from './features/contrast-check/gate-dialog.js';
+import { RulesPage } from './features/rules/rules.js';
 import { StartPage } from './start.js';
 import { createStudio, StudioContext, useStudio, type StudioState } from './state/studio.js';
 import { cancelExport, confirmExport } from './state/exports.js';
@@ -27,22 +28,21 @@ import {
   ScenePrefsPanel,
   type Choice,
   type ContrastMode,
-  type ModeView,
   type ScenePrefs,
 } from './scene-prefs.js';
+import { createRouter, type Router } from './app/router.js';
 import {
   BEHAVIOR_PAGES,
   COLORS_PAGES,
-  createRouter,
   HOME,
   hrefOf,
   THEME_PAGE,
   type BehaviorPage,
   type ColorsView,
   type MenuItem,
+  type ModeView,
   type Route,
-  type Router,
-} from './app/router.js';
+} from './shared/routes/routes.js';
 
 /*
   The shell of the studio (#695): the bar of the application and its three sections, the Start
@@ -123,7 +123,7 @@ export function Studio({ state, router }: StudioProps = {}) {
               }
             />
           )}
-          {route.section === 'behavior' && <BehaviorPageView page={route.page} />}
+          {route.section === 'behavior' && <RulesPage page={route.page} />}
           <PendingExport onReview={() => openColors('contrast')} />
         </div>
       </StudioContext.Provider>
@@ -546,7 +546,7 @@ function PreviewPanel({
  * preferences reach every frame (scene-prefs.tsx). The select offers the
  * themes of the configuration the person edits, which the frame paints (scene-css.ts); while the
  * generator refuses the configuration, the themes Magma ships. The theme and the mode are those of
- * the address (a link of the Themes page, app/router.ts), the first theme in light when it names
+ * the address (a link of the Themes page, shared/routes/routes.ts), the first theme in light when it names
  * none: a choice made here writes its address in place, and back, forward or a link typed choose
  * again. One source, so the echo of an address written here never undoes a choice made after it.
  */
@@ -738,42 +738,5 @@ function ThemePage({
         <PreviewPanel view={view} onView={setView} width={width} onWidth={setWidth} />
       </mds-dropdown>
     </div>
-  );
-}
-
-/** What each page of Behavior will hold, and where it comes from. */
-const BEHAVIOR_SUMMARY: Record<BehaviorPage, string> = {
-  'design-language': msg(
-    'The rules of composition every page of a product follows: rhythm, density, actions, titles, surfaces and widths.',
-  ),
-  patterns: msg(
-    'How a task across components is solved in every product, with the narrower values a product keeps in its magma/patterns folder.',
-  ),
-  blocks: msg(
-    'The sections of a page that come back in two patterns or more: the application shell, the page header, the lists.',
-  ),
-};
-
-function BehaviorPageView({ page }: { page: BehaviorPage }) {
-  const item = BEHAVIOR_PAGES.find((one) => one.id === page)!;
-  const t = useT();
-  return (
-    <main class="studio-section studio-page">
-      <header class="studio-page-head">
-        <div class="studio-page-title">
-          <mds-text typography="page" tag="h1">
-            {t(item.label)}
-          </mds-text>
-          <mds-text typography="detail" tag="p" class="studio-muted">
-            {t(BEHAVIOR_SUMMARY[page])}
-          </mds-text>
-        </div>
-      </header>
-      <mds-banner variant="info" headline={t('Read-only, after the theme')}>
-        {t(
-          'This page shows what Magma decided and the layer of the product, in the theme of the product. It comes after the Theme section (#693, "The plan").',
-        )}
-      </mds-banner>
-    </main>
   );
 }
