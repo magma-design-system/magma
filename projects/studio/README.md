@@ -36,7 +36,7 @@ Before them comes the **Start page** (`#/start`, below): a start with no address
 the name of the studio at the start of the bar links to it.
 
 Every page is a link with an address in the hash (`#/colors/palette`, `#/theme`,
-`#/behavior/patterns`, `src/app/router.ts`), so the studio works from whatever folder serves it.
+`#/behavior/patterns`, `src/shared/routes/routes.ts`), so the studio works from whatever folder serves it.
 The Theme section may name the theme and the mode it opens on, `#/theme/editorial/dark`, and its
 address follows the choices made there, replaced in place, so a reload or a link shows the same
 theme in the same mode. A hash that does not start with `#/` is left alone: the anchor of a

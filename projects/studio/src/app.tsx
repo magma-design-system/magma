@@ -30,7 +30,7 @@ import {
 } from './engine/generator.js';
 import { ScalesManager, type ScaleOrigin } from './scales.js';
 import { SurfaceManager } from './surfaces.js';
-import { COLORS_PAGES, type ColorsView } from './app/router.js';
+import { COLORS_PAGES, type ColorsView } from './shared/routes/routes.js';
 import { ThemesManager } from './themes.js';
 import { ContrastCheck } from './contrast.js';
 import { GateBadge } from './shared/ui/verdict.js';
@@ -82,7 +82,7 @@ import {
 import { SaturationEditor } from './saturation-editor.js';
 import { MARK, colorspaceVerdict, type ColorspaceVerdict } from './colorspace-verdict.js';
 
-// the views of the Colors section of the studio (app/router.ts); 'surface' keeps its id so the
+// the views of the Colors section of the studio (shared/routes/routes.ts); 'surface' keeps its id so the
 // drafts saved before the views were split keep working
 type View = ColorsView;
 

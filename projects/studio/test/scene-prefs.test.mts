@@ -16,6 +16,7 @@ import {
   applyPrefs,
   type Choice,
 } from '../src/scene-prefs.js'
+import { MODE_VIEWS } from '../src/shared/routes/routes.js'
 
 // The dropdown of the preferences holds controls of the studio, not the mds-pref-* themselves:
 // what it offers is held here to the components it stands for, read from their sources.
@@ -86,8 +87,10 @@ test('the mode and the contrast are those of each component but its system, with
       expect(imported(component)).toContain(one.icon)
     }
   }
-  // the studio's own mode, both side by side in two frames, comes last
+  // the studio's own mode, both side by side in two frames, comes last; the menu offers the modes
+  // an address names, in their order
   expect(MODES.map((one) => one.mode)).toEqual(['light', 'dark', 'both'])
+  expect(MODES.map((one) => one.mode)).toEqual([...MODE_VIEWS])
 })
 
 test('the scene starts from what each component applies with nothing chosen', () => {

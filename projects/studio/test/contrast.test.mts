@@ -4,7 +4,7 @@ import { act } from 'preact/test-utils'
 
 import initialConfig from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json'
 import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs'
-import { COLORS_PAGES } from '../src/app/router.js'
+import { COLORS_PAGES } from '../src/shared/routes/routes.js'
 import { Studio } from '../src/shell.js'
 import { ContrastCheck } from '../src/contrast.js'
 import { DRAFT_STORAGE_KEY, hashText, type StudioDraft } from '../src/state/draft.js'

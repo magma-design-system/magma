@@ -27,22 +27,21 @@ import {
   ScenePrefsPanel,
   type Choice,
   type ContrastMode,
-  type ModeView,
   type ScenePrefs,
 } from './scene-prefs.js';
+import { createRouter, type Router } from './app/router.js';
 import {
   BEHAVIOR_PAGES,
   COLORS_PAGES,
-  createRouter,
   HOME,
   hrefOf,
   THEME_PAGE,
   type BehaviorPage,
   type ColorsView,
   type MenuItem,
+  type ModeView,
   type Route,
-  type Router,
-} from './app/router.js';
+} from './shared/routes/routes.js';
 
 /*
   The shell of the studio (#695): the bar of the application and its three sections, the Start
@@ -546,7 +545,7 @@ function PreviewPanel({
  * preferences reach every frame (scene-prefs.tsx). The select offers the
  * themes of the configuration the person edits, which the frame paints (scene-css.ts); while the
  * generator refuses the configuration, the themes Magma ships. The theme and the mode are those of
- * the address (a link of the Themes page, app/router.ts), the first theme in light when it names
+ * the address (a link of the Themes page, shared/routes/routes.ts), the first theme in light when it names
  * none: a choice made here writes its address in place, and back, forward or a link typed choose
  * again. One source, so the echo of an address written here never undoes a choice made after it.
  */

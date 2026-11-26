@@ -7,6 +7,7 @@ import contrastIt from '../../stencil/src/components/mds-pref-contrast/meta/loca
 import modeEn from '../../stencil/src/components/mds-pref-mode/meta/locale.en.json';
 import modeIt from '../../stencil/src/components/mds-pref-mode/meta/locale.it.json';
 import { useLangOf, useT, type Lang } from './shared/i18n/i18n.js';
+import type { ModeView } from './shared/routes/routes.js';
 
 /*
   The preferences of the person the Theme section checks a theme under, the accessibility of the
@@ -51,9 +52,9 @@ export const CONSUMPTIONS: ReadonlyArray<Choice<ConsumptionMode>> = [
 /**
  * The modes a frame is seen in: those of mds-pref-mode (its `modes`), in the order it draws them,
  * without `system`, since the studio sets the mode of the frame; then the studio's own, both modes
- * side by side in two frames that scroll together.
+ * side by side in two frames that scroll together. Their ids are the ones an address names
+ * (`MODE_VIEWS`, shared/routes/routes.ts).
  */
-export type ModeView = 'light' | 'dark' | 'both';
 export const MODES: ReadonlyArray<Choice<ModeView>> = [
   { mode: 'light', word: 'lightMode', icon: 'mi/baseline/light-mode' },
   { mode: 'dark', word: 'darkMode', icon: 'mi/baseline/dark-mode' },

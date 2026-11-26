@@ -27,11 +27,12 @@ const chalkStub = fileURLToPath(new URL('./src/engine/chalk-stub.ts', import.met
 
 const root = fileURLToPath(new URL('.', import.meta.url));
 
-// The tests that need no document: the engine, the state and its actions, the router, and the
-// checks of the build and of the site. Every other `*.test.mts` runs in jsdom, so a new test is
-// never left out of a run.
+// The tests that need no document: the engine, the state and its actions, the table of the pages
+// and the router, and the checks of the build and of the site. Every other `*.test.mts` runs in
+// jsdom, so a new test is never left out of a run.
 const NODE_TESTS = [
   'src/{engine,state}/**/*.test.mts',
+  'src/shared/routes/routes.test.mts',
   'src/app/router.test.mts',
   'test/{bundle,share,site,vendor}.test.mts',
 ];

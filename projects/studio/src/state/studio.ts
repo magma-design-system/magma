@@ -9,12 +9,11 @@ import { sceneStyle, type SceneStyle } from '../engine/scene-css.js';
 import type { ThemeChoices } from '../engine/theme-choices.js';
 import type { FileOut } from '../engine/exports.js';
 import type { T, Vars } from '../shared/i18n/text.js';
+import { colorsViewOf, type ColorsView } from '../shared/routes/routes.js';
 import {
   browserStorage,
-  colorsViewOf,
   readDraft,
   writeDraft,
-  type ColorsView,
   type DraftReason,
   type DraftSource,
   type KeptIn,
