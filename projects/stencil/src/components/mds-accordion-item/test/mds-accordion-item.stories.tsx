@@ -1,6 +1,8 @@
 import { h } from '@stencil/core';
-import { typographyHeadingTagDictionary } from '@type/text';
-import { typographyReadDictionary } from '@type/typography';
+import { expect, userEvent, waitFor } from 'storybook/test';
+import { StateCell, StatesGrid, stateCell } from '@fixture/states';
+import { TypographyHeadingTagType, typographyHeadingTagDictionary } from '@type/text';
+import { TypographyTitleType, typographyReadDictionary } from '@type/typography';
 
 export default {
   title: 'UI / Structure / Accordion / Accordion Item',
@@ -84,4 +86,150 @@ export const InTheOutline = {
       </mds-accordion>
     </div>
   ),
+};
+
+/**
+ * Every state an item has of its own once the story has opened (#1440, @fixture/states), each in
+ * an accordion of its own, under a label of its own (two regions with one name are two landmarks
+ * a screen reader cannot tell apart). Closed and open, each style of its title (`typography`:
+ * `h5` by default, `h6` the style of a part of the page, `action` the compact one, and the
+ * larger ones), the title in the outline of the page (`tag`, under the title of its section),
+ * the long label that wraps and the focus of its button. The states that come from the accordion
+ * (one open at a time, several with `multiple`, the open item kept by `disable-close`, the
+ * separators by the place of the open item) are in the story of mds-accordion. A state only an
+ * interaction reaches (`play: true`) is brought there by the play function, which checks
+ * `selected` or the focus, not the look.
+ */
+interface ItemProps {
+  label: string;
+  selected?: boolean;
+  typography?: TypographyTitleType;
+  tag?: TypographyHeadingTagType;
+}
+
+interface ItemState {
+  state: string;
+  play?: boolean;
+  item: ItemProps;
+  /** the title of the section the accordion stands in, when the item is in the outline */
+  section?: string;
+}
+
+const itemStates: ItemState[] = [
+  { state: 'closed', item: { label: 'Dati del richiedente' } },
+  { state: 'open', item: { label: "Dati dell'immobile", selected: true } },
+  { state: 'title h6, closed', item: { label: 'Documenti allegati', typography: 'h6' } },
+  {
+    state: 'title h6, open',
+    item: { label: 'Pagamenti effettuati', typography: 'h6', selected: true },
+  },
+  { state: 'title action, closed', item: { label: 'Recapiti', typography: 'action' } },
+  {
+    state: 'title action, open',
+    item: { label: 'Tecnico incaricato', typography: 'action', selected: true },
+  },
+  { state: 'title h4', item: { label: 'Impresa esecutrice', typography: 'h4' } },
+  { state: 'title h3', item: { label: 'Titolo edilizio', typography: 'h3' } },
+  { state: 'title h2', item: { label: 'Vincoli paesaggistici', typography: 'h2' } },
+  { state: 'title h1', item: { label: 'Oneri di urbanizzazione', typography: 'h1' } },
+  {
+    state: 'in the outline, heading h3 under its section',
+    item: { label: 'Calcolo della superficie', typography: 'h6', tag: 'h3', selected: true },
+    section: 'Domanda di permesso di costruire',
+  },
+  {
+    state: 'long label',
+    item: {
+      label:
+        'Dichiarazione sostitutiva di certificazione del richiedente e dei familiari conviventi',
+    },
+  },
+  {
+    state: 'long label, open',
+    item: {
+      label: 'Relazione tecnica asseverata sulle opere strutturali e sugli impianti del fabbricato',
+      selected: true,
+    },
+  },
+  { state: 'opened by a click', play: true, item: { label: 'Integrazioni richieste' } },
+  { state: 'opened with Enter', play: true, item: { label: 'Comunicazioni ricevute' } },
+  { state: 'opened with Space', play: true, item: { label: 'Pareri degli enti' } },
+  {
+    state: 'closed by a click',
+    play: true,
+    item: { label: 'Sopralluoghi', selected: true },
+  },
+  { state: 'focused', play: true, item: { label: 'Storico della pratica' } },
+];
+
+const accordion = (item: ItemProps) => (
+  <mds-accordion>
+    <mds-accordion-item {...item}>
+      <mds-text>I dati e i documenti di questa sezione della pratica.</mds-text>
+    </mds-accordion-item>
+  </mds-accordion>
+);
+
+const TemplateStates = () => (
+  <StatesGrid>
+    {itemStates.map(({ state, play, item, section }) => (
+      <StateCell key={state} state={state} play={play}>
+        {section ? (
+          <div class="grid gap-300">
+            <mds-text typography="section" tag="h2">
+              {section}
+            </mds-text>
+            {accordion(item)}
+          </div>
+        ) : (
+          accordion(item)
+        )}
+      </StateCell>
+    ))}
+  </StatesGrid>
+);
+
+/** The item of a cell and its button, once every Magma element of the cell has loaded. */
+const loadedItem = async (canvasElement: HTMLElement, state: string) => {
+  const cell = stateCell(canvasElement, state);
+  const elements = Array.from(cell.querySelectorAll('*')).filter((element) =>
+    element.tagName.startsWith('MDS-'),
+  );
+  await waitFor(() => elements.forEach((element) => expect(element).toHaveAttribute('hydrated')));
+  const item = cell.querySelector('mds-accordion-item') as HTMLMdsAccordionItemElement;
+  // the button in the shadow root listens to the click, not the host
+  const button = item.shadowRoot!.querySelector('button.action') as HTMLButtonElement;
+  return { item, button };
+};
+const playStates = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+  const clicked = await loadedItem(canvasElement, 'opened by a click');
+  clicked.button.click();
+  const closed = await loadedItem(canvasElement, 'closed by a click');
+  closed.button.click();
+
+  // a native button: Enter clicks it on the press, Space on the release
+  const enter = await loadedItem(canvasElement, 'opened with Enter');
+  enter.button.focus();
+  await userEvent.keyboard('{Enter}');
+  const space = await loadedItem(canvasElement, 'opened with Space');
+  space.button.focus();
+  await userEvent.keyboard(' ');
+
+  // the last one to take the focus, which the page has only one of
+  const focused = await loadedItem(canvasElement, 'focused');
+  focused.button.focus();
+
+  // the property, not the attribute: Stencil reflects it on the next frame, and a hidden page
+  // draws no frame
+  await waitFor(() => expect(clicked.item).toHaveProperty('selected', true));
+  await waitFor(() => expect(closed.item).toHaveProperty('selected', false));
+  await waitFor(() => expect(enter.item).toHaveProperty('selected', true));
+  await waitFor(() => expect(space.item).toHaveProperty('selected', true));
+  await waitFor(() => expect(focused.item.shadowRoot!.activeElement).toBe(focused.button));
+};
+
+export const States = {
+  render: TemplateStates,
+
+  play: playStates,
 };

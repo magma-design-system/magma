@@ -1,4 +1,5 @@
 import { h } from '@stencil/core';
+import { StateCell, StatesGrid } from '@fixture/states';
 import { menuDictionary, navDictionary } from '../../mds-header-bar/meta/dictionary';
 import { appearanceDictionary, appearanceSetDictionary } from '../meta/dictionary';
 
@@ -268,5 +269,119 @@ export const AppearanceSet = {
     appearance: 'inline',
     menu: 'all',
     threshold: 10,
+  },
+};
+
+/**
+ * Every state of the header once the story has opened (#1440, @fixture/states), each at the top
+ * of a page of its own: a box with `transform` and `overflow: hidden` holds the header, sticky,
+ * and its backdrop, fixed, which would otherwise stand at the top of the window over every cell.
+ * The two appearances, the floating one with and without its backdrop, the bar hidden in each,
+ * and where the header lets the bar show its navigation and its hamburger (`nav`, `menu`: the
+ * values name breakpoints of the window, so a cell shows what the window of the story is wide
+ * enough for), with and without a `menu` slot, which a hamburger needs to open anything. The bar
+ * hides on scroll (`auto-hide`) and changes appearance on scroll (`appearance-set`) by the scroll
+ * of the window, which every cell shares: the hidden bar is set here on `visibility`, the scroll
+ * is in the stories AutoHide and AppearanceSet. The menu opens in an mds-modal, in the top layer
+ * over the whole page, so it is left to the stories of the header and of the modal. The states
+ * the bar has of its own (its regions, the long name, the many actions) are in the story of
+ * mds-header-bar. No state needs a play.
+ */
+interface HeaderState {
+  state: string;
+  header?: Record<string, string | boolean>;
+  /** the header has a menu, which the hamburger opens */
+  menu?: boolean;
+}
+
+const headerStates: HeaderState[] = [
+  { state: 'stripe, nav from desktop and menu on mobile', menu: true },
+  { state: 'inline, floating', header: { appearance: 'inline' }, menu: true },
+  {
+    state: 'inline, without backdrop',
+    header: { appearance: 'inline', 'hide-backdrop': true },
+    menu: true,
+  },
+  { state: 'stripe, hidden', header: { visibility: 'hidden' }, menu: true },
+  {
+    state: 'inline, hidden',
+    header: { appearance: 'inline', visibility: 'hidden' },
+    menu: true,
+  },
+  { state: 'nav and menu on every screen', header: { nav: 'all', menu: 'all' }, menu: true },
+  { state: 'menu only, on every screen', header: { nav: 'none', menu: 'all' }, menu: true },
+  {
+    state: 'nav on mobile, menu from desktop',
+    header: { nav: 'mobile', menu: 'desktop' },
+    menu: true,
+  },
+  { state: 'menu none', header: { nav: 'all', menu: 'none' }, menu: true },
+  { state: 'menu on every screen, no menu slot', header: { nav: 'all', menu: 'all' } },
+];
+
+const TemplateStates = () => (
+  <StatesGrid>
+    {headerStates.map(({ state, header, menu }) => (
+      <StateCell key={state} state={state}>
+        <div
+          class="relative overflow-hidden rounded-md bg-surface-default"
+          style={{ transform: 'translateZ(0)' }}
+        >
+          <mds-header {...header}>
+            <mds-header-bar>
+              <div class="flex gap-400 items-center">
+                <mds-img
+                  class="w-1000 shrink-0"
+                  src="./logo-gruppo-maggioli.svg"
+                  alt="Gruppo Maggioli"
+                />
+                <mds-text typography="h6">Servizi online</mds-text>
+              </div>
+              <mds-button slot="nav" variant="dark" tone="outline">
+                Accedi
+              </mds-button>
+              <mds-button slot="nav" icon="mi/round/person">
+                Registrati
+              </mds-button>
+            </mds-header-bar>
+            {menu && (
+              <div slot="menu" class="grid gap-200 p-600">
+                <mds-button variant="dark" tone="outline">
+                  Accedi
+                </mds-button>
+                <mds-button icon="mi/round/person">Registrati</mds-button>
+              </div>
+            )}
+          </mds-header>
+          <div class="grid gap-200 p-600">
+            <mds-text typography="detail">
+              Pagamenti, certificati e pratiche del Comune, in un unico posto.
+            </mds-text>
+            <mds-text typography="detail" class="text-fg-muted">
+              Accedi con SPID o CIE per vedere le tue pratiche.
+            </mds-text>
+          </div>
+        </div>
+      </StateCell>
+    ))}
+  </StatesGrid>
+);
+
+export const States = {
+  render: TemplateStates,
+
+  parameters: {
+    a11y: {
+      config: {
+        // a page has one header, and the nav of its bar takes no name: the ten pages of this story
+        // put ten unnamed navs in one document, which axe reads as landmarks a screen reader cannot
+        // tell apart (landmark-unique). Off here only, the rest of axe runs; the rule of
+        // .storybook/preview.jsx is repeated, since a parameter that is an array is replaced
+        rules: [
+          { id: 'color-contrast', reviewOnFail: true },
+          { id: 'landmark-unique', enabled: false },
+        ],
+      },
+    },
   },
 };
