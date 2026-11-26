@@ -1,4 +1,6 @@
 import { h } from '@stencil/core';
+import { expect, waitFor } from 'storybook/test';
+import { StateCell, StatesGrid, stateCell } from '@fixture/states';
 import { Fragment, useState, useEffect } from 'react';
 import { NotificationItemPreviewType } from 'src/components';
 
@@ -233,3 +235,146 @@ export const AddMultipleNotifications = {
 };
 
 export const ManualNotification = Template.bind({}, { behavior: 'manual' });
+
+/**
+ * Every state of the stack once the story has opened (#1440, @fixture/states). The stack is fixed
+ * to the right edge of the viewport, from the top to the bottom: each cell holds it on a stage of
+ * its own, a box with a `transform`, which makes it the containing block of the fixed stack, and
+ * `overflow-hidden`, which clips the stack while it waits outside, hidden; the stage is the height
+ * of the column the stack would fill. The notifications come in by themselves, a few hundred
+ * milliseconds after the stack has loaded, and stay: none has a timer. The states the item has of
+ * its own (preview, variants, slots, the long text) are in the story of mds-push-notification-item.
+ * Two states only an interaction reaches: the stack cleared with its own button, and the stack
+ * whose last notification the person dismissed; the play function clicks the button and checks
+ * that the stack hid itself (`visible` back to no value), not its look.
+ */
+interface StackNotification {
+  icon: string;
+  subject: string;
+  message: string;
+  dismissible?: boolean;
+}
+
+interface StackState {
+  state: string;
+  play?: boolean;
+  tall?: boolean;
+  props: Record<string, string | boolean>;
+  notifications: StackNotification[];
+}
+
+const protocol: StackNotification = {
+  icon: 'mi/baseline/description',
+  subject: 'Pratica protocollata',
+  message: 'La pratica 2024/1042 ha ricevuto il numero di protocollo 18733.',
+};
+const attachment: StackNotification = {
+  icon: 'mi/baseline/attach-file',
+  subject: 'Nuovo allegato',
+  message: 'Luca Bianchi ha caricato la planimetria aggiornata.',
+};
+const message: StackNotification = {
+  icon: 'mi/baseline/email',
+  subject: 'Nuovo messaggio',
+  message: "Hai ricevuto una risposta dall'ufficio tecnico.",
+};
+
+const stackStates: StackState[] = [
+  { state: 'one notification', props: {}, notifications: [protocol] },
+  {
+    state: 'several notifications',
+    tall: true,
+    props: {},
+    notifications: [protocol, attachment, message],
+  },
+  { state: 'manual, hidden', props: { behavior: 'manual' }, notifications: [protocol] },
+  {
+    state: 'manual, shown by visible',
+    props: { behavior: 'manual', visible: true },
+    notifications: [protocol],
+  },
+  {
+    state: 'shown, no notification',
+    props: { behavior: 'manual', visible: true },
+    notifications: [],
+  },
+  {
+    state: 'cleared with its button',
+    play: true,
+    props: {},
+    notifications: [protocol, attachment],
+  },
+  {
+    state: 'last notification dismissed',
+    play: true,
+    props: {},
+    notifications: [{ ...protocol, dismissible: true }],
+  },
+];
+
+const TemplateStates = () => (
+  <StatesGrid>
+    {stackStates.map(({ state, play, tall, props, notifications }) => (
+      <StateCell key={state} state={state} play={play}>
+        <div
+          class={`relative overflow-hidden rounded-md bg-surface-default ${tall ? 'h-9000' : 'h-6000'}`}
+          style={{ transform: 'translateZ(0)' }}
+        >
+          <mds-push-notification {...props}>
+            {notifications.map(({ icon, subject, message: text, dismissible }) => (
+              <mds-push-notification-item
+                key={subject}
+                icon={icon}
+                subject={subject}
+                message={text}
+                dismissible={dismissible}
+              ></mds-push-notification-item>
+            ))}
+          </mds-push-notification>
+        </div>
+      </StateCell>
+    ))}
+  </StatesGrid>
+);
+
+/**
+ * The stack of a cell, once every Magma element of the cell has loaded, the stack shows and its
+ * notifications have come in, as a person sees them before clicking. The stack marks a
+ * notification that came in with an inline `visibility: visible`, its own end of the entrance: a
+ * click before it is a race of the component, where the notifications still coming in show the
+ * stack again once the others leave.
+ */
+const shownStack = async (canvasElement: HTMLElement, state: string) => {
+  const cell = stateCell(canvasElement, state);
+  const elements = Array.from(cell.querySelectorAll('*')).filter((element) =>
+    element.tagName.startsWith('MDS-'),
+  );
+  await waitFor(() => elements.forEach((element) => expect(element).toHaveAttribute('hydrated')));
+  const stack = cell.querySelector('mds-push-notification') as HTMLMdsPushNotificationElement;
+  await waitFor(() => expect(stack).toHaveProperty('visible', true));
+  const items = Array.from(stack.querySelectorAll('mds-push-notification-item')) as HTMLElement[];
+  await waitFor(() => items.forEach((item) => expect(item.style.visibility).toBe('visible')));
+  return stack;
+};
+
+const playStates = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+  const cleared = await shownStack(canvasElement, 'cleared with its button');
+  const clear = cleared.shadowRoot!.querySelector('mds-button') as HTMLMdsButtonElement;
+  clear.click();
+
+  const dismissed = await shownStack(canvasElement, 'last notification dismissed');
+  const item = dismissed.querySelector('mds-push-notification-item') as HTMLElement;
+  const close = item.shadowRoot!.querySelector('mds-button.close-button') as HTMLMdsButtonElement;
+  await waitFor(() => expect(close).toHaveAttribute('hydrated'));
+  close.click();
+
+  // hidden is no value at all: the stack takes `visible` off
+  await waitFor(() => expect(cleared).toHaveProperty('visible', undefined));
+  await waitFor(() => expect(dismissed).toHaveProperty('visible', undefined));
+};
+
+export const States = {
+  render: TemplateStates,
+
+  play: playStates,
+};
