@@ -859,6 +859,63 @@ describe('speech-to-text', () => {
   });
 });
 
+// the recognizer listened in the language of the browser, while the texts of the field follow
+// the language of the page
+describe('the language of the dictation', () => {
+  /** A recognizer that keeps the language it was given. */
+  class LangRecognition {
+    static last?: LangRecognition;
+    lang = '';
+    constructor() {
+      LangRecognition.last = this;
+    }
+    start(): void {}
+    stop(): void {}
+  }
+
+  beforeEach(() => {
+    LangRecognition.last = undefined;
+    vi.stubGlobal('SpeechRecognition', LangRecognition);
+  });
+
+  afterEach(() => {
+    document.documentElement.removeAttribute('lang');
+    vi.unstubAllGlobals();
+  });
+
+  const startDictation = async (): Promise<LangRecognition> => {
+    await setup('<mds-input mic></mds-input>');
+    return dictate();
+  };
+
+  const dictate = async (): Promise<LangRecognition> => {
+    mdsInput.shadowRoot!.querySelector<HTMLElement>('.mic-toggle-button')!.click();
+    await waitForChanges();
+    return LangRecognition.last!;
+  };
+
+  it('listens in the language of the page', async () => {
+    document.documentElement.lang = 'de-CH';
+
+    expect((await startDictation()).lang).toBe('de-CH');
+  });
+
+  it('listens in the language of the part of the page the field is in', async () => {
+    document.documentElement.lang = 'it-IT';
+    const result = await render<HTMLElement>('<div lang="de"><mds-input mic></mds-input></div>');
+    mdsInput = result.root.querySelector('mds-input')!;
+    waitForChanges = result.waitForChanges;
+
+    expect((await dictate()).lang).toBe('de');
+  });
+
+  it('listens in the language of the browser when the page declares none', async () => {
+    document.documentElement.removeAttribute('lang');
+
+    expect((await startDictation()).lang).toBe(navigator.language || 'it-IT');
+  });
+});
+
 // the buttons inside the field looked and stayed active on a disabled field; the password toggle
 // stays on a field the user cannot change, as it shows the value without changing it (#1368)
 describe('the password toggle of a disabled field', () => {
