@@ -19,6 +19,12 @@ export default {
       type: { name: 'string' },
       description: 'Choose to display or not the back arrow button',
     },
+    'dropdown-icon': {
+      type: { name: 'string' },
+      description: 'The icon of the chevron, the button that opens the menu, in place of the arrow',
+      options: iconsDictionary,
+      control: { type: 'select' },
+    },
     'auto-focus': {
       type: { name: 'boolean' },
       description: 'Specifies if the component is focused when is loaded on the viewport',
@@ -171,6 +177,69 @@ export const FormActions = {
     await waitFor(() => expect(menu).toHaveAttribute('visible'));
     await userEvent.click(dropdown.querySelector('mds-button[value="draft"]')!);
     await expect(await canvas.findByText('draft')).toBeInTheDocument();
+  },
+};
+
+// the conversations with an agent in a side column: the name opens one, the three dots of
+// dropdown-icon its menu; stretched by the column, the name takes the width and the dots stay at
+// the end
+const conversations = ['Riunione di lunedi', 'Bozza del bando di gara', 'Riepilogo delle ferie'];
+
+const TemplateConversations = (args) => (
+  <nav class="flex flex-col gap-100 w-full max-w-[280px]" aria-label="Conversazioni">
+    {conversations.map((name, index) => (
+      <mds-button-dropdown
+        {...args}
+        key={name}
+        class="self-stretch"
+        current={index === 0 ? 'page' : undefined}
+        href={`#chat-${index}`}
+        label={name}
+      >
+        <mds-button
+          icon="mi/baseline/edit"
+          variant="dark"
+          tone="text"
+          label="Rinomina"
+        ></mds-button>
+        <mds-button
+          icon="mi/baseline/share"
+          variant="dark"
+          tone="text"
+          label="Condividi"
+        ></mds-button>
+        <mds-button
+          icon="mi/baseline/delete"
+          variant="error"
+          tone="text"
+          label="Elimina"
+        ></mds-button>
+      </mds-button-dropdown>
+    ))}
+  </nav>
+);
+
+export const Conversations = {
+  render: TemplateConversations,
+
+  args: {
+    'dropdown-icon': 'mi/baseline/more-horiz',
+    size: 'sm',
+    tone: 'weak',
+    variant: 'dark',
+  },
+  play: async ({ canvasElement, userEvent }) => {
+    const dropdown = canvasElement.querySelector('mds-button-dropdown')!;
+    await waitFor(() => expect(dropdown).toHaveAttribute('hydrated'));
+    const dots = dropdown.shadowRoot!.querySelector('.dropdown-action') as HTMLMdsButtonElement;
+
+    await expect(dots.icon).toBe('mi/baseline/more-horiz');
+    // named in the language of the page after the label, as the arrow is
+    await expect(dots.getAttribute('aria-label')).toContain('Riunione di lunedi');
+
+    const menu = dropdown.shadowRoot!.querySelector('mds-dropdown')!;
+    await userEvent.click(dots);
+    await waitFor(() => expect(menu).toHaveAttribute('visible'));
   },
 };
 

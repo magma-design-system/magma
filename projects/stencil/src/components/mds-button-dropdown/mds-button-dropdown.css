@@ -41,8 +41,13 @@ mds-button {
 }
 
 /* a host stretched by its row (actions/stacked: align-self, a width, a flex-basis) gives its free
-   width to the main action, whose label mds-button centres, and the chevron stays at its own
-   size at the end; at its own width the host has none to give, so nothing moves (#1313).
+   width to the main action, and the chevron stays at its own size at the end; at its own width
+   the host has none to give, so nothing moves (#1313).
+   The label of a stretched main action starts at its start edge, where mds-button centres it: a
+   column of split buttons (the conversations with an agent, each name with its three dots) reads
+   down that edge, and centred names wandered from row to row. Chosen by the maintainer on live
+   renders (2026-11-26) over the stacked row of #1313, where its label no longer lines up with
+   the centred label of a stretched mds-button beside it.
    The outer corners of the two buttons are the corners of the host, the same radius on their
    own: a row that joins the component flattens them there, as mds-button-group does with
    ::slotted, which reaches the host and not the buttons inside it (#1340) */
@@ -53,6 +58,7 @@ mds-button {
   border-top-left-radius: inherit;
   border-top-right-radius: 0;
   flex-grow: 1;
+  justify-content: flex-start;
 }
 
 .dropdown-action {
