@@ -17,7 +17,7 @@ patterns of Messages and states (`docs/agents/patterns/`) are the examples to fo
 Run `npx nx run stencil:list.patterns` and search the patterns for the need (`grep -il` on
 their `need`, `keywords` and `situations` in `docs/agents/patterns/`):
 
-- a defined pattern covers it: say which one, and propose `/pattern-change <id>` instead;
+- a defined pattern covers it: say which one, and propose `/magma-dev:pattern-change <id>` instead;
 - a candidate covers it: this skill turns that candidate into the pattern, keeping its id;
 - nothing covers it: choose a new id, kebab-case, named after the task, not a component.
 
@@ -51,14 +51,14 @@ target to drop files on, a bar of actions, a list of items):
      and the cases name the component as it will be;
    - **a new component**: only when none holds the role, or holding it would bend the one
      that exists out of its shape; its issue carries the role, the API and the prototype the
-     previews draw (`data-prototype`), and `/component-new` builds it from there;
+     previews draw (`data-prototype`), and `/magma-dev:component-new` builds it from there;
    - **one way only**: when an existing, simpler way already meets the need, the pattern
      points to it and adds none; two components or two patterns doing the same thing are a
      defect to remove, not a choice to offer.
 4. **What it makes redundant.** A pattern, a block or a component the new one replaces is
    deprecated in its favour (the old id in `aliases` of the pattern that takes its place; on a
    component, `@deprecated` naming the replacement, removed in the next major) or overwritten
-   (`/pattern-change`, with a row of `## Decisions` that says what it replaces).
+   (`/magma-dev:pattern-change`, with a row of `## Decisions` that says what it replaces).
 
 Show the maintainer the decision of point 3 rendered: the component as it is and the proposal,
 side by side, the recommended one first. The draft names the components the decision chose.
@@ -87,7 +87,7 @@ field a question that defines a pattern:
 - **the cases**: values of the variables; `use` gives the parts of the solution, each
   `{ role, use }`: what it does in the case, then the component as `mds-tag attribute=value`,
   the text of the application as `<what it holds>` (`docs/PATTERNS.md`, "The parts of a case");
-  once the previews exist, in the order of their parts (step 7 of `/pattern-preview`);
+  once the previews exist, in the order of their parts (step 7 of `/magma-dev:pattern-preview`);
 - **the situations**: actions every application has (save a form in a dialog, delete from a list,
   copy a link, export a big file, lose the connection), each with its case;
 - **what is always true**, each rule `checked-by: review` or `lint` (with `lint-planned` for a
@@ -121,7 +121,7 @@ recommended option first and a one-line reason for each option. Every answer bec
 
 ## 7. The previews
 
-For each case, its preview: follow `.claude/skills/pattern-preview/SKILL.md` for this pattern
+For each case, its preview: follow `.claude/skills/magma-dev/skills/pattern-preview/SKILL.md` for this pattern
 (two options live, the maintainer chooses), so the pattern leaves with every case shown.
 
 ## 8. The pull request

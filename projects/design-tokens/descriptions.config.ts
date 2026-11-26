@@ -62,6 +62,8 @@ export const tokenDescriptions: Record<string, string> = {
     'The band of a solid fill (default, hover, active, selected), one per status and accent family: the primitives behind the emphasis roles.',
   'palette.inverse':
     'The selected level of the inverse pair, one per neutral family: the primitive behind surface-inverse-selected.',
+  'palette.fg':
+    'The ink of an accent on a neutral surface (default), one per accent family, a step of its ramp chosen per mode: the primitive behind the fg role of the accents.',
 
   size: 'The primitive length scale that spacing, container, border and radius name: size.100 is 4px, size.400 is 16px. The CSS publishes the resolved values, not these.',
   font: 'The four font families, used through the typography styles: title (Roboto), info (Karla), read (Merriweather), code (Roboto Mono).',
@@ -117,7 +119,7 @@ export const tokenDescriptions: Record<string, string> = {
 };
 
 /** The ladders of `palette`: one per family, described by a rule, not one by one. */
-const LADDERS = ['surface', 'border', 'text', 'wash', 'emphasis', 'inverse'];
+const LADDERS = ['surface', 'border', 'text', 'wash', 'emphasis', 'inverse', 'fg'];
 
 /**
  * The description of a group or token of the base set, by its DTCG path: its own entry, else

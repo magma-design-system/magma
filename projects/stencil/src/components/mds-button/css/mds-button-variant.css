@@ -28,7 +28,10 @@
  *
  * The ink of the accents and the status hues is a text role of the family, solved on its washes
  * (#1427): weak writes with text-default, text and outline with text-muted at rest and
- * text-default on hover. A fill state as ink (emphasis-hover on weak) fell under Lc 60.
+ * text-default on hover. A fill state as ink (emphasis-hover on weak) fell under Lc 60. At rest,
+ * text and outline of an accent write with its fg instead, the ink of a link (#1496): with no
+ * area, the hue is all that tells the action from the text beside it, and text-muted, solved for
+ * Lc 75, was a blue too light in dark to hold any (chroma 0.042).
  *
  * The tone rules stay at or below the specificity of the service variants, which come after
  * and set the public properties themselves, and of the tone sheet, which comes last. */
@@ -46,7 +49,7 @@
   --private-button-outline: var(--private-button-fill);
   --private-button-outline-ink: var(--private-button-text-ink);
   --private-button-outline-ink-hover: var(--private-button-text-ink-hover);
-  --private-button-text-ink: var(--magma-accent-text-muted);
+  --private-button-text-ink: var(--magma-accent-fg);
   --private-button-text-ink-hover: var(--magma-accent-text-default);
   --private-button-text-wash: var(--magma-accent-surface-subtle);
   --private-button-text-ink-active: var(--private-button-text-ink);
@@ -64,7 +67,7 @@
   --private-button-wash: var(--magma-accent-ai-surface);
   --private-button-wash-hover: var(--magma-accent-ai-surface-hover);
   --private-button-ink: var(--magma-accent-ai-text-default);
-  --private-button-text-ink: var(--magma-accent-ai-text-muted);
+  --private-button-text-ink: var(--magma-accent-ai-fg);
   --private-button-text-ink-hover: var(--magma-accent-ai-text-default);
   --private-button-text-wash: var(--magma-accent-ai-surface-subtle);
   --private-button-current-wash: var(--magma-accent-ai-surface-selected);

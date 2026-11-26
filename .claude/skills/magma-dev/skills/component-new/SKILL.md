@@ -28,7 +28,7 @@ first, and every proposal of a look is shown rendered before it is kept.
 2. **One component per role.** Check that none holds the role already: the catalogue
    (`docs/COMPONENTS.md`, the "Native analogue" column) and `find_component` of the MCP server
    with the role in words. One that holds it, even badly, is changed, not doubled: say so and
-   stop (`/pattern-new`, step 2).
+   stop (`/magma-dev:pattern-new`, step 2).
 3. **Its place**: `@category <id>` when it stands alone, `@parent <tag>` when it is a part of a
    compound (`docs/COMPONENTS.md`, "Categories"). Ask when the issue does not say.
 4. **Its branch**: from the issue, `gh issue develop <n> --base main` (or `--base <epic branch>`
@@ -102,7 +102,7 @@ INCORRECT/CORRECT pairs; no table of props, no rule that applies to every compon
 Put the component in the previews of the pattern where its prototype stood (the markup with
 `data-prototype="<tag>"` becomes `<tag>`), so `render_preview` no longer names a prototype and
 the cases' `use` names the component as it is: `npx nx run mcp:serve.previews` to edit them on
-the build, then `/pattern-change` on the pattern for its `## Decisions` if the build changed what
+the build, then `/magma-dev:pattern-change` on the pattern for its `## Decisions` if the build changed what
 the pattern decided.
 
 ## 8. The checks
@@ -129,7 +129,7 @@ their version.
 
 ## 10. The pull request
 
-Bring the agent context up to date (`/context-review`), commit (`feat(<tag>): add ...`, ASCII
+Bring the agent context up to date (`/magma-dev:context-review`), commit (`feat(<tag>): add ...`, ASCII
 only, `docs/COMMITS.md`), check `origin/main` (or the branch of the epic) in its own step and
 merge it if it moved, push the branch and open a pull request with `Closes #<issue>`, the
 decisions taken, the result of the audit, and the table `Title | What to test | URL` of

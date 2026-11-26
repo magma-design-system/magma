@@ -11,7 +11,7 @@
  *   nx run stencil:generate mds-name --category <id>    a component that stands alone
  *   nx run stencil:generate mds-name --parent <tag>     a part of a compound
  *
- * What to do next is printed at the end; the skill /component-new walks through it.
+ * What to do next is printed at the end; the skill /magma-dev:component-new walks through it.
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
@@ -108,7 +108,7 @@ const states =
     ? 'the States story with every state'
     : `its states in the States story of ${parent}`;
 console.log(`
-${tag}: scaffolded, ${taxonomy}, its Storybook page "${title}". Next (the skill /component-new):
+${tag}: scaffolded, ${taxonomy}, its Storybook page "${title}". Next (the skill /magma-dev:component-new):
   1. the description above @Component, its props, events and parts, each with its JSDoc;
   2. its design decisions as knobs on :host in ${tag}.css, each with its @prop and named in
      the order of SPEC.md (npm run lint.css holds both: magma/host-knobs); the spacing in the

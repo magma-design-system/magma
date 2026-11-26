@@ -130,18 +130,18 @@ export interface SemanticConfig {
   scaleSteps: number;
   /**
    * Ramp steps of a colored family for the quintet roles that are still ramp steps (spec 6.5):
-   * the `fg` and the `border` of an accent and of a hue with no generated roles. Its washes and
-   * its solid fill are generated (`--wash-*`, `--emphasis-*`, src/lib/state-color.mts, #1427).
+   * the `fg` and the `border` of a hue with no generated roles, and the `border` of an accent.
+   * Its washes and its solid fill are generated (`--wash-*`, `--emphasis-*`,
+   * src/lib/state-color.mts, #1427), and so is the `fg` of an accent, a step per mode
+   * (`--fg-<family>-default`, `ACCENT_FG_STEPS` of src/lib/emphasis.ts, #1496).
    */
   hueSteps: { fg: string; border: string };
   /**
-   * Quintet steps where an ACCENT departs from `hueSteps` (spec 6.3). The accent
-   * ink: `fg` is what icons and text in the accent colour use on a neutral surface,
-   * and step 05 measured 53-66 Lc there (below the 60 floor in light, 53 on an
-   * overlay field in dark), so the components kept reaching for step 03 by hand.
-   * Step 03 gives 71-84 Lc in both modes. Optional: an omitted step follows `hueSteps`.
+   * Quintet steps where an ACCENT departs from `hueSteps` (spec 6.3). Optional: an omitted step
+   * follows `hueSteps`. The ink of an accent is no longer a step named here: it is generated
+   * per mode (`ACCENT_FG_STEPS`, #1496), since one step cannot carry it in both.
    */
-  accentSteps?: Partial<{ fg: string; border: string }>;
+  accentSteps?: Partial<{ border: string }>;
   /**
    * WASH LEVELS of a colored hue: how marked the colored background is, NOT how
    * high it sits. Emitted as `--magma-<hue>-wash-<level>`, each level naming the generated
@@ -304,7 +304,6 @@ export const semantic: SemanticConfig = {
   },
   scaleSteps: 10,
   hueSteps: { fg: '05', border: '06' },
-  accentSteps: { fg: '03' },
   // The three wash levels the component sheets actually use as a background (#624: 144
   // declarations that named a raw step because no role could hold their value), and the two
   // selected levels of #1427. NOTE: the accents express the same levels with state-derived
@@ -613,9 +612,10 @@ export const statePrimitive = (groupLevel: string, family: string): string => {
 };
 
 /**
- * The `--magma-tint-accent-*` pointers of `accentTintOverride`, as data: `fg` and `border` name
- * ramp steps of the family (`variant-primary`), the rest the primitives generated for it
- * (`--wash-primary-*`, `--emphasis-primary-*`, `--text-primary-*`, #1427).
+ * The `--magma-tint-accent-*` pointers of `accentTintOverride`, as data: `border` names a ramp
+ * step of the family (`variant-primary`), the rest the primitives generated for it
+ * (`--fg-primary-default`, #1496; `--wash-primary-*`, `--emphasis-primary-*`, `--text-primary-*`,
+ * #1427).
  */
 export const accentTintDecls = (role: string, family: string): SemanticDecl[] => {
   const steps = { ...semantic.hueSteps, ...semantic.accentSteps };
@@ -626,7 +626,7 @@ export const accentTintDecls = (role: string, family: string): SemanticDecl[] =>
     ref,
   });
   return [
-    pointer('fg', `${family}-${steps.fg}`),
+    pointer('fg', `fg-${generated}-default`),
     pointer('border', `${family}-${steps.border}`),
     ...Object.entries(emphasisRoles()).map(([key, state]) =>
       pointer(key, `emphasis-${generated}-${state}`),

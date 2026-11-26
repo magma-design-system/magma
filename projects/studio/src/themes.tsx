@@ -2,6 +2,7 @@ import { useMemo, useState } from 'preact/hooks';
 import { APCAcontrast, sRGBtoY } from 'apca-w3';
 import chroma from 'chroma-js';
 import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
+import { ACCENT_FG_STEPS } from '@maggioli-design-system/design-tokens/src/lib/emphasis.js';
 import { createColorTokens } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
 
 import { semantic } from '@maggioli-design-system/design-tokens/semantic.config';
@@ -52,8 +53,6 @@ const MODE_NAMES: Record<Mode, string> = { light: msg('light'), dark: msg('dark'
 type RoleSet = Record<string, { value: string }>;
 type FamilyModes = { light: RoleSet; dark: RoleSet };
 
-// the ramp steps an accent still names (its fg), as the layer does: accentSteps over hueSteps
-const ACCENT_STEPS = { ...semantic.hueSteps, ...semantic.accentSteps };
 /** tree step keys are numeric without the leading zero (`04` -> `4`). */
 const stepKey = (s: string): string => String(Number(s));
 
@@ -489,7 +488,8 @@ function ThemeCard({
                           ? hex(s, semantic.onEmphasisDark)
                           : seeds[mode];
                       const aSurface = variantState(variants, variant, mode, 'wash');
-                      const aFg = variantHex(variants, variant, mode, ACCENT_STEPS.fg);
+                      // its ink on a neutral surface, a step per mode, as the layer generates it (#1496)
+                      const aFg = variantHex(variants, variant, mode, ACCENT_FG_STEPS[mode]);
                       return (
                         <span class="themes-sample">
                           <span

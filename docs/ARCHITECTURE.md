@@ -296,6 +296,8 @@ The Claude Code plugin of Magma (`projects/claude-plugin`, #1114): the skills th
 
 The skills are procedures that defer to the installed version (the MCP server, the shipped guides), so the plugin follows `main` with no version of its own. They are generated from `templates/` with what they list taken from the code and the guides (the packages per target, the tools of the server, the rules of the lint, the codemod), and the `claude-plugin-ci` workflow fails when one is out of date or breaks the Agent Skills format. How to change one: [`projects/claude-plugin/README.md`](../projects/claude-plugin/README.md).
 
+The skills that work on this repository are another plugin, `magma-dev` (`/magma-dev:<skill>`), kept in `.claude/skills/magma-dev/` and never shipped: Claude Code loads it for whoever works in the repository, with no install (#1546). How it loads and how to change a skill: [`.claude/skills/magma-dev/README.md`](../.claude/skills/magma-dev/README.md).
+
 ### 2.10 `codemod`
 
 The `@maggioli-design-system/magma-codemods` package (`projects/codemod`): it migrates consumer code from v1 to v2, rewriting HTML, React, Angular templates (external and inline) and CSS/SCSS, and reports what needs a human decision. Its rules are a manifest (`src/manifest/manifest.ts`), drafted from the `documentation.json` of the two versions; one module per surface (`src/surfaces/`) decides where an attribute or a class is written, the forms the class rules of the lint read too ([`docs/CONTRACTS.md`](CONTRACTS.md)). The contributor notes are [`projects/codemod/README.md`](../projects/codemod/README.md).

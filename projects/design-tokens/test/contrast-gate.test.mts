@@ -118,7 +118,9 @@ test('aliasesFromConfig maps every --magma-* role to its primitive (A9 contract)
   expect(map['--magma-accent-surface-selected']).toBe('--wash-primary-selected');
   expect(map['--magma-accent-surface-subtle-selected']).toBe('--wash-primary-soft-selected');
   expect(map['--magma-accent-ai-text-default']).toBe('--text-ai-default');
-  expect(map['--magma-accent-fg']).toBe('--variant-primary-03');
+  // the ink of an accent is generated, a step per mode (#1496)
+  expect(map['--magma-accent-fg']).toBe('--fg-primary-default');
+  expect(map['--magma-accent-ai-fg']).toBe('--fg-ai-default');
   // the old per-role infix names are gone (secondary role dropped, primary promoted)
   expect(map['--magma-accent-primary-emphasis']).toBeUndefined();
   expect(map['--magma-accent-secondary-fg']).toBeUndefined();

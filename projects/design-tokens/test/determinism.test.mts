@@ -44,7 +44,7 @@ test('color and step order follows the config, run after run', () => {
   // they are appended after the APCA colors, so exclude them when checking that
   // the config-driven entries follow the config order.
   const isDerived = (entry: string) =>
-    ['surface', 'border', 'wash', 'emphasis', 'inverse', 'text'].includes(entry.split('.')[0])
+    ['surface', 'border', 'wash', 'emphasis', 'inverse', 'fg', 'text'].includes(entry.split('.')[0])
   const groupName = (entry: string) => entry.split('.').length === 2
   // the config-driven group.name entries appear in the exact order of the config colors
   expect(orderOf(first.tokens).filter((e) => groupName(e) && !isDerived(e))).toEqual(configOrder)
@@ -71,6 +71,8 @@ test('color and step order follows the config, run after run', () => {
     ...washed.map((color) => `wash.${familyOf(color)}`),
     ...filled.map((color) => `emphasis.${familyOf(color)}`),
     ...tints.map((color) => `inverse.${familyOf(color)}`),
+    // the ink of the accents on a neutral surface, a step per mode (#1496)
+    ...accents.map((color) => `fg.${familyOf(color)}`),
     ...surfaceFamilies.map((family) => `text.${family}`),
     ...accents.map((color) => `text.${familyOf(color)}`),
   ])
