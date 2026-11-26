@@ -24,8 +24,11 @@ const cycle: SortDirectionType[] = ['none', 'ascending', 'descending'];
 const naturalOrder = new WeakMap<Element, HTMLMdsTableRowElement[]>();
 
 /**
+ * @slot - The heading of a column that is not `sortable`, when it has no `label`: text with plain
+ * inline markup (`code`, `abbr`, `strong`, `em`), which takes the typography of the heading. A
+ * `sortable` column shows only its `label`
  * @part action - The `mds-button` that sorts the column, with the `label`: only when `sortable`
- * @part label - The `label` of a column that is not `sortable`
+ * @part label - The heading of a column that is not `sortable`: its `label`, or the slot
  * @parent mds-table-header
  */
 @Component({
@@ -45,7 +48,8 @@ export class MdsTableHeaderCell {
   @Prop({ reflect: true }) readonly sortable?: boolean;
 
   /**
-   * Sets a label for the cell
+   * Sets a label for the cell. It is the heading of a `sortable` column, and takes the place of the
+   * slot on the others
    */
   @Prop({ reflect: true }) readonly label?: string;
 
@@ -259,7 +263,15 @@ export class MdsTableHeaderCell {
           ></mds-button>
         ) : (
           <mds-text class="label" typography="label" part="label">
-            {this.label}
+            {this.label ? (
+              this.label
+            ) : (
+              // one inline box: a slot straight in mds-text, whose box is flex, would make each run
+              // of text and each element a flex item, and drop the spaces between them
+              <span class="heading">
+                <slot></slot>
+              </span>
+            )}
           </mds-text>
         )}
       </Host>

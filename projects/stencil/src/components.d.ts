@@ -3237,7 +3237,7 @@ export namespace Components {
          */
         "direction": SortDirectionType;
         /**
-          * Sets a label for the cell
+          * Sets a label for the cell. It is the heading of a `sortable` column, and takes the place of the slot on the others
          */
         "label"?: string;
         /**
@@ -8898,7 +8898,7 @@ declare namespace LocalJSX {
          */
         "direction"?: SortDirectionType;
         /**
-          * Sets a label for the cell
+          * Sets a label for the cell. It is the heading of a `sortable` column, and takes the place of the slot on the others
          */
         "label"?: string;
         /**

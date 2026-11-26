@@ -1556,6 +1556,7 @@ mds-table-header-cell prop label (attr label) [reflect]: string | undefined
 mds-table-header-cell prop sortable (attr sortable) [reflect]: boolean | undefined
 mds-table-header-cell prop sortKey (attr sort-key) [reflect]: string | undefined
 mds-table-header-cell event mdsTableHeaderCellSort: MdsTableHeaderCellSortEventDetail [bubbles, cancelable, composed]
+mds-table-header-cell slot (default)
 mds-table-header-cell part action
 mds-table-header-cell part label
 mds-table-row encapsulation shadow

@@ -19,11 +19,13 @@ The `<mds-table-header-cell>` web component is the column-header cell of a Magma
 - **Tri-state sort cycle**: Each activation advances the column through `none` -> `ascending` -> `descending` and back to `none`; the `none` state restores the order the rows had before any column sorted them (rows removed in the meantime stay out, rows added go last).
 - **Sort event**: Every click emits `mdsTableHeaderCellSort`, which bubbles to the table, with `{ direction, index, sortKey }`: the new direction, the position of the column and its `sort-key`. A `direction` set by the application emits nothing, the application already knows it.
 - **Single active sort column**: Sorting a column resets every sibling header cell to `none`, so only one column drives the order at a time.
-- **Conditional rendering**: When `sortable` is set the cell renders a clickable sorter (with an up / down / unfold-more icon reflecting `direction`); otherwise it renders a plain label with no interaction.
+- **Conditional rendering**: When `sortable` is set the cell renders a clickable sorter (with an up / down / unfold-more icon reflecting `direction`); otherwise it renders a plain heading with no interaction.
+- **Heading from `label` or from the slot**: A column that does not sort takes its heading from `label` or, without one, from its default slot, where the heading can hold plain inline markup (`<code>` for a field name, `<abbr>`, `<strong>`), as a `mds-table-cell` does. The slotted text takes the typography of the heading and sits in the same `label` part. `label` wins when both are given, and a `sortable` column shows only `label`: its heading is the label of an `mds-button`, which takes text alone.
 
 #### Properties & Visual Configurations
 
-- **`sortable`**: Opt a column into interactive sorting. Leave it unset for purely descriptive columns (label only); set it when the column's values should be reorderable by the user.
+- **`label`**: The heading of the column, as plain text. Required on a `sortable` column; a column that does not sort can leave it out and slot its heading instead.
+- **`sortable`**: Opt a column into interactive sorting. Leave it unset for purely descriptive columns (heading only); set it when the column's values should be reorderable by the user.
 - **`direction`**: The reflected sort state of the column (`none`, `ascending`, `descending`), which drives the sort icon and `aria-sort`. Set from outside (or in the markup) it acts like the clicks that lead there: it sorts the rows, or only shows the order with `sorting="external"`, resets the other columns to `none`, and the next click goes on from it.
 - **`sortKey`** (`sort-key`): Names the column in `mdsTableHeaderCellSort`, typically the field the back end sorts by, so the application does not depend on the position of the column.
 
@@ -48,6 +50,27 @@ The simplest form: a non-sortable column header that renders a styled label. Omi
       <mds-table-cell>Mario Rossi</mds-table-cell>
       <mds-table-cell>Amministratore</mds-table-cell>
       <mds-table-cell>Attivo</mds-table-cell>
+    </mds-table-row>
+  </mds-table-body>
+</mds-table>
+```
+
+#### Inline Markup in the Heading
+
+A column that does not sort can slot its heading instead of setting `label`: plain inline markup, such as a `<code>` for a field name or an `<abbr>` with its expansion, as in the cells below it. The slotted text takes the typography of the heading. A table rendered from Markdown or from a schema writes the same markup in the header row as in the body.
+
+```html
+<mds-table>
+  <mds-table-header>
+    <mds-table-header-cell><code>pathPatterns</code></mds-table-header-cell>
+    <mds-table-header-cell><abbr title="Codice fiscale">CF</abbr> del titolare</mds-table-header-cell>
+    <mds-table-header-cell label="Descrizione"></mds-table-header-cell>
+  </mds-table-header>
+  <mds-table-body>
+    <mds-table-row>
+      <mds-table-cell><code>/api/v1/*</code></mds-table-cell>
+      <mds-table-cell>RSSMRA80A01H501U</mds-table-cell>
+      <mds-table-cell>I percorsi a cui risponde il servizio</mds-table-cell>
     </mds-table-row>
   </mds-table-body>
 </mds-table>
@@ -180,7 +203,7 @@ document.querySelector('mds-table').addEventListener('mdsTableHeaderCellSort', (
 
 #### Styling Customization
 
-Target the `label` or `action` shadow parts for glyph-level overrides. Set them on the host or a parent selector.
+Target the `label` or `action` shadow parts for glyph-level overrides. Set them on the host or a parent selector. The `label` part holds the slotted heading too, so it styles the whole heading; the markup in the slot is light DOM, styled by the page like any other.
 
 ```css
 mds-table-header-cell::part(label) {
@@ -248,18 +271,32 @@ By default a sortable header cell reorders the rows in the DOM. On a table that 
 <mds-table-header-cell label="Stato"></mds-table-header-cell>
 ```
 
-#### Do Not Slot Content Instead of Using the `label` Prop
+#### Do Not Slot the Heading of a Sortable Column
 
-The component renders its label through the `label` prop; there is no documented slot. Placing text or elements as children of the host puts them in an unsupported slot and they will not appear.
+A `sortable` column renders its heading as the label of an `mds-button`, which takes text alone: it shows only `label`, and whatever is slotted does not appear. Slot a heading only on a column that does not sort.
 
 ```html
 <!-- INCORRECT -->
 <mds-table-header-cell sortable>
-  <span>Cognome</span>
+  <code>createdAt</code>
 </mds-table-header-cell>
 
 <!-- CORRECT -->
-<mds-table-header-cell label="Cognome" sortable></mds-table-header-cell>
+<mds-table-header-cell label="createdAt" sortable></mds-table-header-cell>
+```
+
+#### Do Not Wrap the Slotted Heading in `mds-text`
+
+The slot takes plain inline markup, and the cell gives it the typography of the heading. An `mds-text` brings its own typography (`detail` by default) and replaces the heading's.
+
+```html
+<!-- INCORRECT -->
+<mds-table-header-cell>
+  <mds-text><code>pathPatterns</code></mds-text>
+</mds-table-header-cell>
+
+<!-- CORRECT -->
+<mds-table-header-cell><code>pathPatterns</code></mds-table-header-cell>
 ```
 
 #### Do Not Pierce Shadow DOM to Style the Sort Button
@@ -305,7 +342,7 @@ mds-table-header-cell::part(action) {
 | Property    | Attribute   | Description                                                                                                                                                            | Type                                    | Default     |
 | ----------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- | ----------- |
 | `direction` | `direction` | Specifies the current sort direction of the column. Set from outside, it sorts the rows like a click, or only shows the order when the table has `sorting="external"`. | `"ascending" \| "descending" \| "none"` | `'none'`    |
-| `label`     | `label`     | Sets a label for the cell                                                                                                                                              | `string \| undefined`                   | `undefined` |
+| `label`     | `label`     | Sets a label for the cell. It is the heading of a `sortable` column, and takes the place of the slot on the others                                                     | `string \| undefined`                   | `undefined` |
 | `sortKey`   | `sort-key`  | Names the column in the `mdsTableHeaderCellSort` event, for example the field the back end sorts by                                                                    | `string \| undefined`                   | `undefined` |
 | `sortable`  | `sortable`  | Tells the component to make the cell able to sort the table columns items                                                                                              | `boolean \| undefined`                  | `undefined` |
 
@@ -317,12 +354,19 @@ mds-table-header-cell::part(action) {
 | `mdsTableHeaderCellSort` | Emits when the user changes the sort direction of the column, at every step of the cycle. With `sorting="external"` on the table the rows are not moved: the application renders them in the order asked. | `CustomEvent<MdsTableHeaderCellSortEventDetail>` |
 
 
+## Slots
+
+| Slot | Description                                                                                                                                                                                                                   |
+| ---- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|      | The heading of a column that is not `sortable`, when it has no `label`: text with plain inline markup (`code`, `abbr`, `strong`, `em`), which takes the typography of the heading. A `sortable` column shows only its `label` |
+
+
 ## Shadow Parts
 
 | Part       | Description                                                                    |
 | ---------- | ------------------------------------------------------------------------------ |
 | `"action"` | The `mds-button` that sorts the column, with the `label`: only when `sortable` |
-| `"label"`  | The `label` of a column that is not `sortable`                                 |
+| `"label"`  | The heading of a column that is not `sortable`: its `label`, or the slot       |
 
 
 ## Dependencies

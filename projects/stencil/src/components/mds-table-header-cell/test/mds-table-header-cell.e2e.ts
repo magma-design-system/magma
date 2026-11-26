@@ -39,6 +39,63 @@ describe('mds-table-header-cell', () => {
     expect(root).toHaveAttribute('hydrated');
   });
 
+  // #1538: a heading held only the label string, so a field name lost its <code>
+  describe('the heading in the slot', () => {
+    it('shows the slot in the label part, with the typography of the heading', async () => {
+      const { root } = await render(`
+        <mds-table-header-cell>Field <abbr title="identifier">ID</abbr> <code>pathPatterns</code></mds-table-header-cell>
+      `);
+      const label = root.shadowRoot!.querySelector<HTMLElement>('[part="label"]')!;
+      const abbr = root.querySelector('abbr')!;
+      const code = root.querySelector('code')!;
+
+      expect(abbr.assignedSlot).not.toBeNull();
+      expect(label.contains(abbr.assignedSlot)).toBe(true);
+      const heading = getComputedStyle(label);
+      const slotted = getComputedStyle(abbr);
+      expect(slotted.fontFamily).toBe(heading.fontFamily);
+      expect(slotted.fontSize).toBe(heading.fontSize);
+      expect(slotted.fontWeight).toBe(heading.fontWeight);
+      expect(slotted.lineHeight).toBe(heading.lineHeight);
+      // a code keeps its face, not a size of its own
+      expect(getComputedStyle(code).fontSize).toBe(heading.fontSize);
+    });
+
+    it('keeps the spaces between the text and the markup', async () => {
+      const { root } = await render(
+        '<mds-table-header-cell>Field <code>pathPatterns</code></mds-table-header-cell>',
+      );
+      const text = root.firstChild as Text;
+      const word = document.createRange();
+      word.setStart(text, 0);
+      word.setEnd(text, 'Field'.length);
+
+      // the space after the word is laid out, not dropped at the edge of a flex item
+      const gap =
+        root.querySelector('code')!.getBoundingClientRect().left - word.getBoundingClientRect().right;
+      expect(gap).toBeGreaterThan(1);
+    });
+
+    it('gives way to the label', async () => {
+      const { root } = await render(
+        '<mds-table-header-cell label="Name"><code>name</code></mds-table-header-cell>',
+      );
+
+      expect(root.shadowRoot!.querySelector('[part="label"]')!.textContent!.trim()).toBe('Name');
+      expect(root.querySelector('code')!.assignedSlot).toBeNull();
+    });
+
+    it('is not shown by a sortable cell, whose heading is the label of its button', async () => {
+      const { root } = await render(
+        '<mds-table-header-cell sortable label="Name"><code>name</code></mds-table-header-cell>',
+      );
+
+      expect(root.shadowRoot!.querySelector('slot')).toBeNull();
+      expect(root.querySelector('code')!.assignedSlot).toBeNull();
+      expect(root.shadowRoot!.querySelector('[part="action"]')).toEqualAttribute('label', 'Name');
+    });
+  });
+
   it('sorts a cell on its text once its value attribute is removed', async () => {
     const { root, waitForChanges } = await render(`
       <mds-table>

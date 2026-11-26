@@ -1020,8 +1020,47 @@ const TemplateSortingExternal = (args) => {
   );
 };
 
+// #1538: the headings of a table rendered from Markdown or from a schema keep their inline markup
+const TemplateMarkupHeadings = (args) => (
+  <mds-table {...args}>
+    <mds-table-header>
+      <mds-table-header-cell>
+        <code>pathPatterns</code>
+      </mds-table-header-cell>
+      <mds-table-header-cell>
+        <abbr title="Time to live">TTL</abbr> in seconds
+      </mds-table-header-cell>
+      <mds-table-header-cell label="Description"></mds-table-header-cell>
+    </mds-table-header>
+    <mds-table-body>
+      <mds-table-row>
+        <mds-table-cell>
+          <code>/api/v1/*</code>
+        </mds-table-cell>
+        <mds-table-cell>300</mds-table-cell>
+        <mds-table-cell>The paths the service answers on</mds-table-cell>
+      </mds-table-row>
+      <mds-table-row>
+        <mds-table-cell>
+          <code>/health</code>
+        </mds-table-cell>
+        <mds-table-cell>0</mds-table-cell>
+        <mds-table-cell>Never cached</mds-table-cell>
+      </mds-table-row>
+    </mds-table-body>
+  </mds-table>
+);
+
 export const Default = {
   render: Template,
+};
+
+export const MarkupInHeadings = {
+  render: TemplateMarkupHeadings,
+  play: async ({ canvasElement }) => {
+    const code = canvasElement.querySelector('mds-table-header-cell code') as HTMLElement;
+    await waitFor(() => expect(code.assignedSlot).not.toBeNull());
+  },
 };
 
 export const Interactive = {
