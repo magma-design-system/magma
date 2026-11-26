@@ -20,6 +20,9 @@ Alla fine c'è un **tema rilasciabile**: per Magma, il suo preset, con cui si co
 prodotto, il preset di Magma modificato ed esportato come preset suo, da installare nel suo
 progetto. Il flusso è **uno solo** per i due casi. (persona)
 
+**Opzione secondaria**: esportare colori per casi fuori da Magma, una palette che si usa altrove.
+Serve, ma non è il centro dello studio. (persona, 2026-11-26)
+
 **Fatto**, per un tema: nessuna coppia della verifica che blocca, e il tema giudicato sulla
 scena in chiaro e in scuro. Per l'insieme: ogni tema del preset così. (persona)
 
@@ -126,14 +129,18 @@ deciso il 2026-11-20 con `taxonomy` (persona). Quelle che toccano questo modello
 - **compatibile con Magma**: una scala con tanti gradini quanti ne nominano i ruoli di Magma (oggi
   dieci), e per estensione una famiglia su una scala così e un preset le cui famiglie lo sono
   tutte. (persona, 2026-11-26)
+- **gruppo**: le famiglie di un tipo (`label`, `brand`), con le impostazioni comuni; il **gruppo
+  di export** è un'altra cosa, il file delle uscite in cui finisce una famiglia;
+- **casi fuori da Magma**: i colori che si esportano per un uso fuori da Magma, mai "eccezioni",
+  che restano lo sfondo di una funzione. (persona, 2026-11-26)
 
 ## 4. Entità
 
 ```
 Preset  (uno per host: quello di Magma, o quello di un prodotto sopra il preset di Magma)
 |- 1. Colori
-|  '- Famiglia -> Rampa (gradini per modalità)
-|     ... si riferisce a una Scala di contrasto (condivisa tra famiglie)
+|  '- Gruppo -> Famiglia -> Rampa (gradini per modalità)
+|     ... la famiglia si riferisce a una Scala di contrasto (condivisa tra famiglie)
 |- 2. Pesi
 |  |- superfici (5 ruoli), bordi (3), testi (4 obiettivi)
 |  '- ruoli trasparenti: velature, bande, tracce; intensità, alpha, inchiostro
@@ -148,7 +155,7 @@ Accanto a ogni passo:
   Verifica   -> Coppie (primo piano, sfondo, modalità, tema) -> verdetto, filtrato sul passo
 ```
 
-Raggruppamento per passo e gerarchia confermati. (persona)
+Raggruppamento per passo e gerarchia confermati (persona); il Gruppo è entrato il 2026-11-26.
 
 Altre relazioni:
 - un Tema si riferisce a Famiglie, per la tinta e per gli accenti;
@@ -163,11 +170,14 @@ Altre relazioni:
   dallo studio. (persona, con la gerarchia)
 - **Contiene**: le impostazioni globali (colorspace, smooth, formula, saturazione) e i gruppi di
   export. (progetto: `.magma-design-tokensrc.json`)
+- **Ordine dei colori**: il preset li scrive raggruppati per gruppo e, dentro ogni gruppo, in
+  ordine cromatico, come li mostra lo studio; il primo salvataggio riordina una volta la
+  configurazione di Magma. (persona, 2026-11-26; la seconda frase è una conseguenza)
 - **Dove finisce**:
   - Magma: `.magma-design-tokensrc.json`, più i ruoli trasparenti, che oggi sono codice in
     `semantic.config.ts` e passano nel preset (persona: si regolano nello studio);
   - prodotto: il suo preset, esportato in JSON e installato nel suo progetto. (persona)
-- **Figli**: famiglie, scale di contrasto, pesi, temi, eccezioni, modifiche.
+- **Figli**: gruppi con le loro famiglie, scale di contrasto, pesi, temi, eccezioni, modifiche.
 - **Azioni**:
   - aprire: dal preset, da un tema pronto, da un colore di brand, dalla bozza;
   - salvare (nel comando di un progetto) o scaricare (su Pages);
@@ -181,6 +191,26 @@ Altre relazioni:
   (persona); quando non vale come tema di Magma (proposta, 2026-11-26).
 - **Uscire quando non vale come tema di Magma**: si può, chiedendo, come con la verifica rossa.
   (proposta, 2026-11-26)
+
+### Gruppo
+
+- **Scopo**: le famiglie di un tipo, con le impostazioni che hanno in comune. (progetto: sezione
+  `groups` della configurazione)
+- **Contiene**: le sue famiglie (il prefisso del loro nome, `label.red`); scala di contrasto,
+  formula ed export, che una famiglia eredita se non li cambia. (progetto: README dello studio)
+- **Azioni**:
+  - crearlo, liberamente (persona, 2026-11-26);
+  - nasce con il suo primo colore: in "New color" il campo Gruppo accetta un nome nuovo, e un
+    "Nuovo gruppo" nell'elenco apre lo stesso dialogo (proposta);
+  - regolarne le impostazioni ed esportarne le famiglie, come fa oggi la pagina Groups
+    (progetto; persona: "funziona già").
+- **Regole** (progetto):
+  - il nome non è quello di un gruppo che il motore genera: `surface`, `border`, `text`, `wash`,
+    `emphasis`, `inverse`, `fg` (`DERIVED_GROUPS` in design-tokens, `src/lib/text-role.mts`);
+  - `variant` è dei soli riferimenti (`src/app.tsx`, il dialogo "New color"); `status` non
+    diventa mai un tema (`src/engine/groups.ts`).
+- **Ordine**: le varianti in cima, poi i gruppi nell'ordine della configurazione; uno nuovo va in
+  fondo. (proposta, sulla scelta del 2026-11-05)
 
 ### Famiglia
 
@@ -196,6 +226,10 @@ Altre relazioni:
   2026-11-26; progetto: semantic `hueSteps`).
 - **Sempre visibile**: cosa dipinge (i componenti, il tema in cui si vede) e le coppie della
   verifica che tocca (persona); il badge della sua scala (proposta, 2026-11-26).
+- **Ordine**: cromatico dentro il suo gruppo, ovunque compaia: l'elenco, i selettori, il preset e
+  i file esportati (persona, 2026-11-26). Il criterio: la tonalità OKLCH del colore chiave, a
+  partire dal rosso; i neutri, che non hanno tonalità, per luminosità; un riferimento prende la
+  tonalità della famiglia che segue. (proposta)
 
 ### Scala di contrasto
 
@@ -350,7 +384,10 @@ La barra dello studio porta sempre con sé:
 
 - **Entità al centro**: Famiglia. **Scopo**: regolare un colore e vedere cosa dipinge.
 - **Intorno**:
-  - le famiglie, in linea: elenco accanto per gruppo, menu o ricerca, oppure dalla scena;
+  - le famiglie, in linea: elenco accanto per gruppo, in ordine cromatico dentro il gruppo, menu o
+    ricerca, oppure dalla scena;
+  - un gruppo nuovo, con "Nuovo gruppo" nell'elenco o con un nome nuovo nel campo Gruppo di un
+    colore nuovo (proposta, 2026-11-26);
   - tutti i campi della famiglia, in linea;
   - la scala, in linea per sceglierla, con il suo badge; si modifica nella sua pagina, Scala;
   - la scena del passo, accanto: i componenti che la famiglia dipinge;
@@ -394,7 +431,8 @@ La barra dello studio porta sempre con sé:
 - **Intorno**:
   - i temi, in un elenco accanto: predefiniti e del prodotto, con il verdetto per modalità come
     stato. Uno è al centro, con la sua scena accanto;
-  - tinta e accenti, in linea, scelti tra le famiglie (con il campione) o dalla scena;
+  - tinta e accenti, in linea, scelti tra le famiglie (con il campione, nello stesso ordine
+    dell'elenco di Colori) o dalla scena;
   - le modalità, in linea;
   - gli altri temi, con un avviso solo quando uno si rompe;
   - le famiglie, con un link a Colori. (persona)
@@ -579,6 +617,9 @@ Finché un conflitto non è risolto, si costruisce come dice il design system.
 11. **La compatibilità controllata anche dal motore**: dove il preset diventa tema di Magma (la
     build di design-tokens, la CI), una famiglia su una scala non compatibile ferma la build?
     Il badge dello studio direbbe allora la stessa cosa del controllo. (proposta, 2026-11-26)
+12. **Chi ordina i colori**: lo studio quando scrive il preset, o anche il motore di
+    design-tokens, così esce in ordine anche una configurazione scritta a mano? Proposta: un
+    solo ordinamento, nel motore, che lo studio riusa. (proposta, 2026-11-26)
 
 ## 11. Deroghe ai principi
 
@@ -601,3 +642,16 @@ confondersi con le eccezioni dei componenti.)
   contrasto (4); Colori, Scala, la barra e Giro completo, ritoccate (5); il badge nel design
   system (7); le domande 10 e 11 (10). Introduzione, Partenza, Pesi, Temi ed Eccezioni non
   cambiano. Nessun conflitto nuovo con il design system.
+
+### 2026-11-26: l'ordine dei colori e i gruppi
+
+- **Richiesta** (persona): le famiglie in ordine cromatico, da sole; aggiungere gruppi liberamente
+  e poi esportarli dalla sezione Groups.
+- **L'obiettivo è ancora quello?** Il principale sì: il tema rilasciabile. Si aggiunge, come
+  opzione secondaria, l'export di colori per casi fuori da Magma. (persona)
+- **Dove si rallenta oggi?** Sempre nell'andare avanti e indietro tra i controlli e la scena.
+  (persona)
+- **Cosa è cambiato**: l'opzione secondaria (1); le parole gruppo, gruppo di export e casi fuori
+  da Magma (3); il Gruppo, nuova entità, e l'ordine di Famiglia e Preset (4); Colori e Temi,
+  ritoccate (5); la domanda 12 (10). L'export resta quello della pagina Groups, che funziona già;
+  la pagina entra in Colori con #1403. Nessun conflitto nuovo con il design system.
