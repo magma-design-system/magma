@@ -282,8 +282,9 @@ export const StackedRow = {
 /**
  * Every state of the split button once the story has opened (#1440, @fixture/states): each variant
  * in both its tones, the sizes, with an icon and without a label, disabled (by the attribute and by
- * a fieldset), waiting, the current view (a page and a section), a link, the long label in two
- * truncations, and the menu open. Secondary renders as primary, kept for compatibility
+ * a fieldset), waiting, the current view (a page and a section), a link, an icon of its own on the
+ * chevron (`dropdown-icon`, three dots: an item with the menu of its options), stretched with its
+ * label at the start, the long label in two truncations, and the menu open. Secondary renders as primary, kept for compatibility
  * (docs/agents/variants.md). The light variant is painted in the paper of the mode, so it sits on
  * the inverse surface. The menu is opened in the first cell, at the top of the page: its panel
  * opens on the side of the window with the most room, below it there, into the room the cell keeps,
@@ -361,6 +362,31 @@ const dropdownStates: DropdownState[] = [
     ],
   },
   { state: 'link (href)', dropdowns: [{ label: 'Vai alle pratiche', href: '#pratiche' }] },
+  {
+    state: 'dropdown-icon, an item with the menu of its options',
+    dropdowns: [
+      {
+        label: 'Riunione di lunedi',
+        href: '#chat-42',
+        'dropdown-icon': 'mi/baseline/more-horiz',
+        variant: 'dark',
+        tone: 'weak',
+      },
+    ],
+  },
+  {
+    state: 'stretched, the label at the start',
+    dropdowns: [
+      {
+        label: 'Riunione di lunedi',
+        href: '#chat-42',
+        'dropdown-icon': 'mi/baseline/more-horiz',
+        variant: 'dark',
+        tone: 'weak',
+        class: 'w-full',
+      },
+    ],
+  },
   {
     state: 'long label, truncate word (default)',
     dropdowns: [{ label: 'Invia la comunicazione a tutti i destinatari', class: 'max-w-6400' }],
