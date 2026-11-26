@@ -207,3 +207,53 @@ test.skipIf(!built)('no class of the sheets of the studio is a utility of the bu
   expect(sheets.length).toBeGreaterThan(0)
   expect([...own].filter((name) => utilities.has(name))).toEqual([])
 })
+
+// A class reaches the bundle only if Tailwind reads it whole in the sources: written apart in a
+// string (`'flex gap-200'`, either branch of a condition), never glued to an expression
+// (`gap-200${...}`), which the scanner does not read (#1401: the gap of a cell of Contrast check
+// went missing so). Each class a page of features/ writes is a utility of the bundle or a class of
+// a sheet of the studio.
+test.skipIf(!built)('every class a page of features/ writes is in the bundle or in a sheet', () => {
+  const ts = fromStudio('typescript') as typeof import('typescript')
+  const features = path.join(studio, 'src/features')
+  const pages = readdirSync(features, { recursive: true, encoding: 'utf8' }).filter((file) => file.endsWith('.tsx'))
+  const written: string[] = []
+  const glued: string[] = []
+  /** The texts a class may be: a literal, a template, or either branch of a condition. */
+  const collect = (node: import('typescript').Node, at: string): void => {
+    if (ts.isStringLiteral(node) || ts.isNoSubstitutionTemplateLiteral(node))
+      written.push(...node.text.split(/\s+/).filter(Boolean))
+    else if (ts.isTemplateExpression(node)) {
+      const parts = [node.head.text, ...node.templateSpans.map((span) => span.literal.text)]
+      parts.forEach((text, index) => {
+        if (index < parts.length - 1 && /\S$/.test(text)) glued.push(`${at}: ${text.split(/\s+/).at(-1)}\${...}`)
+        if (index > 0 && /^\S/.test(text)) glued.push(`${at}: \${...}${text.split(/\s+/)[0]}`)
+        written.push(...text.split(/\s+/).filter(Boolean))
+      })
+      node.templateSpans.forEach((span) => collect(span.expression, at))
+    } else if (ts.isConditionalExpression(node)) {
+      collect(node.whenTrue, at)
+      collect(node.whenFalse, at)
+    } else if (ts.isParenthesizedExpression(node) || ts.isJsxExpression(node)) {
+      if (node.expression) collect(node.expression, at)
+    }
+  }
+  for (const page of pages) {
+    const source = ts.createSourceFile(page, readFileSync(path.join(features, page), 'utf8'), ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX)
+    const visit = (node: import('typescript').Node) => {
+      if (ts.isJsxAttribute(node) && node.name.getText() === 'class' && node.initializer)
+        collect(node.initializer, `${page}:${source.getLineAndCharacterOfPosition(node.getStart()).line + 1}`)
+      ts.forEachChild(node, visit)
+    }
+    visit(source)
+  }
+  expect(glued).toEqual([])
+  expect(written.length).toBeGreaterThan(0)
+  const utilities = classesOf(layerBody(bundled, 'utilities'))
+  const sheets = new Set(
+    readdirSync(path.join(studio, 'src'), { recursive: true, encoding: 'utf8' })
+      .filter((file) => file.endsWith('.css'))
+      .flatMap((file) => [...readFileSync(path.join(studio, 'src', file), 'utf8').matchAll(/\.([a-zA-Z_][\w-]*)/g)].map(([, name]) => name)),
+  )
+  expect([...new Set(written)].filter((name) => !utilities.has(name) && !sheets.has(name))).toEqual([])
+})

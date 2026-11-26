@@ -83,7 +83,7 @@ The studio speaks to the person with "tu", as the Italian of Magma does (README,
 | `saturation` | saturation | saturazione | the curve of the saturation across a ramp, global or per family | the hue shift | family (config `colors[].saturation`, or the root) | | | `saturation` |
 | `draft` | draft | bozza | the preset being edited, kept in the browser over a reload | an exit | preset (`state/draft.ts`, localStorage) | | | `state/draft.ts` |
 | `preview` | preview | anteprima | a page of the studio drawn with the preset in a frame: the scene, the groups, the states, the hero | the scene alone | (root of the previews) | | theme | `frame.ts`, `scene.html`, `groups.html`, `states.html`, `hero.html` |
-| `rules` | rules | regole | the design language, the patterns and the blocks of Magma, read only; "Regole", not "Comportamento", which does not fit the bar beside the preset at its narrowest width (2026-11-10) | a stage of the balancing | (root; where it goes in the redesign is open) | | | `BehaviorPage` (`src/shared/routes/routes.ts`) |
+| `rules` | rules | regole | the design language, the patterns and the blocks of Magma, read only; "Regole", not "Comportamento", which does not fit the bar beside the preset at its narrowest width (2026-11-10) | a stage of the balancing | (root; where it goes in the redesign is open) | | | `BehaviorPage` (`src/shared/routes/routes.ts`), `RulesPage` (`src/features/rules/`) |
 | `variant` | variant | variante | the colour choice of a component; the `variant.*` families are what those values paint with: one concept, declared homonym | | | | family | `variant` prop, `variant.*` families |
 
 ## Hierarchy checked on instances

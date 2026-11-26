@@ -1,8 +1,18 @@
 import { createContext, type ComponentChild } from 'preact';
 import { useContext, useEffect, useMemo, useState } from 'preact/hooks';
-import { langOf, translator, type Lang, type T } from './text.js';
+import { langOf, translator, type Catalogue, type Lang, type T } from './text.js';
 
-export { LANGS, langOf, msg, plural, translator, type Lang, type T, type Vars } from './text.js';
+export {
+  LANGS,
+  langOf,
+  msg,
+  plural,
+  translator,
+  type Catalogue,
+  type Lang,
+  type T,
+  type Vars,
+} from './text.js';
 
 /*
   The languages of the studio (#1336): English, the language its texts are written in, and
@@ -75,8 +85,11 @@ export const LangProvider = LangContext.Provider;
 /** The language the pages are drawn in; English outside a LangProvider (a page tested alone). */
 export const useLangOf = (): Lang => useContext(LangContext);
 
-/** The translator of the language the pages are drawn in. */
-export function useT(): T {
+/**
+ * The translator of the language the pages are drawn in; a page of features/ hands it its own
+ * catalogue, looked up first.
+ */
+export function useT(own?: Catalogue): T {
   const lang = useLangOf();
-  return useMemo(() => translator(lang), [lang]);
+  return useMemo(() => translator(lang, own), [lang, own]);
 }

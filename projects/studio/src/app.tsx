@@ -12,7 +12,7 @@ import {
 } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
 import { COLORSPACES } from '@maggioli-design-system/design-tokens/src/lib/schema.mjs';
 import { GroupsManager } from './groups.js';
-import { DiffView } from './diff.js';
+import { DiffView } from './features/diffs/diffs.js';
 import { BatchExportModal } from './batch.js';
 import {
   CURVE_PRESETS,
@@ -32,7 +32,7 @@ import { ScalesManager, type ScaleOrigin } from './scales.js';
 import { SurfaceManager } from './surfaces.js';
 import { COLORS_PAGES, type ColorsView } from './shared/routes/routes.js';
 import { ThemesManager } from './themes.js';
-import { ContrastCheck } from './contrast.js';
+import { ContrastCheck } from './features/contrast-check/contrast-check.js';
 import { GateBadge } from './shared/ui/verdict.js';
 import { nearestColorName } from './engine/color-names.js';
 import { reasonText } from './state/draft.js';

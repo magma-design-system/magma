@@ -141,11 +141,14 @@ No theme (the studio edits themes, it does not wear one) and no consumption.
   the page ships `lang="en"`, which `mds-pref-language` reads before the browser. A stored language
   the studio has no texts for is dropped: the Storybook, on the same origin, may have stored `es`.
 - **How a text is written**: in English where it is used, in `t('...')`; the Italian catalogue
-  (`src/shared/i18n/i18n-it.ts`) maps the English. A text kept in data is marked `msg('...')` and
+  (`src/shared/i18n/i18n-it.ts`) maps the English, and a page of `src/features/` keeps the Italian
+  of its own texts beside it (`i18n-it.ts`), handed to `useT` and looked up first. A text kept in data is marked `msg('...')` and
   translated where it is drawn, a count takes `plural()`, and a sentence with a link inside it takes
   `rich()`, translated whole so Italian orders its own words. `test/i18n.test.mts` reads the sources
   and fails on a text with no Italian, an Italian text no source uses, placeholders that differ and
-  a text of the interface written outside `t()`. The tests of the pages run in English.
+  a text of the interface written outside `t()`, and on a text of a page of `features/` found in
+  another page's catalogue. The tests of the pages run in English, and each page of `features/`
+  in Italian once.
 - **Components that read their text once**: `mds-button` and `mds-badge` copy the text of their
   slot into their `label` once, so the studio writes their text in `label`; `mds-input-switch` and
   `mds-input-range` read theirs once into the name of their control, so one that holds a translated
@@ -396,7 +399,7 @@ flowchart LR
     STATE["src/state/<br/>the work in signals, the draft, the actions"]
     APP["src/app.tsx<br/>the pages of Colors"]
     SURF["src/surfaces.tsx, src/themes.tsx<br/>balances, themes, names"]
-    GATE["src/engine/gate.ts, src/contrast.tsx<br/>the contrast gate, Contrast check"]
+    GATE["src/engine/gate.ts, src/features/contrast-check/<br/>the contrast gate, Contrast check"]
     OUT["src/engine/formats.ts, src/engine/exports.ts, src/batch.tsx<br/>zip, DTCG, CSS, GIMP, config"]
     VEN["build/vendor.ts<br/>serves Magma to the pages"]
     API["build/magma-api.ts<br/>the variant and tone of each component"]
@@ -475,16 +478,25 @@ The folders of the studio (#1397; #1399 moved the files into them, #1400 added `
   bundle declares none of its variables and each utility reads the one of the Magma the page
   loads, the value of the theme only as the fallback of its `var()`. `test/tailwind.test.mts`
   holds that every name of the theme the installed sheets do not define falls back on one they
-  define (all but two literals, each with its reason), and that the bundle declares none.
-- the rest of `src/`: the shell and the pages, until #1401-#1404 give the pages `features/` and
-  move the shell into `app/`.
+  define (all but two literals, each with its reason), that the bundle declares none, and that
+  every class a page of `features/` writes reaches the bundle: written whole in a string, never
+  glued to an expression (`gap-200${...}`), which the scanner of Tailwind does not read.
+- `src/features/`: one folder per page (#1401: `diffs`, `contrast-check`, and `rules`, the pages
+  of Behavior), the shape the other pages take in #1402-#1404. A page is written in the classes of
+  Magma; its short sheet keeps what classes do not write, the data its previews paint (the steps of
+  a ramp, the sample of a pair); its Italian catalogue (`i18n-it.ts`) goes to the translator
+  (`useT(IT_...)`), which looks there before the catalogue of `shared/`; its tests sit beside it.
+- the rest of `src/`: the shell and the pages not moved yet, until #1402-#1404 move them into
+  `features/` and the shell into `app/`.
 
 Imports go one way, and ESLint holds it (`no-restricted-imports` in `eslint.config.mjs`): a file
 of `engine` imports no other file of the studio but `shared/i18n/text.ts`, and types alone from
 `build/`; a file of `shared` imports nothing of the pages; a file of `state` imports the engine,
 `shared/i18n/text.ts` and the table of the pages (`shared/routes/routes.ts`), never a page,
-`app/` or another part of `shared`. A test sits beside its module and may import what it is
-tested with. `test/` keeps the checks of the build, of the site and of the translations, and the
+`app/` or another part of `shared`; a page of `features/` imports the engine, the state and
+`shared`, never `app/`, the shell, a page not moved yet or another page: its links go through the
+table of the pages, its data through the state. A test sits beside its module and may import what
+it is tested with. `test/` keeps the checks of the build, of the site and of the translations, and the
 tests of the pages until the pages move. Vitest runs `src/engine/`, `src/state/`, the table of
 the pages, the router and the checks of the build in Node, every other `*.test.mts` in jsdom,
 every `*.e2e.mts` in Chromium.

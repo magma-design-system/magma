@@ -10,7 +10,8 @@ import { App } from './app.js';
 import { useDarkMode } from './dark-mode.js';
 import { GateBadge } from './shared/ui/verdict.js';
 import { ConfigItems, useConfigMenu, type ConfigAction } from './app/config-menu.js';
-import { GateDialog } from './contrast.js';
+import { GateDialog } from './features/contrast-check/gate-dialog.js';
+import { RulesPage } from './features/rules/rules.js';
 import { StartPage } from './start.js';
 import { createStudio, StudioContext, useStudio, type StudioState } from './state/studio.js';
 import { cancelExport, confirmExport } from './state/exports.js';
@@ -122,7 +123,7 @@ export function Studio({ state, router }: StudioProps = {}) {
               }
             />
           )}
-          {route.section === 'behavior' && <BehaviorPageView page={route.page} />}
+          {route.section === 'behavior' && <RulesPage page={route.page} />}
           <PendingExport onReview={() => openColors('contrast')} />
         </div>
       </StudioContext.Provider>
@@ -737,42 +738,5 @@ function ThemePage({
         <PreviewPanel view={view} onView={setView} width={width} onWidth={setWidth} />
       </mds-dropdown>
     </div>
-  );
-}
-
-/** What each page of Behavior will hold, and where it comes from. */
-const BEHAVIOR_SUMMARY: Record<BehaviorPage, string> = {
-  'design-language': msg(
-    'The rules of composition every page of a product follows: rhythm, density, actions, titles, surfaces and widths.',
-  ),
-  patterns: msg(
-    'How a task across components is solved in every product, with the narrower values a product keeps in its magma/patterns folder.',
-  ),
-  blocks: msg(
-    'The sections of a page that come back in two patterns or more: the application shell, the page header, the lists.',
-  ),
-};
-
-function BehaviorPageView({ page }: { page: BehaviorPage }) {
-  const item = BEHAVIOR_PAGES.find((one) => one.id === page)!;
-  const t = useT();
-  return (
-    <main class="studio-section studio-page">
-      <header class="studio-page-head">
-        <div class="studio-page-title">
-          <mds-text typography="page" tag="h1">
-            {t(item.label)}
-          </mds-text>
-          <mds-text typography="detail" tag="p" class="studio-muted">
-            {t(BEHAVIOR_SUMMARY[page])}
-          </mds-text>
-        </div>
-      </header>
-      <mds-banner variant="info" headline={t('Read-only, after the theme')}>
-        {t(
-          'This page shows what Magma decided and the layer of the product, in the theme of the product. It comes after the Theme section (#693, "The plan").',
-        )}
-      </mds-banner>
-    </main>
   );
 }

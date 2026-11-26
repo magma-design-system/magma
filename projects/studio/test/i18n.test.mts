@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { basename, dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import ts from 'typescript'
@@ -8,7 +8,7 @@ import { IT, IT_SHELL } from '../src/shared/i18n/i18n-it.js'
 import { IT_PALETTE } from '../src/shared/i18n/i18n-it-palette.js'
 import { IT_SCALES } from '../src/shared/i18n/i18n-it-scales.js'
 import { IT_THEMES } from '../src/shared/i18n/i18n-it-themes.js'
-import { LANGUAGE_KEY, langOf, plural, startLanguage, translator } from '../src/shared/i18n/i18n.js'
+import { LANGUAGE_KEY, langOf, plural, startLanguage, translator, type Catalogue } from '../src/shared/i18n/i18n.js'
 
 // The languages of the studio (#1336, i18n.ts): the language it starts in, the translator, and
 // the Italian catalogue held to the sources, so a text added in English never ships without its
@@ -50,6 +50,31 @@ test('a text is translated by its English, then its placeholders filled; a count
   expect(plural(en, 0, '{count} pair', '{count} pairs')).toBe('0 pairs')
 })
 
+// a page of features/ keeps the Italian of its own texts beside it and hands it to the translator
+// (#1401): looked up first, then the catalogue of the studio; English ignores it
+test('the translator of a page looks in its own catalogue first, then in the studio\'s', () => {
+  const own: Catalogue = { 'A text of the page': 'Un testo della pagina', Colors: 'Colori della pagina' }
+  expect(translator('it', own)('A text of the page')).toBe('Un testo della pagina')
+  expect(translator('it', own)('Colors')).toBe('Colori della pagina')
+  expect(translator('it', own)('Theme')).toBe('Tema')
+  expect(translator('en', own)('A text of the page')).toBe('A text of the page')
+})
+
+/**
+ * The catalogue of each page of features/ (its i18n-it.ts, #1401), by the folder of the page: a
+ * new page is held to its catalogue with nothing to add here.
+ */
+const features = join(src, 'features')
+const OWN = new Map<string, Catalogue>()
+for (const page of readdirSync(features)) {
+  if (!existsSync(join(features, page, 'i18n-it.ts'))) continue
+  const module: Record<string, Catalogue> = await import(join(features, page, 'i18n-it.ts'))
+  OWN.set(`features/${page}`, Object.values(module)[0])
+}
+
+/** The catalogue of the page a source belongs to, if it is a page of features/. */
+const ownOf = (name: string) => OWN.get(name.split(/[/\\]/).slice(0, 2).join('/'))
+
 /** The modules of the studio, parsed. */
 // every folder of src/ (engine, shared, the pages), the catalogues and the texts of the previews
 // left out by the name of the file
@@ -74,8 +99,9 @@ const visit = (node: ts.Node, see: (node: ts.Node) => void) => {
   ts.forEachChild(node, (child) => visit(child, see))
 }
 
-/** Every text the sources hand to t(), msg() and plural(), with where it is. */
+/** Every text the sources hand to t(), msg() and plural(), with where it is, once per source. */
 const used = new Map<string, string>()
+const uses: Array<{ text: string; name: string; at: string }> = []
 for (const { name, file } of sources) {
   visit(file, (node) => {
     if (!ts.isCallExpression(node) || !ts.isIdentifier(node.expression)) return
@@ -88,23 +114,36 @@ for (const { name, file } of sources) {
           : callee === 'plural'
           ? [...literals(node.arguments[2]), ...literals(node.arguments[3])]
           : []
-    for (const text of texts) used.set(text, `${name}:${file.getLineAndCharacterOfPosition(node.getStart()).line + 1}`)
+    for (const text of texts) {
+      const at = `${name}:${file.getLineAndCharacterOfPosition(node.getStart()).line + 1}`
+      used.set(text, at)
+      uses.push({ text, name, at })
+    }
   })
 }
 
 const placeholders = (text: string) => [...text.matchAll(/\{(\w+)\}/g)].map((match) => match[1]).sort()
 
+// a page of features/ finds a text in its own catalogue or in the studio's, never in another page's
+const italianOf = (text: string, name: string): string | undefined => ownOf(name)?.[text] ?? IT[text]
+
 test('every text of the studio has its Italian, with the same placeholders', () => {
-  const missing = [...used].filter(([text]) => !(text in IT)).map(([text, at]) => `${at} ${JSON.stringify(text)}`)
+  const missing = uses
+    .filter(({ text, name }) => italianOf(text, name) === undefined)
+    .map(({ text, at }) => `${at} ${JSON.stringify(text)}`)
   expect(missing).toEqual([])
-  const differ = [...used.keys()]
-    .filter((text) => text in IT && placeholders(text).join() !== placeholders(IT[text]).join())
+  const differ = uses
+    .filter(({ text, name }) => {
+      const italian = italianOf(text, name)
+      return italian !== undefined && placeholders(text).join() !== placeholders(italian).join()
+    })
+    .map(({ text, at }) => `${at} ${JSON.stringify(text)}`)
   expect(differ).toEqual([])
 })
 
 test('a text is translated in one part of the catalogue only', () => {
   // the parts are spread into one catalogue: a key in two of them would keep the Italian of the last
-  const parts = { IT_SHELL, IT_PALETTE, IT_SCALES, IT_THEMES }
+  const parts = { IT_SHELL, IT_PALETTE, IT_SCALES, IT_THEMES, ...Object.fromEntries(OWN) }
   const seen = new Map<string, string>()
   const twice: string[] = []
   for (const [part, entries] of Object.entries(parts))
@@ -117,6 +156,11 @@ test('a text is translated in one part of the catalogue only', () => {
 
 test('every Italian text is used by a source', () => {
   expect(Object.keys(IT).filter((text) => !used.has(text))).toEqual([])
+  // the catalogue of a page, by a source of that page
+  for (const [page, own] of OWN) {
+    const ofPage = new Set(uses.filter(({ name }) => ownOf(name) === own).map(({ text }) => text))
+    expect(Object.keys(own).filter((text) => !ofPage.has(text)), page).toEqual([])
+  }
 })
 
 /**

@@ -6,14 +6,21 @@ import {
   createColorTokens,
   type MagmaConfig,
 } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
-import { plural, useT } from './shared/i18n/i18n.js';
-import './diff.css';
+import { plural, useT } from '../../shared/i18n/i18n.js';
+import { IT_DIFFS } from './i18n-it.js';
+import './diffs.css';
 
-// The diff compares the palette generated from the edited config against the
-// one generated from the committed configuration (.magma-design-tokensrc.json,
-// bundled at build time). The generated token files under tokens/color are
-// build artifacts and not committed, so the committed config is the stable
-// baseline.
+/*
+  The Diffs page (#1401, out of diff.tsx; the bar takes it over in #1402): the palette generated
+  from the edited configuration against the one generated from the committed configuration
+  (.magma-design-tokensrc.json, bundled at build time). The generated token files under
+  tokens/color are build artifacts and not committed, so the committed configuration is the
+  stable baseline. Written in the classes of Magma (src/tailwind.css); its sheet keeps the steps,
+  which are data.
+*/
+
+/** The translator of the page: its own Italian (i18n-it.ts), then the studio's. */
+const useDiffsT = () => useT(IT_DIFFS);
 
 type StepMap = Record<string, { value: string }>;
 interface Modes {
@@ -86,16 +93,16 @@ function diffColor(
 // one mode of a colour: its label, then its steps. The steps are data, each in its own colour
 // inline; a changed step is ringed twice, so the ring reads on a light step and on a dark one
 function DiffRow({ label, cells }: { label: string; cells: DiffCell[] }) {
-  const t = useT();
+  const t = useDiffsT();
   return (
-    <div class="diffs-mode">
-      <mds-text typography="caption" tag="p" class="studio-muted">
+    <div class="contents">
+      <mds-text typography="caption" tag="p" class="text-fg-muted">
         {label}
       </mds-text>
-      <div class="diffs-ramp">
+      <div class="flex gap-inline">
         {cells.map((cell) => (
           <div
-            class={`diffs-step${cell.changed ? ' diffs-step-changed' : ''}`}
+            class={cell.changed ? 'diffs-step diffs-step-changed' : 'diffs-step'}
             style={{ background: cell.value }}
             title={
               cell.changed
@@ -120,7 +127,7 @@ const BADGE_VARIANT: Record<ColorDiff['status'], JSX.IntrinsicElements['mds-badg
 };
 
 export function DiffView({ config }: { config: MagmaConfig }) {
-  const t = useT();
+  const t = useDiffsT();
   const baseline = useMemo(() => paletteOf(initialConfigJson as unknown as MagmaConfig), []);
   const [current, error] = useMemo<[ColorTree | null, string | null]>(() => {
     try {
@@ -155,8 +162,8 @@ export function DiffView({ config }: { config: MagmaConfig }) {
   const removed = diffs.filter((d) => d.status === 'removed').length;
 
   return (
-    <div class="diffs-page">
-      <mds-text typography="detail" tag="p" class="diffs-hint studio-muted">
+    <div class="grid gap-between-containers">
+      <mds-text typography="detail" tag="p" class="max-w-text text-fg-muted">
         {t(
           'Differences between the current palette and the one generated from the committed configuration. Changed steps are outlined; the badge shows the largest perceptual distance (deltaE) across the color.',
         )}
@@ -167,7 +174,7 @@ export function DiffView({ config }: { config: MagmaConfig }) {
           : t('{changed} changed, {added} new, {removed} removed', { changed, added, removed })}
       </mds-text>
       {diffs.map((d) => (
-        <mds-card class="diffs-card" key={d.path}>
+        <mds-card key={d.path}>
           <mds-card-header>
             <mds-text typography="part" tag="h2">
               {d.path}
@@ -185,7 +192,7 @@ export function DiffView({ config }: { config: MagmaConfig }) {
             />
           </mds-card-header>
           <mds-card-content>
-            <div class="diffs-modes">
+            <div class="grid grid-cols-[max-content_minmax(0,1fr)] items-center gap-inline">
               <DiffRow label={t('light')} cells={d.light} />
               <DiffRow label={t('dark')} cells={d.dark} />
             </div>
