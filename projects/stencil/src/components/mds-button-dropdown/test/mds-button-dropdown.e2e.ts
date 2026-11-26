@@ -403,15 +403,22 @@ describe('mds-button-dropdown stretched', () => {
     const host = box(stretched);
     const primary = box(primaryAction(stretched));
     const arrow = box(chevron(stretched));
-    const label = box(primaryAction(stretched).shadowRoot!.querySelector('[part="label"]')!);
+    const labelOf = (dropdown: Element): DOMRect =>
+      box(primaryAction(dropdown).shadowRoot!.querySelector('[part="label"]')!);
+    const label = labelOf(stretched);
 
     expect(host.width).toBeCloseTo(box(stretched.parentElement!).width, 0);
     expect(primary.left).toBeCloseTo(host.left, 0);
     expect(arrow.left).toBeCloseTo(primary.right, 0);
     expect(arrow.right).toBeCloseTo(host.right, 0);
     expect(arrow.width).toBeCloseTo(box(chevron(intrinsic)).width, 0);
-    // the label stays in the middle of the main action, as in a stretched mds-button
-    expect(label.left + label.width / 2).toBeCloseTo(primary.left + primary.width / 2, 0);
+    // the label starts where it starts at the own width of the component, where a stretched
+    // mds-button centres it: a column of split buttons reads down one edge
+    expect(label.left - primary.left).toBeCloseTo(
+      labelOf(intrinsic).left - box(primaryAction(intrinsic)).left,
+      0,
+    );
+    expect(label.left + label.width / 2).toBeLessThan(primary.left + primary.width / 2);
   });
 
   // the footer of a card under 380px stacks its row and stretches every action: the main action
