@@ -2925,6 +2925,11 @@ export namespace Components {
      * @category structure
      */
     interface MdsSeparator {
+        /**
+          * Sets the intensity of the rule: `strong` draws the role of functional outlines (`--magma-border-default`), `weak` the role of decorative dividers (`--magma-border-muted`), for the rows of a list inside a card or a panel that already has an outline of its own
+          * @default 'strong'
+         */
+        "tone"?: ToneMinimalVariantType;
     }
     /**
      * @category feedback
@@ -8585,6 +8590,11 @@ declare namespace LocalJSX {
      * @category structure
      */
     interface MdsSeparator {
+        /**
+          * Sets the intensity of the rule: `strong` draws the role of functional outlines (`--magma-border-default`), `weak` the role of decorative dividers (`--magma-border-muted`), for the rows of a list inside a card or a panel that already has an outline of its own
+          * @default 'strong'
+         */
+        "tone"?: ToneMinimalVariantType;
     }
     /**
      * @category feedback
@@ -9907,6 +9917,9 @@ declare namespace LocalJSX {
         "typography": TypographyTechnicalType;
         "variant": ThemeVariantType;
     }
+    interface MdsSeparatorAttributes {
+        "tone": ToneMinimalVariantType;
+    }
     interface MdsSpinnerAttributes {
         "running": boolean;
     }
@@ -10166,7 +10179,7 @@ declare namespace LocalJSX {
         "mds-radial-menu": Omit<MdsRadialMenu, keyof MdsRadialMenuAttributes> & { [K in keyof MdsRadialMenu & keyof MdsRadialMenuAttributes]?: MdsRadialMenu[K] } & { [K in keyof MdsRadialMenu & keyof MdsRadialMenuAttributes as `attr:${K}`]?: MdsRadialMenuAttributes[K] } & { [K in keyof MdsRadialMenu & keyof MdsRadialMenuAttributes as `prop:${K}`]?: MdsRadialMenu[K] };
         "mds-radial-menu-item": Omit<MdsRadialMenuItem, keyof MdsRadialMenuItemAttributes> & { [K in keyof MdsRadialMenuItem & keyof MdsRadialMenuItemAttributes]?: MdsRadialMenuItem[K] } & { [K in keyof MdsRadialMenuItem & keyof MdsRadialMenuItemAttributes as `attr:${K}`]?: MdsRadialMenuItemAttributes[K] } & { [K in keyof MdsRadialMenuItem & keyof MdsRadialMenuItemAttributes as `prop:${K}`]?: MdsRadialMenuItem[K] };
         "mds-radial-progress": Omit<MdsRadialProgress, keyof MdsRadialProgressAttributes> & { [K in keyof MdsRadialProgress & keyof MdsRadialProgressAttributes]?: MdsRadialProgress[K] } & { [K in keyof MdsRadialProgress & keyof MdsRadialProgressAttributes as `attr:${K}`]?: MdsRadialProgressAttributes[K] } & { [K in keyof MdsRadialProgress & keyof MdsRadialProgressAttributes as `prop:${K}`]?: MdsRadialProgress[K] };
-        "mds-separator": MdsSeparator;
+        "mds-separator": Omit<MdsSeparator, keyof MdsSeparatorAttributes> & { [K in keyof MdsSeparator & keyof MdsSeparatorAttributes]?: MdsSeparator[K] } & { [K in keyof MdsSeparator & keyof MdsSeparatorAttributes as `attr:${K}`]?: MdsSeparatorAttributes[K] } & { [K in keyof MdsSeparator & keyof MdsSeparatorAttributes as `prop:${K}`]?: MdsSeparator[K] };
         "mds-spinner": Omit<MdsSpinner, keyof MdsSpinnerAttributes> & { [K in keyof MdsSpinner & keyof MdsSpinnerAttributes]?: MdsSpinner[K] } & { [K in keyof MdsSpinner & keyof MdsSpinnerAttributes as `attr:${K}`]?: MdsSpinnerAttributes[K] } & { [K in keyof MdsSpinner & keyof MdsSpinnerAttributes as `prop:${K}`]?: MdsSpinner[K] };
         "mds-status-bar": Omit<MdsStatusBar, keyof MdsStatusBarAttributes> & { [K in keyof MdsStatusBar & keyof MdsStatusBarAttributes]?: MdsStatusBar[K] } & { [K in keyof MdsStatusBar & keyof MdsStatusBarAttributes as `attr:${K}`]?: MdsStatusBarAttributes[K] } & { [K in keyof MdsStatusBar & keyof MdsStatusBarAttributes as `prop:${K}`]?: MdsStatusBar[K] };
         "mds-stepper-bar": Omit<MdsStepperBar, keyof MdsStepperBarAttributes> & { [K in keyof MdsStepperBar & keyof MdsStepperBarAttributes]?: MdsStepperBar[K] } & { [K in keyof MdsStepperBar & keyof MdsStepperBarAttributes as `attr:${K}`]?: MdsStepperBarAttributes[K] } & { [K in keyof MdsStepperBar & keyof MdsStepperBarAttributes as `prop:${K}`]?: MdsStepperBar[K] };

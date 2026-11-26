@@ -1365,6 +1365,7 @@ mds-radial-progress css --mds-radial-progress-text-background INTERNAL
 mds-radial-progress css --mds-radial-progress-text-background-shadow INTERNAL
 mds-radial-progress css --mds-radial-progress-text-suffix
 mds-separator encapsulation shadow
+mds-separator prop tone (attr tone) [reflect]: "strong" | "weak" | undefined = 'strong'
 mds-separator css --mds-separator-background
 mds-spinner encapsulation shadow
 mds-spinner prop running (attr running) [reflect, mutable]: boolean | undefined = false

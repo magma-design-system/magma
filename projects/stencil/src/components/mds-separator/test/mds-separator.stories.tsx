@@ -1,8 +1,18 @@
 import { h } from '@stencil/core';
+import { toneMinimalVariantDictionary } from '@type/tone';
 
 export default {
   title: 'UI / Structure / Separator',
   id: 'ui-separator',
+  argTypes: {
+    tone: {
+      type: { name: 'string' },
+      options: toneMinimalVariantDictionary,
+      control: { type: 'select' },
+      description:
+        'Sets the intensity of the rule: `strong` the role of functional outlines, `weak` the role of decorative dividers',
+    },
+  },
 };
 
 const Template = (args) => (
@@ -49,4 +59,12 @@ const Template = (args) => (
 
 export const Default = {
   render: Template,
+};
+
+// #1554: the rows of a list inside a card, whose own outline is already `border-default`
+export const Weak = {
+  render: Template,
+  args: {
+    tone: 'weak',
+  },
 };

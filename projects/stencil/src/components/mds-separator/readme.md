@@ -11,7 +11,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ### 1. Description
 
-The `<mds-separator>` web component is the visual divider of the Magma Design System: a thin, full-radius horizontal rule used to partition content into distinct groups. It is a purely presentational primitive - the styled equivalent of an `<hr>` - with no props, slots, events, or interactive state.
+The `<mds-separator>` web component is the visual divider of the Magma Design System: a thin, full-radius horizontal rule used to partition content into distinct groups. It is a purely presentational primitive - the styled equivalent of an `<hr>` - with one prop, `tone`, and no slots, events, or interactive state.
 
 #### Semantic Behavior
 
@@ -21,7 +21,13 @@ The `<mds-separator>` web component is the visual divider of the Magma Design Sy
 
 #### Properties & Visual Configurations
 
-The component defines no configurable props. The only intended customization point is the CSS custom property **`--mds-separator-background`** (default `rgb(var(--magma-border-default))`) that overrides the divider color; set it to a semantic color role so the divider keeps following the mode and the contrast preference.
+- **`tone`** (`strong` by default, reflected) - the intensity of the rule, as a border role:
+  - `strong` draws `--magma-border-default`, the role of functional outlines (inputs, cards): a rule between the sections of a page or of a panel with no outline of its own.
+  - `weak` draws `--magma-border-muted`, the role of decorative dividers: the rows of a list inside a card, whose own outline is already `border-default`, so the rules stay below it.
+
+Both tones follow the `pref-contrast-more` layer: each role is promoted one step (`border-muted` to `border-default`, `border-default` to `border-strong`), so the weak rule never drops below what that preference asks for.
+
+For any other color, the customization point is the CSS custom property **`--mds-separator-background`** (default `rgb(var(--magma-border-default))`, `rgb(var(--magma-border-muted))` when `weak`); set it to a semantic color role so the divider keeps following the mode and the contrast preference. Set it on the `<mds-separator>` itself (or on a selector that matches it): the component declares the property on its host, so a value set on a parent does not reach it.
 
 For the semantic color roles the default value draws from, see [`docs/agents/color.md`](../../../../../../docs/agents/color.md).
 
@@ -48,6 +54,30 @@ The most common use: place `<mds-separator>` between stacked rows or sections to
     <mds-text typography="h6">Wario</mds-text>
   </mds-entity>
 </div>
+```
+
+#### Lighter Rules Between the Rows of a Card
+
+Inside a card or a panel that already has an outline, the rules between its rows take `tone="weak"`: the role of decorative dividers, a step below the outline of the card, so the rows read as one group. Under the high-contrast preference the rule is promoted with the outline, and stays visible.
+
+```html
+<mds-card>
+  <mds-card-content slot="content">
+    <ul class="m-0 grid list-none gap-300 p-0">
+      <li>
+        <mds-entity icon="mi/outline/menu-book" variant="primary" tone="weak">
+          <mds-text typography="h6" truncate="word">Delibera 12/2026</mds-text>
+        </mds-entity>
+      </li>
+      <li class="grid gap-300">
+        <mds-separator tone="weak"></mds-separator>
+        <mds-entity icon="mi/outline/assignment" variant="primary" tone="weak">
+          <mds-text typography="h6" truncate="word">Determina 48/2026</mds-text>
+        </mds-entity>
+      </li>
+    </ul>
+  </mds-card-content>
+</mds-card>
 ```
 
 #### Dividing Sections Inside a Card
@@ -86,7 +116,7 @@ Use `<mds-separator>` to separate groups of content inside a card region. `<mds-
 
 #### Custom Separator Color
 
-Override the divider color through the single documented CSS custom property `--mds-separator-background`. Use a semantic color role wrapped in `rgb(var(--magma-<role>))` so dark-mode and high-contrast variants keep working.
+For a color the two tones do not give, override the divider color through the single documented CSS custom property `--mds-separator-background`. Use a semantic color role wrapped in `rgb(var(--magma-<role>))` so dark-mode and high-contrast variants keep working, and set it on a selector that matches the separator: a value set on a parent does not reach it.
 
 ```css
 .sezione-speciale mds-separator {
@@ -160,8 +190,40 @@ mds-separator {
 
 /* CORRECT */
 mds-separator {
-  --mds-separator-background: rgb(var(--magma-border-muted));
+  --mds-separator-background: rgb(var(--magma-accent-border));
 }
+```
+
+#### Do Not Recolor the Separator to Make It Lighter
+
+A lighter rule is the `weak` tone, not a color of your own: the tone takes the role of decorative dividers and keeps it promoted under the high-contrast preference. The custom property set on a parent does not even reach the separator, since the component declares it on its host.
+
+```html
+<!-- INCORRECT -->
+<mds-card style="--mds-separator-background: rgb(var(--magma-border-muted))">
+  <mds-card-content slot="content">
+    <mds-entity icon="mi/outline/menu-book">
+      <mds-text typography="h6">Delibera 12/2026</mds-text>
+    </mds-entity>
+    <mds-separator></mds-separator>
+    <mds-entity icon="mi/outline/assignment">
+      <mds-text typography="h6">Determina 48/2026</mds-text>
+    </mds-entity>
+  </mds-card-content>
+</mds-card>
+
+<!-- CORRECT -->
+<mds-card>
+  <mds-card-content slot="content">
+    <mds-entity icon="mi/outline/menu-book">
+      <mds-text typography="h6">Delibera 12/2026</mds-text>
+    </mds-entity>
+    <mds-separator tone="weak"></mds-separator>
+    <mds-entity icon="mi/outline/assignment">
+      <mds-text typography="h6">Determina 48/2026</mds-text>
+    </mds-entity>
+  </mds-card-content>
+</mds-card>
 ```
 
 #### Do Not Pierce Shadow DOM to Style the Separator
@@ -195,6 +257,13 @@ mds-separator {
 <mds-separator></mds-separator>
 ```
 
+
+
+## Properties
+
+| Property | Attribute | Description                                                                                                                                                                                                                                                        | Type                              | Default    |
+| -------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------- | ---------- |
+| `tone`   | `tone`    | Sets the intensity of the rule: `strong` draws the role of functional outlines (`--magma-border-default`), `weak` the role of decorative dividers (`--magma-border-muted`), for the rows of a list inside a card or a panel that already has an outline of its own | `"strong" \| "weak" \| undefined` | `'strong'` |
 
 
 ## CSS Custom Properties
