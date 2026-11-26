@@ -19,11 +19,8 @@ import {
   paintsAny,
 } from './paints.js'
 import { sceneStyle } from './scene-css.js'
-import {
-  NO_THEME_CHOICES,
-  resetThemeChoices,
-  type ThemeChoices,
-} from '../theme-choices.js'
+import { NO_THEME_CHOICES, type ThemeChoices } from './theme-choices.js'
+import { resetThemeChoices } from '../theme-choices.js'
 
 // What a family paints (#1308): read from the documentation.json of the installed magma, the
 // guide of the variants and the accents of the themes, never guessed. The bundled configuration

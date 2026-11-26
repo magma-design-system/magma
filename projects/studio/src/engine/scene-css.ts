@@ -3,8 +3,8 @@ import { createColorTokens } from '@maggioli-design-system/design-tokens/src/lib
 import { semantic } from '@maggioli-design-system/design-tokens/semantic.config';
 import type { ColorMode } from '@maggioli-design-system/design-tokens/src/lib/theme-manifest.mjs';
 import { cssRgb } from './formats.js';
-import { RESERVED_GROUPS } from '../surfaces.js';
-import { NO_THEME_CHOICES, type ThemeChoices } from '../theme-choices.js';
+import { RESERVED_GROUPS } from './groups.js';
+import { NO_THEME_CHOICES, type ThemeChoices } from './theme-choices.js';
 import {
   SHIPPED_BY_FAMILY,
   givenNamesOf,
@@ -12,7 +12,7 @@ import {
   nameOfTheme,
   themeNameProblem,
   themesExportCss,
-} from '../themes.js';
+} from './themes.js';
 
 /*
   What the frame of the Theme section needs to show the configuration the person edits, not only

@@ -21,7 +21,8 @@ import { paintedBy, type Painted } from './engine/paints.js';
 import { sceneStyle, type ConfigTheme } from './engine/scene-css.js';
 import { forceHover, settled, statesMarkup, statesPlan } from './shared/frames/states.js';
 import { msg, plural, rich, useT, type T } from './shared/i18n/i18n.js';
-import { useThemeChoices, type ThemeChoices } from './theme-choices.js';
+import type { ThemeChoices } from './engine/theme-choices.js';
+import { useThemeChoices } from './theme-choices.js';
 import './scales.css';
 
 /*

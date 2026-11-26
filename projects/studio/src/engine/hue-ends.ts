@@ -1,4 +1,4 @@
-import { msg } from '../shared/i18n/i18n.js';
+import { msg } from '../shared/i18n/text.js';
 
 /*
   How the two ends of a custom hue shift move together, a choice of the editor of the hue shifting

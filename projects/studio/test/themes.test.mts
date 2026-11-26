@@ -8,7 +8,8 @@ import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/
 import { COLOR_MODES_PROPERTY, namedThemeCss, themeOf } from '@maggioli-design-system/design-tokens/semantic.model'
 import { semantic } from '@maggioli-design-system/design-tokens/semantic.config'
 import { validateTheme } from '@maggioli-design-system/design-tokens/src/lib/theme-manifest.mjs'
-import { MODE_CHOICES, RESERVED_THEME_NAMES, ThemesManager, themeNameProblem } from '../src/themes.js'
+import { RESERVED_THEME_NAMES, themeNameProblem } from '../src/engine/themes.js'
+import { MODE_CHOICES, ThemesManager } from '../src/themes.js'
 import { resetThemeChoices } from '../src/theme-choices.js'
 
 // The themes view of the studio: it builds the export CSS while rendering, so a throw anywhere

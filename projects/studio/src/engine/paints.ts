@@ -4,9 +4,9 @@ import guide from '../../../../docs/agents/variants.md?raw';
 import api from 'virtual:magma-api';
 import type { ComponentAxes } from '../../build/magma-api.js';
 import type { ConfigTheme } from './scene-css.js';
-import { NO_THEME_CHOICES, type ThemeChoices } from '../theme-choices.js';
-import { accentOfTheme } from '../themes.js';
-import { msg } from '../shared/i18n/i18n.js';
+import { NO_THEME_CHOICES, type ThemeChoices } from './theme-choices.js';
+import { accentOfTheme } from './themes.js';
+import { msg } from '../shared/i18n/text.js';
 
 /*
   What a family of the palette paints: the components a change of it moves, so that the previews
