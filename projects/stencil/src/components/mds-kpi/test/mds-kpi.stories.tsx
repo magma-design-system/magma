@@ -1,4 +1,5 @@
 import { h } from '@stencil/core';
+import { StateCell, StatesGrid } from '@fixture/states';
 
 export default {
   title: 'UI / Data / KPI',
@@ -87,4 +88,54 @@ export const Default = {
 
 export const ScrollEffect = {
   render: TemplateScroll,
+};
+
+/**
+ * Every state the KPI group has of its own once the story has opened (#1440, @fixture/states):
+ * how it lays out one, two, three and five items in the width of a column (as many columns of
+ * at least 180px as fit, the rest wraps), and items of different content side by side, which keep
+ * one height per row. What one item shows (icon, value, description, the reveal on scroll) is in
+ * the story of mds-kpi-item. The pace and the placeholder of the reveal are custom properties of
+ * the group, not states. No state needs an interaction.
+ */
+interface KpiState {
+  state: string;
+  items: Record<string, string>[];
+}
+
+const figures = [
+  { icon: 'mi/baseline/description', label: '1.248', description: 'Pratiche aperte' },
+  { icon: 'mi/baseline/done', label: '962', description: 'Pratiche chiuse' },
+  { icon: 'mi/baseline/timer', label: '18', description: 'Giorni medi di attesa' },
+  { icon: 'mi/baseline/warning', label: '37', description: 'Pratiche in ritardo' },
+  { icon: 'mi/baseline/folder', label: '4', description: 'Uffici coinvolti' },
+];
+
+const kpiStates: KpiState[] = [
+  { state: 'one item', items: figures.slice(0, 1) },
+  { state: 'two items', items: figures.slice(0, 2) },
+  { state: 'three items, wrapped', items: figures.slice(0, 3) },
+  { state: 'five items, wrapped', items: figures },
+  {
+    state: 'items of different content in a row',
+    items: [figures[0], { label: '962', description: 'Pratiche chiuse nel trimestre in corso' }],
+  },
+];
+
+const TemplateStates = () => (
+  <StatesGrid>
+    {kpiStates.map(({ state, items }) => (
+      <StateCell key={state} state={state}>
+        <mds-kpi>
+          {items.map((item) => (
+            <mds-kpi-item key={item.description} {...item}></mds-kpi-item>
+          ))}
+        </mds-kpi>
+      </StateCell>
+    ))}
+  </StatesGrid>
+);
+
+export const States = {
+  render: TemplateStates,
 };

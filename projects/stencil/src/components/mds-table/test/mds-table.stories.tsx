@@ -3,6 +3,9 @@ import { useEffect, useRef, useState, FC } from 'react';
 import { expect, waitFor } from 'storybook/test';
 import { MdsTableHeaderCellSortEventDetail } from '@component/mds-table-header-cell/meta/event-detail';
 import { MdsPaginatorEventDetail } from '@component/mds-paginator/meta/event-detail';
+import { SortDirectionType } from '@component/mds-table-header-cell/meta/types';
+import { StateCell, StatesGrid, stateCell } from '@fixture/states';
+import { ButtonVariantType } from '@type/button';
 
 export default {
   title: 'UI / Data / Table',
@@ -1099,4 +1102,314 @@ export const BatchActions = {
     interactive: false,
     selectable: true,
   },
+};
+
+/**
+ * Every state of the table once the story has opened (#1440, @fixture/states), with the states of
+ * its parts, which have no story of their own (mds-table-header, mds-table-header-cell,
+ * mds-table-body, mds-table-row, mds-table-cell, mds-table-footer): header, rows and footer and
+ * without the footer, the interactive rows, the sortable columns at rest, sorted either way and
+ * sorted by a click, the order asked of the application (`sorting="external"`), which leaves the
+ * rows where they are, the selectable rows with none, some and all selected and the selections
+ * made by a click on a row and on the header, the bar of the batch actions closed and open, the
+ * Actions column of the rows, the table wider than its box, which scrolls and lays the actions of
+ * its rows over it, the long text that wraps and the empty body. The table has no loading or empty
+ * message of its own: an empty body shows the header alone. The rows lit under the pointer
+ * (`interactive`) and the overlaid actions revealed by it need a real pointer, which a play does
+ * not move: mds-table.e2e.ts and mds-table-row.e2e.ts test them. A table with the bar of the batch
+ * actions needs the width of a page, not of one column of the grid: those cells span the whole
+ * grid. A state only an interaction reaches (`play: true`) is brought there by the play function,
+ * which checks the `direction` of the column, the order of the rows by their `value`, the
+ * `selected` of the rows and the `selection` of the table, not their look.
+ */
+interface Pratica {
+  numero: string;
+  richiedente: string;
+  stato: string;
+  ufficio?: string;
+  data?: string;
+}
+
+interface TableState {
+  state: string;
+  play?: boolean;
+  /** the cell spans the whole grid */
+  wide?: boolean;
+  table?: Record<string, string | boolean>;
+  sortable?: boolean;
+  /** the column written sorted, by its index */
+  direction?: [number, SortDirectionType];
+  /** two more columns, with text that does not wrap */
+  extended?: boolean;
+  rows?: Pratica[];
+  /** the indexes of the rows written `selected` */
+  selected?: number[];
+  /** the actions of each row, by their number */
+  actions?: number;
+  footer?: boolean;
+  batch?: boolean;
+}
+
+const pratiche: Pratica[] = [
+  {
+    numero: '142',
+    richiedente: 'Mario Rossi',
+    stato: 'Aperta',
+    ufficio: 'Edilizia privata',
+    data: '12 ottobre 2026',
+  },
+  {
+    numero: '98',
+    richiedente: 'Giulia Bianchi',
+    stato: 'Chiusa',
+    ufficio: 'Commercio e attivita produttive',
+    data: '3 marzo 2026',
+  },
+  {
+    numero: '127',
+    richiedente: 'Luca Verdi',
+    stato: 'In attesa',
+    ufficio: 'Tributi',
+    data: '8 giugno 2026',
+  },
+];
+const baseColumns: [string, keyof Pratica][] = [
+  ['N.', 'numero'],
+  ['Richiedente', 'richiedente'],
+  ['Stato', 'stato'],
+];
+const extraColumns: [string, keyof Pratica][] = [
+  ['Ufficio', 'ufficio'],
+  ['Ricevuta il', 'data'],
+];
+const rowActions: { icon: string; label: string; variant: ButtonVariantType }[] = [
+  { icon: 'mi/baseline/visibility', label: 'Apri la pratica', variant: 'dark' },
+  { icon: 'mi/baseline/edit', label: 'Modifica la pratica', variant: 'dark' },
+  { icon: 'mi/baseline/delete', label: 'Elimina la pratica', variant: 'error' },
+];
+
+const sortedByClick = 'sorted by a click';
+const rowByClick = 'a row selected by a click';
+const allFromHeader = 'all selected from the header';
+
+const tableStates: TableState[] = [
+  { state: 'header, rows and footer', footer: true },
+  { state: 'no footer' },
+  { state: 'interactive (rows lit under the pointer)', table: { interactive: true } },
+  { state: 'sortable columns, none sorted', sortable: true },
+  { state: 'sorted ascending', sortable: true, direction: [0, 'ascending'] },
+  { state: 'sorted descending', sortable: true, direction: [1, 'descending'] },
+  { state: sortedByClick, play: true, sortable: true },
+  {
+    state: 'sorting external, the rows left in the order of the application',
+    table: { sorting: 'external' },
+    sortable: true,
+    direction: [0, 'ascending'],
+  },
+  { state: 'selectable, none selected', table: { selectable: true } },
+  { state: 'selectable, some selected', table: { selectable: true }, selected: [1] },
+  { state: 'selectable, all selected', table: { selectable: true }, selected: [0, 1, 2] },
+  { state: rowByClick, play: true, table: { selectable: true } },
+  { state: allFromHeader, play: true, table: { selectable: true } },
+  { state: 'selectable, with a footer', table: { selectable: true }, footer: true },
+  { state: 'row actions, the Actions column', actions: 1 },
+  { state: 'row actions, with a footer', actions: 1, footer: true },
+  { state: 'wider than its box, scrolls', extended: true },
+  {
+    state: 'wider than its box, row actions laid over it',
+    extended: true,
+    actions: 3,
+  },
+  {
+    state: 'long text, wrapped',
+    rows: [
+      {
+        numero: '142',
+        richiedente: 'Studio associato Bianchi Fontana, per conto di Giulia Bianchi',
+        stato: 'In attesa della documentazione integrativa',
+      },
+      ...pratiche.slice(1),
+    ],
+  },
+  { state: 'empty body, the header alone', rows: [] },
+  {
+    state: 'batch actions, nothing selected (bar closed)',
+    wide: true,
+    table: { selectable: true },
+    batch: true,
+    actions: 3,
+  },
+  {
+    state: 'batch actions, rows selected (bar open, with the count)',
+    wide: true,
+    table: { selectable: true },
+    batch: true,
+    actions: 3,
+    selected: [0, 2],
+  },
+];
+
+const TemplateStates = () => (
+  <StatesGrid>
+    {tableStates.map(
+      ({
+        state,
+        play,
+        wide,
+        table,
+        sortable,
+        direction,
+        extended,
+        rows,
+        selected,
+        actions,
+        footer,
+        batch,
+      }) => {
+        const columns = extended ? [...baseColumns, ...extraColumns] : baseColumns;
+        return (
+          <div key={state} class={wide ? 'col-span-full' : undefined}>
+            <StateCell state={state} play={play}>
+              <mds-table {...table}>
+                <mds-table-header>
+                  {columns.map(([label], index) => (
+                    <mds-table-header-cell
+                      key={label}
+                      label={label}
+                      sortable={sortable || undefined}
+                      direction={direction?.[0] === index ? direction[1] : undefined}
+                    ></mds-table-header-cell>
+                  ))}
+                </mds-table-header>
+                <mds-table-body>
+                  {(rows ?? pratiche).map((row, index) => (
+                    <mds-table-row
+                      key={row.numero}
+                      value={row.numero}
+                      selected={selected?.includes(index) || undefined}
+                    >
+                      {columns.map(([label, key]) => (
+                        <mds-table-cell key={label}>
+                          <mds-text
+                            typography="detail"
+                            class={extended ? 'text-nowrap' : undefined}
+                          >
+                            {row[key]}
+                          </mds-text>
+                        </mds-table-cell>
+                      ))}
+                      {rowActions.slice(0, actions ?? 0).map(({ icon, label, variant }) => (
+                        <mds-button
+                          key={label}
+                          slot="action"
+                          icon={icon}
+                          aria-label={`${label} ${row.numero}`}
+                          variant={variant}
+                          tone="text"
+                        ></mds-button>
+                      ))}
+                    </mds-table-row>
+                  ))}
+                </mds-table-body>
+                {footer && (
+                  <mds-table-footer>
+                    <mds-table-cell>
+                      <mds-text typography="action">Totale</mds-text>
+                    </mds-table-cell>
+                    <mds-table-cell>
+                      <mds-text typography="action">3 richiedenti</mds-text>
+                    </mds-table-cell>
+                    <mds-table-cell>
+                      <mds-text typography="action">1 aperta</mds-text>
+                    </mds-table-cell>
+                  </mds-table-footer>
+                )}
+                {batch && (
+                  <mds-button
+                    slot="batch-action"
+                    icon="mi/baseline/download"
+                    label="Scarica"
+                    variant="dark"
+                    tone="text"
+                  ></mds-button>
+                )}
+                {batch && (
+                  <mds-button
+                    slot="batch-action"
+                    icon="mi/baseline/send"
+                    label="Inoltra"
+                    variant="dark"
+                    tone="text"
+                  ></mds-button>
+                )}
+                {batch && (
+                  <mds-button
+                    slot="batch-action"
+                    icon="mi/baseline/delete"
+                    label="Elimina"
+                    variant="error"
+                    tone="text"
+                  ></mds-button>
+                )}
+              </mds-table>
+            </StateCell>
+          </div>
+        );
+      },
+    )}
+  </StatesGrid>
+);
+
+/** The table of a cell, once every Magma element of the cell has loaded. */
+const loadedTable = async (canvasElement: HTMLElement, state: string) => {
+  const cell = stateCell(canvasElement, state);
+  const elements = Array.from(cell.querySelectorAll('*')).filter((element) =>
+    element.tagName.startsWith('MDS-'),
+  );
+  await waitFor(() => elements.forEach((element) => expect(element).toHaveAttribute('hydrated')));
+  return cell.querySelector('mds-table') as HTMLMdsTableElement;
+};
+
+/**
+ * Clicks the checkbox a row or the header renders in its shadow root, once it has loaded: click()
+ * runs the activation of the native control, the change included, with or without the focus of
+ * the document.
+ */
+const clickCheckbox = async (host: HTMLElement) => {
+  const control = () => host.shadowRoot!.querySelector('mds-input-switch') as HTMLElement;
+  await waitFor(() => expect(control()).toHaveAttribute('hydrated'));
+  (control().shadowRoot!.querySelector('input') as HTMLInputElement).click();
+};
+
+const playStates = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+  const sorted = await loadedTable(canvasElement, sortedByClick);
+  const column = sorted.querySelector('mds-table-header-cell') as HTMLMdsTableHeaderCellElement;
+  // the cell listens on the button in its shadow root
+  (column.shadowRoot!.querySelector('.action') as HTMLElement).click();
+
+  const oneRow = await loadedTable(canvasElement, rowByClick);
+  const row = oneRow.querySelectorAll('mds-table-row')[1] as HTMLMdsTableRowElement;
+  await clickCheckbox(row);
+
+  const allRows = await loadedTable(canvasElement, allFromHeader);
+  await clickCheckbox(allRows.querySelector('mds-table-header') as HTMLElement);
+
+  // the properties, not the attributes: Stencil reflects them on the next frame, and a hidden
+  // page draws no frame
+  await waitFor(() => expect(column).toHaveProperty('direction', 'ascending'));
+  await waitFor(() => expect(sorted.querySelector('mds-table-row')).toHaveProperty('value', '98'));
+  await waitFor(() => expect(row).toHaveProperty('selected', true));
+  await waitFor(() => expect(oneRow).toHaveProperty('selection', true));
+  await waitFor(() =>
+    allRows
+      .querySelectorAll('mds-table-row')
+      .forEach((each) => expect(each).toHaveProperty('selected', true)),
+  );
+  await waitFor(() => expect(allRows).toHaveProperty('selection', true));
+};
+
+export const States = {
+  render: TemplateStates,
+
+  play: playStates,
 };
