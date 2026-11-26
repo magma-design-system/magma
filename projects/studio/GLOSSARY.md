@@ -25,6 +25,7 @@ The studio speaks to the person with "tu", as the Italian of Magma does (README,
 | 8 | "tone" / "tono": neutral group vs component prop | alias: the group is **neutri** / **neutrals** in the interface; `tone` stays in tokens (public) | register; Palette group label |
 | 9a | "pesi" / "bilanciamenti" for one thing | rename: **pesi** / **weights**; "bilanciare" stays the verb | register; i18n ("balances"); model; README |
 | 9b | "candidato" / "proposta" for one thing | rename: **candidato** / **candidate** for both | register; model |
+| 10 | none (2026-11-26): a new concept, **compatibile con Magma** / **Magma-compatible**, and the built-in mark the interface already shows ("Integrata") | new rows; a scale that is not built-in gets no name of its own, so the words do not grow | register; model |
 
 ## Taxonomy register
 
@@ -35,9 +36,11 @@ The studio speaks to the person with "tu", as the Italian of Magma does (README,
 | `family-group` | group | gruppo | the families of one kind | a family; an export group | preset (config `groups`, the prefix of `colors[].name`) | | | `groups` |
 | `neutrals` | neutrals | neutri | the group of neutral families: porcelain, kaolin, neutral, fireclay, bisque (person) | the `tone` of a component | preset (config `colors[].name` `tone.*`) | family-group (config prefix) | | `tone` (alias: `--tone-*` tokens are public) |
 | `feedback-colours` | status colours | colori di feedback | info, success, warning, danger: the families that carry the outcome of a message (person) | a component state | preset (config `colors[].name` `status.*`) | family-group (config prefix) | | `status` (alias: `--status-*` tokens are public) |
-| `ramp` | ramp | rampa | the ten steps of a family in one mode, ordered by contrast | a contrast scale | family (`createColorTokens`, `color[group][name][mode]`) | | contrast-scale | `tokens.color` |
-| `ramp-step` | step | gradino | one of the ten steps of a ramp (01..10), or its seed | a stage | ramp (`color[group][name][mode][step]`) | | | `01`..`10`, `seed` |
-| `contrast-scale` | contrast scale | scala di contrasto | the ten contrast targets shared by the families that use it | a ramp | preset (config `ratios`, built-in ones in `src/lib`) | | | `ratios`; `default` and `tint` are one built-in scale |
+| `ramp` | ramp | rampa | the steps of a family in one mode, ordered by contrast, as many as its contrast scale has: ten on a Magma-compatible scale | a contrast scale | family (`createColorTokens`, `color[group][name][mode]`) | | contrast-scale | `tokens.color` |
+| `ramp-step` | step | gradino | one of the steps of a ramp (01..10 on a Magma-compatible scale), or its seed | a stage | ramp (`color[group][name][mode][step]`) | | | `01`..`10`, `seed`; `01`..`NN` on a scale of NN steps |
+| `contrast-scale` | contrast scale | scala di contrasto | the contrast targets shared by the families that use it, one per step: ten on a Magma-compatible scale | a ramp | preset (config `ratios`; the built-in ones in `projects/design-tokens/src/config/default-color.json` `ratios`) | | | `ratios`; under `wcag3`, `default` and `tint` hold the same targets |
+| `built-in` | built-in | integrata | shipped with the design-tokens engine, not written by the preset: a contrast scale (`default`, `tint`, `tone` under `wcag3`; `default`, `tone`, `v1`, `v2` under `wcag2`) or a variant; the preset may redefine it, never rename or delete it, and a built-in scale keeps its number of steps (person, 2026-11-26) | a ready theme, which Magma ships as a theme file; Magma-compatible (`v1` is built-in with twenty steps) | | | | `ScaleOrigin` `builtin`, `builtin-overridden` and `builtinScales` (`src/scales.tsx`, `src/app.tsx`); a scale that is not built-in has no name in the interface (`custom` in the code) |
+| `magma-compatible` | Magma-compatible | compatibile con Magma | a contrast scale with as many steps as the roles of Magma name (semantic `scaleSteps`, ten today); a family on such a scale, and a preset whose families all are, compile as a theme of Magma (person, 2026-11-26) | a green verification: a compatible preset can still fail the contrast check | | | role (semantic `hueSteps` and the other steps the roles name) | semantic `scaleSteps`, `scaleStepList()`; nothing in the studio yet |
 | `weights` | weights | pesi | how much every neutral element and every transparent role weighs, per mode (person) | the old "balances", the same thing renamed | preset (config `theme`; semantic `transparent`) | | | `theme` (alias: public key of the config format) |
 | `role` | role | ruolo | a named use of a colour that components paint with | a ramp step | (root of the contract: `semantic.config.ts`) | | ramp-step or surface it resolves to (semantic) | `--magma-*` |
 | `surface` | surface | superficie | a neutral background role by elevation: sunken, muted, default, raised, overlay | a ground | weights (config `theme.surfaces`) | role | tint (`--magma-tint-*`) | `--magma-surface-*` |
@@ -87,6 +90,7 @@ The studio speaks to the person with "tu", as the Italian of Magma does (README,
 - `editorial` names `bisque` without containing it: theme refers to family.
 - `--magma-band` lies on any ground and outlives it: band refers to ink, ground is a condition, not a parent.
 - A candidate has one parent per instance (an exception, or the start of a theme from a brand colour): two possible parents for the type, never two at once. Proposed until the studio holds candidates.
+- `v1` is built-in and has twenty steps (`default-color.json`): built-in does not mean Magma-compatible. Compatibility is the number of steps alone, read from semantic `scaleSteps`; a scale no family uses changes nothing.
 - Edges marked (proposed) have no source in the data yet: scene in stage, ground in condition, exception in preset, component-state in exception.
 
 ## Retired names and the interface today
