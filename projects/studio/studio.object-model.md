@@ -169,7 +169,8 @@ Altre relazioni:
 - **Scopo**: è ciò con cui si compila il colore di Magma o di un prodotto, ed è l'unità che esce
   dallo studio. (persona, con la gerarchia)
 - **Contiene**: le impostazioni globali (colorspace, smooth, formula, saturazione) e i gruppi di
-  export. (progetto: `.magma-design-tokensrc.json`)
+  export. (progetto: `.magma-design-tokensrc.json`) Una famiglia le eredita se non le cambia; la
+  vista dove si regolano non è ancora collocata (domanda 13).
 - **Ordine dei colori**: il preset li scrive raggruppati per gruppo e, dentro ogni gruppo, in
   ordine cromatico, come li mostra lo studio; il primo salvataggio riordina una volta la
   configurazione di Magma. (persona, 2026-11-26; la seconda frase è una conseguenza)
@@ -203,7 +204,7 @@ Altre relazioni:
   - nasce con il suo primo colore: in "New color" il campo Gruppo accetta un nome nuovo, e un
     "Nuovo gruppo" nell'elenco apre lo stesso dialogo (proposta);
   - regolarne le impostazioni ed esportarne le famiglie, come fa oggi la pagina Groups
-    (progetto; persona: "funziona già").
+    (progetto; persona: "funziona già"), in una pagina sua, Gruppo (persona, 2026-11-26).
 - **Regole** (progetto):
   - il nome non è quello di un gruppo che il motore genera: `surface`, `border`, `text`, `wash`,
     `emphasis`, `inverse`, `fg` (`DERIVED_GROUPS` in design-tokens, `src/lib/text-role.mts`);
@@ -220,12 +221,20 @@ Altre relazioni:
   design-tokens)
 - **Figli**: la rampa per modalità, con tanti gradini quanti ne ha la sua scala (01..10 su una
   scala compatibile con Magma) più il seed.
-- **Azioni**: aggiungere, cambiare, eliminare (con annulla), farne un alias. (progetto, proposta)
+- **Azioni**: aggiungere, cambiare, eliminare (con annulla), farne un alias (progetto,
+  proposta); da un valore ereditato, andare dove si decide: la pagina Gruppo per un valore del
+  gruppo (persona, 2026-11-26), la vista delle impostazioni del preset per uno del preset
+  (domanda 13).
 - **Stati**: usata da un tema, come tinta o accento, oppure no (persona); su una scala non
   compatibile con Magma, e allora i ruoli che nominano i suoi gradini non reggono (proposta,
   2026-11-26; progetto: semantic `hueSteps`).
+- **Stati di un campo**: suo, oppure ereditato (persona, 2026-11-26). Dal gruppo: scala di
+  contrasto, formula, export; dal preset: colorspace, smooth, formula, saturazione. La formula
+  viene dal gruppo quando il gruppo la fissa, altrimenti dal preset. (progetto: `groups` e le
+  impostazioni globali della configurazione)
 - **Sempre visibile**: cosa dipinge (i componenti, il tema in cui si vede) e le coppie della
-  verifica che tocca (persona); il badge della sua scala (proposta, 2026-11-26).
+  verifica che tocca (persona); il badge della sua scala (proposta, 2026-11-26); per ogni campo
+  ereditato, da chi: il gruppo per nome, o il preset (persona, 2026-11-26).
 - **Ordine**: cromatico dentro il suo gruppo, ovunque compaia: l'elenco, i selettori, il preset e
   i file esportati (persona, 2026-11-26). Il criterio: la tonalità OKLCH del colore chiave, a
   partire dal rosso; i neutri, che non hanno tonalità, per luminosità; un riferimento prende la
@@ -351,8 +360,11 @@ Altre relazioni:
 Si va da un passo all'altro **in ordine**, avanti e indietro. (persona)
 
 ```
-Introduzione -> Partenza -> 1. Colori (-> Scala) -> 2. Pesi -> 3. Temi -> 4. Eccezioni -> Giro completo -> uscita
+Introduzione -> Partenza -> 1. Colori (-> Scala, -> Gruppo) -> 2. Pesi -> 3. Temi -> 4. Eccezioni -> Giro completo -> uscita
 ```
+
+Scala e Gruppo sono pagine laterali di Colori, non passi: l'ordine dei passi non cambia.
+(persona, 2026-11-26)
 
 La barra dello studio porta sempre con sé:
 - le modifiche fatte e "salva o scarica", cioè ciò che del preset è sempre visibile, e lo stato
@@ -390,12 +402,15 @@ La barra dello studio porta sempre con sé:
     colore nuovo (proposta, 2026-11-26);
   - tutti i campi della famiglia, in linea;
   - la scala, in linea per sceglierla, con il suo badge; si modifica nella sua pagina, Scala;
+  - ogni campo ereditato dice da chi eredita, "eredita da `tone`" o "dal preset", con un link a
+    dove si decide: Gruppo per un valore del gruppo, la vista delle impostazioni del preset per
+    uno del preset (persona, 2026-11-26; domanda 13);
   - la scena del passo, accanto: i componenti che la famiglia dipinge;
   - le coppie toccate, in linea;
   - i temi che la usano, nominati, con un link a Temi. (persona; proposta per gli ultimi due)
-- **Mai qui**: pesi, temi, eccezioni.
-- **Ingresso**: Partenza, o un elemento toccato sulla scena. **Uscita**: Scala; il passo dopo,
-  Pesi.
+- **Mai qui**: pesi, temi, eccezioni; le impostazioni di un gruppo, che stanno in Gruppo.
+- **Ingresso**: Partenza, o un elemento toccato sulla scena. **Uscita**: Scala; Gruppo; il passo
+  dopo, Pesi.
 
 ### Scala
 
@@ -409,8 +424,22 @@ La barra dello studio porta sempre con sé:
     su una integrata una riga dice che per cambiarlo la si duplica (persona, 2026-11-26);
   - la scena del campione, accanto: i suoi componenti in ogni stato;
   - le coppie toccate. (progetto, proposta)
-- **Ingresso**: la scala di una famiglia. **Uscita**: torna alla famiglia, con un link che la
-  nomina.
+- **Ingresso**: la scala di una famiglia, o quella di un gruppo (2026-11-26). **Uscita**: torna da
+  dove si è arrivati, la famiglia o il gruppo, con un link che lo nomina.
+
+### Gruppo
+
+- **Entità al centro**: Gruppo. **Scopo**: regolare ciò che le sue famiglie ereditano (scala di
+  contrasto, formula, export) ed esportarne le famiglie. È una pagina sua, come Scala; prende il
+  posto della pagina Groups di oggi. (persona, 2026-11-26)
+- **Intorno** (proposta, 2026-11-26):
+  - le sue famiglie, in ordine cromatico, e per ognuna i valori del gruppo che cambia;
+  - la scala, in linea per sceglierla, con il suo badge e un link a Scala;
+  - la formula e l'export, in linea;
+  - la scena: le famiglie del gruppo sui componenti che dipingono.
+- **Mai qui**: i campi di una famiglia, che stanno in Colori.
+- **Ingresso**: un campo ereditato dal gruppo in Colori, o il gruppo nell'elenco di Colori.
+  **Uscita**: torna alla famiglia, con un link che la nomina; Scala.
 
 ### 2. Pesi
 
@@ -496,6 +525,8 @@ principio.
 | Partenza | `page-header` | `surfaces` (un elemento di un insieme), `actions` |
 | Colori, Temi | `record-detail` con l'elenco accanto; lacuna: lista e dettaglio (#1262) | `surfaces`, `rhythm` |
 | Scala | `record-detail`; lo stato "compatibile con Magma" come `mds-badge` con la sua etichetta (`record-detail`, `labels-and-values`) | `rhythm` |
+| Gruppo | `record-detail`, come Scala; la scala con il suo `mds-badge` (`labels-and-values`) (proposta, 2026-11-26) | `rhythm` |
+| un valore ereditato | lacuna: nessun pattern dice da chi eredita un campo (cercato nei pattern il 2026-11-26) | |
 | Pesi | lacuna: spazio di lavoro con anteprima | `rhythm`, `titles` |
 | Eccezioni | lacuna: confrontare alternative | `density` |
 | Giro completo | lacuna: revisione a voci; `confirm-action` per uscire con la verifica rossa | `actions` |
@@ -537,6 +568,17 @@ principio.
   lo tocca.
 - **Il design system dice**: nessun pattern.
 - **Risoluzione** (persona): **cambia il design system**. L'issue si apre sul sì della persona.
+
+### Valore ereditato
+
+- **Il modello dice**: un campo ereditato dice da chi eredita, il gruppo o il preset, e porta dove
+  si decide. (persona, 2026-11-26)
+- **Il design system dice**: nessun pattern per un valore che arriva da un'altra entità; i pattern
+  parlano di "inherit" solo per l'inchiostro CSS (`surfaces`).
+- **Effetto**: ogni campo ereditato rischia una forma sua.
+- **Risoluzione** (proposta, 2026-11-26): per ora si costruisce con ciò che c'è, il messaggio
+  del campo con un link a dove il valore si decide; se lo stesso bisogno torna in un prodotto,
+  diventa un caso di `form-and-validation`. Da confermare con la persona.
 
 Finché un conflitto non è risolto, si costruisce come dice il design system.
 
@@ -620,6 +662,10 @@ Finché un conflitto non è risolto, si costruisce come dice il design system.
 12. **Chi ordina i colori**: lo studio quando scrive il preset, o anche il motore di
     design-tokens, così esce in ordine anche una configurazione scritta a mano? Proposta: un
     solo ordinamento, nel motore, che lo studio riusa. (proposta, 2026-11-26)
+13. **Le impostazioni del preset** (colorspace, smooth, formula, saturazione): in quale vista si
+    regolano? Oggi stanno sotto le famiglie della Palette; nel flusso nessuna vista le ospita, e
+    un campo ereditato dal preset deve portare lì. Proposta: una pagina sua, come Gruppo e Scala,
+    raggiunta dai campi ereditati dal preset. (proposta, 2026-11-26)
 
 ## 11. Deroghe ai principi
 
@@ -655,3 +701,20 @@ confondersi con le eccezioni dei componenti.)
   da Magma (3); il Gruppo, nuova entità, e l'ordine di Famiglia e Preset (4); Colori e Temi,
   ritoccate (5); la domanda 12 (10). L'export resta quello della pagina Groups, che funziona già;
   la pagina entra in Colori con #1403. Nessun conflitto nuovo con il design system.
+
+### 2026-11-26: i valori ereditati
+
+- **Richiesta** (persona): nel campo Ratios di una famiglia, "inherit (tone)" viene dal gruppo,
+  ma dal campo non si capisce da dove arriva né si va dove si cambia (la scala del gruppo si
+  sceglie oggi nella pagina Groups, i suoi obiettivi in Contrast scales).
+- **L'obiettivo è ancora quello?** Sì: il tema rilasciabile, con l'export fuori da Magma come
+  opzione secondaria. (persona)
+- **Dove si rallenta oggi?** Sempre nell'andare avanti e indietro tra i controlli e la scena.
+  (persona)
+- **Le risposte nuove** (persona): le impostazioni di un gruppo stanno in una pagina sua,
+  Gruppo, come Scala; dicono da chi ereditano sia i valori del gruppo sia quelli del preset.
+- **Cosa è cambiato**: Preset, Gruppo e Famiglia, con lo stato "ereditato" di un campo (4);
+  Colori e Scala ritoccate, Gruppo nuova, al posto della pagina Groups che il giro precedente
+  portava dentro Colori (5); Gruppo e la lacuna del valore ereditato nel design system (7); il
+  conflitto "Valore ereditato" (8); la domanda 13 (10). Introduzione, Partenza, Pesi, Temi,
+  Eccezioni e Giro completo non cambiano.
