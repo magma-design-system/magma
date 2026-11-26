@@ -38,7 +38,7 @@ export const IT_SHELL: Record<string, string> = {
   Studio: 'Studio',
   Preferences: 'Preferenze',
 
-  // the pages of the sections (routes.ts)
+  // the pages of the sections (app/router.ts)
   Palette: 'Palette',
   'Contrast scales': 'Scale di contrasto',
   'Semantic surface': 'Superficie semantica',

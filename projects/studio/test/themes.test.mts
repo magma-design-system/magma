@@ -1,4 +1,4 @@
-import { afterEach, expect, test, vi } from 'vitest'
+import { afterEach, beforeEach, expect, test, vi } from 'vitest'
 import { h, render } from 'preact'
 import { act } from 'preact/test-utils'
 import { within } from '@testing-library/preact'
@@ -10,7 +10,8 @@ import { semantic } from '@maggioli-design-system/design-tokens/semantic.config'
 import { validateTheme } from '@maggioli-design-system/design-tokens/src/lib/theme-manifest.mjs'
 import { RESERVED_THEME_NAMES, themeNameProblem } from '../src/engine/themes.js'
 import { MODE_CHOICES, ThemesManager } from '../src/themes.js'
-import { resetThemeChoices } from '../src/theme-choices.js'
+import { createStudio, type StudioState } from '../src/state/studio.js'
+import { inStudio } from './studio.mjs'
 
 // The themes view of the studio: it builds the export CSS while rendering, so a throw anywhere
 // in that path (e.g. a helper used but never imported) silently drops the whole block from the
@@ -18,12 +19,17 @@ import { resetThemeChoices } from '../src/theme-choices.js'
 
 const root = document.createElement('div')
 document.body.append(root)
+// the state the page is drawn in, with the choices of the person: one per test, kept nowhere
+let studio: StudioState
+beforeEach(() => {
+  studio = createStudio({ storage: null, api: false })
+})
 afterEach(() => {
   render(null, root)
-  resetThemeChoices()
 })
 
-const show = () => render(h(ThemesManager, { config: initialConfig as unknown as MagmaConfig }), root)
+const show = () =>
+  render(inStudio(studio, h(ThemesManager, { config: initialConfig as unknown as MagmaConfig })), root)
 
 // The page found as a person reads it (#1398): the cards are the items of the list of the themes,
 // a theme is named by the heading of its card, the rest by its text and the label of its field.
@@ -69,7 +75,7 @@ test('a theme is drawn from a family of any group, one created in the studio too
   const blue = config.colors.find((color) => color.name === 'label.blue')!
   blue.surface = true
   config.colors.push({ ...blue, name: 'product.ocean' })
-  render(h(ThemesManager, { config }), root)
+  render(inStudio(studio, h(ThemesManager, { config })), root)
 
   const families = cardsOf().map((card) => familyOf(card).textContent ?? '')
   expect(families.some((family) => family.includes('blue'))).toBe(true)
@@ -274,7 +280,7 @@ test('each mode of a theme links to the Theme section, that theme in that mode',
 test('a family of any group opted into a surface is a theme, the ramp of its group in the export', () => {
   const config = JSON.parse(JSON.stringify(initialConfig)) as MagmaConfig
   config.colors.find((color) => color.name === 'label.violet')!.surface = true
-  render(h(ThemesManager, { config }), root)
+  render(inStudio(studio, h(ThemesManager, { config })), root)
 
   const violet = cardsOf().find((card) => familyOf(card).textContent?.includes('violet'))
   expect(violet).toBeDefined()
@@ -291,7 +297,7 @@ test('a status family is no theme, not even one opted in on its own', () => {
 
   const config = JSON.parse(JSON.stringify(initialConfig)) as MagmaConfig
   config.colors.find((color) => color.name === 'status.info')!.surface = true
-  render(h(ThemesManager, { config }), root)
+  render(inStudio(studio, h(ThemesManager, { config })), root)
   expect(families().some((family) => family.includes('info'))).toBe(false)
 })
 

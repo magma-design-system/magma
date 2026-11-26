@@ -1,23 +1,29 @@
 import { afterEach, beforeEach, expect, test, vi } from 'vitest'
 import { h, render } from 'preact'
+import { effect } from '@preact/signals'
 import { within } from '@testing-library/preact'
 
 import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs'
 import { App } from '../src/app.js'
-import type { ConfigAction } from '../src/config-menu.js'
+import type { ConfigAction } from '../src/app/config-menu.js'
 import { nearestColorName } from '../src/engine/color-names.js'
+import type { StudioState } from '../src/state/studio.js'
+import { ConfigMenu, inStudio, startStudio } from './studio.mjs'
 
 // The Palette page in Magma: the list of the families, the editor of the one selected, its menu,
 // the settings of the whole configuration and the dialog of a new colour react to the controls of
 // Magma. jsdom does not upgrade the components: the test dispatches the events they emit, with
-// their detail, and reads the configuration the page hands to the shell.
+// their detail, and reads the configuration of the state of the studio, each one it takes.
 
 const root = document.createElement('div')
 document.body.append(root)
 
 let configs: MagmaConfig[] = []
-// the actions of the Config menu of the bar, as the App hands them to it
+// the actions of the Config menu of the bar, as the bar draws them
 let actions: ConfigAction[] = []
+// the state of the studio the page is drawn in, and what stops following its configuration
+let studio: StudioState
+let stopFollowing: () => void = () => undefined
 const latest = (): MagmaConfig => configs[configs.length - 1]
 const color = (name: string) => latest().colors.find((one) => one.name === name)
 
@@ -27,20 +33,23 @@ beforeEach(async () => {
   localStorage.clear()
   configs = []
   actions = []
+  studio = startStudio()
+  // every configuration the state takes, in order
+  stopFollowing = effect(() => {
+    configs.push(studio.config.value)
+  })
   render(
-    h(App, {
-      onConfig: (config: MagmaConfig) => configs.push(config),
-      onConfigActions: (handed: ConfigAction[]) => (actions = handed),
-    }),
+    inStudio(studio, h(App, {}), h(ConfigMenu, { take: (handed: ConfigAction[]) => (actions = handed) })),
     root,
   )
   await vi.waitFor(() => expect(heading()).toBe('tone.neutral'))
-  // the actions of the Config menu are handed by an effect, after the paint
-  await vi.waitFor(() => expect(actions.length).toBeGreaterThan(0))
+  expect(actions.length).toBeGreaterThan(0)
 })
 
 afterEach(() => {
   render(null, root)
+  stopFollowing()
+  studio.dispose()
   localStorage.clear()
   vi.unstubAllGlobals()
 })
@@ -148,7 +157,7 @@ test('where the list stands above the page, its bar names the family shown and f
 })
 
 test('the pages on the whole configuration have neither the list nor its bar', async () => {
-  render(h(App, { view: 'surface', onConfig: (config: MagmaConfig) => configs.push(config) }), root)
+  render(inStudio(studio, h(App, { view: 'surface' })), root)
   await vi.waitFor(() => expect(pageHead()?.textContent).toContain('Semantic surface'))
   expect(within(root).queryByRole('complementary', { name: 'The families of colour' })).toBeNull()
   expect(toggle()).toBeNull()
@@ -161,7 +170,7 @@ test('the head of Semantic surface leads its first column, beside the opt-in; el
   // the Palette of beforeEach: the head is a child of the region, the main of the page
   expect(root.querySelectorAll('header')).toHaveLength(1)
   expect(pageHead()?.parentElement?.localName).toBe('main')
-  render(h(App, { view: 'surface', onConfig: (config: MagmaConfig) => configs.push(config) }), root)
+  render(inStudio(studio, h(App, { view: 'surface' })), root)
   await vi.waitFor(() => expect(pageHead()?.textContent).toContain('Semantic surface'))
   expect(root.querySelectorAll('header')).toHaveLength(1)
   // the head leads the first column, still in the region; the opt-in is the second column, its
@@ -677,7 +686,7 @@ test('the head of a page keeps Reset in view; the Config menu brings the configu
   } finally {
     click.mockRestore()
   }
-  // Import config opens the file picker of the App
+  // Import config opens the file picker of the menu
   const picker = root.querySelector<HTMLInputElement>('input[type="file"]')!
   const opened = vi.spyOn(picker, 'click').mockImplementation(() => undefined)
   actions.find((one) => one.id === 'import')!.run()
@@ -700,6 +709,6 @@ test('a page of Colors opens at its top, not at the scroll the page before it le
   const main = root.querySelector('main')!
   const set: number[] = []
   Object.defineProperty(main, 'scrollTop', { configurable: true, get: () => 0, set: (top: number) => set.push(top) })
-  render(h(App, { view: 'scales', onConfig: (config: MagmaConfig) => configs.push(config) }), root)
+  render(inStudio(studio, h(App, { view: 'scales' })), root)
   await vi.waitFor(() => expect(set).toContain(0))
 })

@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { afterEach, expect, test } from 'vitest'
+import { expect, test } from 'vitest'
 
 import initialConfig from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json'
 import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs'
@@ -20,7 +20,6 @@ import {
 } from './paints.js'
 import { sceneStyle } from './scene-css.js'
 import { NO_THEME_CHOICES, type ThemeChoices } from './theme-choices.js'
-import { resetThemeChoices } from '../theme-choices.js'
 
 // What a family paints (#1308): read from the documentation.json of the installed magma, the
 // guide of the variants and the accents of the themes, never guessed. The bundled configuration
@@ -31,7 +30,6 @@ const config = initialConfig as unknown as MagmaConfig
 // the folder of this file
 const here = dirname(fileURLToPath(import.meta.url))
 const guide = readFileSync(join(here, '../../../../docs/agents/variants.md'), 'utf8')
-afterEach(() => resetThemeChoices())
 
 const painted = (family: string, choices: ThemeChoices = NO_THEME_CHOICES) =>
   paintedBy(family, { config, themes: sceneStyle(config, choices)!.themes, choices })

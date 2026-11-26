@@ -20,12 +20,12 @@ import {
 import { RESERVED_GROUPS } from './engine/groups.js';
 import { SurfaceCanvas } from './surfaces.js';
 import { Field, Select, TextInput, type Option } from './shared/magma/magma.js';
-import { updateThemeChoices, useThemeChoices } from './theme-choices.js';
-import type { ExportAction } from './contrast.js';
+import { useStudio, type ExportAction } from './state/studio.js';
+import { setThemeAccent, setThemeModes, setThemeName } from './state/theme-choices.js';
 import type { GateReport, GateTheme } from './engine/gate.js';
 import { msg, rich, useT } from './shared/i18n/i18n.js';
 import { ThemeVerdict } from './shared/ui/verdict.js';
-import { hrefOf } from './routes.js';
+import { hrefOf } from './app/router.js';
 import './themes.css';
 
 /**
@@ -97,7 +97,7 @@ interface ThemesManagerProps {
 export function ThemesManager({
   config,
   report,
-  guard = (action) => action.run(),
+  guard = (action) => void action.run(),
 }: ThemesManagerProps) {
   const t = useT();
   // generate once; read the per-family surface/text/border/variant role sets
@@ -169,14 +169,13 @@ export function ThemesManager({
   const extras = opted.filter((family) => family !== semantic.tint);
   const previewFamilies = [...(opted.includes(semantic.tint) ? [semantic.tint] : []), ...extras];
 
-  // the choices of the person, per family: shared with the Theme section and kept across a
-  // reload (theme-choices.ts); only the changes are stored, the rest from the shipped theme
-  const choices = useThemeChoices();
+  // the choices of the person, per family: the state's, shared with the Theme section and kept
+  // across a reload (state/theme-choices.ts); only the changes are stored, the rest from the
+  // shipped theme
+  const studio = useStudio();
+  const choices = studio.themeChoices.value;
   const setAccent = (family: string, role: string, variant: string) =>
-    updateThemeChoices((prev) => ({
-      ...prev,
-      accents: { ...prev.accents, [family]: { ...prev.accents[family], [role]: variant } },
-    }));
+    setThemeAccent(studio, family, role, variant);
   const accentFor = (family: string, role: string): string => accentOfTheme(family, role, choices);
   const modesFor = (family: string): readonly ColorMode[] => modesOfTheme(family, choices);
   const nameOf = (family: string): string => nameOfTheme(family, choices);
@@ -235,9 +234,7 @@ export function ThemesManager({
                 ? null
                 : themeNameProblem(nameOf(family), family, givenNames, t)
             }
-            onName={(name) =>
-              updateThemeChoices((prev) => ({ ...prev, names: { ...prev.names, [family]: name } }))
-            }
+            onName={(name) => setThemeName(studio, family, name)}
             surfaces={surfaces}
             texts={texts}
             borders={borders}
@@ -247,9 +244,7 @@ export function ThemesManager({
             onAccent={setAccent}
             gate={report?.themes.find((theme) => theme.family === family)}
             modes={modesFor(family)}
-            onModes={(next) =>
-              updateThemeChoices((prev) => ({ ...prev, modes: { ...prev.modes, [family]: next } }))
-            }
+            onModes={(next) => setThemeModes(studio, family, next)}
           />
         ))}
       </div>

@@ -14,6 +14,7 @@ import {
 import { msg, plural, rich, useT, type T } from './shared/i18n/i18n.js';
 import { Check } from './shared/magma/magma.js';
 import { ThemeVerdict } from './shared/ui/verdict.js';
+import type { ExportAction } from './state/studio.js';
 import './contrast.css';
 
 /*
@@ -302,20 +303,8 @@ export function ContrastCheck({ report }: { report: GateReport }) {
   );
 }
 
-/**
- * Something that hands the configuration out of the studio: a download, a save, a copy. Its label
- * and the text of its button in the dialog are written in English and marked with msg() where the
- * action is made: the dialog translates them where it draws them. The button carries its whole
- * text, never a verb the dialog composes: one English word may be a verb and a noun (Export), and
- * the catalogue gives each English text one Italian.
- */
-export interface ExportAction {
-  /** What the action is called where the person chose it: `Download all tokens`. */
-  label: string;
-  /** The button of the dialog that runs the action anyway, repeating its verb: `Download anyway`. */
-  proceed: string;
-  run: () => void;
-}
+// what hands the configuration out of the studio, held while the gate fails (state/exports.ts)
+export type { ExportAction } from './state/studio.js';
 
 /** How many failing pairs the dialog names before it counts the rest. */
 const NAMED_FAILURES = 5;

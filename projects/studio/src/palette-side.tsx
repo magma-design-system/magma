@@ -6,7 +6,7 @@ import { applyFrame, markPainted, type Scheme } from './shared/frames/frame.js';
 import { msg, plural, useT, type T } from './shared/i18n/i18n.js';
 import { paintedBy, paintedSelector, paintsAny, type Painted } from './engine/paints.js';
 import { sceneStyle } from './engine/scene-css.js';
-import { useThemeChoices } from './theme-choices.js';
+import { useStudio } from './state/studio.js';
 
 /*
   The side of the Palette, beside the family and the global settings where the detail has the
@@ -124,7 +124,7 @@ export function PaletteSide({
   const [tags, setTags] = useState<string[]>([]);
   const frame = useRef<HTMLIFrameElement>(null);
   const shownFamily = useRef<string | undefined>(undefined);
-  const choices = useThemeChoices();
+  const choices = useStudio().themeChoices.value;
 
   // solved only while the frame shows: the ramps alone need none of it
   const scene = useMemo(

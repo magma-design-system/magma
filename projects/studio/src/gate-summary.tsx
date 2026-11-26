@@ -1,6 +1,6 @@
 import { gateFailureGroups, type GateFailureGroup, type GateReport } from './engine/gate.js';
 import { msg, plural, rich, useT } from './shared/i18n/i18n.js';
-import { hrefOf } from './routes.js';
+import { hrefOf } from './app/router.js';
 import { GateBadge } from './shared/ui/verdict.js';
 import './gate-summary.css';
 

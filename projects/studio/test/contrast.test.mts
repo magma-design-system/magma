@@ -4,15 +4,14 @@ import { act } from 'preact/test-utils'
 
 import initialConfig from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json'
 import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs'
-import { App } from '../src/app.js'
-import type { ConfigAction } from '../src/config-menu.js'
+import { COLORS_PAGES } from '../src/app/router.js'
 import { Studio } from '../src/shell.js'
 import { ContrastCheck } from '../src/contrast.js'
-import { DRAFT_STORAGE_KEY, hashText, type StudioDraft } from '../src/draft.js'
+import { DRAFT_STORAGE_KEY, hashText, type StudioDraft } from '../src/state/draft.js'
 import { gateReport, type GateReport } from '../src/engine/gate.js'
 import { NO_THEME_CHOICES } from '../src/engine/theme-choices.js'
-import { resetThemeChoices } from '../src/theme-choices.js'
 import { ThemesManager } from '../src/themes.js'
+import { inStudio, startStudio } from './studio.mjs'
 import { textOf } from './text.mjs'
 
 // The contrast gate in the studio (#698): every pair it judges, per theme and per mode, on the
@@ -31,9 +30,9 @@ beforeEach(() => {
 })
 afterEach(() => {
   render(null, root)
-  resetThemeChoices()
   localStorage.clear()
   vi.unstubAllGlobals()
+  location.hash = ''
 })
 
 const config = () => JSON.parse(JSON.stringify(initialConfig)) as MagmaConfig
@@ -61,19 +60,19 @@ const storeDraft = (draft: MagmaConfig, view = 'colors') => {
   localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(stored))
 }
 
-/** The pages of Colors restored on a draft of a configuration. */
-// the actions of the Config menu of the bar, as the App hands them to it
-let actions: ConfigAction[] = []
-const runAction = (id: string) => act(() => actions.find((action) => action.id === id)!.run())
+/** An action of the Config menu of the bar, run as a click on its button. */
+const runAction = (id: string) =>
+  act(() =>
+    root.querySelector<HTMLElement>(`mds-dropdown[target="#studio-config"] mds-button[data-action="${id}"]`)!.click(),
+  )
 
+/** The studio on a page of Colors, restored on a draft of a configuration. */
 const openOn = async (draft: MagmaConfig, view = 'colors') => {
   storeDraft(draft, view)
-  actions = []
-  render(h(App, { onConfigActions: (handed: ConfigAction[]) => (actions = handed) }), root)
+  location.hash = `#/colors/${COLORS_PAGES.find((page) => page.id === view)!.slug}`
+  render(h(Studio, {}), root)
   await vi.waitFor(() => {
     if (!root.querySelector('mds-text[tag="h1"]')) throw new Error('no page yet')
-    // handed by an effect, after the paint
-    if (!actions.length) throw new Error('no actions yet')
   })
 }
 
@@ -289,11 +288,14 @@ test('the Themes page says the verdict of each theme per mode, and its export as
   const report = gateReport(failing())
   const asked: Array<{ label: string; proceed: string }> = []
   render(
-    h(ThemesManager, {
-      config: failing(),
-      report,
-      guard: ({ label, proceed }: { label: string; proceed: string }) => asked.push({ label, proceed }),
-    }),
+    inStudio(
+      startStudio(),
+      h(ThemesManager, {
+        config: failing(),
+        report,
+        guard: ({ label, proceed }: { label: string; proceed: string }) => asked.push({ label, proceed }),
+      }),
+    ),
     root,
   )
   expect(themeVerdicts(report.themes[0].name).map((badge) => badge.getAttribute('label'))).toEqual([
