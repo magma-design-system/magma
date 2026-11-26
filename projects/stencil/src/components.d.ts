@@ -703,6 +703,10 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
+          * The icon of the chevron, the button that opens the menu, in place of the arrow: a slug of the Magma icon library or SVG markup, as `icon`. Three dots (`mi/baseline/more-horiz`) make the component an item with the menu of its options, as the name of a conversation with an agent. The chevron keeps its name, `dropdownLabel` or the one the component builds
+         */
+        "dropdownIcon"?: string;
+        /**
           * The accessible name of the chevron, the button that opens the menu, in place of the one the component builds in the language of the page: "More actions for" and `label`, or "More actions" without a label. Two split buttons of one page then name their chevrons apart
          */
         "dropdownLabel"?: string;
@@ -6204,6 +6208,10 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
+          * The icon of the chevron, the button that opens the menu, in place of the arrow: a slug of the Magma icon library or SVG markup, as `icon`. Three dots (`mi/baseline/more-horiz`) make the component an item with the menu of its options, as the name of a conversation with an agent. The chevron keeps its name, `dropdownLabel` or the one the component builds
+         */
+        "dropdownIcon"?: string;
+        /**
           * The accessible name of the chevron, the button that opens the menu, in place of the one the component builds in the language of the page: "More actions for" and `label`, or "More actions" without a label. Two split buttons of one page then name their chevrons apart
          */
         "dropdownLabel"?: string;
@@ -9410,6 +9418,7 @@ declare namespace LocalJSX {
     interface MdsButtonDropdownAttributes {
         "label": string;
         "dropdownLabel": string;
+        "dropdownIcon": string;
         "autoFocus": boolean;
         "icon": string;
         "iconCurrent": string;

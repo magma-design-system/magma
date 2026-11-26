@@ -261,6 +261,39 @@ describe('mds-button-dropdown chevron', () => {
     await waitForChanges();
     expect(chevron(root)).toEqualAttribute('aria-label', 'Altre azioni per Esporta');
   });
+
+  // the three dots of an item with the menu of its options, as the name of a conversation
+  it('shows the arrow, the icon of dropdown-icon in its place, and the arrow again without it', async () => {
+    mockIconFetch();
+    const { root, waitForChanges } = await render<HTMLMdsButtonDropdownElement>(
+      '<mds-button-dropdown label="Riunione"><mds-button label="Rinomina"></mds-button></mds-button-dropdown>',
+    );
+    const dots = chevron(root) as HTMLMdsButtonElement;
+    const arrow = dots.icon;
+
+    expect(arrow).toContain('<svg');
+
+    root.dropdownIcon = 'mi/baseline/more-horiz';
+    await waitForChanges();
+    expect(dots.icon).toBe('mi/baseline/more-horiz');
+    expect((primaryAction(root) as HTMLMdsButtonElement).icon).toBeUndefined();
+
+    root.dropdownIcon = '';
+    await waitForChanges();
+    expect(dots.icon).toBe(arrow);
+  });
+
+  it('keeps its name with dropdown-icon, and takes no title from the slug of the icon', async () => {
+    mockIconFetch();
+    const { root } = await render(
+      '<mds-button-dropdown label="Riunione" dropdown-icon="mi/baseline/more-horiz"><mds-button label="Rinomina"></mds-button></mds-button-dropdown>',
+    );
+    const dots = chevron(root);
+
+    await vi.waitFor(() => expect(dots).toHaveAttribute('hydrated'));
+    expect(dots).toEqualAttribute('aria-label', 'Altre azioni per Riunione');
+    expect(dots).not.toHaveAttribute('title');
+  });
 });
 
 // #1431: `await` reached both halves, so a split button showed two spinners and two busy buttons
