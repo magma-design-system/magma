@@ -8,8 +8,8 @@
   "scripts": {
     "serve": "vite",
     "build": "vite build",
-    "build.site": "tsx site.ts",
-    "cover": "tsx cover.ts",
+    "build.site": "tsx build/site.ts",
+    "cover": "tsx build/cover.ts",
     "test": "vitest --run",
     "check.types": "tsc --noEmit -p tsconfig.json",
     "lint": "eslint .",

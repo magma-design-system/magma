@@ -1,5 +1,5 @@
 import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
-import { msg, type T } from './i18n.js';
+import { msg, type T } from './shared/i18n/i18n.js';
 
 // the working state is mirrored to localStorage so a reload keeps the edited
 // or loaded configuration instead of falling back to the source config. The key

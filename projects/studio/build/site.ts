@@ -31,9 +31,9 @@ import {
 } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import type { ToolContext } from '../mcp/src/context.ts';
-import { slugFiles } from '../mcp/src/icons.ts';
-import { ICON_PATH, fileOf, loaderOf } from '../mcp/src/render.ts';
+import type { ToolContext } from '../../mcp/src/context.ts';
+import { slugFiles } from '../../mcp/src/icons.ts';
+import { ICON_PATH, fileOf, loaderOf } from '../../mcp/src/render.ts';
 
 /** The tag that tells the studio there is no API beside the page: `hasApi` of src/app.tsx reads it. */
 const API_META = '<meta name="magma-studio-api" content="none">';
@@ -128,7 +128,8 @@ export function writeSite(root: string, out: string): Site {
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) {
-  const root = path.dirname(fileURLToPath(import.meta.url));
+  // the studio, one folder up from build/
+  const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
   const out = path.join(root, 'dist-site');
   const site = writeSite(root, out);
   console.log(

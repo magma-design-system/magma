@@ -9,9 +9,9 @@ import {
   resolveFormula,
   resolveRatiosName,
 } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
-import type { ColorScales, Step } from './generator.js';
-import { plural, rich, useT } from './i18n.js';
-import { Check, Field, Select, TextInput } from './magma.js';
+import type { ColorScales, Step } from './engine/generator.js';
+import { plural, rich, useT } from './shared/i18n/i18n.js';
+import { Check, Field, Select, TextInput } from './shared/magma/magma.js';
 import './groups.css';
 
 interface GroupsManagerProps {

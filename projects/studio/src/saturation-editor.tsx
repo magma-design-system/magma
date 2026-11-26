@@ -16,10 +16,10 @@ import {
   type CurveKind,
   type CurvePreset,
 } from './curves.js';
-import type { Step } from './generator.js';
-import { HUE_ENDS, endsOf, moveEnd, type HueEnds } from './hue-ends.js';
-import { Field, Range, Select, type Option } from './magma.js';
-import { useT } from './i18n.js';
+import type { Step } from './engine/generator.js';
+import { HUE_ENDS, endsOf, moveEnd, type HueEnds } from './engine/hue-ends.js';
+import { Field, Range, Select, type Option } from './shared/magma/magma.js';
+import { useT } from './shared/i18n/i18n.js';
 
 /*
   The saturation curve of a scale (#1439, vittorio 2026-11-18), the group beside the hue shifting

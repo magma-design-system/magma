@@ -2,10 +2,10 @@ import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import type { ComponentChildren } from 'preact';
 import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
 import { COLOR_MODES } from '@maggioli-design-system/design-tokens/src/lib/theme-manifest.mjs';
-import { applyFrame, markPainted, type Scheme } from './frame.js';
-import { msg, plural, useT, type T } from './i18n.js';
-import { paintedBy, paintedSelector, paintsAny, type Painted } from './paints.js';
-import { sceneStyle } from './scene-css.js';
+import { applyFrame, markPainted, type Scheme } from './shared/frames/frame.js';
+import { msg, plural, useT, type T } from './shared/i18n/i18n.js';
+import { paintedBy, paintedSelector, paintsAny, type Painted } from './engine/paints.js';
+import { sceneStyle } from './engine/scene-css.js';
 import { useThemeChoices } from './theme-choices.js';
 
 /*

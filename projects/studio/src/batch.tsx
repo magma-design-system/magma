@@ -3,9 +3,9 @@ import type {
   ColorConfig,
   MagmaConfig,
 } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
-import { generateScales } from './generator.js';
-import { useT } from './i18n.js';
-import { Check, Field, TextInput } from './magma.js';
+import { generateScales } from './engine/generator.js';
+import { useT } from './shared/i18n/i18n.js';
+import { Check, Field, TextInput } from './shared/magma/magma.js';
 import './batch.css';
 
 interface BatchExportModalProps {

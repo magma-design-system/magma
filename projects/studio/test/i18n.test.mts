@@ -1,14 +1,14 @@
 import { readdirSync, readFileSync } from 'node:fs'
-import { dirname, join } from 'node:path'
+import { basename, dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import ts from 'typescript'
 import { expect, test } from 'vitest'
 
-import { IT, IT_SHELL } from '../src/i18n-it.js'
-import { IT_PALETTE } from '../src/i18n-it-palette.js'
-import { IT_SCALES } from '../src/i18n-it-scales.js'
-import { IT_THEMES } from '../src/i18n-it-themes.js'
-import { LANGUAGE_KEY, langOf, plural, startLanguage, translator } from '../src/i18n.js'
+import { IT, IT_SHELL } from '../src/shared/i18n/i18n-it.js'
+import { IT_PALETTE } from '../src/shared/i18n/i18n-it-palette.js'
+import { IT_SCALES } from '../src/shared/i18n/i18n-it-scales.js'
+import { IT_THEMES } from '../src/shared/i18n/i18n-it-themes.js'
+import { LANGUAGE_KEY, langOf, plural, startLanguage, translator } from '../src/shared/i18n/i18n.js'
 
 // The languages of the studio (#1336, i18n.ts): the language it starts in, the translator, and
 // the Italian catalogue held to the sources, so a text added in English never ships without its
@@ -51,8 +51,10 @@ test('a text is translated by its English, then its placeholders filled; a count
 })
 
 /** The modules of the studio, parsed. */
-const sources = readdirSync(src)
-  .filter((name) => /\.tsx?$/.test(name) && !name.startsWith('i18n'))
+// every folder of src/ (engine, shared, the pages), the catalogues and the texts of the previews
+// left out by the name of the file
+const sources = readdirSync(src, { recursive: true, encoding: 'utf8' })
+  .filter((name) => /\.tsx?$/.test(name) && !basename(name).startsWith('i18n'))
   .map((name) => ({
     name,
     file: ts.createSourceFile(name, readFileSync(join(src, name), 'utf8'), ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX),

@@ -19,7 +19,7 @@ import {
   rampAt,
   textAt,
 } from '../src/start-demo.js'
-import { gateReport } from '../src/gate.js'
+import { gateReport } from '../src/engine/gate.js'
 import { FEATURES, LEVELS, PLAY_MS, StartPage } from '../src/start.js'
 import { textOf } from './text.mjs'
 

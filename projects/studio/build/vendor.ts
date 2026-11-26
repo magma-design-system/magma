@@ -15,7 +15,7 @@
 import { createReadStream } from 'node:fs';
 import path from 'node:path';
 import type { Connect, Plugin } from 'vite';
-import type { ToolContext } from '../mcp/src/context.ts';
+import type { ToolContext } from '../../mcp/src/context.ts';
 import {
   LAYERS,
   TYPES,
@@ -23,7 +23,7 @@ import {
   loaderOf,
   magmaVersion,
   stylesheetImports,
-} from '../mcp/src/render.ts';
+} from '../../mcp/src/render.ts';
 
 /** The version of the installed magma for the bar of the studio; none when it cannot be read. */
 const versionTag = (version: string | undefined) =>

@@ -10,9 +10,9 @@ import type { ThemeConfig } from '@maggioli-design-system/design-tokens/src/lib/
 import { TEXT_ROLES } from '@maggioli-design-system/design-tokens/src/lib/text-role.mjs'
 import { SurfaceManager } from '../src/surfaces.js'
 import { DEFAULT_TARGETS } from '@maggioli-design-system/design-tokens/src/lib/contrast-gate.js'
-import { gateFailureGroups, gateReport } from '../src/gate.js'
+import { gateFailureGroups, gateReport } from '../src/engine/gate.js'
 import { hrefOf } from '../src/routes.js'
-import { LangProvider } from '../src/i18n.js'
+import { LangProvider } from '../src/shared/i18n/i18n.js'
 import { textOf } from './text.mjs'
 
 // The Semantic surface page, written in Magma: the groups are chips, the families chips with

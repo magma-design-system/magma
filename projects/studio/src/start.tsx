@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
 import './start.css';
-import { applyFrame } from './frame.js';
+import { applyFrame } from './shared/frames/frame.js';
 import { DEMO_STEPS, demoStep, type DemoReading, type DemoStep } from './start-demo.js';
-import { msg, rich, useT } from './i18n.js';
-import { verdictLabel } from './verdict.js';
+import { msg, rich, useT } from './shared/i18n/i18n.js';
+import { verdictLabel } from './shared/ui/verdict.js';
 import {
   BEHAVIOR_PAGES,
   COLORS_PAGES,

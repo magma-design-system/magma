@@ -15,13 +15,14 @@ import {
   type EasingFn,
 } from '@maggioli-design-system/design-tokens/src/lib/easing.mjs';
 import { COLOR_MODES } from '@maggioli-design-system/design-tokens/src/lib/theme-manifest.mjs';
-import { applyFrame, type Scheme } from './frame.js';
-import { Field, Select, TextInput, type Option } from './magma.js';
-import { paintedBy, type Painted } from './paints.js';
-import { sceneStyle, type ConfigTheme } from './scene-css.js';
-import { forceHover, settled, statesMarkup, statesPlan } from './states.js';
-import { msg, plural, rich, useT, type T } from './i18n.js';
-import { useThemeChoices, type ThemeChoices } from './theme-choices.js';
+import { applyFrame, type Scheme } from './shared/frames/frame.js';
+import { Field, Select, TextInput, type Option } from './shared/magma/magma.js';
+import { paintedBy, type Painted } from './engine/paints.js';
+import { sceneStyle, type ConfigTheme } from './engine/scene-css.js';
+import { forceHover, settled, statesMarkup, statesPlan } from './shared/frames/states.js';
+import { msg, plural, rich, useT, type T } from './shared/i18n/i18n.js';
+import type { ThemeChoices } from './engine/theme-choices.js';
+import { useThemeChoices } from './theme-choices.js';
 import './scales.css';
 
 /*

@@ -1,4 +1,4 @@
-import { langOf, type Lang } from './i18n.js';
+import { langOf, type Lang } from '../i18n/i18n.js';
 import { IT_PREVIEWS } from './i18n-it-previews.js';
 
 /*

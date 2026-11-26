@@ -1,6 +1,6 @@
-import type { ComponentAxes } from '../magma-api.js';
-import { COMPONENTS, TONES, type Painted } from './paints.js';
-import { msg, type T } from './i18n.js';
+import type { ComponentAxes } from '../../../build/magma-api.js';
+import { COMPONENTS, TONES, type Painted } from '../../engine/paints.js';
+import { msg, type T } from '../i18n/i18n.js';
 
 /*
   The states of a colour beside a contrast scale (scales.tsx, #1308): the components the sample

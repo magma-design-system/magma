@@ -7,16 +7,16 @@ import logoWhite from '@maggioli-design-system/identity/dist/internal/magma-desi
 import { App } from './app.js';
 import { useDarkMode } from './dark-mode.js';
 import { readDraft } from './draft.js';
-import type { GateVerdict } from './gate.js';
-import { GateBadge } from './verdict.js';
+import type { GateVerdict } from './engine/gate.js';
+import { GateBadge } from './shared/ui/verdict.js';
 import { ConfigItems, type ConfigAction } from './config-menu.js';
-import { sceneStyle } from './scene-css.js';
+import { sceneStyle } from './engine/scene-css.js';
 import { StartPage } from './start.js';
 import { useThemeChoices } from './theme-choices.js';
-import { applyFrame, type Scheme } from './frame.js';
-import { LANGS, LangProvider, msg, useLang, useT, type T } from './i18n.js';
+import { applyFrame, type Scheme } from './shared/frames/frame.js';
+import { LANGS, LangProvider, msg, useLang, useT, type T } from './shared/i18n/i18n.js';
 
-export { applyFrame, type Scheme } from './frame.js';
+export { applyFrame, type Scheme } from './shared/frames/frame.js';
 import {
   applyPrefs,
   DEFAULT_PREFS,

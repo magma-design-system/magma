@@ -5,7 +5,7 @@
   only draws them, in its dropdown and in the menu of a narrow window. Each says beside its label
   the format of what it reads or hands over, a badge the click goes through.
 */
-import { useT } from './i18n.js';
+import { useT } from './shared/i18n/i18n.js';
 
 /** An action of the Config menu: what it is called, what it reads or hands over, what it runs. */
 export interface ConfigAction {

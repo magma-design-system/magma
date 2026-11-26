@@ -3,8 +3,8 @@ import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { expect, test, vi } from 'vitest'
 
-import { IT_PREVIEWS } from '../src/i18n-it-previews.js'
-import { followLanguage, previewTexts, translatePage } from '../src/i18n-previews.js'
+import { IT_PREVIEWS } from '../src/shared/frames/i18n-it-previews.js'
+import { followLanguage, previewTexts, translatePage } from '../src/shared/frames/i18n-previews.js'
 
 // The previews in the language of the studio (#1336, i18n-previews.ts): the sample pages the
 // frames show, held to their Italian catalogue, and the switch of language that reaches them.

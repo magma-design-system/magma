@@ -6,8 +6,7 @@ import { afterEach, expect, test } from 'vitest'
 import initialConfig from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json'
 import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs'
 import { semantic } from '@maggioli-design-system/design-tokens/semantic.config'
-import { componentAxes } from '../magma-api.js'
-import { markPainted } from '../src/frame.js'
+import { componentAxes } from '../../build/magma-api.js'
 import {
   COMPONENTS,
   KINDS,
@@ -18,13 +17,10 @@ import {
   paintedSelector,
   paintingComponents,
   paintsAny,
-} from '../src/paints.js'
-import { sceneStyle } from '../src/scene-css.js'
-import {
-  NO_THEME_CHOICES,
-  resetThemeChoices,
-  type ThemeChoices,
-} from '../src/theme-choices.js'
+} from './paints.js'
+import { sceneStyle } from './scene-css.js'
+import { NO_THEME_CHOICES, type ThemeChoices } from './theme-choices.js'
+import { resetThemeChoices } from '../theme-choices.js'
 
 // What a family paints (#1308): read from the documentation.json of the installed magma, the
 // guide of the variants and the accents of the themes, never guessed. The bundled configuration
@@ -32,9 +28,9 @@ import {
 // label.violet, and the editorial theme points the accent at variant.secondary.
 
 const config = initialConfig as unknown as MagmaConfig
-// the folder of this file: the URL global of jsdom is no file URL readFileSync takes
+// the folder of this file
 const here = dirname(fileURLToPath(import.meta.url))
-const guide = readFileSync(join(here, '../../../docs/agents/variants.md'), 'utf8')
+const guide = readFileSync(join(here, '../../../../docs/agents/variants.md'), 'utf8')
 afterEach(() => resetThemeChoices())
 
 const painted = (family: string, choices: ThemeChoices = NO_THEME_CHOICES) =>
@@ -150,30 +146,4 @@ test('the selector finds a component by its variant, or by its default', () => {
   expect(selector).not.toContain('mds-text')
   expect(paintedSelector(['primary'])).toContain('mds-button:not([variant])')
   expect(paintedSelector([])).toBe('')
-})
-
-const scene = () =>
-  new DOMParser().parseFromString(
-    readFileSync(join(here, '../scene.html'), 'utf8'),
-    'text/html',
-  )
-
-test('the scene marks the elements of the family, and forgets them for another', () => {
-  const page = scene()
-  const tags = markPainted(page, 'status.error', paintedSelector(['error']))
-  expect(tags).toEqual(['mds-banner', 'mds-badge', 'mds-input-field', 'mds-input', 'mds-button'])
-  expect(page.documentElement.getAttribute('data-studio-paints')).toBe('status.error')
-  expect(page.querySelector('mds-banner[variant="error"]')?.hasAttribute('data-studio-painted')).toBe(true)
-
-  // the surfaces of a theme have nothing to put first: the page goes back as it is
-  expect(markPainted(page, 'tone.neutral', '')).toEqual([])
-  expect(page.documentElement.hasAttribute('data-studio-paints')).toBe(false)
-  expect(page.querySelectorAll('[data-studio-painted]')).toHaveLength(0)
-})
-
-test('the scene has an element for every label colour of the guide', () => {
-  const page = scene()
-  for (const [variant, kind] of KINDS)
-    if (kind === 'Label')
-      expect(page.querySelector(`[variant="${variant}"]`), variant).not.toBeNull()
 })

@@ -21,10 +21,11 @@ import {
 } from '@maggioli-design-system/design-tokens/src/lib/contrast-gate.js';
 import boxShadowTokens from '@maggioli-design-system/design-tokens/tokens/cosmetic/box-shadow.json';
 import committedConfig from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json';
-import { Field, Range, Select } from './magma.js';
-import type { GateReport } from './gate.js';
+import { Field, Range, Select } from './shared/magma/magma.js';
+import type { GateReport } from './engine/gate.js';
 import { GateSummary } from './gate-summary.js';
-import { msg, rich, useT, type T } from './i18n.js';
+import { RESERVED_GROUPS } from './engine/groups.js';
+import { msg, rich, useT, type T } from './shared/i18n/i18n.js';
 import './surfaces.css';
 
 /*
@@ -169,20 +170,6 @@ const TEXT_TARGET_MAX = 106;
 function familyOf(color: ColorConfig): string {
   return color.name.split('.')[1];
 }
-
-/**
- * Groups RESERVED to the status messages: the group of the `status-*` families the
- * coloured hues of semantic.config.ts (`hues`) draw from. Their families MUST
- * generate surfaces, shown checked and locked: a status component (banner, toast,
- * badge) paints text on its own tinted background, and that pair only has a contrast
- * guarantee when the family carries generated `--text-*` roles (text-role picks the
- * step against the WORST of the family's surfaces). Left optional, a status family
- * would fall back to hand-picked ramp steps in each component - which is what it does
- * today. And they never become a theme (themes.tsx): a theme repaints the whole
- * interface, so a page painted in a status colour would mix with the messages that
- * colour carries. Every other group, one created in the studio included, can be one.
- */
-export const RESERVED_GROUPS = new Set(['status']);
 
 /**
  * Groups that can never be a surface seed. `variant.*` is an alias-only accent

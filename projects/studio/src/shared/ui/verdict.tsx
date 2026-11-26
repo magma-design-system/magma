@@ -1,6 +1,6 @@
 import type { Mode } from '@maggioli-design-system/design-tokens/src/lib/contrast-gate.js';
-import type { GateTheme, GateVerdict } from './gate.js';
-import { msg, plural, useT, type T } from './i18n.js';
+import type { GateTheme, GateVerdict } from '../../engine/gate.js';
+import { msg, plural, useT, type T } from '../i18n/i18n.js';
 
 /*
   The verdict of the contrast gate as badges (#698): the status of the configuration, beside the

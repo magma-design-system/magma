@@ -3,8 +3,8 @@ import { page, userEvent } from 'vitest/browser'
 import { h, render } from 'preact'
 import { useState } from 'preact/hooks'
 
-import { LangProvider } from '../src/i18n.js'
-import { Check, Field, Range, Select, TextInput } from '../src/magma.js'
+import { LangProvider } from '../i18n/i18n.js'
+import { Check, Field, Range, Select, TextInput } from './magma.js'
 
 // The form controls of Magma hand back the next value, as a native control of Preact does, and
 // never the echo of the value the page set: mds-input, mds-input-select and mds-input-range emit

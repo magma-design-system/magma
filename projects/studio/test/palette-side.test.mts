@@ -4,10 +4,10 @@ import { within } from '@testing-library/preact'
 
 import initialConfig from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json'
 import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs'
-import { translator } from '../src/i18n.js'
+import { translator } from '../src/shared/i18n/i18n.js'
 import { PaletteSide, paintsLine } from '../src/palette-side.js'
-import { paintedBy } from '../src/paints.js'
-import { sceneStyle } from '../src/scene-css.js'
+import { paintedBy } from '../src/engine/paints.js'
+import { sceneStyle } from '../src/engine/scene-css.js'
 import { resetThemeChoices, updateThemeChoices } from '../src/theme-choices.js'
 
 // The side of the Palette: the ramps of the family, or the theme on a page of a product, small as

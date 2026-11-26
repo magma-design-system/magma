@@ -327,6 +327,9 @@ tests it when it or `design-tokens` changes.
   from a menu that opens with the verdict of the contrast gate), Theme (the theme full screen in an
   iframe, its controls over it) and Behavior (design language, patterns, blocks, from a menu). A
   section that opens its pages from a menu is a case the app-shell block does not have yet.
+- **Folders by layer** (#1397): `build/` for what runs in Node (the plugins of Vite, the static
+  site), `src/engine/` for what computes and paints with no Preact and no state, `src/shared/` for
+  what several pages use; imports go one way (`engine` <- `shared` <- the pages), held by ESLint.
 - **Two hosts, one app** (#695): the docs site mounts it with nothing to install, and a command of
   the `magma` package serves it inside a project, on its `magma/` folder.
 - **Published beside the Storybook**: the studio of `main` is on GitHub Pages at
