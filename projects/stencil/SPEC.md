@@ -16,7 +16,7 @@ Every published entry point is tree-shakeable except the lazy loader, which regi
 | `magma`         | `/components/mds-button.js`                                       | one component per file                                                                             | ✅                                |
 | `magma`         | `/loader`                                                         | `defineCustomElements()`, registers everything lazily                                              | ❌ by design                      |
 | `magma`         | `/hydrate`                                                        | `renderToString()` for SSR (server-only bundle)                                                    | ❌ by design (server bundle)      |
-| `magma`         | `.`                                                               | lazy runtime + `IconsSetService`, `NavigationService` (no components), types of the components     | n/a                               |
+| `magma`         | `.`                                                               | `IconsSetService`, `NavigationService`, types of the components: no component, no Stencil runtime  | n/a                               |
 | `magma`         | `/services`                                                       | the same module as `.`, for code written against it                                                | n/a                               |
 | `magma`         | `/AGENTS.md`, `/agents/*`                                         | the agent docs (install guide, `docs/agents/` fragments)                                           | n/a                               |
 | `magma`         | `/dist/documentation.json`, `/dist/collection/components/<tag>/*` | the docs JSON, and per component `AGENTS.md`, `examples.md`, `mistakes.md`, `documentation.json` | n/a                               |
@@ -38,6 +38,8 @@ import { MdsButton } from '@maggioli-design-system/magma-angular';
 ```
 
 The guides import the services from `.`, not from `/services`: TypeScript reads the types of the root under every `moduleResolution`, those of a subpath of `exports` only under one that reads that field (`node10` does not). The root re-exports the types of the components too, as types only, so it gives what `dist/types/components.d.ts` gave before ([`src/index.ts`](src/index.ts)).
+
+No module of the root imports `@stencil/core`, so importing the services costs no Stencil runtime: an app on the wrappers renders from `dist/components` and would otherwise ship the runtime of the lazy loader too, about 100 kB (#1540). What a service needs only inside a component (the server guard of `mds-icon`) stays in the component. [`src/index.build.spec.ts`](src/index.build.spec.ts) walks the modules the built `.` and `/services` reach, for `import` and `require`, and fails when one is the runtime of a lazy build.
 
 ### What keeps this working
 

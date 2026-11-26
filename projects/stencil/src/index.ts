@@ -24,6 +24,10 @@
  * it, and neither touches `window` while the module loads: a server can import them (the
  * spec next to this file loads it in plain Node).
  *
+ * Nothing here imports `@stencil/core`: an app on the wrappers renders from `dist/components`,
+ * and a runtime reached from this entry would be a second one in its bundle (#1540).
+ * `index.build.spec.ts` walks the built entry and fails when it reaches the runtime.
+ *
  * The types of the components (`Components`, `JSX`, the `Mds*CustomEvent` types, the event
  * details) are re-exported as types only, as the Stencil component starter does in its
  * `src/index.ts`: they were the types of the root before this module took its place

@@ -1,4 +1,4 @@
-import { Component, Element, h, Host, Method, Prop, State, Watch } from '@stencil/core';
+import { Build, Component, Element, h, Host, Method, Prop, State, Watch } from '@stencil/core';
 import { IconsSetService } from './services/icons-set.service';
 import { isIconFormatIsBase64, isIconFormatIsSVG, BASE64_SVG_ICON } from '@common/icon';
 
@@ -95,6 +95,16 @@ export class MdsIcon {
     if (isIconFormatIsSVG(this.name)) {
       this.svgHTML = this.name;
       return Promise.resolve();
+    }
+
+    // No fetch during SSR: relative icon paths have no origin to resolve against, and the client
+    // fetches after hydration anyway. The empty icon causes no layout shift because the :host
+    // reserves the box (aspect-ratio + width). Spec tests also run with isServer=true but mock
+    // fetch, so they are excluded via isTesting. The guard is here rather than in the service,
+    // which imports nothing of the runtime (icons-set.service.ts).
+    if (Build.isServer && !Build.isTesting) {
+      this.svgHTML = '';
+      return;
     }
 
     const svgHTML = await IconsSetService.fetchSvg(this.name);

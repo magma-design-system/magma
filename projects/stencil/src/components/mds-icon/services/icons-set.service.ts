@@ -1,4 +1,3 @@
-import { Build } from '@stencil/core';
 import { get, set, del } from 'idb-keyval';
 import { IconNameResolverFn, MdsIconSet } from '../meta/icon-set';
 
@@ -202,15 +201,11 @@ class IconsSetController {
     }
   }
 
+  // Not on the server: mds-icon, its one caller, does not ask there. The guard lives in the
+  // component because this module imports nothing of `@stencil/core`: the package root re-exports
+  // it, and an import of the runtime here would bring the runtime of the lazy loader into every
+  // app that imports the services (#1540).
   async fetchSvg(name: string): Promise<string> {
-    // No fetch during SSR: relative icon paths have no origin to resolve
-    // against, and the client re-fetches after hydration anyway. The empty
-    // icon causes no layout shift because mds-icon's :host reserves the box
-    // (aspect-ratio + width). Spec tests also run with isServer=true but mock
-    // fetch, so they are excluded via isTesting.
-    if (Build.isServer && !Build.isTesting) {
-      return '';
-    }
     // an icon without the attribute passes an undefined (or null) name: there is nothing to load
     if (!name) {
       return '';
