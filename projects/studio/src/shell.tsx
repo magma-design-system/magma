@@ -545,9 +545,10 @@ function PreviewPanel({
  * the preview, open their controls in a dropdown from their button, and the choices of the
  * preferences reach every frame (scene-prefs.tsx). The select offers the
  * themes of the configuration the person edits, which the frame paints (scene-css.ts); while the
- * generator refuses the configuration, the themes Magma ships. The address may name the theme and
- * the mode the section opens on (a link of the Themes page, app/router.ts), and it follows the
- * choices made here, in place, so it always names the theme in view.
+ * generator refuses the configuration, the themes Magma ships. The theme and the mode are those of
+ * the address (a link of the Themes page, app/router.ts), the first theme in light when it names
+ * none: a choice made here writes its address in place, and back, forward or a link typed choose
+ * again. One source, so the echo of an address written here never undoes a choice made after it.
  */
 function ThemePage({
   theme: askedTheme,
@@ -558,7 +559,7 @@ function ThemePage({
   theme?: string;
   /** The mode the address names. */
   mode?: ModeView;
-  /** The theme and the mode chosen here, which the address follows in place (the router). */
+  /** A theme or a mode chosen here: the router writes its address in place. */
   onChoose: (theme: string, mode: ModeView) => void;
 }) {
   const frames = useRef<Array<HTMLIFrameElement | null>>([]);
@@ -570,7 +571,7 @@ function ThemePage({
   const names = scene?.themes.map((one) => one.name) ?? PREVIEW_THEMES;
   // the theme asked for is kept while the configuration loads: a theme of the person is among the
   // names only then
-  const [chosen, setTheme] = useState(askedTheme ?? PREVIEW_THEMES[0]);
+  const chosen = askedTheme ?? PREVIEW_THEMES[0];
   const theme = names.includes(chosen) ? chosen : names[0];
   // a theme of one mode is seen in that mode only: the other is no way to check it (#1274)
   const themeModes: readonly Scheme[] =
@@ -592,33 +593,28 @@ function ThemePage({
   const [prefs, setPrefs] = useState<ScenePrefs>(DEFAULT_PREFS);
   const [view, setView] = useState<View>('scenes');
   const page = VIEWS.find((one) => one.id === view)!;
-  const [picked, setMode] = useState<ModeView>(askedMode ?? 'light');
+  const picked: ModeView = askedMode ?? 'light';
   const mode: ModeView = offers(picked) ? picked : themeModes[0];
   const [contrast, setContrast] = useState<ContrastMode>('no-preference');
   const [width, setWidth] = useState<Width>('full');
   const [loaded, setLoaded] = useState(0);
   const schemes: Scheme[] = mode === 'both' ? ['light', 'dark'] : [mode];
 
-  // another address while the section is open (back, forward, a link typed) chooses again. Only
-  // another one: the address the section opened on is its first state already, and an effect runs
-  // after a paint, so applying that one again would undo a choice made before it
-  const seen = useRef({ theme: askedTheme, mode: askedMode });
-  useEffect(() => {
-    if (askedTheme && askedTheme !== seen.current.theme) setTheme(askedTheme);
-    if (askedMode && askedMode !== seen.current.mode) setMode(askedMode);
-    seen.current = { theme: askedTheme, mode: askedMode };
-  }, [askedTheme, askedMode]);
-  // the address names what was chosen, replaced in place: a choice is no page to go back to
-  useEffect(() => {
-    onChoose(chosen, picked);
-  }, [chosen, picked, askedTheme, askedMode]);
+  // a choice writes the address, replaced in place (a choice is no page to go back to), with the
+  // other half of it as the last render has it: the listener of the select is added once
+  const choice = {
+    theme: (next: string) => onChoose(next, picked),
+    mode: (next: ModeView) => onChoose(chosen, next),
+  };
+  const choose = useRef(choice);
+  choose.current = choice;
 
   useEffect(() => {
     const element = select.current;
     if (!element) return;
     const change = (event: Event) => {
       const { value } = (event as CustomEvent<{ value?: string }>).detail ?? {};
-      if (value) setTheme(value);
+      if (value) choose.current.theme(value);
     };
     element.addEventListener('mdsInputSelectChange', change);
     return () => element.removeEventListener('mdsInputSelectChange', change);
@@ -723,7 +719,7 @@ function ThemePage({
       >
         <ScenePrefsPanel
           mode={mode}
-          onMode={setMode}
+          onMode={(next) => choose.current.mode(next)}
           modeOff={modeOff}
           contrast={contrast}
           onContrast={setContrast}

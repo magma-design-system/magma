@@ -289,6 +289,22 @@ test('the choices of the Themes page outlive a reload', async () => {
   expect(createStudio().themeChoices.value.names).toEqual({ porcelain: 'cold-desk' })
 })
 
+// The theme and the mode of the section are those of its address (#1400): a choice writes the
+// address in place, and the address the section wrote while it opened never takes it back (seen in
+// CI on #1559, where a choice made at once was undone by the echo of the first address)
+test('a choice made as the section opens stays: the address it writes follows it', async () => {
+  location.hash = '#/theme'
+  render(h(Studio, {}), root)
+  // at once, before the section has written its first address
+  const modes = root.querySelector('mds-dropdown[target="#studio-axis-preferences"] mds-tab[aria-label="Mode"]')!
+  modes.dispatchEvent(new CustomEvent('mdsTabChange', { detail: { id: 2, value: 'both' }, bubbles: true }))
+  await vi.waitFor(() => expect(location.hash).toBe('#/theme/business/both'))
+  // every effect of the opening has run: the choice is still there
+  await new Promise((resolve) => setTimeout(resolve, 100))
+  expect(location.hash).toBe('#/theme/business/both')
+  expect(scenes()).toHaveLength(2)
+})
+
 test('the preferences set the mode and the contrast: both modes are two frames', async () => {
   await at('#/theme')
   const dropdown = await vi.waitFor(() => {
