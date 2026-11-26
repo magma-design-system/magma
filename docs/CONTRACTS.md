@@ -49,7 +49,7 @@ keep in step.
 - **Read by**: the lint core (`projects/lint/src/core/data.ts`), the component tools of the MCP
   server, the per-component `AGENTS.md` (`component-docs.ts`), `check.usage-docs`, the codemod
   manifest ([`projects/codemod/README.md`](../projects/codemod/README.md), "Regenerating the
-  manifest from the docs"), the studio (`projects/studio/magma-api.ts`: the `variant` and the
+  manifest from the docs"), the studio (`projects/studio/build/magma-api.ts`: the `variant` and the
   `tone` of each component, for the previews of a colour), the docs site. The docs site reads
   `usage` in
   `src/loaders/components.ts` of `magma-design-system/docs`: the description is the overview of
@@ -239,7 +239,7 @@ keep in step.
 - **Read by**: the agents of consumer projects, the MCP `get_guide`, the skills of the Claude
   Code plugin (`projects/claude-plugin/scripts/skills.ts`), the docs site; the studio reads the
   tables of the section Variants of `docs/agents/variants.md` and of its section Tones, from the
-  repository (`projects/studio/src/paints.ts`: the colour variants, their kinds, the order of
+  repository (`projects/studio/src/engine/paints.ts`: the colour variants, their kinds, the order of
   the tones).
 - **Held by**: `check.usage-docs` (every symbol a guide names exists); `component-docs.ts` fails
   the build on a relative link of a shipped guide that does not resolve inside its package;
@@ -371,10 +371,10 @@ keep in step.
   a render loads, and when it is ready).
 - **Read by**: the MCP `render_preview` (`projects/mcp/src/render.ts`, `render-page.ts`);
   `mcp:serve.previews` (`projects/mcp/scripts/serve-previews.ts`), on the same page; the pages
-  of the studio (`projects/studio/vendor.ts`), through `stylesheetImports`, `loaderOf` and
+  of the studio (`projects/studio/build/vendor.ts`), through `stylesheetImports`, `loaderOf` and
   `fileOf` of the render, with paths relative to the page; the static site of the studio
-  (`projects/studio/site.ts`, on GitHub Pages), which writes as files what `fileOf` serves: the
-  stylesheets its pages import and what they load, the folder of the loader, and every icon slug
+  (`projects/studio/build/site.ts`, on GitHub Pages), which writes as files what `fileOf` serves:
+  the stylesheets its pages import and what they load, the folder of the loader, and every icon slug
   of the installed sets (`slugFiles` of `projects/mcp/src/icons.ts`).
 - **Held by**: the `render_preview` tests: `STYLESHEETS` and `TAILWIND` equal the blocks of the
   guide, the Magma utilities compile on the classes of the markup, the widths

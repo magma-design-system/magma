@@ -18,7 +18,7 @@ stops instead of opening a second instance on another port.
 ## The shell
 
 The bar of the studio follows the app-shell block of Magma (the logo, "Magma Studio" and under it
-the version of the Magma it runs on, which `vendor.ts` writes into the page) and holds three
+the version of the Magma it runs on, which `build/vendor.ts` writes into the page) and holds three
 sections, in the order of the work (#693, decided 2026-11-05). The logo is the Magma mark of
 `identity`, blue, and its white version in the dark mode, as the favicon and the docs site show
 it: the sheets of the studio have no `dark:`, so `src/dark-mode.ts` matches the `<html>` of the
@@ -68,8 +68,8 @@ The select offers the themes of the configuration being edited, the ones the The
 (each tint with a surface, the base first), and the frame paints them: the studio writes into it,
 over the stylesheets of the installed Magma, the palette of the configuration and the block of
 each theme, printed by the code that writes the files Magma ships (`colors-rgb.css` and
-`themes.css`, `src/scene-css.ts`). So `porcelain` is a theme of the bundled configuration though
-Magma ships none by that name. The choices made on the Themes page, the name of a theme, the
+`themes.css`, `src/engine/scene-css.ts`). So `porcelain` is a theme of the bundled configuration
+though Magma ships none by that name. The choices made on the Themes page, the name of a theme, the
 accents it repoints and the colour modes it is used in, are the studio's (`src/theme-choices.ts`):
 the frame paints the themes as that page exports them, and a theme of one mode is seen in that
 mode only, the other modes of the preferences off and `pref-theme-scheme-<mode>` on the frame, as
@@ -130,17 +130,17 @@ them above the preferences (`src/style.css`, held to `screen.tablet.min` by `tes
 No theme (the studio edits themes, it does not wear one) and no consumption.
 
 - **Where the language lives**: `<html lang>`, which `mds-pref-language` writes and every Magma
-  component follows. The studio follows it at once (`useLang` of `src/i18n.ts`), so a change of
-  language needs no reload, and `live-language` tells `mds-pref` so. The first language is the one
-  the person chose, else Italian on a browser in Italian, else English (`startLanguage`): the page
-  ships `lang="en"`, which `mds-pref-language` reads before the browser. A stored language the
-  studio has no texts for is dropped: the Storybook, on the same origin, may have stored `es`.
+  component follows. The studio follows it at once (`useLang` of `src/shared/i18n/i18n.ts`), so a
+  change of language needs no reload, and `live-language` tells `mds-pref` so. The first language is
+  the one the person chose, else Italian on a browser in Italian, else English (`startLanguage`):
+  the page ships `lang="en"`, which `mds-pref-language` reads before the browser. A stored language
+  the studio has no texts for is dropped: the Storybook, on the same origin, may have stored `es`.
 - **How a text is written**: in English where it is used, in `t('...')`; the Italian catalogue
-  (`src/i18n-it.ts`) maps the English. A text kept in data is marked `msg('...')` and translated
-  where it is drawn, a count takes `plural()`, and a sentence with a link inside it takes `rich()`,
-  translated whole so Italian orders its own words. `test/i18n.test.mts` reads the sources and
-  fails on a text with no Italian, an Italian text no source uses, placeholders that differ and a
-  text of the interface written outside `t()`. The tests of the pages run in English.
+  (`src/shared/i18n/i18n-it.ts`) maps the English. A text kept in data is marked `msg('...')` and
+  translated where it is drawn, a count takes `plural()`, and a sentence with a link inside it takes
+  `rich()`, translated whole so Italian orders its own words. `test/i18n.test.mts` reads the sources
+  and fails on a text with no Italian, an Italian text no source uses, placeholders that differ and
+  a text of the interface written outside `t()`. The tests of the pages run in English.
 - **Components that read their text once**: `mds-button` and `mds-badge` copy the text of their
   slot into their `label` once, so the studio writes their text in `label`; `mds-input-switch` and
   `mds-input-range` read theirs once into the name of their control, so one that holds a translated
@@ -148,9 +148,9 @@ No theme (the studio edits themes, it does not wear one) and no consumption.
 - **The previews**: `hero.html`, `scene.html` and `groups.html` are sample pages written in English.
   `applyFrame` writes the language of the studio on their `<html>`, which their Magma components
   follow, puts the Italian of their texts in place of the English and follows a change of language
-  at once (`src/i18n-previews.ts`, `src/i18n-it-previews.ts`, held to the pages by
-  `test/i18n-previews.test.mts`). The names of the components and the values of their API (a
-  variant, a tone, a role) stay as Magma writes them, and so do proper names.
+  at once (`src/shared/frames/i18n-previews.ts`, `src/shared/frames/i18n-it-previews.ts`, held to
+  the pages by `test/i18n-previews.test.mts`). The names of the components and the values of their
+  API (a variant, a tone, a role) stay as Magma writes them, and so do proper names.
 - **The words**: the studio speaks to the person with "tu", as the Italian of Magma does. The words
   that come back on every page keep one form, in English and in Italian: the taxonomy register
   of [`GLOSSARY.md`](GLOSSARY.md) (agreed with vittorio on 2026-11-10, renamed on 2026-11-20 for
@@ -202,25 +202,25 @@ studio is for, the steps of the work and what each section changes, in three par
 ## The pages in Magma
 
 Every page is written with the components of Magma (#695): the controls of a form go through the
-bridges of `src/magma.tsx` (`Field`, `TextInput`, `ColorInput`, `Select`, `Check`, `Range`), which
-hand back the next value as a native control of Preact does and never the echo of a value the page
-set (the change events of `mds-input`, `mds-input-select` and `mds-input-range` leave on that too).
-A value the page parses or sorts (a name, a stop of a scale, a list of export groups) takes
-`commit="leave"`: it is handed back on Enter or on leaving the field, as the change of a native
-input, not at every key. Dialogs are an `mds-modal` with an `mds-banner` window, the main action
-last; destructive actions sit in the menu of their item.
+bridges of `src/shared/magma/magma.tsx` (`Field`, `TextInput`, `ColorInput`, `Select`, `Check`,
+`Range`), which hand back the next value as a native control of Preact does and never the echo of a
+value the page set (the change events of `mds-input`, `mds-input-select` and `mds-input-range` leave
+on that too). A value the page parses or sorts (a name, a stop of a scale, a list of export groups)
+takes `commit="leave"`: it is handed back on Enter or on leaving the field, as the change of a
+native input, not at every key. Dialogs are an `mds-modal` with an `mds-banner` window, the main
+action last; destructive actions sit in the menu of their item.
 
-The `mds-*` tags are typed by the magma installed beside the studio: `src/shared/magma/elements.d.ts`
-imports the `JSX.IntrinsicElements` its build publishes (`dist/types/components.d.ts`) as a type,
-renames the handlers of the events `onMds*` -> `onmds*` (the names Preact listens to) and adds the
-attributes Preact takes on any element. A prop renamed or removed in Magma fails
-`check.types`; nothing of Magma reaches the bundle.
+The `mds-*` tags are typed by the magma installed beside the studio:
+`src/shared/magma/elements.d.ts` imports the `JSX.IntrinsicElements` its build publishes
+(`dist/types/components.d.ts`) as a type, renames the handlers of the events `onMds*` -> `onmds*`
+(the names Preact listens to) and adds the attributes Preact takes on any element. A prop renamed or
+removed in Magma fails `check.types`; nothing of Magma reaches the bundle.
 
-The bridges are tried against the real components: `test/magma.e2e.mts` runs in the `browser`
-project of Vitest (`vite.config.ts`), whose page loads the installed magma through `vendor.ts` as
-every page of the studio does, and the person types, chooses and moves the slider through
-Playwright. The pages are tried in jsdom (the `jsdom` project), where the tags never upgrade; the
-engine and the checks of the build in Node (the `node` project).
+The bridges are tried against the real components: `src/shared/magma/magma.e2e.mts` runs in the
+`browser` project of Vitest (`vite.config.ts`), whose page loads the installed magma through
+`build/vendor.ts` as every page of the studio does, and the person types, chooses and moves the
+slider through Playwright. The pages are tried in jsdom (the `jsdom` project), where the tags never
+upgrade; the engine and the checks of the build in Node (the `node` project).
 
 Each page keeps its rules in the sheet beside its module (`palette.css`, `scales.css`, ...),
 from the tokens only: spaces from the rhythm, widths from the widths, colours from the semantic
@@ -239,8 +239,8 @@ with its issue until the component lands:
 
 The studio never bundles the Magma components nor their stylesheets: its pages load them from the
 Magma installed where the studio runs ([`ARCHITECTURE.md`](../../docs/ARCHITECTURE.md), "Magma as
-an external vendor"), as a render of the MCP server does. `vendor.ts` uses the code of the render
-(`projects/mcp/src/render.ts`; "The page a render loads" in
+an external vendor"), as a render of the MCP server does. `build/vendor.ts` uses the code of the
+render (`projects/mcp/src/render.ts`; "The page a render loads" in
 [`CONTRACTS.md`](../../docs/CONTRACTS.md)):
 
 - each page imports the stylesheets of `agents/assets.md` in their layers (`stylesheetImports`),
@@ -249,15 +249,15 @@ an external vendor"), as a render of the MCP server does. `vendor.ts` uses the c
 - the dev server and `vite preview` serve those three paths from the installed packages (`fileOf`);
 - the tags are written after Vite has processed the page, so the build leaves them as they are:
   whoever hosts the built studio serves the same three paths beside it;
-- for a host that serves files only, `build.site` writes them as files (`site.ts`, below).
+- for a host that serves files only, `build.site` writes them as files (`build/site.ts`, below).
 
 In this repository the installed magma is the build of `stencil`, so `serve` and `build` build it
 first (an implicit dependency). A test holds the bundle to the rule: no component and no runtime
 of Stencil in `dist/assets`.
 
-What the studio reads of the API of that magma, it reads at build time: `magma-api.ts` takes the
-`variant` and the `tone` of each component from its `documentation.json` (as the lint and the MCP
-server read it, `readData`) and hands the pages these two props alone, as the virtual module
+What the studio reads of the API of that magma, it reads at build time: `build/magma-api.ts` takes
+the `variant` and the `tone` of each component from its `documentation.json` (as the lint and the
+MCP server read it, `readData`) and hands the pages these two props alone, as the virtual module
 `virtual:magma-api`, not the megabytes of the documentation. A magma with no documentation gives no
 component, and the previews of a colour say that it paints none.
 
@@ -276,7 +276,7 @@ agents of the products; the agent guide of theming links it too. Moving the stud
 `og:url` of `index.html` and that constant together: `story-titles-lib.spec.ts` fails on the
 first two out of step with the third.
 
-GitHub Pages serves files only, so `nx run studio:build.site` (`site.ts`) writes into
+GitHub Pages serves files only, so `nx run studio:build.site` (`build/site.ts`) writes into
 `dist-site/` the build with, beside its pages, the files `fileOf` serves to the dev server:
 
 - `node_modules/`: the stylesheets each page imports and what they load in turn, the fonts of
@@ -303,8 +303,8 @@ tokens, the config, the CSS of the themes), as when the studio runs without its 
 How the studio shows in a tab and on other sites, as the docs site does for itself
 (magma-design-system/docs, `agents/architecture.md`, "Covers"):
 
-- **Favicons.** `favicons.ts`, a plugin of Vite, draws them with `sharp` from the Magma mark of
-  `identity`, the one of the bar: the SVG for the tabs (white on a dark scheme), the ICO for the
+- **Favicons.** `build/favicons.ts`, a plugin of Vite, draws them with `sharp` from the Magma mark
+  of `identity`, the one of the bar: the SVG for the tabs (white on a dark scheme), the ICO for the
   browsers without SVG favicons, the touch icon of iOS on white, the icons and the manifest of
   Android. It serves them under `favicons/` to the dev server, writes them there into the build
   and links them from the studio, relative to the page; the pages of the frames have none.
@@ -313,10 +313,10 @@ How the studio shows in a tab and on other sites, as the docs site does for itse
   the studio on Pages and its cover, both absolute, as those sites ask.
 - **The cover.** `public/covers/og-1200x630.png`, the `og:image`, copied by the build as it is,
   so its address never changes: `<use>-<width>x<height>.png`, as the covers of the docs site.
-  `nx run studio:cover` (`cover.ts`) takes it again from the built studio in the Playwright
+  `nx run studio:cover` (`build/cover.ts`) takes it again from the built studio in the Playwright
   Chromium, at 1200 by 630 with the motion reduced: the Palette on the primary colour by default,
-  or another recipe (`npx tsx cover.ts theme-light /tmp/cover.png` in `projects/studio`). Take it
-  again when the studio changes the way it looks, before a link to it is shared.
+  or another recipe (`npx tsx build/cover.ts theme-light /tmp/cover.png` in `projects/studio`). Take
+  it again when the studio changes the way it looks, before a link to it is shared.
 
 A site caches the preview of an address the first time it reads it: after a new cover, ask it to
 read the page again (LinkedIn: the Post Inspector) before sharing. `test/share.test.mts` holds the
@@ -325,8 +325,8 @@ favicons to the sizes each host asks for and the tags to the cover the build hol
 ## The contrast gate
 
 The studio runs the APCA contrast gate of design-tokens in the browser, on the configuration being
-edited, at every edit (#698, `src/gate.ts`): the pairs `nx run design-tokens:contrast` measures,
-with its targets and its baseline, through its own engine (`contrast-gate.ts`, driven by
+edited, at every edit (#698, `src/engine/gate.ts`): the pairs `nx run design-tokens:contrast`
+measures, with its targets and its baseline, through its own engine (`contrast-gate.ts`, driven by
 `semantic.config.ts`), so the studio and the CI judge a pair the same way: every text role on every
 surface (Lc 75 / 75 / 45 / 30), the on-emphasis text of each hue on its fill and the states of the
 fill (Lc 75 in light, 70 in dark), the text of the hues and of the neutral band on their washes,
@@ -334,12 +334,12 @@ and the pairs the gate only reports (coloured text on the surfaces, the borders)
 
 What differs is which themes. The CI judges the themes Magma ships (`semantic.themes`); the studio
 judges the themes of the configuration it edits, as the Themes page defines and exports them
-(`configThemes` of `src/scene-css.ts`, the list the select of the Theme section offers): the base
-theme is the base layer of the gate, every other one a theme of the gate with its family, its ramp
-and the accents it repoints, keyed `<theme>:<pair>` as the CLI keys it, so the baseline accepts
+(`configThemes` of `src/engine/scene-css.ts`, the list the select of the Theme section offers): the
+base theme is the base layer of the gate, every other one a theme of the gate with its family, its
+ramp and the accents it repoints, keyed `<theme>:<pair>` as the CLI keys it, so the baseline accepts
 the same offenders. An accent the base theme repoints reaches the themes that leave it alone, as
 `:root` does in the CSS the page exports. On the configuration Magma builds with the studio
-measures the base and `editorial` exactly as the CLI does (`test/gate.test.mts` holds it).
+measures the base and `editorial` exactly as the CLI does (`src/engine/gate.test.mts` holds it).
 
 Every pair is measured in both modes, and judged in the modes its theme is used in: a theme of one
 mode (#1274) is never painted in the other, since `mds-pref-theme` locks it, so its pairs there say
@@ -389,11 +389,11 @@ flowchart LR
     SHELL["src/shell.tsx, src/routes.ts, src/start.tsx<br/>the bar, Start, Colors, Theme, Behavior"]
     APP["src/app.tsx<br/>the pages of Colors"]
     SURF["src/surfaces.tsx, src/themes.tsx<br/>balances, themes, names"]
-    GATE["src/gate.ts, src/contrast.tsx<br/>the contrast gate, Contrast check"]
-    OUT["src/formats.ts, src/batch.tsx<br/>zip, DTCG, CSS, GIMP, config"]
-    VEN["vendor.ts<br/>serves Magma to the pages"]
-    API["magma-api.ts<br/>the variant and tone of each component"]
-    SITE["site.ts<br/>the static site, dist-site/"]
+    GATE["src/engine/gate.ts, src/contrast.tsx<br/>the contrast gate, Contrast check"]
+    OUT["src/engine/formats.ts, src/batch.tsx<br/>zip, DTCG, CSS, GIMP, config"]
+    VEN["build/vendor.ts<br/>serves Magma to the pages"]
+    API["build/magma-api.ts<br/>the variant and tone of each component"]
+    SITE["build/site.ts<br/>the static site, dist-site/"]
     SCENE["scene.html, states.html, hero.html<br/>the pages the frames show"]
     SHELL --> APP
     SHELL --> SCENE
@@ -436,6 +436,27 @@ Rectangles: this repository; rounded boxes: outside it. Solid arrows: inside the
 dashed: where the package is installed. Labels: the file, export or command that crosses.
 Colours: purple ai, amber assets, teal visual, blue components, grey tooling, white outside
 ([convention](../../docs/ARCHITECTURE.md#diagrams-of-the-projects)).
+
+The folders of the studio (#1397; #1399 moved the files into them):
+
+- `build/`: what runs in Node, never in a page: the plugins of Vite (`vendor.ts`, `magma-api.ts`,
+  `favicons.ts`) and the commands (`site.ts`, `cover.ts`).
+- `src/engine/`: what computes and paints, with no Preact and no state: `generator`, `gate`,
+  `paints`, `scene-css`, `formats`, `hue-ends`, `color-names`, the model of the themes
+  (`themes.ts`), of the theme choices (`theme-choices.ts`) and the groups kept for the status
+  colours (`groups.ts`), `chalk-stub`.
+- `src/shared/`: what several pages use: `magma/` (the bridges to the components and the types of
+  their tags), `frames/` (the previews in a frame, `states`, their texts), `i18n/` (the languages;
+  `text.ts` is the part with no Preact), `ui/` (`verdict.tsx`).
+- the rest of `src/`: the shell and the pages, until #1400-#1404 give them `state/`, `features/`
+  and `app/`.
+
+Imports go one way, and ESLint holds it (`no-restricted-imports` in `eslint.config.mjs`): a file
+of `engine` imports no other file of the studio but `shared/i18n/text.ts`, and types alone from
+`build/`; a file of `shared` imports nothing of the pages. A test sits beside its module and may
+import what it is tested with. `test/` keeps the checks of the build, of the site and of the
+translations, and the tests of the pages until the pages move. Vitest runs `src/engine/` and the
+checks of the build in Node, every other `*.test.mts` in jsdom, every `*.e2e.mts` in Chromium.
 
 The engine, `semantic.config.ts` and the theme files stay in `design-tokens`: the builds of
 `design-tokens` and `styles` read them, and moving them here would make `design-tokens` depend on
@@ -600,9 +621,9 @@ dark-on-light in light mode and light-on-dark in dark mode. Every color picks it
 
 Beside each card, where the page has the room (60rem, as the side of the Palette), the sample
 colour solved on the scale paints the components it paints in a page of their own (`states.html`,
-`src/states.ts`): the action and the message of its variant, `mds-button` at every tone and in
-every state (at rest, hovered, pressed with `active`, selected with `current`, disabled) and
-`mds-banner` at every tone; a variant neither takes, a label, shows `mds-badge` and `mds-label`.
+`src/shared/frames/states.ts`): the action and the message of its variant, `mds-button` at every
+tone and in every state (at rest, hovered, pressed with `active`, selected with `current`, disabled)
+and `mds-banner` at every tone; a variant neither takes, a label, shows `mds-badge` and `mds-label`.
 The tones are those the documentation gives each component, in the order of
 `docs/agents/variants.md`. No prop gives the hover: the page copies the `:hover` rules of the
 component's own shadow sheet under an attribute (`forceHover`), so the hover is the component's.
@@ -612,12 +633,12 @@ takes the ramp of its source whatever its scale, so it shows none and names its 
 ### What a colour paints
 
 The previews of a colour, the scene beside the Palette and the states beside a contrast scale,
-show the components a change of the family moves (#1308, `src/paints.ts`), each link read where
-it is decided:
+show the components a change of the family moves (#1308, `src/engine/paints.ts`), each link read
+where it is decided:
 
 | Link | Source |
 | --- | --- |
-| a component paints with a colour through its `variant`, the values it takes and its default | `documentation.json` of the installed magma (`magma-api.ts`) |
+| a component paints with a colour through its `variant`, the values it takes and its default | `documentation.json` of the installed magma (`build/magma-api.ts`) |
 | which values of a `variant` are colours, and of which kind: accent, status, neutral, label, identity; a `variant` that takes anything else is no colour (`mds-text` has one of typography) | the tables of the section Variants of `docs/agents/variants.md` |
 | a status and a label paint with their own family: `status.error` is the `error` variant, `label.red` the `red` one | "Paints with" of the same guide, the mapping of `docs/agents/color.md` |
 | `primary` and `secondary` paint with the family the theme points the accent role at, `ai` with the one of the `ai` role; secondary renders exactly like primary | the same guide; `accents` of `semantic.config.ts`, repointed by a theme file or on the Themes page (`accentOfTheme`) |
@@ -627,8 +648,8 @@ it is decided:
 The theme a family is seen in is the one drawn from it, else the first whose accents point at it
 (`variant.secondary` is seen in `editorial`), else the base. The scene puts first, at full
 colour, the cards that hold an element of the family and, in each card, the row that holds it,
-the element staying where it is in its row (`markPainted` of `src/frame.ts`, the rules under
-`data-studio-paints` in `scene.html`); the surfaces of a theme are the whole page, and nothing
+the element staying where it is in its row (`markPainted` of `src/shared/frames/frame.ts`, the rules
+under `data-studio-paints` in `scene.html`); the surfaces of a theme are the whole page, and nothing
 moves. A line over the scene says what the family paints. A family that reaches none of these
 (`brand.rnd`) says so where the scene or the states would be, instead of a page that would not
 move. The scene carries every label colour, so each label family has an element to show.

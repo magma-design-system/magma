@@ -94,7 +94,7 @@ export const slugFile = (folder: string, slug: string): string | undefined => {
 /**
  * Every slug the installed sets serve, with its file: what `fileOf` of the render answers under
  * `svg/`, for a host that serves files only and copies them (the studio on GitHub Pages,
- * projects/studio/site.ts). A file of mdi or mgg is its slug, deprecated icons included, since
+ * projects/studio/build/site.ts). A file of mdi or mgg is its slug, deprecated icons included, since
  * `fileOf` serves them; a Material icon is a slug in each variant of MI_VARIANTS, its folder
  * found by `slugFile`.
  */

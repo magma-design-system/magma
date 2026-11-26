@@ -29,7 +29,7 @@
 #
 # The studio is built on the same components: its pages load Magma from beside
 # them, so `studio:build.site` writes the installed Magma they ask for next to
-# the build (projects/studio/site.ts) and fails on a file it cannot find. Its
+# the build (projects/studio/build/site.ts) and fails on a file it cannot find. Its
 # site is tested in the studio workflow, in the merge queue. On GitHub Pages it
 # has no API to save to: it edits in memory, keeps a draft in the browser and
 # downloads what it makes.
