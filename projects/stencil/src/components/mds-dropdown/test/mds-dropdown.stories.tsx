@@ -1,6 +1,8 @@
 import { floatingUIPlacementDictionary, floatingUIStrategyDictionary } from '@type/floating-ui';
 import { dropdownInteractionDictionary } from '../meta/dictionary';
 import { h } from '@stencil/core';
+import { expect, waitFor } from 'storybook/test';
+import { StateCell, StatesGrid, stateCell } from '@fixture/states';
 import { useState, useEffect } from 'react';
 
 export default {
@@ -589,4 +591,197 @@ export const ModalNested = {
 export const Target = {
   render: TemplateTarget,
   args: {},
+};
+
+/**
+ * Every state of the dropdown once the story has opened (#1440, @fixture/states), each with a
+ * caller of its own in the room its panel opens into, so that no panel covers another cell.
+ *
+ * - The open states are set by `visible`, and nothing in the story clicks: a click on the page
+ *   closes every open panel, and the click on a caller even sends one to the body to close the
+ *   others, so a panel opened by a click would close all the cells. The click is in the e2e tests
+ *   ("clicks on the caller"), and on the page: a click on a caller here opens its panel and closes
+ *   the rest.
+ * - The placements are pinned (`disable-auto-placement`, `disable-shift`): auto-placement and shift
+ *   answer to the viewport, and on a grid taller than the screen they move the panel of a cell
+ *   below the fold to another side, or out of its cell. The default, `bottom` with auto-placement
+ *   and shift, is the first open cell, inside the screen; the moves are in the stories
+ *   AutoPlacement, Flip and Shift and in the e2e tests.
+ * - The panel is a `menu` of real entries, the buttons it holds, or declares another role when it
+ *   holds anything else (`role="group"`), as a product does: a `menu` over arbitrary content is
+ *   what axe rejects.
+ * - Left to other stories: `backdrop` (Backdrop), which dims the whole page, not a cell, and
+ *   `offset`, `arrow-padding`, `shift-padding`, `disable-smooth` and `z-index`, measures of the
+ *   placement rather than states.
+ *
+ * A state only an interaction reaches (`play: true`) is brought there by the play function, which
+ * checks `visible`, and the entry that has the focus, not the look: the pointer over a caller of
+ * `interaction="mouseover"`, and the down arrow on the caller of a menu, which lands on its first
+ * entry.
+ */
+interface DropdownState {
+  state: string;
+  play?: boolean;
+  // the room of the cell the panel opens into, and where the caller stands in it
+  stage: string;
+  dropdown?: Record<string, string | boolean>;
+  // what the panel holds: a menu of actions, or a group that is not one
+  panel?: 'menu' | 'group';
+}
+
+const dropdownPinned = { 'disable-auto-placement': true, 'disable-shift': true };
+
+// above and below the caller a panel and its offset; beside it, the width of the cell and the
+// height of the panel where it goes past the caller
+const panelRoomOf = (placement: string): string => {
+  const [side, align] = placement.split('-');
+  if (side === 'left' || side === 'right') {
+    const justify = side === 'left' ? 'justify-end' : 'justify-start';
+    // with the arrow, a start or an end panel passes the edge of the caller by a little: the
+    // arrow keeps its padding from the corner while it points at the middle of the caller
+    const room = { start: 'pt-600 pb-4000', end: 'pt-4000 pb-600' }[align] ?? 'py-2000';
+    return `flex ${justify} ${room}`;
+  }
+  const justify = { start: 'justify-start', end: 'justify-end' }[align] ?? 'justify-center';
+  return `flex ${justify} ${side === 'top' ? 'pt-6000' : 'pb-6000'}`;
+};
+
+const pinnedPanelPlacements = [
+  'top',
+  'top-start',
+  'top-end',
+  'bottom-start',
+  'bottom-end',
+  'left',
+  'left-start',
+  'left-end',
+  'right',
+  'right-start',
+  'right-end',
+];
+
+const keyboardState = 'opened from the keyboard, on the first entry';
+
+const dropdownStates: DropdownState[] = [
+  { state: 'closed', stage: panelRoomOf('bottom') },
+  { state: 'open, bottom (default)', stage: panelRoomOf('bottom'), dropdown: { visible: true } },
+  {
+    state: 'open, a panel that is not a menu',
+    stage: panelRoomOf('bottom'),
+    dropdown: { ...dropdownPinned, role: 'group', visible: true },
+    panel: 'group',
+  },
+  {
+    state: 'open, without the arrow',
+    stage: panelRoomOf('bottom'),
+    dropdown: { ...dropdownPinned, 'hide-arrow': true, visible: true },
+  },
+  {
+    state: 'open, strategy fixed',
+    stage: panelRoomOf('bottom'),
+    dropdown: { ...dropdownPinned, strategy: 'fixed', visible: true },
+  },
+  ...pinnedPanelPlacements.map((placement) => ({
+    state: `open, ${placement}`,
+    stage: panelRoomOf(placement),
+    dropdown: { ...dropdownPinned, placement, visible: true },
+  })),
+  {
+    state: 'opened by the pointer, interaction mouseover',
+    play: true,
+    stage: panelRoomOf('bottom'),
+    dropdown: { ...dropdownPinned, interaction: 'mouseover' },
+  },
+  { state: keyboardState, play: true, stage: panelRoomOf('bottom'), dropdown: dropdownPinned },
+];
+
+const TemplateStates = () => (
+  <StatesGrid>
+    {dropdownStates.map(({ state, play, stage, dropdown, panel = 'menu' }, index) => (
+      <StateCell key={state} state={state} play={play}>
+        <div class={stage}>
+          {panel === 'menu' ? (
+            <mds-button
+              id={`dropdown-state-${index}`}
+              icon="mi/baseline/more-vert"
+              label="Azioni"
+              variant="primary"
+              tone="weak"
+            ></mds-button>
+          ) : (
+            <mds-button
+              id={`dropdown-state-${index}`}
+              label="Come usiamo i tuoi dati"
+              variant="primary"
+              tone="weak"
+            ></mds-button>
+          )}
+          {panel === 'menu' ? (
+            <mds-dropdown target={`#dropdown-state-${index}`} {...dropdown}>
+              <mds-button icon="mi/baseline/edit" label="Modifica" variant="dark" tone="text" />
+              <mds-button icon="mi/baseline/download" label="Scarica" variant="dark" tone="text" />
+              <mds-button icon="mi/baseline/delete" label="Elimina" variant="error" tone="text" />
+            </mds-dropdown>
+          ) : (
+            <mds-dropdown target={`#dropdown-state-${index}`} {...dropdown}>
+              <mds-text typography="tip">I dati restano sui server di Maggioli.</mds-text>
+              <mds-button
+                href="#policy"
+                label="Leggi la policy"
+                variant="dark"
+                tone="text"
+                size="sm"
+              />
+            </mds-dropdown>
+          )}
+        </div>
+      </StateCell>
+    ))}
+  </StatesGrid>
+);
+
+/** The caller and the panel of a cell, once every Magma element of the cell has loaded. */
+const loadedDropdown = async (canvasElement: HTMLElement, state: string) => {
+  const cell = stateCell(canvasElement, state);
+  const elements = Array.from(cell.querySelectorAll('*')).filter((element) =>
+    element.tagName.startsWith('MDS-'),
+  );
+  await waitFor(() => elements.forEach((element) => expect(element).toHaveAttribute('hydrated')));
+  const dropdown = cell.querySelector('mds-dropdown') as HTMLMdsDropdownElement;
+  // the caller is wired once the panel has found it, and named itself a menu
+  await waitFor(() => expect(dropdown.getAttribute('role')).toBe('menu'));
+  return { caller: cell.querySelector(dropdown.target) as HTMLMdsButtonElement, dropdown };
+};
+
+const playStates = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+  // the pointer over the caller opens the panel after --mds-dropdown-mouseover-delay
+  const pointed = await loadedDropdown(
+    canvasElement,
+    'opened by the pointer, interaction mouseover',
+  );
+  pointed.caller.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
+
+  // the caller of a menu listens to its keys: the down arrow opens the panel on its first entry.
+  // The key waits for the panel to settle: once loaded, a closed panel goes from the display it had
+  // before its styles to none in a transition, laid out all along, and an arrow pressed then opens
+  // it without moving the focus (the entry looks shown, and its focus is refused)
+  const keyboard = await loadedDropdown(canvasElement, keyboardState);
+  await waitFor(() => expect(keyboard.dropdown.getAnimations()).toHaveLength(0));
+  keyboard.caller.dispatchEvent(
+    new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, cancelable: true }),
+  );
+
+  // the property, not the attribute: Stencil reflects it on the next frame, and a hidden page
+  // draws no frame
+  await waitFor(() => expect(pointed.dropdown).toHaveProperty('visible', true));
+  await waitFor(() => expect(keyboard.dropdown).toHaveProperty('visible', true));
+  await waitFor(() =>
+    expect(document.activeElement).toBe(keyboard.dropdown.querySelector('mds-button')),
+  );
+};
+
+export const States = {
+  render: TemplateStates,
+
+  play: playStates,
 };
