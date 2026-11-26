@@ -1,12 +1,13 @@
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
+import chroma from 'chroma-js';
 import { expect, test } from 'vitest';
 
 import { getColorsConfig } from '../src/lib/utils.mjs';
 import { createColorTokens, type MagmaConfig } from '../src/lib/color.mjs';
 import {
   contrastTintOverride,
-  emphasisStateSteps,
+  emphasisRoles,
   hueContrastOverride,
   semantic,
 } from '../semantic.config.js';
@@ -79,23 +80,25 @@ test('aliasesFromConfig maps every --magma-* role to its primitive (A9 contract)
     light: '--tone-neutral-seed',
     dark: '--surface-neutral-default',
   });
-  // focus follows the general accent's emphasis step (theme-aware)
-  expect(map['--magma-border-focus']).toBe('--variant-primary-04');
+  // focus follows the rest of the general accent's emphasis band (theme-aware)
+  expect(map['--magma-border-focus']).toBe('--emphasis-primary-default');
   // A colored hue publishes the neutral vocabulary on its OWN family: wash levels
-  // name ramp steps (they must mode-flip), text/border come from the generated
+  // name its generated washes (#1427), text/border come from the generated
   // role scales. `danger` also proves the three names are independent: hue key
   // `danger`, ramp family `status-error`, role family `error`.
-  expect(map['--magma-danger-wash-strong']).toBe('--status-error-08');
+  expect(map['--magma-danger-wash-strong']).toBe('--wash-error-strong');
+  expect(map['--magma-danger-wash-selected']).toBe('--wash-error-selected');
   expect(map['--magma-danger-text-muted']).toBe('--text-error-muted');
   expect(map['--magma-danger-border-strong']).toBe('--border-error-strong');
   // the legacy quintet aliases are shortcuts onto those roles, not steps of their own
   expect(map['--magma-danger-fg']).toBe('--text-error-default');
-  expect(map['--magma-danger-surface']).toBe('--status-error-09'); // unchanged value
-  // the solid fill keeps naming a ramp step (the role scales model tints, not fills),
-  // and so do its interaction states - the same band as an accent, so the same steps
-  expect(map['--magma-danger-emphasis']).toBe('--status-error-04');
-  expect(map['--magma-danger-emphasis-hover']).toBe('--status-error-03');
-  expect(map['--magma-danger-emphasis-active']).toBe('--status-error-02');
+  expect(map['--magma-danger-surface']).toBe('--wash-error-base'); // the same level as before
+  // the solid fill and its interaction states: the generated band of the family, the same
+  // band as an accent, so the same states
+  expect(map['--magma-danger-emphasis']).toBe('--emphasis-error-default');
+  expect(map['--magma-danger-emphasis-hover']).toBe('--emphasis-error-hover');
+  expect(map['--magma-danger-emphasis-active']).toBe('--emphasis-error-active');
+  expect(map['--magma-danger-emphasis-selected']).toBe('--emphasis-error-selected');
   // the SURFACE-band states stay accent-only: a hue says that with wash levels
   expect(map['--magma-danger-surface-hover']).toBeUndefined();
   expect(map['--magma-danger-surface-subtle']).toBeUndefined();
@@ -107,31 +110,39 @@ test('aliasesFromConfig maps every --magma-* role to its primitive (A9 contract)
   expect(map['--magma-danger-surface-default']).toBeUndefined();
   // accents: the general `accent` owns the bare namespace (no infix, promoted from
   // the former deprecated alias); its states are infix-free too; `ai` infixes.
-  expect(map['--magma-accent-emphasis']).toBe('--variant-primary-04');
-  expect(map['--magma-accent-emphasis-hover']).toBe('--variant-primary-03');
-  expect(map['--magma-accent-ai-emphasis']).toBe('--variant-ai-04');
+  expect(map['--magma-accent-emphasis']).toBe('--emphasis-primary-default');
+  expect(map['--magma-accent-emphasis-hover']).toBe('--emphasis-primary-hover');
+  expect(map['--magma-accent-ai-emphasis']).toBe('--emphasis-ai-default');
+  // its washes by state and its text (#1427); fg and border stay ramp steps
+  expect(map['--magma-accent-surface']).toBe('--wash-primary-base');
+  expect(map['--magma-accent-surface-selected']).toBe('--wash-primary-selected');
+  expect(map['--magma-accent-surface-subtle-selected']).toBe('--wash-primary-soft-selected');
+  expect(map['--magma-accent-ai-text-default']).toBe('--text-ai-default');
+  // the ink of an accent is generated, a step per mode (#1496)
+  expect(map['--magma-accent-fg']).toBe('--fg-primary-default');
+  expect(map['--magma-accent-ai-fg']).toBe('--fg-ai-default');
   // the old per-role infix names are gone (secondary role dropped, primary promoted)
   expect(map['--magma-accent-primary-emphasis']).toBeUndefined();
   expect(map['--magma-accent-secondary-fg']).toBeUndefined();
 });
 
-test('the neutral wash band names tint ramp steps, and shares one map with the hues', () => {
+test('the neutral wash band names the washes of the tint, and shares its levels with the hues', () => {
   const map = aliasesFromConfig(semantic);
-  // the neutral pills (spec 6.1b) name steps of the ACTIVE TINT ramp, so they
-  // follow a named theme; they are NOT the elevation band, which cannot hold these
+  // the neutral pills (spec 6.1b) name the generated washes of the ACTIVE TINT (#1427), so
+  // they follow a named theme; they are NOT the elevation band, which cannot hold these
   // values in both modes (a pill moves toward the ink in light AND in dark).
-  expect(map['--magma-wash-soft']).toBe('--tone-neutral-10');
-  expect(map['--magma-wash-base']).toBe('--tone-neutral-09');
-  expect(map['--magma-wash-strong']).toBe('--tone-neutral-08');
-  // three DISTINCT levels: two collapsing would silently kill a hover or a
+  expect(map['--magma-wash-soft']).toBe('--wash-neutral-soft');
+  expect(map['--magma-wash-base']).toBe('--wash-neutral-base');
+  expect(map['--magma-wash-strong']).toBe('--wash-neutral-strong');
+  // DISTINCT levels: two collapsing would silently kill a hover or a
   // selected state built out of them (the failure #635 hit on the input family).
-  const levels = ['soft', 'base', 'strong'].map((l) => map[`--magma-wash-${l}`]);
-  expect(new Set(levels).size).toBe(3);
-  // one map for both bands: the neutral level and the colored level of the same
-  // name must name the same step, or a neutral pill and a status pill drift apart.
-  for (const [level, step] of Object.entries(semantic.washSteps)) {
-    expect(map[`--magma-wash-${level}`]).toBe(`--tone-neutral-${step}`);
-    expect(map[`--magma-danger-wash-${level}`]).toBe(`--status-error-${step}`);
+  const levels = semantic.washLevels.map((l) => map[`--magma-wash-${l}`]);
+  expect(new Set(levels).size).toBe(semantic.washLevels.length);
+  // one list for both bands: the neutral level and the colored level of the same
+  // name must exist together, or a neutral pill and a status pill drift apart.
+  for (const level of semantic.washLevels) {
+    expect(map[`--magma-wash-${level}`]).toBe(`--wash-neutral-${level}`);
+    expect(map[`--magma-danger-wash-${level}`]).toBe(`--wash-error-${level}`);
   }
   // the ambiguous names must not exist, for the same reason they do not on a hue:
   // `--magma-surface-*` is elevation and a wash is not a level of it.
@@ -169,26 +180,34 @@ test('the inverse surface has a less marked level, gated for on-inverse text', a
   expect(semantic.neutralHueSteps.emphasisMuted).toBe('03');
   // a muted level that resolved to the base fill would collapse weak onto strong
   expect(map['--magma-surface-inverse-muted']).not.toBe(map['--magma-neutral-emphasis']);
+  // its selected level, between the rest and the hover, generated for the tint (#1427)
+  expect(map['--magma-surface-inverse-selected']).toBe('--inverse-neutral-selected');
 
   const pairs = evaluatePairs(await loadTree(), map).filter(
-    (r) => r.fgToken === 'on-inverse' && r.bgToken === 'surface-inverse-muted',
+    (r) =>
+      r.fgToken === 'on-inverse' &&
+      ['surface-inverse-muted', 'surface-inverse-selected'].includes(r.bgToken),
   );
-  expect(pairs.map((r) => r.mode).sort()).toEqual(['dark', 'light']);
+  expect(pairs).toHaveLength(4);
   expect(pairs.every((r) => r.severity === 'error' && r.pass)).toBe(true);
 });
 
 test('the emphasis band carries the same states on a hue as on an accent', async () => {
-  const states = emphasisStateSteps();
+  const roles = emphasisRoles();
   // only the emphasis band: the surface-band states are an accent affair
-  expect(Object.keys(states).sort()).toEqual(['emphasis-active', 'emphasis-hover']);
+  expect(Object.keys(roles).sort()).toEqual([
+    'emphasis',
+    'emphasis-active',
+    'emphasis-hover',
+    'emphasis-selected',
+  ]);
   const map = aliasesFromConfig(semantic);
-  for (const [state, step] of Object.entries(states)) {
+  for (const [role, state] of Object.entries(roles)) {
     for (const hue of ['info', 'success', 'warning', 'danger']) {
-      const family = semantic.hues[hue].family;
-      expect(map[`--magma-${hue}-${state}`]).toBe(`--${family}-${step}`);
-      // a state that resolved to the base fill would silently kill the interaction
-      expect(map[`--magma-${hue}-${state}`]).not.toBe(map[`--magma-${hue}-emphasis`]);
+      const family = semantic.hues[hue].roles;
+      expect(map[`--magma-${hue}-${role}`]).toBe(`--emphasis-${family}-${state}`);
     }
+    expect(map[`--magma-accent-${role}`]).toBe(`--emphasis-primary-${state}`);
   }
 
   // and the gate measures the text on those fills, enforced like the base pair
@@ -196,8 +215,8 @@ test('the emphasis band carries the same states on a hue as on an accent', async
   const hueStatePairs = results.filter(
     (r) => r.category === 'on-emphasis' && /^(info|success|warning|danger)-/.test(r.bgToken) && r.bgToken.includes('-emphasis-'),
   );
-  // 4 hues x 2 states x 2 modes
-  expect(hueStatePairs).toHaveLength(16);
+  // 4 hues x 3 states x 2 modes
+  expect(hueStatePairs).toHaveLength(24);
   expect(hueStatePairs.every((r) => r.severity === 'error')).toBe(true);
   // stronger fills in the safe direction, so they clear the floor by construction
   expect(hueStatePairs.every((r) => r.pass)).toBe(true);
@@ -234,7 +253,8 @@ test('every named theme that repoints something is gated in its own family and a
   expect(themes.editorial.tint).toBe('bisque');
   const editorial = aliasesFromConfig(themes.editorial);
   expect(editorial['--magma-surface-default']).toBe('--surface-bisque-default');
-  expect(editorial['--magma-accent-emphasis']).toBe('--variant-secondary-04');
+  expect(editorial['--magma-accent-emphasis']).toBe('--emphasis-secondary-default');
+  expect(editorial['--magma-wash-base']).toBe('--wash-bisque-base');
   // an accent the theme does not repoint keeps the base one
   expect(editorial['--magma-accent-ai-emphasis']).toBe(
     aliasesFromConfig(semantic)['--magma-accent-ai-emphasis'],
@@ -395,4 +415,52 @@ test('contrastTintOverride only moves the tint pointers, and is family-independe
   // nothing but the tint indirection is touched: no --magma-<role> is restated,
   // so every role resolving through the pointers follows for free
   expect(base.every((line) => line.includes('--magma-tint-'))).toBe(true);
+});
+
+// --- #1427: the states generated for a family ---
+
+test('a selected state lies between the rest and the hover of its band', async () => {
+  const tree = await loadTree();
+  const map = aliasesFromConfig(semantic);
+  const L = (token: string, mode: 'light' | 'dark') => {
+    const alias = map[token];
+    const hex = resolvePrimitive(tree, typeof alias === 'string' ? alias : alias[mode], mode);
+    return chroma(hex).oklch()[0];
+  };
+  const between = (rest: number, selected: number, hover: number) =>
+    Math.min(rest, hover) < selected && selected < Math.max(rest, hover);
+  for (const mode of ['light', 'dark'] as const) {
+    // the fill of strong, accent and hue
+    for (const prefix of ['accent', 'accent-ai', 'danger']) {
+      expect(
+        between(
+          L(`--magma-${prefix}-emphasis`, mode),
+          L(`--magma-${prefix}-emphasis-selected`, mode),
+          L(`--magma-${prefix}-emphasis-hover`, mode),
+        ),
+        `${prefix} ${mode}`,
+      ).toBe(true);
+    }
+    // the area of weak: between the rest (base) and the hover (strong)
+    expect(between(L('--magma-accent-surface', mode), L('--magma-accent-surface-selected', mode), L('--magma-accent-surface-hover', mode))).toBe(true);
+    expect(between(L('--magma-wash-base', mode), L('--magma-wash-selected', mode), L('--magma-wash-strong', mode))).toBe(true);
+    // the area of text and outline: between the page (no area at rest) and the hover (soft)
+    expect(between(L('--magma-surface-default', mode), L('--magma-wash-soft-selected', mode), L('--magma-wash-soft', mode))).toBe(true);
+    // the dark variants (the gate knows the inverse surface by its old name, neutral-emphasis)
+    expect(between(L('--magma-neutral-emphasis', mode), L('--magma-surface-inverse-selected', mode), L('--magma-surface-inverse-muted', mode))).toBe(true);
+  }
+});
+
+test('the text of an accent is gated on its own washes, as the text of a hue', async () => {
+  const pairs = evaluatePairs(await loadTree(), aliasesFromConfig(semantic)).filter(
+    (r) => r.fgToken.startsWith('accent-text-') && r.category === 'text-on-hue',
+  );
+  // 3 roles x 5 levels x 2 modes
+  expect(pairs).toHaveLength(30);
+  // the label of a weak button: text-default on the rest, the selected and soft areas
+  const enforced = pairs.filter((r) => r.severity === 'error');
+  expect(enforced.map((r) => `${r.fgToken} ${r.bgToken}`)).toContain(
+    'accent-text-default accent-surface-selected',
+  );
+  expect(enforced.every((r) => r.pass)).toBe(true);
 });

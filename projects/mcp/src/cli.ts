@@ -41,6 +41,7 @@ const context: ToolContext = {
   settings: { root, ...settings },
   ...(Object.keys(icons).length ? { icons } : {}),
   ...(loader ? { loader: path.resolve(loader) } : {}),
+  ...(process.env.MAGMA_MCP_STARTED_BY ? { startedBy: process.env.MAGMA_MCP_STARTED_BY } : {}),
 };
 
 serveStdio(createServer(context).handle);

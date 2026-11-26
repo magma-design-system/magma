@@ -22,7 +22,7 @@ assumptions:
   - The application has a shell, with one mds-toast-region in it.
   - Desktop and mobile; on mobile with the keyboard open the bottom edge is still to verify.
 high-stakes: false
-components: [mds-input-field, mds-input, mds-banner, mds-toast, mds-toast-region, mds-modal]
+components: [mds-input-field, mds-input, mds-banner, mds-text, mds-button, mds-toast, mds-toast-region, mds-modal, mds-card, mds-card-content, mds-card-footer]
 related: [confirm-action, error-recovery, loading, empty-state, notification-center, app-shell]
 validated-on: []
 
@@ -35,24 +35,185 @@ variables:
   scope: { values: [page, part], means: "what an action changed: data shown across the page, or a part that works on its own" }
 
 cases:
-  - { id: field-error, about: field, outcome: failure, place: on-screen, where: "under the field", use: ["mds-input-field message"] }
-  - { id: field-hint, about: field, outcome: info, place: on-screen, where: "under the field, its helper text; where an example of the value helps, the empty field shows one as its placeholder (\"Es: Mario Rossi\")", use: ["mds-input-field message", "mds-input placeholder"], magma-gap: "validation overwrites it" }
-  - { id: field-valid, about: field, outcome: success, place: on-screen, where: "no message, the field shows its valid state", use: ["mds-input-field"] }
-  - { id: region-failed, about: region, outcome: failure, where: "in that region, with Try again; what was there stays", use: ["mds-banner variant=error tone=strong"] }
-  - { id: region-info, about: region, outcome: info, where: "in that region", use: ["mds-banner variant=info"] }
-  - { id: action-failed-in-place, about: action, outcome: failure, place: on-screen, timing: now, where: "in its place, right above the row of actions of the dialog; what was written stays", use: ["mds-banner variant=error tone=strong"] }
-  - { id: action-done-elsewhere, about: action, outcome: success, place: off-screen, timing: now, where: "toast; the default light toast for a removal (`removal-toast-neutral`)", use: ["mds-toast variant=success"] }
-  - { id: action-done-in-page, about: action, outcome: success, place: on-screen, timing: now, scope: page, where: "toast; the default light toast for a removal (`removal-toast-neutral`)", use: ["mds-toast variant=success"] }
-  - { id: action-done-in-part, about: action, outcome: success, place: on-screen, timing: now, scope: part, where: "next to the part that was saved, inside it", use: ["mds-banner variant=success"], magma-gap: "no light confirmation that goes away" }
-  - { id: action-failed-elsewhere, about: action, outcome: failure, place: off-screen, timing: now, where: "a toast that stays, with Try again", use: ["mds-toast variant=error duration=0 dismissible"] }
-  - { id: action-partial-in-place, about: action, outcome: partial, place: on-screen, timing: now, where: "as a failure in its place: a banner that says how many worked and which did not", use: ["mds-banner variant=error tone=strong"], see: error-recovery }
-  - { id: action-partial-elsewhere, about: action, outcome: partial, place: off-screen, timing: now, where: "as a failure elsewhere: a toast that stays, with what to do about the ones that did not work", use: ["mds-toast variant=error duration=0 dismissible"], see: error-recovery }
-  - { id: action-taken, about: action, outcome: info, timing: now, where: "toast: taken in charge, and how the outcome will come", use: ["mds-toast variant=info"] }
-  - { id: action-later, about: action, timing: later, where: "a toast with its action, which therefore stays; then kept in the notification center", use: ["mds-toast duration=0 dismissible"], see: notification-center }
-  - { id: decision, decision: needed, where: "dialog", use: ["mds-modal"], see: confirm-action }
-  - { id: app-info, about: application, outcome: info, decision: none, where: "a toast that goes after its time: `warning` for a trouble that does not stop the work (the connection dropped), `info` for news", use: ["mds-toast variant=warning", "mds-toast variant=info"] }
-  - { id: app-failed, about: application, outcome: failure, where: "in place of the content of the page, with Try again; the shell stays", use: ["mds-banner variant=error tone=strong"], see: region-failed }
-  - { id: app-deadline, about: application, decision: deadline, where: "dialog, also over an open one; closing it means staying (`deadline-close` of actions)", use: ["mds-modal", "mds-banner slot=window variant=warning tone=box dismissible"] }
+  - id: field-error
+    about: field
+    outcome: failure
+    place: on-screen
+    where: "under the field"
+    use:
+      - { role: "the field: the error goes under it, in its message, written by the validation of its input", use: mds-input-field }
+      - { role: "its input, required; on sending, the first one wrong takes the focus", use: "mds-input required" }
+      - { role: "an input with a format, required, checked on its format too", use: "mds-input type=<the format it checks> required" }
+  - id: field-hint
+    about: field
+    outcome: info
+    place: on-screen
+    where: "under the field, its helper text; where an example of the value helps, the empty field shows one as its placeholder (\"Es: Mario Rossi\")"
+    use:
+      - { role: "a field that an example of its value makes clear, with no hint", use: mds-input-field }
+      - { role: "its input, empty, an example of the value as its placeholder", use: "mds-input placeholder=<Es: an example of the value>" }
+      - { role: "a field with a rule to say: its hint under it, in its message", use: "mds-input-field short message=<the rule of the value, and where to find it>" }
+      - { role: "its input of that format, an example of the value as its placeholder", use: "mds-input type=<the format of the value> placeholder=<Es: an example of the value>" }
+    magma-gap: "validation overwrites it"
+  - id: field-valid
+    about: field
+    outcome: success
+    place: on-screen
+    where: "no message, the field shows its valid state"
+    use:
+      - { role: "the field, which shows its valid state and no message", use: mds-input-field }
+      - { role: "its input, required and of a format it checks when the person leaves it", use: "mds-input type=<the format it checks> required" }
+  - id: region-failed
+    about: region
+    outcome: failure
+    where: "in that region, with Try again; what was there stays"
+    use:
+      - { role: "the error, in the region, under its title, named by what did not load", use: "mds-banner variant=error tone=strong headline=<what did not load>" }
+      - { role: "what did not happen and what to do", use: mds-text }
+      - { role: "Try again, waiting while the region loads again", use: "mds-button slot=action variant=error tone=strong await" }
+  - id: region-info
+    about: region
+    outcome: info
+    where: "in that region"
+    use:
+      - { role: "the note, at the top of the region it is about, which stays", use: "mds-banner variant=info" }
+      - { role: "what the person should know about what the region shows", use: mds-text }
+  - id: action-failed-in-place
+    about: action
+    outcome: failure
+    place: on-screen
+    timing: now
+    where: "in its place, right above the row of actions of the dialog; what was written stays"
+    use:
+      - { role: "the dialog of the form, which stays open when saving fails", use: "mds-modal aria-label=<the name of the form>" }
+      - { role: "the window of the dialog, the form and its row of actions", use: "mds-banner slot=window variant=light tone=box dismissible headline=<the name of the form>" }
+      - { role: "the error, not dismissible, last in the form, right above the row of actions", use: "mds-banner variant=error tone=strong headline=<what did not happen>" }
+      - { role: "why, and what to do: what was written is still there", use: mds-text }
+      - { role: "Cancel, which closes the dialog", use: "mds-button slot=action variant=dark tone=outline" }
+      - { role: "Save, the way to try again: the focus stays on it", use: "mds-button slot=action" }
+  - id: action-done-elsewhere
+    about: action
+    outcome: success
+    place: off-screen
+    timing: now
+    where: "toast; the default light toast for a removal (`removal-toast-neutral`)"
+    use:
+      - { role: "the place of the toasts of the application, once in its shell", use: mds-toast-region }
+      - { role: "the toast that names what was done, once the dialog is gone; it goes after its time", use: "mds-toast variant=success" }
+  - id: action-done-in-page
+    about: action
+    outcome: success
+    place: on-screen
+    timing: now
+    scope: page
+    where: "toast; the default light toast for a removal (`removal-toast-neutral`)"
+    use:
+      - { role: "the title of the page, which shows the new data and takes the focus when the form goes", use: "mds-text typography=page tag=h1 tabindex=-1" }
+      - { role: "the place of the toasts of the application, once in its shell", use: mds-toast-region }
+      - { role: "the toast that names what was saved; it goes after its time", use: "mds-toast variant=success" }
+  - id: action-done-in-part
+    about: action
+    outcome: success
+    place: on-screen
+    timing: now
+    scope: part
+    where: "next to the part that was saved, inside it"
+    use:
+      - { role: "the part that works on its own, with its own Save", use: mds-card }
+      - { role: "its content, where the confirmation goes, after the fields", use: mds-card-content }
+      - { role: "the confirmation, right above the row of the part; it stays until the next change in it", use: "mds-banner variant=success tone=strong headline=<what was saved>" }
+      - { role: "what follows from it", use: mds-text }
+      - { role: "the row of actions of the part", use: mds-card-footer }
+      - { role: "the Save of the part", use: "mds-button type=submit variant=primary tone=outline" }
+    magma-gap: "no light confirmation that goes away"
+  - id: action-failed-elsewhere
+    about: action
+    outcome: failure
+    place: off-screen
+    timing: now
+    where: "a toast that stays, with Try again"
+    use:
+      - { role: "the place of the toasts of the application, once in its shell", use: mds-toast-region }
+      - { role: "the toast that says what did not happen; it stays until closed, its action with it", use: "mds-toast variant=error duration=0 dismissible" }
+      - { role: "Try again, in the colour of the toast", use: "mds-button slot=action size=sm variant=error tone=outline" }
+  - id: action-partial-in-place
+    about: action
+    outcome: partial
+    place: on-screen
+    timing: now
+    where: "as a failure in its place: a banner that says how many worked and which did not"
+    use:
+      - { role: "the outcome, above the items the action was on, named by how many worked and how many did not", use: "mds-banner variant=error tone=strong headline=<how many worked, how many did not>" }
+      - { role: "where the ones that did not work are, why, and what to do", use: mds-text }
+      - { role: "Try again, for the ones that did not work, saying how many; waiting while it goes", use: "mds-button slot=action variant=error tone=strong await" }
+    see: error-recovery
+  - id: action-partial-elsewhere
+    about: action
+    outcome: partial
+    place: off-screen
+    timing: now
+    where: "as a failure elsewhere: a toast that stays, with what to do about the ones that did not work"
+    use:
+      - { role: "the place of the toasts of the application, once in its shell", use: mds-toast-region }
+      - { role: "the toast that says how many worked and how many did not; it stays until closed, its action with it", use: "mds-toast variant=error duration=0 dismissible" }
+      - { role: "Try again, for the ones that did not work, saying how many", use: "mds-button slot=action size=sm variant=error tone=outline" }
+    see: error-recovery
+  - id: action-taken
+    about: action
+    outcome: info
+    timing: now
+    where: "toast: taken in charge, and how the outcome will come"
+    use:
+      - { role: "the place of the toasts of the application, once in its shell", use: mds-toast-region }
+      - { role: "the toast that says the request is taken in charge and how the outcome will come; it goes after its time", use: "mds-toast variant=info" }
+  - id: action-later
+    about: action
+    timing: later
+    where: "a toast with its action, which therefore stays; then kept in the notification center"
+    use:
+      - { role: "the place of the toasts of the application, once in its shell", use: mds-toast-region }
+      - { role: "the toast that names the outcome come later; it stays until closed, its action with it", use: "mds-toast variant=success duration=0 dismissible" }
+      - { role: "the action on the outcome, named by its verb", use: "mds-button slot=action size=sm variant=success tone=outline" }
+    see: notification-center
+  - id: decision
+    decision: needed
+    where: "dialog"
+    use:
+      - { role: "the title of the page, which takes the focus when the dialog closes and what opened it is gone", use: "mds-text typography=page tag=h1 tabindex=-1" }
+      - { role: "the dialog, named by its question", use: "mds-modal aria-label=<the question, naming the item>" }
+      - { role: "the window of the dialog, its headline the question", use: "mds-banner slot=window variant=light tone=box dismissible headline=<the question, naming the item>" }
+      - { role: "the consequence, in a sentence", use: mds-text }
+      - { role: "Cancel, the safe choice, focused on opening", use: "mds-button slot=action variant=dark tone=outline autofocus" }
+      - { role: "the action, last, named by its verb, in the colour of what destroys", use: "mds-button slot=action variant=error tone=strong" }
+    see: confirm-action
+  - id: app-info
+    about: application
+    outcome: info
+    decision: none
+    where: "a toast that goes after its time: `warning` for a trouble that does not stop the work (the connection dropped), `info` for news"
+    use:
+      - { role: "the place of the toasts of the application, once in its shell", use: mds-toast-region }
+      - { role: "the toast of a trouble that does not stop the work (the connection dropped); it goes after its time", use: "mds-toast variant=warning" }
+      - { role: "the toast of news (the connection is back); it goes after its time", use: "mds-toast variant=info" }
+  - id: app-failed
+    about: application
+    outcome: failure
+    where: "in place of the content of the page, with Try again; the shell stays"
+    use:
+      - { role: "the error, in place of the content of the page, under its title; the shell stays", use: "mds-banner variant=error tone=strong headline=<what does not answer>" }
+      - { role: "what did not happen and what to do", use: mds-text }
+      - { role: "Try again, waiting while the page loads again", use: "mds-button slot=action variant=error tone=strong await" }
+    see: region-failed
+  - id: app-deadline
+    about: application
+    decision: deadline
+    where: "dialog, also over an open one; closing it means staying (`deadline-close` of actions)"
+    use:
+      - { role: "the dialog, named by what is about to happen; closing it means staying", use: "mds-modal aria-label=<what is about to happen>" }
+      - { role: "the window of the dialog, in the colour of a warning, its headline what is about to happen", use: "mds-banner slot=window variant=warning tone=box dismissible headline=<what is about to happen>" }
+      - { role: "when, and what is lost", use: mds-text }
+      - { role: "Sign out, the way that ends the session", use: "mds-button slot=action variant=warning tone=outline" }
+      - { role: "Stay signed in, last: the choice that keeps the work, focused on opening", use: "mds-button slot=action variant=warning tone=strong autofocus" }
 gaps: []
 not-applicable:
   - { about: field, place: off-screen, why: "a message about a field goes with its field" }
@@ -146,26 +307,26 @@ for an action, what it changed: data shown across the page, or a part that works
 
 A case that leaves a variable out holds for any of its values, except `decision`, which then means `none`.
 
-| Case | When | Where | Use |
-| --- | --- | --- | --- |
-| `field-error` | about: field; outcome: failure; place: on-screen | under the field | `mds-input-field message` |
-| `field-hint` | about: field; outcome: info; place: on-screen | under the field, its helper text; where an example of the value helps, the empty field shows one as its placeholder ("Es: Mario Rossi"); Magma gap: validation overwrites it | `mds-input-field message`, `mds-input placeholder` |
-| `field-valid` | about: field; outcome: success; place: on-screen | no message, the field shows its valid state | `mds-input-field` |
-| `region-failed` | about: region; outcome: failure | in that region, with Try again; what was there stays | `mds-banner variant=error tone=strong` |
-| `region-info` | about: region; outcome: info | in that region | `mds-banner variant=info` |
-| `action-failed-in-place` | about: action; outcome: failure; place: on-screen; timing: now | in its place, right above the row of actions of the dialog; what was written stays | `mds-banner variant=error tone=strong` |
-| `action-done-elsewhere` | about: action; outcome: success; place: off-screen; timing: now | toast; the default light toast for a removal (`removal-toast-neutral`) | `mds-toast variant=success` |
-| `action-done-in-page` | about: action; outcome: success; place: on-screen; timing: now; scope: page | toast; the default light toast for a removal (`removal-toast-neutral`) | `mds-toast variant=success` |
-| `action-done-in-part` | about: action; outcome: success; place: on-screen; timing: now; scope: part | next to the part that was saved, inside it; Magma gap: no light confirmation that goes away | `mds-banner variant=success` |
-| `action-failed-elsewhere` | about: action; outcome: failure; place: off-screen; timing: now | a toast that stays, with Try again | `mds-toast variant=error duration=0 dismissible` |
-| `action-partial-in-place` | about: action; outcome: partial; place: on-screen; timing: now | as a failure in its place: a banner that says how many worked and which did not; see `error-recovery` | `mds-banner variant=error tone=strong` |
-| `action-partial-elsewhere` | about: action; outcome: partial; place: off-screen; timing: now | as a failure elsewhere: a toast that stays, with what to do about the ones that did not work; see `error-recovery` | `mds-toast variant=error duration=0 dismissible` |
-| `action-taken` | about: action; outcome: info; timing: now | toast: taken in charge, and how the outcome will come | `mds-toast variant=info` |
-| `action-later` | about: action; timing: later | a toast with its action, which therefore stays; then kept in the notification center; see `notification-center` | `mds-toast duration=0 dismissible` |
-| `decision` | decision: needed | dialog; see `confirm-action` | `mds-modal` |
-| `app-info` | about: application; outcome: info; decision: none | a toast that goes after its time: `warning` for a trouble that does not stop the work (the connection dropped), `info` for news | `mds-toast variant=warning`, `mds-toast variant=info` |
-| `app-failed` | about: application; outcome: failure | in place of the content of the page, with Try again; the shell stays; see `region-failed` | `mds-banner variant=error tone=strong` |
-| `app-deadline` | about: application; decision: deadline | dialog, also over an open one; closing it means staying (`deadline-close` of actions) | `mds-modal`, `mds-banner slot=window variant=warning tone=box dismissible` |
+| Case | When | Where |
+| --- | --- | --- |
+| `field-error` | about: field; outcome: failure; place: on-screen | under the field |
+| `field-hint` | about: field; outcome: info; place: on-screen | under the field, its helper text; where an example of the value helps, the empty field shows one as its placeholder ("Es: Mario Rossi"); Magma gap: validation overwrites it |
+| `field-valid` | about: field; outcome: success; place: on-screen | no message, the field shows its valid state |
+| `region-failed` | about: region; outcome: failure | in that region, with Try again; what was there stays |
+| `region-info` | about: region; outcome: info | in that region |
+| `action-failed-in-place` | about: action; outcome: failure; place: on-screen; timing: now | in its place, right above the row of actions of the dialog; what was written stays |
+| `action-done-elsewhere` | about: action; outcome: success; place: off-screen; timing: now | toast; the default light toast for a removal (`removal-toast-neutral`) |
+| `action-done-in-page` | about: action; outcome: success; place: on-screen; timing: now; scope: page | toast; the default light toast for a removal (`removal-toast-neutral`) |
+| `action-done-in-part` | about: action; outcome: success; place: on-screen; timing: now; scope: part | next to the part that was saved, inside it; Magma gap: no light confirmation that goes away |
+| `action-failed-elsewhere` | about: action; outcome: failure; place: off-screen; timing: now | a toast that stays, with Try again |
+| `action-partial-in-place` | about: action; outcome: partial; place: on-screen; timing: now | as a failure in its place: a banner that says how many worked and which did not; see `error-recovery` |
+| `action-partial-elsewhere` | about: action; outcome: partial; place: off-screen; timing: now | as a failure elsewhere: a toast that stays, with what to do about the ones that did not work; see `error-recovery` |
+| `action-taken` | about: action; outcome: info; timing: now | toast: taken in charge, and how the outcome will come |
+| `action-later` | about: action; timing: later | a toast with its action, which therefore stays; then kept in the notification center; see `notification-center` |
+| `decision` | decision: needed | dialog; see `confirm-action` |
+| `app-info` | about: application; outcome: info; decision: none | a toast that goes after its time: `warning` for a trouble that does not stop the work (the connection dropped), `info` for news |
+| `app-failed` | about: application; outcome: failure | in place of the content of the page, with Try again; the shell stays; see `region-failed` |
+| `app-deadline` | about: application; decision: deadline | dialog, also over an open one; closing it means staying (`deadline-close` of actions) |
 
 Not applicable:
 
@@ -178,6 +339,160 @@ Not applicable:
 | about: application; outcome: success | an application does not succeed, its actions do |
 
 No gaps: every combination has a case or is not applicable.
+
+The parts of each case, in the order of its preview: what each does in the case, and the component to write. A value in angle brackets is the text of the application, written as it says; the rest of the preview is its stage, the context of the case.
+
+`field-error`:
+
+| Role | Use |
+| --- | --- |
+| the field: the error goes under it, in its message, written by the validation of its input | `mds-input-field` |
+| its input, required; on sending, the first one wrong takes the focus | `mds-input required` |
+| an input with a format, required, checked on its format too | `mds-input type=<the format it checks> required` |
+
+`field-hint`:
+
+| Role | Use |
+| --- | --- |
+| a field that an example of its value makes clear, with no hint | `mds-input-field` |
+| its input, empty, an example of the value as its placeholder | `mds-input placeholder=<Es: an example of the value>` |
+| a field with a rule to say: its hint under it, in its message | `mds-input-field short message=<the rule of the value, and where to find it>` |
+| its input of that format, an example of the value as its placeholder | `mds-input type=<the format of the value> placeholder=<Es: an example of the value>` |
+
+`field-valid`:
+
+| Role | Use |
+| --- | --- |
+| the field, which shows its valid state and no message | `mds-input-field` |
+| its input, required and of a format it checks when the person leaves it | `mds-input type=<the format it checks> required` |
+
+`region-failed`:
+
+| Role | Use |
+| --- | --- |
+| the error, in the region, under its title, named by what did not load | `mds-banner variant=error tone=strong headline=<what did not load>` |
+| what did not happen and what to do | `mds-text` |
+| Try again, waiting while the region loads again | `mds-button slot=action variant=error tone=strong await` |
+
+`region-info`:
+
+| Role | Use |
+| --- | --- |
+| the note, at the top of the region it is about, which stays | `mds-banner variant=info` |
+| what the person should know about what the region shows | `mds-text` |
+
+`action-failed-in-place`:
+
+| Role | Use |
+| --- | --- |
+| the dialog of the form, which stays open when saving fails | `mds-modal aria-label=<the name of the form>` |
+| the window of the dialog, the form and its row of actions | `mds-banner slot=window variant=light tone=box dismissible headline=<the name of the form>` |
+| the error, not dismissible, last in the form, right above the row of actions | `mds-banner variant=error tone=strong headline=<what did not happen>` |
+| why, and what to do: what was written is still there | `mds-text` |
+| Cancel, which closes the dialog | `mds-button slot=action variant=dark tone=outline` |
+| Save, the way to try again: the focus stays on it | `mds-button slot=action` |
+
+`action-done-elsewhere`:
+
+| Role | Use |
+| --- | --- |
+| the place of the toasts of the application, once in its shell | `mds-toast-region` |
+| the toast that names what was done, once the dialog is gone; it goes after its time | `mds-toast variant=success` |
+
+`action-done-in-page`:
+
+| Role | Use |
+| --- | --- |
+| the title of the page, which shows the new data and takes the focus when the form goes | `mds-text typography=page tag=h1 tabindex=-1` |
+| the place of the toasts of the application, once in its shell | `mds-toast-region` |
+| the toast that names what was saved; it goes after its time | `mds-toast variant=success` |
+
+`action-done-in-part`:
+
+| Role | Use |
+| --- | --- |
+| the part that works on its own, with its own Save | `mds-card` |
+| its content, where the confirmation goes, after the fields | `mds-card-content` |
+| the confirmation, right above the row of the part; it stays until the next change in it | `mds-banner variant=success tone=strong headline=<what was saved>` |
+| what follows from it | `mds-text` |
+| the row of actions of the part | `mds-card-footer` |
+| the Save of the part | `mds-button type=submit variant=primary tone=outline` |
+
+`action-failed-elsewhere`:
+
+| Role | Use |
+| --- | --- |
+| the place of the toasts of the application, once in its shell | `mds-toast-region` |
+| the toast that says what did not happen; it stays until closed, its action with it | `mds-toast variant=error duration=0 dismissible` |
+| Try again, in the colour of the toast | `mds-button slot=action size=sm variant=error tone=outline` |
+
+`action-partial-in-place`:
+
+| Role | Use |
+| --- | --- |
+| the outcome, above the items the action was on, named by how many worked and how many did not | `mds-banner variant=error tone=strong headline=<how many worked, how many did not>` |
+| where the ones that did not work are, why, and what to do | `mds-text` |
+| Try again, for the ones that did not work, saying how many; waiting while it goes | `mds-button slot=action variant=error tone=strong await` |
+
+`action-partial-elsewhere`:
+
+| Role | Use |
+| --- | --- |
+| the place of the toasts of the application, once in its shell | `mds-toast-region` |
+| the toast that says how many worked and how many did not; it stays until closed, its action with it | `mds-toast variant=error duration=0 dismissible` |
+| Try again, for the ones that did not work, saying how many | `mds-button slot=action size=sm variant=error tone=outline` |
+
+`action-taken`:
+
+| Role | Use |
+| --- | --- |
+| the place of the toasts of the application, once in its shell | `mds-toast-region` |
+| the toast that says the request is taken in charge and how the outcome will come; it goes after its time | `mds-toast variant=info` |
+
+`action-later`:
+
+| Role | Use |
+| --- | --- |
+| the place of the toasts of the application, once in its shell | `mds-toast-region` |
+| the toast that names the outcome come later; it stays until closed, its action with it | `mds-toast variant=success duration=0 dismissible` |
+| the action on the outcome, named by its verb | `mds-button slot=action size=sm variant=success tone=outline` |
+
+`decision`:
+
+| Role | Use |
+| --- | --- |
+| the title of the page, which takes the focus when the dialog closes and what opened it is gone | `mds-text typography=page tag=h1 tabindex=-1` |
+| the dialog, named by its question | `mds-modal aria-label=<the question, naming the item>` |
+| the window of the dialog, its headline the question | `mds-banner slot=window variant=light tone=box dismissible headline=<the question, naming the item>` |
+| the consequence, in a sentence | `mds-text` |
+| Cancel, the safe choice, focused on opening | `mds-button slot=action variant=dark tone=outline autofocus` |
+| the action, last, named by its verb, in the colour of what destroys | `mds-button slot=action variant=error tone=strong` |
+
+`app-info`:
+
+| Role | Use |
+| --- | --- |
+| the place of the toasts of the application, once in its shell | `mds-toast-region` |
+| the toast of a trouble that does not stop the work (the connection dropped); it goes after its time | `mds-toast variant=warning` |
+| the toast of news (the connection is back); it goes after its time | `mds-toast variant=info` |
+
+`app-failed`:
+
+| Role | Use |
+| --- | --- |
+| the error, in place of the content of the page, under its title; the shell stays | `mds-banner variant=error tone=strong headline=<what does not answer>` |
+| what did not happen and what to do | `mds-text` |
+| Try again, waiting while the page loads again | `mds-button slot=action variant=error tone=strong await` |
+
+`app-deadline`:
+
+| Role | Use |
+| --- | --- |
+| the dialog, named by what is about to happen; closing it means staying | `mds-modal aria-label=<what is about to happen>` |
+| the window of the dialog, in the colour of a warning, its headline what is about to happen | `mds-banner slot=window variant=warning tone=box dismissible headline=<what is about to happen>` |
+| when, and what is lost | `mds-text` |
+| Sign out, the way that ends the session | `mds-button slot=action variant=warning tone=outline` |
+| Stay signed in, last: the choice that keeps the work, focused on opening | `mds-button slot=action variant=warning tone=strong autofocus` |
 
 ## Parts
 
@@ -302,3 +617,4 @@ Situations every application has, each with its case: they give the examples, th
 | 2026-11-03 | The error of a dialog stands right above its row of actions (`action-failed-in-place`) | Where the eye goes to try again; the place `actions` decided for the error of an action. Confirmed in review round 2 of the previews: https://github.com/magma-design-system/magma/issues/1233 |
 | 2026-11-03 | The connection that drops is a `warning` toast that goes after its time (`app-info`) | A trouble that does not stop the work is a warning, not news; and what was written stays, so the toast need not stay. Chosen in review round 2 of the previews (https://github.com/magma-design-system/magma/issues/1233), over a toast that stays while the connection is off. |
 | 2026-11-03 | Where an example of the value helps, the empty field shows one as its placeholder, "Es: ..." (`field-hint`) | The person sees the shape of the value before typing it; the hint under the field still says the rule. Asked in review round 2 of the previews: https://github.com/magma-design-system/magma/issues/1233 |
+| 2026-11-13 | Each case gives the parts of its solution with their role, in the order of its preview, the stage of the preview marked `data-stage` | The `use` of a case named one part in five of what its preview shows, and no role: the agents of the products composed the rest by hand. https://github.com/magma-design-system/magma/issues/1396 |

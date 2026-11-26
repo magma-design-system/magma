@@ -131,7 +131,7 @@ Other useful `stencil` targets:
 
 ```bash
 nx run stencil:dev                          # Stencil build in watch mode (dev config, no Storybook)
-nx run stencil:generate mds-component-name  # scaffold a new component
+nx run stencil:generate mds-component-name --category <id>  # scaffold a new component
 nx run stencil:test                         # unit + browser tests (Vitest)
 nx run stencil:build.docs                   # regenerate component readme docs
 ```
@@ -189,3 +189,7 @@ Commits follow the [Conventional Commits](https://www.conventionalcommits.org/) 
 | Guidance for AI coding agents working on this repo             | [AGENTS.md](AGENTS.md)                                   |
 
 Each sub-project also has its own `README.md`, and `design-tokens`, `styles` and `stencil` have a `SPEC.md` with in-depth conventions.
+
+## License
+
+MIT ([LICENSE](LICENSE)), except some artworks of `projects/identity`: the marks of the Maggioli Group and an illustration of Maggioli S.p.A. Each family of artworks declares its rights in `dist/identity.json`; see [its LICENSE](projects/identity/LICENSE) and [its README](projects/identity/README.md#license-and-trademarks).

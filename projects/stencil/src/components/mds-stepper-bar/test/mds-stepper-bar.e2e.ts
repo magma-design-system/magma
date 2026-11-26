@@ -28,6 +28,49 @@ describe('mds-stepper-bar', () => {
     expect(shown()).toEqual([false, true]);
   });
 
+  // #1429: the bar kept the panels it found at the load, so a framework's panels were never toggled
+  it('shows and hides the panels the page adds or replaces after the load', async () => {
+    const { root, waitForChanges } = await render<HTMLMdsStepperBarElement>(`
+      <mds-stepper-bar items-done="1">
+        <mds-stepper-bar-item label="A"></mds-stepper-bar-item>
+        <mds-stepper-bar-item label="B"></mds-stepper-bar-item>
+        <mds-stepper-bar-item label="C"></mds-stepper-bar-item>
+        <div slot="content">Panel A</div>
+      </mds-stepper-bar>
+    `);
+    const panel = (text: string): HTMLElement =>
+      Array.from(root.querySelectorAll<HTMLElement>('[slot="content"]')).find(
+        (element) => element.textContent === text,
+      )!;
+    const shown = (text: string): boolean => getComputedStyle(panel(text)).display !== 'none';
+    const add = (text: string): HTMLElement => {
+      const element = document.createElement('div');
+      element.slot = 'content';
+      element.textContent = text;
+      return element;
+    };
+    await vi.waitFor(() => expect(shown('Panel A')).toBe(true));
+
+    root.append(add('Panel B'));
+    root.itemsDone = 2;
+    await waitForChanges();
+    expect([shown('Panel A'), shown('Panel B')]).toEqual([false, true]);
+
+    // added while its step is not current: hidden as soon as it is slotted
+    root.append(add('Panel C'));
+    await vi.waitFor(() => expect(shown('Panel C')).toBe(false));
+
+    // replaced as a framework does with a keyed panel: the new one takes the state of the step
+    panel('Panel B').replaceWith(add('Panel B, again'));
+    await vi.waitFor(() =>
+      expect([shown('Panel A'), shown('Panel B, again'), shown('Panel C')]).toEqual([
+        false,
+        true,
+        false,
+      ]),
+    );
+  });
+
   it('leaves out of the value a done item whose value attribute was removed', async () => {
     const { root, spyOnEvent, waitForChanges } = await render<HTMLMdsStepperBarElement>(`
       <mds-stepper-bar items-done="1">

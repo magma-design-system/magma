@@ -28,6 +28,12 @@ export interface ToolContext {
   loader?: string;
   /** false: render_preview finds no Tailwind, as in a project without it (the tests); the project's when unset. */
   tailwind?: false;
+  /**
+   * What started the server, from MAGMA_MCP_STARTED_BY: `claude-plugin` when the launcher of the
+   * Claude Code plugin did (projects/claude-plugin/bin/magma-mcp.mjs), at whatever scope the
+   * plugin is installed; unset for a client's own entry.
+   */
+  startedBy?: string;
 }
 
 const HERE = fileURLToPath(import.meta.url);
@@ -168,9 +174,10 @@ export const firstSentence = (markdown = ''): string => {
  * What an answer adds when the installed Magma has nothing for a well-formed question (a
  * search that matches nothing, a value it cannot read): the gap is Magma's to fill, and the
  * agent proposes an issue (agents/reporting.md, section 7, #1137). An input error is not a gap.
+ * A component Magma lacks is proposed with its API and a prototype rendered (section 8, #1492).
  */
 export const GAP =
-  'Magma has nothing for this. If it should, tell the user, and at the end of the task propose an issue on Magma: get_guide reporting, section "A tool or an answer the MCP server is missing".';
+  'Magma has nothing for this. If it should, tell the user, and at the end of the task propose an issue on Magma: get_guide reporting, section "A tool or an answer the MCP server is missing"; a component Magma lacks is proposed with its API and a prototype rendered with render_preview, section "A component Magma lacks".';
 
 /** The output schema of the optional `gap` of an answer. */
 export const GAP_SCHEMA = {

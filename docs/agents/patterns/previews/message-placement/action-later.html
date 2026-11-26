@@ -2,7 +2,7 @@
 try: Look at the toast: the export started minutes ago is ready, with Scarica, and stays until the person acts or sends it away; Esporta starts another.
 height: 360
 -->
-<header class="flex flex-wrap items-start justify-between gap-inline">
+<header class="flex flex-wrap items-start justify-between gap-inline" data-stage>
   <mds-text typography="page" tag="h1">Pratiche di ottobre</mds-text>
   <mds-button id="export">Esporta</mds-button>
 </header>
@@ -11,7 +11,7 @@ height: 360
     Esportazione delle pratiche di ottobre pronta
     <mds-button id="download" slot="action" size="sm" variant="success" tone="outline">Scarica</mds-button>
   </mds-toast>
-  <mds-toast id="started" variant="info">Esportazione avviata: ti avvisiamo quando è pronta</mds-toast>
+  <mds-toast id="started" variant="info" data-stage>Esportazione avviata: ti avvisiamo quando è pronta</mds-toast>
 </mds-toast-region>
 <script>
   const ready = document.getElementById('ready');

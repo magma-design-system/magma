@@ -16,8 +16,8 @@ The `<mds-list-item>` web component is the single entry of a Magma list, designe
 #### Semantic Behavior
 
 - **Compound child only**: Must be placed as a direct default-slot child of `<mds-list>`; it is not used standalone or mixed with other element types.
-- **Leading icon is always present**: The component renders an icon before its text; when no `icon` is supplied it falls back to a built-in list-dot glyph, which is decorative.
-- **Text-only default slot**: The default slot is intended for a plain text string; adding HTML elements or other components here is discouraged.
+- **The marker of its list**: in a list with the `dot` marker (the default) the item renders an icon before its text; when no `icon` is supplied it falls back to a built-in list-dot glyph, which is decorative. In a list with `marker="none"` it renders no glyph and no text around its slot: the `listitem` around any content, a link, a card or a chip. It reads the marker of its closest `<mds-list>` and follows it when it changes.
+- **Text-only default slot, with the dot marker**: the default slot is then intended for a plain text string; adding HTML elements or other components here is discouraged. With `marker="none"` the slot takes any content.
 - **Inherited text colour**: The item sets no colour of its own: its text and its leading icon take the colour of the container, as `<mds-text>` does, so a list reads like the paragraphs around it and follows a container that sets its own colour (a tinted card, a banner). For a secondary list, set the muted role on `<mds-list>` or on its container (`text-fg-muted`).
 
 #### Properties & Visual Configurations
@@ -25,6 +25,8 @@ The `<mds-list-item>` web component is the single entry of a Magma list, designe
 - **`typography`**: Selects the text style of the item (default `detail`), drawn from the shared typography scale; pick the value that matches the density and hierarchy of the surrounding list content.
 - **`variant`**: Refines the chosen `typography` (default `info`); use `read` for long-form reading contexts and `info` for compact informational lists.
 - **`icon`**: Overrides the default list-dot with a named icon when a list entry benefits from a meaningful leading glyph; leave unset to keep the standard bullet.
+
+`typography`, `variant` and `icon` apply in a list with the `dot` marker only; with `marker="none"` the content brings its own style.
 
 
 ### 2. Examples
@@ -158,7 +160,7 @@ Common incorrect uses of `<mds-list-item>`. Each entry pairs the wrong form with
 
 #### Do Not Put HTML Elements in the Default Slot
 
-The default slot is meant for plain text only; nested elements are not stripped, they render inline and can break layout. Use the `typography` and `variant` props to control text style instead.
+In a list with the `dot` marker the default slot is meant for plain text only; nested elements are not stripped, they render inline and can break layout. Use the `typography` and `variant` props to control text style instead. Items that are components (links, cards, chips) go in a list with `marker="none"`.
 
 ```html
 <!-- INCORRECT -->
@@ -250,26 +252,26 @@ When a Magma list is needed, use the component pair - not raw HTML. Raw elements
 
 ## Properties
 
-| Property     | Attribute    | Description                                 | Type                                                                   | Default     |
-| ------------ | ------------ | ------------------------------------------- | ---------------------------------------------------------------------- | ----------- |
-| `icon`       | `icon`       | Specifies the icon displayed in the element | `string \| undefined`                                                  | `undefined` |
-| `typography` | `typography` | Specifies the typography of the element     | `"caption" \| "detail" \| "label" \| "option" \| "paragraph" \| "tip"` | `'detail'`  |
-| `variant`    | `variant`    | Specifies the variant for `typography`      | `"info" \| "read" \| undefined`                                        | `'info'`    |
+| Property     | Attribute    | Description                                                                                                    | Type                                                                   | Default     |
+| ------------ | ------------ | -------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ----------- |
+| `icon`       | `icon`       | Specifies the icon displayed in the element, in place of the dot; none in a list with `marker="none"`          | `string \| undefined`                                                  | `undefined` |
+| `typography` | `typography` | Specifies the typography of the element; none in a list with `marker="none"`, where the content brings its own | `"caption" \| "detail" \| "label" \| "option" \| "paragraph" \| "tip"` | `'detail'`  |
+| `variant`    | `variant`    | Specifies the variant for `typography`                                                                         | `"info" \| "read" \| undefined`                                        | `'info'`    |
 
 
 ## Slots
 
-| Slot | Description                                                                            |
-| ---- | -------------------------------------------------------------------------------------- |
-|      | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
+| Slot | Description                                                                                                                                                                    |
+| ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+|      | In a list with the `dot` marker, add a `text string`, **avoid** `HTML elements` or `components` here. In a list with `marker="none"`, add any content: a link, a card, a chip. |
 
 
 ## Shadow Parts
 
-| Part     | Description                                          |
-| -------- | ---------------------------------------------------- |
-| `"icon"` | The bullet icon before the text, the one `icon` sets |
-| `"text"` | The text of the item, around the default slot        |
+| Part     | Description                                                                               |
+| -------- | ----------------------------------------------------------------------------------------- |
+| `"icon"` | The bullet icon before the text, the one `icon` sets; none in a list with `marker="none"` |
+| `"text"` | The text of the item, around the default slot; none in a list with `marker="none"`        |
 
 
 ## CSS Custom Properties

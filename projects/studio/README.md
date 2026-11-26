@@ -151,23 +151,10 @@ No theme (the studio edits themes, it does not wear one) and no consumption.
   `test/i18n-previews.test.mts`). The names of the components and the values of their API (a
   variant, a tone, a role) stay as Magma writes them, and so do proper names.
 - **The words**: the studio speaks to the person with "tu", as the Italian of Magma does. The words
-  that come back on every page keep one form (agreed with vittorio, 2026-11-10):
-
-| English | Italian |
-| --- | --- |
-| Colors, Theme, Behavior, Config | Colori, Tema, Regole, Configurazione |
-| target, floor | obiettivo, soglia |
-| contrast gate, pair | verifica del contrasto, coppia |
-| ramp, step, family, group | rampa, gradino, famiglia, gruppo |
-| role, surface, border, accent, tint | ruolo, superficie, bordo, accento, tinta |
-| hue, hue shift, lightness, saturation | tonalità, spostamento di tonalità, luminosità, saturazione |
-| mode, light, dark | modalità, chiaro, scuro |
-| draft, preview, scene | bozza, anteprima, scena |
-| the configuration Magma builds with | la configurazione con cui si compila Magma |
-| known offender | eccezione nota |
-
-Behavior is Regole, not Comportamento: its pages are rules (of composition, patterns, blocks), and
-Comportamento beside Configurazione does not fit the bar at its narrowest width with sections.
+  that come back on every page keep one form, in English and in Italian: the taxonomy register
+  of [`GLOSSARY.md`](GLOSSARY.md) (agreed with vittorio on 2026-11-10, renamed on 2026-11-20 for
+  the redesign of [`studio.object-model.md`](studio.object-model.md); until it lands the pages
+  keep the names the register lists as the interface of today).
 
 ## The Start page
 

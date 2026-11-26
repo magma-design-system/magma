@@ -1,4 +1,4 @@
 {
   "book": "Βιβλίο",
-  "byAuthor": "{{{name}}}, {{{author}}}"
+  "byAuthor": "{{name}}, {{author}}"
 }

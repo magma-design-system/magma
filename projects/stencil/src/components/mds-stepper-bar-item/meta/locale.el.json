@@ -1,6 +1,6 @@
 {
   "badgeDone": "Ολοκληρώθηκε",
-  "badgeCurrent": "Καθημερινή",
+  "badgeCurrent": "Τρέχον",
   "badgeQueued": "Σε αναμονή",
   "step": "Βήμα {{ index }}"
 }

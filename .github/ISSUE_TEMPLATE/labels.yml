@@ -74,6 +74,9 @@
 - name: prd-leo-planner
   color: 5319e7
   description: 'Reported from LEO (leo-planner)'
+- name: prd-thunderdome
+  color: 5319e7
+  description: 'Reported from Thunderdome (frontend-common)'
 
 # --- Review level (set on every PR by the pr-risk workflow, #843) ---
 - name: risk-contract

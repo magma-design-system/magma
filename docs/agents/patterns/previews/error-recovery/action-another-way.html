@@ -3,17 +3,17 @@ try: Press Salva: the server refuses the code, already in use, so there is no Ri
 height: 440
 -->
 <div class="grid gap-between-sections">
-  <mds-text typography="page" tag="h1">Nuovo ufficio</mds-text>
+  <mds-text typography="page" tag="h1" data-stage>Nuovo ufficio</mds-text>
   <form id="form" class="@container grid max-w-form gap-content-actions">
     <div class="grid gap-between-fields">
-      <mds-input-field label="Nome">
+      <mds-input-field label="Nome" data-stage>
         <mds-input value="Ufficio tributi, sede di Viserba"></mds-input>
       </mds-input-field>
       <mds-input-field id="code-field" label="Codice">
         <mds-input id="code" value="TR01"></mds-input>
       </mds-input-field>
     </div>
-    <div class="flex justify-end gap-inline @max-actions:flex-col @max-actions:*:self-stretch">
+    <div class="flex justify-end gap-inline @max-actions:flex-col @max-actions:*:self-stretch" data-stage>
       <mds-button type="button" variant="dark" tone="outline">Annulla</mds-button>
       <mds-button id="save">Salva</mds-button>
     </div>

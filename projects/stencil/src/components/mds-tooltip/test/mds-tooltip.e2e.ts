@@ -271,7 +271,7 @@ describe('mds-tooltip', () => {
       expect(tip.visible).toBe(false);
     });
 
-    it('shows while the pointer is over the caller, and stays while it keeps the focus', async () => {
+    it('shows while the pointer is over the caller, and stays while it keeps a keyboard focus', async () => {
       const { root, waitForChanges } = await stage();
       const tip = root.querySelector('#tip') as HTMLMdsTooltipElement;
       const first = root.querySelector('#first') as HTMLElement;
@@ -281,9 +281,58 @@ describe('mds-tooltip', () => {
       await waitForChanges();
       expect(tip.visible).toBe(true);
 
-      first.focus();
-      await userEvent.unhover(first);
+      await userEvent.keyboard('{Tab}');
+      await userEvent.hover(root.querySelector('#away')!);
       await waitForChanges();
+      expect(document.activeElement).toBe(first);
+      expect(tip.visible).toBe(true);
+    });
+
+    // #1432: the focus of a click is not a reason to keep the hint over the caller
+    it('hides when the pointer leaves a caller it clicked', async () => {
+      const { root, waitForChanges } = await stage();
+      const tip = root.querySelector('#tip') as HTMLMdsTooltipElement;
+      const first = root.querySelector('#first') as HTMLElement;
+      await vi.waitFor(() => expect(first).toHaveAttribute('aria-describedby'));
+
+      await userEvent.click(first);
+      await waitForChanges();
+      expect(document.activeElement).toBe(first);
+      expect(tip.visible).toBe(true);
+
+      await userEvent.hover(root.querySelector('#away')!);
+      await waitForChanges();
+      expect(document.activeElement).toBe(first);
+      expect(tip.visible).toBe(false);
+    });
+
+    // #1432: a page moves the focus to the control that takes the place of the one clicked; the
+    // browser rings that focus only after a keyboard action, and so does the tooltip
+    it('stays closed on a focus a script moves after a click, and opens on the keyboard', async () => {
+      const { root, waitForChanges } = await render(
+        `<div style="display: flex; flex-direction: column; align-items: start; gap: 200px">
+           <button id="record">Record</button>
+           <span id="stop-wrap"><button id="stop" aria-label="Stop and transcribe">Stop</button></span>
+           <mds-tooltip id="tip" target="#stop-wrap">Stop and transcribe</mds-tooltip>
+         </div>`,
+      );
+      const tip = root.querySelector('#tip') as HTMLMdsTooltipElement;
+      const record = root.querySelector('#record') as HTMLElement;
+      const stop = root.querySelector('#stop') as HTMLElement;
+      record.addEventListener('click', () => stop.focus());
+      await vi.waitFor(() =>
+        expect(root.querySelector('#stop-wrap')).toHaveAttribute('aria-describedby'),
+      );
+
+      await userEvent.click(record);
+      await waitForChanges();
+      expect(document.activeElement).toBe(stop);
+      expect(tip.visible).toBe(false);
+
+      await userEvent.keyboard('{Shift>}{Tab}{/Shift}');
+      await userEvent.keyboard('{Tab}');
+      await waitForChanges();
+      expect(document.activeElement).toBe(stop);
       expect(tip.visible).toBe(true);
     });
 
@@ -293,17 +342,19 @@ describe('mds-tooltip', () => {
       const first = root.querySelector('#first') as HTMLElement;
       await vi.waitFor(() => expect(first).toHaveAttribute('aria-describedby'));
 
-      first.focus();
+      await userEvent.keyboard('{Tab}');
       await waitForChanges();
+      expect(document.activeElement).toBe(first);
       expect(tip.visible).toBe(true);
 
       await userEvent.keyboard('{Escape}');
       await waitForChanges();
       expect(tip.visible).toBe(false);
 
-      first.blur();
-      first.focus();
+      await userEvent.keyboard('{Tab}');
+      await userEvent.keyboard('{Shift>}{Tab}{/Shift}');
       await waitForChanges();
+      expect(document.activeElement).toBe(first);
       expect(tip.visible).toBe(true);
     });
 
@@ -316,12 +367,14 @@ describe('mds-tooltip', () => {
 
       tip.target = '#second';
       await vi.waitFor(() => expect(second).toHaveAttribute('aria-describedby'));
-      first.focus();
+      await userEvent.keyboard('{Tab}');
       await waitForChanges();
+      expect(document.activeElement).toBe(first);
       expect(tip.visible).toBe(false);
 
-      second.focus();
+      await userEvent.keyboard('{Tab}');
       await waitForChanges();
+      expect(document.activeElement).toBe(second);
       expect(tip.visible).toBe(true);
     });
   });

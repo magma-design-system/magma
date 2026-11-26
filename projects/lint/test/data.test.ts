@@ -37,6 +37,28 @@ describe('propInfo', () => {
         .values,
     ).toBeUndefined();
     expect(propInfo({ name: 'disabled', values: [{ type: 'boolean' }] }).boolean).toBe(true);
+    // a boolean next to literals keeps them (#1396): bare is true, a value one of them
+    expect(
+      propInfo({
+        name: 'current',
+        values: [
+          { value: 'page', type: 'string' },
+          { value: 'section', type: 'string' },
+          { type: 'boolean' },
+          { type: 'undefined' },
+        ],
+      }),
+    ).toEqual({ name: 'current', boolean: true, values: ['page', 'section'] });
+  });
+
+  test('a prop the component changes itself is mutable; a number says so', () => {
+    expect(
+      propInfo({ name: 'opened', mutable: true, values: [{ type: 'boolean' }] }),
+    ).toMatchObject({ boolean: true, mutable: true });
+    expect(propInfo({ name: 'label', mutable: false })).not.toHaveProperty('mutable');
+    expect(propInfo({ name: 'duration', values: [{ type: 'number' }] })).toMatchObject({
+      number: true,
+    });
   });
 
   test('a deprecated prop keeps its @deprecated text, on one line', () => {

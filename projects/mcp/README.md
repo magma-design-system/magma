@@ -159,7 +159,10 @@ answer comes from".
   Stylelint 16 the `stylelint` key of `package.json` and the search places of cosmiconfig 9.
   The MCP server is started by the file each client reads, in the project and in the folder the
   client starts the server in, where the client keeps it when the project is another folder:
-  `.mcp.json` (`mcpServers`) or the Magma plugin in `.claude/settings.json` for Claude Code,
+  `.mcp.json` (`mcpServers`) or the Magma plugin for Claude Code, enabled in
+  `.claude/settings.json` or `.claude/settings.local.json` (the project's files where Claude Code
+  reads `enabledPlugins`), or at any scope when the launcher of the plugin started the server
+  (`MAGMA_MCP_STARTED_BY=claude-plugin`, #1524),
   `.vscode/mcp.json` (`servers`), `.cursor/mcp.json` (`mcpServers`), and for OpenCode
   `opencode.json` and `opencode.jsonc`, in the root and in `.opencode/` (`names` of its
   `ConfigDiscovery`), these read as JSONC as OpenCode reads them, with the servers where its
@@ -170,6 +173,14 @@ answer comes from".
   (`@maggioli-design-system/magma/dist/mcp/cli.js`, `BIN_FILE` of `src/root.ts`, held to the
   `bin` of magma by `test/shipped.test.ts`), which a client running node on the installed copy
   names.
+- **The Magma block of `check_setup`** (`agent-context`, #1524): the block the install guide
+  writes into the project's root agent file (step 3.8 of the packages' `AGENTS.md`), found by
+  its markers, which the install guide and the check take from the lint core
+  (`src/core/agents.ts` of `projects/lint`). It is wanted in `AGENTS.md`, and in `CLAUDE.md` too
+  when the root has one that does not import `AGENTS.md` (`@AGENTS.md`): Claude Code reads
+  `AGENTS.md` only when there is no `CLAUDE.md`
+  ([memory docs](https://code.claude.com/docs/en/memory.md), "AGENTS.md"). The guide it names
+  is the `AGENTS.md` of the wrapper the project declares, else of magma.
 - **The sources `check_setup` reads** (where the icon path is set, `sourceFiles` of
   `src/checks.ts`): the files of the project's root, where Vite starts from `index.html` and a
   page served as it is keeps its HTML, and its source folders `src` (Vite, Angular CLI),
@@ -203,7 +214,12 @@ answer comes from".
   without arguments the list carries the `layerErrors` of the whole folder, so a product checks
   its layer where it has no `check.patterns`. Each case of a pattern names the path of its
   preview, and the answer for a situation carries the stage with what to try, since that is
-  the one case the agent builds and its markup is short; of the other examples of a case the
+  the one case the agent builds and its markup is short. The parts of the case (`use`, #1396)
+  come before the stage, in the order of its preview, each with its role: the description of
+  the tool says to compose from them and to read the stage, whose context is marked
+  `data-stage`, as context only, since an agent that builds from the markup copies the list or
+  the form around the case too (the measure on #1396: `use` named one part in five of what a
+  preview shows). Of the other examples of a case the
   pattern names the paths in `examples`, the answer too, and `render_preview` takes `example`.
   The preview of an answer names its two images in `images` (#1243), `<case>.light.webp` and
   `<case>.dark.webp` beside it, which the build of magma makes with `renderPreviewImages`: the
@@ -275,7 +291,13 @@ answer comes from".
   narrow width: the image holds a slice of it at most, and the page where the rest would be), a
   console error or an uncaught exception, a request the page cannot be served, a font family the
   text asks for with no face loaded, a word (the run between two places a line may break: a
-  space, a hyphen, a dash, a slash) on more than one line, content taller than the image. An
+  space, a hyphen, a dash, a slash) on more than one line, content taller than the image. A
+  prototype is none of these (#1492): the markup that stands in for a component proposed to
+  Magma, marked `data-prototype="<tag>"`, is named in `prototypes` of the answer, so the agent
+  says which part of the image is a proposal; it is a problem when its tag is a component the
+  loader defined (`prototype-shipped`: the component ships, write it) or not the name of a
+  custom element (`prototype-unnamed`). The maintainer chose the marker on plain markup over the
+  proposed tag itself, an unknown element with no shadow tree, styled by hand. An
   image is at most 2000 px a side, the cap of Claude Code (CHANGELOG 2.1.122) and of the
   Anthropic API for a request with many images, and four of them stay under the 25,000 tokens
   Claude Code allows a tool result. The driver is the
@@ -358,7 +380,12 @@ nothing for a well-formed question, or a tool that says it does not know, carrie
 (`GAP` of `src/context.ts`), and the instructions of the server tell the agent, then,
 to propose an issue on Magma as `agents/reporting.md` describes ("A tool or an answer the
 MCP server is missing"), only with the user's agreement. An input error never carries
-`gap`, and neither does a weak match: the agent judges that one from the instructions.
+`gap`, and neither does a weak match: the agent judges that one from the instructions. A
+component Magma lacks is reported as a proposal (#1492, "A component Magma lacks" of the same
+guide): its API and a prototype the person has seen rendered, which the issue carries and the
+component, once approved, is scaffolded from (`projects/stencil/SPEC.md`, "Scaffolding a new
+component"); `GAP` and the instructions name that section too, and a test holds every section
+they name to the guide.
 ## Serving the previews
 
 ```bash

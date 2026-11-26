@@ -2,7 +2,7 @@
 try: Press Archivia tutte: 4 requests leave the list, 2 do not; the message above the list says how many, and the 2 stay marked in the list.
 -->
 <div class="grid gap-between-sections">
-  <header class="flex flex-wrap items-start justify-between gap-inline">
+  <header class="flex flex-wrap items-start justify-between gap-inline" data-stage>
     <mds-text typography="page" tag="h1">Pratiche concluse</mds-text>
     <mds-button id="archive">Archivia tutte</mds-button>
   </header>
@@ -11,7 +11,7 @@ try: Press Archivia tutte: 4 requests leave the list, 2 do not; the message abov
       <mds-text>Le 2 non archiviate sono segnate qui sotto. Il server non ha risposto: riprova.</mds-text>
       <mds-button id="retry" slot="action" variant="error" tone="strong">Riprova per 2</mds-button>
     </mds-banner>
-    <mds-list id="list">
+    <mds-list id="list" data-stage>
       <mds-list-item data-file="2026/114">2026/114, Rossi Mario: conclusa</mds-list-item>
       <mds-list-item data-file="2026/118">2026/118, Bianchi Anna: conclusa</mds-list-item>
       <mds-list-item data-file="2026/121">2026/121, Verdi Luca: conclusa</mds-list-item>

@@ -1,6 +1,6 @@
 {
   "colorPicker": "Scegli un colore",
-  "colorPickerFor": "Scegli un colore per {{{name}}}",
+  "colorPickerFor": "Scegli un colore per {{name}}",
   "decrease": "Diminuisci",
   "hidePassword": "Nascondi password",
   "increase": "Aumenta",

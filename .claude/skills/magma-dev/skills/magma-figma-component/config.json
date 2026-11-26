@@ -1,0 +1,20 @@
+{
+  "figmaFileKey": "3gCS6pmUra9QKQM36lGYhC",
+  "figmaFileName": "Magma Design System 2",
+  "magmaStencil": null,
+  "qaPage": "🧪 QA",
+  "libraryPages": [
+    "Actions",
+    "Forms",
+    "Navigation",
+    "Feedback",
+    "Overlays",
+    "Data",
+    "Tags",
+    "Structure",
+    "Content",
+    "Preferences",
+    "Internal"
+  ],
+  "staleAfterDays": 14
+}

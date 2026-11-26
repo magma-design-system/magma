@@ -1,0 +1,30 @@
+import { render } from '@stencil/vitest';
+
+// How to write the tests of a component (Vitest, @stencil/vitest): projects/stencil/HOWTO.md.
+// Every behaviour of {{tag}} (props, events, methods, keyboard and focus, form participation)
+// ships with a test that covers it (SPEC.md, Tests rule 1).
+
+const component = async (html: string): Promise<HTML{{className}}Element> => {
+  const { root } = await render<HTML{{className}}Element>(html);
+  await vi.waitFor(() => expect(root).toHaveAttribute('hydrated'));
+  return root;
+};
+
+describe('{{tag}}', () => {
+  it('renders what it holds', async () => {
+    const element = await component('<{{tag}}>The content</{{tag}}>');
+
+    expect(element).toHaveTextContent('The content');
+  });
+
+  // the design decisions are custom properties on :host (SPEC.md, "The design decisions on
+  // :host"): a value set on the element reaches the rules that read it
+  it('takes its design decisions from the knobs on :host', async () => {
+    const element = await component('<{{tag}}>The content</{{tag}}>');
+
+    // the radius, which no transition delays
+    element.style.setProperty('--{{tag}}-radius', '7px');
+
+    expect(getComputedStyle(element).borderTopLeftRadius).toBe('7px');
+  });
+});

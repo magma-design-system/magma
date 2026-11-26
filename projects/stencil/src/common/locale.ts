@@ -8,6 +8,15 @@ type LocaleConfig = {
   it?: Record<string, string | string[]>;
 };
 
+/**
+ * Mustache escapes HTML in `{{name}}` by default, for templates that become markup. A phrase of
+ * a component never does: it goes into a text node or an attribute, which Stencil sets through
+ * the DOM, so an escaped value stays escaped and `L'agenda` is read aloud as `L&#39;agenda`
+ * (#1433). The values go in as they are, so the phrases write `{{name}}`, never the triple braces
+ * of an unescaped value; no component puts a phrase into `innerHTML`.
+ */
+const verbatim = (value: unknown): string => String(value);
+
 export class Locale {
   rollbackLanguage: string = 'en';
   config: LocaleConfig;
@@ -61,7 +70,7 @@ export class Locale {
       }
     }
 
-    return mustache.render(translatePhrase, context);
+    return mustache.render(translatePhrase, context, undefined, { escape: verbatim });
   };
 
   get = (tag: string | string[], context?: Record<string, string | number | boolean>): string => {

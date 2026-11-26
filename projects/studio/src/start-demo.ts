@@ -71,7 +71,9 @@ export function magmaSteps(): Steps {
   const family = semantic.tint;
   // the family's own ramp, in whatever group of colours it lives (text-role.mts, scaleFor)
   const group = Object.keys(color).find(
-    (name) => !['surface', 'border', 'text'].includes(name) && color[name][family],
+    (name) =>
+      !['surface', 'border', 'text', 'wash', 'emphasis', 'inverse', 'fg'].includes(name) &&
+      color[name][family],
   );
   const ramp = group ? color[group][family].light : {};
   const stepOf = (role: TextRole): number => {

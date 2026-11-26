@@ -182,13 +182,13 @@ test('the formula and the ratios of a group are written to its settings', async 
 
   emit(formula, 'mdsInputSelectChange', { value: 'wcag2', values: ['wcag2'] })
   await flush()
-  expect(calls.update.at(-1)).toEqual(['status', { surface: true, formula: 'wcag2' }])
+  expect(calls.update.at(-1)).toEqual(['status', { surface: true, emphasis: true, formula: 'wcag2' }])
   expect(card('status').querySelector('.groups-settings mds-input-select')?.getAttribute('value')).toBe('wcag2')
 
   // inherit again: the field goes away from the settings
   emit(formula, 'mdsInputSelectChange', { value: '', values: [] })
   await flush()
-  expect(calls.update.at(-1)).toEqual(['status', { surface: true, formula: undefined }])
+  expect(calls.update.at(-1)).toEqual(['status', { surface: true, emphasis: true, formula: undefined }])
 
   emit(ratios, 'mdsInputSelectChange', { value: 'tone', values: ['tone'] })
   await flush()

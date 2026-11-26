@@ -151,7 +151,8 @@ export class MdsButton {
   @Prop({ reflect: true }) readonly href?: string;
 
   /**
-   * Specifies the target of the URL, if self or blank
+   * Specifies the target of the URL, if self or blank: blank opens a new tab, without giving it
+   * access to the page (`rel="noopener noreferrer"`)
    */
   @Prop() readonly target: ButtonTargetType = 'self';
 
@@ -377,7 +378,7 @@ export class MdsButton {
     }
     const href = this.href ?? '';
     if (this.opensElsewhere(event)) {
-      window.open(href, '_blank');
+      window.open(href, '_blank', 'noopener,noreferrer');
       return;
     }
     if (NavigationService.canHandle(href, event)) {
@@ -530,6 +531,7 @@ export class MdsButton {
             href={this.href}
             onFocus={this.focusHost}
             ref={(el) => (this.anchor = el)}
+            rel={this.target === 'blank' ? 'noopener noreferrer' : undefined}
             tabindex="-1"
             target={this.target === 'blank' ? '_blank' : undefined}
           ></a>

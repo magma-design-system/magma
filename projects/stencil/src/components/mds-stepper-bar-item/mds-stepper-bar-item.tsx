@@ -50,9 +50,18 @@ export class MdsStepperBarItem {
   @Prop() readonly label!: string;
 
   /**
-   * Specifies if the step is displayed
+   * Shows the caption of the step above the label: "Step 1", "Passo 1", in the language of the
+   * page, or the text of `stepLabel`
    */
   @Prop() readonly step: boolean;
+
+  /**
+   * The text of the caption that `step` shows, in place of the one the component writes in the
+   * language of the page ("Passo 2"). `{{ index }}` in it becomes the position of the step, as in
+   * the phrases of the component: `"Fase {{ index }}"` gives "Fase 1", "Fase 2"; a text without
+   * it is shown as it is. For another word, or a language the component has no texts for
+   */
+  @Prop() readonly stepLabel?: string;
 
   /**
    * Specifies if the badge status is displayed
@@ -107,6 +116,16 @@ export class MdsStepperBarItem {
     this.km.addElement(this.host);
     this.km.attachClickBehavior();
   }
+
+  // the text of the page, its `{{ index }}` filled as the phrases of the component are, or the
+  // phrase in the language of the page: the Italian one was the English "Step" (#1428). Only the
+  // position is filled, a number, so nothing in it can turn into markup
+  private caption = (): string => {
+    const index = this.index + 1;
+    return (this.stepLabel ?? '') !== ''
+      ? this.stepLabel!.replace(/\{\{\s*index\s*\}\}/g, String(index))
+      : this.t.get('step', { index });
+  };
 
   // a step already done can be gone back to: the item is a button then
   private isReachable = (): boolean => !!this.isDone && !this.isCurrent;
@@ -195,7 +214,7 @@ export class MdsStepperBarItem {
         <div class="infos">
           {this.step && (
             <mds-text class="step" typography="option">
-              {this.t.get('step', { index: this.index + 1 })}
+              {this.caption()}
             </mds-text>
           )}
           {this.label && (

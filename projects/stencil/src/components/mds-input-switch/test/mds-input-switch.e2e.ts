@@ -32,6 +32,19 @@ describe('mds-input-switch', () => {
     expect(control).not.toHaveAttribute('tabindex');
   });
 
+  // #1433: the name used to read `dell&#39;applicazione` and `server&#x2F;tool` aloud
+  it('names the input with the label as it is written, apostrophes and slashes included', async () => {
+    const { input: apostrophe } = await setup(
+      `<mds-input-switch>Credenziali dell'applicazione</mds-input-switch>`,
+    );
+    const { input: slash } = await setup(
+      '<mds-input-switch checked>server/tool</mds-input-switch>',
+    );
+
+    expect(apostrophe).toEqualAttribute('aria-label', "Select Credenziali dell'applicazione");
+    expect(slash).toEqualAttribute('aria-label', 'Deselect server/tool');
+  });
+
   it('keeps the native checkbox and radio semantics', async () => {
     const { input } = await setup('<mds-input-switch type="checkbox"></mds-input-switch>');
 

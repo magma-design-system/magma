@@ -3,13 +3,13 @@ try: Press Esporta: the button does not wait, and a toast says the export has st
 height: 300
 -->
 <div class="flex flex-wrap items-start justify-between gap-inline">
-  <div class="grid min-w-0 gap-title-content">
+  <div class="grid min-w-0 gap-title-content" data-stage>
     <mds-text typography="page" tag="h1">Richieste</mds-text>
     <mds-text typography="detail" tag="p" class="text-fg-muted">10.482 richieste dal 2020.</mds-text>
   </div>
   <div class="flex gap-inline">
     <mds-button id="export" variant="dark" tone="outline" icon="mi/baseline/download">Esporta</mds-button>
-    <mds-button>Nuova richiesta</mds-button>
+    <mds-button data-stage>Nuova richiesta</mds-button>
   </div>
 </div>
 <mds-toast-region>

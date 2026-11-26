@@ -97,9 +97,11 @@ export class MdsTooltip implements FloatingElement {
   private focused = false;
 
   /**
-   * The tooltip shows while the pointer is over the caller or the caller has the focus, so the
-   * keyboard reaches it as the pointer does; Escape hides it until the caller is entered or
-   * focused again (WCAG 1.4.13).
+   * The tooltip shows while the pointer is over the caller or the caller has a focus the browser
+   * rings (`:focus-visible`), so the keyboard reaches it as the pointer does; Escape hides it until
+   * the caller is entered or focused again (WCAG 1.4.13). A focus the browser does not ring, as
+   * the one of a click or the one a script moves after a click, leaves it to the pointer: it kept
+   * the tooltip open over a control the user never hovered nor reached by keyboard (#1432).
    */
   private readonly syncVisibility = (): void => {
     this.visible = this.hovered || this.focused;
@@ -115,8 +117,12 @@ export class MdsTooltip implements FloatingElement {
     this.syncVisibility();
   };
 
-  private readonly handleFocusIn = (): void => {
-    this.focused = true;
+  // the element that took the focus, first of the path of a focusin, inside the shadow root of
+  // the caller too: a shadow host does not match :focus-visible, its focused descendant does.
+  // Every browser of .browserslistrc knows the selector (Chrome 86, Firefox 85, Safari 15.4)
+  private readonly handleFocusIn = (event: FocusEvent): void => {
+    const [focused] = event.composedPath() as globalThis.Element[];
+    this.focused = focused?.matches(':focus-visible') ?? false;
     this.syncVisibility();
   };
 

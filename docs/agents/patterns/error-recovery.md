@@ -25,7 +25,7 @@ not-for:
 assumptions:
   - The application can tell a failure that trying again may fix from one it cannot.
 high-stakes: false
-components: [mds-banner, mds-toast, mds-button, mds-zero, mds-input-field]
+components: [mds-banner, mds-text, mds-button, mds-input-field, mds-input]
 related: [message-placement, loading, empty-state, confirm-action, form-and-validation, concurrent-editing]
 validated-on: []
 
@@ -36,14 +36,80 @@ variables:
   items: { values: [one, many], means: "how many items the action acts on" }
 
 cases:
-  - { id: retry-content, what: content, cause: transient, known: "yes", where: "what was there stays; an error banner in that part with Try again; when it works, the banner goes", use: ["mds-banner variant=error tone=strong", "mds-button slot=action await"] }
-  - { id: content-another-way, what: content, cause: lasting, known: "yes", where: "no Try again: says why and gives another way (the not-found of empty-state for a thing that is gone; who can give access)", use: ["mds-banner variant=error tone=strong", "mds-zero"] }
-  - { id: retry-action, what: action, cause: transient, known: "yes", items: one, where: "says nothing was changed; what was written stays; in the place message-placement gives: a banner in place, right above the row, whose action on screen is the new try, so the banner has no Try again of its own; or a toast that stays, with Try again", use: ["mds-banner variant=error tone=strong", "mds-toast variant=error duration=0 dismissible"] }
-  - { id: action-another-way, what: action, cause: lasting, known: "yes", items: one, where: "no Try again: says why and gives another way (the errors on the fields for refused data; who can do it; back to the list for a thing that is gone)", use: ["mds-banner variant=error", "mds-input-field message"] }
-  - { id: check-or-repeat, what: action, cause: transient, known: "no", where: "Try again at once when repeating does no harm (saving the same values); otherwise the application first asks the server what happened, then tells it: done as a success, not done as retry-action, the action on screen being the new try", use: ["mds-banner variant=error tone=strong", "mds-toast variant=error duration=0 dismissible"] }
-  - { id: changed-meanwhile, what: action, cause: conflict, known: "yes", where: "never overwrite in silence: says who changed it and when, that nothing was saved, and the changes of the person stay on screen", use: ["mds-banner variant=error tone=strong"], see: concurrent-editing }
-  - { id: sign-in-again, cause: session, known: "yes", where: "says the session ended and nothing was saved; Sign in, alone in the banner, opens the sign-in in a new tab, and the action that failed is hidden until the session is back, so it cannot fail again; back on the page the banner goes and the action comes back: the work never leaves the page", use: ["mds-banner variant=error tone=strong", "mds-button slot=action href target=blank"] }
-  - { id: partial, what: action, cause: [transient, lasting], known: "yes", items: many, where: "says how many worked and which did not, and why; Try again acts only on those that failed for a transient cause", use: ["mds-banner variant=error tone=strong", "mds-toast variant=error duration=0 dismissible"] }
+  - id: retry-content
+    what: content
+    cause: transient
+    known: "yes"
+    where: "what was there stays; an error banner in that part with Try again; when it works, the banner goes"
+    use:
+      - { role: "the title of the part that did not load, which takes the focus when the banner goes", use: "mds-text typography=section tag=h2 tabindex=-1" }
+      - { role: "the error, in the part that did not load, its headline what did not load", use: "mds-banner variant=error tone=strong headline=<what did not load>" }
+      - { role: "what to do, in a sentence", use: mds-text }
+      - { role: "Try again, waiting while the part loads again", use: "mds-button slot=action variant=error tone=strong await" }
+  - id: content-another-way
+    what: content
+    cause: lasting
+    known: "yes"
+    where: "no Try again: says why and gives another way (the not-found of empty-state for a thing that is gone; who can give access)"
+    use:
+      - { role: "the error, in place of the content, with no Try again; its headline what the person cannot see", use: "mds-banner variant=error tone=strong headline=<what the person cannot see>" }
+      - { role: "why, and the other way: who can give access", use: mds-text }
+  - id: retry-action
+    what: action
+    cause: transient
+    known: "yes"
+    items: one
+    where: "says nothing was changed; what was written stays; in the place message-placement gives: a banner in place, right above the row, whose action on screen is the new try, so the banner has no Try again of its own; or a toast that stays, with Try again"
+    use:
+      - { role: "the error, right above the row, with no Try again; its headline what did not happen", use: "mds-banner variant=error tone=strong headline=<what did not happen>" }
+      - { role: "that nothing was changed and what was written stays, and what to do", use: mds-text }
+      - { role: "the action that failed, the new try: it keeps the focus, and waits while it works", use: "mds-button await" }
+  - id: action-another-way
+    what: action
+    cause: lasting
+    known: "yes"
+    items: one
+    where: "no Try again: says why and gives another way (the errors on the fields for refused data; who can do it; back to the list for a thing that is gone)"
+    use:
+      - { role: "the field the server refused, in error, its message saying why and what to write instead", use: mds-input-field }
+      - { role: "its control, which takes the focus", use: mds-input }
+  - id: check-or-repeat
+    what: action
+    cause: transient
+    known: "no"
+    where: "Try again at once when repeating does no harm (saving the same values); otherwise the application first asks the server what happened, then tells it: done as a success, not done as retry-action, the action on screen being the new try"
+    use:
+      - { role: "the error, right above the row once the server says it was not done, with no Try again; its headline what did not happen", use: "mds-banner variant=error tone=strong headline=<what did not happen>" }
+      - { role: "what the check found, that what was written stays, and that the new try does it once", use: mds-text }
+      - { role: "the action that failed, waiting while the application asks the server; then the new try", use: "mds-button await" }
+  - id: changed-meanwhile
+    what: action
+    cause: conflict
+    known: "yes"
+    where: "never overwrite in silence: says who changed it and when, that nothing was saved, and the changes of the person stay on screen"
+    use:
+      - { role: "the error, right above the row, its headline that nothing was saved", use: "mds-banner variant=error tone=strong headline=<what did not happen>" }
+      - { role: "who changed it and when, that nothing was saved, and that the changes written stay", use: mds-text }
+    see: concurrent-editing
+  - id: sign-in-again
+    cause: session
+    known: "yes"
+    where: "says the session ended and nothing was saved; Sign in, alone in the banner, opens the sign-in in a new tab, and the action that failed is hidden until the session is back, so it cannot fail again; back on the page the banner goes and the action comes back: the work never leaves the page"
+    use:
+      - { role: "the error, right above the row, its headline that the session ended", use: "mds-banner variant=error tone=strong headline=<that the session ended>" }
+      - { role: "that nothing was saved, and the way on: sign in in another tab, then come back and save", use: mds-text }
+      - { role: "Sign in, alone in the banner, opening the sign-in in a new tab", use: "mds-button slot=action href=<the sign-in page> target=blank icon=<the icon of a new tab> icon-position=right variant=error tone=strong" }
+      - { role: "the action that failed, hidden until the session is back", use: "mds-button type=submit" }
+  - id: partial
+    what: action
+    cause: [transient, lasting]
+    known: "yes"
+    items: many
+    where: "says how many worked and which did not, and why; Try again acts only on those that failed for a transient cause"
+    use:
+      - { role: "the error above the list, its headline how many worked and how many did not", use: "mds-banner variant=error tone=strong headline=<how many worked, how many did not>" }
+      - { role: "which did not, and why", use: mds-text }
+      - { role: "Try again, only on those that failed for a transient cause; it waits while it works", use: "mds-button slot=action variant=error tone=strong await" }
 gaps: []
 not-applicable:
   - { what: content, cause: conflict, why: "loading changes nothing: there is nothing to conflict with" }
@@ -117,16 +183,16 @@ knows what happened, and whether the action was on one item or many.
 
 A case that leaves a variable out holds for any of its values.
 
-| Case | When | Where | Use |
-| --- | --- | --- | --- |
-| `retry-content` | what: content; cause: transient; known: yes | what was there stays; an error banner in that part with Try again; when it works, the banner goes | `mds-banner variant=error tone=strong`, `mds-button slot=action await` |
-| `content-another-way` | what: content; cause: lasting; known: yes | no Try again: says why and gives another way (the not-found of empty-state for a thing that is gone; who can give access) | `mds-banner variant=error tone=strong`, `mds-zero` |
-| `retry-action` | what: action; cause: transient; known: yes; items: one | says nothing was changed; what was written stays; in the place message-placement gives: a banner in place, right above the row, whose action on screen is the new try, so the banner has no Try again of its own; or a toast that stays, with Try again | `mds-banner variant=error tone=strong`, `mds-toast variant=error duration=0 dismissible` |
-| `action-another-way` | what: action; cause: lasting; known: yes; items: one | no Try again: says why and gives another way (the errors on the fields for refused data; who can do it; back to the list for a thing that is gone) | `mds-banner variant=error`, `mds-input-field message` |
-| `check-or-repeat` | what: action; cause: transient; known: no | Try again at once when repeating does no harm (saving the same values); otherwise the application first asks the server what happened, then tells it: done as a success, not done as retry-action, the action on screen being the new try | `mds-banner variant=error tone=strong`, `mds-toast variant=error duration=0 dismissible` |
-| `changed-meanwhile` | what: action; cause: conflict; known: yes | never overwrite in silence: says who changed it and when, that nothing was saved, and the changes of the person stay on screen; see `concurrent-editing` | `mds-banner variant=error tone=strong` |
-| `sign-in-again` | cause: session; known: yes | says the session ended and nothing was saved; Sign in, alone in the banner, opens the sign-in in a new tab, and the action that failed is hidden until the session is back, so it cannot fail again; back on the page the banner goes and the action comes back: the work never leaves the page | `mds-banner variant=error tone=strong`, `mds-button slot=action href target=blank` |
-| `partial` | what: action; cause: transient or lasting; known: yes; items: many | says how many worked and which did not, and why; Try again acts only on those that failed for a transient cause | `mds-banner variant=error tone=strong`, `mds-toast variant=error duration=0 dismissible` |
+| Case | When | Where |
+| --- | --- | --- |
+| `retry-content` | what: content; cause: transient; known: yes | what was there stays; an error banner in that part with Try again; when it works, the banner goes |
+| `content-another-way` | what: content; cause: lasting; known: yes | no Try again: says why and gives another way (the not-found of empty-state for a thing that is gone; who can give access) |
+| `retry-action` | what: action; cause: transient; known: yes; items: one | says nothing was changed; what was written stays; in the place message-placement gives: a banner in place, right above the row, whose action on screen is the new try, so the banner has no Try again of its own; or a toast that stays, with Try again |
+| `action-another-way` | what: action; cause: lasting; known: yes; items: one | no Try again: says why and gives another way (the errors on the fields for refused data; who can do it; back to the list for a thing that is gone) |
+| `check-or-repeat` | what: action; cause: transient; known: no | Try again at once when repeating does no harm (saving the same values); otherwise the application first asks the server what happened, then tells it: done as a success, not done as retry-action, the action on screen being the new try |
+| `changed-meanwhile` | what: action; cause: conflict; known: yes | never overwrite in silence: says who changed it and when, that nothing was saved, and the changes of the person stay on screen; see `concurrent-editing` |
+| `sign-in-again` | cause: session; known: yes | says the session ended and nothing was saved; Sign in, alone in the banner, opens the sign-in in a new tab, and the action that failed is hidden until the session is back, so it cannot fail again; back on the page the banner goes and the action comes back: the work never leaves the page |
+| `partial` | what: action; cause: transient or lasting; known: yes; items: many | says how many worked and which did not, and why; Try again acts only on those that failed for a transient cause |
 
 Not applicable:
 
@@ -137,6 +203,71 @@ Not applicable:
 | cause: lasting or conflict or session; known: no | the server answered: the outcome is known |
 
 No gaps: every combination has a case or is not applicable.
+
+The parts of each case, in the order of its preview: what each does in the case, and the component to write. A value in angle brackets is the text of the application, written as it says; the rest of the preview is its stage, the context of the case.
+
+`retry-content`:
+
+| Role | Use |
+| --- | --- |
+| the title of the part that did not load, which takes the focus when the banner goes | `mds-text typography=section tag=h2 tabindex=-1` |
+| the error, in the part that did not load, its headline what did not load | `mds-banner variant=error tone=strong headline=<what did not load>` |
+| what to do, in a sentence | `mds-text` |
+| Try again, waiting while the part loads again | `mds-button slot=action variant=error tone=strong await` |
+
+`content-another-way`:
+
+| Role | Use |
+| --- | --- |
+| the error, in place of the content, with no Try again; its headline what the person cannot see | `mds-banner variant=error tone=strong headline=<what the person cannot see>` |
+| why, and the other way: who can give access | `mds-text` |
+
+`retry-action`:
+
+| Role | Use |
+| --- | --- |
+| the error, right above the row, with no Try again; its headline what did not happen | `mds-banner variant=error tone=strong headline=<what did not happen>` |
+| that nothing was changed and what was written stays, and what to do | `mds-text` |
+| the action that failed, the new try: it keeps the focus, and waits while it works | `mds-button await` |
+
+`action-another-way`:
+
+| Role | Use |
+| --- | --- |
+| the field the server refused, in error, its message saying why and what to write instead | `mds-input-field` |
+| its control, which takes the focus | `mds-input` |
+
+`check-or-repeat`:
+
+| Role | Use |
+| --- | --- |
+| the error, right above the row once the server says it was not done, with no Try again; its headline what did not happen | `mds-banner variant=error tone=strong headline=<what did not happen>` |
+| what the check found, that what was written stays, and that the new try does it once | `mds-text` |
+| the action that failed, waiting while the application asks the server; then the new try | `mds-button await` |
+
+`changed-meanwhile`:
+
+| Role | Use |
+| --- | --- |
+| the error, right above the row, its headline that nothing was saved | `mds-banner variant=error tone=strong headline=<what did not happen>` |
+| who changed it and when, that nothing was saved, and that the changes written stay | `mds-text` |
+
+`sign-in-again`:
+
+| Role | Use |
+| --- | --- |
+| the error, right above the row, its headline that the session ended | `mds-banner variant=error tone=strong headline=<that the session ended>` |
+| that nothing was saved, and the way on: sign in in another tab, then come back and save | `mds-text` |
+| Sign in, alone in the banner, opening the sign-in in a new tab | `mds-button slot=action href=<the sign-in page> target=blank icon=<the icon of a new tab> icon-position=right variant=error tone=strong` |
+| the action that failed, hidden until the session is back | `mds-button type=submit` |
+
+`partial`:
+
+| Role | Use |
+| --- | --- |
+| the error above the list, its headline how many worked and how many did not | `mds-banner variant=error tone=strong headline=<how many worked, how many did not>` |
+| which did not, and why | `mds-text` |
+| Try again, only on those that failed for a transient cause; it waits while it works | `mds-button slot=action variant=error tone=strong await` |
 
 ## Parts
 
@@ -235,3 +366,4 @@ None blocking: retrying is logic of the application.
 | 2026-11-03 | An error that stops the person is `tone="strong"` (`retry-content`, `content-another-way`, `retry-action`, `check-or-repeat`, `changed-meanwhile`, `sign-in-again`, `partial`) | One tone for every error, as `message-placement`. Chosen in review round 2 of the previews (https://github.com/magma-design-system/magma/issues/1233), over the weak tone. |
 | 2026-11-03 | Where the action that failed is on screen, its banner has no Try again: the action is the new try (`retry-action`, `check-or-repeat`) | Two buttons that do the same thing; the rule `failed` of the domain Actions. Applied in review round 2 of the previews: https://github.com/magma-design-system/magma/issues/1233 |
 | 2026-11-03 | An ended session shows Sign in alone, in the banner, and hides the action that failed until the session is back (`sign-in-again`) | The action would fail again until the person signs in: it is not offered. Asked in review round 2 of the previews: https://github.com/magma-design-system/magma/issues/1233 |
+| 2026-11-13 | Each case gives the parts of its solution with their role, in the order of its preview, the stage of the preview marked `data-stage` | The `use` of a case named one part in five of what its preview shows, and no role: the agents of the products composed the rest by hand. https://github.com/magma-design-system/magma/issues/1396 |

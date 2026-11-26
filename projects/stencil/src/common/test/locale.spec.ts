@@ -22,6 +22,17 @@ describe('Locale', () => {
     },
   );
 
+  // #1433: the phrase goes into an attribute or a text node, where an entity is never decoded
+  it('puts the values in as they are, without escaping them as HTML', () => {
+    const named = new Locale({ en: { select: 'Select {{label}}', both: '{{a}} and {{b}}' } });
+
+    expect(named.get('select', { label: "Credenziali dell'applicazione" })).toBe(
+      "Select Credenziali dell'applicazione",
+    );
+    expect(named.get('select', { label: 'server/tool' })).toBe('Select server/tool');
+    expect(named.get('both', { a: 'R&D <beta>', b: '"quoted"' })).toBe('R&D <beta> and "quoted"');
+  });
+
   it.each(['pt-BR', 'de', ''])(
     'gives %s, a language it has no texts for, the English ones',
     (language) => {

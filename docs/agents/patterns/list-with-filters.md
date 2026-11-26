@@ -29,7 +29,7 @@ assumptions:
   - The back end can search, count, sort and page the set.
   - The application knows whether other people or systems change the set while it is on screen.
 high-stakes: false
-components: [mds-input, mds-input-field, mds-input-select, mds-filter, mds-filter-item, mds-table, mds-table-header-cell, mds-paginator, mds-notification, mds-text, mds-badge, mds-button, mds-card]
+components: [mds-input, mds-input-field, mds-input-select, mds-filter, mds-filter-item, mds-table, mds-table-header, mds-table-header-cell, mds-table-body, mds-table-row, mds-table-cell, mds-link, mds-paginator, mds-notification, mds-text, mds-badge, mds-button, mds-card, mds-toast-region, mds-toast]
 related: [loading, empty-state, error-recovery, message-placement, confirm-action, record-detail, choose-items, page-header, item-list, app-shell]
 validated-on: []
 
@@ -38,9 +38,51 @@ variables:
   changes: { values: ["no", by-others], means: "by-others: other people or systems add or change items while the list is on screen (a queue of incoming requests)" }
 
 cases:
-  - { id: find-and-open, goal: open, changes: "no", where: "the title of the list, a search form, the summary, the results and the pages; the name or the number of each item is the link to its page", use: ["mds-input type=search", "mds-filter", "mds-input-select", "mds-table sorting=external", "mds-table-header-cell sortable sort-key", "mds-paginator"] }
-  - { id: act-on-many, goal: act, changes: "no", where: "a checkbox on each row and the bar of the batch actions, with how many are selected; the selection is the page on screen; an action that cannot be taken back asks first, saying how many; the outcome is told as message-placement says, a partial one as error-recovery says", use: ["mds-table selectable", "mds-button slot=batch-action"], see: confirm-action }
-  - { id: show-new-items, changes: by-others, where: "nothing on screen moves by itself: at the end of the line of the summary, how many items are new or changed, the count in an info dot that pulses three times when it grows and the words in the info colour, and Show, which loads the list again with the same query; the line keeps its place while there is nothing new, so the results never move; the count is read out without moving the focus; Show hides once pressed, and the focus goes to the heading of the list", use: ["mds-notification variant=info pulse", "mds-text typography=detail", "mds-button variant=info tone=outline size=sm"] }
+  - id: find-and-open
+    goal: open
+    changes: "no"
+    where: "the title of the list, a search form, the summary, the results and the pages; the name or the number of each item is the link to its page"
+    use:
+      - { role: "the title of the list, in the plural, the heading of the page", use: "mds-text typography=page tag=h1" }
+      - { role: "the field of the search, with its visible label", use: "mds-input-field label=<what the field is>" }
+      - { role: "the search on the number and the name; its placeholder says what it searches", use: "mds-input type=search placeholder=<what it searches>" }
+      - { role: "the field of a property with a few values, short", use: "mds-input-field short label=<the property>" }
+      - { role: "the select of that property", use: mds-input-select }
+      - { role: "the statuses, one at a time", use: "mds-filter label=<the property of the statuses>" }
+      - { role: "a status, with how many items it would show", use: "mds-filter-item label=<the status> count=<how many items it would show>" }
+      - { role: "the summary: which items are on screen out of how many, read out after every change", use: "mds-text typography=detail tag=p role=status" }
+      - { role: "Clear filters, next to the summary while there are any", use: "mds-button variant=dark tone=text size=sm" }
+      - { role: "the results, which the back end orders", use: "mds-table sorting=external" }
+      - { role: "the headers of the columns", use: mds-table-header }
+      - { role: "the header of a column that orders the list, by a key of the back end", use: "mds-table-header-cell sortable label=<the column> sort-key=<the key the back end orders by>" }
+      - { role: "the header of a column that does not order it", use: "mds-table-header-cell label=<the column>" }
+      - { role: "the header of the column the list is ordered by, with its direction", use: "mds-table-header-cell sortable direction=descending label=<the column> sort-key=<the key the back end orders by>" }
+      - { role: "the items of the page on screen", use: mds-table-body }
+      - { role: "one row for each item", use: mds-table-row }
+      - { role: "one cell for each column", use: mds-table-cell }
+      - { role: "the text of a cell", use: "mds-text typography=detail" }
+      - { role: "the number or the name of the item, the link to its page", use: "mds-link href=<the page of the item>" }
+      - { role: "the status of an item, as the text of a badge in the tone of that status", use: "mds-badge variant=<the tone of its status> label=<the status>" }
+      - { role: "the pages, under the items, only when there is more than one", use: "mds-paginator pages=<the number of pages> current-page=<the page shown>" }
+  - id: act-on-many
+    goal: act
+    changes: "no"
+    where: "a checkbox on each row and the bar of the batch actions, with how many are selected; the selection is the page on screen; an action that cannot be taken back asks first, saying how many; the outcome is told as message-placement says, a partial one as error-recovery says"
+    use:
+      - { role: "the results, with a checkbox on each row and the bar that says how many are selected", use: "mds-table selectable sorting=external" }
+      - { role: "an action on the selected items, in the bar", use: "mds-button slot=batch-action variant=dark tone=outline size=sm" }
+      - { role: "the main action on the selected items, last, in the primary colour", use: "mds-button slot=batch-action variant=primary tone=outline size=sm" }
+      - { role: "the place of the toasts of the application, once in its shell", use: mds-toast-region }
+      - { role: "the outcome, how many items the action reached, as message-placement says", use: mds-toast }
+    see: confirm-action
+  - id: show-new-items
+    changes: by-others
+    where: "nothing on screen moves by itself: at the end of the line of the summary, how many items are new or changed, the count in an info dot that pulses three times when it grows and the words in the info colour, and Show, which loads the list again with the same query; the line keeps its place while there is nothing new, so the results never move; the count is read out without moving the focus; Show hides once pressed, and the focus goes to the heading of the list"
+    use:
+      - { role: "the heading of the list, which takes the focus when Show is gone", use: "mds-text typography=page tag=h1 tabindex=-1" }
+      - { role: "the count of the new items, in an info dot that pulses three times when it grows", use: "mds-notification variant=info pulse" }
+      - { role: "the words after the count, in the info colour: new or changed, and of what", use: "mds-text typography=detail" }
+      - { role: "Show, which loads the list again with the same query; hidden once pressed, keeping its place", use: "mds-button variant=info tone=outline size=sm" }
 gaps: []
 not-applicable: []
 
@@ -122,13 +164,60 @@ once), and whether other people change the set while it is on screen.
 
 A case that leaves a variable out holds for any of its values.
 
-| Case | When | Where | Use |
-| --- | --- | --- | --- |
-| `find-and-open` | goal: open; changes: no | the title of the list, a search form, the summary, the results and the pages; the name or the number of each item is the link to its page | `mds-input type=search`, `mds-filter`, `mds-input-select`, `mds-table sorting=external`, `mds-table-header-cell sortable sort-key`, `mds-paginator` |
-| `act-on-many` | goal: act; changes: no | a checkbox on each row and the bar of the batch actions, with how many are selected; the selection is the page on screen; an action that cannot be taken back asks first, saying how many; the outcome is told as message-placement says, a partial one as error-recovery says; see `confirm-action` | `mds-table selectable`, `mds-button slot=batch-action` |
-| `show-new-items` | changes: by-others | nothing on screen moves by itself: at the end of the line of the summary, how many items are new or changed, the count in an info dot that pulses three times when it grows and the words in the info colour, and Show, which loads the list again with the same query; the line keeps its place while there is nothing new, so the results never move; the count is read out without moving the focus; Show hides once pressed, and the focus goes to the heading of the list | `mds-notification variant=info pulse`, `mds-text typography=detail`, `mds-button variant=info tone=outline size=sm` |
+| Case | When | Where |
+| --- | --- | --- |
+| `find-and-open` | goal: open; changes: no | the title of the list, a search form, the summary, the results and the pages; the name or the number of each item is the link to its page |
+| `act-on-many` | goal: act; changes: no | a checkbox on each row and the bar of the batch actions, with how many are selected; the selection is the page on screen; an action that cannot be taken back asks first, saying how many; the outcome is told as message-placement says, a partial one as error-recovery says; see `confirm-action` |
+| `show-new-items` | changes: by-others | nothing on screen moves by itself: at the end of the line of the summary, how many items are new or changed, the count in an info dot that pulses three times when it grows and the words in the info colour, and Show, which loads the list again with the same query; the line keeps its place while there is nothing new, so the results never move; the count is read out without moving the focus; Show hides once pressed, and the focus goes to the heading of the list |
 
 No gaps: every combination has a case or is not applicable.
+
+The parts of each case, in the order of its preview: what each does in the case, and the component to write. A value in angle brackets is the text of the application, written as it says; the rest of the preview is its stage, the context of the case.
+
+`find-and-open`:
+
+| Role | Use |
+| --- | --- |
+| the title of the list, in the plural, the heading of the page | `mds-text typography=page tag=h1` |
+| the field of the search, with its visible label | `mds-input-field label=<what the field is>` |
+| the search on the number and the name; its placeholder says what it searches | `mds-input type=search placeholder=<what it searches>` |
+| the field of a property with a few values, short | `mds-input-field short label=<the property>` |
+| the select of that property | `mds-input-select` |
+| the statuses, one at a time | `mds-filter label=<the property of the statuses>` |
+| a status, with how many items it would show | `mds-filter-item label=<the status> count=<how many items it would show>` |
+| the summary: which items are on screen out of how many, read out after every change | `mds-text typography=detail tag=p role=status` |
+| Clear filters, next to the summary while there are any | `mds-button variant=dark tone=text size=sm` |
+| the results, which the back end orders | `mds-table sorting=external` |
+| the headers of the columns | `mds-table-header` |
+| the header of a column that orders the list, by a key of the back end | `mds-table-header-cell sortable label=<the column> sort-key=<the key the back end orders by>` |
+| the header of a column that does not order it | `mds-table-header-cell label=<the column>` |
+| the header of the column the list is ordered by, with its direction | `mds-table-header-cell sortable direction=descending label=<the column> sort-key=<the key the back end orders by>` |
+| the items of the page on screen | `mds-table-body` |
+| one row for each item | `mds-table-row` |
+| one cell for each column | `mds-table-cell` |
+| the text of a cell | `mds-text typography=detail` |
+| the number or the name of the item, the link to its page | `mds-link href=<the page of the item>` |
+| the status of an item, as the text of a badge in the tone of that status | `mds-badge variant=<the tone of its status> label=<the status>` |
+| the pages, under the items, only when there is more than one | `mds-paginator pages=<the number of pages> current-page=<the page shown>` |
+
+`act-on-many`:
+
+| Role | Use |
+| --- | --- |
+| the results, with a checkbox on each row and the bar that says how many are selected | `mds-table selectable sorting=external` |
+| an action on the selected items, in the bar | `mds-button slot=batch-action variant=dark tone=outline size=sm` |
+| the main action on the selected items, last, in the primary colour | `mds-button slot=batch-action variant=primary tone=outline size=sm` |
+| the place of the toasts of the application, once in its shell | `mds-toast-region` |
+| the outcome, how many items the action reached, as message-placement says | `mds-toast` |
+
+`show-new-items`:
+
+| Role | Use |
+| --- | --- |
+| the heading of the list, which takes the focus when Show is gone | `mds-text typography=page tag=h1 tabindex=-1` |
+| the count of the new items, in an info dot that pulses three times when it grows | `mds-notification variant=info pulse` |
+| the words after the count, in the info colour: new or changed, and of what | `mds-text typography=detail` |
+| Show, which loads the list again with the same query; hidden once pressed, keeping its place | `mds-button variant=info tone=outline size=sm` |
 
 ## Parts
 
@@ -280,3 +369,4 @@ Situations every application has, each with its case: they give the examples, th
 | 2026-10-29 | Choosing items for something else is a pattern of its own, the candidate `choose-items` | The selection lives across searches and ends in a choice, not in work on the items; each pattern stays shorter. |
 | 2026-11-04 | The dot of the new items is `mds-notification variant="info" pulse`, the count its `value`, before the words of the line inside its status region; Show `dismissed` it | Magma carries it since #1216 (PR #1239): the pulse follows `value`, so the dot shows the count, and the count is in the info colour as decided on 2026-10-31; a product never writes the animation itself. It replaces the dot the render of 2026-10-31 drew by hand. |
 | 2026-11-03 | The order is chosen from the headers of the columns, not from the search form; Clear filters is in the summary, but only in the panel when nothing matches; after Show the focus goes to the heading; what was searched is marked in the results | What the previews of the cases showed, confirmed in review round 2 of the previews: https://github.com/magma-design-system/magma/issues/1233 |
+| 2026-11-13 | Each case gives the parts of its solution with their role, in the order of its preview, the stage of the preview marked `data-stage`; the parts the blocks `page-header` and `item-list` lay out are parts of a case where its `where` names them | The `use` of a case named one part in five of what its preview shows, and no role: the agents of the products composed the rest by hand. https://github.com/magma-design-system/magma/issues/1396 |

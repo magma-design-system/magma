@@ -2,7 +2,7 @@
 try: Press Riprova in Allegati: it waits, then the attachments come in and the error goes; Richiedente, which had loaded, never moved.
 -->
 <div class="grid gap-between-sections">
-  <section class="grid gap-title-content">
+  <section class="grid gap-title-content" data-stage>
     <mds-text typography="section" tag="h2">Richiedente</mds-text>
     <dl class="m-0 grid max-w-form items-start gap-between-fields @md:grid-cols-2">
       <div class="grid gap-label-control">
@@ -21,7 +21,7 @@ try: Press Riprova in Allegati: it waits, then the attachments come in and the e
       <mds-text>Controlla la connessione, poi riprova.</mds-text>
       <mds-button id="retry" slot="action" variant="error" tone="strong">Riprova</mds-button>
     </mds-banner>
-    <div id="list" class="grid gap-between-containers hidden">
+    <div id="list" class="grid gap-between-containers hidden" data-stage>
       <mds-file filename="planimetria.pdf"></mds-file>
       <mds-file filename="delega-firmata.pdf"></mds-file>
     </div>

@@ -2,13 +2,13 @@
 try: Look at the error above the row: the session ended and nothing was saved, so Salva is hidden and Accedi, in the banner, is the only way on. Press Accedi: the sign-in opens in a new tab; back here the banner goes and Salva comes back, with what was written.
 -->
 <div class="grid gap-between-sections">
-  <mds-text typography="page" tag="h1">Modifica referente</mds-text>
+  <mds-text typography="page" tag="h1" data-stage>Modifica referente</mds-text>
   <form id="form" class="@container grid max-w-form gap-content-actions">
     <div class="grid gap-between-fields">
-      <mds-input-field label="Nome e cognome">
+      <mds-input-field label="Nome e cognome" data-stage>
         <mds-input value="Marco Bianchi"></mds-input>
       </mds-input-field>
-      <mds-input-field label="PEC">
+      <mds-input-field label="PEC" data-stage>
         <mds-input type="email" value="m.bianchi@pec.esempio.it"></mds-input>
       </mds-input-field>
       <mds-banner id="expired" variant="error" tone="strong" headline="Sessione scaduta">
@@ -20,7 +20,7 @@ try: Look at the error above the row: the session ended and nothing was saved, s
       </mds-banner>
     </div>
     <div class="flex justify-end gap-inline @max-actions:flex-col @max-actions:*:self-stretch">
-      <mds-button type="button" variant="dark" tone="outline">Annulla</mds-button>
+      <mds-button type="button" variant="dark" tone="outline" data-stage>Annulla</mds-button>
       <mds-button id="save" type="submit" class="hidden">Salva</mds-button>
     </div>
   </form>

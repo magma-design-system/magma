@@ -23,9 +23,20 @@ the file.
 In Claude Code, the Magma plugin starts the server for you and adds the skills that run a
 whole job: `/magma:setup`, `/magma:review`, `/magma:migrate`, `/magma:pattern-layer` (the
 layer of a pattern for the product, [`patterns.md`](patterns.md)), and `ui`, which Claude loads
-by itself for UI work. Register it for the whole team in the project's committed
-`.claude/settings.json`; Claude Code loads it once the folder is trusted, in the terminal and
-in the desktop app, which reads the same settings:
+by itself for UI work. Install it from the project's root at a scope: `project` for the team,
+`user` for you in every project (where Magma is not installed, its server starts with no tools),
+`local` for you in this project only:
+
+```bash
+claude plugin marketplace add magma-design-system/magma --scope project
+claude plugin install magma@magma --scope project
+```
+
+`/plugin` does the same from a session in the terminal. The scope writes these keys into its
+settings file: the committed `.claude/settings.json` (`project`), `~/.claude/settings.json`
+(`user`), `.claude/settings.local.json`, which git does not track (`local`). Without the
+`claude` command, MERGE them into that file; for `project` also `enabledPlugins` into
+`.claude/settings.local.json`:
 
 ```json
 {
@@ -36,8 +47,12 @@ in the desktop app, which reads the same settings:
 }
 ```
 
-On one machine only, in a Claude Code session in the terminal:
-`/plugin marketplace add magma-design-system/magma`, then `/plugin install magma@magma`.
+The committed file turns the plugin on for the colleagues but does not download it: Claude Code
+downloads a plugin only when the user's settings or an untracked `.claude/settings.local.json`
+enable it, so each colleague installs it once per clone
+(`claude plugin install magma@magma --scope project`). A plugin installed during a session loads
+with `/reload-plugins`, or in the next session. The terminal, the desktop app and the IDE
+extensions of one computer read the same settings files.
 
 With the plugin, do not also add the `.mcp.json` entry below: the server would run twice.
 
@@ -116,10 +131,10 @@ an answer names (a preview, the layer of a pattern) is absolute.
 | `explain_class` | what a class does with the Magma theme | the trap of the scale: `p-4` is 0.01rem, `p-400` is 1rem |
 | `find_icon` | a slug that exists, by meaning, or whether a slug exists | an `icon="..."` that renders nothing |
 | `get_guide` | one section of a guide, or of a domain of the design language, the rules of composition (`rhythm`, `density`, `actions`, `titles`, `surfaces`, `widths`) | reading the whole file |
-| `get_pattern` | how a task across components is solved in every product (where a message goes, confirming an action, an empty, a loading or a failed part): the list, the patterns for a need, or, with the values of the variables of a pattern, the one case to follow, with its preview (the stage, live, what to try in it and in `images` the paths of its light and dark images, to show where the stage cannot run) when Magma has one and in `rules` the rules of the domains it relies on; the layer of the project (`magma/patterns/<id>.md`) applied, and in `layerFile` the file to write it in; the domains of the design language first in the list, then the building blocks (`kind: block`, the page header), which answer with the regions to lay out, in order | inventing the flow, or reading [`patterns.md`](patterns.md) and each pattern by hand |
+| `get_pattern` | how a task across components is solved in every product (where a message goes, confirming an action, an empty, a loading or a failed part): the list, the patterns for a need, or, with the values of the variables of a pattern, the one case to follow, with its parts (`use`: each with its role and the component to write, in the order of its preview, a value in angle brackets the text of your application) and its preview (the stage, live, its context marked `data-stage`, what to try in it and in `images` the paths of its light and dark images, to show where the stage cannot run) when Magma has one and in `rules` the rules of the domains it relies on; the layer of the project (`magma/patterns/<id>.md`) applied, and in `layerFile` the file to write it in; the domains of the design language first in the list, then the building blocks (`kind: block`, the page header), which answer with the regions to lay out, in order | inventing the flow, or reading [`patterns.md`](patterns.md) and each pattern by hand |
 | `check_markup` | whether a snippet passes the lint, before it is written | a lint run after the fact |
 | `check_setup` | what the Magma integration of the project misses, and which folder it read as the project | checking the install steps by hand |
-| `render_preview` | an image of markup with Magma components, or of the preview Magma ships for a case of a pattern (`pattern` and `case`), at the widths (pixels or Magma breakpoints), the mode and the theme you give, with a report of what in it is not representative | describing an interface in words, or a wireframe of your own |
+| `render_preview` | an image of markup with Magma components, or of the preview Magma ships for a case of a pattern (`pattern` and `case`), at the widths (pixels or Magma breakpoints), the mode and the theme you give, with a report of what in it is not representative, and in `prototypes` the markup that stands in for a component you propose to Magma (`data-prototype`) | describing an interface in words, or a wireframe of your own |
 
 `check_markup` uses the ESLint, Stylelint and template parsers the project installed with
 the lint ([`lint.md`](lint.md)). The same definitions, for a tool that documents them, are in
@@ -129,7 +144,8 @@ the lint ([`lint.md`](lint.md)). The same definitions, for a tool that documents
 
 - Before writing a component: `find_component`, then `get_component` and `get_usage`.
 - Before a colour, a spacing or a class: `list_tokens`, `suggest_role`, `explain_class`.
-- Before a flow that tells the person something or makes them wait or decide: `get_pattern`.
+- Before a flow that tells the person something or makes them wait or decide: `get_pattern`;
+  compose the case from its parts, then add what your situation needs.
 - Before the head of a page (its title, the way back, its actions): the building block
   `page-header`, `get_pattern` with its id and the values of its variables.
 - Before laying out a page, a form, a dialog or a card: the domains of the design language, which
@@ -138,18 +154,26 @@ the lint ([`lint.md`](lint.md)). The same definitions, for a tool that documents
   with a component.
 - Before an icon: `find_icon`.
 - After writing: `check_markup`, then the project's lint ([`lint.md`](lint.md)).
-- After the bootstrap, or when something does not render: `check_setup`.
+- After the bootstrap, or when something does not render: `check_setup`. Once per session,
+  before the first change to the interface, too: when it reports the Magma block missing
+  (`agent-context`), propose to write it.
 - Before asking the person to decide on an interface: `render_preview`, one render per
   option ([Show the person what you mean](#show-the-person-what-you-mean)).
 - When no tool gives you what the task needs, or an answer carries `gap`: tell the user,
   and at the end of the task propose an issue on Magma
-  ([`reporting.md`](reporting.md), "A tool or an answer the MCP server is missing").
+  ([`reporting.md`](reporting.md), "A tool or an answer the MCP server is missing"); a
+  component Magma lacks with its proposal and a rendered prototype ("A component Magma
+  lacks").
 
 ## Show the person what you mean
 
 A decision on an interface taken from words is taken blind: the person reads the concept and
 imagines a screen of their own. Show the real components instead, rendered on the version the
 project installed.
+
+The same holds before you write what the person keeps: the choices of a layer of a pattern, a
+pattern of the product, the choice you make where Magma has only a candidate, a component you
+propose to Magma. Each is shown rendered, and corrected on its render, before it is written.
 
 1. **Render each option.** `render_preview` with the markup of the option, as the product
    would write it: the real components, the real texts, the layout around them, with the
@@ -160,7 +184,12 @@ project installed.
    element by element: a component unknown or not hydrated, an element with no size, a
    component that is one flat colour, a console error, an icon, a font or an image that did
    not load, a word broken across lines, content cut. Fix your markup and render again; show
-   an image with a problem only with the problem said next to it.
+   an image with a problem only with the problem said next to it. A prototype is no problem:
+   the markup that stands in for a component you propose to Magma, marked
+   `data-prototype="<the tag you propose>"` ([`reporting.md`](reporting.md), "A component
+   Magma lacks"), is named in `prototypes`; say which part of the image it is. Once the
+   installed Magma has that component, the report names it (`prototype-shipped`): write the
+   component instead.
 3. **Show the images.** The tool returns each image as image content and as a file. VS Code
    and Cursor show the image to the person; Claude Code passes it to you and may not show it,
    so there attach the file (`file`) the way your client sends a file to the person, or give

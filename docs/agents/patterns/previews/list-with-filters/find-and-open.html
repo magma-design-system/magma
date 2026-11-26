@@ -2,7 +2,7 @@
 try: Look at the order of the list: the search form, the summary that says which practices out of how many with Rimuovi i filtri, the table whose numbers are the links to each practice, and the pages.
 whole-page: true
 -->
-<mds-header>
+<mds-header data-stage>
   <mds-header-bar>
     <mds-text typography="h6" tag="p">Servizi demografici</mds-text>
     <mds-button slot="nav" href="#" variant="dark" tone="text" current>Pratiche</mds-button>
@@ -18,7 +18,7 @@ whole-page: true
     <mds-button href="#" variant="dark" tone="text" class="w-full justify-start">Esci</mds-button>
   </nav>
 </mds-header>
-<mds-dropdown target="#persona" placement="bottom-end" strategy="fixed">
+<mds-dropdown target="#persona" placement="bottom-end" strategy="fixed" data-stage>
   <mds-text typography="detail" tag="p" class="text-fg-muted">Mario Rossi</mds-text>
   <mds-button href="#" icon="mi/baseline/person" variant="dark" tone="text" label="Profilo"></mds-button>
   <mds-separator></mds-separator>
@@ -28,9 +28,9 @@ whole-page: true
   <header class="@container flex flex-wrap items-start justify-between gap-inline">
     <div class="grid min-w-0 grow basis-actions gap-title-content">
       <mds-text typography="page" tag="h1">Pratiche</mds-text>
-      <mds-text typography="detail" tag="p" class="text-fg-muted">Le pratiche che i cittadini inviano agli uffici.</mds-text>
+      <mds-text typography="detail" tag="p" class="text-fg-muted" data-stage>Le pratiche che i cittadini inviano agli uffici.</mds-text>
     </div>
-    <div class="flex gap-inline @max-actions:basis-full @max-actions:flex-col @max-actions:*:self-stretch">
+    <div class="flex gap-inline @max-actions:basis-full @max-actions:flex-col @max-actions:*:self-stretch" data-stage>
       <mds-button variant="dark" tone="outline">Esporta</mds-button>
       <mds-button>Nuova pratica</mds-button>
     </div>

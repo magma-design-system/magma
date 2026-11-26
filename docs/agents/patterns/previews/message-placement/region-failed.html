@@ -2,17 +2,17 @@
 try: Press Riprova: the button waits, then the list takes the place of the message; Scadenze, which loaded, never changes.
 -->
 <div class="grid gap-between-sections">
-  <section class="grid gap-title-content">
+  <section class="grid gap-title-content" data-stage>
     <mds-text typography="section" tag="h2">Scadenze</mds-text>
     <mds-text tag="p">3 pratiche scadono questa settimana.</mds-text>
   </section>
   <section class="grid gap-title-content">
-    <mds-text typography="section" tag="h2">Pratiche</mds-text>
+    <mds-text typography="section" tag="h2" data-stage>Pratiche</mds-text>
     <mds-banner id="message" variant="error" tone="strong" headline="Pratiche non caricate">
       <mds-text>L'elenco non si è caricato. Riprova tra qualche istante.</mds-text>
       <mds-button id="retry" slot="action" variant="error" tone="strong">Riprova</mds-button>
     </mds-banner>
-    <mds-list id="list" class="hidden">
+    <mds-list id="list" class="hidden" data-stage>
       <mds-list-item>2026/114, Rossi Mario: in istruttoria</mds-list-item>
       <mds-list-item>2026/118, Bianchi Anna: da integrare</mds-list-item>
       <mds-list-item>2026/121, Verdi Luca: conclusa</mds-list-item>

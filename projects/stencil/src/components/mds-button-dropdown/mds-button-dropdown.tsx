@@ -62,6 +62,13 @@ export class MdsButtonDropdown {
   @Prop() readonly label: string;
 
   /**
+   * The accessible name of the chevron, the button that opens the menu, in place of the one the
+   * component builds in the language of the page: "More actions for" and `label`, or "More
+   * actions" without a label. Two split buttons of one page then name their chevrons apart
+   */
+  @Prop() readonly dropdownLabel?: string;
+
+  /**
    * Focuses the primary action once the component is loaded
    */
   @Prop() readonly autoFocus: boolean;
@@ -170,6 +177,15 @@ export class MdsButtonDropdown {
 
   private isDisabled = (): boolean => !!this.disabled || this.formDisabled;
 
+  // the page's name first, then the one built from the label, so that two split buttons of a
+  // page do not both name their chevron "More actions" (#1430)
+  private chevronName = (): string =>
+    (this.dropdownLabel ?? '') !== ''
+      ? this.dropdownLabel!
+      : (this.label ?? '') !== ''
+        ? this.t.get('moreActionsFor', { label: this.label })
+        : this.t.get('moreActions');
+
   componentDidLoad(): void {
     // given by the host, not passed down: the inner buttons load before the host is shown, and
     // their own focus() took no effect, so autoFocus never focused anything
@@ -217,15 +233,16 @@ export class MdsButtonDropdown {
         ></mds-button>
         {/* the chevron only opens the menu: the link is the primary action's (#798). It takes the
             look of the current button, as a section, which keeps it working, and no aria-current:
-            the place you are in is the primary action's (#1264) */}
+            the place you are in is the primary action's (#1264). The action in progress is the
+            primary one, which alone shows the spinner and is busy: the chevron keeps its arrow
+            and is disabled until the component stops awaiting, so the menu does not open (#1431) */}
         <mds-button
           active={this.active}
           aria-current={currentOf(this.current) ? 'false' : undefined}
-          aria-label={this.t.get('moreActions')}
-          await={this.await}
+          aria-label={this.chevronName()}
           current={currentOf(this.current) ? 'section' : undefined}
           class="dropdown-action"
-          disabled={this.isDisabled()}
+          disabled={this.isDisabled() || !!this.await}
           icon={miBaselineKeyboardArrowDown}
           size={this.size}
           tone={this.tone}

@@ -264,6 +264,7 @@ mds-button-dropdown prop autoFocus (attr auto-focus): boolean
 mds-button-dropdown prop await (attr await) [reflect, mutable]: boolean | undefined
 mds-button-dropdown prop current (attr current) [reflect]: "page" | "section" | boolean | undefined
 mds-button-dropdown prop disabled (attr disabled) [reflect, mutable]: boolean | undefined
+mds-button-dropdown prop dropdownLabel (attr dropdown-label): string | undefined
 mds-button-dropdown prop href (attr href) [reflect]: string | undefined
 mds-button-dropdown prop icon (attr icon) [reflect, mutable]: string | undefined
 mds-button-dropdown prop iconCurrent (attr icon-current): string | undefined
@@ -1030,6 +1031,7 @@ mds-link css --mds-link-underline-color INTERNAL
 mds-link css --mds-link-underline-offset INTERNAL
 mds-link css --mds-link-underline-thickness INTERNAL
 mds-list encapsulation shadow
+mds-list prop marker (attr marker) [reflect]: "dot" | "none" = 'dot'
 mds-list slot (default)
 mds-list-item encapsulation shadow
 mds-list-item prop icon (attr icon): string | undefined
@@ -1403,6 +1405,7 @@ mds-stepper-bar-item prop icon (attr icon) [required]: string
 mds-stepper-bar-item prop iconChecked (attr icon-checked): string | undefined = this.icon
 mds-stepper-bar-item prop label (attr label) [required]: string
 mds-stepper-bar-item prop step (attr step): boolean
+mds-stepper-bar-item prop stepLabel (attr step-label): string | undefined
 mds-stepper-bar-item prop typography (attr typography): "action" | "caption" | "detail" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "hack" | "label" | "option" | "paragraph" | "snippet" | "tip" | undefined = 'h6'
 mds-stepper-bar-item prop value (attr value) [reflect]: string | undefined
 mds-stepper-bar-item event mdsStepperBarItemDone: MdsStepperBarItemEventDetail [bubbles, cancelable, composed]
@@ -1816,10 +1819,11 @@ type InputTextType = "number" | "time" | "text" | "email" | "tel" | "url" | "dat
 type InputTipItemVariantType = "text" | "required" | "disabled" | "count-almost" | "count-almost-full" | "count-empty" | "count-full" | "count-incomplete" | "readonly" | "required-success"
 type InputTipPositionType = 'top' | 'bottom';
 type Interaction = 'click' | 'rightclick';
-type KeyboardKeyName = "option" | "b" | "i" | "p" | "q" | "s" | "u" | "a" | "1" | "2" | "end" | "0" | "3" | "4" | "5" | "6" | "7" | "v" | "shift" | "g" | "8" | "9" | "alt" | "altleft" | "altright" | "arrowdown" | "arrowleft" | "arrowright" | "arrowup" | "backspace" | "c" | "capslock" | "command" | "commandleft" | "commandright" | "control" | "controlleft" | "controlright" | "d" | "delete" | "e" | "enter" | "escape" | "f" | "f1" | "f10" | "f11" | "f12" | "f2" | "f3" | "f4" | "f5" | "f6" | "f7" | "f8" | "f9" | "h" | "home" | "j" | "k" | "l" | "m" | "n" | "o" | "optionleft" | "optionright" | "pagedown" | "pageup" | "r" | "shiftleft" | "shiftright" | "space" | "t" | "tab" | "w" | "windows" | "windowsleft" | "windowsright" | "x" | "y" | "z"
+type KeyboardKeyName = "option" | "b" | "i" | "p" | "q" | "s" | "u" | "a" | "1" | "2" | "end" | "0" | "3" | "4" | "5" | "6" | "7" | "escape" | "v" | "shift" | "g" | "8" | "9" | "alt" | "altleft" | "altright" | "arrowdown" | "arrowleft" | "arrowright" | "arrowup" | "backspace" | "c" | "capslock" | "command" | "commandleft" | "commandright" | "control" | "controlleft" | "controlright" | "d" | "delete" | "e" | "enter" | "f" | "f1" | "f10" | "f11" | "f12" | "f2" | "f3" | "f4" | "f5" | "f6" | "f7" | "f8" | "f9" | "h" | "home" | "j" | "k" | "l" | "m" | "n" | "o" | "optionleft" | "optionright" | "pagedown" | "pageup" | "r" | "shiftleft" | "shiftright" | "space" | "t" | "tab" | "w" | "windows" | "windowsleft" | "windowsright" | "x" | "y" | "z"
 type KeyboardTest = 'pass' | 'fail';
 type LinkUnderlineType = "marker" | "solid" | "dotted"
 type LinkVariantType = "primary" | "inherit"
+type ListMarkerType = "none" | "dot"
 type LoadingType = "eager" | "lazy"
 interface MdsAccordionEventDetail { children: NodeListOf<HTMLMdsAccordionItemElement>; selected: string; }
 interface MdsAccordionItemEventDetail { id: string; selected: boolean; }

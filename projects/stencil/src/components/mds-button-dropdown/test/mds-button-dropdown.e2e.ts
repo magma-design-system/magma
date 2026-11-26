@@ -226,10 +226,85 @@ describe('mds-button-dropdown chevron', () => {
     );
     const chevron = root.shadowRoot!.querySelector('.dropdown-action')!;
 
-    expect(chevron).toEqualAttributes({ role: 'button', 'aria-label': 'Altre azioni' });
+    expect(chevron).toEqualAttributes({ role: 'button', 'aria-label': 'Altre azioni per Salva' });
     await vi.waitFor(() => {
       expect(chevron).toEqualAttribute('aria-expanded', 'false');
     });
+  });
+
+  // #1430: two split buttons of a page both had a chevron named "Altre azioni"
+  it('is named after the label, so two split buttons name their chevrons apart', async () => {
+    const { root } = await render(`<div>
+      <mds-button-dropdown label="Esporta"><mds-button label="PDF"></mds-button></mds-button-dropdown>
+      <mds-button-dropdown label="Condividi"><mds-button label="Copia il link"></mds-button></mds-button-dropdown>
+      <mds-button-dropdown><mds-button label="Salva come"></mds-button></mds-button-dropdown>
+    </div>`);
+    const names = Array.from(root.querySelectorAll('mds-button-dropdown')).map((dropdown) =>
+      dropdown.shadowRoot!.querySelector('.dropdown-action')!.getAttribute('aria-label'),
+    );
+
+    expect(names).toEqual([
+      'Altre azioni per Esporta',
+      'Altre azioni per Condividi',
+      'Altre azioni',
+    ]);
+  });
+
+  it('takes the name the page gives in dropdown-label, and follows it', async () => {
+    const { root, waitForChanges } = await render<HTMLMdsButtonDropdownElement>(
+      '<mds-button-dropdown label="Esporta" dropdown-label="Formati di esportazione"><mds-button label="PDF"></mds-button></mds-button-dropdown>',
+    );
+
+    expect(chevron(root)).toEqualAttribute('aria-label', 'Formati di esportazione');
+
+    root.dropdownLabel = undefined;
+    await waitForChanges();
+    expect(chevron(root)).toEqualAttribute('aria-label', 'Altre azioni per Esporta');
+  });
+});
+
+// #1431: `await` reached both halves, so a split button showed two spinners and two busy buttons
+describe('mds-button-dropdown awaiting', () => {
+  const menu = (dropdown: Element): HTMLMdsDropdownElement =>
+    dropdown.shadowRoot!.querySelector<HTMLMdsDropdownElement>('mds-dropdown')!;
+  const awaiting =
+    '<mds-button-dropdown label="Save" await><mds-button label="Save as draft"></mds-button></mds-button-dropdown>';
+
+  it('shows one spinner, on the primary action, and keeps the arrow of the chevron', async () => {
+    const { root } = await render<HTMLMdsButtonDropdownElement>(awaiting);
+    const primary = primaryAction(root);
+    const arrow = chevron(root);
+
+    await vi.waitFor(() => {
+      expect(primary).toEqualAttribute('aria-busy', 'true');
+      expect(arrow).toEqualAttribute('aria-busy', 'false');
+    });
+    expect(primary.shadowRoot!.querySelector('mds-spinner')).not.toBeNull();
+    expect(arrow.shadowRoot!.querySelector('mds-spinner')).toBeNull();
+    expect(arrow).not.toHaveAttribute('await');
+    expect(getComputedStyle(arrow.shadowRoot!.querySelector('.icon')!).display).not.toBe('none');
+    expect(arrow).toHaveAttribute('disabled');
+  });
+
+  it('opens nothing from the chevron while it awaits, and the menu again once it is done', async () => {
+    const { root, waitForChanges } = await render<HTMLMdsButtonDropdownElement>(awaiting);
+    const arrow = chevron(root);
+    await vi.waitFor(() => expect(arrow).toEqualAttribute('aria-expanded', 'false'));
+
+    await userEvent.click(arrow, { force: true });
+    arrow.focus();
+    await userEvent.keyboard('{ArrowDown}');
+    await waitForChanges();
+    expect(root.shadowRoot!.activeElement).not.toBe(arrow);
+    expect(menu(root).visible).toBe(false);
+
+    root.await = false;
+    await waitForChanges();
+    expect(arrow).not.toHaveAttribute('disabled');
+    arrow.focus();
+    await userEvent.keyboard('{Enter}');
+    await waitForChanges();
+    expect(menu(root).visible).toBe(true);
   });
 });
 

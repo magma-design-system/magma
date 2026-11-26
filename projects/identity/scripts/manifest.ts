@@ -7,15 +7,20 @@ import { DIST_DIR } from './meta';
 /*
   dist/identity.json: what a consumer would otherwise guess from the file names. One entry per
   family of artworks (all the variants of one brand), with its name as the artwork writes it,
-  its owner, its kind, its product line, and every variant with its form, colour, the
-  background it is drawn for and its size.
+  its owner, its kind, its product line, its rights, and every variant with its form, colour,
+  the background it is drawn for and its size.
 
   The facts that a file name cannot carry are written by hand next to the artworks, one
   `identity.meta.json` per owner folder of resources/ (and one for the avatars): the owner,
-  the families with their names and their files, the product lines. The build derives the
+  the families with their names, rights and files, the product lines. The build derives the
   rest from the files and checks the two against each other: an SVG that no family lists, a
   listed file that does not exist, a family or an owner defined twice, a line or an owner a
-  family names but nobody defines, all stop it.
+  family names but nobody defines, a family without rights, all stop it. Since every SVG
+  belongs to a family, every SVG has its rights.
+
+  The rights of a family are what the LICENSE of this package says of it (#1528): which marks
+  are Maggioli's, and which artworks are not open source, is decided by Maggioli, not derived
+  from the files.
 
   Descriptions and usage rules (clear space, minimum size) are not here yet: they have to come
   from the brand guidelines, not from the files.
@@ -33,12 +38,20 @@ const RASTER_WIDTHS = [256, 512, 1024];
 const COLORS = ['color', 'blue', 'gold', 'dark-gold', 'black', 'white'] as const;
 /** Forms of a logo, in order. */
 const FORMS = ['logo', 'bordered', 'symbol'] as const;
+/**
+ * The rights of a family, as the LICENSE of this package defines them:
+ * - `trademark`: the files are MIT, the mark they show is a trademark of Maggioli S.p.A.;
+ * - `proprietary`: Maggioli S.p.A., all rights reserved, the MIT License does not apply;
+ * - `mit`: like the rest of the repository.
+ */
+const RIGHTS = ['trademark', 'proprietary', 'mit'] as const;
 const COLOR_SUFFIX = /-(dark-gold|gold|blue|black|white)(?=-|$)/;
 
 type Kind = 'logo' | 'avatar' | 'illustration';
 type Color = (typeof COLORS)[number];
 type Form = (typeof FORMS)[number];
 type Background = 'light' | 'dark' | 'any';
+type Rights = (typeof RIGHTS)[number];
 
 /** A file of a family in a meta file: its path, or the path with what its name gets wrong. */
 type MetaFile = string | { file: string; form?: Form; color?: Color; background?: Background };
@@ -46,6 +59,8 @@ type MetaFile = string | { file: string; form?: Form; color?: Color; background?
 interface MetaFamily {
   id: string;
   name: string;
+  /** required: what the LICENSE of the package lets others do with the family */
+  rights: Rights;
   /** default: `avatar` in avatar/, `illustration` in illustrations/, `logo` elsewhere */
   kind?: Kind;
   /** the owner id, when the folder has none (avatar/) or another one */
@@ -82,6 +97,7 @@ interface Asset {
   group: (typeof GROUPS)[number];
   owner: { id: string; name: string };
   line?: { id: string; name: string };
+  rights: Rights;
   variants: Variant[];
   formats: { svg: true; pdf: true; png: number[]; webp: number[] };
 }
@@ -162,6 +178,10 @@ const main = async (): Promise<void> => {
       const lineName = family.line === undefined ? undefined : meta.lines?.[family.line];
       if (family.line !== undefined && lineName === undefined)
         problems.push(`${where}: line ${family.line} is not in the lines of its meta file`);
+      if (!RIGHTS.includes(family.rights))
+        problems.push(
+          `${where}: rights is ${JSON.stringify(family.rights) ?? 'missing'}, not one of ${RIGHTS.join(', ')}`,
+        );
       const kind: Kind =
         family.kind ??
         (group === 'avatar' ? 'avatar' : group === 'illustrations' ? 'illustration' : 'logo');
@@ -201,6 +221,7 @@ const main = async (): Promise<void> => {
         group,
         owner: { id: ownerId ?? '', name: ownerName ?? '' },
         ...(family.line && lineName ? { line: { id: family.line, name: lineName } } : {}),
+        rights: family.rights,
         variants,
         formats: { svg: true, pdf: true, png: RASTER_WIDTHS, webp: RASTER_WIDTHS },
       });

@@ -7,6 +7,7 @@
     {
       "id": "magma",
       "name": "Magma",
+      "rights": "mit",
       "files": [
         "logo-magma",
         "logo-magma-black",

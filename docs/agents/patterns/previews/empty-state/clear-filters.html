@@ -2,12 +2,12 @@
 try: Look at the search for Rossini among the open requests: the summary and the panel say nothing matches, and the panel offers Rimuovi i filtri only; Nuova richiesta stays in the header.
 -->
 <div class="grid gap-between-sections">
-  <div class="flex flex-wrap items-start justify-between gap-inline">
+  <div class="flex flex-wrap items-start justify-between gap-inline" data-stage>
     <mds-text typography="page" tag="h1" class="min-w-0">Richieste</mds-text>
     <mds-button>Nuova richiesta</mds-button>
   </div>
   <div class="grid gap-between-groups">
-    <form role="search" class="grid gap-between-fields">
+    <form role="search" class="grid gap-between-fields" data-stage>
       <div class="field-group max-w-form">
         <mds-input-field label="Cerca per nome o numero">
           <mds-input type="search" name="q" value="Rossini"></mds-input>

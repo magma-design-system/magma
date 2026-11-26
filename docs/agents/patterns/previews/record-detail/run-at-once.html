@@ -2,7 +2,7 @@
 try: Press Prendi in carico: the button waits for the answer, then the page shows the practice as the back end returns it, with its new status and actions, a toast says it was done, and the focus goes to the heading.
 whole-page: true
 -->
-<mds-header>
+<mds-header data-stage>
   <mds-header-bar>
     <mds-text typography="h6" tag="p">Servizi demografici</mds-text>
     <mds-button slot="nav" href="#" variant="dark" tone="text" current="section">Pratiche</mds-button>
@@ -18,7 +18,7 @@ whole-page: true
     <mds-button href="#" variant="dark" tone="text" class="w-full justify-start">Esci</mds-button>
   </nav>
 </mds-header>
-<mds-dropdown target="#persona" placement="bottom-end" strategy="fixed">
+<mds-dropdown target="#persona" placement="bottom-end" strategy="fixed" data-stage>
   <mds-text typography="detail" tag="p" class="text-fg-muted">Mario Rossi</mds-text>
   <mds-button href="#" icon="mi/baseline/person" variant="dark" tone="text" label="Profilo"></mds-button>
   <mds-separator></mds-separator>
@@ -26,22 +26,22 @@ whole-page: true
 </mds-dropdown>
 <main class="page-frame grid gap-between-sections py-between-sections">
   <header class="@container grid gap-title-content">
-    <mds-button href="#" icon="mi/baseline/arrow-back" variant="dark" tone="text" size="sm" class="justify-self-start">Pratiche</mds-button>
+    <mds-button href="#" icon="mi/baseline/arrow-back" variant="dark" tone="text" size="sm" class="justify-self-start" data-stage>Pratiche</mds-button>
     <div class="flex flex-wrap items-start justify-between gap-inline">
       <div class="grid min-w-0 grow basis-actions gap-title-content">
-        <mds-text typography="caption" tag="p" class="text-fg-muted">Pratica 2026/0142</mds-text>
+        <mds-text typography="caption" tag="p" class="text-fg-muted" data-stage>Pratica 2026/0142</mds-text>
         <div class="flex flex-wrap items-center gap-inline">
           <mds-text id="titolo" typography="page" tag="h1" class="min-w-0" tabindex="-1">Cambio di residenza</mds-text>
-          <mds-badge id="stato" variant="info" label="Nuova"></mds-badge>
+          <mds-badge id="stato" variant="info" label="Nuova" data-stage></mds-badge>
         </div>
-        <mds-text typography="detail" tag="p" class="text-fg-muted">Ufficio anagrafe, ricevuta il 3 marzo 2026</mds-text>
+        <mds-text typography="detail" tag="p" class="text-fg-muted" data-stage>Ufficio anagrafe, ricevuta il 3 marzo 2026</mds-text>
       </div>
       <div id="azioni" class="flex gap-inline @max-actions:basis-full @max-actions:flex-col @max-actions:*:self-stretch">
         <mds-button id="prendi">Prendi in carico</mds-button>
       </div>
     </div>
   </header>
-  <div class="@container grid gap-between-fields">
+  <div class="@container grid gap-between-fields" data-stage>
     <mds-tab>
       <mds-tab-item label="Dati" href="#dati" selected></mds-tab-item>
       <mds-tab-item label="Documenti" href="#documenti"></mds-tab-item>

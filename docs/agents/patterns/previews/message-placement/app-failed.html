@@ -3,7 +3,7 @@ try: The server answers nothing: the bar of the application and the title of the
 height: 460
 whole-page: true
 -->
-<mds-header>
+<mds-header data-stage>
   <mds-header-bar>
     <mds-text typography="h6" tag="p">Gestione pratiche</mds-text>
     <mds-button slot="nav" href="#" variant="dark" tone="text" current>Pratiche</mds-button>
@@ -19,19 +19,19 @@ whole-page: true
     <mds-button href="#" variant="dark" tone="text" class="w-full justify-start">Esci</mds-button>
   </nav>
 </mds-header>
-<mds-dropdown target="#persona" placement="bottom-end" strategy="fixed">
+<mds-dropdown target="#persona" placement="bottom-end" strategy="fixed" data-stage>
   <mds-text typography="detail" tag="p" class="text-fg-muted">Mario Rossi</mds-text>
   <mds-button href="#" icon="mi/baseline/person" variant="dark" tone="text" label="Profilo"></mds-button>
   <mds-separator></mds-separator>
   <mds-button href="#" icon="mi/baseline/logout" variant="dark" tone="text" label="Esci"></mds-button>
 </mds-dropdown>
 <main class="page-frame grid gap-between-sections py-between-sections">
-  <mds-text typography="page" tag="h1">Pratiche</mds-text>
+  <mds-text typography="page" tag="h1" data-stage>Pratiche</mds-text>
   <mds-banner id="message" variant="error" tone="strong" headline="Il servizio non risponde">
     <mds-text>Non è stato possibile caricare la pagina. Riprova tra qualche istante.</mds-text>
     <mds-button id="retry" slot="action" variant="error" tone="strong">Riprova</mds-button>
   </mds-banner>
-  <mds-list id="content" class="hidden">
+  <mds-list id="content" class="hidden" data-stage>
     <mds-list-item>2026/114, Rossi Mario: in istruttoria</mds-list-item>
     <mds-list-item>2026/118, Bianchi Anna: da integrare</mds-list-item>
   </mds-list>

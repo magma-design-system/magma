@@ -1,7 +1,7 @@
 {
   "end": "Fine",
   "endDate": "Data di fine",
-  "endValue": "{{{end}}}: {{{date}}}",
+  "endValue": "{{end}}: {{date}}",
   "from": "Dal",
   "openCalendar": "Apri il calendario",
   "pickDate": "Scegli una data",

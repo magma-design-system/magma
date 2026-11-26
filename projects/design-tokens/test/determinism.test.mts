@@ -2,6 +2,7 @@ import { expect, test } from 'vitest'
 
 import { createColorTokens, MagmaConfig } from '../src/lib/color.mjs'
 import { resolveSurfaceOptIn } from '../src/lib/surface.mjs'
+import { resolveEmphasisOptIn, washedColors } from '../src/lib/state-color.mjs'
 import realConfig from '../.magma-design-tokensrc.json'
 
 const CONFIG = realConfig as MagmaConfig
@@ -42,7 +43,8 @@ test('color and step order follows the config, run after run', () => {
   // surface/border are DERIVED groups (lightness engine, not config colors);
   // they are appended after the APCA colors, so exclude them when checking that
   // the config-driven entries follow the config order.
-  const isDerived = (entry: string) => ['surface', 'border', 'text'].includes(entry.split('.')[0])
+  const isDerived = (entry: string) =>
+    ['surface', 'border', 'wash', 'emphasis', 'inverse', 'fg', 'text'].includes(entry.split('.')[0])
   const groupName = (entry: string) => entry.split('.').length === 2
   // the config-driven group.name entries appear in the exact order of the config colors
   expect(orderOf(first.tokens).filter((e) => groupName(e) && !isDerived(e))).toEqual(configOrder)
@@ -53,12 +55,26 @@ test('color and step order follows the config, run after run', () => {
   const surfaceFamilies = CONFIG.colors
     .filter((color) => !color.disabled && resolveSurfaceOptIn(CONFIG, color) !== undefined)
     .map((color) => color.name.split('.')[1])
+  // the states are DERIVED (#1427): washes for every family with surfaces or a solid fill, the
+  // band of the solid fills, the selected inverse of the tints, in config order
+  const familyOf = (color: { name: string }) => color.name.split('.')[1]
+  const washed = washedColors(CONFIG)
+  const filled = washed.filter((color) => resolveEmphasisOptIn(CONFIG, color) !== undefined)
+  const tints = washed.filter((color) => resolveEmphasisOptIn(CONFIG, color) === undefined)
+  // the accents have text roles with no surfaces of their own, after the families with surfaces
+  const accents = filled.filter((color) => resolveSurfaceOptIn(CONFIG, color) === undefined)
   // text roles are DERIVED too (by-target, A7); one entry per opted-in family,
-  // appended after surfaces and borders in config order
+  // appended after surfaces, borders and the states in config order
   expect(orderOf(first.tokens).filter((e) => groupName(e) && isDerived(e))).toEqual([
     ...surfaceFamilies.map((family) => `surface.${family}`),
     ...surfaceFamilies.map((family) => `border.${family}`),
+    ...washed.map((color) => `wash.${familyOf(color)}`),
+    ...filled.map((color) => `emphasis.${familyOf(color)}`),
+    ...tints.map((color) => `inverse.${familyOf(color)}`),
+    // the ink of the accents on a neutral surface, a step per mode (#1496)
+    ...accents.map((color) => `fg.${familyOf(color)}`),
     ...surfaceFamilies.map((family) => `text.${family}`),
+    ...accents.map((color) => `text.${familyOf(color)}`),
   ])
   // and the whole flattened order is stable between runs
   expect(orderOf(second.tokens)).toEqual(orderOf(first.tokens))

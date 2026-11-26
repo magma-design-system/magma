@@ -2,7 +2,7 @@
 try: Press Invia promemoria in the open menu of Bianchi Anna: the menu closes, the sending fails, and a toast that stays says so, with Riprova.
 height: 400
 -->
-<div class="grid gap-title-content">
+<div class="grid gap-title-content" data-stage>
   <mds-text typography="page" tag="h1">Iscritti al corso</mds-text>
   <div class="grid">
     <div class="flex items-center justify-between gap-inline">
@@ -15,7 +15,7 @@ height: 400
     </div>
   </div>
 </div>
-<mds-dropdown id="menu" target="#actions" placement="bottom-end" visible>
+<mds-dropdown id="menu" target="#actions" placement="bottom-end" visible data-stage>
   <mds-button id="remind" icon="mi/baseline/send" variant="dark" tone="text" label="Invia promemoria"></mds-button>
 </mds-dropdown>
 <mds-toast-region>
@@ -23,7 +23,7 @@ height: 400
     Promemoria a Bianchi Anna non inviato
     <mds-button id="retry" slot="action" size="sm" variant="error" tone="outline">Riprova</mds-button>
   </mds-toast>
-  <mds-toast id="sent" variant="success">Promemoria inviato a Bianchi Anna</mds-toast>
+  <mds-toast id="sent" variant="success" data-stage>Promemoria inviato a Bianchi Anna</mds-toast>
 </mds-toast-region>
 <script>
   const menu = document.getElementById('menu');

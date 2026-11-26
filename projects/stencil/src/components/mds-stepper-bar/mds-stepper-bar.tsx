@@ -26,7 +26,6 @@ import { StepperBarNavigationType } from './meta/meta';
 })
 export class MdsStepperBar {
   private items: NodeListOf<HTMLMdsStepperBarItemElement>;
-  private contentItems: NodeListOf<HTMLElement>;
   @State() currentItem = 0;
   @Element() private element: HTMLMdsStepperBarElement;
 
@@ -45,11 +44,13 @@ export class MdsStepperBar {
   private queryItems = (): NodeListOf<HTMLMdsStepperBarItemElement> =>
     this.element.querySelectorAll<HTMLMdsStepperBarItemElement>('mds-stepper-bar-item');
 
-  private queryContentItems = (): NodeListOf<HTMLElement> =>
-    this.element.querySelectorAll<HTMLElement>('[slot=content]');
-
-  // private queryContents = (): NodeListOf<HTMLElement> =>
-  //   this.element.querySelectorAll<HTMLElement>('[slot="content"]')
+  // the panels the content slot shows: the children of the bar, the ones in the page now. Read on
+  // every call, as the items are: a list kept from the load missed the panels a framework adds or
+  // replaces later (#1429), and a descendant would count the panels of a bar nested in a panel
+  private queryContentItems = (): HTMLElement[] =>
+    Array.from(this.element.children).filter(
+      (child): child is HTMLElement => child.getAttribute('slot') === 'content',
+    );
 
   private minmax = (value: number, min: number, max: number): number =>
     Math.min(Math.max(value, min), max);
@@ -83,7 +84,7 @@ export class MdsStepperBar {
   // the `hidden` attribute hides a panel without any style of the page: the `hidden` class it
   // used took effect only where the page defined it
   private setCurrentContent = (): void => {
-    this.contentItems.forEach((item: HTMLElement, index: number) => {
+    this.queryContentItems().forEach((item: HTMLElement, index: number) => {
       item.hidden = index !== this.currentItem;
     });
   };
@@ -137,10 +138,11 @@ export class MdsStepperBar {
   // page, when it found its items by id; it finds them by tag now, and the id is the page's (#680)
   componentWillLoad(): void {
     this.items = this.queryItems();
+    // the content slot announces its first panels before the load: they take the step already
+    this.currentItem = this.itemsDone - 1;
   }
 
   componentDidLoad(): void {
-    this.contentItems = this.queryContentItems();
     this.setCurrent(this.itemsDone);
   }
 
@@ -156,7 +158,8 @@ export class MdsStepperBar {
           <slot />
         </div>
         <div class="contents" part="contents">
-          <slot name="content" />
+          {/* a panel the page adds, removes or replaces after the load takes its state here */}
+          <slot name="content" onSlotchange={this.setCurrentContent} />
         </div>
       </Host>
     );

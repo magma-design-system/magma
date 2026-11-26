@@ -18,10 +18,15 @@ The `<mds-list>` web component is the structural container of the Magma Design S
 - **List role**: Exposes the group as a semantic list to assistive technology regardless of the surrounding markup.
 - **Compound parent**: Acts purely as the container; the visual rows (leading glyph and text) live in the slotted `<mds-list-item>` children.
 - **Default slot is structural**: The default slot is meant to receive `<mds-list-item>` element(s) rather than free text.
+- **The marker belongs to the list**: as `list-style` belongs to a `<ul>`, `marker` is set on the list and every item follows it, also an item added or moved into the list later.
 
 #### Properties & Visual Configurations
 
-This component exposes no configurable props; it carries no `variant`, `tone`, `size` or text colour of its own: the items take the colour of the container, and a class such as `text-fg-muted` on `<mds-list>` makes the whole list secondary. All appearance and behavior are delegated to the slotted `<mds-list-item>` children. For the shared ladders that govern the children, see [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md).
+- **`marker`** decides what the items are:
+  - `dot` (the default): text items, each with a glyph before it (the `icon` of the item, a dot without it), indented by the room of the glyphs;
+  - `none`: items that are links, cards or chips. No glyph, no indent, and each item takes any content and wraps it in nothing, so the page lays the items out with classes on the list: a column (the default grid, with a `gap-*`), a row that wraps (`flex flex-wrap`), a grid of cards (`grid-cols-*` under a container query). The `icon`, `typography` and `variant` of the items do not apply: the content brings its own. The list and its items keep the `list` and `listitem` roles.
+
+Beyond `marker`, the list carries no `variant`, `tone`, `size` or text colour of its own: the items take the colour of the container, and a class such as `text-fg-muted` on `<mds-list>` makes the whole list secondary. All appearance and behavior are delegated to the slotted `<mds-list-item>` children. For the shared ladders that govern the children, see [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md).
 
 
 ### 2. Examples
@@ -38,6 +43,56 @@ The canonical form. Place `<mds-list-item>` children directly inside `<mds-list>
   <mds-list-item>Verifica i dati di fatturazione</mds-list-item>
   <mds-list-item>Scarica la ricevuta in PDF</mds-list-item>
 </mds-list>
+```
+
+#### A Column of Links
+
+With `marker="none"` the items hold components: a navigation list, the column of a footer. The text style comes from the `<mds-text>` around each link, which the link takes.
+
+```html
+<mds-text id="risorse" typography="h6" tag="h2">Risorse</mds-text>
+<mds-list marker="none" aria-labelledby="risorse" class="gap-300">
+  <mds-list-item>
+    <mds-text typography="detail"><mds-link href="/componenti">Componenti</mds-link></mds-text>
+  </mds-list-item>
+  <mds-list-item>
+    <mds-text typography="detail"><mds-link href="/token">Token</mds-link></mds-text>
+  </mds-list-item>
+</mds-list>
+```
+
+#### A Row of Chips
+
+The classes of the list lay out the items: a row that wraps.
+
+```html
+<mds-list marker="none" class="flex flex-wrap gap-300">
+  <mds-list-item><mds-chip label="Claude Code"></mds-chip></mds-list-item>
+  <mds-list-item><mds-chip label="Cursor"></mds-chip></mds-list-item>
+</mds-list>
+```
+
+#### A Grid of Cards
+
+One card per item, in as many columns as the container gives room for. Steps in order keep their number in the content (the title of the card): the list draws none.
+
+```html
+<div class="@container">
+  <mds-list marker="none" class="gap-600 @md:grid-cols-2 @3xl:grid-cols-3">
+    <mds-list-item>
+      <mds-card>
+        <mds-card-header><mds-text typography="h6" tag="h3">1. Componenti</mds-text></mds-card-header>
+        <mds-card-content><mds-text typography="detail">I componenti, uno per ruolo.</mds-text></mds-card-content>
+      </mds-card>
+    </mds-list-item>
+    <mds-list-item>
+      <mds-card>
+        <mds-card-header><mds-text typography="h6" tag="h3">2. Blocchi</mds-text></mds-card-header>
+        <mds-card-content><mds-text typography="detail">I blocchi, composti dai componenti.</mds-text></mds-card-content>
+      </mds-card>
+    </mds-list-item>
+  </mds-list>
+</div>
 ```
 
 #### Overriding the Item Icon
@@ -147,7 +202,7 @@ Using a raw list element bypasses the design-system layout, typography defaults,
 
 #### Do Not Put HTML Elements in the Default Slot of `<mds-list-item>`
 
-The default slot of `<mds-list-item>` accepts a plain text string only; placing HTML elements or other components there is explicitly discouraged in the component's API and can break layout and compound-component communication.
+In a list with the `dot` marker, the default slot of `<mds-list-item>` accepts a plain text string only: the item wraps it in its text, after the glyph, and HTML elements or components there break the layout. A list whose items are components takes `marker="none"`.
 
 ```html
 <!-- INCORRECT -->
@@ -160,6 +215,24 @@ The default slot of `<mds-list-item>` accepts a plain text string only; placing 
 <!-- CORRECT -->
 <mds-list>
   <mds-list-item>Allegato 1 - Contratto firmato</mds-list-item>
+</mds-list>
+```
+
+#### Do Not Write a List of Links, Cards or Chips as a Native List
+
+A native list with its markers removed loses its semantics in Safari, which reads a `list-style: none` list as no list unless it carries `role="list"`, and its items are laid out by hand. `marker="none"` keeps the roles and takes the layout from the classes of the list.
+
+```html
+<!-- INCORRECT -->
+<ul class="m-0 flex list-none flex-col gap-300 p-0">
+  <li><mds-link href="/componenti">Componenti</mds-link></li>
+  <li><mds-link href="/token">Token</mds-link></li>
+</ul>
+
+<!-- CORRECT -->
+<mds-list marker="none" class="gap-300">
+  <mds-list-item><mds-link href="/componenti">Componenti</mds-link></mds-list-item>
+  <mds-list-item><mds-link href="/token">Token</mds-link></mds-list-item>
 </mds-list>
 ```
 
@@ -234,6 +307,13 @@ The default slot of `<mds-list>` is documented to receive `<mds-list-item>` elem
 </mds-list>
 ```
 
+
+
+## Properties
+
+| Property | Attribute | Description                                                                                                                                                                                                                                                                                                                                       | Type              | Default |
+| -------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- | ------- |
+| `marker` | `marker`  | The marker of the items: `dot` draws a glyph before the text of each item (the `icon` of the item, a dot without it); `none` draws nothing and indents nothing, for a list whose items are links, cards or chips: each item then takes any content, and the page lays the items out (a column, a row that wraps, a grid) with classes on the list | `"dot" \| "none"` | `'dot'` |
 
 
 ## Slots

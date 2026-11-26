@@ -185,8 +185,8 @@ Parts (e.g. `mds-table-cell`, `mds-card-header`) always compose inside their par
 
 | Component                       | Native analogue | Intent                                                                            |
 | ------------------------------- | --------------- | --------------------------------------------------------------------------------- |
-| `mds-list`                      | `<ul>` / `<ol>` | Vertical list container.                                                          |
-| `mds-list-item`                 | `<li>`          | Single row inside `mds-list`.                                                     |
+| `mds-list`                      | `<ul>` / `<ol>` | List of text items after a marker, or of links, cards, chips (`marker="none"`).   |
+| `mds-list-item`                 | `<li>`          | Single item inside `mds-list`: a text after its marker, or any content.           |
 | `mds-table`                     | `<table>`       | Tabular data container.                                                           |
 | `mds-table-header`              | `<thead>`       | Header section of `mds-table`.                                                    |
 | `mds-table-header-cell`         | `<th>`          | Header cell inside `mds-table-header`.                                            |
@@ -214,7 +214,7 @@ Parts (e.g. `mds-table-cell`, `mds-card-header`) always compose inside their par
 
 | Component          | Native analogue | Intent                                                                                                                          |
 | ------------------ | --------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| `mds-chip`         | -               | Compact, selectable tag with optional icon or colour swatch and delete action.                                                  |
+| `mds-chip`         | -               | Short piece of metadata of a record (tag, status, category): removable, selectable as a filter value, or opening what it names. |
 | `mds-badge`        | -               | Small inline badge for counts, status dots, or tags.                                                                            |
 | `mds-label`        | -               | Standalone text label for grouping or tagging - **not** the `<label>` for inputs (use `mds-input-field`'s label slot for that). |
 | `mds-mention`      | -               | Inline @-mention tag with avatar and name.                                                                                      |

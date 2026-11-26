@@ -178,16 +178,19 @@ const scoreOf = (pattern: Pattern, words: string[]): number => {
   );
 };
 
-/** What a candidate answers: Magma knows the need, no default covers it yet. */
+/**
+ * What a candidate answers: Magma knows the need, no default covers it yet. The choice the agent
+ * makes instead is a proposal, shown rendered before it is built on (#1492).
+ */
 export const CANDIDATE =
-  'A candidate: Magma knows this need and has no default for it yet. Do not present a choice of yours as the Magma default: tell the user which choice you made and why. ' +
+  'A candidate: Magma knows this need and has no default for it yet. Do not present a choice of yours as the Magma default: render it with render_preview and show it to the user before you build on it, and tell them which choice you made and why. ' +
   GAP;
 
 export const getPattern = (context: ToolContext): Tool => ({
   name: 'get_pattern',
   title: 'Read a Magma pattern',
   description:
-    'The patterns Magma ships: the solution to a task across components (where a message goes, confirming an action, an empty, a loading or a failed part), the same in every product; first the domains of the design language (kind design-language), the rules of composition every pattern stands on (the space between elements, ...), then the building blocks (kind block), the sections of a page that come back in several patterns (the page header). Without arguments the list, in layerDir the folder of the layers of this project (its magma/patterns/) and in layerErrors what is wrong in them; with need the patterns for it; with id the pattern (its variables, cases, always-true rules and open choices, with the layer of this project applied, and in layerFile the file that layer is read from, to write or change); with id and situation, the values of its variables you know, the one case to follow (with its preview when Magma has one: the stage, as markup, what to try in it and the paths of its images, light and dark, to show where the stage cannot run, and in rules the rules of the domains it relies on, each with its domain, its text and the path of its preview; the other examples of the case in examples), or which variables are still to settle; for a block, the regions that show, in the order of the page, and when the values match one of its situations, every variable given, the preview of that situation as for a case (the stage, what to try, the other examples); with id and section the text of that section. Ask before building a flow or the head of a page, and follow the case or the regions it gives and its rules.',
+    'The patterns Magma ships: the solution to a task across components (where a message goes, confirming an action, an empty, a loading or a failed part), the same in every product; first the domains of the design language (kind design-language), the rules of composition every pattern stands on (the space between elements, ...), then the building blocks (kind block), the sections of a page that come back in several patterns (the page header). Without arguments the list, in layerDir the folder of the layers of this project (its magma/patterns/) and in layerErrors what is wrong in them; with need the patterns for it; with id the pattern (its variables, cases, always-true rules and open choices, with the layer of this project applied, and in layerFile the file that layer is read from, to write or change); with id and situation, the values of its variables you know, the one case to follow (in use the parts of its solution, each with its role and the component to write, in the order of its preview, a value in angle brackets the text of the application; with its preview when Magma has one: the stage, as markup, the elements marked data-stage the context of the case and not part of it, what to try in it and the paths of its images, light and dark, to show where the stage cannot run, and in rules the rules of the domains it relies on, each with its domain, its text and the path of its preview; the other examples of the case in examples), or which variables are still to settle; for a block, the regions that show, in the order of the page, and when the values match one of its situations, every variable given, the preview of that situation as for a case (the stage, what to try, the other examples); with id and section the text of that section. Ask before building a flow or the head of a page, compose from the parts of the case or the regions it gives, then add what your situation needs, and follow its rules.',
   inputSchema: {
     type: 'object',
     properties: {

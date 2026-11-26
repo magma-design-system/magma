@@ -57,6 +57,7 @@ import { KeyboardTest } from "./components/mds-keyboard/meta/type";
 import { KeyboardKeyName } from "./type/keyboard";
 import { MdsLabelVariantType } from "./components/mds-label/mds-label";
 import { LinkUnderlineType, LinkVariantType } from "./components/mds-link/meta/types";
+import { ListMarkerType } from "./components/mds-list/meta/types";
 import { MentionSize } from "./components/mds-mention/meta/type";
 import { MdsMentionEvent } from "./components/mds-mention/meta/interface";
 import { ModalAnimationStyleType, ModalInteractionType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
@@ -149,6 +150,7 @@ export { KeyboardTest } from "./components/mds-keyboard/meta/type";
 export { KeyboardKeyName } from "./type/keyboard";
 export { MdsLabelVariantType } from "./components/mds-label/mds-label";
 export { LinkUnderlineType, LinkVariantType } from "./components/mds-link/meta/types";
+export { ListMarkerType } from "./components/mds-list/meta/types";
 export { MentionSize } from "./components/mds-mention/meta/type";
 export { MdsMentionEvent } from "./components/mds-mention/meta/interface";
 export { ModalAnimationStyleType, ModalInteractionType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
@@ -647,7 +649,7 @@ export namespace Components {
          */
         "size": ButtonSizeType;
         /**
-          * Specifies the target of the URL, if self or blank
+          * Specifies the target of the URL, if self or blank: blank opens a new tab, without giving it access to the page (`rel="noopener noreferrer"`)
           * @default 'self'
          */
         "target": ButtonTargetType;
@@ -700,6 +702,10 @@ export namespace Components {
           * Specifies if the component is disabled or not
          */
         "disabled"?: boolean;
+        /**
+          * The accessible name of the chevron, the button that opens the menu, in place of the one the component builds in the language of the page: "More actions for" and `label`, or "More actions" without a label. Two split buttons of one page then name their chevrons apart
+         */
+        "dropdownLabel"?: string;
         /**
           * The URL the primary action navigates to, instead of submitting; the chevron only opens the menu
          */
@@ -931,7 +937,7 @@ export namespace Components {
      */
     interface MdsChip {
         /**
-          * Adds ARIA support to the element if has interaction
+          * Opens the content that revolves around what the chip names, such as the office or the person a record refers to: the label becomes a focusable button that the pointer, Enter and Space activate, and it emits `mdsChipClickLabel`. Not for an action of the application or of an agent (send, ask, a suggestion): that is an `mds-button`.
          */
         "clickable"?: boolean;
         /**
@@ -2237,17 +2243,22 @@ export namespace Components {
      * @category data
      */
     interface MdsList {
+        /**
+          * The marker of the items: `dot` draws a glyph before the text of each item (the `icon` of the item, a dot without it); `none` draws nothing and indents nothing, for a list whose items are links, cards or chips: each item then takes any content, and the page lays the items out (a column, a row that wraps, a grid) with classes on the list
+          * @default 'dot'
+         */
+        "marker": ListMarkerType;
     }
     /**
      * @parent mds-list
      */
     interface MdsListItem {
         /**
-          * Specifies the icon displayed in the element
+          * Specifies the icon displayed in the element, in place of the dot; none in a list with `marker="none"`
          */
         "icon"?: string;
         /**
-          * Specifies the typography of the element
+          * Specifies the typography of the element; none in a list with `marker="none"`, where the content brings its own
           * @default 'detail'
          */
         "typography": TypographyInfoType | TypographyReadType;
@@ -2995,9 +3006,13 @@ export namespace Components {
          */
         "label": string;
         /**
-          * Specifies if the step is displayed
+          * Shows the caption of the step above the label: "Step 1", "Passo 1", in the language of the page, or the text of `stepLabel`
          */
         "step": boolean;
+        /**
+          * The text of the caption that `step` shows, in place of the one the component writes in the language of the page ("Passo 2"). `{{ index }}` in it becomes the position of the step, as in the phrases of the component: `"Fase {{ index }}"` gives "Fase 1", "Fase 2"; a text without it is shown as it is. For another word, or a language the component has no texts for
+         */
+        "stepLabel"?: string;
         /**
           * Specifies the typography of the element
           * @default 'h6'
@@ -6135,7 +6150,7 @@ declare namespace LocalJSX {
          */
         "size"?: ButtonSizeType;
         /**
-          * Specifies the target of the URL, if self or blank
+          * Specifies the target of the URL, if self or blank: blank opens a new tab, without giving it access to the page (`rel="noopener noreferrer"`)
           * @default 'self'
          */
         "target"?: ButtonTargetType;
@@ -6188,6 +6203,10 @@ declare namespace LocalJSX {
           * Specifies if the component is disabled or not
          */
         "disabled"?: boolean;
+        /**
+          * The accessible name of the chevron, the button that opens the menu, in place of the one the component builds in the language of the page: "More actions for" and `label`, or "More actions" without a label. Two split buttons of one page then name their chevrons apart
+         */
+        "dropdownLabel"?: string;
         /**
           * The `id` of a `<form>` element to associate this element with.
          */
@@ -6446,7 +6465,7 @@ declare namespace LocalJSX {
      */
     interface MdsChip {
         /**
-          * Adds ARIA support to the element if has interaction
+          * Opens the content that revolves around what the chip names, such as the office or the person a record refers to: the label becomes a focusable button that the pointer, Enter and Space activate, and it emits `mdsChipClickLabel`. Not for an action of the application or of an agent (send, ask, a suggestion): that is an `mds-button`.
          */
         "clickable"?: boolean;
         /**
@@ -7813,17 +7832,22 @@ declare namespace LocalJSX {
      * @category data
      */
     interface MdsList {
+        /**
+          * The marker of the items: `dot` draws a glyph before the text of each item (the `icon` of the item, a dot without it); `none` draws nothing and indents nothing, for a list whose items are links, cards or chips: each item then takes any content, and the page lays the items out (a column, a row that wraps, a grid) with classes on the list
+          * @default 'dot'
+         */
+        "marker"?: ListMarkerType;
     }
     /**
      * @parent mds-list
      */
     interface MdsListItem {
         /**
-          * Specifies the icon displayed in the element
+          * Specifies the icon displayed in the element, in place of the dot; none in a list with `marker="none"`
          */
         "icon"?: string;
         /**
-          * Specifies the typography of the element
+          * Specifies the typography of the element; none in a list with `marker="none"`, where the content brings its own
           * @default 'detail'
          */
         "typography"?: TypographyInfoType | TypographyReadType;
@@ -8642,9 +8666,13 @@ declare namespace LocalJSX {
          */
         "onMdsStepperBarItemDone"?: (event: MdsStepperBarItemCustomEvent<MdsStepperBarItemEventDetail>) => void;
         /**
-          * Specifies if the step is displayed
+          * Shows the caption of the step above the label: "Step 1", "Passo 1", in the language of the page, or the text of `stepLabel`
          */
         "step"?: boolean;
+        /**
+          * The text of the caption that `step` shows, in place of the one the component writes in the language of the page ("Passo 2"). `{{ index }}` in it becomes the position of the step, as in the phrases of the component: `"Fase {{ index }}"` gives "Fase 1", "Fase 2"; a text without it is shown as it is. For another word, or a language the component has no texts for
+         */
+        "stepLabel"?: string;
         /**
           * Specifies the typography of the element
           * @default 'h6'
@@ -9381,6 +9409,7 @@ declare namespace LocalJSX {
     }
     interface MdsButtonDropdownAttributes {
         "label": string;
+        "dropdownLabel": string;
         "autoFocus": boolean;
         "icon": string;
         "iconCurrent": string;
@@ -9708,6 +9737,9 @@ declare namespace LocalJSX {
         "tone": ToneMinimalVariantType;
         "underline": LinkUnderlineType;
     }
+    interface MdsListAttributes {
+        "marker": ListMarkerType;
+    }
     interface MdsListItemAttributes {
         "typography": TypographyInfoType | TypographyReadType;
         "variant": TypographyReadingVariants;
@@ -9882,6 +9914,7 @@ declare namespace LocalJSX {
     interface MdsStepperBarItemAttributes {
         "label": string;
         "step": boolean;
+        "stepLabel": string;
         "badge": boolean;
         "icon": string;
         "iconChecked": string | undefined;
@@ -10092,7 +10125,7 @@ declare namespace LocalJSX {
         "mds-kpi-item": Omit<MdsKpiItem, keyof MdsKpiItemAttributes> & { [K in keyof MdsKpiItem & keyof MdsKpiItemAttributes]?: MdsKpiItem[K] } & { [K in keyof MdsKpiItem & keyof MdsKpiItemAttributes as `attr:${K}`]?: MdsKpiItemAttributes[K] } & { [K in keyof MdsKpiItem & keyof MdsKpiItemAttributes as `prop:${K}`]?: MdsKpiItem[K] };
         "mds-label": Omit<MdsLabel, keyof MdsLabelAttributes> & { [K in keyof MdsLabel & keyof MdsLabelAttributes]?: MdsLabel[K] } & { [K in keyof MdsLabel & keyof MdsLabelAttributes as `attr:${K}`]?: MdsLabelAttributes[K] } & { [K in keyof MdsLabel & keyof MdsLabelAttributes as `prop:${K}`]?: MdsLabel[K] };
         "mds-link": Omit<MdsLink, keyof MdsLinkAttributes> & { [K in keyof MdsLink & keyof MdsLinkAttributes]?: MdsLink[K] } & { [K in keyof MdsLink & keyof MdsLinkAttributes as `attr:${K}`]?: MdsLinkAttributes[K] } & { [K in keyof MdsLink & keyof MdsLinkAttributes as `prop:${K}`]?: MdsLink[K] };
-        "mds-list": MdsList;
+        "mds-list": Omit<MdsList, keyof MdsListAttributes> & { [K in keyof MdsList & keyof MdsListAttributes]?: MdsList[K] } & { [K in keyof MdsList & keyof MdsListAttributes as `attr:${K}`]?: MdsListAttributes[K] } & { [K in keyof MdsList & keyof MdsListAttributes as `prop:${K}`]?: MdsList[K] };
         "mds-list-item": Omit<MdsListItem, keyof MdsListItemAttributes> & { [K in keyof MdsListItem & keyof MdsListItemAttributes]?: MdsListItem[K] } & { [K in keyof MdsListItem & keyof MdsListItemAttributes as `attr:${K}`]?: MdsListItemAttributes[K] } & { [K in keyof MdsListItem & keyof MdsListItemAttributes as `prop:${K}`]?: MdsListItem[K] };
         "mds-mention": Omit<MdsMention, keyof MdsMentionAttributes> & { [K in keyof MdsMention & keyof MdsMentionAttributes]?: MdsMention[K] } & { [K in keyof MdsMention & keyof MdsMentionAttributes as `attr:${K}`]?: MdsMentionAttributes[K] } & { [K in keyof MdsMention & keyof MdsMentionAttributes as `prop:${K}`]?: MdsMention[K] };
         "mds-modal": Omit<MdsModal, keyof MdsModalAttributes> & { [K in keyof MdsModal & keyof MdsModalAttributes]?: MdsModal[K] } & { [K in keyof MdsModal & keyof MdsModalAttributes as `attr:${K}`]?: MdsModalAttributes[K] } & { [K in keyof MdsModal & keyof MdsModalAttributes as `prop:${K}`]?: MdsModal[K] };

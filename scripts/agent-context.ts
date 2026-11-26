@@ -4,7 +4,7 @@
   The generated docs have their checks (check.api-snapshot, check.usage-docs, check.patterns,
   claude-plugin:check, check.diagrams). This one holds the context written by hand for the agents
   that work on the repository (`isContext`): AGENTS.md and the root README, the documents of
-  docs/, the documents at the root of each project, the project skills of .claude/skills/, the
+  docs/, the documents at the root of each project, the skills of .claude/skills/, the
   instructions and the templates of .github/. Each rule reads what it compares with from where it
   is decided, never from a list kept here:
 
@@ -15,16 +15,32 @@
   - commands: every `nx run <project>:<target>` of the context and of the guides of docs/agents/
     names a target of the project graph (`nx graph --file`, as check.diagrams reads it);
   - projects: every project of the graph has its line in "Sub-projects and build order" of
-    AGENTS.md, and no other line is there; every project skill is named in AGENTS.md as `/<name>`;
+    AGENTS.md, and no other line is there;
+  - skills: every skill is named in AGENTS.md as it is invoked, `/<name>` for a project skill
+    (.claude/skills/<name>/SKILL.md), `/<plugin>:<name>` for a skill of a plugin kept there
+    (.claude/skills/<folder>/skills/<name>/SKILL.md, beside .claude/skills/<folder>/.claude-plugin/
+    plugin.json): Claude Code loads such a folder as a skills-directory plugin and prefixes its
+    skills with the `name` of the manifest (https://code.claude.com/docs/en/plugins/create.md,
+    "skills-directory plugin"); a `name` in a skill's frontmatter is the name of its folder, since
+    it would replace the command, and its description is there, at most 1,536 characters, where
+    the listing of the skills cuts it (https://code.claude.com/docs/en/skills.md, "Frontmatter
+    reference");
   - counts: a count of the components in figures, three of them ("117 components": a smaller
     number is an example, "two components"), is the number of folders of
     projects/stencil/src/components; a count of tools in the documents of the MCP server
     (`TOOL_COUNTS`) is the number of tools of the server (`toolsOf`), "the other N tools" one less;
   - copies: the commit types and the project scopes docs/COMMITS.md and
     .github/instructions/commit-messages.instructions.md write are those of commitlint.config.js,
-    and the count of types docs/COMMITS.md writes is theirs;
+    and the count of types docs/COMMITS.md writes is theirs; the skill paradigm-check (`PARADIGM`)
+    writes in criterion.md the scales its page.html offers, in page.md the collections page.html
+    reads and the rules that declare them, a version in the title of criterion.md that is the
+    newest of its History, an issue on every decision it records, and an issue, a date and the
+    place in the criterion on every case of cases.md;
   - budget: what every session loads before any task, CLAUDE.md with what it imports and the
-    names and descriptions of the project skills, stays within `BUDGET` tokens.
+    names and descriptions of the skills, stays within `BUDGET` tokens. A skill only a
+    person launches (`disable-model-invocation: true` in its frontmatter) does not count: Claude
+    Code keeps its description out of the context ("Description not in context, full skill loads
+    when invoked", https://code.claude.com/docs/en/skills.md, "Control who invokes a skill").
 
   Left out, and why:
   - the guides of docs/agents/ from the links and the index: the stencil build rewrites their
@@ -33,7 +49,8 @@
   - the CHANGELOG.md of each project: the release writes it;
   - a path inside a build output (a `dist` folder): the build writes it, git ignores it.
 
-  What a machine cannot see stays with the skill /context-review (.claude/skills/context-review):
+  What a machine cannot see stays with the skill /magma-dev:context-review
+  (.claude/skills/magma-dev/skills/context-review):
   whether a change needs a new line in a document, whether a document still describes the old
   behaviour, whether a part every session loads belongs in a document read on demand.
 
@@ -55,6 +72,9 @@ import { readProjectGraph, sectionOf, type ProjectGraph } from './diagrams.ts';
  * section read for one kind of task into a document the index of AGENTS.md routes to.
  */
 export const BUDGET = 6500;
+
+/** The folder of the skill that judges the issues and pull requests of contributors (#1546). */
+export const PARADIGM = '.claude/skills/magma-dev/skills/paradigm-check';
 
 /** The documents whose counts of tools are the tools of the MCP server. */
 export const TOOL_COUNTS = ['AGENTS.md', 'projects/mcp/README.md', 'docs/agents/mcp.md'];
@@ -146,6 +166,146 @@ const compare = (file: string, what: string, copy: string[], list: string[]): st
     errors.push(
       `${file}: the ${what} name ${extra.join(', ')}, which commitlint.config.js does not allow`,
     );
+  return errors;
+};
+
+/** A skill of .claude/skills/, its folder's name and the command that invokes it. */
+interface Skill {
+  file: string;
+  name: string;
+  command: string;
+}
+
+/** The skills of .claude/skills/: the project skills, and those of the plugins kept there. */
+const skillsOf = (files: string[], read: Repository['read'], errors: string[]): Skill[] => {
+  const prefixes = new Map<string, string | undefined>();
+  for (const file of files) {
+    const folder = /^\.claude\/skills\/([^/]+)\/\.claude-plugin\/plugin\.json$/.exec(file)?.[1];
+    if (folder === undefined) continue;
+    let name: unknown;
+    try {
+      name = (JSON.parse(read(file) ?? '') as { name?: unknown }).name;
+    } catch {
+      name = undefined;
+    }
+    if (typeof name === 'string' && name) prefixes.set(folder, name);
+    else {
+      prefixes.set(folder, undefined);
+      errors.push(`${file}: no "name", the prefix of the plugin's skills`);
+    }
+  }
+  const skills: Skill[] = [];
+  for (const file of files) {
+    const own = /^\.claude\/skills\/([^/]+)\/SKILL\.md$/.exec(file);
+    if (own) {
+      skills.push({ file, name: own[1], command: `/${own[1]}` });
+      continue;
+    }
+    const of = /^\.claude\/skills\/([^/]+)\/skills\/([^/]+)\/SKILL\.md$/.exec(file);
+    if (!of) continue;
+    if (!prefixes.has(of[1]))
+      errors.push(
+        `${file}: no .claude/skills/${of[1]}/.claude-plugin/plugin.json, so Claude Code does not load it`,
+      );
+    const prefix = prefixes.get(of[1]);
+    if (prefix) skills.push({ file, name: of[2], command: `/${prefix}:${of[2]}` });
+  }
+  return skills.sort((a, b) => a.file.localeCompare(b.file));
+};
+
+/** A string in a regular expression, as itself. */
+const literal = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+/** The first cells of the rows of the Markdown tables of a piece of text, headers left out. */
+const firstCells = (markdown: string): string[] => {
+  const cells: string[] = [];
+  let header = true;
+  for (const line of markdown.split('\n')) {
+    const cell = /^\|\s*([^|]*?)\s*\|/.exec(line)?.[1];
+    if (cell === undefined) header = true;
+    else if (/^:?-+:?$/.test(cell)) header = false;
+    else if (!header) cells.push(cell);
+  }
+  return cells;
+};
+
+/** What the files of the skill paradigm-check copy of each other, and how they break it. */
+const paradigmErrors = (read: Repository['read']): string[] => {
+  const page = read(`${PARADIGM}/page.html`);
+  if (page === undefined) return [];
+  const errors: string[] = [];
+  const criterionFile = `${PARADIGM}/criterion.md`;
+  const storeFile = `${PARADIGM}/page.md`;
+  const casesFile = `${PARADIGM}/cases.md`;
+  const criterion = read(criterionFile) ?? '';
+  const store = read(storeFile) ?? '';
+  const cases = read(casesFile) ?? '';
+  const differ = (file: string, what: string, copy: string[], list: string[]) => {
+    const missing = list.filter((name) => !copy.includes(name));
+    const extra = copy.filter((name) => !list.includes(name));
+    if (missing.length || extra.length)
+      errors.push(
+        `${file}: the ${what} differ from page.html (missing: ${missing.join(', ') || 'none'}; not in page.html: ${extra.join(', ') || 'none'})`,
+      );
+  };
+  // the scales: the menus of the page, and the agent's "Da decidere", never in them
+  const strings = (name: string) =>
+    [
+      ...(new RegExp(`var ${name} = \\[([^\\]]*)\\]`).exec(page)?.[1] ?? '').matchAll(/"([^"]+)"/g),
+    ].map((match) => match[1]);
+  const defer = /var DEFER = "([^"]+)"/.exec(page)?.[1];
+  const deferred = defer ? [defer] : [];
+  differ(criterionFile, 'votes of "Issues"', firstCells(sectionOf(criterion, 'Issues') ?? ''), [
+    ...strings('ISSUE_VOTES'),
+    ...deferred,
+  ]);
+  differ(
+    criterionFile,
+    'votes of "Pull requests"',
+    firstCells(sectionOf(criterion, 'Pull requests') ?? ''),
+    [...strings('PR_VOTES'), ...deferred],
+  );
+  // the store: what the page reads, the table of page.md, the rules it is published with
+  const used = [
+    ...new Set([...page.matchAll(/db\.(?:collection|doc)\("([^"/]+)/g)].map((match) => match[1])),
+  ];
+  // the first table of the section, before the fields of each collection
+  const listed = firstCells((sectionOf(store, 'The store') ?? '').split(/^### /m)[0]).map(
+    (cell) => /^`([^`/]+)/.exec(cell)?.[1] ?? cell,
+  );
+  differ(storeFile, 'collections of "The store"', listed, used);
+  differ(
+    storeFile,
+    'rules of "Publish"',
+    [...(sectionOf(store, 'Publish') ?? '').matchAll(/"path":\s*"([^"]+)"/g)].map((m) => m[1]),
+    used,
+  );
+  // the version: the title names the newest entry of History, each entry dated
+  const version = /^# .*\b(v\d+)\s*$/m.exec(criterion)?.[1];
+  const history = [...(sectionOf(criterion, 'History') ?? '').matchAll(/^### (.*)$/gm)].map(
+    (match) => match[1],
+  );
+  for (const entry of history)
+    if (!/^v\d+ \(\d{4}-\d{2}-\d{2}\)$/.test(entry))
+      errors.push(`${criterionFile}: the History entry "${entry}" is not "vN (YYYY-MM-DD)"`);
+  if (!version || history[0]?.split(' ')[0] !== version)
+    errors.push(
+      `${criterionFile}: the title names ${version ?? 'no version'}, the newest entry of History is ${history[0] ?? 'missing'}`,
+    );
+  // every decision names its issue; every case its issue, its date and its place in the criterion
+  const decisions = (sectionOf(criterion, 'Decisions recorded on issues') ?? '').split(/\n(?=- )/);
+  for (const decision of decisions.filter((block) => block.startsWith('- ')))
+    if (!/#\d+/.test(decision))
+      errors.push(
+        `${criterionFile}: a decision names no issue: "${decision.slice(2).replace(/\s+/g, ' ').slice(0, 60)}"`,
+      );
+  for (const block of cases.split(/\n(?=### )/).filter((part) => part.startsWith('### '))) {
+    const heading = block.split('\n')[0];
+    if (!/#\d+/.test(heading) || !/\(\d{4}-\d{2}-\d{2}\)$/.test(heading))
+      errors.push(`${casesFile}: the case "${heading}" names no issue or no date (YYYY-MM-DD)`);
+    if (!/^- In the criterion: \S/m.test(block))
+      errors.push(`${casesFile}: the case "${heading}" says not where the criterion holds it`);
+  }
   return errors;
 };
 
@@ -248,11 +408,19 @@ export const checkContext = (repository: Repository): Report => {
       if (!projects.includes(name))
         errors.push(`AGENTS.md: "Sub-projects and build order" lists ${name}, not a project`);
   }
-  const skills = files.filter((file) => /^\.claude\/skills\/[^/]+\/SKILL\.md$/.test(file)).sort();
+  const skills = skillsOf(files, read, errors);
   for (const skill of skills) {
-    const name = skill.split('/')[2];
-    if (!new RegExp(`(^|[\\s\`(,])/${name}\\b`).test(agents))
-      errors.push(`AGENTS.md: the project skill /${name} is not named`);
+    if (!new RegExp(`(^|[\\s\`(,])${literal(skill.command)}\\b`).test(agents))
+      errors.push(`AGENTS.md: the skill ${skill.command} is not named`);
+    const keys = frontmatter(read(skill.file) ?? '');
+    const name = keys.get('name');
+    if (name !== undefined && name !== skill.name)
+      errors.push(`${skill.file}: name "${name}" is not the name of its folder, ${skill.name}`);
+    const description = keys.get('description') ?? '';
+    if (!description || description.length > 1536)
+      errors.push(
+        `${skill.file}: the description is empty or longer than 1,536 characters (${description.length})`,
+      );
   }
 
   // counts
@@ -317,6 +485,7 @@ export const checkContext = (repository: Repository): Report => {
       else errors.push(...compare(instructions, what, words, [...list]));
     }
   }
+  errors.push(...paradigmErrors(read));
 
   // budget
   const loaded: string[] = [];
@@ -331,11 +500,14 @@ export const checkContext = (repository: Repository): Report => {
       load(path.posix.normalize(path.posix.join(path.posix.dirname(file), match[1])));
   };
   load('CLAUDE.md');
+  let described = 0;
   for (const skill of skills) {
-    const keys = frontmatter(read(skill) ?? '');
+    const keys = frontmatter(read(skill.file) ?? '');
+    if (keys.get('disable-model-invocation') === 'true') continue;
+    described++;
     size += tokens(`${keys.get('name') ?? ''}: ${keys.get('description') ?? ''}`);
   }
-  const what = [...loaded, `${skills.length} skill descriptions`].join(', ');
+  const what = [...loaded, `${described} skill descriptions`].join(', ');
   if (size > BUDGET)
     errors.push(
       `every session loads ~${size} tokens before any task (${what}), over the budget of ${BUDGET}: move a section read for one task into a document the index of AGENTS.md routes to`,
@@ -346,7 +518,7 @@ export const checkContext = (repository: Repository): Report => {
     .sort((a, b) => b[1] - a[1]);
   return {
     errors,
-    loaded: { files: [...loaded, `${skills.length} skill descriptions`], tokens: size },
+    loaded: { files: [...loaded, `${described} skill descriptions`], tokens: size },
     largest,
     links,
     commands,

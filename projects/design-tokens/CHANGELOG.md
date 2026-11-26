@@ -4,6 +4,28 @@ Every release of `@maggioli-design-system/design-tokens`, newest first. Each sec
 release with the same tag, written by git-cliff from the conventional commits of the
 package.
 
+## [design-tokens@16.1.0] - 2026-11-19
+
+### Bug Fixes
+
+- *(design-tokens)* Solve the text roles against the washes of their family too
+- *(design-tokens)* The brand ramps keep their colour toward the light end
+- *(design-tokens)* The schema offers only the colorspaces the engine builds
+
+### Changes
+
+- *(design-tokens)* The default palette and surfaces balanced in the studio
+
+### Documentation
+
+- *(design-tokens)* Document typography.css, the plain css twin of the tailwind theme
+
+### Features
+
+- *(design-tokens)* A saturation curve across the contrast scale, global and per colour
+- *(design-tokens,studio)* A uniform curve, the same change on every step of the scale
+- *(design-tokens)* Grade how a ramp holds the hue and the saturation of its seed
+
 ## [design-tokens@16.0.0] - 2026-11-06
 
 ### Bug Fixes

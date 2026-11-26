@@ -1,7 +1,7 @@
 {
   "end": "Λήξη",
   "endDate": "Ημερομηνία λήξης",
-  "endValue": "{{{end}}}: {{{date}}}",
+  "endValue": "{{end}}: {{date}}",
   "from": "Από",
   "openCalendar": "Άνοιγμα ημερολογίου",
   "pickDate": "Επιλέξτε ημερομηνία",

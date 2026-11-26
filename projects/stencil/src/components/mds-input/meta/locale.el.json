@@ -1,6 +1,6 @@
 {
   "colorPicker": "Επιλέξτε χρώμα",
-  "colorPickerFor": "Επιλέξτε χρώμα για {{{name}}}",
+  "colorPickerFor": "Επιλέξτε χρώμα για {{name}}",
   "decrease": "Μείωση",
   "hidePassword": "Απόκρυψη κωδικού",
   "increase": "Αύξηση",

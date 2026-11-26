@@ -7,6 +7,49 @@ package.
 It is released together with `magma`, at the same version: the sections are the
 releases of `magma`.
 
+## [magma@2.15.0] - 2026-11-19
+
+### Bug Fixes
+
+- *(mcp)* Read the sources a project keeps in its root in check_setup
+- *(stencil)* Type the frame of the States stories without React (#1440)
+- *(mds-input-switch)* The disabled off knob keeps its contrast in dark with the balanced palette
+- *(stencil)* Put the values of a localized phrase in as they are, never escaped as HTML
+- *(mds-stepper-bar)* Show and hide the panels a page adds or replaces after the load
+- *(mds-tooltip)* Open on the focus the browser rings, not on the focus of a click
+
+### Documentation
+
+- *(magma)* Check the components that hold the role before a pattern
+- *(magma)* Write the parts of a case and the stage of a preview
+- *(magma)* Tell the agents of the products to compose a case from its parts
+- *(magma)* Point the domains of the design language to their own issue
+
+### Features
+
+- *(stencil)* Save the file of a link with download on mds-link and mds-button
+- *(mds-img)* Pass decoding on, and keep the box of the picture before hydration
+- *(stencil)* A link sets the preferences a story opens in, as Storybook globals (#1436)
+- *(stencil)* A States story shows every state of a component, piloted on two (#1440)
+- *(mds-input-field)* An icon before the label, in the colour of the variant
+- *(lint)* Read the use of a case as { role, use } entries, with placeholders
+- *(lint)* Hold the use of a case to the solution its preview shows
+- *(magma)* Give each case of confirm-action its parts with their role
+- *(mcp)* Tell the agent to compose a case from its parts and their role
+- *(lint)* Match each part of a preview to its entry, and the values the application chooses
+- *(magma)* Give each case of message-placement its parts with their role
+- *(magma)* Give each case of error-recovery its parts with their role
+- *(magma)* Give each case of loading its parts with their role
+- *(magma)* Give each case of empty-state its parts with their role
+- *(magma)* Give each case of list-with-filters its parts with their role
+- *(magma)* Give each case of record-detail its parts with their role
+- *(magma)* Name in the regions of page-header every part its situations show
+- *(magma)* Name in the regions of app-shell every part its situations show
+- *(magma)* Name in the regions of item-list every part its situations show
+- *(magma)* Name in the regions of labels-and-values every part its situations show
+- *(mds-button-dropdown)* Name the chevron after the label, and await on the primary action only
+- *(mds-stepper-bar-item)* An Italian step caption, and step-label for the page's own
+
 ## [magma@2.14.0] - 2026-11-12
 
 ### Features

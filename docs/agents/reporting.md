@@ -2,8 +2,9 @@
 
 > Scope: you are working in a project that uses Magma and you hit a problem that is
 > Magma's, not the project's: a component that misbehaves, a guide that is wrong, a
-> missing token or utility, a packaging or install issue, or something you needed that
-> the Magma MCP server does not answer (section 7). This is how to report it to the
+> missing token or utility, a packaging or install issue, something you needed that
+> the Magma MCP server does not answer (section 7), or a component Magma lacks, which
+> you propose with a prototype (section 8). This is how to report it to the
 > Magma repository, `magma-design-system/magma`, labelled with the project it comes
 > from, so the maintainers can tell which project reported what.
 
@@ -137,7 +138,13 @@ when:
   filter or an argument it does not take;
 - a flow across components that no pattern covers (`get_pattern` finds none for the need,
   or only a candidate, or its answer for your situation is a gap): the pattern is the
-  missing answer, `magma-mcp: no pattern for <the need>`.
+  missing answer, `magma-mcp: no pattern for <the need>`. Before you report it, find the
+  components that hold the role (`find_component` with the need in words) and render them
+  in your context; under "What the server answered" name each one and whether it fits. A
+  component that holds the role but not as the flow needs is the first thing to fix, so say
+  what does not fit (the render, the rule it breaks) instead of building around it. When none
+  holds the role, the component is missing too: propose it in the same issue, under
+  "Proposal", as section 8 says.
 
 It is not a gap when the answer is right but not the one you hoped for, when your own
 input was wrong (an unknown tag, a missing argument), or when the question is about the
@@ -165,7 +172,9 @@ Read a file by hand, guessed, asked the user, and what it cost.
 
 ## Proposal
 
-The tool, argument or field that would have answered it, if you have one in mind.
+The tool, argument or field that would have answered it, if you have one in mind. For a
+flow that needs a component Magma lacks, the proposal of that component and its
+prototype (section 8).
 
 ## Versions
 
@@ -174,3 +183,92 @@ The tool, argument or field that would have answered it, if you have one in mind
 
 Found in <project> (<repository>).
 ```
+
+## 8. A component Magma lacks
+
+When no component of the installed Magma holds the role the task needs (a field, a target
+to drop files on, a bar of actions), the component is the missing answer. Make sure first:
+`find_component` with the need in words, `get_component` and `get_usage` for each one it
+finds, and `render_preview` of it in the context of the flow (inside a card, a row, a
+dialog). It is not a missing component when:
+
+- a component holds the role, but not as the flow needs: that component is the one to fix
+  (section 7, "What the server answered"); never propose a second one beside it;
+- an existing, simpler way already meets the need: use it.
+
+Magma keeps no proposal it has not seen: a new component is proposed with a prototype the
+person has seen rendered, and corrected.
+
+1. **The prototype.** Write what the flow needs with plain markup and the components Magma
+   has, and mark the element that stands in for the new component with the tag you propose:
+   `data-prototype="<the tag you propose>"` (`mds-` and a name for its role, such as
+   `data-prototype="mds-preview"`). Never write the proposed tag itself: the page knows no
+   such element. `render_preview` it in the context of the flow: its answer names the
+   stand-in in `prototypes`, not as a problem. Show the person the image, say which part of
+   it is the prototype, and render again with their corrections until they agree with it.
+2. **The proposal.** What the component is for (its intent); why no component holds the
+   role (the components you checked, and what their render showed); its API: the props with
+   their values and default, the slots, the events; what it is built on (the components,
+   tokens and behaviour of Magma it reuses); its accessibility (its role, its name, the
+   keyboard).
+3. **Ask.** Show the person the proposal with the image of the prototype, and open the
+   issue only once they agree with both.
+
+Follow steps 2, 3, 4 and 6, with `feature`, `prg-stencil` and the project's `prd-*` label.
+When the component is what a flow no pattern covers needs (section 7), the proposal goes in
+that issue, under "Proposal"; otherwise in an issue of its own. Title:
+`<the tag you propose>: <what it does>`, e.g.
+`mds-preview: the result of an editor, drawn at a width of its own`. Body:
+
+```markdown
+## Need
+
+What the task needed, in one sentence, and the flow it is part of.
+
+## Why no component holds the role
+
+The components you checked, and what their render showed.
+
+## Intent
+
+What the component is for, and what it is not for.
+
+## API
+
+| Kind | Name | What |
+| --- | --- | --- |
+| prop | `<name>` | its values and its default |
+| slot | `<name>` | what goes in it |
+| event | `<name>` | when it fires, and its detail |
+
+## Built on
+
+The components, tokens and behaviour of Magma it reuses.
+
+## Accessibility
+
+Its role, how it is named, how it works with the keyboard.
+
+## Prototype
+
+The markup, the stand-in marked `data-prototype`, rendered with render_preview: the image
+is attached below.
+
+## Versions
+
+- @maggioli-design-system/magma: <installed version>
+- Client: <e.g. Claude Code, VS Code, Cursor>
+
+## Workaround
+
+What the project does meanwhile, if anything: the prototype in its own code, or a pattern
+of its own.
+
+Found in <project> (<repository>).
+```
+
+`gh` cannot attach an image: give the person the file of the image (`file` in the answer of
+`render_preview`) to drop into the issue once it is open. Until the component ships, the
+project's markup that stands in for it carries a comment that links the issue (step 6); once
+the installed Magma has the component, `render_preview` reports the prototype
+(`prototype-shipped`): write the component instead.

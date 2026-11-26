@@ -1,6 +1,13 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
-import { BUDGET, checkContext, isContext, tokens, type Repository } from './agent-context.ts';
+import {
+  BUDGET,
+  PARADIGM,
+  checkContext,
+  isContext,
+  tokens,
+  type Repository,
+} from './agent-context.ts';
 import type { ProjectGraph } from './diagrams.ts';
 
 const graph: ProjectGraph = {
@@ -156,7 +163,7 @@ describe('checkContext', () => {
         '.claude/skills/context-review/SKILL.md':
           '---\nname: context-review\ndescription: x\n---\n',
       }),
-      ['AGENTS.md: the project skill /context-review is not named'],
+      ['AGENTS.md: the skill /context-review is not named'],
     );
   });
 
@@ -193,6 +200,132 @@ describe('checkContext', () => {
         '.github/instructions/commit-messages.instructions.md': '- Allowed types: `feat`, `fix`',
       }),
       ['.github/instructions/commit-messages.instructions.md: no bullet "- Project scopes:"'],
+    );
+  });
+
+  it('leaves out of the budget a skill only a person launches, still naming it in AGENTS.md', () => {
+    const launched = '.claude/skills/send-replies/SKILL.md';
+    const skill = (flag: string) =>
+      `---\nname: send-replies\ndescription: ${'Send. '.repeat(200)}\n${flag}---\n\n# Send\n`;
+    const named = { 'AGENTS.md': `${AGENTS}\nThe skill \`/send-replies\`.` };
+    const report = checkContext(
+      repository({ ...named, [launched]: skill('disable-model-invocation: true\n') }),
+    );
+    assert.deepEqual(report.errors, []);
+    assert.deepEqual(report.loaded.files, ['CLAUDE.md', 'AGENTS.md', '1 skill descriptions']);
+    assert.equal(
+      report.loaded.tokens,
+      tokens(BASE['CLAUDE.md']) +
+        tokens(named['AGENTS.md']) +
+        tokens('review-work: Review the work.'),
+    );
+    const counted = checkContext(repository({ ...named, [launched]: skill('') }));
+    assert.deepEqual(counted.loaded.files, ['CLAUDE.md', 'AGENTS.md', '2 skill descriptions']);
+    assert.equal(
+      errorsOf({ [launched]: skill('disable-model-invocation: true\n') }).join(),
+      'AGENTS.md: the skill /send-replies is not named',
+    );
+  });
+
+  it('names a skill of a plugin kept in .claude/skills with its prefix, its name and description valid', () => {
+    const skill = '.claude/skills/maint/skills/triage/SKILL.md';
+    const manifest = '.claude/skills/maint/.claude-plugin/plugin.json';
+    const plugin = {
+      [manifest]: '{"name": "maint-dev"}',
+      [skill]: '---\nname: triage\ndescription: Triage the issues.\n---\n',
+    };
+    const named = { 'AGENTS.md': `${AGENTS}\nThe skill \`/maint-dev:triage\`.` };
+    assert.deepEqual(errorsOf({ ...plugin, ...named }), []);
+    assert.deepEqual(errorsOf(plugin), ['AGENTS.md: the skill /maint-dev:triage is not named']);
+    assert.deepEqual(errorsOf({ ...plugin, ...named, [manifest]: undefined }), [
+      `${skill}: no .claude/skills/maint/.claude-plugin/plugin.json, so Claude Code does not load it`,
+    ]);
+    assert.deepEqual(errorsOf({ ...plugin, ...named, [manifest]: '{}' }), [
+      `${manifest}: no "name", the prefix of the plugin's skills`,
+    ]);
+    assert.deepEqual(
+      errorsOf({ ...plugin, ...named, [skill]: '---\nname: triage-all\ndescription:\n---\n' }),
+      [
+        `${skill}: name "triage-all" is not the name of its folder, triage`,
+        `${skill}: the description is empty or longer than 1,536 characters (0)`,
+      ],
+    );
+  });
+
+  it('holds what the files of paradigm-check copy of each other', () => {
+    const files = {
+      [`${PARADIGM}/page.html`]: [
+        'var ISSUE_VOTES = ["Accoglibile", "Altra forma"];',
+        'var PR_VOTES = ["Pronta"];',
+        'var DEFER = "Da decidere";',
+        'db.collection("items").onSnapshot(); db.doc("meta/run").onSnapshot();',
+      ].join('\n'),
+      [`${PARADIGM}/page.md`]: [
+        '## Publish',
+        '{"db": {"rules": [{"path": "items"}, {"path": "meta"}]}}',
+        '## The store',
+        '| Collection | Written by |',
+        '|---|---|',
+        '| `items/<n>` | agent |',
+        '| `meta/run` | agent |',
+        '### `items/<n>`',
+        '| Field | Value |',
+        '|---|---|',
+        '| `n` | the number |',
+      ].join('\n'),
+      [`${PARADIGM}/criterion.md`]: [
+        '# The criterion v2',
+        '## The scales',
+        '### Issues',
+        '| Vote | When |',
+        '|---|---|',
+        '| Accoglibile | a |',
+        '| Altra forma | b |',
+        '| Da decidere | c |',
+        '### Pull requests',
+        '| Vote | When |',
+        '|---|---|',
+        '| Pronta | a |',
+        '| Da decidere | b |',
+        '## Decisions recorded on issues',
+        'Each with its issue.',
+        '- A decision',
+        '  over two lines (#12).',
+        '## History',
+        '### v2 (2026-11-26)',
+        '### v1 (2026-11-25)',
+      ].join('\n'),
+      [`${PARADIGM}/cases.md`]: [
+        '# Cases',
+        '## Round of 2026-11-25',
+        '### #12 A case (2026-11-25)',
+        '- Asked: something.',
+        '- In the criterion: the decisions.',
+      ].join('\n'),
+    };
+    assert.deepEqual(errorsOf(files), []);
+    const criterion = files[`${PARADIGM}/criterion.md`];
+    assert.deepEqual(
+      errorsOf({
+        ...files,
+        [`${PARADIGM}/criterion.md`]: criterion
+          .replace('| Altra forma |', '| Altra via |')
+          .replace('# The criterion v2', '# The criterion v3')
+          .replace('  over two lines (#12).', '  over two lines.'),
+        [`${PARADIGM}/page.md`]: files[`${PARADIGM}/page.md`].replace(
+          '| `meta/run` | agent |\n',
+          '',
+        ),
+        [`${PARADIGM}/cases.md`]: '### #12 A case\n- Asked: something.',
+      }),
+      [
+        `${PARADIGM}/criterion.md: the votes of "Issues" differ from page.html (missing: Altra forma; not in page.html: Altra via)`,
+        `${PARADIGM}/page.md: the collections of "The store" differ from page.html (missing: meta; not in page.html: none)`,
+        `${PARADIGM}/criterion.md: the title names v3, the newest entry of History is v2 (2026-11-26)`,
+        `${PARADIGM}/criterion.md: a decision names no issue: "A decision over two lines."`,
+        `${PARADIGM}/cases.md: the case "### #12 A case" names no issue or no date (YYYY-MM-DD)`,
+        `${PARADIGM}/cases.md: the case "### #12 A case" says not where the criterion holds it`,
+      ],
     );
   });
 

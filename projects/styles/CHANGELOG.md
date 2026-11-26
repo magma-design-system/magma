@@ -4,6 +4,12 @@ Every release of `@maggioli-design-system/styles`, newest first. Each section is
 release with the same tag, written by git-cliff from the conventional commits of the
 package.
 
+## [styles@17.8.0] - 2026-11-19
+
+### Features
+
+- *(styles)* Collect the box of a component before hydration into hydrated.css
+
 ## [styles@17.7.1] - 2026-11-12
 
 ### Bug Fixes

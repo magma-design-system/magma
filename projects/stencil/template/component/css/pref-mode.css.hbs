@@ -1,0 +1,19 @@
+/* Theme preference. The palette flips by itself in dark mode: this sheet is only for a deliberate
+ * refinement (a shadow does not show on a dark page, so a card takes a weak ring). The component
+ * reflects the resolved mode and scheme from <html> onto its host as pref-mode and
+ * pref-theme-scheme (preferenceStore in @common/preference); the refinement sets a knob again on
+ * these plain shadow selectors. Keep this sheet only when the component refines something, else
+ * delete it and its @import:
+ *
+ * :host([pref-mode='dark']:not([pref-theme-scheme='light'])),
+ * :host([pref-theme-scheme='dark']) {
+ *   --{{tag}}-<knob>: <the value for dark>;
+ * }
+ *
+ * @media (prefers-color-scheme: dark) {
+ *   :host([pref-mode='system']:not([pref-theme-scheme='light'])),
+ *   :host(:not([pref-mode]):not([pref-theme-scheme='light'])) {
+ *     --{{tag}}-<knob>: <the value for dark>;
+ *   }
+ * }
+ */

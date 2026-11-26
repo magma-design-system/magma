@@ -1,0 +1,12 @@
+{
+  "name": "magma-dev",
+  "displayName": "Magma maintainers",
+  "description": "The skills of the maintainers of the Magma repository: epics and merges, patterns, new components, the Figma library, the agent context, and the paradigm check of the issues and pull requests of contributors.",
+  "author": {
+    "name": "Maggioli Design System",
+    "url": "https://github.com/magma-design-system"
+  },
+  "homepage": "https://github.com/magma-design-system/magma/tree/main/.claude/skills/magma-dev",
+  "repository": "https://github.com/magma-design-system/magma",
+  "license": "MIT"
+}

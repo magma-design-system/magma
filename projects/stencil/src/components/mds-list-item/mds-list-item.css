@@ -13,6 +13,14 @@
   width: 100%;
 }
 
+/* in a list with marker="none" (list-marker is the list's, written by the item): a block as wide
+   as its content, so the classes of the list lay the items out in a column, a row or a grid */
+
+:host([list-marker='none']) {
+  display: block;
+  width: auto;
+}
+
 .icon {
   fill: currentcolor;
   height: --spacing(600);

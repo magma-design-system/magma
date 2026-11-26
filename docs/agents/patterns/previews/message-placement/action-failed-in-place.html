@@ -2,11 +2,11 @@
 try: Press Salva: the error shows right above the row of the dialog, what was written stays, and the focus stays on Salva, the way to try again.
 height: 480
 -->
-<mds-button id="open">Modifica azienda</mds-button>
+<mds-button id="open" data-stage>Modifica azienda</mds-button>
 <mds-modal id="dialog" opened aria-label="Modifica azienda">
   <mds-banner slot="window" variant="light" tone="box" dismissible headline="Modifica azienda">
     <form class="grid gap-between-fields">
-      <mds-input-field label="Ragione sociale">
+      <mds-input-field label="Ragione sociale" data-stage>
         <mds-input value="Maggioli SpA"></mds-input>
       </mds-input-field>
       <mds-banner id="message" variant="error" tone="strong" headline="Salvataggio non riuscito" class="hidden">

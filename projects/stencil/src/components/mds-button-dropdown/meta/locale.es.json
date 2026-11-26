@@ -1,3 +1,4 @@
 {
-  "moreActions": "Más acciones"
+  "moreActions": "Más acciones",
+  "moreActionsFor": "Más acciones para {{label}}"
 }

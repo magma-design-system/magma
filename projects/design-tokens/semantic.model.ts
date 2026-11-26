@@ -4,7 +4,7 @@ import {
   accentTintDecls,
   contrastTintDecls,
   cssDecl,
-  emphasisStateSteps,
+  emphasisRoles,
   hueContrastDecls,
   roleDescription,
   scaleFamily,
@@ -88,13 +88,12 @@ const {
   seed,
   onEmphasisDark,
   hues,
-  hueSteps,
-  washSteps,
+  washLevels,
   shadowStep,
   hueRoles,
   neutralHueSteps,
   accents,
-  accentStateSteps,
+  accentRoles,
   themes,
 } = semantic;
 
@@ -126,6 +125,11 @@ const tintSection = (): SemanticSection => ({
     ...surfaceRoles.map((r) => pointer(r, `surface-${tint}-${r}`)),
     ...borderRoles.map((r) => pointer(`border-${r}`, `border-${tint}-${r}`)),
     ...textRoles.map((r) => pointer(`text-${r}`, `text-${tint}-${r}`)),
+    // the washes of the tint (#1427): generated at a distance from its page, so a named theme
+    // repoints them with its surfaces
+    ...washLevels.map((level) => pointer(`wash-${level}`, `wash-${tint}-${level}`)),
+    // the selected level of the inverse pair (#1427), between its rest and its hover
+    pointer('inverse-selected', `inverse-${tint}-selected`),
     // the ink on a solid fill: the seed in light; repointed to the canvas in dark by
     // the dark block (#739). Every `*-on-emphasis` and `on-inverse` resolves through
     // this one pointer, so the fills cannot disagree on their ink.
@@ -147,24 +151,23 @@ const surfaceSection = (): SemanticSection => ({
 });
 
 // 2b. wash levels - neutral PILLS, not elevation. Same device as the colored
-//    `--magma-<hue>-wash-*` of 6.4 and the same `washSteps` map, so the two
+//    `--magma-<hue>-wash-*` of 6.4 and the same `washLevels`, so the two
 //    vocabularies cannot drift; what differs is what they name. A hue names its
 //    own family directly (a theme never retints a hue), while the neutral levels
-//    resolve through `--magma-tint-scale-*`, so they follow the active theme
+//    resolve through `--magma-tint-wash-*`, so they follow the active theme
 //    exactly like the surfaces above.
 //    Why they cannot BE surfaces, measured: the elevation ladder moves toward
 //    white as it rises in light and toward the ink in dark, while a pill moves
-//    toward the ink in BOTH modes (step 08 is #d0d0d0 on #f2f2f2 paper in light,
-//    #6b6b6b on #1d1d1d in dark). No elevation role can hold that value - it
-//    would have to be `sunken` in light and `raised` in dark. Naming a ramp step
-//    gets the mode-flip for free, because the primitive itself flips.
+//    toward the ink in BOTH modes. No elevation role can hold that value - it
+//    would have to be `sunken` in light and `raised` in dark. The generated wash is placed at
+//    a distance from the page, below it in light and above it in dark (#1427).
 //    Censused for #624: 144 component declarations were naming steps 10/09/08 as
 //    a background for exactly this reason, with no role to reach for.
 const washSection = (): SemanticSection => ({
   title:
-    'Wash - neutral pills, by how marked they are (spec 6.1b); follows the theme via --magma-tint-scale-*',
-  decls: Object.entries(washSteps).map(([level, step]) =>
-    role(`wash-${level}`, `magma-tint-scale-${step}`, `wash-${level}`),
+    'Wash - neutral pills, by how marked they are (spec 6.1b); follows the theme via --magma-tint-wash-*',
+  decls: washLevels.map((level) =>
+    role(`wash-${level}`, `magma-tint-wash-${level}`, `wash-${level}`),
   ),
 });
 
@@ -208,8 +211,8 @@ const borderSection = (): SemanticSection => ({
 //    from the generated per-family role scales (`--text-success-*`), so the A7
 //    guarantee - each step solved against the family's own surfaces - carries over
 //    to every hue, and the spec 9.3 promotion applies to them verbatim.
-//    Wash levels instead NAME ramp steps (see `washSteps`, shared with the
-//    neutral band of 2b): a colored chip
+//    Wash levels instead name the generated washes of the family (see `washLevels`, shared
+//    with the neutral band of 2b, #1427): a colored chip
 //    moves toward the ink in both modes, which no elevation role can express, and
 //    they are NOT called `surface-*` precisely so they cannot be read as the
 //    colored parent of `--magma-surface-*`, which is a different thing.
@@ -243,6 +246,9 @@ const hueSection = (
         // inverse-surface role (renamed from neutral-emphasis / -on-emphasis)
         role('surface-inverse', tintStep(steps.emphasis), 'surface-inverse'),
         role('surface-inverse-muted', tintStep(steps.emphasisMuted), 'surface-inverse-muted'),
+        // the fill of the dark variants on the view you are in (#1427), between its rest and
+        // its hover: generated, no step lies there
+        role('surface-inverse-selected', 'magma-tint-inverse-selected', 'surface-inverse-selected'),
         role('on-inverse', 'magma-tint-text-on-emphasis', 'on-inverse'),
         role(`${hue}-emphasis`, 'magma-surface-inverse', `${hue}-emphasis`, {
           note: 'deprecated: renamed to --magma-surface-inverse / --magma-on-inverse',
@@ -266,23 +272,20 @@ const hueSection = (
   return {
     title,
     decls: [
-      // wash levels: named ramp steps, so they mode-flip with the primitive
-      ...Object.entries(washSteps).map(([level, step]) =>
-        role(`${hue}-wash-${level}`, `${family}-${step}`, `${hue}-wash-${level}`),
+      // wash levels: generated at a distance from the page, flipping with the mode (#1427)
+      ...washLevels.map((level) =>
+        role(`${hue}-wash-${level}`, `wash-${roles}-${level}`, `${hue}-wash-${level}`),
       ),
       // text + border: the family's own generated role scales (A7 guarantee)
       ...textRoles.map((r) => role(`${hue}-text-${r}`, `text-${roles}-${r}`, `${hue}-fg-${r}`)),
       ...borderRoles.map((r) =>
         role(`${hue}-border-${r}`, `border-${roles}-${r}`, `${hue}-border-${r}`),
       ),
-      // the solid saturated fill has no counterpart in the generated scales (those
-      // model tinted surfaces, not fills), so it keeps naming a ramp step - and so do
-      // its interaction states, shared with the accents through emphasisStateSteps()
-      // (spec 6.6). Stated directly on the family, not through a tint pointer: a
-      // named theme retints the accents, never a hue.
-      role(`${hue}-emphasis`, `${family}-${hueSteps.emphasis}`, `${hue}-emphasis`),
-      ...Object.entries(emphasisStateSteps()).map(([state, step]) =>
-        role(`${hue}-${state}`, `${family}-${step}`, `${hue}-${state}`),
+      // the solid fill and its interaction states: the generated emphasis band of the family,
+      // shared with the accents through emphasisRoles() (spec 6.6, #1427). Stated directly on
+      // the family, not through a tint pointer: a named theme retints the accents, never a hue.
+      ...Object.entries(emphasisRoles()).map(([key, state]) =>
+        role(`${hue}-${key}`, `emphasis-${roles}-${state}`, `${hue}-${key}`),
       ),
       role(`${hue}-on-emphasis`, 'magma-tint-text-on-emphasis', `${hue}-on-emphasis`),
       // shortcuts onto the roles above (NOT onto the primitives): stated this way
@@ -299,16 +302,22 @@ const hueSection = (
 // 6. accents (variant) - the standout colors (spec 8). Each accent role is a
 //    THEME-AWARE quintet: the roles resolve through per-role tint pointers
 //    (--magma-tint-accent-*), so a named theme repoints an accent exactly like a
-//    surface. Steps reuse the colored-hue quintet (hueSteps); on-emphasis is the
+//    surface. fg and border are ramp steps (hueSteps, accentSteps); the washes, the band of the
+//    solid fill and the text are generated for the family (accentRoles, #1427); on-emphasis is the
 //    fill ink pointer (family-independent, spec 6.5). The GENERAL `accent` role carries NO
 //    infix (--magma-accent-*), promoting the formerly deprecated single alias to
 //    the canonical general accent; `ai` infixes (--magma-accent-ai-*). See
 //    `accentInfix`.
 const accentSection = (accentRole: string, family: string): SemanticSection => {
   const infix = accentInfix(accentRole);
-  // roles resolve through the tint pointers -> theme-aware
+  // roles resolve through the tint pointers -> theme-aware. The text roles bridge to Tailwind as
+  // `fg-*`, as the text of a hue does (`text-info-fg-default`, `text-accent-fg-default`)
   const accent = (key: string) =>
-    role(`accent-${infix}${key}`, `magma-tint-accent-${infix}${key}`, `accent-${infix}${key}`);
+    role(
+      `accent-${infix}${key}`,
+      `magma-tint-accent-${infix}${key}`,
+      `accent-${infix}${key.replace(/^text-/, 'fg-')}`,
+    );
   return {
     title: `accent ${accentRole} (${family})`,
     decls: [
@@ -317,11 +326,10 @@ const accentSection = (accentRole: string, family: string): SemanticSection => {
       // existing ramp step so it mode-flips and retints per theme like the quintet.
       // Shared with the theme overrides + the studio via accentTintDecls().
       ...accentTintDecls(accentRole, family),
-      accent('surface'),
       accent('fg'),
       accent('border'),
-      accent('emphasis'),
-      ...Object.keys(accentStateSteps).map((state) => accent(state)),
+      ...Object.keys(emphasisRoles()).map((key) => accent(key)),
+      ...Object.keys(accentRoles).map((key) => accent(key)),
       role(
         `accent-${infix}on-emphasis`,
         'magma-tint-text-on-emphasis',
@@ -374,14 +382,14 @@ const normalizeTheme = (def: ThemeDef): Exclude<ThemeDef, string> =>
 export const THEME_NAME = /^[a-z]+(-[a-z]+)*$/;
 
 /**
- * What a picker shows for a theme (#692): the wash its pills take (the `base` wash step of its
- * ramp, what `--magma-wash-base` resolves to under it) and its accent fill (the `emphasis`
- * pointer of its accent, what `--magma-accent-emphasis` resolves to under it). Both are ramp
- * steps, so they flip with the mode as the theme does.
+ * What a picker shows for a theme (#692): the wash its pills take (the `base` wash of its
+ * family, what `--magma-wash-base` resolves to under it) and its accent fill (the `emphasis`
+ * pointer of its accent, what `--magma-accent-emphasis` resolves to under it). Both flip with
+ * the mode as the theme does.
  */
 const previewOf = (
   name: string,
-  ramp: string,
+  washFamily: string,
   accentFamily: string,
   deprecated?: string,
 ): SemanticDecl[] => {
@@ -392,7 +400,7 @@ const previewOf = (
   return [
     {
       name: `magma-preview-${name}-wash`,
-      ref: `${ramp}-${washSteps.base}`,
+      ref: `wash-${washFamily}-base`,
       description: `The wash of the ${name} theme, for its preview in a theme picker.`,
       ...extra,
     },
@@ -423,6 +431,9 @@ export const themeOf = (name: string, def: ThemeDef): SemanticTheme => {
       ...surfaceRoles.map((r) => pointer(r, `surface-${surface}-${r}`)),
       ...borderRoles.map((r) => pointer(`border-${r}`, `border-${surface}-${r}`)),
       ...textRoles.map((r) => pointer(`text-${r}`, `text-${surface}-${r}`)),
+      // the washes and the selected inverse of its family, generated from its page (#1427)
+      ...washLevels.map((level) => pointer(`wash-${level}`, `wash-${surface}-${level}`)),
+      pointer('inverse-selected', `inverse-${surface}-selected`),
       // the ramp retints with the rest of the block, or the raw steps a component
       // still uses would stay on the base tint while its surfaces moved
       ...scaleTintDecls(ramp),
@@ -445,7 +456,7 @@ export const themeOf = (name: string, def: ThemeDef): SemanticTheme => {
   const contrast = retints ? contrastTintDecls(surface, CONTRAST_LEVEL) : [];
   const preview = previewOf(
     name,
-    ramp ?? scaleFamily(surface ?? tint, scale),
+    surface ?? tint,
     accentOverride?.accent ?? accents.accent,
     deprecated,
   );

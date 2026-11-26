@@ -10,7 +10,7 @@
     "projects/*"
   ],
   "overrides": {
-    "caniuse-lite": "1.0.30001826",
+    "caniuse-lite": "1.0.30001828",
     "minimatch@^9.0.0": "9.0.9",
     "picomatch@^4.0.0": "4.0.7",
     "xml2js": "0.6.2"
@@ -23,9 +23,9 @@
     "@eslint/eslintrc": "3.3.7",
     "@eslint/js": "9.39.5",
     "@types/fs-extra": "11.0.4",
-    "@types/node": "25.9.9",
-    "@typescript-eslint/eslint-plugin": "8.73.0",
-    "@typescript-eslint/parser": "8.73.0",
+    "@types/node": "25.9.12",
+    "@typescript-eslint/eslint-plugin": "8.74.0",
+    "@typescript-eslint/parser": "8.74.0",
     "@vitest/browser-playwright": "4.1.12",
     "chalk": "4.1.2",
     "eslint": "9.39.5",
@@ -33,7 +33,7 @@
     "globals": "16.5.0",
     "husky": "9.1.7",
     "lint-staged": "15.5.2",
-    "nx": "23.3.2",
+    "nx": "23.3.3",
     "playwright": "1.65.1",
     "prettier": "3.10.1",
     "react": "18.3.1",
@@ -45,7 +45,7 @@
     "stylelint-order": "7.0.1",
     "tsx": "4.23.15",
     "typescript": "5.9.3",
-    "typescript-eslint": "8.73.0",
+    "typescript-eslint": "8.74.0",
     "vitest": "4.1.12"
   },
   "engines": {

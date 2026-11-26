@@ -2,7 +2,7 @@
 try: Close the dialog with its X, Esc or the backdrop: it means Resta collegato, as the button does; only Esci ends the session. Simula la scadenza opens it again.
 height: 400
 -->
-<mds-button id="open" variant="dark" tone="outline">Simula la scadenza</mds-button>
+<mds-button id="open" variant="dark" tone="outline" data-stage>Simula la scadenza</mds-button>
 <mds-modal id="dialog" opened aria-label="La sessione sta per scadere">
   <mds-banner slot="window" variant="warning" tone="box" dismissible headline="La sessione sta per scadere">
     <mds-text>Tra 2 minuti la sessione scade per inattività, e le modifiche non salvate alla pratica vanno perse.</mds-text>

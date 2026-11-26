@@ -30,11 +30,20 @@ illustration, content), and the design language is one group of it, Design langu
 | Who reads them | the `get_pattern` tool of the MCP server, the `ui` and `review` skills of the Claude Code plugin, the agents of the products, the docs site |
 | The format and its checks | `projects/lint/src/core/patterns.ts`, which ships inside `magma` |
 | The template | `projects/stencil/template/pattern.md`; for a domain, `projects/stencil/template/design-language.md`; for a block, `projects/stencil/template/block.md` |
-| The contributor skills | `.claude/skills/pattern-new`, `pattern-change`, `pattern-preview`, `pattern-list` (not in the plugin that ships) |
+| The contributor skills | `.claude/skills/magma-dev/skills/pattern-new`, `pattern-change`, `pattern-preview`, `pattern-list` (the maintainers' plugin `magma-dev`, not the plugin that ships) |
 | A product layer | `magma/patterns/<id>.md` in the product's own repository |
 
 ## The method
 
+- **The components that hold the role, first.** Before a pattern or a block is drafted, the
+  components Magma ships for its role are found (the catalogue, `find_component`), rendered in
+  the context of the pattern and checked against today's standards (the design language, the
+  color roles, accessibility). Then a decision says what the pattern stands on: the component as
+  it is, the component changed (an issue the pattern waits on or carries), a new component only
+  when none holds the role, or the simpler way that already exists, since two ways to do one
+  thing are a defect. What the new pattern makes redundant is deprecated in its favour or
+  overwritten. The steps are those of `/magma-dev:pattern-new`, step 2, which `/magma-dev:pattern-change` follows
+  when a change swaps the components of a case or replaces a pattern (#1394).
 - **The variables of the situation, never a domain.** A pattern is defined on the few questions
   that decide the case (for `message-placement`: what the message is about, its outcome, whether
   its place is on screen, now or later, whether a decision is needed, what an action changed).
@@ -65,7 +74,7 @@ A Markdown file: the frontmatter is the data, the body is for people and agents 
 | `principle` | The rule of the pattern in one sentence: the bold line under the title. |
 | `keywords`, `not-for`, `assumptions`, `high-stakes`, `components`, `related`, `validated-on` | The words of the need; the needs another pattern answers (`{ need, use: <id> }`); what the default takes for granted; whether it is a payment, a destructive action or a legal step; the components the cases use; the neighbouring patterns; the products it was validated on. |
 | `variables` | `name: { values: [...], means: "..." }`. Values are text: quote `yes`, `no` and numbers. No variable may take the name of a key of the entries (`id`, `where`, `use`, `see`, `magma-gap`, `rules`, `serves`, `carried-by`, `carried-by-planned`, `note`, `why`). |
-| `cases` | `{ id, <variable>: <value>, where, use, see, magma-gap, rules }`. A variable left out means any of its values, except `decision`, which means `none`; a list of values means any of them. `use` names components as `mds-tag attribute=value` (a bare attribute is a boolean, or a value of the application's); `see` names a case of the pattern or another pattern; `rules` names the rules and relations of the domains the case and its preview rely on, as `<domain>/<id>` (`[rhythm/inset, rhythm/between-fields]`). |
+| `cases` | `{ id, <variable>: <value>, where, use, see, magma-gap, rules }`. A variable left out means any of its values, except `decision`, which means `none`; a list of values means any of them. `use` gives the parts of the solution (The parts of a case, below); `see` names a case of the pattern or another pattern; `rules` names the rules and relations of the domains the case and its preview rely on, as `<domain>/<id>` (`[rhythm/inset, rhythm/between-fields]`). |
 | `gaps` | `{ <variable>: <value>, note }`: a combination still open, with its question. |
 | `not-applicable` | `{ <variable>: <value>, why }`: a combination with no meaning. |
 | `always-true` | `{ id, rule, checked-by: review or lint, lint, lint-planned, note }`: what holds in every product, which a product layer cannot change. A rule of another pattern is cited as `{ id, from: <pattern> }`; a rule or a relation of a domain as `{ id, from: <domain> }`. |
@@ -75,6 +84,39 @@ A Markdown file: the frontmatter is the data, the body is for people and agents 
 | `used-by` | In a block only: the patterns it comes back in, two at least, each naming the block among its `related`. |
 | `serves` | In a domain only, on each case and each rule: the principle it serves, `inclusive`, `enabling`, `intuitive` or `flexible`, or a list of them. |
 | `carried-by`, `carried-by-planned` | In a domain only, on a case or a rule: where it lives, strongest first, and where it will live once built. |
+
+### The parts of a case
+
+The `use` of a case is the solution its preview shows, part by part (#1396): `{ role, use }`, in
+the order each part first shows in the preview. `role` says what the part does in the case, from
+its `where` and the Description of the component; `use` is the component to write,
+`mds-tag attribute=value ...`. An agent composes the case from them, then adds what its own
+situation needs.
+
+```yaml
+use:
+  - { role: "the dialog, named by its question", use: "mds-modal aria-label=<the question, naming the item>" }
+  - { role: "the consequence, in a sentence", use: mds-text }
+  - { role: "Cancel, the safe choice, focused on opening", use: "mds-button slot=action variant=dark tone=outline autofocus" }
+```
+
+What an attribute is to the case is read from its type in the release (`documentation.json`),
+the maintainer's choice on #1396 (2026-11-13); the criterion is beside `attributeKind` in
+`projects/lint/src/core/patterns.ts`:
+
+| Kind | Which | In `use` |
+| --- | --- | --- |
+| The case's | a prop with a closed set of values, a number, a boolean the component never changes itself; `slot`, `role`, `tabindex`, `autofocus`; an ARIA property of a token, a number or true/false | as it is, the same as in the preview; a value the application chooses (the number of pages, the tone of a status, the format of a field) as `<what decides it>`, and the preview has the attribute |
+| The application's text | a prop of free text (`headline`, `label`, `href`, `icon`), `title`, `lang`, `dir`, an ARIA property of text (`aria-label`) | `<what it holds>` when the case says what goes in it (`headline=<the question, naming the item>`), else left out |
+| The application's wiring | `id`, `name`, `value`, an ARIA property that names ids | never |
+| A state | a boolean the component changes itself (`opened`, `visible`, `await`, `selected`), `hidden`, an ARIA state | bare, only when the case decides it (`await` on Send); never compared |
+| The stage's | `class`, `style`, `data-*` | never |
+
+Two parts of one kind (the rows of a list) are one entry, unless they play two roles. A building
+block gives no role: its regions are its parts (`what`), and their `use` stays a list of
+`tag attribute=value`, with the same kinds. A product's own pattern, and a domain of the design
+language until #1406 decides theirs, may give the bare `use` of before, `mds-tag attribute=value` (a
+bare attribute a boolean, or a value of the application's).
 
 The body has the sections of the template, in this order: When to use it, What decides it,
 Cases, Parts, Behaviour over time, Always true, Open choices, Situations, Accessibility,
@@ -224,6 +266,25 @@ try: Press Salva: the error shows above the form, and what was written stays.
   length of the words, to show what it keeps the same and what it lets vary: `<case>.2.html`,
   `<case>.3.html`, after `<case>.html`, with no gap. A rule of a pattern has none: its cases show
   it.
+- **The stage and the solution** (#1396). What the case decides is its solution; the rest is the
+  stage, the context it needs to be shown (the list a toast speaks of, the fields of a form, the
+  page around a part). `data-stage` on the outermost element of each piece of the stage marks
+  it, and everything inside it; every other component is a part of the solution, and `use` names
+  it. A preview that is all solution (a dialog) has no marker; a piece of stage around the
+  solution (the dialog of another case around the values of a block) takes
+  `data-stage="frame"`: the element only, not what it holds. The marker ships with the
+  preview, so an agent that reads the markup tells the context from the solution too; it is the
+  maintainer's choice on #1396 (2026-11-13), over a wrapper around the solution, which changes
+  the layout of the stage and splits when the solution does.
+- **A prototype** (#1492). A component the pattern proposes and Magma lacks is stood in for by
+  markup, in a draft and in the preview of a case that waits on it (`magma-gap`): plain
+  elements and the components Magma has, the outermost one marked with the tag the proposal
+  gives the component, `data-prototype="mds-preview"`. `render_preview` names it in
+  `prototypes` instead of reporting a problem, and reports it (`prototype-shipped`) once the
+  build has the component, so the change that ships the component writes it in the previews
+  (the skill `/magma-dev:component-new`, which builds the component from its issue and its prototype).
+  It is the maintainer's choice on #1492 (2026-11-23), over writing the proposed tag itself,
+  an element the page does not know, with no shadow tree, styled by hand.
 - **What to try**, required: one line, what to do in the preview ("Press Salva: ..."), or what
   to look at when there is nothing to do. The page shows it under the stage. A live preview with
   nothing said is a still form; the maintainer chose the line and no animation (#1186).
@@ -237,7 +298,8 @@ try: Press Salva: the error shows above the form, and what was written stays.
   of the page start at the edge of the document, as in an application).
 - **Who reads it.** The docs site from `node_modules`; `get_pattern` gives its path on each case
   of a pattern, on each rule of a domain and on each situation of a block, the paths of the
-  other examples in `examples`, and in the answer for a situation the stage itself with what to
+  other examples in `examples`, and in the answer for a situation the parts of the case (`use`),
+  then the stage itself with what to
   try, the paths of the other examples and of the previews of the rules the case relies on (for
   a block, the preview of the situation the values match exactly, every variable given; the
   previews of the next situations with the same values go in `examples`); `get_guide` lists the previews of
@@ -280,8 +342,8 @@ try: Press Salva: the error shows above the form, and what was written stays.
   stage: the repository's `.vscode/settings.json` maps the entry point the server writes,
   `.claude/previews/tailwind.css` (`docs/EDITOR_TOKENS.md`, "Tailwind classes").
 
-`/pattern-preview <id>` makes the previews a pattern lacks; `/pattern-new` and
-`/pattern-change` call it at the end, so a new or changed case leaves with its preview.
+`/magma-dev:pattern-preview <id>` makes the previews a pattern lacks; `/magma-dev:pattern-new` and
+`/magma-dev:pattern-change` call it at the end, so a new or changed case leaves with its preview.
 
 ## The check
 
@@ -295,6 +357,12 @@ try: Press Salva: the error shows above the form, and what was written stays.
   combination, `used-by` naming two patterns or more that name the block back;
 - the release: every component and attribute named exists in `dist/documentation.json`, with a
   value it takes;
+- the parts of a case (#1396): in a pattern and a block of Magma every entry of a case with its
+  role, every attribute written as its kind asks; the components each preview shows outside its
+  `data-stage`, with the attributes the case decides, are the ones `use` names, in the order they
+  first show, each placeholder a text the preview gives; every example of a case is compared;
+  a situation of a block against the regions its values show, every part named by one of them
+  and each required one shown;
 - the lint: a rule `checked-by: lint` names a rule the lint has; a `lint-planned` one, a rule it
   does not have yet (once written, the check asks to switch it to `lint`);
 - the carriers of a domain: every one of `carried-by` is in the release, every one of
@@ -326,6 +394,16 @@ to the lint rules (a product may name rules of its own) nor to the generated bod
 generator does not ship). A pattern that comes back in the layers of two or three products is
 proposed for the default.
 
+The rule of the method holds in a product too: nothing of a layer or of a pattern of the
+product is written before the person has seen it rendered (`render_preview`, on the release
+the product installed), each choice with its options side by side, each case of its own
+pattern as the product writes it. A case of a product that needs a component Magma lacks uses
+a prototype of it, markup marked `data-prototype="<tag>"`, which `render_preview` names in
+`prototypes` instead of reporting it, and reports (`prototype-shipped`) once the release has
+the component; the component is proposed to Magma with its API and the image of the prototype
+(`agents/reporting.md`, "A component Magma lacks"), which becomes the issue a pattern of Magma
+waits on, as a proposal of `/magma-dev:pattern-new` does (#1492).
+
 The products learn the format from the section "A product's layer" of the shipped catalogue
 (`agents/patterns.md`, written by `sync-agent-docs.ts`), and write a layer with the plugin
 skill `/magma:pattern-layer`, in the file `get_pattern` names: `layerFile` with the id,
@@ -342,15 +420,17 @@ check on a product's folder.
 
 With Claude Code on this repository:
 
-- `/pattern-new <the need>`: checks the list first, turns a candidate into a pattern or starts
-  a new one, researches the sources, writes the file, runs the check, asks only the decisions
-  the sources do not settle, opens the pull request;
-- `/pattern-change <id>`: shows why the current answer was decided, asks whether the change is
-  the default or one product's layer, keeps the old id on a rename;
-- `/pattern-preview <id>`: for each case with no preview, shows two options live and saves the
+- `/magma-dev:pattern-new <the need>`: checks the list first, then the components that hold the role,
+  turns a candidate into a pattern or starts a new one, researches the sources, writes the
+  file, runs the check, asks only the decisions the sources do not settle, opens the pull
+  request;
+- `/magma-dev:pattern-change <id>`: shows why the current answer was decided, asks whether the change is
+  the default or one product's layer, keeps the old id on a rename, checks the components that
+  hold the role when a change swaps them;
+- `/magma-dev:pattern-preview <id>`: for each case with no preview, shows two options live and saves the
   one the maintainer chooses; its drafts and the saved previews open in `mcp:serve.previews`,
   for the maintainer to adjust by hand;
-- `/pattern-list`: the list, read only.
+- `/magma-dev:pattern-list`: the list, read only.
 
 Without Claude:
 

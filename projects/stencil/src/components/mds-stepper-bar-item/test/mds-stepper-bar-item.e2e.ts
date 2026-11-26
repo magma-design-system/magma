@@ -96,4 +96,50 @@ describe('the status badge', () => {
       expect(badges(root).map(({ painted }) => painted)).toEqual(['Done', 'Done', 'Current']),
     );
   });
+
+  // #1428: the Italian caption was the English "Step 1", and no text of the page could replace it
+  describe('in the language of the page', () => {
+    afterEach(() => {
+      document.documentElement.removeAttribute('lang');
+    });
+
+    it.each([
+      ['en', 'Step', 'Current'],
+      ['it', 'Passo', 'In corso'],
+      ['es', 'Paso', 'En curso'],
+      ['el', 'Βήμα', 'Τρέχον'],
+    ])('writes the caption and the status in %s', async (language, step, current) => {
+      document.documentElement.lang = language;
+      const { root } = await render(`
+        <mds-stepper-bar items-done="2">
+          <mds-stepper-bar-item step badge label="One"></mds-stepper-bar-item>
+          <mds-stepper-bar-item step badge label="Two"></mds-stepper-bar-item>
+        </mds-stepper-bar>
+      `);
+
+      await vi.waitFor(() => {
+        expect(stepsOf(root)).toEqual([`${step} 1`, `${step} 2`]);
+        expect(badges(root)[1].painted).toBe(current);
+      });
+    });
+  });
+
+  it('writes the caption the page gives in step-label, its {{ index }} filled', async () => {
+    const { root } = await render(`
+      <mds-stepper-bar>
+        <mds-stepper-bar-item step step-label="Fase {{ index }}" label="One"></mds-stepper-bar-item>
+        <mds-stepper-bar-item step step-label="Fase {{index}} di 4" label="Two"></mds-stepper-bar-item>
+        <mds-stepper-bar-item step step-label="Riepilogo" label="Three"></mds-stepper-bar-item>
+        <mds-stepper-bar-item step step-label="" label="Four"></mds-stepper-bar-item>
+        <mds-stepper-bar-item step-label="Fase {{ index }}" label="Five"></mds-stepper-bar-item>
+      </mds-stepper-bar>
+    `);
+    const captions = Array.from(root.querySelectorAll('mds-stepper-bar-item')).map(
+      (item) => item.shadowRoot!.querySelector('.step')?.textContent?.trim() ?? null,
+    );
+
+    // a text without the placeholder is shown as it is, an empty one leaves the phrase of the
+    // component, and `step` still decides whether the caption is shown
+    expect(captions).toEqual(['Fase 1', 'Fase 2 di 4', 'Riepilogo', 'Step 4', null]);
+  });
 });

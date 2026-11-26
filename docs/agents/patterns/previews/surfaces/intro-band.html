@@ -17,20 +17,11 @@ whole-page: true
           <mds-text id="titolo" typography="page" tag="h1">Le pratiche anagrafiche, senza fila</mds-text>
           <mds-text typography="detail" tag="p">Certificati, cambi di residenza e carta di identità: la richiesta parte da qui, a qualsiasi ora, e la segui fino alla fine.</mds-text>
         </div>
-        <ul role="list" class="m-0 grid list-none gap-label-control p-0">
-          <li class="flex items-start gap-inline">
-            <mds-icon name="mi/baseline/check-circle" class="shrink-0"></mds-icon>
-            <mds-text typography="detail" tag="span">I certificati subito, con il bollo digitale</mds-text>
-          </li>
-          <li class="flex items-start gap-inline">
-            <mds-icon name="mi/baseline/check-circle" class="shrink-0"></mds-icon>
-            <mds-text typography="detail" tag="span">Lo stato della pratica, passo per passo</mds-text>
-          </li>
-          <li class="flex items-start gap-inline">
-            <mds-icon name="mi/baseline/check-circle" class="shrink-0"></mds-icon>
-            <mds-text typography="detail" tag="span">Lo sportello solo quando serve, su appuntamento</mds-text>
-          </li>
-        </ul>
+        <mds-list class="gap-label-control">
+          <mds-list-item icon="mi/baseline/check-circle">I certificati subito, con il bollo digitale</mds-list-item>
+          <mds-list-item icon="mi/baseline/check-circle">Lo stato della pratica, passo per passo</mds-list-item>
+          <mds-list-item icon="mi/baseline/check-circle">Lo sportello solo quando serve, su appuntamento</mds-list-item>
+        </mds-list>
         <div class="flex flex-wrap gap-inline">
           <mds-button href="#" variant="light" tone="outline">Come funziona</mds-button>
           <mds-button href="#" variant="light" tone="strong">Inizia una richiesta</mds-button>
@@ -41,20 +32,20 @@ whole-page: true
           <mds-text typography="part" tag="h2">I più richiesti</mds-text>
         </mds-card-header>
         <mds-card-content>
-          <ul role="list" class="m-0 grid list-none gap-between-fields p-0">
-            <li class="grid gap-label-control">
+          <mds-list marker="none" class="gap-between-fields">
+            <mds-list-item class="grid gap-label-control">
               <mds-text typography="detail" tag="span">Certificato di residenza</mds-text>
               <mds-text typography="caption" tag="span" class="text-fg-muted">Subito, in PDF</mds-text>
-            </li>
-            <li class="grid gap-label-control">
+            </mds-list-item>
+            <mds-list-item class="grid gap-label-control">
               <mds-text typography="detail" tag="span">Cambio di residenza</mds-text>
               <mds-text typography="caption" tag="span" class="text-fg-muted">Entro 45 giorni</mds-text>
-            </li>
-            <li class="grid gap-label-control">
+            </mds-list-item>
+            <mds-list-item class="grid gap-label-control">
               <mds-text typography="detail" tag="span">Carta di identità</mds-text>
               <mds-text typography="caption" tag="span" class="text-fg-muted">Su appuntamento</mds-text>
-            </li>
-          </ul>
+            </mds-list-item>
+          </mds-list>
         </mds-card-content>
       </mds-card>
     </div>

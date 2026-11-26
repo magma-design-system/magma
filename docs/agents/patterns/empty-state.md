@@ -23,7 +23,7 @@ not-for:
 assumptions:
   - The application knows why the part is empty (nothing yet, nothing matches, all done, does not exist).
 high-stakes: false
-components: [mds-zero, mds-text, mds-button, mds-img]
+components: [mds-zero, mds-text, mds-button, mds-img, mds-dropdown]
 related: [list-with-filters, record-detail, loading, error-recovery, item-list, app-shell]
 validated-on: []
 
@@ -33,12 +33,59 @@ variables:
   room: { values: [panel, line], means: "is there room for a panel, or only for a line (a menu, a dropdown, a cell)" }
 
 cases:
-  - { id: add-the-first, cause: first-use, can-add: "yes", room: panel, where: "a panel that says what is missing and what it is for, with the action that adds the first one; an illustration may welcome", use: ["mds-zero", "mds-button slot=action"] }
-  - { id: filled-by-others, cause: first-use, can-add: "no", room: panel, where: "a panel that says who or what fills the part, and when; no button", use: ["mds-zero"] }
-  - { id: clear-filters, cause: filtered, room: panel, where: "a panel that says nothing matches, with Clear filters only; the summary of the results says it too", use: ["mds-zero", "mds-button slot=action"] }
-  - { id: all-done, cause: cleared, room: panel, where: "a panel that says all is done and what will come here; no button", use: ["mds-zero"] }
-  - { id: not-found, cause: gone, room: panel, where: "the panel takes the place of the page: its title is the h1, its action leads to the list", use: ["mds-zero", "mds-button slot=action href"] }
-  - { id: one-line, cause: [first-use, filtered, cleared], room: line, where: "one line of text where the items would be; the control that opened it is the way out", use: ["mds-text"] }
+  - id: add-the-first
+    cause: first-use
+    can-add: "yes"
+    room: panel
+    where: "a panel that says what is missing and what it is for, with the action that adds the first one; an illustration may welcome"
+    use:
+      - { role: "the panel, where the items would be", use: mds-zero }
+      - { role: "the title, what is missing, a title of a part at the level of its place", use: "mds-text slot=content typography=part tag=h2" }
+      - { role: "what it is for, and that the first one starts it", use: "mds-text slot=content typography=detail tag=p" }
+      - { role: "the action that adds the first one, outlined: the strong one stays in the header of the page", use: "mds-button slot=action variant=primary tone=outline" }
+  - id: filled-by-others
+    cause: first-use
+    can-add: "no"
+    room: panel
+    where: "a panel that says who or what fills the part, and when; no button"
+    use:
+      - { role: "the panel, where the items would be", use: mds-zero }
+      - { role: "the title, what is missing, a title of a part at the level of its place", use: "mds-text slot=content typography=part tag=h3" }
+      - { role: "who or what fills the part, and when", use: "mds-text slot=content typography=detail tag=p" }
+  - id: clear-filters
+    cause: filtered
+    room: panel
+    where: "a panel that says nothing matches, with Clear filters only; the summary of the results says it too"
+    use:
+      - { role: "the summary of the results, which says it too, read out", use: "mds-text typography=detail tag=p role=status" }
+      - { role: "the panel, in the place of the results", use: mds-zero }
+      - { role: "the title, that nothing matches", use: "mds-text slot=content typography=part tag=h2" }
+      - { role: "what to try: other words, or clearing the filters", use: "mds-text slot=content typography=detail tag=p" }
+      - { role: "Clear filters, the only action, outlined: Create stays in the header of the page", use: "mds-button slot=action variant=primary tone=outline" }
+  - id: all-done
+    cause: cleared
+    room: panel
+    where: "a panel that says all is done and what will come here; no button"
+    use:
+      - { role: "the panel, where the items would be", use: mds-zero }
+      - { role: "the title, that nothing is left to do", use: "mds-text slot=content typography=part tag=h2" }
+      - { role: "that all is done, and what will come here", use: "mds-text slot=content typography=detail tag=p" }
+  - id: not-found
+    cause: gone
+    room: panel
+    where: "the panel takes the place of the page: its title is the h1, its action leads to the list"
+    use:
+      - { role: "the panel, in the place of the page", use: mds-zero }
+      - { role: "the title of the page, what was not found", use: "mds-text slot=content typography=page tag=h1" }
+      - { role: "why it is not there, and where to look for it", use: "mds-text slot=content typography=detail tag=p" }
+      - { role: "the way to the list, a link named after it", use: "mds-button slot=action href=<the list>" }
+  - id: one-line
+    cause: [first-use, filtered, cleared]
+    room: line
+    where: "one line of text where the items would be; the control that opened it is the way out"
+    use:
+      - { role: "the panel of the options, under the control that opened it, which reads the line out", use: "mds-dropdown target=<the control that opened it> interaction=none placement=bottom-start role=status" }
+      - { role: "one line where the items would be, in the muted foreground: nothing matches what was typed", use: "mds-text typography=detail" }
 gaps: []
 not-applicable:
   - { cause: gone, room: line, why: "a thing that does not exist is reached by its address: the whole page" }
@@ -99,14 +146,14 @@ whether there is room for a panel or only for a line.
 
 A case that leaves a variable out holds for any of its values.
 
-| Case | When | Where | Use |
-| --- | --- | --- | --- |
-| `add-the-first` | cause: first-use; can-add: yes; room: panel | a panel that says what is missing and what it is for, with the action that adds the first one; an illustration may welcome | `mds-zero`, `mds-button slot=action` |
-| `filled-by-others` | cause: first-use; can-add: no; room: panel | a panel that says who or what fills the part, and when; no button | `mds-zero` |
-| `clear-filters` | cause: filtered; room: panel | a panel that says nothing matches, with Clear filters only; the summary of the results says it too | `mds-zero`, `mds-button slot=action` |
-| `all-done` | cause: cleared; room: panel | a panel that says all is done and what will come here; no button | `mds-zero` |
-| `not-found` | cause: gone; room: panel | the panel takes the place of the page: its title is the h1, its action leads to the list | `mds-zero`, `mds-button slot=action href` |
-| `one-line` | cause: first-use or filtered or cleared; room: line | one line of text where the items would be; the control that opened it is the way out | `mds-text` |
+| Case | When | Where |
+| --- | --- | --- |
+| `add-the-first` | cause: first-use; can-add: yes; room: panel | a panel that says what is missing and what it is for, with the action that adds the first one; an illustration may welcome |
+| `filled-by-others` | cause: first-use; can-add: no; room: panel | a panel that says who or what fills the part, and when; no button |
+| `clear-filters` | cause: filtered; room: panel | a panel that says nothing matches, with Clear filters only; the summary of the results says it too |
+| `all-done` | cause: cleared; room: panel | a panel that says all is done and what will come here; no button |
+| `not-found` | cause: gone; room: panel | the panel takes the place of the page: its title is the h1, its action leads to the list |
+| `one-line` | cause: first-use or filtered or cleared; room: line | one line of text where the items would be; the control that opened it is the way out |
 
 Not applicable:
 
@@ -115,6 +162,59 @@ Not applicable:
 | cause: gone; room: line | a thing that does not exist is reached by its address: the whole page |
 
 No gaps: every combination has a case or is not applicable.
+
+The parts of each case, in the order of its preview: what each does in the case, and the component to write. A value in angle brackets is the text of the application, written as it says; the rest of the preview is its stage, the context of the case.
+
+`add-the-first`:
+
+| Role | Use |
+| --- | --- |
+| the panel, where the items would be | `mds-zero` |
+| the title, what is missing, a title of a part at the level of its place | `mds-text slot=content typography=part tag=h2` |
+| what it is for, and that the first one starts it | `mds-text slot=content typography=detail tag=p` |
+| the action that adds the first one, outlined: the strong one stays in the header of the page | `mds-button slot=action variant=primary tone=outline` |
+
+`filled-by-others`:
+
+| Role | Use |
+| --- | --- |
+| the panel, where the items would be | `mds-zero` |
+| the title, what is missing, a title of a part at the level of its place | `mds-text slot=content typography=part tag=h3` |
+| who or what fills the part, and when | `mds-text slot=content typography=detail tag=p` |
+
+`clear-filters`:
+
+| Role | Use |
+| --- | --- |
+| the summary of the results, which says it too, read out | `mds-text typography=detail tag=p role=status` |
+| the panel, in the place of the results | `mds-zero` |
+| the title, that nothing matches | `mds-text slot=content typography=part tag=h2` |
+| what to try: other words, or clearing the filters | `mds-text slot=content typography=detail tag=p` |
+| Clear filters, the only action, outlined: Create stays in the header of the page | `mds-button slot=action variant=primary tone=outline` |
+
+`all-done`:
+
+| Role | Use |
+| --- | --- |
+| the panel, where the items would be | `mds-zero` |
+| the title, that nothing is left to do | `mds-text slot=content typography=part tag=h2` |
+| that all is done, and what will come here | `mds-text slot=content typography=detail tag=p` |
+
+`not-found`:
+
+| Role | Use |
+| --- | --- |
+| the panel, in the place of the page | `mds-zero` |
+| the title of the page, what was not found | `mds-text slot=content typography=page tag=h1` |
+| why it is not there, and where to look for it | `mds-text slot=content typography=detail tag=p` |
+| the way to the list, a link named after it | `mds-button slot=action href=<the list>` |
+
+`one-line`:
+
+| Role | Use |
+| --- | --- |
+| the panel of the options, under the control that opened it, which reads the line out | `mds-dropdown target=<the control that opened it> interaction=none placement=bottom-start role=status` |
+| one line where the items would be, in the muted foreground: nothing matches what was typed | `mds-text typography=detail` |
 
 ## Parts
 
@@ -197,3 +297,4 @@ Situations every application has, each with its case: they give the examples, th
 | 2026-10-28 | A search with no results offers Clear filters only, even when the person may create | One action that answers the cause; Create stays in the header of the page. |
 | 2026-10-28 | An illustration only on first use, optional | It welcomes; where the person is working, the space belongs to the data (Illustration guide of the docs site). |
 | 2026-11-10 | `mds-zero` takes the roles of the design language: `p-inset` around its zones, `gap-title-content` in its content, `gap-content-actions` between the zones, `gap-inline` between the actions, no footer with no action; its fill is `surface-muted` in both modes, and its examples title the panel `typography="part"` (#1231). | The previews corrected the panel by hand. The fill is a step under the page in light and in dark, where the items would stand (`surfaces/tints-in-components`); the wash it had stood under the page in light and over it in dark, a light card. Rejected: `surface-sunken`, a hole in dark, and `surface-raised` with a shadow, a card, which `surfaces` keeps for an item of a set. Chosen by vittorio on the render. |
+| 2026-11-13 | Each case gives the parts of its solution with their role, in the order of its preview, the stage of the preview marked `data-stage` | The `use` of a case named one part in five of what its preview shows, and no role: the agents of the products composed the rest by hand. https://github.com/magma-design-system/magma/issues/1396 |
