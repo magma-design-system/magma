@@ -1,4 +1,5 @@
 import { h } from '@stencil/core';
+import { StateCell, StatesGrid } from '@fixture/states';
 import { iconsDictionary } from '@type/icon';
 import { themeFullVariantAvatarDictionary } from '@type/variant';
 import { toneMinimalVariantDictionary } from '@type/tone';
@@ -272,4 +273,140 @@ export const DateFormat = {
     tone: 'strong',
     variant: 'primary',
   },
+};
+
+/**
+ * Every state a notification has of its own once the story has opened (#1440, @fixture/states),
+ * each in a stack of its own: an item is a part of mds-push-notification, which brings it in and
+ * takes it out. The stack is fixed to the right edge of the viewport, so each cell holds it on a
+ * stage, a box with a `transform` (the containing block of the fixed stack) and
+ * `overflow-hidden`; the stack, its clear button and its show and hide are in the story of
+ * mds-push-notification, the item taken out by its dismiss button too. The variant and the tone
+ * paint the chip of the icon, every one of them on the same icon. The date is a static one
+ * (`date-format`, a date with no time zone, so it reads the same everywhere): the default
+ * `timeago` writes the time passed since the date, which changes with the clock, and is left out.
+ * The dismiss button shows only under the pointer or the focus, which a story does not hold, so
+ * the cell `dismissible` shows the room it keeps on the right. No state needs an interaction.
+ */
+interface ItemState {
+  state: string;
+  tall?: boolean;
+  badge?: boolean;
+  actions?: string[];
+  props: Record<string, string | boolean>;
+}
+
+const protocolItem = {
+  icon: 'mi/baseline/description',
+  subject: 'Pratica protocollata',
+  message: 'La pratica 2024/1042 ha ricevuto il numero di protocollo 18733.',
+};
+const staticDate = { datetime: '2025-06-15T09:30:00', 'date-format': 'DD/MM/YYYY HH:mm' };
+
+const itemStates: ItemState[] = [
+  { state: 'icon, subject and message', props: protocolItem },
+  { state: 'no subject', props: { icon: protocolItem.icon, message: protocolItem.message } },
+  { state: 'no icon', props: { subject: protocolItem.subject, message: protocolItem.message } },
+  { state: 'no message, the default text', props: { icon: protocolItem.icon } },
+  {
+    state: 'avatar, picture',
+    props: {
+      preview: 'avatar',
+      src: './avatar-05-200x200.jpeg',
+      subject: 'Sarah Ho',
+      message: 'Ti ho inviato la bozza del parere, fammi sapere se va bene.',
+    },
+  },
+  {
+    state: 'avatar, initials',
+    props: {
+      preview: 'avatar',
+      initials: 'SH',
+      subject: 'Sarah Ho',
+      message: 'Ti ho inviato la bozza del parere, fammi sapere se va bene.',
+    },
+  },
+  {
+    state: 'picture',
+    props: {
+      src: './book-cover-01.webp',
+      subject: 'Nuovo volume disponibile',
+      message: 'Il codice degli appalti commentato è nella tua biblioteca.',
+    },
+  },
+  {
+    state: 'icon and picture',
+    props: {
+      icon: 'mi/baseline/attach-file',
+      src: './book-cover-01.webp',
+      subject: 'Nuovo volume disponibile',
+      message: 'Il codice degli appalti commentato è nella tua biblioteca.',
+    },
+  },
+  { state: 'static date', props: { ...protocolItem, ...staticDate } },
+  { state: 'badge', badge: true, props: { ...protocolItem, icon: 'mi/baseline/attach-file' } },
+  { state: 'one action', tall: true, actions: ['Apri'], props: protocolItem },
+  { state: 'two actions', tall: true, actions: ['Ignora', 'Apri'], props: protocolItem },
+  { state: 'dismissible', props: { ...protocolItem, dismissible: true } },
+  {
+    state: 'long subject and message, clamped',
+    props: {
+      icon: protocolItem.icon,
+      subject: 'Pratica 2024/1042 protocollata e assegnata al servizio Edilizia privata',
+      message:
+        'La pratica ha ricevuto il numero di protocollo 18733 ed è stata assegnata al servizio Edilizia privata, che la prenderà in carico entro dieci giorni lavorativi. Fino ad allora puoi modificare gli allegati.',
+    },
+  },
+  {
+    state: 'every part',
+    tall: true,
+    badge: true,
+    actions: ['Ignora', 'Apri'],
+    props: {
+      ...protocolItem,
+      ...staticDate,
+      icon: 'mi/baseline/attach-file',
+      variant: 'primary',
+      dismissible: true,
+    },
+  },
+  ...themeFullVariantAvatarDictionary.flatMap((variant) =>
+    toneMinimalVariantDictionary.map((tone) => ({
+      state: `variant ${variant}, ${tone}`,
+      props: { ...protocolItem, variant, tone },
+    })),
+  ),
+];
+
+const TemplateStates = () => (
+  <StatesGrid>
+    {itemStates.map(({ state, tall, badge, actions, props }) => (
+      <StateCell key={state} state={state}>
+        <div
+          class={`relative overflow-hidden rounded-md bg-surface-default ${tall ? 'h-5600' : 'h-4800'}`}
+          style={{ transform: 'translateZ(0)' }}
+        >
+          <mds-push-notification>
+            <mds-push-notification-item {...props}>
+              {badge && <mds-badge slot="badge" variant="amaranth" label="pdf"></mds-badge>}
+              {actions?.map((action, index) => (
+                <mds-button
+                  key={action}
+                  slot="action"
+                  size="sm"
+                  tone={index < actions.length - 1 ? 'outline' : 'weak'}
+                >
+                  {action}
+                </mds-button>
+              ))}
+            </mds-push-notification-item>
+          </mds-push-notification>
+        </div>
+      </StateCell>
+    ))}
+  </StatesGrid>
+);
+
+export const States = {
+  render: TemplateStates,
 };
