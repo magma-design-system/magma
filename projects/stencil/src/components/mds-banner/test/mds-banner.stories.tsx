@@ -1,4 +1,5 @@
 import { h } from '@stencil/core';
+import { StateCell, StatesGrid } from '@fixture/states';
 import { iconsDictionary } from '@type/icon';
 import { themeVariantDictionary } from '@type/variant';
 import { toneMinimalBoxVariantDictionary } from '@type/tone';
@@ -238,4 +239,108 @@ const VariantsTableTemplate = () => (
 
 export const VariantsTable = {
   render: VariantsTableTemplate,
+};
+
+/**
+ * Every state of a banner once the story has opened (#1440, @fixture/states). Each variant in each
+ * tone carries a headline, an icon in its cockade and the close button, so the colours of all
+ * three are seen per variant; the parts one at a time are on the default variant (primary,
+ * weak). Two cells hold the banner in a narrow box (`max-w-7200`, 288px), where its container
+ * queries move the close button clear of the first line and stack the actions. The actions stand
+ * in a row only in a banner wider than --container-actions (380px) plus its inset: in the three
+ * columns of a 1440px canvas the cell `actions` is under it and stacks them too, on a wider
+ * canvas it shows the row; `narrow, actions stacked` stacks them at every width. The banner as the
+ * window of a dialog (`slot="window"` in an mds-modal, h5 headline by its place) opens an overlay
+ * and is left to the stories of mds-modal; the h5 style itself is here, by `typography`. No state
+ * needs an interaction: the close button only emits `mdsBannerClose`, the product removes the
+ * banner, so the story has no play function.
+ */
+interface BannerState {
+  state: string;
+  narrow?: boolean;
+  actions?: boolean;
+  text?: string;
+  props: Record<string, string | boolean>;
+}
+
+const bannerText =
+  'Il servizio scade il 31 dicembre: rinnovalo per continuare a ricevere gli aggiornamenti normativi.';
+const bannerLongText =
+  'La pratica 2024/1042 è stata assegnata al servizio Edilizia privata, che la prenderà in carico entro dieci giorni lavorativi. Fino ad allora puoi ancora modificare gli allegati e la descrizione dei lavori: dopo, ogni modifica dovrà passare da una nuova istanza di integrazione documentale.';
+const bannerHeadline = 'Rinnovo del servizio';
+const bannerVariantIcons: Record<string, string> = {
+  ai: 'mgg/ai-brain',
+  dark: 'mi/baseline/info',
+  error: 'mi/baseline/warning',
+  info: 'mi/baseline/info',
+  light: 'mi/baseline/info',
+  primary: 'mi/baseline/info',
+  success: 'mi/baseline/check-circle',
+  warning: 'mi/baseline/warning',
+};
+
+const bannerStates: BannerState[] = [
+  ...themeVariantDictionary.flatMap((variant) =>
+    toneMinimalBoxVariantDictionary.map((tone) => ({
+      state: `${variant}, ${tone}`,
+      props: {
+        variant,
+        tone,
+        headline: bannerHeadline,
+        icon: bannerVariantIcons[variant],
+        dismissible: true,
+      },
+    })),
+  ),
+  { state: 'rest', props: {} },
+  { state: 'headline', props: { headline: bannerHeadline } },
+  { state: 'headline, typography h5', props: { headline: bannerHeadline, typography: 'h5' } },
+  { state: 'icon in its cockade', props: { icon: 'mi/baseline/info' } },
+  { state: 'icon, hide-cockade', props: { icon: 'mi/baseline/info', 'hide-cockade': true } },
+  { state: 'dismissible', props: { dismissible: true } },
+  { state: 'actions', actions: true, props: {} },
+  {
+    state: 'every part',
+    actions: true,
+    props: { headline: bannerHeadline, icon: 'mi/baseline/info', dismissible: true },
+  },
+  {
+    state: 'long text',
+    text: bannerLongText,
+    props: {
+      headline: 'Pratica assegnata al servizio Edilizia privata del Comune',
+      icon: 'mi/baseline/info',
+      dismissible: true,
+    },
+  },
+  {
+    state: 'narrow, dismissible',
+    narrow: true,
+    props: { headline: bannerHeadline, dismissible: true },
+  },
+  { state: 'narrow, actions stacked', narrow: true, actions: true, props: {} },
+];
+
+const TemplateStates = () => (
+  <StatesGrid>
+    {bannerStates.map(({ state, narrow, actions, text, props }) => (
+      <StateCell key={state} state={state}>
+        <div class={narrow ? 'max-w-7200' : undefined}>
+          <mds-banner {...props}>
+            <mds-text typography="detail">{text ?? bannerText}</mds-text>
+            {actions && (
+              <mds-button slot="action" tone="outline">
+                Più tardi
+              </mds-button>
+            )}
+            {actions && <mds-button slot="action">Rinnova</mds-button>}
+          </mds-banner>
+        </div>
+      </StateCell>
+    ))}
+  </StatesGrid>
+);
+
+export const States = {
+  render: TemplateStates,
 };
