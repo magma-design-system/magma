@@ -8,7 +8,7 @@ import initialConfig from '@maggioli-design-system/design-tokens/.magma-design-t
 import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs'
 import { ScalesManager, type RatioSet } from '../src/scales.js'
 import { App } from '../src/app.js'
-import { LangProvider, type Lang } from '../src/i18n.js'
+import { LangProvider, type Lang } from '../src/shared/i18n/i18n.js'
 import { textOf } from './text.mjs'
 
 // The Contrast scales page is written in Magma: its stops, its distribution and its menus are

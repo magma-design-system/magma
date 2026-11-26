@@ -2,7 +2,7 @@ import {
   CURVE_PRESETS,
   HUE_SHIFT_EASINGS,
 } from '@maggioli-design-system/design-tokens/src/lib/hue-shift.mjs';
-import type { Option } from './magma.js';
+import type { Option } from './shared/magma/magma.js';
 
 /*
   The curves across a scale, as the editors of the Palette offer them: the hue shifting (app.tsx,

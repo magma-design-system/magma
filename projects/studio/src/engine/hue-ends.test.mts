@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
 
-import { endsOf, moveEnd } from '../src/hue-ends.js'
+import { endsOf, moveEnd } from './hue-ends.js'
 
 // The link of the two ends of a hue shift: read back from the two values the configuration keeps,
 // and applied when one end moves.

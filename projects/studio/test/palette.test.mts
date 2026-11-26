@@ -5,7 +5,7 @@ import { within } from '@testing-library/preact'
 import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs'
 import { App } from '../src/app.js'
 import type { ConfigAction } from '../src/config-menu.js'
-import { nearestColorName } from '../src/color-names.js'
+import { nearestColorName } from '../src/engine/color-names.js'
 
 // The Palette page in Magma: the list of the families, the editor of the one selected, its menu,
 // the settings of the whole configuration and the dialog of a new colour react to the controls of

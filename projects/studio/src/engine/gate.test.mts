@@ -5,8 +5,8 @@ import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/
 import { createColorTokens } from '@maggioli-design-system/design-tokens/src/lib/color.mjs'
 import { gatePairs, type ColorTree, type PairResult } from '@maggioli-design-system/design-tokens/src/lib/contrast-gate.js'
 import { semantic } from '@maggioli-design-system/design-tokens/semantic.config'
-import { gateFailureGroups, gateFailures, gateReport, gateVerdict, type GateTheme } from '../src/gate.js'
-import { NO_THEME_CHOICES, type ThemeChoices } from '../src/theme-choices.js'
+import { gateFailureGroups, gateFailures, gateReport, gateVerdict, type GateTheme } from './gate.js'
+import { NO_THEME_CHOICES, type ThemeChoices } from '../theme-choices.js'
 
 // The studio runs the contrast gate of design-tokens on the configuration it edits (#698): the
 // pairs `nx run design-tokens:contrast` measures, with its targets, on the themes of the Themes

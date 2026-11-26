@@ -4,9 +4,9 @@ import { playwright } from '@vitest/browser-playwright';
 import { fileURLToPath } from 'node:url';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
-import { magmaVendor } from './vendor.ts';
-import { magmaApi } from './magma-api.ts';
-import { studioFavicons } from './favicons.ts';
+import { magmaVendor } from './build/vendor.ts';
+import { magmaApi } from './build/magma-api.ts';
+import { studioFavicons } from './build/favicons.ts';
 
 // the generator sources of design-tokens are .mts files imported with .mjs
 // specifiers (node/tsc convention); vite needs help mapping the extension
@@ -23,13 +23,13 @@ function resolveMts(): Plugin {
 
 // chalk is only used by the generator for console coloring; in the browser
 // bundle it is replaced by a pass-through stub
-const chalkStub = fileURLToPath(new URL('./src/chalk-stub.ts', import.meta.url));
+const chalkStub = fileURLToPath(new URL('./src/engine/chalk-stub.ts', import.meta.url));
 
 const root = fileURLToPath(new URL('.', import.meta.url));
 
 // The tests that need no document: the engine, and the checks of the build and of the site.
 // Every other `*.test.mts` runs in jsdom, so a new test is never left out of a run.
-const NODE_TESTS = ['test/{bundle,gate,hue-ends,routes,share,site,vendor}.test.mts'];
+const NODE_TESTS = ['src/engine/**/*.test.mts', 'test/{bundle,routes,share,site,vendor}.test.mts'];
 
 export default defineConfig({
   root,
@@ -83,7 +83,7 @@ export default defineConfig({
         test: {
           name: 'jsdom',
           environment: 'jsdom',
-          include: ['test/**/*.test.mts'],
+          include: ['{src,test}/**/*.test.mts'],
           exclude: NODE_TESTS,
           // the effects of Preact after a paint, scheduled with no global of jsdom (test/setup.mts)
           setupFiles: ['test/setup.mts'],
@@ -98,7 +98,7 @@ export default defineConfig({
         },
         test: {
           name: 'browser',
-          include: ['test/**/*.e2e.mts'],
+          include: ['{src,test}/**/*.e2e.mts'],
           browser: {
             enabled: true,
             provider: playwright(),

@@ -9,7 +9,7 @@ import initialConfig from '@maggioli-design-system/design-tokens/.magma-design-t
 import blueMark from '@maggioli-design-system/identity/dist/internal/magma-design-system/logo-magma.svg?url'
 import whiteMark from '@maggioli-design-system/identity/dist/internal/magma-design-system/logo-magma-white.svg?url'
 import { DRAFT_STORAGE_KEY, hashText, type StudioDraft } from '../src/draft.js'
-import { Studio } from '../src/shell.js'
+import { Studio, applyFrame } from '../src/shell.js'
 import { THEME_CHOICES_KEY, resetThemeChoices, updateThemeChoices } from '../src/theme-choices.js'
 import { textOf } from './text.mjs'
 
@@ -423,4 +423,26 @@ test('the studio follows the language of <html lang> at once', async () => {
   } finally {
     document.documentElement.lang = ''
   }
+})
+
+// moved from the tests of scene-css (#1399): applyFrame is the shell's and needs a document
+test('a frame follows the theme, the mode and the contrast it is given, not those the person stored', () => {
+  const scene = document.implementation.createHTMLDocument('scene')
+  // what mds-pref-mode and mds-pref-contrast write from a stored choice
+  scene.documentElement.classList.add('pref-mode-system', 'pref-contrast-more')
+  applyFrame(scene, { theme: 'editorial', scheme: 'dark', contrast: false, css: 'a {}' })
+  const html = scene.documentElement
+  expect(html.getAttribute('data-theme-name')).toBe('editorial')
+  expect(html.hasAttribute('data-magma-pref')).toBe(true)
+  expect([...html.classList].sort()).toEqual(['pref-contrast-no-preference', 'pref-mode-dark', 'pref-theme-scheme-all'])
+  expect(scene.querySelectorAll('style#studio-configuration')).toHaveLength(1)
+
+  applyFrame(scene, { theme: 'business', scheme: 'light', contrast: true, css: 'b {}' })
+  expect([...html.classList].sort()).toEqual(['pref-contrast-more', 'pref-mode-light', 'pref-theme-scheme-all'])
+  expect(scene.querySelectorAll('style#studio-configuration')).toHaveLength(1)
+  expect(scene.getElementById('studio-configuration')?.textContent).toBe('b {}')
+
+  // no configuration yet: the frame shows the installed Magma alone
+  applyFrame(scene, { theme: 'business', scheme: 'light', contrast: false })
+  expect(scene.getElementById('studio-configuration')).toBeNull()
 })

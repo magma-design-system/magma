@@ -3,11 +3,11 @@ import { within } from '@testing-library/preact'
 
 import initialConfig from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json'
 import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs'
-import { paintedBy } from '../src/paints.js'
-import { sceneStyle } from '../src/scene-css.js'
-import { onScale } from '../src/scales.js'
-import { ACTION_STATES, forcedSelector, forceHover, statesMarkup, statesPlan } from '../src/states.js'
-import { translator } from '../src/i18n.js'
+import { paintedBy } from '../../engine/paints.js'
+import { sceneStyle } from '../../engine/scene-css.js'
+import { onScale } from '../../scales.js'
+import { ACTION_STATES, forcedSelector, forceHover, statesMarkup, statesPlan } from './states.js'
+import { translator } from '../i18n/i18n.js'
 
 // The states of a colour beside a contrast scale (#1308): the components the family paints at
 // every tone the documentation gives them, an action in the states mds-button publishes, the

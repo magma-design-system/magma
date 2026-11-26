@@ -16,8 +16,8 @@ import { semantic } from '@maggioli-design-system/design-tokens/semantic.config'
 import type { ColorMode } from '@maggioli-design-system/design-tokens/src/lib/theme-manifest.mjs';
 import baselineFile from '@maggioli-design-system/design-tokens/contrast-baseline.json';
 import { configThemes, scaleOfFamily } from './scene-css.js';
-import { NO_THEME_CHOICES, type ThemeChoices } from './theme-choices.js';
-import { accentOfTheme } from './themes.js';
+import { NO_THEME_CHOICES, type ThemeChoices } from '../theme-choices.js';
+import { accentOfTheme } from '../themes.js';
 
 /*
   The APCA contrast gate of design-tokens, run in the browser on the configuration being edited

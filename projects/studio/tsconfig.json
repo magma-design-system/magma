@@ -13,5 +13,5 @@
     "strict": false,
     "noEmit": true
   },
-  "include": ["src", "test", "vite.config.ts", "vendor.ts", "magma-api.ts", "site.ts"]
+  "include": ["src", "test", "build", "vite.config.ts"]
 }

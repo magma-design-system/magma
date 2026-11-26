@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url'
 import sharp from 'sharp'
 import { expect, test } from 'vitest'
 
-import { FAVICONS } from '../favicons.ts'
+import { FAVICONS } from '../build/favicons.ts'
 
 // The studio in a tab and on other sites: the favicons drawn from the mark of its bar
 // (favicons.ts), and the preview of a link to it (index.html, public/covers/). The build is the

@@ -17,7 +17,7 @@ import {
   resolveFormula,
   resolveRatiosName,
 } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
-import { cssHex, cssRgb, gimpPalette } from './formats.js';
+import { cssHex, cssRgb, gimpPalette } from './engine/formats.js';
 import type { ConfigAction } from './config-menu.js';
 import {
   COLORSPACES,
@@ -38,17 +38,22 @@ import {
   type HueShiftEasing,
 } from '@maggioli-design-system/design-tokens/src/lib/hue-shift.mjs';
 import { hasSaturation } from '@maggioli-design-system/design-tokens/src/lib/saturation.mjs';
-import { generateScales, singleColorConfig, type ColorScales, type Step } from './generator.js';
+import {
+  generateScales,
+  singleColorConfig,
+  type ColorScales,
+  type Step,
+} from './engine/generator.js';
 import { ScalesManager, type RatioSet, type ScaleOrigin } from './scales.js';
 import { SurfaceManager, DEFAULT_THEME } from './surfaces.js';
 import { COLORS_PAGES, type ColorsView } from './routes.js';
 import { ThemesManager } from './themes.js';
 import { useThemeChoices } from './theme-choices.js';
-import { gateReport, type GateVerdict } from './gate.js';
+import { gateReport, type GateVerdict } from './engine/gate.js';
 import { ContrastCheck, GateDialog, type ExportAction } from './contrast.js';
-import { GateBadge } from './verdict.js';
+import { GateBadge } from './shared/ui/verdict.js';
 import type { ThemeConfig } from '@maggioli-design-system/design-tokens/src/lib/surface.mjs';
-import { nearestColorName } from './color-names.js';
+import { nearestColorName } from './engine/color-names.js';
 import {
   clearDraft,
   hashText,
@@ -61,10 +66,18 @@ import {
   type LoadedRatios,
   type StudioDraft,
 } from './draft.js';
-import { Check, ColorInput, Field, Range, Select, TextInput, type Option } from './magma.js';
-import { HUE_ENDS, endsOf, moveEnd, type HueEnds } from './hue-ends.js';
+import {
+  Check,
+  ColorInput,
+  Field,
+  Range,
+  Select,
+  TextInput,
+  type Option,
+} from './shared/magma/magma.js';
+import { HUE_ENDS, endsOf, moveEnd, type HueEnds } from './engine/hue-ends.js';
 import { PaletteSide } from './palette-side.js';
-import { msg, useT, type T } from './i18n.js';
+import { msg, useT, type T } from './shared/i18n/i18n.js';
 import './palette.css';
 import {
   CURVE_KINDS,

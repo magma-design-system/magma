@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'preact/hooks';
 import { THEME_NAME } from '@maggioli-design-system/design-tokens/semantic.model';
 import { MODES, type ModeView } from './scene-prefs.js';
-import { msg } from './i18n.js';
+import { msg } from './shared/i18n/i18n.js';
 
 /*
   The pages of the studio and their addresses. Every page is a link (the app-shell block of

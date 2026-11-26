@@ -10,10 +10,10 @@ import {
   type GatePair,
   type GateReport,
   type PairState,
-} from './gate.js';
-import { msg, plural, rich, useT, type T } from './i18n.js';
-import { Check } from './magma.js';
-import { ThemeVerdict } from './verdict.js';
+} from './engine/gate.js';
+import { msg, plural, rich, useT, type T } from './shared/i18n/i18n.js';
+import { Check } from './shared/magma/magma.js';
+import { ThemeVerdict } from './shared/ui/verdict.js';
 import './contrast.css';
 
 /*

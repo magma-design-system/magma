@@ -6,7 +6,7 @@ import {
   createColorTokens,
   type MagmaConfig,
 } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
-import { plural, useT } from './i18n.js';
+import { plural, useT } from './shared/i18n/i18n.js';
 import './diff.css';
 
 // The diff compares the palette generated from the edited config against the

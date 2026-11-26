@@ -10,7 +10,7 @@ import {
   type StudioDraft,
 } from '../src/draft.js'
 import { App } from '../src/app.js'
-import { translator } from '../src/i18n.js'
+import { translator } from '../src/shared/i18n/i18n.js'
 
 // The studio mirrors its working config to localStorage. A restored draft
 // used to win over the config on disk even after the file changed or was

@@ -18,12 +18,12 @@ import {
   type ColorMode,
 } from '@maggioli-design-system/design-tokens/src/lib/theme-manifest.mjs';
 import { RESERVED_GROUPS, SurfaceCanvas } from './surfaces.js';
-import { Field, Select, TextInput, type Option } from './magma.js';
+import { Field, Select, TextInput, type Option } from './shared/magma/magma.js';
 import { type ThemeChoices, updateThemeChoices, useThemeChoices } from './theme-choices.js';
 import type { ExportAction } from './contrast.js';
-import type { GateReport, GateTheme } from './gate.js';
-import { msg, rich, translator, useT, type T } from './i18n.js';
-import { ThemeVerdict } from './verdict.js';
+import type { GateReport, GateTheme } from './engine/gate.js';
+import { msg, rich, translator, useT, type T } from './shared/i18n/i18n.js';
+import { ThemeVerdict } from './shared/ui/verdict.js';
 import { hrefOf } from './routes.js';
 import './themes.css';
 

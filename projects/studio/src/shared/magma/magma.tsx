@@ -1,6 +1,6 @@
 import type { ComponentChildren } from 'preact';
 import { useRef, useState } from 'preact/hooks';
-import { useLangOf } from './i18n.js';
+import { useLangOf } from '../i18n/i18n.js';
 import './magma.css';
 
 /*

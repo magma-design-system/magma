@@ -21,10 +21,10 @@ import {
 } from '@maggioli-design-system/design-tokens/src/lib/contrast-gate.js';
 import boxShadowTokens from '@maggioli-design-system/design-tokens/tokens/cosmetic/box-shadow.json';
 import committedConfig from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json';
-import { Field, Range, Select } from './magma.js';
-import type { GateReport } from './gate.js';
+import { Field, Range, Select } from './shared/magma/magma.js';
+import type { GateReport } from './engine/gate.js';
 import { GateSummary } from './gate-summary.js';
-import { msg, rich, useT, type T } from './i18n.js';
+import { msg, rich, useT, type T } from './shared/i18n/i18n.js';
 import './surfaces.css';
 
 /*

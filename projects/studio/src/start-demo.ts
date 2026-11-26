@@ -17,9 +17,9 @@ import {
   type TextConfig,
   type TextRole,
 } from '@maggioli-design-system/design-tokens/src/lib/text-role.mjs';
-import { gateReport, type GateCell, type GateVerdict } from './gate.js';
-import { sceneStyle } from './scene-css.js';
-import { msg } from './i18n.js';
+import { gateReport, type GateCell, type GateVerdict } from './engine/gate.js';
+import { sceneStyle } from './engine/scene-css.js';
+import { msg } from './shared/i18n/i18n.js';
 
 /*
   The demo of the hero of the Start page (start.tsx): the configuration Magma builds with, drawn

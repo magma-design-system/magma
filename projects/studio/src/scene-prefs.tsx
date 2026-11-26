@@ -6,7 +6,7 @@ import contrastEn from '../../stencil/src/components/mds-pref-contrast/meta/loca
 import contrastIt from '../../stencil/src/components/mds-pref-contrast/meta/locale.it.json';
 import modeEn from '../../stencil/src/components/mds-pref-mode/meta/locale.en.json';
 import modeIt from '../../stencil/src/components/mds-pref-mode/meta/locale.it.json';
-import { useLangOf, useT, type Lang } from './i18n.js';
+import { useLangOf, useT, type Lang } from './shared/i18n/i18n.js';
 
 /*
   The preferences of the person the Theme section checks a theme under, the accessibility of the

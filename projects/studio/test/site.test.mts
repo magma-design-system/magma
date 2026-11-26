@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url'
 import { chromium, type Browser, type Page } from 'playwright'
 import { afterAll, beforeAll, expect, test } from 'vitest'
 
-import { writeSite } from '../site.ts'
+import { writeSite } from '../build/site.ts'
 import { COLORS_PAGES } from '../src/routes.ts'
 
 // The studio as a static site (site.ts), served as GitHub Pages serves it: files only, no Vite,

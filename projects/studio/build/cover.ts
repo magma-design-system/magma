@@ -20,7 +20,8 @@ import { fileURLToPath } from 'node:url';
 import { chromium, type Page } from 'playwright';
 import { preview } from 'vite';
 
-const root = fileURLToPath(new URL('.', import.meta.url));
+// the studio, one folder up from build/
+const root = fileURLToPath(new URL('..', import.meta.url));
 
 /** The size of an Open Graph image, which LinkedIn, Facebook and Slack show whole. */
 const SIZE = { width: 1200, height: 630 };
