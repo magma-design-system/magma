@@ -389,6 +389,7 @@ flowchart LR
   MCP["mcp<br/>src/render.ts"]
   WC["stencil<br/>dist/magma-components"]
   ID["identity<br/>logo-magma.svg, logo-magma-white.svg"]
+  ST["styles<br/>dist/tailwind"]
   subgraph stu["studio<br/>an app, not on npm"]
     SHELL["src/shell.tsx, src/app/, src/start.tsx<br/>the bar, the router, Start, Colors, Theme, Behavior"]
     STATE["src/state/<br/>the work in signals, the draft, the actions"]
@@ -400,6 +401,7 @@ flowchart LR
     API["build/magma-api.ts<br/>the variant and tone of each component"]
     SITE["build/site.ts<br/>the static site, dist-site/"]
     SCENE["scene.html, states.html, hero.html<br/>the pages the frames show"]
+    TW["src/tailwind.css<br/>the classes of the pages"]
     SHELL --> APP
     SHELL --> STATE
     SHELL --> SCENE
@@ -409,6 +411,7 @@ flowchart LR
     STATE --> OUT
     SURF --> GATE
     API --> APP
+    TW --> SHELL
   end
   DT -->|"createColorTokens, themeOf, namedThemeCss, gradeRamps"| APP
   DT -->|"gatePairs, applyBaseline, contrast-baseline.json"| GATE
@@ -419,11 +422,12 @@ flowchart LR
   WC -->|"documentation.json"| API
   WC -->|"the lazy loader"| SITE
   ID -->|"the logo of the bar"| SHELL
+  ST -->|"theme.css, typography.css as reference, utilities.css"| TW
   VEN -.->|"node_modules/, svg/, components/"| SHELL
   SITE -.->|"deploy-site.yml"| PAGES(["GitHub Pages<br/>magma/studio/"])
   OUT -.->|"download"| AUTHOR(["the author of a theme"])
   MI(["@material-icons/svg<br/>check_circle, warning, cancel"]) -.->|"the icons of a verdict, inlined at build"| APP
-  class DT,APP,STATE,SURF,GATE,OUT,SHELL,VEN,API,SITE,SCENE visual
+  class DT,ST,APP,STATE,SURF,GATE,OUT,SHELL,VEN,API,SITE,SCENE,TW visual
   class MCP ai
   class WC components
   class ID assets
@@ -465,6 +469,12 @@ The folders of the studio (#1397; #1399 moved the files into them, #1400 added `
 - `src/app/`: the router (`router.ts`: one table of the pages for the menus and the addresses,
   `navigate(route, { replace })`, a location in the hash or in memory, a hash that does not start
   with `#/` left alone) and the Config menu of the bar (`config-menu.tsx`).
+- `src/tailwind.css`: the entry of Tailwind (#1401), the Tailwind layer of Magma as
+  `docs/agents/assets.md` writes it, with the theme of Magma imported as `reference`, so the
+  bundle declares none of its variables and each utility reads the one of the Magma the page
+  loads, the value of the theme only as the fallback of its `var()`. `test/tailwind.test.mts`
+  holds that every name of the theme the installed sheets do not define falls back on one they
+  define (all but two literals, each with its reason), and that the bundle declares none.
 - the rest of `src/`: the shell and the pages, until #1401-#1404 give the pages `features/` and
   move the shell into `app/`.
 

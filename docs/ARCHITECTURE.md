@@ -27,6 +27,7 @@ graph TD
   ID --> SD
   MCP --> SD
   ST --> WC
+  ST --> SD
   SI --> WC
   SI --> IC
   ID --> WC

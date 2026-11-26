@@ -1,0 +1,22 @@
+/*
+  The entry of Tailwind in the studio (#1397, #1401): the Tailwind layer of Magma, as a product
+  with Tailwind 4 imports it (docs/agents/assets.md, "Tailwind (optional)"), so the pages are
+  written in the classes of the products and of the docs site, and the lint of Magma reads them.
+
+  One difference from the guide, for Magma as an external vendor (#695, docs/ARCHITECTURE.md): the
+  theme of Magma is imported as `reference`. Tailwind then writes none of its variables into the
+  bundle, and every utility reads the variable of the Magma the page loads (build/vendor.ts), with
+  the value of the theme only as the fallback of its var(): `max-w-2xl` is
+  `var(--max-width-2xl, var(--container-2xl))`, `bg-surface-raised` reads `--magma-surface-raised`.
+  So sizes, type and colours follow the installed Magma, and a name only Tailwind has falls back
+  on one the installed sheets define. test/tailwind.test.mts holds it, and that the bundle
+  declares no variable of the theme.
+
+  The classes are read from the sources of the studio alone (`source`), not from its docs or tests.
+*/
+
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities) source('.');
+@import '@maggioli-design-system/styles/dist/tailwind/theme.css' reference;
+@import '@maggioli-design-system/styles/dist/tailwind/typography.css' reference;
+@import '@maggioli-design-system/styles/dist/tailwind/utilities.css';

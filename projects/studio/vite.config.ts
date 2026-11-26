@@ -1,6 +1,7 @@
 import type { Plugin } from 'vite';
 import { defineConfig } from 'vitest/config';
 import { playwright } from '@vitest/browser-playwright';
+import tailwindcss from '@tailwindcss/vite';
 import { fileURLToPath } from 'node:url';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
@@ -34,12 +35,13 @@ const NODE_TESTS = [
   'src/{engine,state}/**/*.test.mts',
   'src/shared/routes/routes.test.mts',
   'src/app/router.test.mts',
-  'test/{bundle,share,site,vendor}.test.mts',
+  'test/{bundle,share,site,tailwind,vendor}.test.mts',
 ];
 
 export default defineConfig({
   root,
-  plugins: [resolveMts(), magmaVendor(root), magmaApi(), studioFavicons()],
+  // tailwindcss: the classes of the pages, on the Tailwind layer of Magma (src/tailwind.css)
+  plugins: [resolveMts(), tailwindcss(), magmaVendor(root), magmaApi(), studioFavicons()],
   oxc: {
     jsx: { runtime: 'automatic', importSource: 'preact' },
   },
