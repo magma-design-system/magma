@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { useEffect, useState, useSyncExternalStore } from 'react';
 import { expect, waitFor } from 'storybook/test';
 import { NavigationService } from '@common/navigation';
+import { StateCell, StatesGrid, stateCell } from '@fixture/states';
 
 export default {
   title: 'UI / Navigation / Tab',
@@ -675,4 +676,170 @@ export const UseCaseClientSideRouter = {
       window.history.replaceState(null, '', `${pathname}${search}${hash}`);
     }
   },
+};
+
+/**
+ * Every state of the strip once the story has opened (#1440, @fixture/states): which tab is
+ * selected (the first, a middle one, none), the selection animation (`slide`, the default, and
+ * `fade`), the small size, the strip that fills its room, the panels of the `content` slot with the
+ * one of the selected tab shown, the vertical strip with and without panels, more tabs than the
+ * strip holds (with the overflow shadows, or the scrollbar), and the strip of links, where every
+ * item has `href`. The states a tab has of its own (disabled, its icon, waiting, link, the long
+ * label) are in the story of mds-tab-item. A state only an interaction reaches (`play: true`) is
+ * brought there by the play function, which checks `selected` on the items and the panel shown,
+ * not their look.
+ */
+interface TabItem {
+  label: string;
+  value: string;
+  selected?: boolean;
+  href?: string;
+}
+
+interface TabState {
+  state: string;
+  play?: boolean;
+  tab?: Record<string, string | boolean>;
+  items: TabItem[];
+  panels?: boolean;
+}
+
+/** The items, the one of `value` selected; the others without the attribute, as in markup. */
+const selecting = (items: TabItem[], value?: string): TabItem[] =>
+  items.map((item) => (item.value === value ? { ...item, selected: true } : item));
+
+const caseTabs: TabItem[] = [
+  { label: 'Dati generali', value: 'dati' },
+  { label: 'Allegati', value: 'allegati' },
+  { label: 'Storico', value: 'storico' },
+];
+
+const manyTabs: TabItem[] = [
+  { label: 'Dati generali', value: 'dati' },
+  { label: 'Richiedente', value: 'richiedente' },
+  { label: 'Immobile', value: 'immobile' },
+  { label: 'Tecnico incaricato', value: 'tecnico' },
+  { label: 'Allegati', value: 'allegati' },
+  { label: 'Pagamenti', value: 'pagamenti' },
+  { label: 'Comunicazioni', value: 'comunicazioni' },
+  { label: 'Storico', value: 'storico' },
+];
+
+// fragments, so that the preview stays on the page should a click get through
+const linkTabs: TabItem[] = [
+  { label: 'Panoramica', value: 'panoramica', href: '#panoramica' },
+  { label: 'Documenti', value: 'documenti', href: '#documenti' },
+  { label: 'Scadenze', value: 'scadenze', href: '#scadenze' },
+];
+
+const panelTexts: Record<string, string> = {
+  dati: 'Pratica 128/2026, permesso di costruire presentato il 12 marzo 2026.',
+  allegati: 'Tre documenti allegati: relazione tecnica, planimetria, ricevuta di pagamento.',
+  storico: 'Protocollata il 12 marzo 2026, assegnata al servizio edilizia privata.',
+};
+
+const tabStates: TabState[] = [
+  { state: 'first tab selected', items: selecting(caseTabs, 'dati') },
+  { state: 'middle tab selected', items: selecting(caseTabs, 'allegati') },
+  { state: 'no tab selected', items: caseTabs },
+  { state: 'fade animation', tab: { animation: 'fade' }, items: selecting(caseTabs, 'allegati') },
+  { state: 'small size', tab: { size: 'sm' }, items: selecting(caseTabs, 'allegati') },
+  { state: 'fill', tab: { fill: true }, items: selecting(caseTabs, 'allegati') },
+  { state: 'panels, the selected one shown', items: selecting(caseTabs, 'allegati'), panels: true },
+  {
+    state: 'vertical, with panels',
+    tab: { direction: 'vertical' },
+    items: selecting(caseTabs, 'allegati'),
+    panels: true,
+  },
+  {
+    state: 'vertical, without panels',
+    tab: { direction: 'vertical' },
+    items: selecting(caseTabs, 'allegati'),
+  },
+  {
+    state: 'more tabs than its room, overflow shadows',
+    tab: { overflow: true },
+    items: selecting(manyTabs, 'allegati'),
+  },
+  {
+    state: 'more tabs than its room, scrollbar',
+    tab: { scrollbar: true },
+    items: selecting(manyTabs, 'allegati'),
+  },
+  { state: 'links, the current one selected', items: selecting(linkTabs, 'documenti') },
+  {
+    state: 'another tab chosen by a click',
+    play: true,
+    items: selecting(caseTabs, 'dati'),
+    panels: true,
+  },
+  {
+    state: 'another tab chosen with Enter',
+    play: true,
+    items: selecting(caseTabs, 'dati'),
+    panels: true,
+  },
+];
+
+const TemplateStates = () => (
+  <StatesGrid>
+    {tabStates.map(({ state, play, tab, items, panels }) => (
+      <StateCell key={state} state={state} play={play}>
+        <mds-tab {...tab}>
+          {items.map((item) => (
+            <mds-tab-item key={item.value} type="button" {...item}></mds-tab-item>
+          ))}
+          {panels &&
+            items.map(({ value }) => (
+              <div key={value} slot="content" class="p-400">
+                <mds-text>{panelTexts[value]}</mds-text>
+              </div>
+            ))}
+        </mds-tab>
+      </StateCell>
+    ))}
+  </StatesGrid>
+);
+
+/** The items and the panels of a cell, once every Magma element of the cell has loaded. */
+const loadedTab = async (canvasElement: HTMLElement, state: string) => {
+  const cell = stateCell(canvasElement, state);
+  const elements = Array.from(cell.querySelectorAll('*')).filter((element) =>
+    element.tagName.startsWith('MDS-'),
+  );
+  await waitFor(() => elements.forEach((element) => expect(element).toHaveAttribute('hydrated')));
+  const item = (value: string) =>
+    cell.querySelector(`mds-tab-item[value="${value}"]`) as HTMLMdsTabItemElement;
+  const panels = Array.from(cell.querySelectorAll('[slot="content"]')) as HTMLElement[];
+  return { item, panels };
+};
+
+/** The inner button of an item: the item listens on it, not on its host. */
+const tabButton = (item: HTMLMdsTabItemElement) =>
+  item.shadowRoot!.querySelector('mds-button') as HTMLMdsButtonElement;
+
+const playStates = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+  const clicked = await loadedTab(canvasElement, 'another tab chosen by a click');
+  tabButton(clicked.item('allegati')).click();
+  const enter = await loadedTab(canvasElement, 'another tab chosen with Enter');
+  tabButton(enter.item('storico')).dispatchEvent(
+    new KeyboardEvent('keydown', { code: 'Enter', key: 'Enter', bubbles: true, cancelable: true }),
+  );
+
+  // the properties, not the attributes: Stencil reflects them on the next frame, and a hidden
+  // page draws no frame. The panels are shown and hidden by an attribute the strip sets at once
+  await waitFor(() => expect(clicked.item('allegati')).toHaveProperty('selected', true));
+  await waitFor(() => expect(clicked.item('dati')).not.toHaveProperty('selected', true));
+  await waitFor(() => expect(clicked.panels[1]).not.toHaveAttribute('mds-tab-content-hidden'));
+  await waitFor(() => expect(clicked.panels[0]).toHaveAttribute('mds-tab-content-hidden'));
+  await waitFor(() => expect(enter.item('storico')).toHaveProperty('selected', true));
+  await waitFor(() => expect(enter.item('dati')).not.toHaveProperty('selected', true));
+  await waitFor(() => expect(enter.panels[2]).not.toHaveAttribute('mds-tab-content-hidden'));
+};
+
+export const States = {
+  render: TemplateStates,
+
+  play: playStates,
 };
