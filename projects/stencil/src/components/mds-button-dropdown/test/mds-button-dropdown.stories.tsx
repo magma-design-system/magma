@@ -2,6 +2,7 @@ import { h } from '@stencil/core';
 import { iconsDictionary } from '@type/icon';
 import { useState } from 'react';
 import { expect, waitFor } from 'storybook/test';
+import { StateCell, StatesGrid, stateCell } from '@fixture/states';
 import {
   buttonDropdownVariantDictionary,
   buttonSizeDictionary,
@@ -207,4 +208,164 @@ export const StackedRow = {
       expect(chevron.getBoundingClientRect().right).toBeCloseTo(host.right, 0);
     });
   },
+};
+
+/**
+ * Every state of the split button once the story has opened (#1440, @fixture/states): each variant
+ * in both its tones, the sizes, with an icon and without a label, disabled (by the attribute and by
+ * a fieldset), waiting, the current view (a page and a section), a link, the long label in two
+ * truncations, and the menu open. Secondary renders as primary, kept for compatibility
+ * (docs/agents/variants.md). The light variant is painted in the paper of the mode, so it sits on
+ * the inverse surface. The menu is opened in the first cell, at the top of the page: its panel
+ * opens on the side of the window with the most room, below it there, into the room the cell keeps,
+ * so that it covers no other state (in the last cell it opened upwards, over the cell above). A
+ * click anywhere on the page closes it, so it is the only one open. A state only an interaction
+ * reaches (`play: true`) is brought there by the play function, which checks the property, not the
+ * look. `type`, `name`, `value` and `dropdown-label` change what the button sends or how the
+ * chevron is named, not how it looks; the width it takes in a stacked row is the StackedRow story.
+ */
+interface DropdownState {
+  state: string;
+  play?: boolean;
+  /** the inverse surface, for the variant painted in the paper of the mode */
+  inverse?: boolean;
+  /** the split buttons sit in a disabled fieldset */
+  fieldset?: boolean;
+  dropdowns: Record<string, string | boolean>[];
+}
+
+// the label each variant takes in a product: what the variant says
+const variantLabels: [string, string][] = [
+  ['primary', 'Invia'],
+  ['secondary', 'Modifica'],
+  ['ai', 'Riassumi'],
+  ['dark', 'Esporta'],
+  ['light', 'Apri'],
+  ['error', 'Elimina'],
+  ['warning', 'Sospendi'],
+  ['success', 'Approva'],
+  ['info', 'Dettagli'],
+];
+
+const sizeDropdown = (size: string) => [{ size, label: 'Scarica', icon: 'mi/baseline/download' }];
+const menuOpen = 'menu open';
+
+const dropdownStates: DropdownState[] = [
+  { state: menuOpen, play: true, dropdowns: [{ label: 'Invia', icon: 'mi/baseline/send' }] },
+  ...variantLabels.map(([variant, label]) => ({
+    state: `variant ${variant} (strong, weak)`,
+    inverse: variant === 'light',
+    dropdowns: ['strong', 'weak'].map((tone) => ({ variant, tone, label })),
+  })),
+  { state: 'size sm', dropdowns: sizeDropdown('sm') },
+  { state: 'size md (default)', dropdowns: sizeDropdown('md') },
+  { state: 'size lg', dropdowns: sizeDropdown('lg') },
+  { state: 'size xl', dropdowns: sizeDropdown('xl') },
+  { state: 'icon', dropdowns: [{ label: 'Invia', icon: 'mi/baseline/send' }] },
+  {
+    state: 'icon, no label',
+    dropdowns: [{ icon: 'mi/baseline/print', 'dropdown-label': 'Altre opzioni di stampa' }],
+  },
+  {
+    state: 'disabled (strong, weak)',
+    dropdowns: ['strong', 'weak'].map((tone) => ({ tone, label: 'Invia', disabled: true })),
+  },
+  { state: 'disabled by its fieldset', fieldset: true, dropdowns: [{ label: 'Invia' }] },
+  {
+    state: 'await (strong, weak)',
+    dropdowns: ['strong', 'weak'].map((tone) => ({
+      tone,
+      label: 'Invio in corso',
+      await: true,
+    })),
+  },
+  {
+    state: 'current page, a link',
+    dropdowns: [
+      { label: 'Pratiche', href: '#pratiche', variant: 'dark', tone: 'weak', current: true },
+    ],
+  },
+  {
+    state: 'current section, a link back',
+    dropdowns: [
+      { label: 'Pratiche', href: '#pratiche', variant: 'dark', tone: 'weak', current: 'section' },
+    ],
+  },
+  { state: 'link (href)', dropdowns: [{ label: 'Vai alle pratiche', href: '#pratiche' }] },
+  {
+    state: 'long label, truncate word (default)',
+    dropdowns: [{ label: 'Invia la comunicazione a tutti i destinatari', class: 'max-w-6400' }],
+  },
+  {
+    state: 'long label, truncate none',
+    dropdowns: [
+      {
+        label: 'Invia la comunicazione a tutti i destinatari',
+        truncate: 'none',
+        class: 'max-w-6400',
+      },
+    ],
+  },
+];
+
+const TemplateStates = () => (
+  <StatesGrid>
+    {dropdownStates.map(({ state, play, inverse, fieldset, dropdowns }) => {
+      const row = dropdowns.map((props, index) => (
+        <mds-button-dropdown key={String(index)} {...props}>
+          <mds-button
+            icon="mi/outline/schedule"
+            variant="dark"
+            tone="text"
+            type="button"
+            label="Programma l'invio"
+          ></mds-button>
+          <mds-button
+            icon="mi/baseline/edit"
+            variant="dark"
+            tone="text"
+            type="button"
+            label="Salva come bozza"
+          ></mds-button>
+        </mds-button-dropdown>
+      ));
+      const layout = `flex flex-wrap items-center gap-200${inverse ? ' bg-surface-inverse p-400 rounded-lg' : ''}`;
+      return (
+        <StateCell key={state} state={state} play={play}>
+          {fieldset ? (
+            <fieldset disabled class={`${layout} border-0 m-0 min-w-0 p-0`}>
+              {row}
+            </fieldset>
+          ) : (
+            <div class={layout}>{row}</div>
+          )}
+          {/* the room the panel opens into, under the split button */}
+          {state === menuOpen && <div class="h-3600"></div>}
+        </StateCell>
+      );
+    })}
+  </StatesGrid>
+);
+
+const playStates = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+  const cell = stateCell(canvasElement, menuOpen);
+  const elements = Array.from(cell.querySelectorAll('*')).filter((element) =>
+    element.tagName.startsWith('MDS-'),
+  );
+  await waitFor(() => elements.forEach((element) => expect(element).toHaveAttribute('hydrated')));
+  const dropdown = cell.querySelector('mds-button-dropdown') as HTMLMdsButtonDropdownElement;
+  // the chevron is the caller of the menu, in the shadow root of the component
+  (dropdown.shadowRoot!.querySelector('.dropdown-action') as HTMLElement).click();
+
+  // the property, not the attribute: Stencil reflects it on the next frame, and a hidden page
+  // draws no frame
+  await waitFor(() =>
+    expect(dropdown.shadowRoot!.querySelector('mds-dropdown')).toHaveProperty('visible', true),
+  );
+};
+
+export const States = {
+  render: TemplateStates,
+
+  play: playStates,
 };
