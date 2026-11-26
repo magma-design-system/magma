@@ -1,0 +1,1166 @@
+<title>Controllo del paradigma</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  /* Layout: one reading column of subjects; each issue is a card that reads top to bottom:
+     who and what (number, original title), the problem in plain words, then each request with
+     its vote and why, and the maintainer's own vote at the side (below on phones). */
+  :root {
+    --bg: #f6f7f9;
+    --surface: #ffffff;
+    --fg: #17202e;
+    --muted: #5a6577;
+    --line: #dde2ea;
+    --accent: #2450b8;
+    --focus: #2450b8;
+    --v-ok: #1d7a45;
+    --v-form: #2f55c9;
+    --v-exists: #0f7470;
+    --v-rule: #9a2f7d;
+    --v-out: #5f6672;
+    --v-decide: #9a6200;
+    --v-fix: #b34a0b;
+    --v-bad: #b42318;
+    --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0f131a; --surface: #171c25; --fg: #e6eaf1; --muted: #9aa5b6; --line: #2a3240;
+      --accent: #8fb0ff; --focus: #8fb0ff;
+      --v-ok: #6fd39a; --v-form: #9ab4ff; --v-exists: #5fd0c8; --v-rule: #e79bd2;
+      --v-out: #aab2bf; --v-decide: #f0c060; --v-fix: #f5a46b; --v-bad: #ff9a8f;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f131a; --surface: #171c25; --fg: #e6eaf1; --muted: #9aa5b6; --line: #2a3240;
+    --accent: #8fb0ff; --focus: #8fb0ff;
+    --v-ok: #6fd39a; --v-form: #9ab4ff; --v-exists: #5fd0c8; --v-rule: #e79bd2;
+    --v-out: #aab2bf; --v-decide: #f0c060; --v-fix: #f5a46b; --v-bad: #ff9a8f;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--fg); font-family: var(--font-body);
+    font-size: 15px; line-height: 1.5;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 32px 48px;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+  header { display: flex; flex-direction: column; gap: 8px; }
+  .eyebrow { margin: 0; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+  h1 { margin: 0; font-size: 30px; line-height: 1.15; font-weight: 600; text-wrap: balance; }
+  .lede { margin: 0; max-width: 68ch; color: var(--muted); }
+  .run { margin: 0; font-size: 13px; color: var(--muted); }
+  .about {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+    padding: 16px 20px; display: flex; flex-direction: column; gap: 10px; max-width: 80ch; margin-top: 6px;
+  }
+  .about h2 { margin: 0; font-size: 15px; font-weight: 600; }
+  .about ul { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 6px; font-size: 14.5px; }
+  .about-not { margin: 0; font-size: 13.5px; color: var(--muted); }
+  .notice {
+    border: 1px solid color-mix(in oklab, var(--v-decide) 45%, var(--line));
+    background: color-mix(in oklab, var(--v-decide) 10%, var(--surface));
+    border-radius: 8px; padding: 10px 14px; max-width: 80ch; font-size: 14px;
+  }
+  .notice strong { color: var(--v-decide); }
+  .summary-bar { display: flex; flex-direction: column; gap: 12px; }
+  .tally { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; font-size: 14px; }
+  .tally .mine { color: var(--muted); }
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; }
+  .filters button {
+    font: inherit; font-size: 13px; padding: 6px 12px; border-radius: 999px; cursor: pointer;
+    border: 1px solid var(--line); background: var(--surface); color: var(--fg);
+  }
+  .filters button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); font-weight: 600; }
+  .filters .n { font-family: var(--font-mono); font-size: 12px; color: var(--muted); margin-left: 4px; font-variant-numeric: tabular-nums; }
+  .state { color: var(--muted); font-size: 14px; }
+  .groups { display: flex; flex-direction: column; gap: 36px; }
+  .group {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+    padding: 20px 22px; display: flex; flex-direction: column;
+  }
+  .ghead { display: flex; flex-direction: column; gap: 6px; }
+  .ghead h2 { margin: 0; font-size: 19px; font-weight: 600; }
+  .ghead .gsum { margin: 0; color: var(--muted); max-width: 80ch; font-size: 14px; }
+  .ghead .gsum::before { content: "In sintesi: "; font-weight: 600; color: var(--fg); }
+  .group hr { border: 0; border-top: 1px solid var(--line); margin: 18px 0 0; }
+  .cards { display: flex; flex-direction: column; }
+  .card {
+    padding-block: 20px; display: grid; gap: 16px 28px;
+    grid-template-columns: minmax(0, 1fr) 15rem; align-items: start;
+  }
+  .card + .card { border-top: 1px solid var(--line); }
+  .card:last-child { padding-bottom: 2px; }
+  .main { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  .top { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  .top a { font-family: var(--font-mono); font-weight: 500; color: var(--accent); text-decoration: none; font-variant-numeric: tabular-nums; }
+  .top a:hover { text-decoration: underline; }
+  .kind { font-size: 12px; color: var(--muted); }
+  .top .overall { margin-left: auto; }
+  .tag { font-size: 11px; padding: 1px 6px; border-radius: 4px; border: 1px dashed var(--v-decide); color: var(--v-decide); }
+  .title { margin: 0; font-size: 13px; color: var(--muted); font-family: var(--font-mono); overflow-wrap: anywhere; }
+  .problem { margin: 0; font-size: 15.5px; max-width: 72ch; }
+  .reqs-h { margin: 4px 0 0; font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+  .reqs { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; counter-reset: req; }
+  .reqs > li {
+    display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 10px;
+    padding: 10px 12px; border-radius: 8px; background: var(--bg);
+  }
+  .reqs.many > li { counter-increment: req; }
+  .req-body { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+  .req-plain { margin: 0; font-size: 14.5px; }
+  .req-plain-h, .req-why-h { display: block; }
+  .rel { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; font-size: 13.5px; }
+  .rel a { font-family: var(--font-mono); font-weight: 500; color: var(--accent); }
+  .card { scroll-margin-top: 16px; }
+  .reqs.many > li::before {
+    content: counter(req); grid-row: 1; font-family: var(--font-mono); font-size: 13px;
+    color: var(--muted); padding-top: 1px; font-variant-numeric: tabular-nums;
+  }
+  .reqs:not(.many) > li { grid-template-columns: minmax(0, 1fr); }
+  .req-line { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 10px; }
+  .req-ask { font-weight: 500; }
+  .req-detail { display: flex; flex-direction: column; gap: 6px; min-width: 0; color: var(--muted); font-size: 14px; }
+  .req-why { margin: 0; }
+  .req-why-h { font-size: 11.5px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+  .opts { margin: 0; padding-left: 1.7em; list-style-type: lower-alpha; display: flex; flex-direction: column; gap: 4px; }
+  .opts > li { display: list-item; padding-left: 2px; }
+  .opts li::marker { font-family: var(--font-mono); font-weight: 600; color: var(--fg); }
+  .example {
+    margin: 0; padding: 8px 10px; border-radius: 6px; border: 1px solid var(--line);
+    background: var(--surface); color: var(--fg); font-family: var(--font-mono); font-size: 12.5px;
+    line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere;
+  }
+  .req-detail code, .problem code {
+    font-family: var(--font-mono); font-size: .9em; color: var(--fg);
+    background: color-mix(in oklab, var(--fg) 7%, transparent); padding: 0 4px; border-radius: 4px;
+    overflow-wrap: anywhere;
+  }
+  .prev { font-size: 12.5px; color: var(--muted); margin: 0; }
+  .pill {
+    display: inline-block; font-size: 12.5px; font-weight: 600; padding: 2px 9px; border-radius: 999px;
+    color: var(--c); background: color-mix(in oklab, var(--c) 14%, var(--surface));
+    border: 1px solid color-mix(in oklab, var(--c) 35%, transparent); white-space: nowrap;
+  }
+  .t-ok { --c: var(--v-ok); } .t-form { --c: var(--v-form); } .t-exists { --c: var(--v-exists); }
+  .t-rule { --c: var(--v-rule); } .t-out { --c: var(--v-out); } .t-decide { --c: var(--v-decide); }
+  .t-fix { --c: var(--v-fix); } .t-bad { --c: var(--v-bad); }
+  .mine-cell { display: flex; flex-direction: column; gap: 6px; padding-left: 20px; border-left: 1px solid var(--line); }
+  .mine-h { display: block; margin: 0; font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+  .mine-line { display: flex; gap: 6px; align-items: center; }
+  .mine-cell select, .mine-cell textarea, .mine-cell button {
+    font: inherit; font-size: 13px; color: var(--fg); background: var(--bg);
+    border: 1px solid var(--line); border-radius: 6px;
+  }
+  .mine-cell select { width: 100%; padding: 6px; }
+  .mine-cell button { padding: 5px 9px; cursor: pointer; white-space: nowrap; }
+  .mine-cell textarea { width: 100%; min-height: 4.5em; padding: 6px 8px; resize: vertical; }
+  .status { font-size: 12px; color: var(--muted); min-height: 1.2em; }
+  .status.agree { color: var(--v-ok); }
+  .status.disagree { color: var(--v-rule); font-weight: 600; }
+  .status.error { color: var(--v-bad); font-weight: 600; }
+  /* One vote per request: under each request of an item that has more than one. */
+  .pt-mine {
+    display: flex; flex-direction: column; gap: 6px; max-width: 30rem;
+    padding-top: 10px; border-top: 1px dashed var(--line);
+  }
+  .pt-h { font-size: 11.5px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--fg); }
+  .pt-mine select, .pt-mine textarea {
+    font: inherit; font-size: 13px; color: var(--fg); background: var(--surface);
+    border: 1px solid var(--line); border-radius: 6px; width: 100%;
+  }
+  .pt-mine select { padding: 6px; }
+  .pt-mine textarea { min-height: 3em; padding: 6px 8px; resize: vertical; }
+  .hint { margin: 0; font-size: 13px; color: var(--muted); }
+  .before { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; font-size: 12.5px; color: var(--muted); }
+  .before q { color: var(--fg); }
+  .status.open { color: var(--v-decide); }
+  /* Claude's opinion on each request, read before the maintainer answers it. */
+  .opinion {
+    display: flex; flex-direction: column; gap: 4px; padding: 8px 10px; font-size: 14px; color: var(--fg);
+    background: var(--surface); border-left: 3px solid var(--accent); border-radius: 0 6px 6px 0;
+  }
+  .op-h { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+  .op-title, .op-reply-h { font-size: 11.5px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+  .op-reply-h { margin-top: 4px; }
+  .op-stance { font-size: 12.5px; font-weight: 600; color: var(--c); }
+  .s-agree { --c: var(--v-ok); } .s-object { --c: var(--v-rule); } .s-add { --c: var(--v-form); } .s-proposal { --c: var(--v-decide); }
+  .op-text { margin: 0; white-space: pre-line; }
+  .op-point { margin: 0; font-weight: 500; }
+  .op-more summary { cursor: pointer; font-size: 12.5px; color: var(--accent); width: fit-content; }
+  .op-more .op-text { margin-top: 4px; font-size: 13.5px; color: var(--muted); }
+  /* The reply drafted for the contributor, across the whole card, under the votes. */
+  .draft {
+    grid-column: 1 / -1; display: flex; flex-direction: column; gap: 8px; padding: 12px 14px; border-radius: 8px;
+    border: 1px solid color-mix(in oklab, var(--accent) 35%, var(--line));
+    background: color-mix(in oklab, var(--accent) 5%, var(--surface));
+  }
+  .draft-h { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+  .draft-title { font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--fg); }
+  .draft-action { font-size: 12.5px; font-weight: 600; color: var(--accent); }
+  .draft-sent { font-size: 12.5px; font-weight: 600; color: var(--v-ok); }
+  .draft-brief { margin: 0; font-size: 14.5px; max-width: 80ch; }
+  .draft-brief code, .draft-also code {
+    font-family: var(--font-mono); font-size: .9em;
+    background: color-mix(in oklab, var(--fg) 7%, transparent); padding: 0 4px; border-radius: 4px; overflow-wrap: anywhere;
+  }
+  .draft-label { display: block; font-size: 11.5px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+  .draft textarea, .draft select {
+    font: inherit; font-size: 13.5px; color: var(--fg); background: var(--surface);
+    border: 1px solid var(--line); border-radius: 6px; width: 100%;
+  }
+  .draft .draft-body { font-family: var(--font-mono); font-size: 12.5px; line-height: 1.55; padding: 8px 10px; resize: vertical; }
+  .draft select { padding: 6px; max-width: 22rem; }
+  .draft-mine { display: flex; flex-direction: column; gap: 6px; max-width: 40rem; }
+  .draft-mine textarea { min-height: 3em; padding: 6px 8px; resize: vertical; }
+  .draft-also ul { margin: 4px 0 0; padding-left: 1.2em; font-size: 13.5px; }
+  /* Two views of the same cards: the drafts (title, problem, draft) or the votes and opinions. */
+  .views { display: flex; flex-wrap: wrap; border-bottom: 1px solid var(--line); }
+  .views button {
+    font: inherit; font-size: 14.5px; padding: 8px 14px; margin-bottom: -1px; cursor: pointer;
+    background: none; border: 0; border-bottom: 2px solid transparent; color: var(--muted);
+  }
+  .views button[aria-selected="true"] { color: var(--fg); font-weight: 600; border-bottom-color: var(--accent); }
+  body.view-drafts .card > .main > .reqs-h,
+  body.view-drafts .card > .main > .reqs,
+  body.view-drafts .card > .main > .prev,
+  body.view-drafts .card > .mine-cell,
+  body.view-drafts #filters { display: none; }
+  body.view-drafts .card { grid-template-columns: minmax(0, 1fr); }
+  .op-point code {
+    font-family: var(--font-mono); font-size: .9em;
+    background: color-mix(in oklab, var(--fg) 7%, transparent); padding: 0 4px; border-radius: 4px; overflow-wrap: anywhere;
+  }
+  .op-text code {
+    font-family: var(--font-mono); font-size: .9em;
+    background: color-mix(in oklab, var(--fg) 7%, transparent); padding: 0 4px; border-radius: 4px; overflow-wrap: anywhere;
+  }
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+  .legend { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); }
+  .legend section { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+  .legend h3 { margin: 0 0 8px; font-size: 14px; font-weight: 600; }
+  .legend dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; font-size: 13.5px; }
+  .legend dt { white-space: nowrap; }
+  .legend dd { margin: 0; color: var(--muted); }
+  @media (max-width: 760px) {
+    .group { padding: 16px; }
+    .card { grid-template-columns: minmax(0, 1fr); padding-block: 16px; }
+    .mine-cell { padding-left: 0; border-left: 0; padding-top: 14px; border-top: 1px solid var(--line); }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<main class="wrap">
+  <header>
+    <p class="eyebrow">Magma &middot; issue e PR di autori esterni</p>
+    <h1>Controllo del paradigma</h1>
+    <p class="lede">Le issue e le PR aperte su Magma da persone diverse da vitto e nicolatamburini. Un agente che conosce solo le regole scritte di Magma ha dato a ognuna un voto: il riquadro colorato in alto a destra di ogni scheda &egrave; la sua proposta.</p>
+    <section class="about" aria-labelledby="about-h">
+      <h2 id="about-h">A cosa serve il tuo voto</h2>
+      <ul>
+        <li><strong>Misura l'agente.</strong> Il contatore qui sotto dice quanto il suo giudizio coincide con il tuo: se coincide quasi sempre, il giro giornaliero pu&ograve; fare il primo smistamento al posto tuo.</li>
+        <li><strong>Crea casi di prova.</strong> Ogni disaccordo diventa un caso con la risposta giusta, per verificare che la skill risponda ancora come te quando cambiano le regole o il modello.</li>
+        <li><strong>Scrive le regole che mancano.</strong> Sulle schede &ldquo;Decidi tu&rdquo; l'agente non ha un voto: scegli tu la decisione e scrivi nella nota la risposta alla domanda aperta. Diventa una regola nei documenti di Magma, e la volta dopo l'agente decide da solo.</li>
+        <li><strong>Un voto per punto.</strong> Quando una voce ha pi&ugrave; richieste, ognuna ha la sua tendina e la sua nota: puoi accoglierne una e respingerne un'altra.</li>
+        <li><strong>Il silenzio vale come d'accordo.</strong> Dove non rispondi, il voto dell'agente vale come approvato, e le risposte ai contributori partono da quello. Sui punti &ldquo;Decidi tu&rdquo; l'agente non ha un voto da approvare: senza la tua decisione restano aperti.</li>
+        <li><strong>Il parere di Claude.</strong> Sotto ogni punto trovi una mia seconda lettura del voto dell'agente, e dove avevi gi&agrave; risposto, una risposta critica alla tua nota: la tua risposta pu&ograve; partire da l&igrave;.</li>
+        <li><strong>Le bozze di risposta.</strong> Sotto ogni scheda c'&egrave; la risposta in inglese per chi ha aperto la issue o la PR: approvala, correggi il testo, chiedimi di rivederla o scartala. Senza risposta vale come approvata. Da qui non parte niente: prima dell'invio ti mostro in chat cosa va dove, e invio solo dopo il tuo ok.</li>
+      </ul>
+      <p class="about-not">Il voto non arriva su GitHub: niente commenti, label o chiusure. Rispondere a chi ha aperto la issue, aprire una PR o chiuderla sono passi a parte, che decidi tu.</p>
+    </section>
+    <p class="run" id="run"></p>
+    <div class="notice" id="stale" hidden></div>
+  </header>
+
+  <section class="summary-bar" aria-label="Riepilogo">
+    <div class="views" id="views" role="tablist" aria-label="Vista">
+      <button type="button" role="tab" data-v="drafts" aria-selected="true">Bozze di risposta</button>
+      <button type="button" role="tab" data-v="votes" aria-selected="false">Voti e pareri</button>
+    </div>
+    <div class="tally" id="tally"></div>
+    <div class="filters" id="filters" role="group" aria-label="Mostra">
+      <button type="button" id="f-all" data-f="all" aria-pressed="true">Tutti<span class="n" id="n-all"></span></button>
+      <button type="button" id="f-decide" data-f="decide" aria-pressed="false">Decidi tu<span class="n" id="n-decide"></span></button>
+      <button type="button" id="f-unvoted" data-f="unvoted" aria-pressed="false">Senza il tuo voto<span class="n" id="n-unvoted"></span></button>
+      <button type="button" id="f-disagree" data-f="disagree" aria-pressed="false">In disaccordo<span class="n" id="n-disagree"></span></button>
+    </div>
+  </section>
+
+  <p class="state" id="state">Carico i voti&hellip;</p>
+  <div class="groups" id="groups"></div>
+
+  <div class="legend" aria-label="La scala dei voti">
+    <section>
+      <h3>Issue: la accogliamo, e in che forma?</h3>
+      <dl>
+        <dt><span class="pill t-ok">Accoglibile</span></dt><dd>Il bisogno e la forma proposta stanno nello scopo del componente.</dd>
+        <dt><span class="pill t-form">Altra forma</span></dt><dd>Il bisogno &egrave; vero, la forma no: dice quale, e se esiste solo come piano.</dd>
+        <dt><span class="pill t-exists">Gi&agrave; possibile</span></dt><dd>Un modo documentato esiste gi&agrave;: lo indica.</dd>
+        <dt><span class="pill t-rule">Contro una regola</span></dt><dd>Una regola decisa la esclude; la riapre solo il maintainer, per tutti.</dd>
+        <dt><span class="pill t-out">Non di Magma</span></dt><dd>Errore d'uso del prodotto o problema di un altro progetto.</dd>
+        <dt><span class="pill t-decide">Decidi tu</span></dt><dd>Le regole scritte non bastano: l'agente dice quale decisione manca, e la prendi tu. Non &egrave; fra i voti che puoi dare.</dd>
+      </dl>
+    </section>
+    <section>
+      <h3>PR: &egrave; pronta per la tua review?</h3>
+      <dl>
+        <dt><span class="pill t-ok">Pronta</span></dt><dd>Collegata alla issue, con test, doc e CI verde, nella forma giusta.</dd>
+        <dt><span class="pill t-fix">Da sistemare</span></dt><dd>Forma giusta, ma manca qualcosa: dice cosa.</dd>
+        <dt><span class="pill t-bad">Non conforme</span></dt><dd>La forma &egrave; sbagliata.</dd>
+        <dt><span class="pill t-decide">Decidi tu</span></dt><dd>Come per le issue.</dd>
+      </dl>
+    </section>
+  </div>
+</main>
+
+<script>
+(function () {
+  "use strict";
+  // The maintainer's vote is always a decision: "Da decidere" is only the agent's verdict, shown
+  // as "Decidi tu", and never an option of the maintainer's menu.
+  var ISSUE_VOTES = ["Accoglibile", "Altra forma", "Già possibile", "Contro una regola", "Non di Magma"];
+  var PR_VOTES = ["Pronta", "Da sistemare", "Non conforme"];
+  var DEFER = "Da decidere";
+  var LABEL = { "Da decidere": "Decidi tu" };
+  function label(v) { return LABEL[v] || v; }
+  var TONE = {
+    "Accoglibile": "ok", "Pronta": "ok", "Altra forma": "form", "Già possibile": "exists",
+    "Contro una regola": "rule", "Non di Magma": "out", "Da decidere": "decide",
+    "Da sistemare": "fix", "Non conforme": "bad"
+  };
+
+  var items = [], groups = [], votes = {}, opinions = {}, draftsData = {}, replies = {}, meta = null;
+  // The same save bookkeeping as the votes, for the viewer's answers to the reply drafts.
+  var rTouched = {}, rWriting = {}, rAgain = {}, rSaved = {}, rPendingAt = {}, rRetried = {}, rRestored = {};
+  var loaded = { items: false, groups: false };
+  var rows = {};
+  var db = null;
+  var filter = "all";
+  // writing: a save in flight; again: save once more when it ends; touched: rows the viewer
+  // edited in this view, which the store never overwrites; saved: what this view last stored.
+  var writing = {}, again = {}, touched = {}, saved = {};
+  // pendingAt: the `at` of a write not yet confirmed by the store; restored: the viewer's unsaved
+  // fields kept across a reload of the page (a new version published while they were voting).
+  var pendingAt = {}, retried = {}, restored = {};
+  try { filter = localStorage.getItem("pc-filter") || "all"; } catch (e) { /* no storage */ }
+  var view = "drafts";
+  try { view = localStorage.getItem("pc-view") || "drafts"; } catch (e) { /* no storage */ }
+  function applyView() {
+    document.body.classList.toggle("view-drafts", view === "drafts");
+    Array.prototype.forEach.call(document.querySelectorAll("#views button"), function (b) {
+      b.setAttribute("aria-selected", String(b.getAttribute("data-v") === view));
+    });
+  }
+  Array.prototype.forEach.call(document.querySelectorAll("#views button"), function (b) {
+    b.addEventListener("click", function () {
+      view = b.getAttribute("data-v");
+      try { localStorage.setItem("pc-view", view); } catch (e) { /* no storage */ }
+      applyView();
+      applyFilter();
+    });
+  });
+  applyView();
+
+  var $ = function (id) { return document.getElementById(id); };
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = String(text);
+    return n;
+  }
+  function str(v) { return v == null ? "" : String(v); }
+  function setState(text) { var s = $("state"); s.textContent = text || ""; s.hidden = !text; }
+  // Text with `code` spans: each backtick pair becomes a <code>, built with textContent only.
+  function rich(node, s) {
+    str(s).split("`").forEach(function (seg, i) {
+      if (!seg) return;
+      node.appendChild(i % 2 ? el("code", null, seg) : document.createTextNode(seg));
+    });
+    return node;
+  }
+  function pill(vote, extra) { return el("span", "pill t-" + (TONE[vote] || "out") + (extra ? " " + extra : ""), label(vote)); }
+
+  Array.prototype.forEach.call(document.querySelectorAll("#filters button"), function (b) {
+    b.addEventListener("click", function () {
+      filter = b.getAttribute("data-f");
+      try { localStorage.setItem("pc-filter", filter); } catch (e) { /* no storage */ }
+      applyFilter();
+    });
+  });
+
+  function hhmm(iso) {
+    var d = new Date(iso);
+    return isNaN(d.getTime()) ? "" : d.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
+  }
+
+  // A field is one vote the viewer gives: the whole item when it has one request, each request
+  // when it has more, since an item can be accepted on one point and refused on another.
+  // The store keeps {vote, note} for an item of one request and {parts: {"1": {vote, note}, ...}}
+  // for an item of more; a vote given to the whole item before votes were per request stays as
+  // `before`, shown beside the points and never dropped.
+  var STATE_TEXT = {
+    decision: "Decisione tua: diventa una regola",
+    agree: "D'accordo con l'agente",
+    disagree: "Disaccordo: diventa un caso di prova"
+  };
+  // No answer is consent: the agent's vote stands. A deferred request has no vote to consent to,
+  // so without the viewer's decision it stays open.
+  function isOpen(f) { return !f.sel.value && (f.agent === DEFER || !f.agent); }
+  function emptyText(f) {
+    return isOpen(f) ? "Senza risposta: resta aperto" : "Senza risposta: vale come d'accordo con l'agente";
+  }
+  var STANCE = {
+    agree: "D'accordo con l'agente",
+    object: "Non d'accordo con l'agente",
+    add: "D'accordo, con un'aggiunta",
+    proposal: "La mia proposta"
+  };
+  function makeField(agent, isPr, id, name, idx) {
+    var defers = agent === DEFER || !agent;
+    var sel = el("select");
+    sel.id = "v-" + id + (idx ? "-" + idx : "");
+    sel.appendChild(new Option(defers ? "Scegli la tua decisione…" : "Scegli…", ""));
+    if (!defers) sel.appendChild(new Option("D'accordo con l'agente: " + agent, agent));
+    var others = el("optgroup");
+    others.label = defers ? "La tua decisione" : "Un voto diverso";
+    (isPr ? PR_VOTES : ISSUE_VOTES).forEach(function (v) {
+      if (v !== agent) others.appendChild(new Option(v, v));
+    });
+    sel.appendChild(others);
+    var note = el("textarea");
+    note.id = "n-" + id + (idx ? "-" + idx : "");
+    note.placeholder = defers
+      ? "La tua risposta alla domanda aperta: diventa una regola di Magma"
+      : "Perché (facoltativo)";
+    note.setAttribute("aria-label", "Nota sul tuo voto su " + name + (idx ? ", punto " + idx : ""));
+    var status = el("div", "status");
+    status.setAttribute("aria-live", "polite");
+    return { agent: agent, sel: sel, note: note, status: status };
+  }
+  function setField(f, vote, note) {
+    f.sel.value = str(vote);
+    if (f.sel.value !== str(vote)) f.sel.value = "";
+    f.note.value = str(note);
+  }
+  function fieldState(f) {
+    if (!f.sel.value) return "";
+    if (f.agent === DEFER || !f.agent) return "decision";
+    return f.sel.value === f.agent ? "agree" : "disagree";
+  }
+  function beforeOf(v) {
+    v = v || {};
+    if (v.before && typeof v.before === "object") return { vote: str(v.before.vote), note: str(v.before.note) };
+    if (v.vote || v.note) return { vote: str(v.vote), note: str(v.note) };
+    return null;
+  }
+  function valueOf(r) {
+    if (!r.multi) return { vote: r.fields[0].sel.value, note: r.fields[0].note.value };
+    var parts = {};
+    r.fields.forEach(function (f, i) { parts[String(i + 1)] = { vote: f.sel.value, note: f.note.value }; });
+    var out = { parts: parts };
+    if (r.before) out.before = r.before;
+    return out;
+  }
+  function anyFilled(r) { return r.fields.some(function (f) { return !!(f.sel.value || f.note.value); }); }
+  function fieldsOf(id) { return rows[id] ? rows[id].fields : []; }
+  function votedCount(id) { return fieldsOf(id).filter(function (f) { return !!f.sel.value; }).length; }
+  function isVoted(id) { var fs = fieldsOf(id); return fs.length > 0 && votedCount(id) === fs.length; }
+  function isDisagree(id) { return fieldsOf(id).some(function (f) { return fieldState(f) === "disagree"; }); }
+  function hasDefer(it) {
+    return it.vote === DEFER || (Array.isArray(it.parts) && it.parts.some(function (p) { return p && p.vote === DEFER; }));
+  }
+  function wire(id, f) {
+    var timer = null;
+    f.sel.addEventListener("change", function () { touched[id] = true; showStatus(id); renderTally(); save(id); });
+    f.note.addEventListener("input", function () {
+      touched[id] = true;
+      clearTimeout(timer);
+      timer = setTimeout(function () { save(id); }, 900);
+    });
+    f.note.addEventListener("blur", function () { clearTimeout(timer); save(id); });
+  }
+
+  function buildList() {
+    var box = $("groups");
+    box.textContent = "";
+    rows = {};
+    groups.slice().sort(function (a, b) { return (a.order || 0) - (b.order || 0); }).forEach(function (g) {
+      var its = items.filter(function (it) { return it.group === g.id; })
+        .sort(function (a, b) { return (a.order || 0) - (b.order || 0); });
+      if (!its.length) return;
+      var sec = el("section", "group");
+      var head = el("div", "ghead");
+      head.appendChild(el("h2", null, g.title));
+      if (g.summary) head.appendChild(el("p", "gsum", g.summary));
+      sec.appendChild(head);
+      sec.appendChild(el("hr"));
+      var list = el("div", "cards");
+      list.setAttribute("role", "list");
+      its.forEach(function (it) { list.appendChild(buildCard(it)); });
+      sec.appendChild(list);
+      box.appendChild(sec);
+    });
+    applyVotes();
+    applyOpinions();
+    Object.keys(rows).forEach(renderDraft);
+    applyReplies();
+  }
+
+  function buildCard(it) {
+    var isPr = it.kind === "pr";
+    var label = (isPr ? "PR #" : "#") + str(it.n);
+    var card = el("article", "card");
+    card.id = "i-" + it.id;
+    card.setAttribute("role", "listitem");
+    card.setAttribute("aria-label", label);
+
+    var main = el("div", "main");
+    var top = el("div", "top");
+    var url = str(it.url);
+    if (url.indexOf("https://") === 0) {
+      var a = el("a", null, label);
+      a.href = url; a.target = "_blank"; a.rel = "noopener noreferrer";
+      top.appendChild(a);
+    } else {
+      top.appendChild(el("span", null, label));
+    }
+    top.appendChild(el("span", "kind", isPr ? "pull request" : "issue"));
+    if (it.staleCode) {
+      var t = el("span", "tag", "codice cambiato");
+      t.title = "Il codice che tocca è cambiato dopo il giudizio";
+      top.appendChild(t);
+    }
+    top.appendChild(pill(it.vote, "overall"));
+    main.appendChild(top);
+
+    if (it.title) { var ti = el("p", "title", it.title); ti.lang = "en"; main.appendChild(ti); }
+    // The issue and the pull request that fixes it point at each other.
+    (Array.isArray(it.related) ? it.related : []).forEach(function (r) {
+      r = r || {};
+      var other = items.filter(function (x) { return x.id === str(r.id); })[0];
+      var rel = el("p", "rel");
+      rel.appendChild(el("span", null, r.text));
+      var target = other ? "#i-" + other.id : str(r.url);
+      var name = ((other ? other.kind : r.kind) === "pr" ? "PR #" : "#") + str(other ? other.n : r.n);
+      if (target.indexOf("#i-") === 0 || target.indexOf("https://") === 0) {
+        var ra = el("a", null, name);
+        ra.href = target;
+        if (target.indexOf("https://") === 0) { ra.target = "_blank"; ra.rel = "noopener noreferrer"; }
+        rel.appendChild(ra);
+      } else {
+        rel.appendChild(el("span", null, name));
+      }
+      if (other) rel.appendChild(pill(str(other.vote)));
+      main.appendChild(rel);
+    });
+    if (it.summary) main.appendChild(rich(el("p", "problem"), it.summary));
+
+    var parts = Array.isArray(it.parts) ? it.parts : [];
+    var multi = parts.length > 1, fields = [], opBoxes = [];
+    if (parts.length) {
+      main.appendChild(el("p", "reqs-h", multi ? "Le richieste: un voto per ciascuna" : "La richiesta e il voto"));
+      var ol = el("ol", "reqs" + (multi ? " many" : ""));
+      parts.forEach(function (p, i) {
+        p = p || {};
+        var li = el("li");
+        var line = el("div", "req-line");
+        line.appendChild(el("span", "req-ask", p.ask));
+        line.appendChild(pill(str(p.vote)));
+        var body = el("div", "req-body");
+        body.appendChild(line);
+        if (p.plain) {
+          var q = el("div", "req-detail");
+          q.appendChild(el("span", "req-why-h", "La questione"));
+          q.appendChild(rich(el("p", "req-plain"), p.plain));
+          body.appendChild(q);
+        }
+        li.appendChild(body);
+        var options = Array.isArray(p.options) ? p.options : [];
+        if (p.why || p.example || options.length || p.after) {
+          var d = el("div", "req-detail");
+          d.appendChild(el("span", "req-why-h", "Nel dettaglio"));
+          if (p.example) d.appendChild(el("pre", "example", p.example));
+          if (p.why) d.appendChild(rich(el("p", "req-why"), p.why));
+          if (options.length) {
+            var opl = el("ol", "opts");
+            opl.type = "a";
+            options.forEach(function (o) { opl.appendChild(rich(el("li"), o)); });
+            d.appendChild(opl);
+          }
+          if (p.after) d.appendChild(rich(el("p", "req-why"), p.after));
+          body.appendChild(d);
+        }
+        var op = el("div", "opinion");
+        op.hidden = true;
+        body.appendChild(op);
+        opBoxes.push(op);
+        if (multi) {
+          var f = makeField(str(p.vote), isPr, it.id, label, i + 1);
+          var pm = el("div", "pt-mine");
+          var pl = el("label", "pt-h", "Il tuo voto sul punto " + (i + 1));
+          pl.htmlFor = f.sel.id;
+          pm.appendChild(pl); pm.appendChild(f.sel); pm.appendChild(f.note); pm.appendChild(f.status);
+          body.appendChild(pm);
+          fields.push(f);
+        }
+        ol.appendChild(li);
+      });
+      main.appendChild(ol);
+    }
+    if (it.prevVote && it.prevVote !== it.vote) {
+      main.appendChild(el("p", "prev", "Voto precedente: " + str(it.prevVote)));
+    }
+
+    var mine = el("div", "mine-cell");
+    var r = { row: card, it: it, parts: parts, multi: multi, fields: fields, opBoxes: opBoxes, status: null, before: null, beforeBox: null, saveText: "", failed: false };
+    if (multi) {
+      mine.appendChild(el("p", "mine-h", "Il tuo voto"));
+      mine.appendChild(el("p", "hint", "Questa voce ha " + parts.length + " richieste: vota ognuna sotto il suo punto."));
+      r.beforeBox = el("div", "before");
+      r.beforeBox.hidden = true;
+      mine.appendChild(r.beforeBox);
+      r.status = el("div", "status");
+      r.status.setAttribute("aria-live", "polite");
+      mine.appendChild(r.status);
+    } else {
+      var f0 = makeField(str(it.vote), isPr, it.id, label, 0);
+      var lab = el("label", "mine-h", "Il tuo voto");
+      lab.htmlFor = f0.sel.id;
+      mine.appendChild(lab); mine.appendChild(f0.sel); mine.appendChild(f0.note); mine.appendChild(f0.status);
+      fields.push(f0);
+      r.status = f0.status;
+    }
+    fields.forEach(function (f) { wire(it.id, f); });
+
+    card.appendChild(main); card.appendChild(mine);
+    r.draftBox = el("section", "draft");
+    r.draftBox.hidden = true;
+    r.draftBox.setAttribute("aria-label", "Bozza di risposta su " + label);
+    card.appendChild(r.draftBox);
+    r.dr = makeDraftFields(it.id, label);
+    rows[it.id] = r;
+    wireDraft(it.id);
+    var rk = rRestored[it.id];
+    if (rk && typeof rk === "object") {
+      rTouched[it.id] = true;
+      r.dr.sel.value = str(rk.status);
+      if (r.dr.sel.value !== str(rk.status)) r.dr.sel.value = "";
+      r.dr.body.value = str(rk.body);
+      r.dr.note.value = str(rk.note);
+    }
+    var keep = restored[it.id];
+    if (keep && typeof keep === "object") {
+      touched[it.id] = true;
+      if (multi) {
+        var kp = keep.parts && typeof keep.parts === "object" ? keep.parts : {};
+        fields.forEach(function (f, i) { var p = kp[String(i + 1)] || {}; setField(f, p.vote, p.note); });
+        r.before = beforeOf(keep);
+      } else {
+        setField(fields[0], keep.vote, keep.note);
+      }
+    }
+    return card;
+  }
+
+  function renderBefore(r) {
+    if (!r.beforeBox) return;
+    var b = r.before;
+    r.beforeBox.textContent = "";
+    if (!b || !(b.vote || b.note)) { r.beforeBox.hidden = true; return; }
+    r.beforeBox.appendChild(el("span", null, "Il voto che avevi dato a tutta la voce, prima del voto per punto:"));
+    if (b.vote) r.beforeBox.appendChild(pill(b.vote));
+    if (b.note) r.beforeBox.appendChild(el("q", null, b.note));
+    r.beforeBox.hidden = false;
+  }
+
+  function more(box, point, text, label) {
+    if (point) box.appendChild(rich(el("p", "op-point"), point));
+    if (!text) return;
+    if (!point) { box.appendChild(rich(el("p", "op-text"), text)); return; }
+    var d = el("details", "op-more");
+    d.appendChild(el("summary", null, label));
+    d.appendChild(rich(el("p", "op-text"), text));
+    box.appendChild(d);
+  }
+
+  // Claude's opinion per request, from the `opinions` collection:
+  // {parts: {"1": {stance, point, text, replyPoint, reply}}}.
+  function applyOpinions() {
+    Object.keys(rows).forEach(function (id) {
+      var r = rows[id], o = opinions[id] || {};
+      var ps = o.parts && typeof o.parts === "object" ? o.parts : {};
+      r.opBoxes.forEach(function (box, i) {
+        var p = ps[String(i + 1)];
+        box.textContent = "";
+        if (!p || !(p.text || p.reply)) { box.hidden = true; return; }
+        var part = r.parts[i] || {};
+        var kind = part.vote === DEFER ? "proposal" : (STANCE[p.stance] && p.stance !== "proposal" ? p.stance : "add");
+        var h = el("div", "op-h");
+        h.appendChild(el("span", "op-title", "Il parere di Claude"));
+        h.appendChild(el("span", "op-stance s-" + kind, STANCE[kind]));
+        box.appendChild(h);
+        // The point in one plain sentence; the evidence folded under it, opened on demand.
+        more(box, p.point, p.text, "Le prove");
+        if (p.reply || p.replyPoint) {
+          box.appendChild(el("span", "op-reply-h", "Sulla tua risposta di prima"));
+          more(box, p.replyPoint, p.reply, "Perché");
+        }
+        box.hidden = false;
+      });
+    });
+  }
+
+  // Reply drafts: `drafts/<n>` = {action, actionLabel, brief, body, also[]} written by Claude;
+  // `replies/<n>` = {status ok|revise|drop, note, body (only when the viewer edited it), at}.
+  // No answer counts as approved, as with the votes; nothing is sent from this page.
+  var DRAFT_STATUS = [["ok", "Va bene così"], ["revise", "Da rivedere"], ["drop", "Scartata"]];
+  var DRAFT_TEXT = {
+    ok: "Approvata: entra nella lista per l'invio",
+    revise: "Da rivedere: la riscrivo dalla tua nota",
+    drop: "Scartata: non parte",
+    "": "Senza risposta: entra nella lista per l'invio, come approvata"
+  };
+  function makeDraftFields(id, name) {
+    var sel = el("select");
+    sel.id = "d-" + id;
+    sel.appendChild(new Option("Scegli…", ""));
+    DRAFT_STATUS.forEach(function (s) { sel.appendChild(new Option(s[1], s[0])); });
+    var body = el("textarea", "draft-body");
+    body.id = "db-" + id;
+    body.lang = "en";
+    var note = el("textarea");
+    note.id = "dn-" + id;
+    note.placeholder = "Cosa cambiare (facoltativo)";
+    note.setAttribute("aria-label", "Nota sulla bozza di " + name);
+    var status = el("div", "status");
+    status.setAttribute("aria-live", "polite");
+    return { sel: sel, body: body, note: note, status: status, saveText: "", failed: false };
+  }
+  function fitBody(t) {
+    var lines = t.value.split("\n").reduce(function (n, l) { return n + Math.max(1, Math.ceil(l.length / 88)); }, 0);
+    t.rows = Math.min(22, Math.max(6, lines + 1));
+  }
+  function renderDraft(id) {
+    var r = rows[id], d = draftsData[id];
+    if (!r) return;
+    if (!d || !d.body) { r.draftBox.hidden = true; return; }
+    var box = r.draftBox, f = r.dr;
+    box.textContent = "";
+    var h = el("div", "draft-h");
+    h.appendChild(el("span", "draft-title", "Bozza di risposta"));
+    if (d.actionLabel) h.appendChild(el("span", "draft-action", d.actionLabel));
+    var sent = str(d.sentUrl).indexOf("https://") === 0;
+    if (sent) {
+      var sa = el("a", "draft-sent", "Inviata: vedi su GitHub");
+      sa.href = d.sentUrl; sa.target = "_blank"; sa.rel = "noopener noreferrer";
+      h.appendChild(sa);
+    }
+    f.body.readOnly = sent;
+    box.appendChild(h);
+    if (d.brief) box.appendChild(rich(el("p", "draft-brief"), d.brief));
+    var bl = el("label", "draft-label", "Il testo che parte, in inglese: puoi correggerlo qui");
+    bl.htmlFor = f.body.id;
+    box.appendChild(bl);
+    box.appendChild(f.body);
+    var also = Array.isArray(d.also) ? d.also : [];
+    if (also.length) {
+      var a = el("div", "draft-also");
+      a.appendChild(el("span", "draft-label", "Azioni a parte, ognuna da approvare in chat"));
+      var ul = el("ul");
+      also.forEach(function (x) { ul.appendChild(rich(el("li"), x)); });
+      a.appendChild(ul);
+      box.appendChild(a);
+    }
+    // Once sent, the draft is a record: no approval left to give.
+    if (sent) { box.hidden = false; return; }
+    var m = el("div", "draft-mine");
+    var sl = el("label", "draft-label", "La tua approvazione");
+    sl.htmlFor = f.sel.id;
+    m.appendChild(sl); m.appendChild(f.sel); m.appendChild(f.note); m.appendChild(f.status);
+    box.appendChild(m);
+    box.hidden = false;
+  }
+  function replyValue(id) {
+    var f = rows[id].dr, d = draftsData[id] || {};
+    return { status: f.sel.value, note: f.note.value, body: f.body.value === str(d.body) ? "" : f.body.value };
+  }
+  function applyReplies() {
+    Object.keys(rows).forEach(function (id) {
+      var r = rows[id], f = r.dr, d = draftsData[id] || {}, v = replies[id] || {};
+      if (!rTouched[id]) {
+        f.sel.value = str(v.status);
+        if (f.sel.value !== str(v.status)) f.sel.value = "";
+        f.body.value = str(v.body) || str(d.body);
+        f.note.value = str(v.note);
+        f.saveText = v.at && (v.status || v.note || v.body) ? "Salvato alle " + hhmm(v.at) : "";
+        if (d.body) rSaved[id] = JSON.stringify(replyValue(id));
+      } else if (!f.body.value && d.body) {
+        f.body.value = str(d.body);
+      }
+      fitBody(f.body);
+      showDraftStatus(id);
+    });
+    renderTally();
+  }
+  function showDraftStatus(id) {
+    var r = rows[id];
+    if (!r) return;
+    var f = r.dr, d = draftsData[id] || {}, s = f.sel.value;
+    var bits = [DRAFT_TEXT[s] || DRAFT_TEXT[""]];
+    if (d.body && f.body.value !== str(d.body)) bits.push("testo corretto da te");
+    if (f.saveText) bits.push(f.saveText);
+    f.status.className = f.failed ? "status error"
+      : "status" + (s === "drop" ? " disagree" : s === "revise" ? " open" : s === "ok" ? " agree" : "");
+    f.status.textContent = bits.join(" · ");
+  }
+  function wireDraft(id) {
+    var f = rows[id].dr, timer = null;
+    f.sel.addEventListener("change", function () { rTouched[id] = true; showDraftStatus(id); renderTally(); saveReply(id); });
+    [f.body, f.note].forEach(function (t) {
+      t.addEventListener("input", function () {
+        rTouched[id] = true;
+        showDraftStatus(id);
+        clearTimeout(timer);
+        timer = setTimeout(function () { saveReply(id); }, 900);
+      });
+      t.addEventListener("blur", function () { clearTimeout(timer); saveReply(id); });
+    });
+  }
+  function saveReply(id) {
+    var r = rows[id];
+    if (!db || !r || !draftsData[id]) return;
+    if (rWriting[id]) { rAgain[id] = true; return; }
+    var val = replyValue(id), key = JSON.stringify(val);
+    if (rSaved[id] === key) return;
+    rWriting[id] = true;
+    var f = r.dr;
+    f.failed = false;
+    f.saveText = "Salvo…";
+    showDraftStatus(id);
+    var at = new Date().toISOString();
+    rPendingAt[id] = at;
+    setTimeout(function () {
+      if (rPendingAt[id] !== at) return;
+      delete rPendingAt[id];
+      rSaved[id] = "";
+      if (!rRetried[id]) { rRetried[id] = true; saveReply(id); return; }
+      f.failed = true;
+      f.saveText = "Salvataggio non confermato: cambia la bozza o la nota per riprovare";
+      showDraftStatus(id);
+    }, 15000);
+    db.collection("replies").doc(id).set(Object.assign({}, val, { at: at }))
+      .then(function () {
+        rWriting[id] = false;
+        rSaved[id] = key;
+        renderTally();
+        if (rAgain[id]) { rAgain[id] = false; saveReply(id); }
+      })
+      .catch(function (e) {
+        rWriting[id] = false;
+        delete rPendingAt[id];
+        rSaved[id] = "";
+        f.failed = true;
+        f.saveText = (e && (e.code === "permission_denied" || e.code === "not_granted"))
+          ? "Non puoi approvare su questa pagina"
+          : "Non salvato: riprova";
+        showDraftStatus(id);
+        if (rAgain[id]) { rAgain[id] = false; saveReply(id); }
+      });
+  }
+
+  // The store fills a row only until the viewer touches it: after that the fields are the
+  // viewer's, and a late or out-of-order snapshot can never put old values back in them.
+  function applyVotes() {
+    Object.keys(rows).forEach(function (id) {
+      var r = rows[id];
+      var v = votes[id] || {};
+      if (r.multi && !r.before) r.before = beforeOf(v);
+      if (!touched[id]) {
+        if (r.multi) {
+          var ps = v.parts && typeof v.parts === "object" ? v.parts : {};
+          r.fields.forEach(function (f, i) { var p = ps[String(i + 1)] || {}; setField(f, p.vote, p.note); });
+        } else {
+          setField(r.fields[0], v.vote, v.note);
+        }
+        saved[id] = JSON.stringify(valueOf(r));
+        r.saveText = v.at && anyFilled(r) ? "Salvato alle " + hhmm(v.at) : "";
+      }
+      renderBefore(r);
+      showStatus(id);
+    });
+    renderTally();
+    applyFilter();
+  }
+
+  function showStatus(id) {
+    var r = rows[id];
+    if (!r) return;
+    var bits = [], cls = "status";
+    if (r.multi) {
+      r.fields.forEach(function (f) {
+        var s = fieldState(f);
+        f.status.className = "status" + (s ? (s === "disagree" ? " disagree" : " agree") : isOpen(f) ? " open" : "");
+        f.status.textContent = s ? STATE_TEXT[s] : emptyText(f);
+      });
+      bits.push("Punti votati: " + votedCount(id) + " su " + r.fields.length);
+    } else {
+      var f0 = r.fields[0], s0 = fieldState(f0);
+      if (s0) { bits.push(STATE_TEXT[s0]); cls += s0 === "disagree" ? " disagree" : " agree"; }
+      else { bits.push(emptyText(f0)); if (isOpen(f0)) cls += " open"; }
+    }
+    if (r.saveText) bits.push(r.saveText);
+    r.status.className = r.failed ? "status error" : cls;
+    r.status.textContent = bits.join(" · ");
+  }
+
+  // Items voted counts an item once every request has the viewer's vote; agreement, disagreement
+  // and decisions count requests, since one item can hold all three.
+  function renderTally() {
+    var t = $("tally");
+    t.textContent = "";
+    var counts = {};
+    items.forEach(function (it) { counts[it.vote] = (counts[it.vote] || 0) + 1; });
+    Object.keys(TONE).forEach(function (v) {
+      if (counts[v]) t.appendChild(el("span", "pill t-" + TONE[v], label(v) + " " + counts[v]));
+    });
+    var ids = items.map(function (it) { return it.id; });
+    var voted = ids.filter(isVoted).length;
+    var n = { agree: 0, disagree: 0, decision: 0, silent: 0, open: 0 };
+    ids.forEach(function (id) {
+      fieldsOf(id).forEach(function (f) {
+        var s = fieldState(f);
+        if (s) n[s]++;
+        else if (isOpen(f)) n.open++;
+        else n.silent++;
+      });
+    });
+    if (items.length) {
+      t.appendChild(el("span", "mine", "I tuoi voti: " + voted + " su " + items.length +
+        " · per punto: d'accordo " + n.agree + " · disaccordo " + n.disagree + " · decisioni tue " + n.decision +
+        " · senza risposta " + n.silent + " (valgono d'accordo) · aperti " + n.open));
+    }
+    $("n-all").textContent = items.length || "";
+    $("n-decide").textContent = items.filter(hasDefer).length || "";
+    $("n-unvoted").textContent = (items.length - voted) || "";
+    $("n-disagree").textContent = ids.filter(isDisagree).length || "";
+    var withDraft = ids.filter(function (id) { return rows[id] && draftsData[id] && draftsData[id].body; });
+    if (withDraft.length) {
+      var dn = { ok: 0, revise: 0, drop: 0, "": 0 }, sentN = 0;
+      withDraft.forEach(function (id) {
+        if (str(draftsData[id].sentUrl)) { sentN++; return; }
+        var s = rows[id].dr.sel.value;
+        dn[s in dn ? s : ""]++;
+      });
+      var waiting = withDraft.length - sentN;
+      t.appendChild(el("span", "mine", "Risposte inviate: " + sentN + " su " + withDraft.length +
+        (waiting ? " · da inviare: approvate " + dn.ok + " · da rivedere " + dn.revise +
+          " · scartate " + dn.drop + " · senza risposta " + dn[""] + " (valgono approvate)" : "")));
+    }
+  }
+
+  function applyFilter() {
+    Array.prototype.forEach.call(document.querySelectorAll("#filters button"), function (b) {
+      b.setAttribute("aria-pressed", String(b.getAttribute("data-f") === filter));
+    });
+    var shown = 0;
+    Object.keys(rows).forEach(function (id) {
+      // The drafts view shows every card: the filters are about the votes.
+      var r = rows[id], it = r.it, show = true, f = view === "drafts" ? "all" : filter;
+      if (f === "decide") show = hasDefer(it);
+      else if (f === "unvoted") show = !isVoted(id);
+      else if (f === "disagree") show = isDisagree(id);
+      r.row.hidden = !show;
+      if (show) shown++;
+    });
+    Array.prototype.forEach.call(document.querySelectorAll(".group"), function (g) {
+      g.hidden = !Array.prototype.some.call(g.querySelectorAll(".card"), function (c) { return !c.hidden; });
+    });
+    if (loaded.items && items.length && !shown) setState("Nessun elemento in questa vista.");
+    else if (loaded.items && !items.length) setState("Ancora nessun voto: arrivano con il prossimo giro del controllo.");
+    else setState("");
+  }
+
+  // Saves what the fields hold when the write starts; a change during a write saves again after.
+  function save(id) {
+    var r = rows[id];
+    if (!db || !r) return;
+    if (writing[id]) { again[id] = true; return; }
+    var val = valueOf(r), key = JSON.stringify(val);
+    if (saved[id] === key) return;
+    writing[id] = true;
+    r.failed = false;
+    r.saveText = "Salvo…";
+    showStatus(id);
+    var at = new Date().toISOString();
+    pendingAt[id] = at;
+    // "Salvato" only once a snapshot from the store holds this write (see the votes listener);
+    // without it in 15 s, try once more, then say it was not confirmed.
+    setTimeout(function () {
+      if (pendingAt[id] !== at) return;
+      delete pendingAt[id];
+      saved[id] = "";
+      if (!retried[id]) { retried[id] = true; save(id); return; }
+      r.failed = true;
+      r.saveText = "Salvataggio non confermato: cambia il voto o la nota per riprovare";
+      showStatus(id);
+    }, 15000);
+    db.collection("votes").doc(id).set(Object.assign({}, val, { at: at }))
+      .then(function () {
+        writing[id] = false;
+        saved[id] = key;
+        renderTally();
+        if (again[id]) { again[id] = false; save(id); }
+      })
+      .catch(function (e) {
+        writing[id] = false;
+        delete pendingAt[id];
+        saved[id] = "";
+        r.failed = true;
+        r.saveText = (e && (e.code === "permission_denied" || e.code === "not_granted"))
+          ? "Non puoi votare su questa pagina"
+          : "Non salvato: riprova";
+        showStatus(id);
+        if (again[id]) { again[id] = false; save(id); }
+      });
+  }
+
+  function renderMeta() {
+    if (!meta) return;
+    var parts = [];
+    if (meta.runAt) parts.push("Ultimo giro: " + str(meta.runAt));
+    if (meta.base) parts.push("letto su " + str(meta.base));
+    if (meta.scope) parts.push(str(meta.scope));
+    $("run").textContent = parts.join(" · ");
+    var s = $("stale");
+    s.textContent = "";
+    if (meta.stale && meta.staleNote) {
+      s.appendChild(el("strong", null, "Da sapere. "));
+      s.appendChild(document.createTextNode(str(meta.staleNote)));
+      s.hidden = false;
+    } else {
+      s.hidden = true;
+    }
+  }
+
+  function done(key) {
+    loaded[key] = true;
+    if (loaded.items && loaded.groups) {
+      buildList();
+      // Fields restored after a reload are saved again: the write they started may be lost.
+      Object.keys(restored).forEach(function (id) { if (rows[id]) save(id); });
+      restored = {};
+    }
+  }
+
+  // Unsaved fields survive a reload of the page by the viewer (a newer version published).
+  function drafts() {
+    var out = {};
+    Object.keys(rows).forEach(function (id) {
+      if (touched[id]) out[id] = valueOf(rows[id]);
+    });
+    var rout = {};
+    Object.keys(rows).forEach(function (id) {
+      if (rTouched[id]) rout[id] = { status: rows[id].dr.sel.value, note: rows[id].dr.note.value, body: rows[id].dr.body.value };
+    });
+    return { drafts: out, replyDrafts: rout };
+  }
+
+  function start() {
+    var c = window.claude;
+    if (!c || typeof c.use !== "function") {
+      setState("Questa pagina legge i voti dal suo archivio: aprila su claude.ai, con il tuo account.");
+      return;
+    }
+    c.use("db").then(function (d) {
+      db = d;
+      if (!db) {
+        setState("I voti non sono raggiungibili da questa vista: apri la pagina su claude.ai, con il tuo account.");
+        return;
+      }
+      var fresh = false;
+      var timer = setTimeout(function () {
+        if (!fresh) setState("Non riesco ancora a raggiungere i voti; quelli mostrati potrebbero non essere aggiornati.");
+      }, 10000);
+      function onErr() { clearTimeout(timer); setState("I voti non si caricano: ricarica la pagina più tardi."); }
+      function settle(snap) {
+        if (snap && snap.metadata && snap.metadata.fromCache === false && !fresh) { fresh = true; clearTimeout(timer); }
+      }
+      db.collection("items").onSnapshot(function (snap) {
+        settle(snap);
+        items = snap.docs.map(function (d) { var o = Object.assign({}, d.data()); o.id = d.id; return o; });
+        done("items");
+      }, onErr);
+      db.collection("groups").onSnapshot(function (snap) {
+        settle(snap);
+        groups = snap.docs.map(function (d) { var o = Object.assign({}, d.data()); o.id = d.id; return o; });
+        done("groups");
+      }, onErr);
+      db.collection("votes").onSnapshot(function (snap) {
+        settle(snap);
+        var v = {};
+        snap.docs.forEach(function (d) { v[d.id] = d.data() || {}; });
+        votes = v;
+        var confirmed = !(snap.metadata && snap.metadata.hasPendingWrites);
+        Object.keys(pendingAt).forEach(function (id) {
+          if (!confirmed || !votes[id] || str(votes[id].at) !== pendingAt[id]) return;
+          var r = rows[id];
+          if (r) { r.failed = false; r.saveText = "Salvato alle " + hhmm(pendingAt[id]); }
+          retried[id] = false;
+          delete pendingAt[id];
+        });
+        applyVotes();
+      }, onErr);
+      db.collection("opinions").onSnapshot(function (snap) {
+        var o = {};
+        snap.docs.forEach(function (d) { o[d.id] = d.data() || {}; });
+        opinions = o;
+        applyOpinions();
+      }, function () { /* the cards simply stay without Claude's opinion */ });
+      db.collection("drafts").onSnapshot(function (snap) {
+        var o = {};
+        snap.docs.forEach(function (d) { o[d.id] = d.data() || {}; });
+        draftsData = o;
+        Object.keys(rows).forEach(renderDraft);
+        applyReplies();
+        // Answers restored after a reload are saved again once their draft is known.
+        Object.keys(rTouched).forEach(saveReply);
+      }, function () { /* the cards simply stay without drafts */ });
+      db.collection("replies").onSnapshot(function (snap) {
+        var o = {};
+        snap.docs.forEach(function (d) { o[d.id] = d.data() || {}; });
+        replies = o;
+        var confirmed = !(snap.metadata && snap.metadata.hasPendingWrites);
+        Object.keys(rPendingAt).forEach(function (id) {
+          if (!confirmed || !replies[id] || str(replies[id].at) !== rPendingAt[id]) return;
+          var r = rows[id];
+          if (r) { r.dr.failed = false; r.dr.saveText = "Salvato alle " + hhmm(rPendingAt[id]); }
+          rRetried[id] = false;
+          delete rPendingAt[id];
+        });
+        applyReplies();
+      }, function () { /* answers to the drafts are not readable from this view */ });
+      db.doc("meta/run").onSnapshot(function (snap) {
+        meta = snap.exists ? snap.data() : null;
+        renderMeta();
+      }, function () { /* the header simply stays without the run line */ });
+    }).catch(function () {
+      setState("I voti non sono raggiungibili da questa vista: apri la pagina su claude.ai, con il tuo account.");
+    });
+  }
+  var hot = window.claude && window.claude.hot;
+  try { if (hot && typeof hot.snapshot === "function") hot.snapshot(drafts); } catch (e) { /* no hot reload */ }
+  function boot(data) {
+    restored = (data && data.drafts && typeof data.drafts === "object") ? data.drafts : {};
+    rRestored = (data && data.replyDrafts && typeof data.replyDrafts === "object") ? data.replyDrafts : {};
+    start();
+  }
+  if (hot && typeof hot.ready === "function") hot.ready(boot);
+  else boot((hot && hot.data) || {});
+})();
+</script>

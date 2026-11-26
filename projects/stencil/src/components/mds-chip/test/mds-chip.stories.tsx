@@ -11,7 +11,8 @@ export default {
   argTypes: {
     clickable: {
       type: { name: 'boolean' },
-      description: 'Adds ARIA support to the element if has interaction',
+      description:
+        'Opens the content that revolves around what the chip names (an office, a person); not for an action, that is an mds-button',
     },
     deletable: {
       type: { name: 'boolean' },

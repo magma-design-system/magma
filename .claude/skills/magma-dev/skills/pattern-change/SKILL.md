@@ -38,7 +38,7 @@ moves from `carried-by-planned` to `carried-by` (the check asks for it), with no
 - On a branch of its own, off `main` (`docs/WORKFLOW.md`).
 - **A change of the components**: when the change swaps the components of a case or of a
   region, or replaces or overwrites a pattern or a block, follow the checks of step 2 of
-  `.claude/skills/pattern-new/SKILL.md` (the components that hold the role) before writing it,
+  `.claude/skills/magma-dev/skills/pattern-new/SKILL.md` (the components that hold the role) before writing it,
   point 4 included: what the change makes redundant is deprecated in its favour or overwritten.
 - **A rename**: the new id, the old one kept in `aliases` (an id is a contract the agents of the
   products cite); every reference updated, since the check fails on an old id.
@@ -56,7 +56,7 @@ none yet), and its `use` the parts of that preview with their role, in its order
 `docs/PATTERNS.md`, "The parts of a case"); a preview changed by hand changes its `use` too,
 or `check.patterns` fails. A renamed case moves its file
 (`docs/agents/patterns/previews/<id>/<case>.html`): follow
-`.claude/skills/pattern-preview/SKILL.md` for those cases.
+`.claude/skills/magma-dev/skills/pattern-preview/SKILL.md` for those cases.
 
 ## 5. The check and the pull request
 

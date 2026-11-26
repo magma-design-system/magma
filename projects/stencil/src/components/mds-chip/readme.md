@@ -11,17 +11,17 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ### 1. Description
 
-The `<mds-chip>` web component is the Magma Design System's compact element for representing a discrete piece of information, a filter, a selection, or a removable token. It renders a label with an optional leading icon or colour swatch and an optional delete affordance, and can be made interactive (clickable or selectable) to act as a lightweight button-like control rather than a static tag.
+The `<mds-chip>` web component is the Magma Design System's compact element for a short piece of metadata of a record: a tag, a status, a category, the value of a property. It renders the label on one line, with an optional leading icon or colour swatch and an optional delete affordance. Its interactions act on that metadata and only on it: the chip can be removed from the record that holds it (`deletable`), selected as the value of a filter or a choice (`selectable`), or opened to show the content that revolves around what it names (`clickable`), such as the office or the person a record refers to. An action of the application or of an agent (send, ask, a suggestion, a follow-up) is not a chip: it is an [`mds-button`](../../mds-button), with `truncate="none"` for a long label.
 
 #### Semantic Behavior
 
-- **Static by default**: With no interaction props the chip is a passive, non-focusable label; it becomes a focusable, button-like control only when `clickable` is set.
+- **Static by default**: With no interaction props the chip is a passive, non-focusable label; its label becomes focusable and can be activated (pointer, Enter, Space) only when `clickable` is set.
 - **Selectable implies clickable**: Setting `selectable` automatically turns on `clickable`, so a selectable chip is always keyboard- and pointer-interactive.
 - **Selection toggle**: When `selectable`, activating the chip flips `selected`; an unselected chip carries no `selected` attribute (rather than `selected="false"`).
 - **Keyboard activation**: When interactive, Enter and Space activate the chip just like a pointer click.
 - **Delete affordance**: When `deletable`, a trailing delete button is rendered with a localized title (el/en/es/it) and emits the delete event on activation.
 - **Emitted events**: `mdsChipClickLabel` fires on activation for non-selectable chips, `mdsChipSelect` fires (carrying the new `selected` value) for selectable chips, and `mdsChipDelete` fires from the delete button - all carrying the originating event and host element.
-- **Label is text, on one line**: Long labels do not wrap (`truncate="word"` on the inner text).
+- **Label is text, on one line**: Long labels do not wrap (`truncate="word"` on the inner text). The single line is the shape of the chip, a pill of fixed height, not a default to widen.
 - **One leading mark**: `swatch` takes the place of `icon`; when both are set the chip draws the swatch. The swatch is decorative and hidden from assistive technologies, so the label has to name the colour.
 
 #### Properties & Visual Configurations
@@ -30,10 +30,10 @@ The shared `variant` / `tone` ladders are defined in [`docs/agents/variants.md`]
 
 #### Other behavioral props
 
-- **`clickable`** opts the chip into interactivity (focus, keyboard and click handling) without changing its state on activation - use it for chips that act as actions rather than toggles.
-- **`selectable`** makes the chip a toggle whose `selected` state flips on each activation; pick it for filter/choice chips where the visual selected state matters.
+- **`clickable`** opens the content that revolves around what the chip names (the office, the person, the category a record refers to): the label takes focus, keyboard and click handling and emits `mdsChipClickLabel`, and the chip keeps no state on activation. It is not for an action of the application or of an agent: that is an `mds-button`.
+- **`selectable`** makes the chip a toggle whose `selected` state flips on each activation; pick it for a chip that is the value of a filter or a choice, where the visual selected state matters.
 - **`selected`** drives the selected visual treatment and can be set externally to pre-select a chip; an unselected chip carries no attribute.
-- **`deletable`** adds the trailing cancel button for removable tokens; reserve it for chips the user is meant to dismiss.
+- **`deletable`** adds the trailing cancel button that removes the metadata from the record that holds it (a tag of an entity, an active filter); reserve it for chips the user is meant to remove.
 - **`icon`** is an SVG filename slug from the Magma icon library, shown decoratively to the left of the label.
 - **`swatch`** is a colour of the product, any CSS colour, drawn as a round swatch where the icon goes: for chips whose label names a colour (a family of colours, a category, a calendar). It is not a role and does not follow `variant` or the mode: the chip draws it as given, inside a ring that keeps it visible on the chip at rest and selected, in light and dark. A value that is not a colour draws the empty ring.
 
@@ -88,22 +88,22 @@ Use `swatch` when the label names a colour of the product: a family of colours t
 <mds-chip label="Calendario ferie" swatch="#2f6fd0" clickable></mds-chip>
 ```
 
-#### Clickable Chip (Action, No Toggle)
+#### Clickable Chip (Opens What It Names, No Toggle)
 
-Use `clickable` when the chip triggers an action but does not need a persistent selected state. The component adds `role="button"`, focus handling, and keyboard activation. Listen for `mdsChipClickLabel`.
+Use `clickable` when the chip names something that has content of its own, such as the office or the person a record refers to, and activating it opens that content (a panel, a dialog, a page) without a persistent selected state. The component adds `role="button"`, focus handling, and keyboard activation. Listen for `mdsChipClickLabel`. An action of the application or of an agent is an [`mds-button`](../../mds-button), not a clickable chip.
 
 ```html
 <mds-chip
-  label="Apri dettagli"
+  label="Ufficio Tributi"
   clickable
-  icon="mi/baseline/open-in-new"
+  icon="mi/baseline/business"
   variant="primary"
   tone="weak"
 ></mds-chip>
 
 <script>
   document.querySelector('mds-chip').addEventListener('mdsChipClickLabel', (e) => {
-    console.log('clicked', e.detail.element);
+    openOfficePanel(e.detail.element.label);
   });
 </script>
 ```
@@ -144,7 +144,7 @@ Set `selected` externally to initialize a selectable chip in the selected state 
 
 #### Deletable Chip (Removable Token)
 
-Use `deletable` for chips the user is meant to dismiss - for example tags on an entity or active filters. A trailing cancel button emits `mdsChipDelete` on activation.
+Use `deletable` for chips the user is meant to remove from the record that holds them - for example tags on an entity or active filters. A trailing cancel button emits `mdsChipDelete` on activation.
 
 ```html
 <mds-chip
@@ -164,7 +164,7 @@ Use `deletable` for chips the user is meant to dismiss - for example tags on an 
 
 #### Fully Interactive Chip
 
-Combine `clickable` (or `selectable`) with `deletable` for chips that can both be activated and removed independently.
+Combine `clickable` (or `selectable`) with `deletable` for chips that can both be opened (or selected) and removed independently, such as a tag that opens the records it groups and can be taken off this one.
 
 ```html
 <mds-chip
@@ -217,12 +217,12 @@ Without `clickable`, the chip has no `role`, no focus management, and no keyboar
 
 ```html
 <!-- INCORRECT -->
-<mds-chip label="Apri" variant="primary" onclick="doSomething()"></mds-chip>
+<mds-chip label="Ufficio Tributi" variant="primary" onclick="openOfficePanel()"></mds-chip>
 
 <!-- CORRECT -->
-<mds-chip label="Apri" clickable variant="primary"></mds-chip>
+<mds-chip label="Ufficio Tributi" clickable variant="primary"></mds-chip>
 <script>
-  document.querySelector('mds-chip').addEventListener('mdsChipClickLabel', doSomething);
+  document.querySelector('mds-chip').addEventListener('mdsChipClickLabel', openOfficePanel);
 </script>
 ```
 
@@ -324,6 +324,32 @@ With `selected="false"` the component reads the prop as `false` and drops the at
 <mds-chip label="Filtro" selectable variant="primary"></mds-chip>
 ```
 
+#### Do Not Use a Chip for an Action or a Suggestion
+
+A chip shows a piece of metadata of a record, and its interactions act on that metadata only: removing it, selecting it as the value of a filter, opening the content that revolves around what it names. An action of the application or of an agent - send, ask, a suggested prompt, the follow-up of an AI answer - is not metadata: in a chip it reads as a tag of the record, and its label is cut to the one line of the pill. Use [`mds-button`](../../mds-button); with `truncate="none"` a long label wraps instead of being cut.
+
+```html
+<!-- INCORRECT -->
+<mds-chip label="Apri dettagli" clickable icon="mi/baseline/open-in-new"></mds-chip>
+<mds-chip label="Riassumi la pratica in tre punti" clickable variant="ai"></mds-chip>
+
+<!-- CORRECT -->
+<mds-button
+  label="Apri dettagli"
+  icon="mi/baseline/open-in-new"
+  type="button"
+  variant="primary"
+  tone="weak"
+></mds-button>
+<mds-button
+  label="Riassumi la pratica in tre punti"
+  type="button"
+  truncate="none"
+  variant="ai"
+  tone="weak"
+></mds-button>
+```
+
 #### Do Not Use `<mds-chip>` as a Navigation Link
 
 `<mds-chip>` has no `href` prop. Wrapping it in an `<a>` creates a nested interactive element, breaks keyboard semantics, and fails accessibility audits. Use [`mds-button`](../../mds-button) with `href` instead.
@@ -349,7 +375,7 @@ With `selected="false"` the component reads the prop as `false` and drops the at
 
 | Property             | Attribute    | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | Type                                                                                                                                                                                                                                          | Default     |
 | -------------------- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `clickable`          | `clickable`  | Adds ARIA support to the element if has interaction                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | `boolean \| undefined`                                                                                                                                                                                                                        | `undefined` |
+| `clickable`          | `clickable`  | Opens the content that revolves around what the chip names, such as the office or the person a record refers to: the label becomes a focusable button that the pointer, Enter and Space activate, and it emits `mdsChipClickLabel`. Not for an action of the application or of an agent (send, ask, a suggestion): that is an `mds-button`.                                                                                                                                                                                               | `boolean \| undefined`                                                                                                                                                                                                                        | `undefined` |
 | `deletable`          | `deletable`  | Shows the cross icon to perform cancel/delete action on element                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | `boolean \| undefined`                                                                                                                                                                                                                        | `undefined` |
 | `disabled`           | `disabled`   | Sets the component disabled status: neither the label nor the delete button can be focused or activated                                                                                                                                                                                                                                                                                                                                                                                                                                   | `boolean \| undefined`                                                                                                                                                                                                                        | `false`     |
 | `icon`               | `icon`       | The icon displayed to the left of the component's label                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `string \| undefined`                                                                                                                                                                                                                         | `undefined` |

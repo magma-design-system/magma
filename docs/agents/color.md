@@ -112,8 +112,8 @@ person works, so the accent stays rare: a view has one primary action in it
 | `--magma-accent-surface-subtle` / `-surface-hover` | `bg-accent-surface-*` | the tinted background, lighter / hovered |
 | `--magma-accent-surface-selected` | `bg-accent-surface-selected` | the tinted background of the action of the view you are in (`mds-button current`): between `surface` and its hover. A status hue says it with `-wash-selected` |
 | `--magma-accent-surface-subtle-selected` | `bg-accent-surface-subtle-selected` | the same for a control with no background at rest (a text button), between none and its hover `surface-subtle` |
-| `--magma-accent-text-default` / `-text-muted` / `-text-subtle` | `text-accent-fg-*` | accent text on a neutral surface or on the tinted background: the label of a weak or a text button |
-| `--magma-accent-fg` | `text-accent-fg` | accent text or icon on a neutral surface (a link) |
+| `--magma-accent-text-default` / `-text-muted` / `-text-subtle` | `text-accent-fg-*` | accent text on a neutral surface or on the tinted background: the label of a weak button, of a text button on hover |
+| `--magma-accent-fg` | `text-accent-fg` | accent text or icon on a neutral surface: a link, the label of a text or outline button at rest. In dark it takes a step with more hue than the text ladder can, so the accent still reads as one |
 | `--magma-accent-border` | `border-accent-border` | tinted border |
 
 `accent-ai` is the same set with the infix: `--magma-accent-ai-emphasis`,

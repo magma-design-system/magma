@@ -143,7 +143,7 @@ export interface SemanticMapping {
   hues: Record<string, { family: string; roles?: string; partial?: boolean }>;
   /** Ramp steps of the quintet roles that are still ramp steps (spec 6.5). */
   hueSteps: { fg: string; border: string };
-  accentSteps?: Partial<{ fg: string; border: string }>;
+  accentSteps?: Partial<{ border: string }>;
   neutralHueSteps: { fg: string; border: string; emphasis: string; emphasisMuted?: string };
   accents: Record<string, string>;
   /**
@@ -275,16 +275,16 @@ function baseAliases(m: SemanticMapping): Record<string, string> {
     }
   });
 
-  // accents (variant): the standout quintet, one per fixed role (spec 8). `fg` and `border`
-  // are ramp steps of the accent's mapped family; its washes, its band and its text are the
-  // primitives generated for it (#1427). The general `accent` role carries no infix (bare
+  // accents (variant): the standout quintet, one per fixed role (spec 8). `border` is a ramp
+  // step of the accent's mapped family; its ink (`fg`, a step per mode, #1496), its washes, its
+  // band and its text are the primitives generated for it (#1427). The general `accent` role carries no infix (bare
   // `--magma-accent-*`); others infix their name - mirrors `accentInfix` and
   // `accentTintDecls` in semantic.config.
   const accentSteps = { ...m.hueSteps, ...m.accentSteps };
   Object.entries(m.accents).forEach(([role, family]) => {
     const infix = role === 'accent' ? '' : `${role}-`;
     const generated = familyOfRamp(family);
-    set(`accent-${infix}fg`, `${family}-${accentSteps.fg}`);
+    set(`accent-${infix}fg`, `fg-${generated}-default`);
     set(`accent-${infix}border`, `${family}-${accentSteps.border}`);
     band(`accent-${infix}`, generated);
     set(`accent-${infix}on-emphasis`, m.seed);

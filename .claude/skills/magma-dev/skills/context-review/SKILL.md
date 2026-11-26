@@ -65,8 +65,10 @@ Write the criterion and its source next to each choice you write down, as `AGENT
 The check prints what every session loads, against its budget, and the largest documents. Read
 them with the diff:
 
-- what every session loads (`CLAUDE.md`, `AGENTS.md`, the names and descriptions of the project
-  skills) holds what applies to every task: a rule, a pointer. A procedure for one kind of task
+- what every session loads (`CLAUDE.md`, `AGENTS.md`, the names and descriptions of the skills,
+  except those with `disable-model-invocation: true`, which only a person launches and
+  whose description Claude Code does not load) holds what applies to every task: a rule, a
+  pointer. A procedure for one kind of task
   goes into the document the index routes to, or into a skill. The budget is `BUDGET` in
   `scripts/agent-context.ts`: raise it only with the reason in the comment next to it;
 - a document the branch made grow: does one task need all of it? A section only some tasks read,

@@ -4,7 +4,7 @@ A Claude Code skill that adds or realigns Magma components (`mds-*`) in the **Ma
 
 ## Setup
 
-In this repository there is nothing to install: Claude Code loads the skill from `.claude/skills/`, and the scripts read the Magma code of the checkout they are in. You need:
+In this repository there is nothing to install: Claude Code loads it with the maintainers' plugin `magma-dev` (`.claude/skills/magma-dev/`), as `/magma-dev:magma-figma-component`, and the scripts read the Magma code of the checkout they are in. You need:
 
 1. The **Figma plugin for Claude Code**, logged in with an account that can edit the library.
 2. Python 3 (nothing to `pip install`).
@@ -14,7 +14,7 @@ To use it outside this repository, copy the folder into `~/.claude/skills/` and 
 Check the setup any time, from the root of the repository:
 
 ```bash
-python3 .claude/skills/magma-figma-component/scripts/doctor.py
+python3 .claude/skills/magma-dev/skills/magma-figma-component/scripts/doctor.py
 ```
 
 ## Use

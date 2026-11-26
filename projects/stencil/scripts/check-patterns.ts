@@ -188,7 +188,7 @@ if (found.size) {
 }
 if (missing.length)
   console.warn(
-    `${missing.length} case(s) or situation(s) of a block with no preview yet (docs/PATTERNS.md, "The preview of a case"; /pattern-preview <id> makes them):\n${missing
+    `${missing.length} case(s) or situation(s) of a block with no preview yet (docs/PATTERNS.md, "The preview of a case"; /magma-dev:pattern-preview <id> makes them):\n${missing
       .map((one) => `  - ${one}`)
       .join('\n')}\n`,
   );
