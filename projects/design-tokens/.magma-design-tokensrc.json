@@ -128,8 +128,18 @@
       "colorspace": "OKLAB"
     },
 
-    { "alias": "brand.maggioli", "export": ["default"], "name": "variant.primary" },
-    { "alias": "brand.maggioli-editore", "export": ["default"], "name": "variant.secondary" },
+    {
+      "alias": "brand.maggioli",
+      "export": ["default"],
+      "name": "variant.primary",
+      "emphasis": { "dark": "lightness" }
+    },
+    {
+      "alias": "brand.maggioli-editore",
+      "export": ["default"],
+      "name": "variant.secondary",
+      "emphasis": { "dark": "lightness" }
+    },
     { "alias": "label.violet", "export": ["default"], "name": "variant.ai" },
 
     {
@@ -157,7 +167,8 @@
   "smooth": false,
   "groups": {
     "tone": { "ratios": "tone" },
-    "status": { "surface": true }
+    "status": { "surface": true, "emphasis": true },
+    "variant": { "emphasis": true }
   },
   "theme": {
     "colorspace": "OKLCH",

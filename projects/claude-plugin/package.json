@@ -2,13 +2,14 @@
   "name": "@maggioli-design-system/claude-plugin",
   "version": "0.0.0",
   "private": true,
-  "description": "The Claude Code plugin of Magma: skills generated from templates/ and the MCP server entry. Served from this repository through .claude-plugin/marketplace.json, not published on npm.",
+  "description": "The Claude Code plugin of Magma: skills generated from templates/, the MCP server entry and its launcher. Served from this repository through .claude-plugin/marketplace.json, not published on npm.",
   "license": "MIT",
   "type": "module",
   "scripts": {
     "build": "tsx --tsconfig ../mcp/tsconfig.json scripts/skills.ts write",
     "check": "tsx --tsconfig ../mcp/tsconfig.json scripts/skills.ts check",
-    "lint": "eslint scripts"
+    "test": "vitest run",
+    "lint": "eslint scripts bin test"
   },
   "repository": {
     "type": "git",

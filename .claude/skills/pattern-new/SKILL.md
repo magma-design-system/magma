@@ -50,7 +50,8 @@ target to drop files on, a bar of actions, a list of items):
      context; the change is an issue on the component, which the pattern waits on or carries,
      and the cases name the component as it will be;
    - **a new component**: only when none holds the role, or holding it would bend the one
-     that exists out of its shape;
+     that exists out of its shape; its issue carries the role, the API and the prototype the
+     previews draw (`data-prototype`), and `/component-new` builds it from there;
    - **one way only**: when an existing, simpler way already meets the need, the pattern
      points to it and adds none; two components or two patterns doing the same thing are a
      defect to remove, not a choice to offer.

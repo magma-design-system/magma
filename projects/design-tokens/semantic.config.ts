@@ -35,7 +35,9 @@ import {
   type ColorMode,
   type ThemeManifest,
 } from './src/lib/theme-manifest.mjs';
-import { WASH_STEPS } from './src/lib/wash.js';
+import { EMPHASIS_STATES, type EmphasisState } from './src/lib/emphasis.js';
+import { familyOfRamp } from './src/lib/family.js';
+import { WASH_LEVELS } from './src/lib/wash.js';
 
 /**
  * A named theme's cosmetic override (spec 8). The string shorthand names only
@@ -126,8 +128,12 @@ export interface SemanticConfig {
    * them to the component sheets was retired in #732, once every use had a role.
    */
   scaleSteps: number;
-  /** Steps of a colored family for the quintet (spec 6.5). */
-  hueSteps: { surface: string; fg: string; border: string; emphasis: string };
+  /**
+   * Ramp steps of a colored family for the quintet roles that are still ramp steps (spec 6.5):
+   * the `fg` and the `border` of an accent and of a hue with no generated roles. Its washes and
+   * its solid fill are generated (`--wash-*`, `--emphasis-*`, src/lib/state-color.mts, #1427).
+   */
+  hueSteps: { fg: string; border: string };
   /**
    * Quintet steps where an ACCENT departs from `hueSteps` (spec 6.3). The accent
    * ink: `fg` is what icons and text in the accent colour use on a neutral surface,
@@ -135,12 +141,12 @@ export interface SemanticConfig {
    * overlay field in dark), so the components kept reaching for step 03 by hand.
    * Step 03 gives 71-84 Lc in both modes. Optional: an omitted step follows `hueSteps`.
    */
-  accentSteps?: Partial<{ surface: string; fg: string; border: string; emphasis: string }>;
+  accentSteps?: Partial<{ fg: string; border: string }>;
   /**
    * WASH LEVELS of a colored hue: how marked the colored background is, NOT how
-   * high it sits. Emitted as `--magma-<hue>-wash-<level>` and, like
-   * `accentStateSteps`, each level NAMES an existing ramp step rather than
-   * resolving through the generated `--surface-<family>-*` scale.
+   * high it sits. Emitted as `--magma-<hue>-wash-<level>`, each level naming the generated
+   * `--wash-<family>-<level>` of the family (src/lib/wash.ts, src/lib/state-color.mts, #1427),
+   * not the generated `--surface-<family>-*` scale.
    *
    * The name is deliberate on both halves. NOT `surface-*`, because
    * `--magma-<hue>-surface-default` would read as the colored parent of
@@ -156,22 +162,27 @@ export interface SemanticConfig {
    * WHITE as it rises in light and toward the INK as it rises in dark, while a
    * tinted chip (a banner cockade, a status wash under an icon) moves toward the
    * ink in BOTH modes. One elevation role therefore cannot name it - it would be
-   * `sunken` in light and `raised` in dark - whereas a ramp step mode-flips for
-   * free because the primitive itself flips. The generated surface scale stays
-   * what it is for: the constraint the text roles are solved against.
+   * `sunken` in light and `raised` in dark - whereas a wash is placed at a distance from the
+   * page, below it in light and above it in dark, and its primitive flips with the mode. The
+   * generated surface scale stays what it is for: the constraint the text roles are solved
+   * against.
    *
    * Text on these levels is bounded by the spec 9.1 table, not by taste:
    * `soft` carries the whole text ladder, `base` carries `text-default`, and
    * `strong` carries icons only (no essential text).
    *
-   * The SAME map serves the neutral band (`--magma-wash-*`) and every colored hue
+   * The two selected levels (#1427) are the areas of a selected control, lighter than its
+   * hover: `selected` for one whose hover is `strong` (a weak button), `soft-selected` for one
+   * with no area at rest whose hover is `soft` (a text or outline button).
+   *
+   * The SAME levels serve the neutral band (`--magma-wash-*`) and every colored hue
    * (`--magma-<hue>-wash-*`), on purpose: the two must not drift, because a
    * neutral pill and a colored pill are the same graphic device. They differ only
-   * in what they name - the neutral levels resolve through `--magma-tint-scale-*`,
+   * in what they name - the neutral levels resolve through `--magma-tint-wash-*`,
    * so they follow the active theme, while a hue names its own family directly,
    * since a theme never retints a hue (spec 6.4).
    */
-  washSteps: Record<string, string>;
+  washLevels: readonly string[];
   /**
    * Ramp step the shadow ink names in LIGHT (spec 6.1c): the ink extreme of the
    * active tint, near-black (`5 5 5` on the base tint, `6 5 5` under `warm`). In
@@ -216,30 +227,16 @@ export interface SemanticConfig {
    */
   accents: Record<string, string>;
   /**
-   * Interaction-state steps of a SOLID FILL (spec 6.6). Such a fill has no
-   * elevation ladder to derive hover/active from (unlike neutral surfaces), and
-   * the ramp INVERTS between light and dark, so a runtime `color-mix` cannot
-   * reproduce the states per mode. Instead each state NAMES an existing ramp
-   * step: the design-tokens engine already generates and mode-flips it, so the
-   * states stay theme-aware and the component migration is a mechanical 1:1
-   * rename.
-   *
-   * The `emphasis-*` entries belong to the emphasis band wherever it appears, so
-   * they are emitted for the accents (`--magma-accent-<role>-<state>`, through
-   * `--magma-tint-accent-<role>-<state>`, so a named theme repoints them like the
-   * quintet) AND for the colored hues (`--magma-<hue>-<state>`, stated directly -
-   * a theme does not retint a hue). Read them through `emphasisStateSteps()` so
-   * one definition serves both and a status fill cannot drift from an accent
-   * fill. Measured reason the hues need them: the component sheets had built the
-   * band by hand, fill on step 05 and hover on 04 - and 04 IS `-emphasis`, so
-   * adopting the role without states would collapse hover onto rest. On step 05
-   * `-on-emphasis` sits at 71.5 Lc light / 67.1 dark, under the 75 floor; on
-   * `-emphasis` it reaches 79.5 / 74.9, which is what the accents already carry.
+   * The roles of an accent that name a GENERATED primitive of its family (#1427): role ->
+   * `<group>-<level>`, the primitive `--<group>-<family>-<level>`. Its tinted backgrounds name
+   * the wash levels by state (`surface` is `base`, `surface-hover` is `strong`), its text the
+   * text roles solved on them. The band of its solid fill is `emphasisRoles()`, shared with
+   * the hues. Read through `accentTintDecls()`, so a named theme repoints them like the quintet.
    *
    * The `surface-*` entries stay ACCENT-ONLY: a colored hue expresses that band
-   * as wash levels (`washSteps`), named by intensity rather than by state.
+   * as wash levels (`washLevels`), named by intensity rather than by state.
    */
-  accentStateSteps: Record<string, string>;
+  accentRoles: Record<string, string>;
   /**
    * Named themes (spec 8): map of theme name -> either a surface family (string
    * shorthand) or a `ThemeDef` that also repoints accents. The named family's
@@ -306,20 +303,16 @@ export const semantic: SemanticConfig = {
     neutral: { family: 'tone-neutral', partial: true },
   },
   scaleSteps: 10,
-  hueSteps: { surface: '09', fg: '05', border: '06', emphasis: '04' },
+  hueSteps: { fg: '05', border: '06' },
   accentSteps: { fg: '03' },
-  // The three wash levels the component sheets actually use as a background
-  // today. Colored: 10 x68, 09 x71, 08 x41. NEUTRAL, censused for #624: 10 x35,
-  // 09 x51, 08 x58 - 144 declarations that name a raw step because no role could
-  // hold their value. Either way adopting them is a 1:1 rename and no value moves. `base` is the step `--magma-<hue>-surface` already
-  // pointed at - which is why the shortcut can stay put. NOTE: the accents
-  // express the same three levels with state-derived names (`surface-subtle` /
-  // base / `surface-hover`, #606); these are named by INTENSITY because a
-  // colored chip is not an interaction state. Unifying the two vocabularies is a
-  // follow-up, not part of this change.
-  // the steps of the wash levels live with the text they carry (src/lib/wash.ts): the text-role
-  // engine solves the text against them, the gate measures them (#1414)
-  washSteps: { ...WASH_STEPS },
+  // The three wash levels the component sheets actually use as a background (#624: 144
+  // declarations that named a raw step because no role could hold their value), and the two
+  // selected levels of #1427. NOTE: the accents express the same levels with state-derived
+  // names (`surface-subtle` / base / `surface-hover`, #606); these are named by INTENSITY
+  // because a colored chip is not an interaction state.
+  // the levels live with the text they carry (src/lib/wash.ts): the engine places them, the
+  // text-role engine solves the text against them, the gate measures them (#1414, #1427)
+  washLevels: Object.keys(WASH_LEVELS),
   // The ink extreme. 51 component declarations were naming it for a drop shadow
   // (dropdown 20, tooltip 18, tab 7, filter 4), 38 of them on step 01 itself.
   shadowStep: '01',
@@ -328,25 +321,24 @@ export const semantic: SemanticConfig = {
   // weak dark fill (badge, banner/toast weak, the input-tip bubble) - #731.
   neutralHueSteps: { fg: '03', border: '06', emphasis: '02', emphasisMuted: '03' },
   accents: { ...ACCENT_DEFAULTS, ...business.color.accents },
-  accentStateSteps: {
-    // emphasis band (solid fill): hover/active go one/two steps STRONGER. Shared
-    // with the colored hues via emphasisStateSteps() - the same two steps, so a
-    // status button and an accent button behave identically.
-    'emphasis-hover': '03',
-    'emphasis-active': '02',
-    // No `emphasis-selected` yet (#1269): the selected state weighs LESS than the hover, and
-    // no step of this band does: 04 is the rest (a state on the base fill kills it), 03 the
-    // hover, and on 05 -on-emphasis falls under its floor (see the note above). It comes
-    // with full colours, as a mix of rest and hover (#918).
-    // surface band (subtle fill): hover one step stronger, subtle one lighter.
-    // Accent-only: a hue says this with washSteps.
-    'surface-hover': '08',
-    'surface-subtle': '10',
-    // selected (#1269): the action of the view you are in, an area that weighs LESS than the
-    // hover. No step lies between rest and hover: 10 is the only one lighter than the hover
-    // that differs from the rest (the step of subtle; a hue says it with wash-soft). Its value
-    // moves to a mix of rest and hover with full colours (#918).
-    'surface-selected': '10',
+  accentRoles: {
+    // the tinted background (subtle fill): the wash levels by state, accent-only (a hue says
+    // this with washLevels). `surface` keeps the level it always had, the base wash.
+    surface: 'wash-base',
+    'surface-subtle': 'wash-soft',
+    'surface-hover': 'wash-strong',
+    // selected (#1269, #1427): the action of the view you are in, an area lighter than the
+    // hover and other than the rest, the generated selected levels: of the weak button (rest
+    // `surface`, hover `surface-hover`) and of the text and outline ones (no area at rest,
+    // hover `surface-subtle`). With full colours they become mixes of rest and hover (#918).
+    'surface-selected': 'wash-selected',
+    'surface-subtle-selected': 'wash-soft-selected',
+    // the text of the accent (#1427): solved like the text of a hue, on its surfaces and its
+    // washes, so a label on an accent background has a role instead of a fill state (the weak
+    // button wrote with emphasis-hover, under Lc 60 on its hover)
+    'text-default': 'text-default',
+    'text-muted': 'text-muted',
+    'text-subtle': 'text-subtle',
   },
   // The base comes first: the DTCG export takes the first theme that repoints nothing as its
   // default. `editorial` takes the accent of the Maggioli Editore brand through
@@ -453,6 +445,10 @@ export const roleDescriptions: Record<string, string> = {
   'wash-soft': 'A neutral pill or chip, the least marked.',
   'wash-base': 'A neutral pill or chip, at its default prominence.',
   'wash-strong': 'A neutral pill or chip, the most marked.',
+  'wash-selected':
+    'The area of the neutral control of the view you are in, lighter than its hover (wash-strong).',
+  'wash-soft-selected':
+    'The area of the neutral control of the view you are in that has no area at rest, lighter than its hover (wash-soft).',
   'shadow-ink': 'The colour of a projected shadow, to compose with your own geometry and alpha.',
   'text-default': 'Body text, titles and primary data.',
   'text-muted': 'Secondary text that is still essential, such as an address or a phone number.',
@@ -467,6 +463,8 @@ export const roleDescriptions: Record<string, string> = {
   'neutral-border': 'A neutral border on a coloured context.',
   'surface-inverse': 'A chip that flips with the mode: dark on a light page, light on a dark one.',
   'surface-inverse-muted': 'The inverse chip, one step quieter.',
+  'surface-inverse-selected':
+    'The inverse fill of the control of the view you are in, between its rest and its hover.',
   'on-inverse': 'Text and icons on either inverse surface.',
   'neutral-emphasis': 'Deprecated: the inverse surface under its old name.',
   'neutral-on-emphasis': 'Deprecated: the ink on the inverse surface under its old name.',
@@ -480,6 +478,10 @@ export const hueRoleDescriptions: Record<string, string> = {
   'wash-soft': 'The <hue> background, the least marked.',
   'wash-base': 'The <hue> background, at its default prominence.',
   'wash-strong': 'The <hue> background, the most marked: icons only, no essential text.',
+  'wash-selected':
+    'The <hue> background of the control of the view you are in, lighter than its hover (wash-strong).',
+  'wash-soft-selected':
+    'The <hue> background of the control of the view you are in that has no background at rest, lighter than its hover (wash-soft).',
   'text-default': '<Hue> text on the <hue> background.',
   'text-muted': 'Secondary <hue> text on the <hue> background.',
   'text-subtle': 'Non-essential <hue> text on the <hue> background.',
@@ -490,6 +492,8 @@ export const hueRoleDescriptions: Record<string, string> = {
   emphasis: 'The solid <hue> fill: a solid badge, a button.',
   'emphasis-hover': 'The solid <hue> fill, hovered.',
   'emphasis-active': 'The solid <hue> fill, pressed.',
+  'emphasis-selected':
+    'The solid <hue> fill of the control of the view you are in, between its rest and its hover.',
   'on-emphasis': 'Text and icons on the solid <hue> fill.',
   surface: 'Shortcut for the <hue> background at its default prominence (wash-base).',
   fg: 'Shortcut for the default <hue> text (text-default).',
@@ -501,12 +505,21 @@ export const accentRoleDescriptions: Record<string, string> = {
   emphasis: 'The solid fill of <accent>: the primary action.',
   'emphasis-hover': 'The solid fill of <accent>, hovered.',
   'emphasis-active': 'The solid fill of <accent>, pressed.',
+  'emphasis-selected':
+    'The solid fill of <accent> on the action of the view you are in, between its rest and its hover.',
   'on-emphasis': 'Text and icons on the solid fill of <accent>.',
   surface: 'A background tinted with <accent>: a selected row or chip.',
   'surface-subtle': 'A background tinted with <accent>, lighter.',
   'surface-hover': 'A background tinted with <accent>, hovered.',
   'surface-selected':
     'A background tinted with <accent> on the action of the view you are in, lighter than its hover.',
+  'surface-subtle-selected':
+    'A background tinted with <accent> on the action of the view you are in that has no background at rest, lighter than its hover.',
+  'text-default': 'Text in <accent>, on a neutral surface or on a background tinted with <accent>.',
+  'text-muted':
+    'Secondary text in <accent>, on a neutral surface or on a background tinted with <accent>.',
+  'text-subtle':
+    'Non-essential text in <accent>, on a neutral surface or on a background tinted with <accent>.',
   fg: 'Text or an icon in <accent> on a neutral surface, such as a link.',
   border: 'A border tinted with <accent>.',
 };
@@ -582,32 +595,45 @@ export const scaleTintDecls = (family: string): SemanticDecl[] =>
 export const scaleTintOverride = (family: string): string[] => scaleTintDecls(family).map(cssDecl);
 
 /**
- * The EMPHASIS-band states of `accentStateSteps`, i.e. the ones that describe a
- * solid fill and therefore apply to the colored hues as well as to the accents.
- * Derived rather than duplicated: the steps live in ONE place, so the two bands
- * cannot drift. The `surface-*` states are left out on purpose - a hue expresses
- * that band as wash levels (`washSteps`).
+ * The roles of the EMPHASIS band (spec 6.6): role suffix -> state of the generated band
+ * (`--emphasis-<family>-<state>`, src/lib/emphasis.ts). A solid fill, so they apply to the
+ * colored hues as well as to the accents: one definition, so a status fill cannot drift from an
+ * accent fill. `emphasis` is the rest; hover and active go one and two steps stronger; selected
+ * lies between the rest and the hover (#1427).
  */
-export const emphasisStateSteps = (): Record<string, string> =>
+export const emphasisRoles = (): Record<string, EmphasisState> =>
   Object.fromEntries(
-    Object.entries(semantic.accentStateSteps).filter(([state]) => state.startsWith('emphasis-')),
+    EMPHASIS_STATES.map((state) => [state === 'default' ? 'emphasis' : `emphasis-${state}`, state]),
   );
 
-/** The `--magma-tint-accent-*` pointers of `accentTintOverride`, as data. */
+/** A generated primitive of a family: `wash-base` of `primary` is `wash-primary-base`. */
+export const statePrimitive = (groupLevel: string, family: string): string => {
+  const [group, ...level] = groupLevel.split('-');
+  return `${group}-${family}-${level.join('-')}`;
+};
+
+/**
+ * The `--magma-tint-accent-*` pointers of `accentTintOverride`, as data: `fg` and `border` name
+ * ramp steps of the family (`variant-primary`), the rest the primitives generated for it
+ * (`--wash-primary-*`, `--emphasis-primary-*`, `--text-primary-*`, #1427).
+ */
 export const accentTintDecls = (role: string, family: string): SemanticDecl[] => {
-  const { accentStateSteps } = semantic;
-  const hueSteps = { ...semantic.hueSteps, ...semantic.accentSteps };
+  const steps = { ...semantic.hueSteps, ...semantic.accentSteps };
+  const generated = familyOfRamp(family);
   const infix = accentInfix(role);
-  const pointer = (key: string, step: string): SemanticDecl => ({
+  const pointer = (key: string, ref: string): SemanticDecl => ({
     name: `magma-tint-accent-${infix}${key}`,
-    ref: `${family}-${step}`,
+    ref,
   });
   return [
-    pointer('surface', hueSteps.surface),
-    pointer('fg', hueSteps.fg),
-    pointer('border', hueSteps.border),
-    pointer('emphasis', hueSteps.emphasis),
-    ...Object.entries(accentStateSteps).map(([state, step]) => pointer(state, step)),
+    pointer('fg', `${family}-${steps.fg}`),
+    pointer('border', `${family}-${steps.border}`),
+    ...Object.entries(emphasisRoles()).map(([key, state]) =>
+      pointer(key, `emphasis-${generated}-${state}`),
+    ),
+    ...Object.entries(semantic.accentRoles).map(([key, level]) =>
+      pointer(key, statePrimitive(level, generated)),
+    ),
   ];
 };
 

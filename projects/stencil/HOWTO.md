@@ -5,7 +5,7 @@
 ## To generate a new web-component:
 
 ```
-nx run stencil:generate mds-component-name
+nx run stencil:generate mds-component-name --category <id>   # or --parent <tag> for a part
 ```
 
 ## To build a web-component:
@@ -79,8 +79,8 @@ Keep in mind that:
   makes Vitest look for `Retry Retry` where Playwright sees `Retry`, and the action times out.
   Hand such a target over as a locator on its visible name,
   `userEvent.click(page.getByRole('button', { name: 'Retry' }))`, until Vitest follows;
-- `nx run stencil:generate` still scaffolds the Jest flavoured spec and e2e files: answer no and
-  start from the snippet above.
+- `nx run stencil:generate` writes the Vitest e2e of a new component from
+  `template/component/test/e2e.ts.hbs` (SPEC.md, "Scaffolding a new component").
 
 #### Server-side rendering and hydration
 

@@ -199,6 +199,34 @@ A value no token can say keeps its literal under a disable comment that gives th
 
 The kinds so far: a duration off the scale; a length that the component's TypeScript reads with `cssSizeToNumber` (`@common/unit`), which parses `7px` but not the `calc(var(--spacing) * 175)` that `--spacing(175)` compiles to; the white light of a highlight or a glow (`mds-keyboard`), the same in every theme and mode; the paper of a physical object (`mds-book`), which stays paper in dark mode; and the palette of an illustration (`mds-emoji`).
 
+### Component sheets: the design decisions on :host
+
+`magma/host-knobs`, the other local plugin of `projects/stencil/stylelint.config.mjs` ([`projects/stencil/scripts/stylelint-host-knobs.mjs`](../projects/stencil/scripts/stylelint-host-knobs.mjs)), holds "The design decisions on `:host`" and the names of the knobs (Styling API) of [`projects/stencil/SPEC.md`](../projects/stencil/SPEC.md) (Authoring rules, #1499): a colour, a radius, a shadow, a motion (a duration, an easing) or a `z-index` token reaches the rules from a custom property declared on `:host`, so the inspector shows which tokens reach the component.
+
+| Written                                                   | Write instead                                                                                     |
+| --------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `.box { background-color: rgb(var(--magma-surface-raised)); }` | `:host { --mds-a-box-background: rgb(var(--magma-surface-raised)); }` and `.box { background-color: var(--mds-a-box-background); }` |
+| `:host { border-radius: var(--magma-radius-md); }`        | `:host { --mds-a-radius: var(--magma-radius-md); border-radius: var(--mds-a-radius); }`          |
+| `:host([variant='info']) .box { color: ... }`             | `:host([variant='info']) { --mds-a-box-color: rgb(var(--magma-info-text-default)); }`, the rule below unchanged |
+| `.box { transition-duration: var(--duration-200); }`, `@apply ease-out` | `--mds-a-transition-duration: var(--duration-200)` and `--mds-a-transition-timing-function: var(--ease-out)` on `:host`, read by `.box` |
+| `--mds-a-background-selected`, `--mds-a-duration`         | `--mds-a-selected-background`, `--mds-a-transition-duration`: the state before the property, the property in full |
+| `--size: --spacing(400)`                                  | a knob `--mds-a-size` with its `@prop`, or a `--private-a-size` for plumbing                      |
+
+Free: spacing, sizes and the rest of the geometry (`gap: --spacing(600)`, `padding: var(--magma-rhythm-inset)`, `aspect-ratio`), the typography classes, `corner-shape: var(--magma-corner-shape)`, the page gutter, the focus ring (`--magma-outline-*`, `@apply focus-bounce`) and `@apply not-hydrated`. Any custom property on `:host` may read a token: a knob, a `--private-*` (the palette of `mds-button`'s variants), a role `--magma-*` declared again. A class applied with `@apply` is of a family by its Tailwind namespace (`ease-*`, `transition*`, `shadow*`, `ring*`, `rounded*`, `z-*`, `bg-*`); a class the component defines with `@utility` in its own sheets is checked where it is written. A token is of a family by its name, read without a build; `scripts/stylelint-host-knobs.spec.ts` holds the names to their source on the real data: a `--magma-*` is a colour when the semantic model (`design-tokens/semantic.model.ts`) declares it a role, or every declaration of it (`styles/css/globals.css`, a component that passes it down) holds a colour; a class is of a family when the CSS Tailwind writes for it on the built theme reads a token of the family.
+
+A knob's name: `--mds-<tag>[-<part>][-<variant>][-<state>]-<property>`, ending with a property stylelint knows (`known-css-properties`, resolved from stylelint itself) or with `radius`, `shadow`, `background`; named by an `@prop` of its component, or of the parent that sets it on its items.
+
+The sheets that do not follow it yet are in [`projects/stencil/scripts/host-knobs-pending.json`](../projects/stencil/scripts/host-knobs-pending.json), relative to `src/components`, each with the count of what the rule reports in it (`"mds-banner/css/mds-banner-cockade.css": 2`): a sheet at its count reports nothing, past it reports everything (the new ones among the rest), below it asks to lower the count. A sheet the file does not name, a new component's included, is held at 0. To bring a component to the rule:
+
+```bash
+# In projects/stencil/
+npm run list.host-knobs                  # the components, what the rule reports, their count
+npm run list.host-knobs -- mds-button    # the reports of one component, sheet by sheet
+npm run list.host-knobs -- --lower       # lower the counts to what is reported now (never raises one)
+```
+
+A `Public.` knob renamed keeps its old name as a deprecated alias until a major release, read only when the new one is not set and documented as `Deprecated, ...` in its `@prop`, as `mds-modal` keeps `--mds-modal-transition-timing-funciton` (#824).
+
 ### Selectors
 
 | Rule                                  | Effect                                                                                  |
@@ -298,7 +326,7 @@ mds-button[type="primary"] { … }
 
 ### Project-specific notes
 
-`projects/stencil/stylelint.config.mjs` extends the root and ignores compiled output (`**/dist/*.css`) and non-CSS files (`*.js`, `*.jsx`, `*.svg`). It overrides `import-notation: 'string'` and loads the local `magma/token-values` plugin, on for `src/components/**/*.css` only ([Component sheets: values from the tokens](#component-sheets-values-from-the-tokens)).
+`projects/stencil/stylelint.config.mjs` extends the root and ignores compiled output (`**/dist/*.css`) and non-CSS files (`*.js`, `*.jsx`, `*.svg`). It overrides `import-notation: 'string'` and loads the local plugins `magma/token-values` and `magma/host-knobs`, on for `src/components/**/*.css` only ([Component sheets: values from the tokens](#component-sheets-values-from-the-tokens), [the design decisions on :host](#component-sheets-the-design-decisions-on-host)).
 
 ### Running Stylelint
 
@@ -319,6 +347,7 @@ When writing or editing code in this monorepo:
   - Use `rgb(r g b / a)` modern syntax with numeric alpha; never named colors, never `hsl`/`lch`, never short hex
   - Use `px`, `rem`, `%`, `vh`/`vw` for sizing; never `em`/`cm`/`in`/`mm`/`pc`/`pt`
   - In component sheets, lengths, durations and colours come from the tokens (`--spacing(N)`, `var(--magma-radius-*)`, `var(--duration-*)`, `rgb(var(--magma-*) / a)`); a literal only for `0` and the `1px` hairline (`magma/token-values`)
+  - In component sheets, a colour, radius, shadow, motion or `z-index` token reaches the rules from a custom property on `:host` (a knob `--mds-<tag>[-<part>][-<variant>][-<state>]-<property>` with its `@prop`); spacing and geometry stay in the rules (`magma/host-knobs`)
   - Sort declarations alphabetically; custom props first; one declaration per line
   - Use specific `background-*` properties, never the `background` shorthand
   - No vendor prefixes (except `-webkit-overflow-scrolling`)

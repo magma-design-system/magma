@@ -71,7 +71,9 @@ named theme retints all of it at once.
 | `surface-sunken` | `bg-surface-sunken` | wells, insets, code blocks, tracks |
 | `surface-muted` | `bg-surface-muted` | same-plane grouping inside a component: zebra rows; never the background of a section (`surfaces/tints-in-components`) |
 | `wash-soft` / `wash-base` / `wash-strong` | `bg-wash-*` | a flat neutral pill or chip (no shadow), by how marked it is |
+| `wash-selected` / `wash-soft-selected` | `bg-wash-*-selected` | the area of the neutral control of the view you are in: between `wash-base` and its hover `wash-strong`, or between no area and its hover `wash-soft` (`mds-button current`) |
 | `surface-inverse` / `surface-inverse-muted` | `bg-surface-inverse*` | the chip that flips with the mode (dark on a light UI) |
+| `surface-inverse-selected` | `bg-surface-inverse-selected` | the inverse fill of the control of the view you are in, between its rest and its hover |
 | `on-inverse` | `text-on-inverse` | text and icons on either inverse level |
 | `text-default` | `text-fg-default` | body text, titles, primary data |
 | `text-muted` | `text-fg-muted` | secondary text that is still essential (an address, a phone) |
@@ -92,7 +94,7 @@ shadow in light, and how themes and high contrast move them: [`theming.md`](them
 
 ### Accent: actions and selection
 
-Two accents with the same nine roles: `accent` (the brand action colour) and `accent-ai`
+Two accents with the same roles: `accent` (the brand action colour) and `accent-ai`
 (AI-driven features). A named theme can repoint them. The interface is neutral where the
 person works, so the accent stays rare: a view has one primary action in it
 (`actions/primary`), and which weight every other action takes is the domain
@@ -104,10 +106,13 @@ person works, so the accent stays rare: a view has one primary action in it
 | --- | --- | --- |
 | `--magma-accent-emphasis` | `bg-accent-emphasis` | solid fill: the primary action, the band that introduces a page |
 | `--magma-accent-emphasis-hover` / `-emphasis-active` | `hover:bg-accent-emphasis-hover` | the fill hovered / pressed |
+| `--magma-accent-emphasis-selected` | `bg-accent-emphasis-selected` | the fill of the action of the view you are in (`mds-button current`), between its rest and its hover |
 | `--magma-accent-on-emphasis` | `text-accent-on-emphasis` | text and icons on the fill |
 | `--magma-accent-surface` | `bg-accent-surface` | tinted background: a selected row or chip |
 | `--magma-accent-surface-subtle` / `-surface-hover` | `bg-accent-surface-*` | the tinted background, lighter / hovered |
-| `--magma-accent-surface-selected` | `bg-accent-surface-selected` | the tinted background of the action of the view you are in (`mds-button current`): lighter than its hover. A status hue says it with `-wash-soft`; the solid fill has no selected step yet (#918) |
+| `--magma-accent-surface-selected` | `bg-accent-surface-selected` | the tinted background of the action of the view you are in (`mds-button current`): between `surface` and its hover. A status hue says it with `-wash-selected` |
+| `--magma-accent-surface-subtle-selected` | `bg-accent-surface-subtle-selected` | the same for a control with no background at rest (a text button), between none and its hover `surface-subtle` |
+| `--magma-accent-text-default` / `-text-muted` / `-text-subtle` | `text-accent-fg-*` | accent text on a neutral surface or on the tinted background: the label of a weak or a text button |
 | `--magma-accent-fg` | `text-accent-fg` | accent text or icon on a neutral surface (a link) |
 | `--magma-accent-border` | `border-accent-border` | tinted border |
 
@@ -122,9 +127,10 @@ is `status-error`). A named theme never retints a status.
 | Token (`<hue>` = `info`, `success`, `warning`, `danger`) | Tailwind | Use |
 | --- | --- | --- |
 | `--magma-<hue>-wash-soft` / `-wash-base` / `-wash-strong` | `bg-<hue>-wash-*` | colored background, by how marked it is |
+| `--magma-<hue>-wash-selected` / `-wash-soft-selected` | `bg-<hue>-wash-*-selected` | the colored area of the control of the view you are in, between rest and hover |
 | `--magma-<hue>-text-default` / `-muted` / `-subtle` / `-disabled` | `text-<hue>-fg-*` | colored text on that wash |
 | `--magma-<hue>-border-muted` / `-default` / `-strong` | `border-<hue>-border-*` | colored border |
-| `--magma-<hue>-emphasis` (+ `-hover`, `-active`) | `bg-<hue>-emphasis*` | solid fill: a destructive button, a solid badge |
+| `--magma-<hue>-emphasis` (+ `-hover`, `-active`, `-selected`) | `bg-<hue>-emphasis*` | solid fill: a destructive button, a solid badge |
 | `--magma-<hue>-on-emphasis` | `text-<hue>-on-emphasis` | text and icons on the fill |
 
 Shortcuts at the default prominence, kept for brevity: `--magma-<hue>-surface` =
@@ -139,9 +145,13 @@ measured.
 - **`-fg` on a neutral surface, `-on-emphasis` on the fill.** `--magma-accent-fg` is ink
   for the page; on `--magma-accent-emphasis` use `--magma-accent-on-emphasis`. Swapping
   them is the quickest way to break contrast.
-- **Text on a wash is bounded.** `wash-soft` carries the whole text ladder, `wash-base`
-  carries `text-default` only, `wash-strong` carries icons only (no essential text). Same
-  rule for the neutral band and for every status.
+- **Text on a wash is bounded.** `wash-soft` and `wash-soft-selected` carry the whole text
+  ladder, `wash-base` and `wash-selected` carry `text-default` only, `wash-strong` carries
+  icons only (no essential text). Same rule for the neutral band, every status and the
+  tinted backgrounds of the accents. One exception: the hover of a control whose rest is
+  `wash-base` (`mds-button` weak) keeps its label on `wash-strong` in `text-default`, a
+  passage rather than a background to read on, held at 4.5:1 or more. Never place text on
+  `wash-strong` at rest.
 - **Hierarchy without dropping contrast.** `text-muted` is for essential secondary text,
   `text-subtle` only for what the user can skip. For more hierarchy use weight, size and
   spacing, and soften the chrome (`border-muted`, zebra on `surface-muted`) instead of the
@@ -191,8 +201,10 @@ not compile (`dist/ios/`, `dist/flutter/fonts.dart`) are in
 
 ## Migrating Magma 1 colour classes
 
-Magma 1 code paints raw steps, often with a hand-tuned `dark:` override. These steps have
-a role with the same light value; switch to the role and delete the `dark:` override:
+Magma 1 code paints raw steps, often with a hand-tuned `dark:` override. Each of these steps
+has the role that took its place; switch to the role and delete the `dark:` override. The role
+has the light value of the step, but for the washes, placed at a distance from the page since
+Magma 2 (close to the step in light, lighter and less saturated in dark):
 
 | Magma 1 step | As | Role |
 | --- | --- | --- |

@@ -28,6 +28,12 @@ export interface ToolContext {
   loader?: string;
   /** false: render_preview finds no Tailwind, as in a project without it (the tests); the project's when unset. */
   tailwind?: false;
+  /**
+   * What started the server, from MAGMA_MCP_STARTED_BY: `claude-plugin` when the launcher of the
+   * Claude Code plugin did (projects/claude-plugin/bin/magma-mcp.mjs), at whatever scope the
+   * plugin is installed; unset for a client's own entry.
+   */
+  startedBy?: string;
 }
 
 const HERE = fileURLToPath(import.meta.url);

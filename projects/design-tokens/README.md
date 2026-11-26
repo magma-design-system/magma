@@ -301,6 +301,18 @@ root `theme` block, and each opted-in family additionally emits
 (text roles solved by APCA target against that family's own surfaces). These families are
 what the semantic color layer of `@maggioli-design-system/styles` points at.
 
+The same families, and every family opted into the band of a solid fill (`emphasis`, below),
+also get their **states**, generated in `src/lib/state-color.mts` (#1427), because no step of a
+contrast-solved ramp lies where a state must:
+`--wash-<name>-{soft-selected,soft,base,selected,strong}`, placed by OKLCH lightness at a fixed
+distance from the page of the family (`WASH_LEVELS` in `src/lib/wash.ts`), below it in light and
+above it in dark, with the chroma of the key colour bounded by the paler end;
+`--emphasis-<name>-{default,hover,active,selected}`, the solid fill and its states (ramp steps,
+`selected` at the OKLCH midpoint of rest and hover; `{ "dark": "lightness" }` places the dark
+band by lightness); and, for a tint, `--inverse-<name>-selected`. The text roles of these
+families are solved on their washes too, so a label holds the floor of the contrast gate on the
+wash it sits on.
+
 ### Configuration reference
 
 Root fields:
@@ -330,6 +342,7 @@ Fields of each entry in `colors` (per-color values override the root defaults):
 | `smooth`     | `boolean`         | root value     | Bezier smoothing for this color only                                                                             |
 | `seed`       | `object`          | none           | `{ "light": "#RRGGBB", "dark": "#RRGGBB" }`: emits the off-scale `seed` token instead of `color`. Used by tones for the pure extreme of the mode (white in light, black in dark): `--tone-neutral-seed`. It is not a surface |
 | `surface`    | `boolean` \| `object` | `false`   | Opts the family into the surface engine (see How generation works): `true` uses the root `theme` levels, `{ "surfaces": {...}, "borders": {...} }` overrides them for this family. Also settable per group |
+| `emphasis`   | `boolean` \| `object` | `false`   | Opts the family into the band of a solid fill (see How generation works): its washes, its text roles and its emphasis band are generated. `{ "dark": "lightness" }` places the dark band by lightness instead of the ramp steps. Also settable per group |
 | `hueShift`   | `object`          | root value     | Hue shifting for this color only; set angles to `0` to opt a color out of a root-level default                   |
 | `saturation` | `object`          | root value     | Saturation curve for this color only; set both ends to `0` to opt a color out of a root-level default            |
 | `disabled`   | `boolean`         | `false`        | Skips the color entirely: no tokens are generated for it                                                          |

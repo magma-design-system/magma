@@ -159,7 +159,10 @@ answer comes from".
   Stylelint 16 the `stylelint` key of `package.json` and the search places of cosmiconfig 9.
   The MCP server is started by the file each client reads, in the project and in the folder the
   client starts the server in, where the client keeps it when the project is another folder:
-  `.mcp.json` (`mcpServers`) or the Magma plugin in `.claude/settings.json` for Claude Code,
+  `.mcp.json` (`mcpServers`) or the Magma plugin for Claude Code, enabled in
+  `.claude/settings.json` or `.claude/settings.local.json` (the project's files where Claude Code
+  reads `enabledPlugins`), or at any scope when the launcher of the plugin started the server
+  (`MAGMA_MCP_STARTED_BY=claude-plugin`, #1524),
   `.vscode/mcp.json` (`servers`), `.cursor/mcp.json` (`mcpServers`), and for OpenCode
   `opencode.json` and `opencode.jsonc`, in the root and in `.opencode/` (`names` of its
   `ConfigDiscovery`), these read as JSONC as OpenCode reads them, with the servers where its
@@ -170,6 +173,14 @@ answer comes from".
   (`@maggioli-design-system/magma/dist/mcp/cli.js`, `BIN_FILE` of `src/root.ts`, held to the
   `bin` of magma by `test/shipped.test.ts`), which a client running node on the installed copy
   names.
+- **The Magma block of `check_setup`** (`agent-context`, #1524): the block the install guide
+  writes into the project's root agent file (step 3.8 of the packages' `AGENTS.md`), found by
+  its markers, which the install guide and the check take from the lint core
+  (`src/core/agents.ts` of `projects/lint`). It is wanted in `AGENTS.md`, and in `CLAUDE.md` too
+  when the root has one that does not import `AGENTS.md` (`@AGENTS.md`): Claude Code reads
+  `AGENTS.md` only when there is no `CLAUDE.md`
+  ([memory docs](https://code.claude.com/docs/en/memory.md), "AGENTS.md"). The guide it names
+  is the `AGENTS.md` of the wrapper the project declares, else of magma.
 - **The sources `check_setup` reads** (where the icon path is set, `sourceFiles` of
   `src/checks.ts`): the files of the project's root, where Vite starts from `index.html` and a
   page served as it is keeps its HTML, and its source folders `src` (Vite, Angular CLI),

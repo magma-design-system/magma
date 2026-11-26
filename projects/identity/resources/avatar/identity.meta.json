@@ -3,6 +3,7 @@
     {
       "id": "avatar-gruppo-maggioli",
       "name": "Gruppo Maggioli",
+      "rights": "trademark",
       "owner": "gruppo-maggioli",
       "files": [
         "avatar-gruppo-maggioli"
@@ -11,6 +12,7 @@
     {
       "id": "avatar-maggioli-academy",
       "name": "Maggioli Academy",
+      "rights": "trademark",
       "owner": "maggioli-academy",
       "files": [
         "avatar-maggioli-academy"
@@ -19,6 +21,7 @@
     {
       "id": "avatar-maggioli-editore",
       "name": "Maggioli Editore",
+      "rights": "trademark",
       "owner": "maggioli-editore",
       "files": [
         "avatar-maggioli-editore"
@@ -27,6 +30,7 @@
     {
       "id": "avatar-magma",
       "name": "Magma",
+      "rights": "mit",
       "owner": "magma-design-system",
       "files": [
         "avatar-magma"
@@ -35,6 +39,7 @@
     {
       "id": "avatar-rnd-days",
       "name": "R&D Days",
+      "rights": "mit",
       "owner": "rnd",
       "files": [
         "avatar-rnd-days"

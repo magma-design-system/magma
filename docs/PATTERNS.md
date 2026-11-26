@@ -281,7 +281,8 @@ try: Press Salva: the error shows above the form, and what was written stays.
   elements and the components Magma has, the outermost one marked with the tag the proposal
   gives the component, `data-prototype="mds-preview"`. `render_preview` names it in
   `prototypes` instead of reporting a problem, and reports it (`prototype-shipped`) once the
-  build has the component, so the change that ships the component writes it in the previews.
+  build has the component, so the change that ships the component writes it in the previews
+  (the skill `/component-new`, which builds the component from its issue and its prototype).
   It is the maintainer's choice on #1492 (2026-11-23), over writing the proposed tag itself,
   an element the page does not know, with no shadow tree, styled by hand.
 - **What to try**, required: one line, what to do in the preview ("Press Salva: ..."), or what

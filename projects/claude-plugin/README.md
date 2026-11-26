@@ -1,7 +1,8 @@
 # claude-plugin
 
 The Claude Code plugin of Magma (#1114): the skills that run a whole job with Magma, and the
-entry that starts the Magma MCP server (`.mcp.json`, `npx --no magma-mcp`). It is served
+entry that starts the Magma MCP server (`.mcp.json`, through the launcher `bin/magma-mcp.mjs`,
+#1524). It is served
 from this repository, not from npm: `.claude-plugin/marketplace.json` at the repository root
 is the marketplace `magma`, whose plugin `magma` is this folder.
 
@@ -33,7 +34,7 @@ flowchart LR
   subgraph cp["claude-plugin<br/>served from main, not on npm"]
     GEN["scripts/skills.ts<br/>fills templates/, checks"]
     SK["skills/*/SKILL.md<br/>generated, one per template"]
-    MAN[".claude-plugin/plugin.json<br/>.mcp.json: npx --no magma-mcp"]
+    MAN[".claude-plugin/plugin.json<br/>.mcp.json: bin/magma-mcp.mjs"]
     GEN --> SK
   end
   MCP & AG & CM --> GEN
@@ -86,26 +87,50 @@ Why the data is not in the skills:
    catalogue, the `AGENTS.md` of a component or a whole guide (the "Instead of" column of
    `agents/mcp.md`).
 
-The server is not a remote service: the agent's client starts it from `node_modules` with
-`npx --no magma-mcp` and speaks JSON-RPC to it on stdio, with no network. The order was decided
+The server is not a remote service: the plugin's launcher starts it from the project's
+`node_modules` and Claude Code speaks JSON-RPC to it on stdio, with no network. The order was decided
 in #1083: the lint first (deterministic), then the server on the same data core, then the skills
 on top.
 
 ## How people get it
 
-A project registers it for the whole team in its committed `.claude/settings.json`, as
-`agents/mcp.md` shows (`extraKnownMarketplaces` with `autoUpdate`, `enabledPlugins`); the
-bootstrap of the packages' `AGENTS.md` writes that entry. Claude Code loads the plugin once
-the folder is trusted, in the terminal and in the desktop app. One person alone adds it in a
-terminal session with `/plugin marketplace add magma-design-system/magma`, then
-`/plugin install magma@magma`.
+A person installs it at a scope: for the team (`project`, declared in the committed
+`.claude/settings.json`), for themselves in every project (`user`), or in one project only
+(`local`, in `.claude/settings.local.json`), with
+`claude plugin marketplace add magma-design-system/magma --scope <scope>`, then
+`claude plugin install magma@magma --scope <scope>` ([`agents/mcp.md`](../../docs/agents/mcp.md)).
+The committed file turns the plugin on for the colleagues but does not download it: Claude Code
+downloads a plugin only when the user's settings or an untracked `.claude/settings.local.json`
+enable it, so each colleague installs it once per clone
+([plugins/loading](https://code.claude.com/docs/en/plugins/loading.md), "Enabled in project
+settings but not installed"). A plugin installed in a session loads with `/reload-plugins` or in
+the next session.
+
+The bootstrap of the packages' `AGENTS.md` proposes it (#1524): Claude Code, installing Magma
+without the `magma:*` skills, says what the plugin gives, asks the scope and installs it, and
+asks before writing the `.mcp.json` entry on a no. It also writes a Magma block into the
+project's root `AGENTS.md` (and `CLAUDE.md`, when Claude Code reads that instead), so that the
+agent of a colleague who opens the project without the plugin proposes it there.
+
+### The launcher
+
+`.mcp.json` starts `bin/magma-mcp.mjs`, not `npx --no magma-mcp`: at scope `user` the plugin runs
+in every project of the person, and npx fails where Magma is not installed (it asks the registry
+for a package of that name), so Claude Code would show a failed server there. The launcher looks
+for `@maggioli-design-system/magma` from the project (`CLAUDE_PROJECT_DIR`) upwards, as Node
+resolves a package, and runs its `dist/mcp/cli.js` with `MAGMA_MCP_STARTED_BY=claude-plugin`, so
+`check_setup` counts the plugin at any scope. Without it, it answers as a server with no tools,
+with instructions only when the project declares magma and has not installed it. Plain Node and
+no dependency: Claude Code runs the plugin from its copy of this repository.
 
 ## Layout
 
 | Path | What |
 | --- | --- |
 | `.claude-plugin/plugin.json` | the manifest of the plugin `magma` |
-| `.mcp.json` | the Magma MCP server, started with `npx --no magma-mcp` (#1112) |
+| `.mcp.json` | the Magma MCP server, started through the launcher (#1112, #1524) |
+| `bin/magma-mcp.mjs` | the launcher: the server of the magma installed in the project, or a server with no tools |
+| `test/` | the tests of the launcher, run as a process on stdio (`nx run claude-plugin:test`) |
 | `templates/<name>.md` | the source of each skill |
 | `skills/<name>/SKILL.md` | the skills, generated from the templates: do not edit them |
 | `scripts/skills.ts` | the generator and its check |

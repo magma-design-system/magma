@@ -440,6 +440,24 @@ describe('mds-modal on a narrow screen', () => {
     expect(root.querySelector('[slot="window"]')!.getBoundingClientRect().width).toBe(360 - 48);
   });
 
+  // #1501: a window taller than the screen was centred and clipped at both ends, out of reach. Its
+  // content is what is tall, as the fields of a banner: a height on the window itself would be
+  // clamped with nothing left to scroll
+  it('keeps a slotted window within the screen less its margin and scrolls it', async () => {
+    await page.viewport(360, 640);
+    const { root } = await render(
+      '<mds-modal opened><div slot="window"><div style="height: 2000px">Window</div></div></mds-modal>',
+    );
+    const slotted = root.querySelector<HTMLElement>('[slot="window"]')!;
+
+    // the box of the layout, then where the entry, which slides it with a transform, leaves it
+    expect(slotted.offsetHeight).toBe(640 - 48);
+    await vi.waitFor(() => expect(slotted.getBoundingClientRect().top).toBe(24), {
+      timeout: 2000,
+    });
+    expect(slotted.scrollHeight).toBeGreaterThan(slotted.clientHeight);
+  });
+
   it('keeps the strip at the side of a side position', async () => {
     await page.viewport(360, 640);
     const { root } = await render('<mds-modal opened position="left"><p>Contenuto</p></mds-modal>');

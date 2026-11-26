@@ -55,7 +55,13 @@ export const tokenDescriptions: Record<string, string> = {
   'palette.border':
     'Border ladders (muted, default, strong), one per neutral and status family: the primitives behind the border roles.',
   'palette.text':
-    'Text ladders (default, muted, subtle, disabled), one per neutral and status family, solved for contrast: the primitives behind the text roles.',
+    'Text ladders (default, muted, subtle, disabled), one per neutral, status and accent family, solved for contrast: the primitives behind the text roles.',
+  'palette.wash':
+    'Wash ladders (soft-selected, soft, base, selected, strong), one per neutral, status and accent family, placed at a distance from the page: the primitives behind the wash roles and the tinted backgrounds of the accents.',
+  'palette.emphasis':
+    'The band of a solid fill (default, hover, active, selected), one per status and accent family: the primitives behind the emphasis roles.',
+  'palette.inverse':
+    'The selected level of the inverse pair, one per neutral family: the primitive behind surface-inverse-selected.',
 
   size: 'The primitive length scale that spacing, container, border and radius name: size.100 is 4px, size.400 is 16px. The CSS publishes the resolved values, not these.',
   font: 'The four font families, used through the typography styles: title (Roboto), info (Karla), read (Merriweather), code (Roboto Mono).',
@@ -111,7 +117,7 @@ export const tokenDescriptions: Record<string, string> = {
 };
 
 /** The ladders of `palette`: one per family, described by a rule, not one by one. */
-const LADDERS = ['surface', 'border', 'text'];
+const LADDERS = ['surface', 'border', 'text', 'wash', 'emphasis', 'inverse'];
 
 /**
  * The description of a group or token of the base set, by its DTCG path: its own entry, else

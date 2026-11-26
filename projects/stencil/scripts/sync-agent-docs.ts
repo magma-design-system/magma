@@ -24,6 +24,7 @@ import path from 'path';
 import {
   COMPONENT_DOCS_DIR,
   SHARED_FRAGMENTS,
+  magmaBlock,
   readTaxonomy,
   renderCatalogue,
   renderPatternCatalogue,
@@ -136,6 +137,10 @@ Ask the user only what detection left undecided. Typical questions:
 4. Confirm the version row if the installed major is ambiguous.
 5. **Editor**: VS Code? It gets token and class autocomplete through two files in
    \`.vscode/\` (agents/assets.md section 5); for another editor only the token file applies.
+6. **Claude Code** (only if you are Claude Code and the \`magma:*\` skills are not among
+   your skills): propose the Magma plugin and ask its scope, as the section
+   [Claude Code: the Magma plugin](#claude-code-the-magma-plugin) says. Step 3.7 follows the
+   answer.
 
 ## Step 3 - execute
 
@@ -151,13 +156,27 @@ Ask the user only what detection left undecided. Typical questions:
    configurations, never overwrite them.
 7. Set up the MCP server - see [\`agents/mcp.md\`](agents/mcp.md): it ships in this package as
    the \`magma-mcp\` command, started with \`npx --no magma-mcp\` (never without \`--no\`, which
-   would let npx install a package of that name from the registry). For Claude Code, register
-   the Magma plugin in the project's \`.claude/settings.json\` instead: it starts the server and
-   adds the Magma skills (\`/magma:setup\`, \`/magma:review\`, \`/magma:migrate\`,
-   \`/magma:pattern-layer\`). For the other
-   clients MERGE the entry into \`.vscode/mcp.json\`, \`.cursor/mcp.json\` or
-   \`opencode.json\`; never both the plugin and an \`.mcp.json\` entry, or the server runs
-   twice. Then call its \`check_setup\` tool: it lists what the integration still misses.
+   would let npx install a package of that name from the registry). For Claude Code the
+   Magma plugin starts it instead: install it at the scope chosen in step 2
+   ([Claude Code: the Magma plugin](#claude-code-the-magma-plugin)); on a no, ask before you
+   MERGE the \`.mcp.json\` entry, which is committed and starts the server for the whole
+   team. With the \`magma:*\` skills already there (the user runs \`/magma:setup\`), declare
+   the plugin for the team: MERGE the two keys of [\`agents/mcp.md\`](agents/mcp.md) into
+   \`.claude/settings.json\`, unless the project keeps \`.claude/\` out of git. For the other clients MERGE the entry into \`.vscode/mcp.json\`,
+   \`.cursor/mcp.json\` or \`opencode.json\`; never both the plugin and an \`.mcp.json\` entry,
+   or the server runs twice. Then call its \`check_setup\` tool: it lists what the integration
+   still misses. A plugin installed in this session has no tools yet: call it once the user
+   has typed \`/reload-plugins\`, or leave it to the next session.
+8. Write the Magma block into the project's agent file, so that an agent opening the project
+   later knows Magma is there: into \`AGENTS.md\` at the root (create it if missing), and
+   into the root \`CLAUDE.md\` too when one exists and does not import \`@AGENTS.md\`, since
+   Claude Code then reads \`CLAUDE.md\` instead. When the markers are already there, replace
+   what is between them; never touch the rest of the file. \`check_setup\` reports a project
+   without it (\`agent-context\`):
+
+   \`\`\`md
+${magmaBlock(target.wrapperPkg).replace(/^(?=.)/gm, '   ')}
+   \`\`\`
 
 ## Step 4 - verify
 
@@ -165,8 +184,45 @@ Build the app and confirm an \`mds-*\` component renders and every icon it names
 from the configured path (no 404 on \`<path><slug>.svg\`). In VS Code, check both halves of
 the autocomplete: \`var(--magma-\` completes Magma tokens in a CSS file and, with Tailwind,
 \`bg-surface-default\` shows a swatch. Run the lint ([\`agents/lint.md\`](agents/lint.md)): no
-error. Report what was installed, the cascade order used, the icon route, the icon path and
-the lint configuration.
+error. Report what was installed, the cascade order used, the icon route, the icon path, the
+lint configuration, what starts the MCP server (the Magma plugin and its scope, or the
+client's entry) and the files the Magma block went into. When the plugin was installed in this
+session, end with a reminder: \`/reload-plugins\`, or a new session, loads it.
+
+## Claude Code: the Magma plugin
+
+The plugin adds the Magma skills (\`/magma:setup\`, \`/magma:review\`, \`/magma:migrate\`,
+\`/magma:pattern-layer\`, and \`ui\` for UI work) and starts the MCP server of this package.
+Follow this section when you are Claude Code and the \`magma:*\` skills are not among your
+skills: at install (step 2), or in a project already on Magma, before UI work.
+
+1. **Propose it**, in the user's language, with this sentence or one close to it: "Magma has
+   a plugin for Claude Code: its skills let me write and review the interface with the right
+   components, and check tokens, icons and APIs against the installed version instead of
+   guessing them. Do you want to install it?" When the project's \`.claude/settings.json\`
+   already enables \`magma@magma\`, the team chose it: offer the install on this machine,
+   scope \`project\`. Otherwise ask the scope:
+   - **for the team** (\`project\`): declared in the committed \`.claude/settings.json\`;
+   - **for you, in every project** (\`user\`): in \`~/.claude/settings.json\`; in a project
+     without Magma the server starts with no tools;
+   - **for you, in this project only** (\`local\`): in \`.claude/settings.local.json\`, which
+     git does not track, for a project that keeps \`.claude/\` out of the repository.
+2. **Install it** from the project's root, with the scope chosen:
+   \`claude plugin marketplace add magma-design-system/magma --scope <scope>\`, then
+   \`claude plugin install magma@magma --scope <scope>\`. Where the \`claude\` command is
+   missing (the desktop app may not put it on the PATH), MERGE the two keys of
+   [\`agents/mcp.md\`](agents/mcp.md) (\`extraKnownMarketplaces.magma\`,
+   \`enabledPlugins["magma@magma"]\`) into the settings file of the scope instead, never
+   overwrite it; for \`project\` also \`enabledPlugins\` into \`.claude/settings.local.json\`:
+   Claude Code downloads a plugin only when the user's settings or an untracked
+   \`.claude/settings.local.json\` enable it, never from the committed file alone.
+3. **Load it**: the plugin loads when the user types \`/reload-plugins\`, or in a new session;
+   until then its skills and the tools of the server are not there. Say so, and go on without
+   them.
+4. **The team**: the committed \`.claude/settings.json\` turns the plugin on for the colleagues
+   but does not download it. Each of them installs it once per clone
+   (\`claude plugin install magma@magma --scope project\`); the Magma block of step 3.8 makes
+   their agent propose it.
 
 ## Using the components
 

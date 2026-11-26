@@ -23,9 +23,20 @@ the file.
 In Claude Code, the Magma plugin starts the server for you and adds the skills that run a
 whole job: `/magma:setup`, `/magma:review`, `/magma:migrate`, `/magma:pattern-layer` (the
 layer of a pattern for the product, [`patterns.md`](patterns.md)), and `ui`, which Claude loads
-by itself for UI work. Register it for the whole team in the project's committed
-`.claude/settings.json`; Claude Code loads it once the folder is trusted, in the terminal and
-in the desktop app, which reads the same settings:
+by itself for UI work. Install it from the project's root at a scope: `project` for the team,
+`user` for you in every project (where Magma is not installed, its server starts with no tools),
+`local` for you in this project only:
+
+```bash
+claude plugin marketplace add magma-design-system/magma --scope project
+claude plugin install magma@magma --scope project
+```
+
+`/plugin` does the same from a session in the terminal. The scope writes these keys into its
+settings file: the committed `.claude/settings.json` (`project`), `~/.claude/settings.json`
+(`user`), `.claude/settings.local.json`, which git does not track (`local`). Without the
+`claude` command, MERGE them into that file; for `project` also `enabledPlugins` into
+`.claude/settings.local.json`:
 
 ```json
 {
@@ -36,8 +47,12 @@ in the desktop app, which reads the same settings:
 }
 ```
 
-On one machine only, in a Claude Code session in the terminal:
-`/plugin marketplace add magma-design-system/magma`, then `/plugin install magma@magma`.
+The committed file turns the plugin on for the colleagues but does not download it: Claude Code
+downloads a plugin only when the user's settings or an untracked `.claude/settings.local.json`
+enable it, so each colleague installs it once per clone
+(`claude plugin install magma@magma --scope project`). A plugin installed during a session loads
+with `/reload-plugins`, or in the next session. The terminal, the desktop app and the IDE
+extensions of one computer read the same settings files.
 
 With the plugin, do not also add the `.mcp.json` entry below: the server would run twice.
 
@@ -139,7 +154,9 @@ the lint ([`lint.md`](lint.md)). The same definitions, for a tool that documents
   with a component.
 - Before an icon: `find_icon`.
 - After writing: `check_markup`, then the project's lint ([`lint.md`](lint.md)).
-- After the bootstrap, or when something does not render: `check_setup`.
+- After the bootstrap, or when something does not render: `check_setup`. Once per session,
+  before the first change to the interface, too: when it reports the Magma block missing
+  (`agent-context`), propose to write it.
 - Before asking the person to decide on an interface: `render_preview`, one render per
   option ([Show the person what you mean](#show-the-person-what-you-mean)).
 - When no tool gives you what the task needs, or an answer carries `gap`: tell the user,

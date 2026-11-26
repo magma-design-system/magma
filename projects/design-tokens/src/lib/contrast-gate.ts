@@ -25,7 +25,11 @@ import { APCAcontrast, sRGBtoY } from 'apca-w3';
 import chroma from 'chroma-js';
 // which text roles each wash level must carry (spec 9.1): one table for the gate, the semantic
 // layer and the text-role engine, which solves the text against it (#1414)
-import { WASH_TEXT_ENFORCED } from './wash.js';
+import { WASH_TEXT_ENFORCED, type WashLevel } from './wash.js';
+// the states of the band of a solid fill (spec 6.6, #1427), and the family the generated
+// groups key a ramp by: the same definitions the semantic layer reads
+import { EMPHASIS_STATES } from './emphasis.js';
+import { familyOfRamp } from './family.js';
 
 export type Mode = 'light' | 'dark';
 export type Severity = 'error' | 'warn' | 'info';
@@ -137,22 +141,24 @@ export interface SemanticMapping {
   /** Surface role the fill ink takes in dark instead of the seed (spec 6.5); optional. */
   onEmphasisDark?: string;
   hues: Record<string, { family: string; roles?: string; partial?: boolean }>;
-  hueSteps: { surface: string; fg: string; border: string; emphasis: string };
-  accentSteps?: Partial<{ surface: string; fg: string; border: string; emphasis: string }>;
+  /** Ramp steps of the quintet roles that are still ramp steps (spec 6.5). */
+  hueSteps: { fg: string; border: string };
+  accentSteps?: Partial<{ fg: string; border: string }>;
   neutralHueSteps: { fg: string; border: string; emphasis: string; emphasisMuted?: string };
   accents: Record<string, string>;
   /**
-   * Solid-fill interaction-state steps (spec 6.6); optional. The `emphasis-*`
-   * entries apply to the accents AND to the colored hues, the `surface-*` ones to
-   * the accents only - see `emphasisStateSteps()` in semantic.config.
+   * The roles of an accent that name a generated primitive of its family, role ->
+   * `<group>-<level>` (`surface` -> `wash-base`, #1427); optional. See `accentRoles` in
+   * semantic.config. The band of the solid fill (`EMPHASIS_STATES`) applies to the accents
+   * and to the colored hues alike.
    */
-  accentStateSteps?: Record<string, string>;
+  accentRoles?: Record<string, string>;
   /**
-   * Wash levels, level -> ramp step: the neutral band (`--magma-wash-*`, spec
-   * 6.1b, on the tint ramp) and every colored hue (`--magma-<hue>-wash-*`, spec
-   * 6.4, on its own family). One map for both, so they cannot drift; optional.
+   * Wash levels: the neutral band (`--magma-wash-*`, spec 6.1b, on the generated washes of the
+   * tint) and every colored hue (`--magma-<hue>-wash-*`, spec 6.4, on its own family). One list
+   * for both, so they cannot drift; optional.
    */
-  washSteps?: Record<string, string>;
+  washLevels?: readonly string[];
   /** Which published role each legacy quintet alias shortcuts to; optional. */
   hueRoles?: { surface: string; text: string; border: string };
   /** Ramp step the shadow ink names in light; in dark it is the seed (spec 6.1c); optional. */
@@ -209,85 +215,98 @@ function baseAliases(m: SemanticMapping): Record<string, string> {
   m.textRoles.forEach((r) => set(`text-${r}`, `text-${m.tint}-${r}`));
   set('text-on-emphasis', m.seed);
   m.borderRoles.forEach((r) => set(`border-${r}`, `border-${m.tint}-${r}`));
-  // focus follows the accent named by borderFocus, at its emphasis step
-  set('border-focus', `${m.accents[m.borderFocus]}-${m.hueSteps.emphasis}`);
-  // the neutral wash band (spec 6.1b): named steps of the ACTIVE TINT ramp, which
-  // is what `scaleFamily(tint)` resolves to - not the surface band, which is
-  // elevation and cannot hold these values in both modes.
+  // focus follows the accent named by borderFocus, at the rest of its emphasis band
+  set('border-focus', `emphasis-${familyOfRamp(m.accents[m.borderFocus])}-default`);
+  // the ramp of the ACTIVE TINT, which is what `scaleFamily(tint)` resolves to
   const rampFamily = m.scale ?? `tone-${m.tint}`; // = scaleFamily(tint) in semantic.config
   // the shadow ink (spec 6.1c): a colour, gated for resolution only - a shadow has
   // no text contrast floor of its own.
   if (m.shadowStep) set('shadow-ink', `${rampFamily}-${m.shadowStep}`);
-  Object.entries(m.washSteps ?? {}).forEach(([level, step]) =>
-    set(`wash-${level}`, `${rampFamily}-${step}`),
-  );
+  // the neutral wash band (spec 6.1b): the generated washes of the tint (#1427) - not the
+  // surface band, which is elevation and cannot hold these values in both modes.
+  (m.washLevels ?? []).forEach((level) => set(`wash-${level}`, `wash-${m.tint}-${level}`));
+  // the emphasis band of a family, generated (#1427): `emphasis` is its rest
+  const band = (prefix: string, family: string) =>
+    EMPHASIS_STATES.forEach((state) =>
+      set(
+        state === 'default' ? `${prefix}emphasis` : `${prefix}emphasis-${state}`,
+        `emphasis-${family}-${state}`,
+      ),
+    );
 
   // A colored hue publishes the same vocabulary as the neutral scaffolding on its
-  // own family: wash levels from named ramp steps, text + border from the family's
-  // GENERATED role scales. The quintet aliases are shortcuts onto those roles, so
+  // own family: wash levels, text + border from the family's GENERATED role scales,
+  // the generated emphasis band. The quintet aliases are shortcuts onto those roles, so
   // the gate resolves them to the same primitive the layer does. A `partial` hue
   // (neutral) still borrows ramp steps and publishes no ladder of its own.
-  Object.entries(m.hues).forEach(([hue, { family, roles, partial }]) => {
-    if (partial || !roles) {
-      const steps = partial ? m.neutralHueSteps : m.hueSteps;
+  Object.entries(m.hues).forEach(([hue, { roles, partial }]) => {
+    if (partial) {
+      const steps = m.neutralHueSteps;
       // the neutral hue is the active tint's own ramp: the layer names it through
       // `--magma-tint-scale-*` so it retints with a named theme (#731), which for
-      // the gate means the same `rampFamily` the wash band resolves to
-      const source = partial ? rampFamily : family;
-      if (!partial) set(`${hue}-surface`, `${family}-${m.hueSteps.surface}`);
-      set(`${hue}-fg`, `${source}-${steps.fg}`);
-      set(`${hue}-border`, `${source}-${steps.border}`);
-      set(`${hue}-emphasis`, `${source}-${steps.emphasis}`);
+      // the gate means the same `rampFamily` the shadow ink resolves to
+      set(`${hue}-fg`, `${rampFamily}-${steps.fg}`);
+      set(`${hue}-border`, `${rampFamily}-${steps.border}`);
+      set(`${hue}-emphasis`, `${rampFamily}-${steps.emphasis}`);
       set(`${hue}-on-emphasis`, m.seed);
-      // the inverse surface's less marked level (spec 6.1d): a fill that carries
-      // on-inverse text, gated like an emphasis state
-      if (partial && m.neutralHueSteps.emphasisMuted) {
+      // the inverse surface's less marked level (spec 6.1d) and its selected level (#1427):
+      // fills that carry on-inverse text, gated like an emphasis state
+      if (m.neutralHueSteps.emphasisMuted) {
         set('surface-inverse-muted', `${rampFamily}-${m.neutralHueSteps.emphasisMuted}`);
+        set('surface-inverse-selected', `inverse-${m.tint}-selected`);
         set('on-inverse', m.seed);
       }
       return;
     }
-    Object.entries(m.washSteps ?? {}).forEach(([level, step]) =>
-      set(`${hue}-wash-${level}`, `${family}-${step}`),
-    );
+    // as the semantic model does: a colored hue with no generated roles has nothing to point at
+    if (!roles)
+      throw new Error(`contrast-gate: the colored hue "${hue}" declares no "roles" family`);
+    (m.washLevels ?? []).forEach((level) => set(`${hue}-wash-${level}`, `wash-${roles}-${level}`));
     m.textRoles.forEach((r) => set(`${hue}-text-${r}`, `text-${roles}-${r}`));
     m.borderRoles.forEach((r) => set(`${hue}-border-${r}`, `border-${roles}-${r}`));
-    set(`${hue}-emphasis`, `${family}-${m.hueSteps.emphasis}`);
-    // the emphasis band's interaction states, shared with the accents (spec 6.6).
-    // Same predicate as `emphasisStateSteps()` in semantic.config: the surface-band
-    // states are accent-only, a hue says that with wash levels.
-    Object.entries(m.accentStateSteps ?? {})
-      .filter(([state]) => state.startsWith('emphasis-'))
-      .forEach(([state, step]) => set(`${hue}-${state}`, `${family}-${step}`));
+    // the solid fill and its states, shared with the accents (spec 6.6)
+    band(`${hue}-`, roles);
     set(`${hue}-on-emphasis`, m.seed);
     const shortcut = m.hueRoles;
     if (shortcut) {
-      set(`${hue}-surface`, `${family}-${(m.washSteps ?? {})[shortcut.surface]}`);
+      set(`${hue}-surface`, `wash-${roles}-${shortcut.surface}`);
       set(`${hue}-fg`, `text-${roles}-${shortcut.text}`);
       set(`${hue}-border`, `border-${roles}-${shortcut.border}`);
     }
   });
 
-  // accents (variant): the standout quintet, one per fixed role (spec 8). They
-  // share the colored-hue steps (but for `accentSteps`) and resolve to the accent's mapped family. The
-  // general `accent` role carries no infix (bare `--magma-accent-*`); others infix
-  // their name - mirrors `accentInfix` in semantic.config and scripts/semantic.ts.
+  // accents (variant): the standout quintet, one per fixed role (spec 8). `fg` and `border`
+  // are ramp steps of the accent's mapped family; its washes, its band and its text are the
+  // primitives generated for it (#1427). The general `accent` role carries no infix (bare
+  // `--magma-accent-*`); others infix their name - mirrors `accentInfix` and
+  // `accentTintDecls` in semantic.config.
   const accentSteps = { ...m.hueSteps, ...m.accentSteps };
   Object.entries(m.accents).forEach(([role, family]) => {
     const infix = role === 'accent' ? '' : `${role}-`;
-    set(`accent-${infix}surface`, `${family}-${accentSteps.surface}`);
+    const generated = familyOfRamp(family);
     set(`accent-${infix}fg`, `${family}-${accentSteps.fg}`);
     set(`accent-${infix}border`, `${family}-${accentSteps.border}`);
-    set(`accent-${infix}emphasis`, `${family}-${accentSteps.emphasis}`);
+    band(`accent-${infix}`, generated);
     set(`accent-${infix}on-emphasis`, m.seed);
-    // interaction states (spec 6.6 accent exception): each names an existing ramp
-    // step of the same family, mirroring scripts/semantic.ts.
-    Object.entries(m.accentStateSteps ?? {}).forEach(([state, step]) =>
-      set(`accent-${infix}${state}`, `${family}-${step}`),
-    );
+    Object.entries(m.accentRoles ?? {}).forEach(([key, groupLevel]) => {
+      const [group, ...level] = groupLevel.split('-');
+      set(`accent-${infix}${key}`, `${group}-${generated}-${level.join('-')}`);
+    });
   });
   return map;
 }
+
+/**
+ * The background of an accent at each wash level: an accent names its washes by state (#606),
+ * the level its `surface*` role names in `accentRoles` of semantic.config.
+ */
+const ACCENT_WASH: Record<WashLevel, string> = {
+  'soft-selected': 'surface-subtle-selected',
+  soft: 'surface-subtle',
+  base: 'surface',
+  selected: 'surface-selected',
+  strong: 'surface-hover',
+};
 
 /** A contrast level's role promotions (role -> stronger same-family role). */
 export type ContrastPromotions = {
@@ -461,16 +480,42 @@ export function evaluatePairs(
     }
     // 2b'. the inverse surface's less marked level carries on-inverse text too
     //      (enforced): the weak dark variants and the hover of the strong one.
-    if (aliases['--magma-surface-inverse-muted']) {
+    for (const inverse of ['surface-inverse-muted', 'surface-inverse-selected']) {
+      if (!aliases[`--magma-${inverse}`]) continue;
       push(
         'on-emphasis',
         'error',
         'apca',
         '--magma-on-inverse',
-        '--magma-surface-inverse-muted',
+        `--magma-${inverse}`,
         targets.onEmphasis[mode],
         mode,
       );
+    }
+    // the text of an accent on its own washes (#1427), the pairs of a hue: the label of a weak
+    // or a text button on the tinted area of its states
+    for (const accent of ['accent', 'accent-ai']) {
+      for (const [level, enforced] of Object.entries(WASH_TEXT_ENFORCED) as [
+        WashLevel,
+        readonly string[],
+      ][]) {
+        const bg = `--magma-${accent}-${ACCENT_WASH[level]}`;
+        if (!aliases[bg]) continue;
+        for (const [role, floor] of Object.entries(targets.text)) {
+          const fg = `--magma-${accent}-text-${role}`;
+          if (!aliases[fg]) continue;
+          const gated = enforced.includes(role);
+          push(
+            'text-on-hue',
+            gated ? 'error' : 'warn',
+            'apca',
+            fg,
+            bg,
+            gated ? floor : targets.hueFg,
+            mode,
+          );
+        }
+      }
     }
     // 2c. every hue's text ladder on its OWN wash levels. This is the pair a
     //     banner, toast or badge actually renders, and the one that had no name in

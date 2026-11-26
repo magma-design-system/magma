@@ -7,6 +7,7 @@ import {
   mkdtempSync,
   readdirSync,
   readFileSync,
+  rmSync,
   symlinkSync,
   writeFileSync,
 } from 'node:fs';
@@ -14,10 +15,15 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { describe, expect, test } from 'vitest';
 
-import { readPreviews, webpSize } from '@maggioli-design-system/magma/lint';
+import {
+  MAGMA_BLOCK_END,
+  MAGMA_BLOCK_START,
+  readPreviews,
+  webpSize,
+} from '@maggioli-design-system/magma/lint';
 import { checkSetup, mcpEntries, pluginEnabled, satisfies } from '../src/checks.js';
 import { distance, parseColor } from '../src/color.js';
-import { GAP } from '../src/context.js';
+import { GAP, type ToolContext } from '../src/context.js';
 import { folderOf, slugFiles } from '../src/icons.js';
 import {
   breakpointsOf,
@@ -1474,10 +1480,82 @@ describe('the check tools', () => {
       ok: false,
       detail: expect.stringMatching(/runs the server twice/),
     });
+    // enabled in the local settings only, the plugin starts the server as well (#1524)
+    rmSync(path.join(start, '.claude/settings.json'));
+    writeFileSync(
+      path.join(start, '.claude/settings.local.json'),
+      JSON.stringify({ enabledPlugins: { 'magma@magma': true } }),
+    );
+    expect(mcpOf(await setupIn())).toMatchObject({
+      ok: false,
+      detail: expect.stringMatching(/runs the server twice/),
+    });
+    rmSync(path.join(start, '.claude'), { recursive: true });
     // a context with no start folder reads the root only, and reports no rootFrom
     const alone = (await checkSetup({ ...context, root }).run({})) as Result;
     expect(alone.rootFrom).toBeUndefined();
     expect(mcpOf(alone).ok).toBe(false);
+  });
+
+  test('check_setup counts the plugin that started the server, at any scope (#1524)', async () => {
+    // installed for the person in every project: no settings of the project name it, its
+    // launcher says it started the server
+    const root = mkdtempSync(path.join(tmpdir(), 'magma-plugin-user-'));
+    writeFileSync(path.join(root, 'package.json'), '{}');
+    const mcpOf = async (extra: Partial<ToolContext>) =>
+      ((await checkSetup({ ...context, root, ...extra }).run({})) as Result).checks.find(
+        (check: { id: string }) => check.id === 'mcp',
+      );
+    expect(await mcpOf({ startedBy: 'claude-plugin' })).toMatchObject({
+      ok: true,
+      detail: 'the Magma plugin of Claude Code starts magma-mcp.',
+    });
+    expect((await mcpOf({})).ok).toBe(false);
+    // with an .mcp.json entry as well, Claude Code runs the server twice
+    writeFileSync(
+      path.join(root, '.mcp.json'),
+      JSON.stringify({ mcpServers: { magma: { command: 'npx', args: ['--no', 'magma-mcp'] } } }),
+    );
+    expect(await mcpOf({ startedBy: 'claude-plugin' })).toMatchObject({
+      ok: false,
+      detail: expect.stringMatching(/runs the server twice/),
+    });
+  });
+
+  test('check_setup finds the Magma block in the agent file Claude Code reads (#1524)', async () => {
+    // the markers of the lint core; the block the install guide writes is held to them by
+    // agent-docs-lib.spec.ts of stencil
+    const block = `${MAGMA_BLOCK_START}\n## Magma\n${MAGMA_BLOCK_END}`;
+    const react = JSON.stringify({ dependencies: { '@maggioli-design-system/magma-react': '*' } });
+    // no agent file: the block is missing, and the guide is the one of the package installed
+    expect((await setupOf({ 'package.json': react }))['agent-context']).toMatchObject({
+      ok: false,
+      detail: expect.stringMatching(
+        /^AGENTS\.md of the project has no Magma block: .* step 3\.8 of node_modules\/@maggioli-design-system\/magma-react\/AGENTS\.md says\.$/,
+      ),
+    });
+    expect((await setupOf({ 'AGENTS.md': `# App\n\n${block}\n` }))['agent-context']).toEqual({
+      id: 'agent-context',
+      ok: true,
+      detail: 'AGENTS.md carries the Magma block.',
+      guide: 'node_modules/@maggioli-design-system/magma/AGENTS.md (step 3.8)',
+    });
+    // a CLAUDE.md: Claude Code reads it instead of AGENTS.md, unless it imports AGENTS.md
+    expect(
+      (await setupOf({ 'AGENTS.md': block, 'CLAUDE.md': '# App\n' }))['agent-context'],
+    ).toMatchObject({
+      ok: false,
+      detail: expect.stringMatching(/^CLAUDE\.md of the project has no/),
+    });
+    expect(
+      (await setupOf({ 'AGENTS.md': block, 'CLAUDE.md': '@AGENTS.md\n' }))['agent-context'].ok,
+    ).toBe(true);
+    expect(
+      (await setupOf({ 'AGENTS.md': block, 'CLAUDE.md': `# App\n\n${block}\n` }))['agent-context'],
+    ).toMatchObject({ ok: true, detail: 'AGENTS.md and CLAUDE.md carry the Magma block.' });
+    expect((await setupOf({ 'CLAUDE.md': '# App\n' }))['agent-context'].detail).toMatch(
+      /^AGENTS\.md and CLAUDE\.md of the project have no Magma block/,
+    );
   });
 
   test('check_setup names the folder it found no package.json in, and how it found it', () => {

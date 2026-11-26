@@ -64,6 +64,19 @@ const surfaceOptIn = {
     },
   ],
 }
+// Opt into the band of a solid fill (state-color.mts, #1427): washes, text roles and the
+// emphasis band. `{ dark: 'lightness' }` places the band in dark by lightness. On a group or on
+// a single color, which wins, as for `surface`.
+const emphasisOptIn = {
+  oneOf: [
+    { type: 'boolean' },
+    {
+      type: 'object',
+      additionalProperties: false,
+      properties: { dark: { enum: ['lightness'] } },
+    },
+  ],
+}
 // A text role is an APCA Lc target (number) or an explicit tone step (A7).
 const textLevel = {
   oneOf: [
@@ -185,6 +198,7 @@ export const CONFIG_SCHEMA = {
         formula,
         export: { type: 'array', items: { type: 'string' } },
         surface: surfaceOptIn,
+        emphasis: emphasisOptIn,
       },
     },
     color: {
@@ -218,6 +232,8 @@ export const CONFIG_SCHEMA = {
         saturation,
         // per-family opt-in; overrides the group's (see `surfaceOptIn`)
         surface: surfaceOptIn,
+        // per-family opt-in; overrides the group's (see `emphasisOptIn`)
+        emphasis: emphasisOptIn,
       },
     },
   },

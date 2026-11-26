@@ -23,7 +23,7 @@ Ask the person only what detection leaves open (which framework, when several ar
 
 1. Install the package of the target with the project's package manager (React and Angular install `@maggioli-design-system/magma` too).
 2. Open the `AGENTS.md` of the installed package (`node_modules/@maggioli-design-system/<package>/AGENTS.md`) and follow its steps 1 to 4: they are the bootstrap of this version (the version matrix, styles in their cascade-layer order, fonts, icons, registration, editor autocomplete, the lint, the MCP server). Do not set Magma up from memory: the installed guide is the source.
-3. For the MCP server in Claude Code, prefer this plugin, which already starts it, to an `.mcp.json` entry: register the plugin for the whole team in the project's committed `.claude/settings.json`, merged into what is there:
+3. This plugin already runs here, so the bootstrap asks nothing about it (its step 3.7), and it starts the MCP server: write no `.mcp.json` entry for Claude Code. Unless the project keeps `.claude/` out of git, declare the plugin for the team in the committed `.claude/settings.json`, merged into what is there:
 
 ```json
 {
@@ -34,11 +34,11 @@ Ask the person only what detection leaves open (which framework, when several ar
 }
 ```
 
-   Write the `.vscode/mcp.json`, `.cursor/mcp.json` or `opencode.json` entry of `agents/mcp.md` only for the people of the team who use those clients.
+   That file downloads the plugin for nobody: each colleague installs it once per clone (`claude plugin install magma@magma --scope project`), and the Magma block the bootstrap writes into the project's `AGENTS.md` (its step 3.8) makes their agent propose it. Write the `.vscode/mcp.json`, `.cursor/mcp.json` or `opencode.json` entry of `agents/mcp.md` only for the people of the team who use those clients.
 
 ## 3. Check
 
-1. The magma MCP server of this plugin starts only once Magma is installed: if it did not start at the beginning of the session, reconnect it (`/mcp`).
+1. The magma MCP server of this plugin has its tools only once Magma is installed: when it was not at the beginning of the session, the server started with none, so reconnect it (`/mcp`).
 2. Call its `check_setup` tool and fix what it reports, each item with the guide it names.
 3. Build the app and confirm that an `mds-*` component renders and that the icons it names load.
 4. Report what was installed, the cascade order used, the icon route and path, and the lint and MCP configuration.
