@@ -69,6 +69,14 @@ export class MdsButtonDropdown {
   @Prop() readonly dropdownLabel?: string;
 
   /**
+   * The icon of the chevron, the button that opens the menu, in place of the arrow: a slug of the
+   * Magma icon library or SVG markup, as `icon`. Three dots (`mi/baseline/more-horiz`) make the
+   * component an item with the menu of its options, as the name of a conversation with an agent.
+   * The chevron keeps its name, `dropdownLabel` or the one the component builds
+   */
+  @Prop() readonly dropdownIcon?: string;
+
+  /**
    * Focuses the primary action once the component is loaded
    */
   @Prop() readonly autoFocus: boolean;
@@ -186,6 +194,12 @@ export class MdsButtonDropdown {
         ? this.t.get('moreActionsFor', { label: this.label })
         : this.t.get('moreActions');
 
+  // the arrow unless the page gives an icon of its own, so that the chevron opens the menu of an
+  // item as three dots do; an empty attribute keeps the arrow, as an empty dropdown-label keeps
+  // the built name
+  private chevronIcon = (): string =>
+    (this.dropdownIcon ?? '') !== '' ? this.dropdownIcon! : miBaselineKeyboardArrowDown;
+
   componentDidLoad(): void {
     // given by the host, not passed down: the inner buttons load before the host is shown, and
     // their own focus() took no effect, so autoFocus never focused anything
@@ -234,7 +248,7 @@ export class MdsButtonDropdown {
         {/* the chevron only opens the menu: the link is the primary action's (#798). It takes the
             look of the current button, as a section, which keeps it working, and no aria-current:
             the place you are in is the primary action's (#1264). The action in progress is the
-            primary one, which alone shows the spinner and is busy: the chevron keeps its arrow
+            primary one, which alone shows the spinner and is busy: the chevron keeps its icon
             and is disabled until the component stops awaiting, so the menu does not open (#1431) */}
         <mds-button
           active={this.active}
@@ -243,7 +257,7 @@ export class MdsButtonDropdown {
           current={currentOf(this.current) ? 'section' : undefined}
           class="dropdown-action"
           disabled={this.isDisabled() || !!this.await}
-          icon={miBaselineKeyboardArrowDown}
+          icon={this.chevronIcon()}
           size={this.size}
           tone={this.tone}
           variant={this.variant}
