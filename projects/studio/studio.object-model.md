@@ -453,7 +453,14 @@ in una barra dei passi (sezione 8, "Passi in ordine").
   - la scena del passo, accanto: i componenti che la famiglia dipinge;
   - le coppie toccate, in linea;
   - i temi che la usano, nominati, con un link a Temi. (persona; proposta per gli ultimi due)
-- **Mai qui**: pesi, temi, eccezioni; le impostazioni di un gruppo, che stanno in Gruppi.
+- **Come si vede** (persona, sui render, 2026-11-27): l'elenco accanto, con "Aggiungi colore" e
+  "Nuovo gruppo" in testa (lo stesso dialogo, con il campo Gruppo libero) e accanto al nome di
+  ogni gruppo un'icona che lo apre in Gruppi; in testa alla famiglia, sotto il nome, cosa dipinge
+  e in quale tema, poi le coppie toccate in un dettaglio chiuso, con il numero e il verdetto nel
+  titolo; sotto un campo ereditato, la riga che dice da chi; la scala con il badge e il link a
+  Scala; la scena accanto, come oggi.
+- **Mai qui**: pesi, temi, eccezioni; le impostazioni di un gruppo e quelle del preset, che stanno
+  in Gruppi (domanda 13).
 - **Ingresso**: Partenza, un elemento toccato sulla scena, o una famiglia in Gruppi. **Uscita**:
   Scala; Gruppi; il passo dopo, Pesi.
 
@@ -485,6 +492,8 @@ Fuori dai passi, come la sezione Tema e le Regole; è la pagina Groups di oggi, 
   (scala di contrasto, formula, export) e farne uscire le famiglie, per il tema e per i casi fuori
   da Magma. (persona, 2026-11-27)
 - **Intorno**:
+  - in testa, il preset: le impostazioni che ogni famiglia eredita (colorspace, smooth, formula,
+    saturazione, spostamento di tonalità) (persona, 2026-11-27: domanda 13);
   - ogni gruppo, con le sue famiglie in ordine cromatico e le loro rampe; segnate quelle che
     cambiano un valore del gruppo (progetto: pagina Groups);
   - la scala, in linea per sceglierla, con il suo badge e un link a Scala; la formula e l'export,
@@ -637,7 +646,10 @@ principio.
 - **Effetto**: ogni campo ereditato rischia una forma sua.
 - **Risoluzione** (proposta, 2026-11-26): per ora si costruisce con ciò che c'è, il messaggio
   del campo con un link a dove il valore si decide; se lo stesso bisogno torna in un prodotto,
-  diventa un caso di `form-and-validation`. Da confermare con la persona.
+  diventa un caso di `form-and-validation`. Confermata sul render (persona, 2026-11-27, opzione
+  A): il messaggio di `mds-input-field` è solo testo, quindi è una riga sotto il campo, "Eredita
+  dal gruppo tone", "Eredita dal preset", con il nome in un `mds-link`; non sulla riga
+  dell'etichetta.
 
 Finché un conflitto non è risolto, si costruisce come dice il design system.
 
@@ -735,6 +747,8 @@ Finché un conflitto non è risolto, si costruisce come dice il design system.
     regolano? Oggi stanno sotto le famiglie della Palette; nel flusso nessuna vista le ospita, e
     un campo ereditato dal preset deve portare lì. Proposta: una pagina sua, come Scala, raggiunta
     dai campi ereditati dal preset. (proposta, 2026-11-26)
+    **Risposta** (persona, 2026-11-27): in Gruppi, in testa: Gruppi è il posto di tutto ciò che le
+    famiglie ereditano, prima il preset e poi ogni gruppo; "Eredita dal preset" porta lì.
 
 ## 11. Deroghe ai principi
 
