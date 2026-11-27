@@ -38,6 +38,11 @@ start of the bar links to it.
 | **The bar** (`shell.tsx`, option A of its renders, 2026-11-27) | the product; what stands outside the stages, **Groups** (#1403), the **Theme** section and the **rules** (Behavior, a menu); then the work, always in view: the **changes** since the last exit, a button with their count that opens them by stage (`changes.tsx`), and the **exit**, a split button that saves the preset where a command takes saves and downloads it otherwise, through the contrast gate, the other formats in its menu (`config-menu.tsx`); the menu of the person at the end |
 | **The stages** (`stages.tsx`) | under the bar, on a stage and on a page beside one, the stages in order in an `mds-stepper-bar`, the current one marked, the ones before it done and opened from it; at the end of a stage, the way back and the way forward named after where they lead, the last stage ending with the exit |
 
+The bar and the page follow the window, the gutter at their sides, and start on one edge: the
+studio is the case `workspace` of the widths (`docs/agents/patterns/widths.md`), so `.studio` sets
+`--magma-width-page: none` (`src/style.css`). The introduction, a page read once, is the case
+`page`: its column and the bar over it keep `--magma-width-page` (`data-box` of `.studio`).
+
 The stages are the pattern of the studio in its layer,
 [`magma/patterns/stages-in-order.md`](magma/patterns/stages-in-order.md): Magma has no pattern for
 stages in order (object model, section 8), so the studio writes its own, which the MCP server of
