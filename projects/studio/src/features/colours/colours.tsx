@@ -271,8 +271,10 @@ export function ColoursPage({ foot }: { foot?: ComponentChild }) {
       <div class="grid h-full grid-cols-[calc(var(--spacing)*6000)_minmax(0,1fr)] grid-rows-[auto_minmax(0,1fr)] @max-list-beside/colours:grid-cols-1">
         {/* where the list stands above the page, folded into the family selected: its arrow at the
           end, as the sections of the bar that open a menu (app-shell); hidden where the list
-          stands beside the page (#1311, kept until question 9 of the object model is answered) */}
-        <div class="hidden px-inline pt-inset @max-list-beside/colours:block">
+          stands beside the page (#1311, kept until question 9 of the object model is answered);
+          in the gutter of the page, so it starts on the edge of the bar and the page under it
+          (widths, workspace and start-edge) */}
+        <div class="hidden px-(--magma-width-page-gutter) pt-inset @max-list-beside/colours:block">
           <mds-button
             type="button"
             icon={listOpen ? 'mi/baseline/expand-less' : 'mi/baseline/expand-more'}
@@ -477,13 +479,15 @@ function FamilyList({
   onNewGroup: () => void;
 }) {
   const families = chromaticOrder(config.colors);
+  // the list starts in the gutter of the page, on the edge the bar starts on (widths, workspace
+  // and start-edge: one edge for the bar and what stands under it, vittorio 2026-11-27)
   return (
     <aside
       id="colours-list"
       class={
         open
-          ? 'col-start-1 row-span-2 row-start-1 grid min-h-0 content-start gap-between-fields overflow-y-auto border-e border-border-muted px-inline py-inset @max-list-beside/colours:row-span-1 @max-list-beside/colours:row-start-2 @max-list-beside/colours:border-e-0'
-          : 'col-start-1 row-span-2 row-start-1 grid min-h-0 content-start gap-between-fields overflow-y-auto border-e border-border-muted px-inline py-inset @max-list-beside/colours:hidden'
+          ? 'col-start-1 row-span-2 row-start-1 grid min-h-0 content-start gap-between-fields overflow-y-auto border-e border-border-muted px-(--magma-width-page-gutter) py-inset @max-list-beside/colours:row-span-1 @max-list-beside/colours:row-start-2 @max-list-beside/colours:border-e-0'
+          : 'col-start-1 row-span-2 row-start-1 grid min-h-0 content-start gap-between-fields overflow-y-auto border-e border-border-muted px-(--magma-width-page-gutter) py-inset @max-list-beside/colours:hidden'
       }
       aria-label={t('The families of the preset')}
     >
