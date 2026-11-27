@@ -1,10 +1,13 @@
 /*
   The skills of the Magma plugin: templates/<name>.md filled with what they list, written to
-  skills/<name>/SKILL.md (#1114). What a skill lists comes from where it is decided, never
-  from a copy kept by hand:
+  skills/<name>/SKILL.md (#1114), and each file of a folder templates/<name>/ written at the same
+  place in the skill, such as the references a path of it reads on demand (#1581). What a skill
+  lists comes from where it is decided, never from a copy kept by hand:
   - the package of each target: the "Pick your target" table of docs/agents/SPEC.md;
   - the tools of the magma MCP server: their names and descriptions in projects/mcp;
   - the rules of the lint: the first sentence of each rule in docs/agents/lint.md;
+  - the rules every path follows: the rule in bold that opens each item of
+    docs/agents/mistakes.md, with the rules of the lint the item names;
   - the codemod: the name and the command of projects/codemod/package.json.
 
     nx run claude-plugin:build    regenerate the skills (tsx scripts/skills.ts write)
@@ -17,10 +20,11 @@
   (https://agentskills.io/specification): name equal to its folder, a description of at most
   1024 characters, no key Claude Code alone reads.
 */
-import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { toolsOf } from '../../mcp/src/server.js';
+import { commonRules, filesUnder, templateTargets } from './skill-files.js';
 
 const PLUGIN = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const REPOSITORY = path.resolve(PLUGIN, '../..');
@@ -75,10 +79,8 @@ const values = (): Record<string, string> => {
     ({ name, description }) => `| \`${name}\` | ${sentence(description)} |`,
   );
   // the rules of the lint, from the section of each one in the consumer guide
-  const lint = read('docs/agents/lint.md');
-  const rules = [...lint.matchAll(/^### ([a-z-]+)\n\n([\s\S]*?)\n\n/gm)].map(
-    ([, rule, text]) => `| \`magma/${rule}\` | ${sentence(text!)} |`,
-  );
+  const lint = [...read('docs/agents/lint.md').matchAll(/^### ([a-z-]+)\n\n([\s\S]*?)\n\n/gm)];
+  const rules = lint.map(([, rule, text]) => `| \`magma/${rule}\` | ${sentence(text!)} |`);
   if (!rules.length) throw new Error('No rule in docs/agents/lint.md');
   const codemod = JSON.parse(read('projects/codemod/package.json')) as {
     name: string;
@@ -89,28 +91,34 @@ const values = (): Record<string, string> => {
     targets: ['| Target | Package |', '| --- | --- |', ...targets].join('\n'),
     tools: ['| Tool | What it answers |', '| --- | --- |', ...tools].join('\n'),
     rules: ['| Rule | Catches |', '| --- | --- |', ...rules].join('\n'),
+    commonRules: commonRules(
+      read('docs/agents/mistakes.md'),
+      new Set(lint.map(([, rule]) => rule!)),
+      'docs/agents/mistakes.md',
+    ),
     codemod: codemod.name,
     codemodBin: Object.keys(codemod.bin)[0]!,
   };
 };
 
-/** Every skill, by its file: the template with its values, and a note on where it comes from. */
+/** Every file of every skill, by its path: the template with its values, and a note on where it comes from. */
 export const renderSkills = (): Map<string, string> => {
   const filled = values();
   const skills = new Map<string, string>();
-  for (const file of readdirSync(TEMPLATES)
-    .filter((one) => one.endsWith('.md'))
-    .sort()) {
-    const name = file.slice(0, -3);
+  for (const { template: file, target } of templateTargets(TEMPLATES)) {
     const template = readFileSync(path.join(TEMPLATES, file), 'utf8');
     const text = template.replace(/\{\{(\w+)\}\}/g, (_, key: string) => {
       if (!(key in filled)) throw new Error(`templates/${file}: no value for {{${key}}}`);
       return filled[key]!;
     });
+    const note = `<!-- Generated from projects/claude-plugin/templates/${file} by scripts/skills.ts: edit the template. -->`;
+    if (!target.endsWith('/SKILL.md')) {
+      skills.set(path.join(SKILLS, target), `${note}\n\n${text}`);
+      continue;
+    }
     const [, frontmatter, body] = /^---\n([\s\S]*?)\n---\n([\s\S]*)$/.exec(text) ?? [];
     if (!frontmatter) throw new Error(`templates/${file}: no frontmatter`);
-    const note = `<!-- Generated from projects/claude-plugin/templates/${file} by scripts/skills.ts: edit the template. -->`;
-    skills.set(path.join(SKILLS, name, 'SKILL.md'), `---\n${frontmatter}\n---\n\n${note}\n${body}`);
+    skills.set(path.join(SKILLS, target), `---\n${frontmatter}\n---\n\n${note}\n${body}`);
   }
   return skills;
 };
@@ -152,21 +160,22 @@ const main = () => {
       mkdirSync(path.dirname(file), { recursive: true });
       writeFileSync(file, text);
     }
-    console.info(`${skills.size} skills written in ${path.relative(REPOSITORY, SKILLS)}`);
+    console.info(`${skills.size} files written in ${path.relative(REPOSITORY, SKILLS)}`);
     return;
   }
   if (mode !== 'check') throw new Error('Usage: tsx scripts/skills.ts write|check');
   const errors: string[] = [];
   for (const [file, text] of skills) {
-    const folder = path.basename(path.dirname(file));
+    const relative = path.relative(SKILLS, file).split(path.sep).join('/');
     if (!existsSync(file) || readFileSync(file, 'utf8') !== text)
-      errors.push(`${folder}: out of date, run nx run claude-plugin:build`);
-    errors.push(...formatErrors(folder, text));
+      errors.push(`${relative}: out of date, run nx run claude-plugin:build`);
+    if (path.basename(file) === 'SKILL.md')
+      errors.push(...formatErrors(path.basename(path.dirname(file)), text));
+    else if (/[\u0080-\uFFFF]/.test(text)) errors.push(`${relative}: non-ASCII characters`);
   }
-  const extra = readdirSync(SKILLS).filter(
-    (folder) => !skills.has(path.join(SKILLS, folder, 'SKILL.md')),
-  );
-  for (const folder of extra) errors.push(`skills/${folder}: no template generates it`);
+  for (const file of filesUnder(SKILLS))
+    if (!skills.has(path.join(SKILLS, file)))
+      errors.push(`skills/${file}: no template generates it`);
   // the marketplace of the repository points at this plugin
   const marketplace = JSON.parse(read('.claude-plugin/marketplace.json')) as {
     plugins: Array<{ name: string; source: string }>;
@@ -181,7 +190,10 @@ const main = () => {
     process.exitCode = 1;
     return;
   }
-  console.info(`OK - ${skills.size} skills up to date and in the Agent Skills format`);
+  const count = [...skills.keys()].filter((file) => path.basename(file) === 'SKILL.md').length;
+  console.info(
+    `OK - ${count} skills (${skills.size} files) up to date and in the Agent Skills format`,
+  );
 };
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) main();

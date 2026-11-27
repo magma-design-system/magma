@@ -1,0 +1,20 @@
+<!-- Generated from projects/claude-plugin/templates/ui/references/tools.md by scripts/skills.ts: edit the template. -->
+
+# The tools of the magma server
+
+What each tool answers, in the version of the server installed with magma. Each path of the skill says when to call which.
+
+| Tool | What it answers |
+| --- | --- |
+| `find_component` | Find the Magma components that fit a need, described in words ("a date range picker", "a dismissible notice"). |
+| `get_component` | The API of one Magma component in the installed version: props with their type, allowed values and default, events with their detail, methods, slots, parts and public CSS custom properties (the only ones a product sets; the internal ones are counted, they may change in any release), the files of its usage guide (examples, mistakes), and in rules the rules of the design language that govern it (the relations and rules of the domains of the design language it carries or that write it, each with its domain and its text; the whole domain with get_guide). |
+| `get_usage` | How to write one Magma component in a framework: the import, the element or wrapper name, every prop and event as that framework writes them (attribute, React prop and onMdsX handler, Angular [input] and (output)), an example and the traps of that framework. |
+| `list_tokens` | The Magma roles and tokens of the installed version, each with what it is for, its CSS custom property, its light value and the Tailwind class that reads it. |
+| `suggest_role` | The semantic role to use instead of a raw colour: a literal (#f5f5f5, rgb(...), oklch(...)), a Tailwind class (bg-gray-100, text-tone-neutral-03, shadow-gray-900/20) or a palette step (--tone-neutral-09). |
+| `explain_class` | What a Tailwind class does with the Magma theme: the token it reads and its value, the Magma utility it is, or the trap it falls in (p-4 is 0.01rem in Magma, not 16px; bg-white ignores the theme). |
+| `find_icon` | Icon slugs that exist in the sets the project installed (mi/<variant>/<name> from @material-icons/svg, mdi/<name> from @mdi/svg, mgg/<name> from svg-icons). |
+| `get_guide` | The guides Magma ships for agents (installation, conventions, color, typography, theming, lint...) and the domains of the design language, the rules of composition (kind design-language, such as rhythm: the space between elements): without arguments the list with their sections, with a guide its headings (a domain also the previews of its cases and rules, for render_preview), with a guide and a section the text of that section only. |
+| `get_pattern` | The patterns Magma ships: the solution to a task across components (where a message goes, confirming an action, an empty, a loading or a failed part), the same in every product; first the domains of the design language (kind design-language), the rules of composition every pattern stands on (the space between elements, ...), then the building blocks (kind block), the sections of a page that come back in several patterns (the page header). |
+| `check_markup` | Run the Magma lint on a snippet before writing it: prop values outside their union, "false" booleans, icon-only controls without a name, raw palette classes (templates and @apply), raw colours and prefers-color-scheme queries (CSS). |
+| `check_setup` | Look at the project and list what its Magma integration misses, each with the guide that fixes it: design-tokens and styles installed in the range magma depends on, the React or Angular wrapper at magma's version, the fonts of the typography, an icon set, the icon path, the lint in ESLint and Stylelint, this server in the client configuration. |
+| `render_preview` | Render HTML with Magma components on the magma installed in the project, offline, and get the image (to look at, and to show the person) with its file, and a report of what in it is not representative: a component unknown or not hydrated, an element with no size, a component that shows one flat colour, a console error, an icon, a font or an image that did not load, a word broken across lines, content cut. |

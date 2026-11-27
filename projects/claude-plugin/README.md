@@ -12,7 +12,7 @@ is the marketplace `magma`, whose plugin `magma` is this folder.
 | `/magma:review` | the person, or Claude after UI work | checks the changed files: the lint, `check_markup`, the rules of the guides |
 | `/magma:migrate` | the person | Magma 1 to 2 with the codemod: dry run, report, write, lint |
 | `/magma:pattern-layer` | the person, or Claude when a product wants a pattern narrowed | writes the layer of a Magma pattern for the product (`magma/patterns/<id>.md`: its open choices, its situations) and checks it with `get_pattern` until it is applied |
-| `/magma:ui` | Claude, on UI work in a Magma project | the procedure for writing UI with the tools of the server |
+| `/magma:ui` | Claude, on UI work in a Magma project | writes UI with the tools of the server: a path for each job (build with what Magma has, report what it lacks, let the person decide), the rules every path follows, the checks and the report at the end |
 
 The skills are procedures, not data: the API, the tokens and the rules come from the MCP
 server and the guides of the version installed in the project. So the plugin carries no
@@ -28,12 +28,12 @@ starts the server of the magma version installed in the project.
 ```mermaid
 flowchart LR
   MCP["mcp<br/>src/server.ts: toolsOf"]
-  AG["docs/agents<br/>SPEC.md, lint.md"]
+  AG["docs/agents<br/>SPEC.md, lint.md, mistakes.md"]
   CM["codemod<br/>package.json"]
   MKT[".claude-plugin/marketplace.json<br/>at the repository root"]
   subgraph cp["claude-plugin<br/>served from main, not on npm"]
     GEN["scripts/skills.ts<br/>fills templates/, checks"]
-    SK["skills/*/SKILL.md<br/>generated, one per template"]
+    SK["skills/*/SKILL.md, references/<br/>generated from the templates"]
     MAN[".claude-plugin/plugin.json<br/>.mcp.json: bin/magma-mcp.mjs"]
     GEN --> SK
   end
@@ -130,25 +130,36 @@ no dependency: Claude Code runs the plugin from its copy of this repository.
 | `.claude-plugin/plugin.json` | the manifest of the plugin `magma` |
 | `.mcp.json` | the Magma MCP server, started through the launcher (#1112, #1524) |
 | `bin/magma-mcp.mjs` | the launcher: the server of the magma installed in the project, or a server with no tools |
-| `test/` | the tests of the launcher, run as a process on stdio (`nx run claude-plugin:test`) |
-| `templates/<name>.md` | the source of each skill |
-| `skills/<name>/SKILL.md` | the skills, generated from the templates: do not edit them |
+| `test/` | the tests of the launcher, run as a process on stdio, and of the parts of the generator that read only files (`nx run claude-plugin:test`) |
+| `templates/<name>.md` | the source of each skill, its `SKILL.md` |
+| `templates/<name>/` | the other files of a skill, such as `references/` (optional) |
+| `skills/<name>/` | the skills, generated from the templates: do not edit them |
 | `scripts/skills.ts` | the generator and its check |
+| `scripts/skill-files.ts` | which template writes which file of a skill, and the rules every path of a skill follows, read from `docs/agents/mistakes.md` |
 
 ## Changing a skill
 
 1. Edit its template. What a skill lists is filled in by the generator, never copied: the
    package of each target (`docs/agents/SPEC.md`), the tools of the MCP server
-   (`projects/mcp/src`), the rules of the lint (`docs/agents/lint.md`), the codemod
+   (`projects/mcp/src`), the rules of the lint (`docs/agents/lint.md`), the rules every path
+   follows (`{{commonRules}}`: the rule in bold that opens each item of
+   `docs/agents/mistakes.md`, with the rules of the lint the item names), the codemod
    (`projects/codemod/package.json`). `$ARGUMENTS` is what the person wrote after the command.
 2. `nx run claude-plugin:build` writes the skills; commit them with the template.
-3. `nx run claude-plugin:check` fails when a skill is out of date or breaks the Agent Skills
-   format (portable frontmatter keys only, `name` equal to its folder, a description of at most
-   1024 characters, ASCII); the `claude-plugin-ci` workflow runs it when the plugin, the server,
-   the guides, the codemod or the root toolchain (`package.json`, `package-lock.json`, `.nvmrc`)
-   change.
+3. `nx run claude-plugin:check` fails when a file of a skill is out of date, when a skill has a
+   file no template writes, or when a skill breaks the Agent Skills format (portable
+   frontmatter keys only, `name` equal to its folder, a description of at most 1024
+   characters, ASCII in every file); the `claude-plugin-ci` workflow runs it when the plugin,
+   the server, the guides, the codemod or the root toolchain (`package.json`,
+   `package-lock.json`, `.nvmrc`) change.
 4. With Claude Code installed, `claude plugin validate projects/claude-plugin` and
    `claude plugin validate .` check the manifests as Claude Code reads them.
+
+A skill that does more than one job keeps its `SKILL.md` short: what it is, the path for each
+job, the rules every path follows and what to do when done; each path is a file of
+`templates/<name>/references/`, which the agent reads only when it takes that path (#1581,
+after the skill `ui-sdk` of [vercel-labs/ui](https://github.com/vercel-labs/ui)). `ui` is
+built this way.
 
 A new skill is a new template: the generator picks it up. Keep the descriptions precise,
 since Claude decides from them when to load a skill on its own.
