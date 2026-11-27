@@ -11,11 +11,12 @@ import { ConfigItems, useConfigMenu } from './config-menu.js';
 import { GateDialog } from '../features/contrast-check/gate-dialog.js';
 import { RulesPage } from '../features/rules/rules.js';
 import { ColoursPage } from '../features/colours/colours.js';
+import { ScalePage } from '../features/scale/scale.js';
 import { ExceptionsPage } from '../features/exceptions/exceptions.js';
 import { IntroductionPage } from '../features/introduction/introduction.js';
 import { OpeningPage } from '../features/opening/opening.js';
 import { forgetOpening, undoOpening } from '../state/opening.js';
-import { forgetRemoval, undoRemoval } from '../state/palette.js';
+import { forgetUndo, undoLast } from '../state/undo.js';
 import { reasonText } from '../state/draft.js';
 import { resolveConflict } from '../state/work.js';
 import { ThemePage } from '../theme-section.js';
@@ -106,6 +107,11 @@ export function Studio({ state, router }: StudioProps = {}) {
           {route.section === 'colours' && (
             <div class="studio-section">
               <ColoursPage foot={foot} />
+            </div>
+          )}
+          {route.section === 'scale' && (
+            <div class="studio-section">
+              <ScalePage route={route} onOpen={(next, options) => nav.navigate(next, options)} />
             </div>
           )}
           {route.section === 'colors' && (
@@ -210,7 +216,7 @@ function WorkNotices() {
 /**
  * The toasts that undo what took work away, with no confirmation (confirm-action, `act-then-undo`:
  * the toast with Undo, `duration=0 dismissible`): a preset opened over work with changes (#1402),
- * a family deleted (#1403). Each stays until closed; closed by the person or by Undo, what it kept
+ * a family or a scale deleted, a scale taken back to its built-in steps (#1403, state/undo.ts). Each stays until closed; closed by the person or by Undo, what it kept
  * goes either way. On document.body, in the region of the toasts of the application, as the dialog
  * of the gate stands.
  */
@@ -218,7 +224,7 @@ function UndoToasts() {
   const studio = useStudio();
   const t = useT();
   const opening = studio.lastOpening.value;
-  const removal = studio.lastRemoval.value;
+  const undo = studio.lastUndo.value;
   return createPortal(
     <mds-toast-region>
       {opening && (
@@ -241,24 +247,24 @@ function UndoToasts() {
           ></mds-button>
         </mds-toast>
       )}
-      {removal && (
+      {undo && (
         <mds-toast
           visible
           duration={0}
           dismissible
-          data-removal={removal.family.name}
+          data-undo
           onmdsToastClose={() => {
-            if (studio.lastRemoval.peek() === removal) forgetRemoval(studio);
+            if (studio.lastUndo.peek() === undo) forgetUndo(studio);
           }}
         >
-          {t('{name} deleted.', { name: removal.family.name })}
+          {say(t, undo.said)}
           <mds-button
             slot="action"
             size="sm"
             variant="dark"
             tone="outline"
             label={t('Undo')}
-            onClick={() => undoRemoval(studio)}
+            onClick={() => undoLast(studio)}
           ></mds-button>
         </mds-toast>
       )}

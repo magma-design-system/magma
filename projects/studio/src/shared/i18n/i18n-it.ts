@@ -38,7 +38,6 @@ export const IT_SHELL: Record<string, string> = {
   Preferences: 'Preferenze',
 
   // the pages of the sections (shared/routes/routes.ts)
-  'Contrast scales': 'Scale di contrasto',
   'Semantic surface': 'Superficie semantica',
   Themes: 'Temi',
   Groups: 'Gruppi',
@@ -63,8 +62,31 @@ export const IT_SHELL: Record<string, string> = {
   Undo: 'Annulla',
   // a pair of the contrast check, in Contrast check and in Colours
   '{fg} on {bg}': '{fg} su {bg}',
+  // the badge of a contrast scale, in Colours and in Scale (#1403)
+  'Compatible with Magma': 'Compatibile con Magma',
+  'Not compatible with Magma': 'Non compatibile con Magma',
+  // the pairs of the contrast check a family or a scale touches (shared/ui/touched-pairs.tsx)
+  '{count} pair touched': '{count} coppia toccata',
+  '{count} pairs touched': '{count} coppie toccate',
+  'all above their floor, in light and in dark': 'tutte sopra la soglia, in chiaro e in scuro',
+  '{count} under its floor': '{count} sotto la soglia',
+  '{count} under their floor': '{count} sotto la soglia',
+  '{count} pair accepted by the baseline': '{count} accettata dalla baseline',
+  '{count} pairs accepted by the baseline': '{count} accettate dalla baseline',
+  'No pair of the contrast check: it changes none.':
+    'Nessuna coppia della verifica: non ne cambia nessuna.',
+  'Measuring the pairs it touches...': 'Misuro le coppie che tocca...',
+  passes: 'passa',
+  fails: 'non passa',
+  'accepted by the baseline': 'accettata dalla baseline',
+  'below its target': "sotto l'obiettivo",
+  'measured, not judged': 'misurata, non giudicata',
+  'The pairs it touches': 'Le coppie che tocca',
   // a family deleted, undone from a toast of the shell (#1403)
   '{name} deleted.': '{name} eliminato.',
+  'The scale {name} deleted.': 'Scala {name} eliminata.',
+  'The scale {name} back to its {count} built-in steps.':
+    'La scala {name} è tornata ai suoi {count} gradini integrati.',
   // the name of a new group (engine/families.ts, groupNameProblem)
   'Write the name of the group.': 'Scrivi il nome del gruppo.',
   'A letter first, then letters, digits and hyphens: it names the tokens.':

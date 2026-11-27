@@ -13,20 +13,8 @@ export const IT_SCALES: Record<string, string> = {
   Target: 'Obiettivo',
 
   // the Contrast scales page (scales.tsx)
-  'Contrast scales define the target contrast of every step {against}: 0 sits on the background, the maximum is the strongest contrast (dark in light mode, light in dark mode). Colors pick a scale with their {ratios} field; the {default} scale is mandatory. Pick a distribution easing, or drag the markers / edit the numbers to go manual; Reset takes a scale back to the steps of the configuration loaded.':
-    'Le scale di contrasto definiscono il contrasto obiettivo di ogni gradino {against}: 0 sta sullo sfondo, il massimo è il contrasto più forte (scuro in modalità chiara, chiaro in modalità scura). I colori scelgono una scala con il loro campo {ratios}; la scala {default} è obbligatoria. Scegli un easing di distribuzione, oppure trascina i marcatori / modifica i numeri per passare alla distribuzione manuale; Ripristina riporta una scala ai gradini della configurazione caricata.',
-  'against the theme background': 'rispetto allo sfondo del tema',
   'wcag2 (ratio, 1-21)': 'wcag2 (rapporto, 1-21)',
-  'The colors of a scale, by group': 'I colori di una scala, per gruppo',
   Scale: 'Scala',
-  'No color uses this scale right now': 'Al momento nessun colore usa questa scala',
-  '{name} ({color}) - click to use it as the sample color':
-    '{name} ({color}) - fai clic per usarlo come colore campione',
-  'The states beside the scales': 'Gli stati accanto alle scale',
-  '{name} takes the ramp of {source} whatever its scale: the states of {source} show beside its scales.':
-    '{name} prende la rampa di {source} qualunque sia la sua scala: gli stati di {source} compaiono accanto alle sue scale.',
-  'Beside each scale, {name} solved on it paints the components it paints, in the theme {theme}.':
-    'Accanto a ogni scala, {name} risolto su di essa dipinge i componenti che dipinge, nel tema {theme}.',
   '{name} paints no component of Magma: no variant of a component takes it, no theme points an accent at it and no theme is drawn from it.':
     '{name} non dipinge nessun componente di Magma: nessuna variante di un componente lo usa, nessun tema gli assegna un accento e nessun tema nasce da esso.',
   Mode: 'Modalità',
@@ -37,13 +25,6 @@ export const IT_SCALES: Record<string, string> = {
   // the card of a scale
   'Built-in': 'Integrata',
   'Built-in, overridden': 'Integrata, ridefinita',
-  'shipped with magma; shown here because your config overrides its stops':
-    'inclusa in magma; è qui perché la tua configurazione ne ridefinisce i gradini',
-  'shipped with magma; shown even though it is not in your config':
-    'inclusa in magma; è qui anche se non è nella tua configurazione',
-  '{steps}, used by {colors}': '{steps}, usata da {colors}',
-  '{count} step': '{count} gradino',
-  '{count} steps': '{count} gradini',
   '{count} color': '{count} colore',
   '{count} colors': '{count} colori',
   'Actions of the scale {name}': 'Azioni della scala {name}',
@@ -56,8 +37,6 @@ export const IT_SCALES: Record<string, string> = {
   'The steps of {name}': 'I gradini di {name}',
   'Step {step}': 'Gradino {step}',
   'Remove step {step}': 'Rimuovi il gradino {step}',
-  'remove step': 'rimuovi il gradino',
-  'insert a step in the widest gap': 'inserisci un gradino nello spazio più ampio',
   'Add step': 'Aggiungi gradino',
   Distribution: 'Distribuzione',
   manual: 'manuale',
@@ -71,33 +50,17 @@ export const IT_SCALES: Record<string, string> = {
     '{name} ha i gradini della configurazione caricata',
   'back to the steps of {name} in the loaded configuration, distribution manual':
     'torna ai gradini di {name} nella configurazione caricata, distribuzione manuale',
-  'selected color rendered with this scale, ordered like the axis: 0 (background side) to max contrast':
-    "colore selezionato reso con questa scala, nell'ordine dell'asse: da 0 (lato dello sfondo) al contrasto massimo",
   // the menu of a scale and its dialogs
   Rename: 'Rinomina',
-  'rename scale': 'rinomina la scala',
-  'the default scale is mandatory and cannot be renamed':
-    'la scala default è obbligatoria e non si può rinominare',
   'built-in scales cannot be renamed': 'le scale integrate non si possono rinominare',
   Duplicate: 'Duplica',
   Delete: 'Elimina',
-  'delete scale': 'elimina la scala',
   'the default scale is mandatory': 'la scala default è obbligatoria',
-  'used by {count} color: deleting reassigns them to the default scale':
-    'usata da {count} colore: se la elimini, passa alla scala default',
-  'used by {count} colors: deleting reassigns them to the default scale':
-    'usata da {count} colori: se la elimini, passano alla scala default',
-  'Add scale': 'Aggiungi scala',
   'Rename the scale {name}': 'Rinomina la scala {name}',
   'Write a name': 'Scrivi un nome',
   'A scale named "{name}" exists already': 'Esiste già una scala di nome "{name}"',
   'The colors and the groups that use the scale take the new name':
     'I colori e i gruppi che usano la scala prendono il nuovo nome',
-  'Delete the scale {name}?': 'Vuoi eliminare la scala {name}?',
-  'The scale "{name}" is used by {count} color: deleting it reassigns them to the "default" scale.':
-    'La scala "{name}" è usata da {count} colore: se la elimini, passa alla scala "default".',
-  'The scale "{name}" is used by {count} colors: deleting it reassigns them to the "default" scale.':
-    'La scala "{name}" è usata da {count} colori: se la elimini, passano alla scala "default".',
 
   // the states beside a scale (states.ts)
   '{tag}, variant {variant}': '{tag}, variante {variant}',

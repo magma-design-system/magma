@@ -1,7 +1,9 @@
 import DEFAULT_COLOR_CONFIG from '@maggioli-design-system/design-tokens/src/config/default-color.json';
 import type { Formula, MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
 import type { LoadedRatios } from './draft.js';
+import { msg } from '../shared/i18n/text.js';
 import { updateConfig, type StudioState } from './studio.js';
+import { undoably } from './undo.js';
 
 /*
   The actions of Contrast scales (#1400, out of the JSX of app.tsx): the scales of a formula,
@@ -104,17 +106,38 @@ export function addScale(state: StudioState, formula: Formula, copyFrom: string)
  * built-in scale stays deleted with a null entry, since the generator merges the built-ins back.
  */
 export function deleteScale(state: StudioState, formula: Formula, name: string): void {
-  updateConfig(state, (draft) => {
-    draft.colors.forEach((color) => {
-      const colorFormula = color.formula ?? draft.formula ?? 'wcag3';
-      if (colorFormula === formula && color.ratios === name) delete color.ratios;
-    });
-    Object.values(draft.groups ?? {}).forEach((group) => {
-      if (group.ratios === name) delete group.ratios;
-    });
-    writeScales(draft, formula, (scales) => {
-      if (name in builtinScalesOf(formula)) (scales as Record<string, unknown>)[name] = null;
-      else delete scales[name];
-    });
-  });
+  // nothing asked: a toast undoes it (undo.ts), the families and groups that used it with it
+  undoably(state, { text: msg('The scale {name} deleted.'), vars: { name } }, () =>
+    updateConfig(state, (draft) => {
+      draft.colors.forEach((color) => {
+        const colorFormula = color.formula ?? draft.formula ?? 'wcag3';
+        if (colorFormula === formula && color.ratios === name) delete color.ratios;
+      });
+      Object.values(draft.groups ?? {}).forEach((group) => {
+        if (group.ratios === name) delete group.ratios;
+      });
+      writeScales(draft, formula, (scales) => {
+        if (name in builtinScalesOf(formula)) (scales as Record<string, unknown>)[name] = null;
+        else delete scales[name];
+      });
+    }),
+  );
+}
+
+/**
+ * Takes a built-in scale back to its built-in steps, their number with them: what a preset written
+ * before the number was locked needs when families that paint Magma use it (studio.object-model.md,
+ * section 4, Scala di contrasto, question 10). Nothing asked: a toast undoes it.
+ */
+export function restoreBuiltinSteps(state: StudioState, formula: Formula, name: string): void {
+  const builtin = builtinScalesOf(formula)[name];
+  if (!Array.isArray(builtin)) return;
+  undoably(
+    state,
+    {
+      text: msg('The scale {name} back to its {count} built-in steps.'),
+      vars: { name, count: builtin.length },
+    },
+    () => changeScale(state, formula, name, [...builtin]),
+  );
 }

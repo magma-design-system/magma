@@ -2,10 +2,7 @@ import { batch, computed, effect, signal, type ReadonlySignal, type Signal } fro
 import { createContext } from 'preact';
 import { useContext } from 'preact/hooks';
 import bundledJson from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json';
-import type {
-  ColorConfig,
-  MagmaConfig,
-} from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
+import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
 import { changesOf, type Change, type PresetState } from '../engine/changes.js';
 import { gateReport, type GateReport, type GateVerdict } from '../engine/gate.js';
 import { generateScales, type ColorScales } from '../engine/generator.js';
@@ -159,11 +156,11 @@ export interface StudioState {
    */
   lastOpening: Signal<Opening | null>;
   /**
-   * A family deleted, with where it stood and the family selected before, while the toast that
-   * undoes it is open (state/palette.ts, the act-then-undo of confirm-action: a deletion asks
-   * nothing and is undone); null once undone or closed.
+   * An action that took work away and asked nothing (a family or a scale deleted, a scale taken
+   * back to its built-in steps), while the toast that undoes it is open (state/undo.ts, the
+   * act-then-undo of confirm-action); null once undone, closed, or once the preset changed again.
    */
-  lastRemoval: Signal<Removal | null>;
+  lastUndo: Signal<Undoable | null>;
 
   // derived
   /** The configuration as JSON: a change of its content, not of the object. */
@@ -203,11 +200,15 @@ export interface WorkSnapshot {
   workPlace: string | undefined;
 }
 
-/** A family deleted: the family as it was, its place in the preset, the family selected before. */
-export interface Removal {
-  family: ColorConfig;
-  index: number;
+/**
+ * An action undone from a toast: what it said, the preset and the family selected before it, and
+ * the preset it left (JSON), which an edit after it leaves behind.
+ */
+export interface Undoable {
+  said: Text;
+  before: CloneableConfig;
   selectedName: string;
+  after: string;
 }
 
 /** A preset opened over work that had changes: what it said, and the work it took the place of. */
@@ -302,7 +303,7 @@ export function createStudio(options: StudioOptions = {}): StudioState {
     pendingExport: signal(null),
     baseline,
     lastOpening: signal(null),
-    lastRemoval: signal(null),
+    lastUndo: signal(null),
     json,
     report,
     verdict: computed(() => report.value.verdict),
@@ -359,9 +360,16 @@ export function createStudio(options: StudioOptions = {}): StudioState {
     if (first) first = false;
     else writeThemeChoices(choices, storage);
   });
+  // an undo holds while the preset is the one the action left: an edit after it closes the toast,
+  // so Undo never takes back more than the action did
+  const stopUndo = effect(() => {
+    const undo = state.lastUndo.value;
+    if (undo && state.json.value !== undo.after) state.lastUndo.value = null;
+  });
   state.dispose = () => {
     stopDraft();
     stopChoices();
+    stopUndo();
   };
   return state;
 }

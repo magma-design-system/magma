@@ -59,9 +59,33 @@ export function touchedCells(
   const moved = JSON.parse(JSON.stringify(config)) as MagmaConfig;
   const target = moved.colors.find((one) => one.name === source.name)!;
   target.color = farFrom(source.color) as typeof target.color;
+  return movedCells(config, moved, choices);
+}
+
+/** The cells whose measure differs between a preset and the same preset moved. */
+function movedCells(config: MagmaConfig, moved: MagmaConfig, choices: ThemeChoices): Set<string> {
   const before = measures(gateReport(config, choices));
   const after = measures(gateReport(moved, choices));
   return new Set([...before.keys()].filter((key) => after.get(key) !== before.get(key)));
+}
+
+/**
+ * The cells of the check a contrast scale moves: every target of its steps pulled a third of the
+ * way toward the background, the families that use it solved again. A scale no family uses moves
+ * nothing.
+ */
+export function touchedCellsOfScale(
+  config: MagmaConfig,
+  formula: NonNullable<MagmaConfig['formula']>,
+  name: string,
+  steps: readonly number[],
+  choices: ThemeChoices = NO_THEME_CHOICES,
+): Set<string> {
+  const moved = JSON.parse(JSON.stringify(config)) as MagmaConfig;
+  const ratios = (moved.ratios ?? {}) as Record<string, Record<string, number[] | null>>;
+  ratios[formula] = { ...(ratios[formula] ?? {}), [name]: steps.map((step) => step * (2 / 3)) };
+  moved.ratios = ratios as MagmaConfig['ratios'];
+  return movedCells(config, moved, choices);
 }
 
 /** The pairs a family touches, as the view counts them: per pair of roles in a theme. */

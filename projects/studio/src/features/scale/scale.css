@@ -1,97 +1,10 @@
 /*
-  The Contrast scales page (scales.tsx): the intro and the formula, the usage panel, one card per
-  scale. Spaces from the rhythm, colours from the semantic roles, the sizes of the chrome drawn
-  here (the axis, its markers, the chips) from the steps of --spacing, which is what --spacing(N)
-  computes where Tailwind runs (docs/agents/patterns/rhythm.md, surfaces.md, docs/agents/color.md).
-  The colours of the data (the swatches, the sample of a scale) are inline styles, not chrome.
+  The short sheet of Scale (#1403; the Contrast scales page until then): what its classes do not
+  write, the data its previews paint: the axis of the steps of a scale and its markers, the sample
+  colour solved on it, the frame of its states. Its layout is in its classes (scale.tsx,
+  scale-parts.tsx); sizes from the steps of --spacing, colours from the semantic roles; the
+  colours of the data (the swatches, the sample) are inline styles.
 */
-
-.scales-page {
-  container: scales-page / inline-size;
-  display: grid;
-  gap: var(--magma-rhythm-between-containers);
-  max-inline-size: var(--magma-width-page);
-}
-
-.scales-muted {
-  color: rgb(var(--magma-text-muted));
-}
-
-.scales-page code {
-  background-color: rgb(var(--magma-surface-muted));
-  border-radius: var(--magma-radius-xs);
-  font-family: var(--font-code);
-  padding-inline: calc(var(--spacing) * 100);
-}
-
-/* the intro reads at the width of a text, the formula beside it */
-
-.scales-intro {
-  align-items: start;
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--magma-rhythm-between-fields);
-  justify-content: space-between;
-}
-
-.scales-reading {
-  max-inline-size: var(--magma-width-reading);
-}
-
-.scales-formula {
-  inline-size: calc(var(--spacing) * 6400);
-}
-
-/* the regions of a card, one under the other at the step of the rows of data */
-
-.scales-card-body {
-  display: grid;
-  gap: var(--magma-rhythm-between-fields);
-  min-inline-size: 0;
-}
-
-.scales-usage-select {
-  max-inline-size: calc(var(--spacing) * 6400);
-}
-
-/* the usage panel: a group name, its colours beside it */
-
-.scales-groups {
-  align-items: baseline;
-  display: grid;
-  gap: var(--magma-rhythm-inline) var(--magma-rhythm-between-fields);
-  grid-template-columns: max-content 1fr;
-}
-
-.scales-group {
-  display: contents;
-}
-
-.scales-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--magma-rhythm-inline);
-}
-
-/* a scale card: the title, its badge and its count in one row, the menu at the end */
-
-.scales-card-title {
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--magma-rhythm-inline);
-  min-inline-size: 0;
-}
-
-/* the menu of a card: mds-dropdown gives the inset, the entries stand in one column */
-.scales-menu {
-  display: grid;
-  gap: var(--magma-rhythm-inline);
-}
-
-.scales-menu > mds-button {
-  justify-content: start;
-}
 
 /*
   The axis of the stops, native until Magma has a range of several values (#1261): the value of
@@ -205,45 +118,6 @@
   color: rgb(var(--magma-warning-text-default));
 }
 
-/* the stops: a number field each, its remove button beside it, then Add step */
-
-.scales-stops {
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--magma-rhythm-inline);
-}
-
-.scales-stop {
-  align-items: center;
-  display: flex;
-}
-
-.scales-stop mds-input {
-  inline-size: calc(var(--spacing) * 2800);
-}
-
-.scales-distribution {
-  align-items: end;
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--magma-rhythm-inline);
-}
-
-.scales-distribution > mds-input-field {
-  inline-size: calc(var(--spacing) * 5600);
-}
-
-.scales-distribution-number {
-  inline-size: calc(var(--spacing) * 3200);
-}
-
-/* Reset stands on the line of the fields, as tall as their controls (size lg): mds-button sets
-   itself at the start of a row */
-.scales-distribution > mds-button {
-  align-self: end;
-}
-
 /* the selected colour drawn with the scale: data, its cells painted inline */
 
 .scales-sample {
@@ -258,31 +132,7 @@
   flex: 1;
 }
 
-.scales-add {
-  justify-self: start;
-}
-
-/*
-  The states of the sample colour on each scale (states.ts): the line that says what they show
-  and the mode, then beside each card its page of states, as tall as what it shows and as wide as
-  the side of Colours (26rem, features/colours/colours.css), which holds an action at every tone and state.
-  Where the page has the room of a card and of the states (60rem, the width at which the Palette
-  sets its side beside the detail), they stand beside the card; narrower, under it.
-*/
-
-.scales-states-head {
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--magma-rhythm-inline) var(--magma-rhythm-between-fields);
-  justify-content: space-between;
-}
-
-.scales-card-pair {
-  display: grid;
-  gap: var(--magma-rhythm-between-containers);
-  grid-template-columns: minmax(0, 1fr);
-}
+/* the states of the sample on the scale (states.ts), as tall as what they show */
 
 .scales-states {
   border: thin solid rgb(var(--magma-border-muted));
@@ -290,11 +140,4 @@
   corner-shape: var(--magma-corner-shape);
   display: block;
   inline-size: 100%;
-}
-
-@container scales-page (width >= 60rem) {
-  .scales-card-pair {
-    align-items: start;
-    grid-template-columns: minmax(0, 1fr) calc(var(--spacing) * 10400);
-  }
 }

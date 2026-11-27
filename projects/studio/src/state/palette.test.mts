@@ -6,14 +6,13 @@ import {
   autoNameFamily,
   deleteFamily,
   duplicateFamily,
-  forgetRemoval,
   patchFamily,
   selectFamily,
   setGlobal,
-  undoRemoval,
   type NewFamily,
 } from './palette.js'
 import { familyOf, quietStudio } from './testing.mjs'
+import { forgetUndo, undoLast } from './undo.js'
 
 // The actions of the Palette (#1400): the families of the configuration and its global settings.
 
@@ -124,15 +123,20 @@ test('a family deleted asks nothing and comes back where it stood, the selection
   const red = familyOf(studio, 'label.red')
   deleteFamily(studio, 'label.red')
   expect(studio.config.value.colors.map((one) => one.name)).not.toContain('label.red')
-  expect(studio.lastRemoval.value).toMatchObject({ index: names.indexOf('label.red'), selectedName: 'label.red' })
-  undoRemoval(studio)
+  expect(studio.lastUndo.value?.said).toEqual({ text: '{name} deleted.', vars: { name: 'label.red' } })
+  undoLast(studio)
   expect(studio.config.value.colors.map((one) => one.name)).toEqual(names)
   expect(familyOf(studio, 'label.red')).toEqual(red)
   expect(studio.selectedName.value).toBe('label.red')
-  expect(studio.lastRemoval.value).toBeNull()
+  expect(studio.lastUndo.value).toBeNull()
   // closed, the removal stays
   deleteFamily(studio, 'label.red')
-  forgetRemoval(studio)
-  undoRemoval(studio)
+  forgetUndo(studio)
+  undoLast(studio)
   expect(studio.config.value.colors.map((one) => one.name)).not.toContain('label.red')
+  // an edit after it closes the undo: Undo never takes back more than the action did
+  deleteFamily(studio, 'label.blue')
+  expect(studio.lastUndo.value).not.toBeNull()
+  patchFamily(studio, 'label.green', { color: '#00ff00' })
+  expect(studio.lastUndo.value).toBeNull()
 })

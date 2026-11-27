@@ -1,6 +1,7 @@
 import { expect, test } from 'vitest'
 
-import { addScale, builtinScalesOf, changeScale, deleteScale, renameScale, scalesOf } from './scales.js'
+import { addScale, builtinScalesOf, changeScale, deleteScale, renameScale, restoreBuiltinSteps, scalesOf } from './scales.js'
+import { undoLast } from './undo.js'
 import { updateConfig } from './studio.js'
 import { familyOf, quietStudio } from './testing.mjs'
 
@@ -70,4 +71,35 @@ test('a scale deleted: a built-in one stays deleted with null, its families fall
   deleteScale(studio, 'wcag3', 'tone')
   expect(familyOf(studio, 'label.red')?.ratios).toBe('tone')
   expect(studio.config.value.groups?.tone).not.toHaveProperty('ratios')
+})
+
+// #1403: what takes work away asks nothing and is undone from a toast (state/undo.ts)
+test('a scale deleted comes back from Undo, the families that used it with it', () => {
+  const studio = quietStudio()
+  updateConfig(studio, (draft) => {
+    draft.colors.find((one) => one.name === 'label.red')!.ratios = 'tint'
+  })
+  deleteScale(studio, 'wcag3', 'tint')
+  expect(scalesOf(studio.config.value.ratios, 'wcag3').tint).toBeUndefined()
+  expect(familyOf(studio, 'label.red')?.ratios).toBeUndefined()
+  expect(studio.lastUndo.value?.said).toEqual({ text: 'The scale {name} deleted.', vars: { name: 'tint' } })
+  undoLast(studio)
+  expect(scalesOf(studio.config.value.ratios, 'wcag3').tint).toEqual(builtinScalesOf('wcag3').tint)
+  expect(familyOf(studio, 'label.red')?.ratios).toBe('tint')
+})
+
+test('a built-in scale goes back to its built-in steps, their number with them, and Undo returns', () => {
+  const studio = quietStudio()
+  const twelve = [4, 9, 15, 22, 30, 39, 49, 60, 72, 84, 96, 106]
+  changeScale(studio, 'wcag3', 'default', twelve)
+  restoreBuiltinSteps(studio, 'wcag3', 'default')
+  expect(scalesOf(studio.config.value.ratios, 'wcag3').default).toEqual(builtinScalesOf('wcag3').default)
+  expect(studio.lastUndo.value?.said.vars).toEqual({ name: 'default', count: 10 })
+  undoLast(studio)
+  expect(scalesOf(studio.config.value.ratios, 'wcag3').default).toEqual(twelve)
+  // a scale that is not built-in has no built-in steps to go back to
+  const custom = addScale(studio, 'wcag3', 'default')
+  const before = studio.json.value
+  restoreBuiltinSteps(studio, 'wcag3', custom)
+  expect(studio.json.value).toBe(before)
 })

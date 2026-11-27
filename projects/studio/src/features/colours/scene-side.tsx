@@ -180,7 +180,7 @@ export function Ramps({ scales, error }: { scales: ColorScales | null; error: st
 /**
  * The side of the family: the ramps, or the scene. `painted` is what the family paints (paints.ts),
  * solved by the page, which shows it in its head too. Where the detail has the room of a column for
- * it (the container `family` of colours.tsx, from --container-family-side) the side shows its head,
+ * it (the container `family` of colours.tsx, from --container-side) the side shows its head,
  * and the scene in place of the ramps when asked; narrower, the ramps alone, in the flow.
  */
 export function SceneSide({
@@ -242,7 +242,7 @@ export function SceneSide({
       aria-label={t('The family, as ramps or as a theme')}
     >
       <div
-        class="hidden flex-wrap items-center justify-between gap-inline @family-side/family:flex"
+        class="hidden flex-wrap items-center justify-between gap-inline @side/family:flex"
         role="toolbar"
         aria-label={t('The side of the Palette')}
       >
@@ -290,22 +290,16 @@ export function SceneSide({
         )}
       </div>
       {/* narrow, the ramps whatever was asked: the scene wants a column of its own */}
-      <div class={show === 'theme' && paints ? '@family-side/family:hidden' : undefined}>
-        {ramps}
-      </div>
+      <div class={show === 'theme' && paints ? '@side/family:hidden' : undefined}>{ramps}</div>
       {show === 'theme' && painted && paints && (
-        <mds-text
-          typography="detail"
-          tag="p"
-          class="hidden text-fg-muted @family-side/family:block"
-        >
+        <mds-text typography="detail" tag="p" class="hidden text-fg-muted @side/family:block">
           {paintsLine(t, family, painted, tags)}
         </mds-text>
       )}
       {show === 'theme' && paints && (
         <iframe
           ref={frame}
-          class="colours-side-frame hidden @family-side/family:block"
+          class="colours-side-frame hidden @side/family:block"
           src="scene.html"
           title={t(scheme === 'light' ? '{title}, light mode' : '{title}, dark mode', {
             title: t('The theme {theme} on a page of a product', { theme: theme?.name ?? '' }),
@@ -314,7 +308,7 @@ export function SceneSide({
         />
       )}
       {show === 'theme' && !paints && (
-        <div class="colours-side-frame hidden p-inset @family-side/family:block">
+        <div class="colours-side-frame hidden p-inset @side/family:block">
           <mds-text typography="detail" tag="p">
             {t(
               '{name} paints no component of Magma: no variant of a component takes it, no theme points an accent at it and no theme is drawn from it.',

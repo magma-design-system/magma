@@ -519,7 +519,7 @@ test('a family deleted asks nothing and is undone from a toast of the shell', as
   await at('#/colours', state)
   deleteFamily(state, 'label.red')
   const toast = await vi.waitFor(() => {
-    const found = document.body.querySelector('mds-toast[data-removal="label.red"]')
+    const found = document.body.querySelector('mds-toast[data-undo]')
     if (!found) throw new Error('no toast yet')
     return found
   })
@@ -527,7 +527,7 @@ test('a family deleted asks nothing and is undone from a toast of the shell', as
   expect([toast.getAttribute('duration'), toast.hasAttribute('dismissible')]).toEqual(['0', true])
   toast.querySelector<HTMLElement>('mds-button[label="Undo"]')!.click()
   await vi.waitFor(() => expect(state.config.value.colors.some((one) => one.name === 'label.red')).toBe(true))
-  await vi.waitFor(() => expect(document.body.querySelector('mds-toast[data-removal]')).toBeNull())
+  await vi.waitFor(() => expect(document.body.querySelector('mds-toast[data-undo]')).toBeNull())
 })
 
 test('what keeps the preset from loading stands over every page, a stage or not', async () => {
@@ -545,10 +545,10 @@ test('the page of the work is the stage or the page beside one last opened, whic
   const state = startStudio()
   await at('#/colours', state)
   await vi.waitFor(() => expect(state.workPlace.value).toBe('#/colours'))
-  location.hash = '#/colors/contrast-scales'
-  await vi.waitFor(() => expect(state.workPlace.value).toBe('#/colors/contrast-scales'))
+  location.hash = '#/colours/scale/wcag3/tone'
+  await vi.waitFor(() => expect(state.workPlace.value).toBe('#/colours/scale/wcag3/tone'))
   // a page outside the flow leaves it where it was
   location.hash = '#/theme'
   await vi.waitFor(() => expect(root.querySelector('mds-toolbar, [role="toolbar"]')).not.toBeNull())
-  expect(state.workPlace.value).toBe('#/colors/contrast-scales')
+  expect(state.workPlace.value).toBe('#/colours/scale/wcag3/tone')
 })

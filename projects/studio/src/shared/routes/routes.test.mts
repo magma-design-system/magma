@@ -26,6 +26,8 @@ const pages: Route[] = [
   { section: 'introduction' },
   { section: 'opening' },
   { section: 'colours' },
+  { section: 'scale', formula: 'wcag3', name: 'tone' },
+  { section: 'scale', formula: 'wcag2', name: 'v1', group: 'tone' },
   { section: 'exceptions' },
   ...COLORS_PAGES.map(({ id }): Route => ({ section: 'colors', view: id })),
   { section: 'theme' },
@@ -49,7 +51,7 @@ test('the addresses read as the menus name the pages', () => {
 })
 
 test('an address that names no page is no route', () => {
-  for (const hash of ['', '#', '#/colors', '#/colors/nothing', '#/foundation', '#/start/more', '#/opening/more', '#/introduction/more', '#/colours/more'])
+  for (const hash of ['', '#', '#/colors', '#/colors/nothing', '#/foundation', '#/start/more', '#/opening/more', '#/introduction/more', '#/colours/more', '#/colours/scale', '#/colours/scale/wcag4/tone', '#/colours/scale/wcag3', '#/colours/scale/wcag3/tone/to/tone', '#/colours/scale/wcag3/tone/from'])
     expect(routeOf(hash)).toBeUndefined()
   // a hash that is no address of the studio: the anchor of a heading of the page that hosts it
   for (const hash of ['#start', '#colors/palette', '#the-colors-of-a-theme'])
@@ -82,7 +84,7 @@ test('one table holds the pages: the menus of Colors and Behavior, and the Theme
     ...BEHAVIOR_PAGES.map(() => 'behavior'),
   ])
   expect(COLORS_PAGES.map(({ label }) => label)).toEqual([
-    'Contrast scales', 'Semantic surface', 'Themes', 'Groups', 'Contrast check',
+    'Semantic surface', 'Themes', 'Groups', 'Contrast check',
   ])
   expect(BEHAVIOR_PAGES.map(({ label }) => label)).toEqual(['Design language', 'Patterns', 'Blocks'])
   expect([THEME_PAGE.label, THEME_PAGE.icon]).toEqual(['Theme', 'mi/baseline/format-size'])
@@ -100,6 +102,7 @@ test('the ids of the pages of Colors and of the modes are those the table and th
   expect(colorsViewOf('palette')).toBeUndefined()
   // the Palette went with #1403: Colours took its place
   expect(colorsViewOf('colors')).toBeUndefined()
+  expect(colorsViewOf('scales')).toBeUndefined()
   for (const mode of MODE_VIEWS)
     expect(routeOf(hrefOf({ section: 'theme', theme: 'editorial', mode }))).toEqual({
       section: 'theme',
@@ -132,8 +135,9 @@ test('a page is a stage, a page beside one, or outside the flow', () => {
     return place && `${place.place} of ${place.stage.id} (${place.index})`
   }
   expect(where({ section: 'colours' })).toBe('stage of colours (0)')
-  // Scale and Group beside Colours: today Contrast scales and Groups
-  expect(where({ section: 'colors', view: 'scales' })).toBe('side-page of colours (0)')
+  // Scale and Group beside Colours: the page of any scale, today's Groups
+  expect(where({ section: 'scale', formula: 'wcag3', name: 'tone' })).toBe('side-page of colours (0)')
+  expect(where({ section: 'scale', formula: 'wcag2', name: 'v1', group: 'tone' })).toBe('side-page of colours (0)')
   expect(where({ section: 'colors', view: 'groups' })).toBe('side-page of colours (0)')
   expect(where({ section: 'colors', view: 'surface' })).toBe('stage of weights (1)')
   expect(where({ section: 'colors', view: 'themes' })).toBe('stage of themes (2)')
@@ -172,6 +176,7 @@ test('the address of a page that went opens the view that replaced it', () => {
   expect(routeOf('#/colors/palette')).toEqual({ section: 'colours' })
   expect(workPlaceOf('colors')).toBe('#/colours')
   expect(workPlaceOf('scales')).toBe('#/colors/contrast-scales')
+  expect(routeOf('#/colors/contrast-scales')).toEqual({ section: 'scale', formula: 'wcag3', name: 'default' })
   expect(workPlaceOf('#/colors/palette')).toBe('#/colors/palette')
   expect(workPlaceOf('#/nowhere')).toBeUndefined()
   expect(workPlaceOf(undefined)).toBeUndefined()

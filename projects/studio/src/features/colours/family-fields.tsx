@@ -12,7 +12,7 @@ import { rich, useT } from '../../shared/i18n/i18n.js';
 import { CommitText } from '../../shared/ui/commit-text.js';
 import { HueShiftEditor } from '../../shared/ui/hue-shift-editor.js';
 import { SaturationEditor } from '../../shared/ui/saturation-editor.js';
-import { GROUPS_PAGE, hrefOf, SCALE_PAGE } from '../../shared/routes/routes.js';
+import { GROUPS_PAGE, hrefOf, scaleRoute, type Formula } from '../../shared/routes/routes.js';
 import { IT_COLOURS } from './i18n-it.js';
 
 /*
@@ -46,7 +46,8 @@ export interface FamilyFieldsProps {
   /** the light ramp of the family before any saturation curve and with them (SaturationEditor) */
   saturationBefore: Step[] | null;
   saturationAfter: Step[] | null;
-  /** the scales of the formula of the family, each with its number of steps */
+  /** the formula the family is solved with, and its scales, each with its number of steps */
+  formula: Formula;
   scales: ScaleChoice[];
   /** the family paints something of Magma: it takes a Magma-compatible scale alone */
   paints: boolean;
@@ -118,6 +119,7 @@ function Inherited({
 function ScaleField({
   config,
   family,
+  formula,
   scales,
   paints,
   inherited,
@@ -125,6 +127,8 @@ function ScaleField({
 }: {
   config: MagmaConfig;
   family: ColorConfig;
+  /** the formula the family is solved with: its scales are those of it */
+  formula: Formula;
   scales: ScaleChoice[];
   paints: boolean;
   inherited: string;
@@ -163,7 +167,7 @@ function ScaleField({
               label={compatible ? t('Compatible with Magma') : t('Not compatible with Magma')}
             ></mds-badge>
             <mds-link
-              href={hrefOf(SCALE_PAGE)}
+              href={hrefOf(scaleRoute(formula, scale.name))}
               icon="mi/baseline/arrow-forward"
               label={t('Open the scale {scale}', { scale: scale.name })}
             ></mds-link>
@@ -225,6 +229,7 @@ export function FamilyFields(props: FamilyFieldsProps) {
         <ScaleField
           config={config}
           family={family}
+          formula={props.formula}
           scales={props.scales}
           paints={props.paints}
           inherited={props.inheritedRatios}

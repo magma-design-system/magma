@@ -25,11 +25,11 @@ import {
 } from '../../engine/families.js';
 import { generateScales, singleColorConfig, type ColorScales } from '../../engine/generator.js';
 import { paintedBy, paintsAny, type Painted } from '../../engine/paints.js';
-import { touchedCells, touchedPairs, touchedSummary } from '../../engine/touched.js';
-import type { PairState } from '../../engine/gate.js';
+import { touchedCells, touchedPairs } from '../../engine/touched.js';
 import { Check, ColorInput, Field, Select, TextInput } from '../../shared/magma/magma.js';
 import { msg, plural, rich, useT, type T } from '../../shared/i18n/i18n.js';
 import { GateBadge } from '../../shared/ui/verdict.js';
+import { TouchedPairs } from '../../shared/ui/touched-pairs.js';
 import { HueShiftEditor } from '../../shared/ui/hue-shift-editor.js';
 import { SaturationEditor } from '../../shared/ui/saturation-editor.js';
 import { GROUPS_PAGE, hrefOf, stageOf } from '../../shared/routes/routes.js';
@@ -322,8 +322,8 @@ export function ColoursPage({ foot }: { foot?: ComponentChild }) {
 
           {selected && (
             <div class="@container/family">
-              <div class="grid content-start gap-x-between-groups @family-side/family:grid-cols-[minmax(0,1fr)_calc(var(--spacing)*10400)] @family-side/family:items-start">
-                <div class="mb-title-content flex items-center gap-inline @family-side/family:col-start-1">
+              <div class="grid content-start gap-x-between-groups @side/family:grid-cols-[minmax(0,1fr)_calc(var(--spacing)*10400)] @side/family:items-start">
+                <div class="mb-title-content flex items-center gap-inline @side/family:col-start-1">
                   <mds-text
                     id={FAMILY_TITLE}
                     typography="section"
@@ -344,11 +344,11 @@ export function ColoursPage({ foot }: { foot?: ComponentChild }) {
                     aria-label={t('Actions of {name}', { name: selected.name })}
                   ></mds-button>
                 </div>
-                <div class="mb-between-groups grid gap-inline @family-side/family:col-start-1">
+                <div class="mb-between-groups grid gap-inline @side/family:col-start-1">
                   <PaintsLine t={t} painted={painted} uses={uses} />
-                  <TouchedPairs t={t} pairs={pairs} />
+                  <TouchedPairs pairs={pairs} />
                 </div>
-                <div class="mb-between-groups @family-side/family:sticky @family-side/family:top-inset @family-side/family:col-start-2 @family-side/family:row-span-5 @family-side/family:row-start-1 @family-side/family:mb-0">
+                <div class="mb-between-groups @side/family:sticky @side/family:top-inset @side/family:col-start-2 @side/family:row-span-5 @side/family:row-start-1 @side/family:mb-0">
                   <SceneSide
                     family={selected.name}
                     painted={painted}
@@ -356,10 +356,7 @@ export function ColoursPage({ foot }: { foot?: ComponentChild }) {
                     ramps={<Ramps scales={ramps} error={rampsError} />}
                   />
                 </div>
-                <section
-                  class="grid @family-side/family:col-start-1"
-                  aria-labelledby={FAMILY_TITLE}
-                >
+                <section class="grid @side/family:col-start-1" aria-labelledby={FAMILY_TITLE}>
                   {isAlias(selected) ? (
                     <ReferenceFields
                       config={config}
@@ -381,6 +378,7 @@ export function ColoursPage({ foot }: { foot?: ComponentChild }) {
                       colorspaceVerdict={verdict}
                       saturationBefore={flatRamps?.light ?? null}
                       saturationAfter={ramps?.light ?? null}
+                      formula={formula}
                       scales={scales}
                       paints={!painted || paintsAny(painted)}
                       inheritedColorspace={config.colorspace ?? 'HSL'}
@@ -439,7 +437,7 @@ export function ColoursPage({ foot }: { foot?: ComponentChild }) {
                 </mds-dropdown>
                 {/* the settings of the whole preset, closed at first, apart from the family
                   (vittorio, 2026-11-05): here until Groups holds them (question 13 of the model) */}
-                <div class="mt-between-sections @family-side/family:col-start-1">
+                <div class="mt-between-sections @side/family:col-start-1">
                   <GlobalSettings
                     t={t}
                     config={config}
@@ -631,87 +629,6 @@ function PaintsLine({
         ? parts.flatMap((part, index) => (index ? ['; ', ...part] : part)).concat('.')
         : t('It paints nothing of Magma: a case outside Magma, which goes out as tokens alone.')}
     </mds-text>
-  );
-}
-
-/** The word of the state of a pair in one mode. */
-const STATE_WORD: Record<PairState, string> = {
-  pass: msg('passes'),
-  fail: msg('fails'),
-  accepted: msg('accepted by the baseline'),
-  below: msg('below its target'),
-  info: msg('measured, not judged'),
-  off: msg('measured, not judged'),
-};
-
-/** The name of a mode. */
-const MODE_WORD = { light: msg('Light'), dark: msg('Dark') } as const;
-
-/**
- * The pairs of the contrast check the family touches (touched.ts), in a closed detail under its
- * name, their count and their verdict in its title (vittorio on the renders, 2026-11-27).
- */
-function TouchedPairs({ t, pairs }: { t: T; pairs: ReturnType<typeof touchedPairs> | undefined }) {
-  if (!pairs)
-    return (
-      <mds-text typography="caption" tag="p" class="text-fg-muted" role="status">
-        {t('Measuring the pairs it touches...')}
-      </mds-text>
-    );
-  if (!pairs.length)
-    return (
-      <mds-text typography="detail" tag="p" class="text-fg-muted" data-touched="0">
-        {t('No pair of the contrast check: it changes none.')}
-      </mds-text>
-    );
-  const summary = touchedSummary(pairs);
-  const verdict = [
-    summary.fail
-      ? plural(t, summary.fail, '{count} under its floor', '{count} under their floor')
-      : t('all above their floor, in light and in dark'),
-    ...(summary.accepted
-      ? [
-          plural(
-            t,
-            summary.accepted,
-            '{count} pair accepted by the baseline',
-            '{count} pairs accepted by the baseline',
-          ),
-        ]
-      : []),
-  ].join(', ');
-  return (
-    <mds-details data-touched={summary.pairs}>
-      <span slot="title" class="flex flex-wrap items-center gap-inline">
-        <mds-badge
-          variant={summary.fail ? 'error' : summary.accepted ? 'warning' : 'success'}
-          tone="weak"
-          label={plural(t, summary.pairs, '{count} pair touched', '{count} pairs touched')}
-        ></mds-badge>
-        <mds-text typography="detail" tag="span">
-          {verdict}
-        </mds-text>
-      </span>
-      <ul class="m-0 grid list-none gap-inline p-0" aria-label={t('The pairs the family touches')}>
-        {pairs.map((pair) => (
-          <li class="flex flex-wrap items-baseline gap-x-inline">
-            <mds-text typography="caption" tag="span" class="text-fg-muted">
-              {pair.theme}
-            </mds-text>
-            <mds-text typography="detail" tag="span">
-              {t('{fg} on {bg}', { fg: pair.fg, bg: pair.bg })}
-            </mds-text>
-            {(['light', 'dark'] as const)
-              .filter((mode) => pair.states[mode])
-              .map((mode) => (
-                <mds-text typography="caption" tag="span" class="text-fg-muted">
-                  {`${t(MODE_WORD[mode])}: ${t(STATE_WORD[pair.states[mode]!])}`}
-                </mds-text>
-              ))}
-          </li>
-        ))}
-      </ul>
-    </mds-details>
   );
 }
 

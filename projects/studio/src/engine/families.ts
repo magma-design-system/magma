@@ -194,3 +194,21 @@ export function themesUsing(
   }
   return uses;
 }
+
+/**
+ * The preset with a family solved on a scale: the scale and the formula given, no hue shift of its
+ * own (the sample of the page of a scale, its states solved on it).
+ */
+export function onScale(
+  config: MagmaConfig,
+  family: string,
+  scale: string,
+  formula: NonNullable<ColorConfig['formula']>,
+): MagmaConfig {
+  return {
+    ...config,
+    colors: config.colors.map((color) =>
+      color.name === family ? { ...color, ratios: scale, formula, hueShift: undefined } : color,
+    ),
+  };
+}

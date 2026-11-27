@@ -706,7 +706,7 @@ test('the scale of the family says whether it holds the roles of Magma, and lead
   const row = () => inherits('Contrast scale')?.parentElement
   expect(row()?.querySelector('mds-badge')?.getAttribute('label')).toBe('Compatible with Magma')
   expect(row()?.querySelector('mds-link[label="Open the scale tone"]')?.getAttribute('href')).toBe(
-    '#/colors/contrast-scales',
+    '#/colours/scale/wcag3/tone',
   )
 })
 

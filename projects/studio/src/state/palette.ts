@@ -6,6 +6,7 @@ import type {
 import { nearestColorName } from '../engine/color-names.js';
 import { msg } from '../shared/i18n/text.js';
 import { clone, updateConfig, type StudioState } from './studio.js';
+import { undoably } from './undo.js';
 
 /*
   The actions of the Palette (#1400, out of the JSX of app.tsx): the families of the
@@ -77,42 +78,19 @@ export function duplicateFamily(state: StudioState, name: string): void {
 }
 
 /**
- * Removes a family and selects the first one left. Nothing is asked: the removal is kept until the
- * toast that undoes it closes (lastRemoval, undoRemoval), as the object model wants of an action
- * that takes work away (section 9, "Le azioni distruttive si annullano, senza conferma").
+ * Removes a family and selects the first one left. Nothing is asked: a toast undoes it (undo.ts),
+ * as the object model wants of an action that takes work away (section 9, "Le azioni distruttive
+ * si annullano, senza conferma").
  */
 export function deleteFamily(state: StudioState, name: string): void {
   const index = state.config.peek().colors.findIndex((c) => c.name === name);
   if (index < 0) return;
-  const family = clone(state.config.peek().colors[index]);
-  const selectedName = state.selectedName.peek();
-  batch(() => {
+  undoably(state, { text: msg('{name} deleted.'), vars: { name } }, () => {
     updateConfig(state, (draft) => {
       draft.colors.splice(index, 1);
     });
     state.selectedName.value = state.config.peek().colors[0]?.name ?? '';
-    state.lastRemoval.value = { family, index, selectedName };
   });
-}
-
-/** Puts the family last deleted back where it stood, and selects again the family selected then. */
-export function undoRemoval(state: StudioState): void {
-  const removal = state.lastRemoval.peek();
-  if (!removal) return;
-  batch(() => {
-    updateConfig(state, (draft) => {
-      // a family by that name added meanwhile keeps its place: the one undone goes beside it
-      if (draft.colors.some((one) => one.name === removal.family.name)) return;
-      draft.colors.splice(Math.min(removal.index, draft.colors.length), 0, clone(removal.family));
-    });
-    state.selectedName.value = removal.selectedName;
-    state.lastRemoval.value = null;
-  });
-}
-
-/** Closes the removal: the toast closed, nothing to undo any more. */
-export function forgetRemoval(state: StudioState): void {
-  state.lastRemoval.value = null;
 }
 
 /**

@@ -4,24 +4,13 @@ import type { Formula } from '@maggioli-design-system/design-tokens/src/lib/colo
 import { resolveExport } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
 import { GroupsManager } from './groups.js';
 import { BatchExportModal } from './batch.js';
-import { generateScales, singleColorConfig } from './engine/generator.js';
-import { ScalesManager, type ScaleOrigin } from './scales.js';
 import { SurfaceManager } from './surfaces.js';
 import { COLORS_PAGES, type ColorsView } from './shared/routes/routes.js';
 import { ThemesManager } from './themes.js';
 import { ContrastCheck } from './features/contrast-check/contrast-check.js';
 import { GateBadge } from './shared/ui/verdict.js';
 import { useStudio, type ExportAction } from './state/studio.js';
-import { selectFamily } from './state/palette.js';
-import {
-  addScale,
-  builtinScalesOf,
-  changeScale,
-  deleteScale,
-  renameScale,
-  scalesOf,
-  type RatioSet,
-} from './state/scales.js';
+import { builtinScalesOf, scalesOf, type RatioSet } from './state/scales.js';
 import { toggleGroupSurface, toggleSurface, updateBalances } from './state/surfaces.js';
 import { setExports, updateGroup } from './state/groups.js';
 import { exportSelection, guard } from './state/exports.js';
@@ -57,9 +46,6 @@ interface AppProps {
 
 /** One line under the title of each view: what it holds. */
 const VIEW_SUMMARY: Record<View, string> = {
-  scales: msg(
-    'The contrast ratios the families solve their steps at, against the background of the mode.',
-  ),
   surface: msg(
     'The families that generate surfaces, and the balances: the lightness of the surfaces and borders, the targets of the text.',
   ),
@@ -78,8 +64,6 @@ export function App({ view, foot, lead }: AppProps) {
   // actions, so it outlives them; what is left here is the state of the page
   const studio = useStudio();
   const config = studio.config.value;
-  const loadedRatios = studio.loadedRatios.value;
-  const selectedName = studio.selectedName.value;
   // the contrast gate on the working config and the themes of the Themes page, at every edit
   // (#698): the badge beside the title, the Contrast check page, the exports
   const report = studio.report.value;
@@ -89,13 +73,10 @@ export function App({ view, foot, lead }: AppProps) {
   useEffect(() => {
     if (content.current) content.current.scrollTop = 0;
   }, [view]);
-  const [scalesFormula, setScalesFormula] = useState<Formula>('wcag3');
   const [batchSelection, setBatchSelection] = useState<Set<string>>(() => new Set());
   const [batchModal, setBatchModal] = useState<{ names: string[]; initialExport: string } | null>(
     null,
   );
-
-  const selected = config.colors.find((c) => c.name === selectedName);
 
   // the variants first, at the top of the groups: the first of them is where the work starts
   // (vittorio, 2026-11-05); the other groups in the order of the configuration
@@ -118,13 +99,14 @@ export function App({ view, foot, lead }: AppProps) {
   // exactly like the generator merges them. A null entry in the config is
   // the sentinel for a deleted built-in scale and is filtered out.
   const ratioSetFor = (formula: Formula): RatioSet => scalesOf(config.ratios, formula);
-  const ratioSet = ratioSetFor(scalesFormula);
-  const builtinScales = Object.keys(builtinScalesOf(scalesFormula));
 
   // origin of a scale relative to the built-in defaults. Comparing stops
   // (rather than mere presence in config.ratios) keeps the tag correct even
   // though writeScale materializes untouched built-ins back into the config.
-  const scaleOrigin = (formula: Formula, name: string): ScaleOrigin => {
+  const scaleOrigin = (
+    formula: Formula,
+    name: string,
+  ): 'custom' | 'builtin' | 'builtin-overridden' => {
     const builtin = builtinScalesOf(formula)[name];
     if (!Array.isArray(builtin)) return 'custom';
     const current = ratioSetFor(formula)[name];
@@ -139,29 +121,6 @@ export function App({ view, foot, lead }: AppProps) {
     if (origin === 'builtin-overridden') return t('{name} (built-in, overridden)', { name });
     return name;
   };
-
-  const sampleScales = useMemo(() => {
-    const map = new Map<string, string[]>();
-    if (view !== 'scales' || !selected) return map;
-    Object.keys(ratioSet).forEach((name) => {
-      try {
-        const sampleColor = {
-          ...selected,
-          ratios: name,
-          formula: scalesFormula,
-          hueShift: undefined,
-        };
-        const scales = generateScales(singleColorConfig(config, sampleColor));
-        map.set(
-          name,
-          (scales.get(selected.name)?.light ?? []).map((step) => step.value),
-        );
-      } catch {
-        // an inconsistent scale under edit should not break the view
-      }
-    });
-    return map;
-  }, [view, scalesFormula, JSON.stringify(config), selectedName]);
 
   // an export while the gate fails asks first: never the silent default (#698). The dialog is the
   // shell's, so the exit of the bar asks it from any section
@@ -239,25 +198,6 @@ export function App({ view, foot, lead }: AppProps) {
       <main class="content" ref={content}>
         {view !== 'surface' && lead}
         {view !== 'surface' && pageTop}
-        {view === 'scales' && (
-          <ScalesManager
-            config={config}
-            formula={scalesFormula}
-            ratioSet={ratioSet}
-            loaded={scalesOf(loadedRatios, scalesFormula)}
-            builtinScales={builtinScales}
-            sampleScales={sampleScales}
-            selectedName={selectedName}
-            labelFor={(name) => scaleLabel(scalesFormula, name)}
-            originFor={(name) => scaleOrigin(scalesFormula, name)}
-            onSelectColor={(name) => selectFamily(studio, name)}
-            onFormulaChange={setScalesFormula}
-            onChangeScale={(name, values) => changeScale(studio, scalesFormula, name, values)}
-            onRenameScale={(name, nextName) => renameScale(studio, scalesFormula, name, nextName)}
-            onAddScale={(copyFrom) => addScale(studio, scalesFormula, copyFrom)}
-            onDeleteScale={(name) => deleteScale(studio, scalesFormula, name)}
-          />
-        )}
         {view === 'surface' && (
           <SurfaceManager
             head={pageTop}

@@ -25,7 +25,7 @@
   gap: var(--magma-rhythm-between-containers);
 }
 
-/* where the family has a side (60rem of the detail, --container-family-side of tailwind.css), the
+/* where the family has a side (60rem of the detail, --container-side of tailwind.css), the
    two ramps stand upright side by side in it; under 45rem of the detail (the rule of the steps
    below), upright, side by side while each keeps the room of a step laid flat (about 12rem), one
    over the other under that. Literals, since a container query reads no var(). */

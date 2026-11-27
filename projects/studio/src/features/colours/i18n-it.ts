@@ -15,8 +15,6 @@ export const IT_COLOURS: Record<string, string> = {
   'Inherits from the {preset}': 'Eredita dal {preset}',
   preset: 'preset',
   // the contrast scale of the family, with its badge
-  'Compatible with Magma': 'Compatibile con Magma',
-  'Not compatible with Magma': 'Non compatibile con Magma',
   'Open the scale {scale}': 'Apri la scala {scale}',
   'The roles of Magma name {steps} steps by number: on {count} steps they do not hold. A family that paints Magma takes a scale of {steps} steps.':
     'I ruoli di Magma nominano {steps} gradini per numero: su {count} gradini non reggono. Una famiglia che dipinge Magma prende una scala di {steps} gradini.',
@@ -30,23 +28,6 @@ export const IT_COLOURS: Record<string, string> = {
   'It paints the variants {variants}': 'Dipinge le varianti {variants}',
   'It paints nothing of Magma: a case outside Magma, which goes out as tokens alone.':
     'Non dipinge nulla di Magma: è un caso fuori da Magma, che esce solo nei token.',
-  // the pairs of the contrast check the family touches
-  '{count} pair touched': '{count} coppia toccata',
-  '{count} pairs touched': '{count} coppie toccate',
-  'all above their floor, in light and in dark': 'tutte sopra la soglia, in chiaro e in scuro',
-  '{count} under its floor': '{count} sotto la soglia',
-  '{count} under their floor': '{count} sotto la soglia',
-  '{count} pair accepted by the baseline': '{count} accettata dalla baseline',
-  '{count} pairs accepted by the baseline': '{count} accettate dalla baseline',
-  'No pair of the contrast check: it changes none.':
-    'Nessuna coppia della verifica: non ne cambia nessuna.',
-  'Measuring the pairs it touches...': 'Misuro le coppie che tocca...',
-  passes: 'passa',
-  fails: 'non passa',
-  'accepted by the baseline': 'accettata dalla baseline',
-  'below its target': "sotto l'obiettivo",
-  'measured, not judged': 'misurata, non giudicata',
-  'The pairs the family touches': 'Le coppie che la famiglia tocca',
   // a group born with its first family
   'Name of the group': 'Nome del gruppo',
 };

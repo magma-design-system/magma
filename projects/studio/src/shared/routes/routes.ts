@@ -33,10 +33,10 @@ import { msg } from '../i18n/text.js';
 /**
  * The pages of today's Colors section still standing, by the id a draft saved before #1403 carries
  * (`view`, state/draft.ts): the table gives each its address and its name. 'surface' is Semantic
- * surface, an id kept from before the views were split. The Palette ('colors') went with #1403:
- * Colours took its place (`#/colours`).
+ * surface, an id kept from before the views were split. The Palette ('colors') and Contrast scales
+ * ('scales') went with #1403: Colours and Scale took their places.
  */
-export const COLORS_VIEWS = ['scales', 'surface', 'themes', 'groups', 'contrast'] as const;
+export const COLORS_VIEWS = ['surface', 'themes', 'groups', 'contrast'] as const;
 export type ColorsView = (typeof COLORS_VIEWS)[number];
 
 /** The page of Colors a draft names, if it is one. */
@@ -64,6 +64,11 @@ export type Route =
   | { section: 'opening' }
   /** The stage Colours, the family at its centre (#1403, features/colours/). */
   | { section: 'colours' }
+  /**
+   * The page of a contrast scale beside Colours (#1403, features/scale/): the scale of a formula,
+   * reached from a family, or from a group, which the way back names.
+   */
+  | { section: 'scale'; formula: Formula; name: string; group?: string }
   | { section: 'colors'; view: ColorsView }
   | { section: 'theme'; theme?: string; mode?: ModeView }
   | { section: 'behavior'; page: BehaviorPage }
@@ -73,7 +78,7 @@ export type Route =
 /** A section of the bar: its pages are the rows of PAGES that name it. */
 export type Section = Exclude<
   Route['section'],
-  'introduction' | 'opening' | 'colours' | 'exceptions'
+  'introduction' | 'opening' | 'colours' | 'scale' | 'exceptions'
 >;
 
 export interface MenuItem<Id extends string> {
@@ -95,13 +100,6 @@ export type Page =
 
 /** The pages of the studio, one table for the menus and the addresses, in the order of the bar. */
 export const PAGES: readonly Page[] = [
-  {
-    section: 'colors',
-    id: 'scales',
-    slug: 'contrast-scales',
-    label: msg('Contrast scales'),
-    icon: 'mi/baseline/contrast',
-  },
   {
     section: 'colors',
     id: 'surface',
@@ -184,13 +182,20 @@ export const START_ALIAS = '#/start';
 export const ALIASES: Readonly<Record<string, Route>> = {
   [START_ALIAS]: { section: 'introduction' },
   '#/colors/palette': { section: 'colours' },
+  '#/colors/contrast-scales': { section: 'scale', formula: 'wcag3', name: 'default' },
 };
+
+/** The formulas a contrast scale is written for, as the configuration names them. */
+export const FORMULAS = ['wcag3', 'wcag2'] as const;
+export type Formula = (typeof FORMULAS)[number];
 
 /** The address of a page, as a link writes it: `#/colors/palette`. */
 export function hrefOf(route: Route): string {
   if (route.section === 'introduction') return '#/introduction';
   if (route.section === 'opening') return '#/opening';
   if (route.section === 'colours') return '#/colours';
+  if (route.section === 'scale')
+    return `#/colours/scale/${route.formula}/${route.name}${route.group ? `/from/${route.group}` : ''}`;
   if (route.section === 'exceptions') return '#/exceptions';
   if (route.section === 'theme') {
     if (!route.theme) return '#/theme';
@@ -209,6 +214,14 @@ export function routeOf(hash: string): Route | undefined {
   if (!isAddress(hash)) return undefined;
   const [section, slug, ...rest] = hash.slice(2).split('/');
   if (ALIASES[hash]) return ALIASES[hash];
+  if (section === 'colours' && slug === 'scale') {
+    // a scale by its formula and its name, then the group it was reached from
+    const [formula, name, from, group, ...more] = rest;
+    const known = FORMULAS.find((one) => one === formula);
+    if (!known || !name || more.length) return undefined;
+    if (from === undefined) return { section: 'scale', formula: known, name };
+    return from === 'from' && group ? { section: 'scale', formula: known, name, group } : undefined;
+  }
   if (section === 'introduction' || section === 'opening' || section === 'colours')
     return slug === undefined ? { section } : undefined;
   if (section === 'exceptions') return slug === undefined ? { section: 'exceptions' } : undefined;
@@ -262,11 +275,9 @@ export const STAGES: readonly Stage[] = [
     icon: 'mi/baseline/palette',
     numbered: true,
     route: { section: 'colours' },
-    // Scale in the object model, today Contrast scales; Groups until it moves out of the stages
-    beside: [
-      { section: 'colors', view: 'scales' },
-      { section: 'colors', view: 'groups' },
-    ],
+    // Groups until it moves out of the stages; Scale is beside it too, at the address of any scale
+    // (placeOf)
+    beside: [{ section: 'colors', view: 'groups' }],
   },
   {
     id: 'weights',
@@ -310,7 +321,12 @@ export const stageOf = (id: StageId): Stage => STAGES.find((stage) => stage.id =
  * today Contrast scales), the page of the groups and of the settings of the preset (Groups), the
  * stage of the themes. Named here, so their addresses change in one place.
  */
-export const SCALE_PAGE: Route = { section: 'colors', view: 'scales' };
+export const scaleRoute = (formula: Formula, name: string, group?: string): Route => ({
+  section: 'scale',
+  formula,
+  name,
+  ...(group ? { group } : {}),
+});
 export const GROUPS_PAGE: Route = { section: 'colors', view: 'groups' };
 
 /** The view before the first stage, where its way back leads: the opening. */
@@ -327,6 +343,7 @@ export const BEFORE_STAGES: { route: Route; label: string } = {
 export function workPlaceOf(view: unknown): string | undefined {
   if (typeof view !== 'string') return undefined;
   if (view === 'colors') return '#/colours';
+  if (view === 'scales') return '#/colors/contrast-scales';
   const page = colorsViewOf(view);
   if (page) return hrefOf({ section: 'colors', view: page });
   return routeOf(view) ? view : undefined;
@@ -342,6 +359,8 @@ export interface Place {
 
 /** Where a page stands in the flow, or undefined for a page that is no stage nor beside one. */
 export function placeOf(route: Route): Place | undefined {
+  // the page of any scale stands beside Colours (#1403)
+  if (route.section === 'scale') return { stage: STAGES[0], index: 0, place: 'side-page' };
   const href = hrefOf(route);
   for (const [index, stage] of STAGES.entries()) {
     if (hrefOf(stage.route) === href) return { stage, index, place: 'stage' };

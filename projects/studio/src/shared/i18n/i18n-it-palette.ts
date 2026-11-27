@@ -107,8 +107,6 @@ export const IT_PALETTE: Record<string, string> = {
   'Add reference': 'Aggiungi riferimento',
 
   // the line under the title of each page of Colors (app.tsx)
-  'The contrast ratios the families solve their steps at, against the background of the mode.':
-    'I rapporti di contrasto a cui le famiglie risolvono i loro gradini, rispetto allo sfondo della modalità.',
   'The families that generate surfaces, and the balances: the lightness of the surfaces and borders, the targets of the text.':
     'Le famiglie che generano superfici, e gli equilibri: la luminosità delle superfici e dei bordi, gli obiettivi del testo.',
   'Each family with surfaces, status aside, is a theme: its name, its accents and the CSS that switches it in.':
