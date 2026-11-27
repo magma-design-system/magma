@@ -100,9 +100,27 @@ export default defineConfig({
       {
         extends: true,
         // prebundled before the run: a dependency found mid-run reloads the page of the test,
-        // which then holds two copies of Preact (hooks of one, components of the other)
+        // which then holds two copies of Preact (hooks of one, components of the other), or fails
+        // to import the file of the test. Preact for every test; the rest for the shell
+        // (test/shell.e2e.mts): the state of the studio and the engine of design-tokens it runs,
+        // the list Vite printed as "dependencies optimized" on the first run of that file.
         optimizeDeps: {
-          include: ['preact', 'preact/hooks', 'preact/jsx-dev-runtime', 'preact/jsx-runtime'],
+          include: [
+            'preact',
+            'preact/hooks',
+            'preact/jsx-dev-runtime',
+            'preact/jsx-runtime',
+            '@preact/signals',
+            'ajv',
+            'apca-w3',
+            'chroma-js',
+            'color-namer',
+            'colorjs.io',
+            'fflate',
+            'handlebars',
+            'hex-rgb',
+            'hsluv',
+          ],
         },
         test: {
           name: 'browser',

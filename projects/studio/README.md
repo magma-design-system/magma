@@ -69,8 +69,13 @@ removed in Magma fails `check.types`; nothing of Magma reaches the bundle.
 The bridges are tried against the real components: `src/shared/magma/magma.e2e.mts` runs in the
 `browser` project of Vitest (`vite.config.ts`), whose page loads the installed magma through
 `build/vendor.ts` as every page of the studio does, and the person types, chooses and moves the
-slider through Playwright. The pages are tried in jsdom (the `jsdom` project), where the tags never
-upgrade; the engine and the checks of the build in Node (the `node` project).
+slider through Playwright. The layout jsdom does not compute is tried there too:
+`test/shell.e2e.mts` draws the shell with its sheets on Weights and holds that the document never
+scrolls, the region of the page does (`style.css`, `.studio`: each region that scrolls is the
+containing block of what it positions). A module a test of that project loads for the first time
+goes into its `optimizeDeps.include`, or the first run reloads the page and fails to import the
+test. The pages are tried in jsdom (the `jsdom` project), where the tags never upgrade; the engine
+and the checks of the build in Node (the `node` project).
 
 Each page keeps its rules in the sheet beside its module (`colours.css`, `scale.css`, ...),
 from the tokens only: spaces from the rhythm, widths from the widths, colours from the semantic

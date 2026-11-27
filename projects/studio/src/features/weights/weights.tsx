@@ -74,8 +74,12 @@ export function WeightsPage() {
   const cells = touched?.mode === mode ? touched.cells : undefined;
   const pairs = useMemo(() => (cells ? touchedPairs(report, cells) : undefined), [cells, report]);
 
+  // the region that scrolls is `relative`, the containing block of what it positions, as the shell
+  // asks of every page (style.css, .studio): the hidden name of each slider (magma.css,
+  // .studio-hidden) is absolute, and with no positioned ancestor it sits on the document below the
+  // window, so the window scrolled too and the bar covered the strip of the stages
   return (
-    <main class="@container/weights h-full min-h-0 overflow-y-auto px-(--magma-width-page-gutter) pt-inset pb-between-sections">
+    <main class="@container/weights relative h-full min-h-0 overflow-y-auto px-(--magma-width-page-gutter) pt-inset pb-between-sections">
       <div class="grid content-start gap-x-between-containers @side/weights:grid-cols-[minmax(0,1fr)_calc(var(--spacing)*10400)] @side/weights:items-start">
         <div class="grid min-w-0 content-start gap-between-groups">
           {/* the head of the view: its title with the verdict of the contrast check beside it */}
