@@ -18,104 +18,12 @@
       mode and the contrast; applyPrefs of scene-prefs.tsx, the animations and the consumption), so
       this page holds no mds-pref-*: it would keep its choice in the storage of the origin, shared
       with the two frames side by side and with the studio's own preferences (#1336).
-      The plain CSS below takes every value from the tokens of the installed Magma.
+      The page is written in the classes of Magma (src/tailwind.css). Its short sheet,
+      src/shared/frames/previews.css, keeps what classes do not write: the order the scene takes
+      when the studio puts first what a family paints, keyed by the data-scene of its lists.
     -->
-    <style>
-      .scene-main {
-        display: grid;
-        gap: var(--magma-rhythm-between-groups);
-        max-width: var(--magma-width-page);
-        margin-inline: auto;
-        padding: var(--magma-rhythm-between-groups) var(--magma-width-page-gutter);
-      }
-      .scene-head,
-      .scene-stack {
-        display: grid;
-        gap: var(--magma-rhythm-title-content);
-      }
-      .scene-figure .scene-stack {
-        justify-items: start;
-      }
-      .scene-grow {
-        flex: 1 1 0;
-        min-inline-size: 0;
-      }
-      /* the cards in columns at least two thirds of a form wide, as many as the frame holds */
-      .scene-grid {
-        columns: calc(var(--magma-width-form) * 2 / 3);
-        column-gap: var(--magma-rhythm-between-containers);
-      }
-      .scene-grid > * {
-        break-inside: avoid;
-        margin-block-end: var(--magma-rhythm-between-containers);
-      }
-      .scene-fields {
-        display: grid;
-        gap: var(--magma-rhythm-between-fields);
-      }
-      .scene-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: var(--magma-rhythm-inline);
-        align-items: center;
-      }
-      /* a row whose last item goes to the end: a name and its state, a count */
-      .scene-spread {
-        display: flex;
-        gap: var(--magma-rhythm-inline);
-        align-items: center;
-        justify-content: space-between;
-      }
-      .scene-spread > :first-child {
-        display: flex;
-        gap: var(--magma-rhythm-inline);
-        align-items: center;
-        min-inline-size: 0;
-      }
-      .scene-rows {
-        display: grid;
-      }
-      .scene-rows > * {
-        padding-block: calc(var(--spacing) * 200);
-        border-block-end: thin solid rgb(var(--magma-border-muted));
-      }
-      .scene-rows > :last-child {
-        border-block-end: 0;
-      }
-      .scene-muted {
-        color: rgb(var(--magma-text-muted));
-      }
-      .scene-icon {
-        color: rgb(var(--magma-text-muted));
-      }
-      .scene-figure {
-        display: flex;
-        gap: var(--magma-rhythm-inline);
-        align-items: center;
-        justify-content: space-between;
-      }
-      /* the family the Palette edits, first (palette-side.tsx): the studio marks the elements
-         that paint with it (frame.ts, markPainted), and every list of the scene puts first what
-         holds one, the card in the page, the row in its card, the element staying where it is in
-         its row. The cards leave their columns, the frame of the Palette having the room of one,
-         and the messages of the stack go one by one, so the one of the family leads the others */
-      html[data-studio-paints] :is(.scene-grid, .scene-grid > .scene-stack) {
-        display: contents;
-      }
-      html[data-studio-paints] .scene-main {
-        row-gap: var(--magma-rhythm-between-containers);
-      }
-      html[data-studio-paints] .scene-grid > * {
-        margin-block-end: 0;
-      }
-      html[data-studio-paints] .scene-head {
-        order: -2;
-      }
-      html[data-studio-paints] :is(.scene-main, .scene-grid, .scene-stack, .scene-fields, .scene-rows)
-        > :is([data-studio-painted], :has([data-studio-painted])) {
-        order: -1;
-      }
-    </style>
+    <link rel="stylesheet" href="/src/tailwind.css" />
+    <link rel="stylesheet" href="/src/shared/frames/previews.css" />
   </head>
   <body>
     <!-- the bar of the product, inline: a box of its page under the bar of the studio, so the two
@@ -128,10 +36,13 @@
         <mds-button slot="nav" href="#" variant="dark" tone="text">Deadlines</mds-button>
       </mds-header-bar>
     </mds-header>
-    <main class="scene-main">
-      <header class="scene-head">
+    <main
+      class="mx-auto grid max-w-(--magma-width-page) gap-between-groups px-(--magma-width-page-gutter) py-between-groups"
+      data-scene="main"
+    >
+      <header class="grid gap-title-content" data-scene="head">
         <mds-text typography="page" tag="h1">Desk</mds-text>
-        <mds-text typography="detail" tag="p" class="scene-muted">The requests, the appointments and the messages of the registry office.</mds-text>
+        <mds-text typography="detail" tag="p" class="text-fg-muted">The requests, the appointments and the messages of the registry office.</mds-text>
       </header>
 
       <!-- the request in hand: its steps want the width of the page, the stepper centres the
@@ -150,38 +61,44 @@
         </mds-card-content>
       </mds-card>
 
-      <div class="scene-grid">
+      <!-- the cards in columns at least two thirds of a form wide, as many as the frame holds -->
+      <div
+        class="columns-[calc(var(--magma-width-form)*2/3)] gap-x-between-containers *:mb-between-containers *:break-inside-avoid"
+        data-scene="grid"
+      >
         <!-- filters: a choice among states, the filters in force, the kinds with their counts -->
         <mds-card>
           <mds-card-header>
             <mds-text typography="part" tag="h2">Filters</mds-text>
           </mds-card-header>
           <mds-card-content>
-            <div class="scene-fields">
+            <div class="grid gap-between-fields" data-scene="fields">
               <mds-filter label="Status">
                 <mds-filter-item label="All" value="" count="44" selected></mds-filter-item>
                 <mds-filter-item label="New" value="new" count="8"></mds-filter-item>
                 <mds-filter-item label="Closed" value="closed" count="16"></mds-filter-item>
               </mds-filter>
-              <div class="scene-row">
+              <div class="flex flex-wrap items-center gap-inline">
                 <mds-chip label="Registry" deletable tone="weak"></mds-chip>
                 <mds-chip label="November" deletable tone="weak"></mds-chip>
               </div>
-              <div class="scene-rows">
-                <div class="scene-spread">
-                  <mds-input-switch type="checkbox" checked>Changes of address</mds-input-switch>
+              <!-- rows whose last item goes to the end: a name and its state, a count; the name, first,
+                   a row of its own that may shrink -->
+              <div class="grid divide-y divide-border-muted *:py-200" data-scene="rows">
+                <div class="flex items-center justify-between gap-inline">
+                  <mds-input-switch class="flex min-w-0 items-center gap-inline" type="checkbox" checked>Changes of address</mds-input-switch>
                   <mds-badge variant="dark" tone="strong" label="25"></mds-badge>
                 </div>
-                <div class="scene-spread">
-                  <mds-input-switch type="checkbox" checked>Certificates</mds-input-switch>
+                <div class="flex items-center justify-between gap-inline">
+                  <mds-input-switch class="flex min-w-0 items-center gap-inline" type="checkbox" checked>Certificates</mds-input-switch>
                   <mds-badge variant="dark" tone="strong" label="3"></mds-badge>
                 </div>
-                <div class="scene-spread">
-                  <mds-input-switch type="checkbox">Registrations</mds-input-switch>
+                <div class="flex items-center justify-between gap-inline">
+                  <mds-input-switch class="flex min-w-0 items-center gap-inline" type="checkbox">Registrations</mds-input-switch>
                   <mds-badge variant="warning" tone="strong" label="0"></mds-badge>
                 </div>
-                <div class="scene-spread">
-                  <mds-input-switch type="checkbox" disabled>Identity cards</mds-input-switch>
+                <div class="flex items-center justify-between gap-inline">
+                  <mds-input-switch class="flex min-w-0 items-center gap-inline" type="checkbox" disabled>Identity cards</mds-input-switch>
                   <mds-badge variant="dark" tone="weak" label="4"></mds-badge>
                 </div>
               </div>
@@ -192,11 +109,11 @@
         <!-- figures: a count with its trend, two actions -->
         <mds-card>
           <mds-card-content>
-            <div class="scene-fields">
+            <div class="grid gap-between-fields" data-scene="fields">
               <mds-kpi>
                 <mds-kpi-item icon="mi/baseline/folder-open" label="1,240" description="Requests closed in November"></mds-kpi-item>
               </mds-kpi>
-              <mds-text typography="detail" tag="p" class="scene-muted">15% more than in October, with the same staff at the counter.</mds-text>
+              <mds-text typography="detail" tag="p" class="text-fg-muted">15% more than in October, with the same staff at the counter.</mds-text>
             </div>
           </mds-card-content>
           <mds-card-footer>
@@ -206,7 +123,7 @@
         </mds-card>
 
         <!-- states: the four messages a page shows -->
-        <div class="scene-stack">
+        <div class="grid gap-title-content" data-scene="stack">
           <mds-banner variant="info" headline="Nine new messages">Three come from the online counter.</mds-banner>
           <mds-banner variant="success" headline="Check complete">The details of the applicant are confirmed.</mds-banner>
           <mds-banner variant="warning" headline="Confirm your email">
@@ -222,7 +139,7 @@
             <mds-text typography="part" tag="h2">Schedule</mds-text>
           </mds-card-header>
           <mds-card-content>
-            <div class="scene-fields">
+            <div class="grid gap-between-fields" data-scene="fields">
               <mds-input-field label="Day">
                 <mds-input-date value="2026-11-05"></mds-input-date>
               </mds-input-field>
@@ -242,25 +159,25 @@
             <mds-text typography="part" tag="h2">Recent requests</mds-text>
           </mds-card-header>
           <mds-card-content>
-            <div class="scene-rows">
-              <div class="scene-spread">
-                <mds-text typography="detail">Giulia Bianchi</mds-text>
+            <div class="grid divide-y divide-border-muted *:py-200" data-scene="rows">
+              <div class="flex items-center justify-between gap-inline">
+                <mds-text typography="detail" class="flex min-w-0 items-center gap-inline">Giulia Bianchi</mds-text>
                 <mds-badge variant="info" label="Sent"></mds-badge>
               </div>
-              <div class="scene-spread">
-                <mds-text typography="detail">Luca Ferri</mds-text>
+              <div class="flex items-center justify-between gap-inline">
+                <mds-text typography="detail" class="flex min-w-0 items-center gap-inline">Luca Ferri</mds-text>
                 <mds-badge variant="error" label="Rejected"></mds-badge>
               </div>
-              <div class="scene-spread">
-                <mds-text typography="detail">Marco Rossi</mds-text>
+              <div class="flex items-center justify-between gap-inline">
+                <mds-text typography="detail" class="flex min-w-0 items-center gap-inline">Marco Rossi</mds-text>
                 <mds-badge variant="warning" label="In progress"></mds-badge>
               </div>
-              <div class="scene-spread">
-                <mds-text typography="detail">Anna Conti</mds-text>
+              <div class="flex items-center justify-between gap-inline">
+                <mds-text typography="detail" class="flex min-w-0 items-center gap-inline">Anna Conti</mds-text>
                 <mds-badge variant="success" label="Closed"></mds-badge>
               </div>
-              <div class="scene-spread">
-                <mds-text typography="detail">Elena Ricci</mds-text>
+              <div class="flex items-center justify-between gap-inline">
+                <mds-text typography="detail" class="flex min-w-0 items-center gap-inline">Elena Ricci</mds-text>
                 <mds-badge variant="success" label="Closed"></mds-badge>
               </div>
             </div>
@@ -273,9 +190,9 @@
         <!-- a score on a radial progress -->
         <mds-card>
           <mds-card-content>
-            <div class="scene-figure">
-              <div class="scene-stack">
-                <mds-text typography="caption" tag="p" class="scene-muted">Accessibility of the portal</mds-text>
+            <div class="flex items-center justify-between gap-inline">
+              <div class="grid justify-items-start gap-title-content" data-scene="stack">
+                <mds-text typography="caption" tag="p" class="text-fg-muted">Accessibility of the portal</mds-text>
                 <mds-text typography="h3" tag="p">91 out of 100</mds-text>
                 <mds-badge variant="success" label="All in order"></mds-badge>
               </div>
@@ -304,9 +221,9 @@
             <mds-text typography="part" tag="h2">New message</mds-text>
           </mds-card-header>
           <mds-card-content>
-            <div class="scene-fields">
-              <div class="scene-spread">
-                <div>
+            <div class="grid gap-between-fields" data-scene="fields">
+              <div class="flex items-center justify-between gap-inline">
+                <div class="flex min-w-0 items-center gap-inline">
                   <mds-button icon="mi/baseline/format-bold" variant="dark" tone="text" size="sm" aria-label="Bold"></mds-button>
                   <mds-button icon="mi/baseline/format-italic" variant="dark" tone="text" size="sm" aria-label="Italic"></mds-button>
                   <mds-button icon="mi/baseline/format-underlined" variant="dark" tone="text" size="sm" aria-label="Underline"></mds-button>
@@ -327,8 +244,8 @@
         <!-- a search and its action -->
         <mds-card>
           <mds-card-content>
-            <div class="scene-row">
-              <mds-input class="scene-grow" type="search" icon="mi/baseline/search" aria-label="Search" placeholder="Number or subject"></mds-input>
+            <div class="flex flex-wrap items-center gap-inline">
+              <mds-input class="min-w-0 flex-1" type="search" icon="mi/baseline/search" aria-label="Search" placeholder="Number or subject"></mds-input>
               <mds-button>Search</mds-button>
             </div>
           </mds-card-content>
@@ -340,7 +257,7 @@
             <mds-text typography="part" tag="h2">New operator</mds-text>
           </mds-card-header>
           <mds-card-content>
-            <div class="scene-fields">
+            <div class="grid gap-between-fields" data-scene="fields">
               <mds-input-field label="Username">
                 <mds-input icon="mi/baseline/person" value="g.bianchi"></mds-input>
               </mds-input-field>
@@ -373,25 +290,25 @@
             <mds-text typography="part" tag="h2">Archive</mds-text>
           </mds-card-header>
           <mds-card-content>
-            <div class="scene-rows">
-              <div class="scene-spread">
-                <span><mds-icon class="scene-icon" name="mi/baseline/storage"></mds-icon><mds-text typography="detail">Registers</mds-text></span>
-                <mds-text typography="detail" class="scene-muted">7</mds-text>
+            <div class="grid divide-y divide-border-muted *:py-200" data-scene="rows">
+              <div class="flex items-center justify-between gap-inline">
+                <span class="flex min-w-0 items-center gap-inline"><mds-icon class="text-fg-muted" name="mi/baseline/storage"></mds-icon><mds-text typography="detail">Registers</mds-text></span>
+                <mds-text typography="detail" class="text-fg-muted">7</mds-text>
               </div>
-              <div class="scene-spread">
-                <span><mds-icon class="scene-icon" name="mi/baseline/inventory-2"></mds-icon><mds-text typography="detail">Files</mds-text></span>
-                <mds-text typography="detail" class="scene-muted">128</mds-text>
+              <div class="flex items-center justify-between gap-inline">
+                <span class="flex min-w-0 items-center gap-inline"><mds-icon class="text-fg-muted" name="mi/baseline/inventory-2"></mds-icon><mds-text typography="detail">Files</mds-text></span>
+                <mds-text typography="detail" class="text-fg-muted">128</mds-text>
               </div>
-              <div class="scene-spread">
-                <span><mds-icon class="scene-icon" name="mi/baseline/forum"></mds-icon><mds-text typography="detail">Messages</mds-text></span>
+              <div class="flex items-center justify-between gap-inline">
+                <span class="flex min-w-0 items-center gap-inline"><mds-icon class="text-fg-muted" name="mi/baseline/forum"></mds-icon><mds-text typography="detail">Messages</mds-text></span>
                 <mds-badge variant="info" tone="strong" label="29"></mds-badge>
               </div>
-              <div class="scene-spread">
-                <span><mds-icon class="scene-icon" name="mi/baseline/groups"></mds-icon><mds-text typography="detail">Operators</mds-text></span>
-                <mds-text typography="detail" class="scene-muted">12</mds-text>
+              <div class="flex items-center justify-between gap-inline">
+                <span class="flex min-w-0 items-center gap-inline"><mds-icon class="text-fg-muted" name="mi/baseline/groups"></mds-icon><mds-text typography="detail">Operators</mds-text></span>
+                <mds-text typography="detail" class="text-fg-muted">12</mds-text>
               </div>
-              <div class="scene-spread">
-                <span><mds-icon class="scene-icon" name="mi/baseline/settings"></mds-icon><mds-text typography="detail">Settings</mds-text></span>
+              <div class="flex items-center justify-between gap-inline">
+                <span class="flex min-w-0 items-center gap-inline"><mds-icon class="text-fg-muted" name="mi/baseline/settings"></mds-icon><mds-text typography="detail">Settings</mds-text></span>
               </div>
             </div>
           </mds-card-content>
@@ -403,7 +320,7 @@
             <mds-text typography="part" tag="h2">The team</mds-text>
           </mds-card-header>
           <mds-card-content>
-            <div class="scene-fields">
+            <div class="grid gap-between-fields" data-scene="fields">
               <!-- one letter each: the next avatar of the stack covers the second -->
               <mds-avatar-stack total="7">
                 <mds-avatar-stack-item initials="g" variant="primary"></mds-avatar-stack-item>
@@ -430,11 +347,11 @@
             <mds-text typography="part" tag="h2">Attachments</mds-text>
           </mds-card-header>
           <mds-card-content>
-            <div class="scene-fields">
+            <div class="grid gap-between-fields" data-scene="fields">
               <mds-file filename="Identity document" suffix="pdf" description="240 KB"></mds-file>
               <mds-file filename="Rental contract" suffix="docx" description="1.2 MB"></mds-file>
-              <div class="scene-stack">
-                <mds-text typography="caption" tag="p" class="scene-muted">Floor plan, 60%</mds-text>
+              <div class="grid gap-title-content" data-scene="stack">
+                <mds-text typography="caption" tag="p" class="text-fg-muted">Floor plan, 60%</mds-text>
                 <mds-progress progress="0.6" aria-label="Uploading the floor plan"></mds-progress>
               </div>
             </div>
@@ -447,14 +364,14 @@
             <mds-text typography="part" tag="h2">Actions</mds-text>
           </mds-card-header>
           <mds-card-content>
-            <div class="scene-fields">
-              <div class="scene-row">
+            <div class="grid gap-between-fields" data-scene="fields">
+              <div class="flex flex-wrap items-center gap-inline">
                 <mds-button>Send</mds-button>
                 <mds-button tone="weak">Assign</mds-button>
                 <mds-button tone="outline">Forward</mds-button>
                 <mds-button tone="text">Postpone</mds-button>
               </div>
-              <div class="scene-row">
+              <div class="flex flex-wrap items-center gap-inline">
                 <mds-button variant="dark" tone="outline">Cancel</mds-button>
                 <mds-button variant="error">Delete</mds-button>
                 <mds-button variant="ai" icon="mi/baseline/insights">Summarize</mds-button>
@@ -471,7 +388,7 @@
             <mds-text typography="part" tag="h2">Categories</mds-text>
           </mds-card-header>
           <mds-card-content>
-            <div class="scene-row">
+            <div class="flex flex-wrap items-center gap-inline">
               <mds-label variant="blue" label="Residence"></mds-label>
               <mds-label variant="green" label="Civil status"></mds-label>
               <mds-label variant="orange" label="Elections"></mds-label>

@@ -22,6 +22,18 @@
 @import '@maggioli-design-system/styles/dist/tailwind/utilities.css';
 
 /*
+  The pages the studio shows in its frames (#1404): the scene and the groups of the Theme section,
+  the states beside a contrast scale, the banner of the Start page. They are written in these
+  classes and load this sheet, but sit at the root of the studio, beside src/, where `source` does
+  not look: each is named here.
+*/
+
+@source '../scene.html';
+@source '../groups.html';
+@source '../states.html';
+@source '../hero.html';
+
+/*
   The thresholds of the container queries the classes write (`@max-<name>:`, `@min-<name>:`): each
   is a `--container-<name>` in an @theme here, named after the limit it comes from, its reason
   beside it, a literal since a container query reads no var() (as Magma's own --container-actions,
