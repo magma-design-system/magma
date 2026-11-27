@@ -5,6 +5,7 @@ import { toneMinimalVariantDictionary } from '@type/tone';
 import { TypographyType, TypographyVariants } from '@type/typography';
 import { expect, fn, waitFor } from 'storybook/test';
 import { linkUnderlineDictionary, linkVariantDictionary } from '../meta/dictionary';
+import { StateCell, StatesGrid, stateCell } from '@fixture/states';
 
 export default {
   title: 'UI / Actions / Link',
@@ -269,4 +270,190 @@ export const WithoutHref = {
     await userEvent.keyboard(' ');
     await expect(args.onClick).toHaveBeenCalledTimes(3);
   },
+};
+
+/**
+ * Every state of the link once the story has opened (#1440, @fixture/states), each a word of a
+ * sentence, as a link sits in a product: every underline in both tones, the variant that takes the
+ * colour of the text on a coloured surface, the icon after and before the text, a new tab, a
+ * download, the inline button without `href`, the text that wraps (the icon on the line of its
+ * word), and the link in a heading, a caption and editorial text. A state only an interaction
+ * reaches (`play: true`) is brought there by the play function, which checks the focus, not the
+ * look. The fill under the pointer needs a real pointer, which a play does not move.
+ */
+interface LinkState {
+  state: string;
+  play?: boolean;
+  /** the text around the link, before and after it */
+  text: [string, string];
+  label: string;
+  link: Record<string, string | boolean>;
+  typography?: TypographyType;
+  editorial?: boolean;
+  /** a coloured surface, which the link takes the colour of with `variant="inherit"` */
+  coloured?: boolean;
+  /** a narrow text, where the link wraps onto two lines */
+  narrow?: boolean;
+}
+
+const privacy: Pick<LinkState, 'text' | 'label'> = {
+  text: ["Leggi l'", ' prima di continuare.'],
+  label: 'informativa sulla privacy',
+};
+const focusedLink = 'focused';
+
+const linkStates: LinkState[] = [
+  { state: 'solid, strong (default)', ...privacy, link: { href: '#privacy' } },
+  { state: 'solid, weak', ...privacy, link: { href: '#privacy', tone: 'weak' } },
+  { state: 'dotted, strong', ...privacy, link: { href: '#privacy', underline: 'dotted' } },
+  {
+    state: 'dotted, weak',
+    ...privacy,
+    link: { href: '#privacy', underline: 'dotted', tone: 'weak' },
+  },
+  { state: 'marker, strong', ...privacy, link: { href: '#privacy', underline: 'marker' } },
+  {
+    state: 'marker, weak',
+    ...privacy,
+    link: { href: '#privacy', underline: 'marker', tone: 'weak' },
+  },
+  {
+    state: 'variant inherit, on a coloured surface',
+    text: ['Pagamento rifiutato. ', ' per riprovare.'],
+    label: 'Aggiorna la carta',
+    link: { href: '#carta', variant: 'inherit' },
+    typography: 'detail',
+    coloured: true,
+  },
+  {
+    state: 'variant inherit, dotted, weak',
+    text: ['Pagamento rifiutato. ', ' per riprovare.'],
+    label: 'Aggiorna la carta',
+    link: { href: '#carta', variant: 'inherit', underline: 'dotted', tone: 'weak' },
+    typography: 'detail',
+    coloured: true,
+  },
+  {
+    state: 'variant inherit, marker',
+    text: ['Pagamento rifiutato. ', ' per riprovare.'],
+    label: 'Aggiorna la carta',
+    link: { href: '#carta', variant: 'inherit', underline: 'marker' },
+    typography: 'detail',
+    coloured: true,
+  },
+  {
+    state: 'icon right (default)',
+    text: ['Domanda inviata: ', '.'],
+    label: 'vai al riepilogo',
+    link: { href: '#riepilogo', icon: 'mi/baseline/arrow-forward' },
+  },
+  {
+    state: 'icon left',
+    text: ['', ' per gli altri capitoli.'],
+    label: "Torna all'indice",
+    link: { href: '#indice', icon: 'mi/baseline/arrow-back', 'icon-position': 'left' },
+  },
+  {
+    state: 'new tab',
+    text: ['Fonte: ', '.'],
+    label: 'sito del Gruppo Maggioli',
+    link: { href: 'https://www.maggioli.it', target: 'blank', icon: 'mi/baseline/open-in-new' },
+  },
+  {
+    state: 'download',
+    text: ['', ' in PDF.'],
+    label: 'Scarica il rapporto annuale',
+    link: { href: '#rapporto', download: 'rapporto-annuale.pdf', icon: 'mi/baseline/download' },
+  },
+  {
+    state: 'without href, an inline button',
+    text: ['Non trovi quello che cerchi? ', ' al supporto.'],
+    label: 'Chiedi aiuto',
+    link: {},
+  },
+  {
+    state: 'long text that wraps',
+    text: ['Va a capo con il testo: ', ' e poi il testo prosegue.'],
+    label: 'un collegamento abbastanza lungo da occupare due righe',
+    link: { href: '#lungo' },
+    narrow: true,
+  },
+  {
+    state: 'icon on the last word, wrapping',
+    text: ["L'icona resta sull'ultima parola: ", '.'],
+    label: 'scarica il rapporto completo',
+    link: { href: '#completo', icon: 'mi/baseline/download' },
+    narrow: true,
+  },
+  {
+    state: 'in a heading',
+    text: ['Le pratiche di ', ''],
+    label: 'Mario Rossi',
+    link: { href: '#mario-rossi' },
+    typography: 'h4',
+  },
+  {
+    state: 'in a caption',
+    text: ['Aggiornato il 12 marzo 2025. ', ''],
+    label: 'Cronologia delle modifiche',
+    link: { href: '#cronologia' },
+    typography: 'caption',
+  },
+  {
+    state: 'in editorial text',
+    text: ['Il regolamento si applica dal 1 gennaio: ', ' per i dettagli.'],
+    label: 'leggi il testo completo',
+    link: { href: '#regolamento' },
+    editorial: true,
+  },
+  { state: focusedLink, play: true, ...privacy, link: { href: '#privacy' } },
+];
+
+const TemplateStates = () => (
+  <StatesGrid>
+    {linkStates.map(
+      ({ state, play, text, label, link, typography, editorial, coloured, narrow }) => {
+        const classes = [
+          coloured && 'rounded-md bg-danger-surface p-400 text-danger-fg',
+          narrow && 'max-w-[16rem]',
+        ]
+          .filter(Boolean)
+          .join(' ');
+        return (
+          <StateCell key={state} state={state} play={play}>
+            <mds-text
+              typography={typography ?? 'paragraph'}
+              variant={editorial ? 'read' : undefined}
+              class={classes || undefined}
+            >
+              {text[0]}
+              <mds-link {...link}>{label}</mds-link>
+              {text[1]}
+            </mds-text>
+          </StateCell>
+        );
+      },
+    )}
+  </StatesGrid>
+);
+
+const playStates = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+  const cell = stateCell(canvasElement, focusedLink);
+  const elements = Array.from(cell.querySelectorAll('*')).filter((element) =>
+    element.tagName.startsWith('MDS-'),
+  );
+  await waitFor(() => elements.forEach((element) => expect(element).toHaveAttribute('hydrated')));
+  const link = cell.querySelector('mds-link') as HTMLMdsLinkElement;
+  // the shadow root delegates the focus to the anchor, which is what takes it
+  link.focus();
+
+  await waitFor(() =>
+    expect(link.shadowRoot!.activeElement).toBe(link.shadowRoot!.querySelector('.link')),
+  );
+};
+
+export const States = {
+  render: TemplateStates,
+
+  play: playStates,
 };
