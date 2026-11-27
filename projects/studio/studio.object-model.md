@@ -254,9 +254,12 @@ Altre relazioni:
   verifica che tocca (persona); il badge della sua scala (proposta, 2026-11-26); per ogni campo
   ereditato, da chi: il gruppo per nome, o il preset (persona, 2026-11-26).
 - **Ordine**: cromatico dentro il suo gruppo, ovunque compaia: l'elenco, i selettori, il preset e
-  i file esportati (persona, 2026-11-26). Il criterio: la tonalità OKLCH del colore chiave, a
-  partire dal rosso; i neutri, che non hanno tonalità, per luminosità; un riferimento prende la
-  tonalità della famiglia che segue. (proposta)
+  i file esportati (persona, 2026-11-26). Il criterio, scelto sul render (persona, 2026-11-27,
+  opzione B): la tonalità OKLCH del colore chiave, da 0 gradi, cioè dal rosso; un riferimento
+  prende la tonalità della famiglia che segue; il gruppo dei neutri (`tone`) dal freddo al caldo,
+  sull'asse b di OKLab, così `porcelain` resta tra i grigi; in un altro gruppo un grigio, con croma
+  sotto 0.03 (la soglia `HUE_READABLE` di `ramp-grade.mts` in design-tokens, sotto la quale la
+  tonalità è rumore), va in testa, per luminosità.
 
 ### Scala di contrasto
 
@@ -724,6 +727,10 @@ Finché un conflitto non è risolto, si costruisce come dice il design system.
 12. **Chi ordina i colori**: lo studio quando scrive il preset, o anche il motore di
     design-tokens, così esce in ordine anche una configurazione scritta a mano? Proposta: un
     solo ordinamento, nel motore, che lo studio riusa. (proposta, 2026-11-26)
+    **Risposta** (persona, 2026-11-27): lo studio ora, il motore poi. Una funzione pura nel motore
+    dello studio (`src/engine/`) ordina ogni elenco e il preset che lo studio scrive; spostarla in
+    design-tokens, perché anche una configurazione scritta a mano esca in ordine, è un'issue a
+    parte, con il rilascio di design-tokens.
 13. **Le impostazioni del preset** (colorspace, smooth, formula, saturazione): in quale vista si
     regolano? Oggi stanno sotto le famiglie della Palette; nel flusso nessuna vista le ospita, e
     un campo ereditato dal preset deve portare lì. Proposta: una pagina sua, come Scala, raggiunta
