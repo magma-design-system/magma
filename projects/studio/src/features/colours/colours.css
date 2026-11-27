@@ -1,0 +1,172 @@
+/*
+  The short sheet of Colours (#1403): what the classes of its pages do not write, the data its
+  previews paint, in the colours of the preset. The layout of the page is in its classes
+  (colours.tsx); the thresholds its classes query are in src/tailwind.css.
+*/
+
+/* the swatch of a family in the list: the colour of the family fills the circle of the icon,
+   through the part icon that mds-button documents (it has no custom property for the colour of
+   its icon); a ring of the default border keeps a pale colour visible on the canvas */
+
+.colours-swatch::part(icon) {
+  fill: var(--colours-swatch);
+  stroke: rgb(var(--magma-border-default));
+  stroke-width: calc(var(--spacing) * 25);
+}
+
+/* ---- the ramps of the family (Ramps, scene-side.tsx) ---- */
+
+/* the light and the dark ramp, two cards of data, one over the other while each holds its steps
+   in a row (the container of the rule after the steps) */
+
+.colours-ramps {
+  container: ramps / inline-size;
+  display: grid;
+  gap: var(--magma-rhythm-between-containers);
+}
+
+/* where the family has a side (60rem of the detail, --container-side of tailwind.css), the
+   two ramps stand upright side by side in it; under 45rem of the detail (the rule of the steps
+   below), upright, side by side while each keeps the room of a step laid flat (about 12rem), one
+   over the other under that. Literals, since a container query reads no var(). */
+
+@container family (width >= 60rem) {
+  .colours-side .colours-ramps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@container family (width < 45rem) {
+  .colours-ramps {
+    align-items: start;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+  }
+}
+
+/* each card stands on the background its ramp is solved against, white for light and black for
+   dark (generator.ts): data, like the steps, not a surface of the page */
+
+.preview-card {
+  padding: var(--magma-rhythm-inline) var(--magma-rhythm-inset);
+  border-radius: var(--magma-radius-lg);
+}
+
+.preview-card.light {
+  border: thin solid rgb(var(--magma-border-muted));
+  background: white;
+}
+
+.preview-card.dark {
+  background: black;
+}
+
+.scale-row {
+  display: flex;
+  gap: var(--magma-rhythm-inline);
+  align-items: center;
+}
+
+/* the name of the mode, legible on the background of its card whatever the mode of the page */
+
+.scale-label {
+  flex: none;
+  inline-size: 5ch;
+  font-size: var(--text-size-info-tip);
+  color: dimgray;
+}
+
+.preview-card.dark .scale-label {
+  color: darkgray;
+}
+
+.scale-cells {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  border-radius: var(--magma-radius-md);
+}
+
+.scale-cell {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: 0;
+  block-size: calc(var(--spacing) * 1300);
+}
+
+/* the colour of the token beside its ramp */
+
+.scale-cell.seed {
+  flex: 0 0 calc(var(--spacing) * 1300);
+  margin-inline-start: var(--magma-rhythm-inline);
+  border-radius: var(--magma-radius-md);
+}
+
+.cell-contrast {
+  font-size: var(--text-size-info-tip);
+  font-variant-numeric: tabular-nums;
+}
+
+.cell-hex {
+  font-family: var(--font-code);
+  font-size: var(--text-size-info-tip);
+}
+
+/*
+  A ramp stands in a row while every step keeps its text whole: a step needs its hex, six
+  characters of code at the size of a tip, and a margin, about 3.5rem; ten steps, the seed, the
+  name of the mode and the inset of the card make about 45rem. Under it the steps would squash, so
+  each ramp turns vertical: one step a row, the contrast at its start and the hex at its end, the
+  seed under them.
+*/
+
+@container ramps (width < 45rem) {
+  .preview-card {
+    padding: var(--magma-rhythm-inline);
+  }
+
+  .scale-row {
+    align-items: stretch;
+    flex-direction: column;
+    gap: calc(var(--spacing) * 200);
+  }
+
+  .scale-label {
+    inline-size: auto;
+  }
+
+  /* in a column the cells keep their height: a basis of 0 under overflow: hidden would fold them */
+
+  .scale-cells {
+    flex: none;
+    flex-direction: column;
+  }
+
+  .scale-cell {
+    block-size: calc(var(--spacing) * 900);
+    flex: none;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-inline: calc(var(--spacing) * 300);
+  }
+
+  .scale-cell.seed {
+    flex: none;
+    margin-block-start: var(--magma-rhythm-inline);
+    margin-inline-start: 0;
+  }
+}
+
+/* the scene: a page of a product as wide as the side, as tall as a phone held upright, never taller
+   than three quarters of the window; a family that paints nothing says so in its place */
+
+.colours-side-frame {
+  aspect-ratio: 9 / 16;
+  border: thin solid rgb(var(--magma-border-muted));
+  border-radius: var(--magma-radius-lg);
+  corner-shape: var(--magma-corner-shape);
+  inline-size: 100%;
+  max-block-size: 75dvh;
+}

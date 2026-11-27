@@ -2,6 +2,7 @@ import { expect, test } from 'vitest'
 
 import { cancelExport, confirmExport, exitOf, exportConfig, exportSelection, guard } from './exports.js'
 import { updateConfig } from './studio.js'
+import { presetInOrder } from '../engine/colour-order.js'
 import { quietStudio } from './testing.mjs'
 
 // What hands the configuration out (#1400): each export through the contrast gate (#698), the
@@ -49,7 +50,7 @@ test('each export hands over the file it says', () => {
     ['magma-gimp.zip', 'application/zip'],
     ['magma-selection.zip', 'application/zip'],
   ])
-  expect(JSON.parse(studio.files[1].data as string)).toEqual(studio.config.value)
+  expect(JSON.parse(studio.files[1].data as string)).toEqual(presetInOrder(studio.config.value))
 })
 
 test('the tokens of a configuration the generator refuses are not handed over: the notice says why', () => {
@@ -74,7 +75,7 @@ test('the exit downloads the preset on its own, saves it where a command takes s
   expect([download.label, download.proceed]).toEqual(['Download the preset', 'Download anyway'])
   void download.run()
   expect(studio.files.map(({ name }) => name)).toEqual(['magma-design-tokensrc.json'])
-  expect(JSON.parse(studio.files[0].data as string)).toEqual(studio.config.value)
+  expect(JSON.parse(studio.files[0].data as string)).toEqual(presetInOrder(studio.config.value))
 
   // a command that refuses saves: the preset is downloaded
   studio.served.value = { path: 'package.json', readOnly: 'a configuration in package.json' }

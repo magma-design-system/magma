@@ -1,5 +1,6 @@
-// The groups of families the studio treats apart (out of surfaces.tsx, #1399): read by the
-// Semantic surface page, the Themes page and the CSS of the scene.
+// The groups of families the studio treats apart (out of surfaces.tsx, #1399): read by the switch
+// of the surfaces of a family (Colours) and of a group (Groups), the Themes page and the CSS of the
+// scene.
 
 /**
  * Groups RESERVED to the status messages: the group of the `status-*` families the
@@ -14,3 +15,10 @@
  * colour carries. Every other group, one created in the studio included, can be one.
  */
 export const RESERVED_GROUPS = new Set(['status']);
+
+/**
+ * Groups that never generate surfaces: `variant` holds the alias-only accent families
+ * (constraint A3, issue #613), references that re-export the ramp of their source, so neither
+ * the group nor its families offer the switch.
+ */
+export const NO_SURFACE_GROUPS = new Set(['variant']);

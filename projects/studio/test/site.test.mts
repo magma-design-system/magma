@@ -117,16 +117,22 @@ test.skipIf(!built).each([
   60_000,
 )
 
-// The Colors section is the layout that holds its <main>: the bar of the list of the families,
-// the list and the page. The list is the <aside> the button of the bar controls by its id.
-const LIST_TOGGLE = 'mds-button[aria-controls="palette-list"]'
-const LIST = '#palette-list'
-const PAGE = '#palette-list ~ main'
+// The stage Colours is the layout that holds its <main>: the bar of the list of the families, the
+// list and the page. The list is the <aside> the button of the bar controls by its id (#1403).
+const LIST_TOGGLE = 'mds-button[aria-controls="colours-list"]'
+const LIST = '#colours-list'
+const PAGE = '#colours-list ~ main'
+
+/** The pages of Colors: the stage Colours, then the pages of today's section, by their address. */
+const PAGES_OF_COLORS = [
+  { hash: '#/colours', label: 'Colors' },
+  ...COLORS_PAGES.map((page) => ({ hash: `#/colors/${page.slug}`, label: page.label })),
+]
 
 /** A page of Colors in the tab, once its title is the one of the page and its components are up. */
-async function openColors (tab: Page, slug: string): Promise<void> {
-  const label = COLORS_PAGES.find((page) => page.slug === slug)!.label
-  await tab.evaluate((hash) => { location.hash = hash }, `#/colors/${slug}`)
+async function openColors (tab: Page, hash: string): Promise<void> {
+  const label = PAGES_OF_COLORS.find((page) => page.hash === hash)!.label
+  await tab.evaluate((next) => { location.hash = next }, hash)
   await tab.waitForFunction((title) => {
     const heading = document.querySelector('main mds-text[tag="h1"]')
     const section = heading?.closest('main')?.parentElement
@@ -144,17 +150,10 @@ async function openColors (tab: Page, slug: string): Promise<void> {
 /** Whether the element the selector names is drawn: it and its ancestors take a box. */
 const drawn = (tab: Page, selector: string) => tab.locator(selector).isVisible()
 
-/** How the actions of the head of the page, the row of Reset, are laid out: in a row, or stacked. */
-const actions = (tab: Page) =>
-  tab.evaluate(() => {
-    const row = document.getElementById('studio-reset')!.parentElement!
-    return getComputedStyle(row).flexDirection
-  })
-
 // The pages of Colors on a phone (#1311): none scrolls sideways, a block of code scrolling inside
-// its own frame; the list of the families stands folded above the page (palette.css), its bar
-// opens the list in place of the page and choosing a family folds it again; the actions of the
-// head stack (style.css). On a desktop the list stands beside the page and the bar is not drawn.
+// its own frame; the list of the families of Colours stands folded above the page (its classes,
+// --container-colours-list), its bar opens the list in place of the page and choosing a family
+// folds it again. On a desktop the list stands beside the page and the bar is not drawn.
 test.skipIf(!built)(
   'on a phone no page of Colors scrolls sideways, and the list of the families folds above the page',
   async () => {
@@ -162,9 +161,9 @@ test.skipIf(!built)(
     const tab = await context.newPage()
     await tab.goto(`${origin}${BASE}`, { waitUntil: 'networkidle' })
     const sideways: Record<string, string[]> = {}
-    for (const { slug } of COLORS_PAGES) {
-      await openColors(tab, slug)
-      sideways[slug] = await tab.evaluate(() =>
+    for (const { hash } of PAGES_OF_COLORS) {
+      await openColors(tab, hash)
+      sideways[hash] = await tab.evaluate(() =>
         [...document.querySelector('main')!.parentElement!.querySelectorAll('*')]
           .filter(
             (el) =>
@@ -179,10 +178,9 @@ test.skipIf(!built)(
           }),
       )
     }
-    expect(sideways).toEqual(Object.fromEntries(COLORS_PAGES.map(({ slug }) => [slug, []])))
+    expect(sideways).toEqual(Object.fromEntries(PAGES_OF_COLORS.map(({ hash }) => [hash, []])))
 
-    await openColors(tab, 'palette')
-    expect(await actions(tab)).toBe('column')
+    await openColors(tab, '#/colours')
     expect(await drawn(tab, LIST_TOGGLE)).toBe(true)
     expect(await drawn(tab, LIST)).toBe(false)
     await tab.click(LIST_TOGGLE)
@@ -203,7 +201,7 @@ test.skipIf(!built)('on a desktop the list of the families stands beside the pag
   const context = await browser.newContext({ viewport: { width: 1280, height: 800 } })
   const tab = await context.newPage()
   await tab.goto(`${origin}${BASE}`, { waitUntil: 'networkidle' })
-  await openColors(tab, 'palette')
+  await openColors(tab, '#/colours')
   const boxes = await tab.evaluate((selectors) =>
     selectors.map((one) => {
       const box = document.querySelector(one)!.getBoundingClientRect()
@@ -214,6 +212,5 @@ test.skipIf(!built)('on a desktop the list of the families stands beside the pag
   expect(boxes[0].left).toBe(0)
   expect(boxes[1].left).toBe(boxes[0].right)
   expect(boxes[1].top).toBe(boxes[0].top)
-  expect(await actions(tab)).toBe('row')
   await context.close()
 }, 60_000)

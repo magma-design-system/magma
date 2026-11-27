@@ -6,6 +6,7 @@ import type {
 import { nearestColorName } from '../engine/color-names.js';
 import { msg } from '../shared/i18n/text.js';
 import { clone, updateConfig, type StudioState } from './studio.js';
+import { undoably } from './undo.js';
 
 /*
   The actions of the Palette (#1400, out of the JSX of app.tsx): the families of the
@@ -76,11 +77,15 @@ export function duplicateFamily(state: StudioState, name: string): void {
   });
 }
 
-/** Removes a family and selects the first one left. */
+/**
+ * Removes a family and selects the first one left. Nothing is asked: a toast undoes it (undo.ts),
+ * as the object model wants of an action that takes work away (section 9, "Le azioni distruttive
+ * si annullano, senza conferma").
+ */
 export function deleteFamily(state: StudioState, name: string): void {
   const index = state.config.peek().colors.findIndex((c) => c.name === name);
   if (index < 0) return;
-  batch(() => {
+  undoably(state, { text: msg('{name} deleted.'), vars: { name } }, () => {
     updateConfig(state, (draft) => {
       draft.colors.splice(index, 1);
     });

@@ -44,7 +44,7 @@ const footButtons = () =>
   }))
 
 test('on a stage the stepper shows the stages in order under the bar, the current one by its position', async () => {
-  await at('#/colors/semantic-surface')
+  await at('#/weights')
   expect(stepper()?.getAttribute('items-done')).toBe('2')
   expect(items().map((one) => textOf(one))).toEqual([
     'Colors',
@@ -60,7 +60,7 @@ test('on a stage the stepper shows the stages in order under the bar, the curren
   expect(bar.compareDocumentPosition(stages()!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
   // each stage of its own page opens with its position
   for (const [hash, done] of [
-    ['#/colors/palette', '1'],
+    ['#/colours', '1'],
     ['#/colors/themes', '3'],
     ['#/exceptions', '4'],
     ['#/colors/contrast-check', '5'],
@@ -71,12 +71,9 @@ test('on a stage the stepper shows the stages in order under the bar, the curren
 })
 
 test('a page beside a stage keeps its stage current, and has no foot', async () => {
-  await at('#/colors/contrast-scales')
-  expect(stepper()?.getAttribute('items-done')).toBe('1')
-  expect(foot()).toBeNull()
-  location.hash = '#/colors/groups'
-  await vi.waitFor(() => expect(root.querySelector('.content')).not.toBeNull())
-  expect(stepper()?.getAttribute('items-done')).toBe('1')
+  // the page of a scale, beside Colours (#1403)
+  await at('#/colours/scale/wcag3/tone')
+  await vi.waitFor(() => expect(stepper()?.getAttribute('items-done')).toBe('1'))
   expect(foot()).toBeNull()
 })
 
@@ -90,24 +87,24 @@ test('a page that is no stage has neither the stepper nor the foot', async () =>
 })
 
 test('the foot of a stage leads back and forward, named after where it leads, at the end of the page', async () => {
-  await at('#/colors/semantic-surface')
+  await at('#/weights')
   expect(footButtons()).toEqual([
-    { text: '1. Colors', href: '#/colors/palette' },
+    { text: '1. Colors', href: '#/colours' },
     { text: '3. Themes', href: '#/colors/themes' },
   ])
   // the way back outlined first, the way forward the main action, last
   const [back, forward] = foot()!.querySelectorAll('mds-button')
   expect([back.getAttribute('tone'), forward.getAttribute('tone')]).toEqual(['outline', null])
-  // at the end of the region of the page that scrolls
-  const content = root.querySelector('main.content')!
+  // at the end of the region of the page that scrolls, the main of the stage
+  const content = root.querySelector('.studio-section main')!
   expect(content.contains(foot())).toBe(true)
   expect(content.lastElementChild?.contains(foot())).toBe(true)
   // the first stage leads back to the view before the stages
-  location.hash = '#/colors/palette'
+  location.hash = '#/colours'
   await vi.waitFor(() =>
     expect(footButtons()).toEqual([
       { text: 'Opening', href: '#/opening' },
-      { text: '2. Weights', href: '#/colors/semantic-surface' },
+      { text: '2. Weights', href: '#/weights' },
     ]),
   )
   // the stage with no page of today has its own, the foot at its end
@@ -141,14 +138,14 @@ test('the last stage ends with the exit, which downloads the preset through the 
 test('a done stage of the stepper opens its stage, as a link would', async () => {
   await at('#/colors/themes')
   items()[0].dispatchEvent(new CustomEvent('mdsStepperBarItemDone', { detail: { value: 'colours' } }))
-  await vi.waitFor(() => expect(location.hash).toBe('#/colors/palette'))
+  await vi.waitFor(() => expect(location.hash).toBe('#/colours'))
   await vi.waitFor(() => expect(stepper()?.getAttribute('items-done')).toBe('1'))
 })
 
 test('the stepper and the foot speak the language of the studio', async () => {
   document.documentElement.lang = 'it'
   try {
-    await at('#/colors/semantic-surface')
+    await at('#/weights')
     expect(within(root).queryByRole('navigation', { name: 'Passi' })).not.toBeNull()
     expect(
       [...root.querySelectorAll('mds-stepper-bar-item')].map((one) => textOf(one)),

@@ -5,7 +5,7 @@ import initialConfig from '@maggioli-design-system/design-tokens/.magma-design-t
 import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs'
 import { paintedBy } from '../../engine/paints.js'
 import { sceneStyle } from '../../engine/scene-css.js'
-import { onScale } from '../../scales.js'
+import { onScale } from '../../engine/families.js'
 import { ACTION_STATES, forcedSelector, forceHover, statesMarkup, statesPlan } from './states.js'
 import { translator } from '../i18n/i18n.js'
 

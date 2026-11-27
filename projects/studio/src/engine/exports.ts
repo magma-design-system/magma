@@ -7,12 +7,14 @@ import {
   colorsToDtcg,
   type ColorTokenTree,
 } from '@maggioli-design-system/design-tokens/src/lib/dtcg.mjs';
+import { chromaticOrder, presetInOrder } from './colour-order.js';
 import { cssHex, cssRgb, gimpPalette } from './formats.js';
 
 /*
   What the Config menu of the bar hands over, as files (#1400, out of app.tsx): the configuration,
   its tokens in the formats of the build of design-tokens, or a zip of all of them. Pure: the
-  configuration in, the file out; the action that downloads it is state/exports.ts.
+  configuration in, the file out; the action that downloads it is state/exports.ts. Every file goes
+  out with its families in their order (colour-order.ts, #1403).
 */
 
 /** A file handed to the person: its name, its content, its media type. */
@@ -115,10 +117,11 @@ function distFiles(config: MagmaConfig, date: string, groups = true): Record<str
  * configuration. `date` stamps the CSS files, as the build of design-tokens does.
  */
 export function exportOf(
-  config: MagmaConfig,
+  preset: MagmaConfig,
   kind: ExportKind,
   date: string = new Date().toUTCString(),
 ): FileOut {
+  const config = presetInOrder(preset);
   if (kind === 'config')
     return {
       name: 'magma-design-tokensrc.json',
@@ -162,7 +165,10 @@ export function selectionOf(
   date: string = new Date().toUTCString(),
 ): FileOut {
   const target = new Set(names);
-  const subset = { ...clone(config), colors: config.colors.filter((one) => target.has(one.name)) };
+  const subset = {
+    ...clone(config),
+    colors: chromaticOrder(config.colors.filter((one) => target.has(one.name))),
+  };
   return {
     name: 'magma-selection.zip',
     data: zipOf(distFiles(subset, date, false)),

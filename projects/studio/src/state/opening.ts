@@ -32,7 +32,7 @@ function snapshot(state: StudioState): WorkSnapshot {
     baseline: state.baseline.peek(),
     selectedName: state.selectedName.peek(),
     loadedRatios: clone(state.loadedRatios.peek()),
-    colorsView: state.colorsView.peek(),
+    workPlace: state.workPlace.peek(),
   };
 }
 
@@ -55,7 +55,7 @@ function open(
     if (opened.config !== base) updateConfig(state, (draft) => Object.assign(draft, opened.config));
     state.themeChoices.value = opened.choices;
     if (opened.family) state.selectedName.value = opened.family;
-    state.colorsView.value = undefined;
+    state.workPlace.value = undefined;
     state.notice.value = null;
     state.lastOpening.value = previous && { said, previous };
   });
@@ -108,7 +108,7 @@ export async function openImported(state: StudioState, file: PickedFile): Promis
       state.themeChoices.value = choices;
       return;
     }
-    state.colorsView.value = undefined;
+    state.workPlace.value = undefined;
     state.lastOpening.value = previous && {
       said: { text: msg('You opened {file}.'), vars: { file: file.name } },
       previous,
@@ -128,7 +128,7 @@ export function undoOpening(state: StudioState): void {
     state.baseline.value = previous.baseline;
     state.selectedName.value = previous.selectedName;
     state.loadedRatios.value = previous.loadedRatios;
-    state.colorsView.value = previous.colorsView;
+    state.workPlace.value = previous.workPlace;
     state.lastOpening.value = null;
   });
 }

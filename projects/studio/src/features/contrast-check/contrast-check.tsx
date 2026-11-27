@@ -82,7 +82,7 @@ export const measure = (cell: Pick<GateCell, 'metric'>, value: number): string =
 type BadgeVariant = 'success' | 'error' | 'warning' | 'info' | 'dark';
 
 /**
- * The badge of a pair in one mode, as the Semantic surface preview draws a verdict: `error` for
+ * The badge of a pair in one mode, as the canvas of the surfaces draws a verdict: `error` for
  * what fails the build, `warning` for what the gate only reports, `success` when it holds. The
  * label fills `{measure}` with the target of the pair.
  */

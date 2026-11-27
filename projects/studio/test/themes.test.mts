@@ -197,7 +197,7 @@ test('an accent is a Magma select: another variant marks the override and repoin
   expect(exportOf()).not.toBe(before)
 })
 
-// The canvas of Semantic surface (SurfaceCanvas, surfaces.tsx), found by its label, which names
+// The canvas of the surfaces (SurfaceCanvas, shared/ui/surface-canvas.tsx), found by its label, which names
 // its mode and its colour and, for a mode out of use, says why: `light - canvas #f6f6f6 - not
 // offered by the theme`. On it, each surface is its role then its colour in code (`sunken
 // #f0f0f0`), each text role `text muted` with its colour, its Lc and its verdict.
@@ -214,7 +214,7 @@ const surfacesOf = (canvas: HTMLElement) =>
     .map((surface) => surface.textContent?.split(' ')[0])
 const textRolesOf = (canvas: HTMLElement) => within(canvas).queryAllByText(/^text \S+$/)
 
-test('a theme shows the canvas of Semantic surface per mode, its accents on each', () => {
+test('a theme shows the canvas of its surfaces per mode, its accents on each', () => {
   show()
   const card = cardsOf()[0]
   // two parts, the columns of its row: what the theme is with its settings, then its modes

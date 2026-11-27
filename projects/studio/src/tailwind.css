@@ -29,3 +29,20 @@
   (vittorio, 2026-11-26): the pages of #1401 need none, and the sheets that the views of
   #1402-#1404 replace keep their literals, each with its reason beside it, until then.
 */
+
+@theme {
+  /* Colours (#1403, features/colours/): the list of the families stands beside the page while the
+     page keeps the room of the row of actions of its head (--container-actions of Magma, 23.75rem)
+     inside its gutters (--magma-width-page-gutter, 1.5rem on each side), with the list (15rem):
+     41.75rem of the layout. Under it the list goes above the page, folded into a bar (#1311). */
+  --container-colours-list: 41.75rem;
+  /* a view has a side, beside its fields, from 60rem of its detail: in Colours the ramps or the
+     scene of the family, in Scale the states of its sample. The column of a form (about 30rem,
+     widths/reading), the side (26rem, two upright ramps of 12rem and their gap, or an action at
+     every tone and state) and the gap between them */
+  --container-side: 60rem;
+  /* an editor of a curve (shared/ui/, hue-shift-editor.tsx, saturation-editor.tsx): its box of the
+     two ends and its charts take two columns of its fields from two short fields and their gap,
+     56ch (--magma-width-form, --magma-width-reading) and 24px (--magma-rhythm-between-fields) */
+  --container-two-fields: calc(56ch + 24px);
+}

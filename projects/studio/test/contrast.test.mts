@@ -62,9 +62,12 @@ const runAction = (id: string) =>
   act(() => root.querySelector<HTMLElement>(`#studio-exit mds-button[data-action="${id}"]`)!.click())
 
 /** The studio on a page of Colors, restored on a draft of a configuration. */
-const openOn = async (draft: MagmaConfig, view = 'colors') => {
+const openOn = async (draft: MagmaConfig, view = 'colours') => {
   storeDraft(draft, view)
-  location.hash = `#/colors/${COLORS_PAGES.find((page) => page.id === view)!.slug}`
+  location.hash =
+    view === 'colours' || view === 'weights'
+      ? `#/${view}`
+      : `#/colors/${COLORS_PAGES.find((page) => page.id === view)!.slug}`
   render(h(Studio, {}), root)
   await vi.waitFor(() => {
     if (!root.querySelector('mds-text[tag="h1"]')) throw new Error('no page yet')
@@ -90,11 +93,11 @@ const magmaButton = (label: string) =>
   document.querySelector<HTMLElement>(`mds-button[label="${label}"]`)
 
 test('the title of every page of Colors carries the verdict of the gate on the configuration edited', async () => {
-  await openOn(config(), 'surface')
+  await openOn(config(), 'weights')
   expect(badgeOf(pageHead())).toEqual({ variant: 'success', label: 'All contrasts are OK' })
   render(null, root)
 
-  await openOn(failing(), 'surface')
+  await openOn(failing(), 'weights')
   const { variant, label } = badgeOf(pageHead())
   expect(variant).toBe('error')
   expect(label).toMatch(/^\d+ contrasts below target$/)

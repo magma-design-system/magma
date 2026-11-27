@@ -1,0 +1,10 @@
+/*
+  The short sheet of Groups (#1403; groups.css and batch.css until then): the data its previews
+  paint, a step of the light ramp of a family, its colour inline. The layout is in its classes
+  (groups.tsx, batch.tsx).
+*/
+
+.groups-step {
+  block-size: 1lh;
+  flex: 1;
+}

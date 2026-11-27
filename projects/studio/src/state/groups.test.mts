@@ -24,3 +24,13 @@ test('the families named take an export list, or go back to the one of their gro
   setExports(studio, ['label.red'], undefined)
   expect(familyOf(studio, 'label.red')).not.toHaveProperty('export')
 })
+
+test('a setting of a group keeps the others it has, the surfaces of the status colours', () => {
+  const studio = quietStudio()
+  const status = studio.config.value.groups?.status
+  expect(status).toEqual({ surface: true, emphasis: true })
+  updateGroup(studio, 'status', { ...status, formula: 'wcag2' })
+  expect(studio.config.value.groups?.status).toEqual({ surface: true, emphasis: true, formula: 'wcag2' })
+  updateGroup(studio, 'status', { ...studio.config.value.groups?.status, formula: undefined })
+  expect(studio.config.value.groups?.status).toEqual({ surface: true, emphasis: true })
+})

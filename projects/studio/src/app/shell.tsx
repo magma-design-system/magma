@@ -10,10 +10,17 @@ import { ChangesButton, ChangesPanel } from './changes.js';
 import { ConfigItems, useConfigMenu } from './config-menu.js';
 import { GateDialog } from '../features/contrast-check/gate-dialog.js';
 import { RulesPage } from '../features/rules/rules.js';
+import { ColoursPage } from '../features/colours/colours.js';
+import { ScalePage } from '../features/scale/scale.js';
+import { GroupsPage } from '../features/groups/groups.js';
+import { WeightsPage } from '../features/weights/weights.js';
 import { ExceptionsPage } from '../features/exceptions/exceptions.js';
 import { IntroductionPage } from '../features/introduction/introduction.js';
 import { OpeningPage } from '../features/opening/opening.js';
 import { forgetOpening, undoOpening } from '../state/opening.js';
+import { forgetUndo, undoLast } from '../state/undo.js';
+import { reasonText } from '../state/draft.js';
+import { resolveConflict } from '../state/work.js';
 import { ThemePage } from '../theme-section.js';
 import { createStudio, say, StudioContext, useStudio, type StudioState } from '../state/studio.js';
 import { cancelExport, confirmExport, exitOf, guard } from '../state/exports.js';
@@ -28,7 +35,6 @@ import {
   placeOf,
   THEME_PAGE,
   type BehaviorPage,
-  type ColorsView,
   type MenuItem,
   type Route,
 } from '../shared/routes/routes.js';
@@ -85,7 +91,10 @@ export function Studio({ state, router }: StudioProps = {}) {
     if (!state) void checkSource(studio);
   }, []);
   const route = nav.route.value;
-  const openColors = (view: ColorsView) => nav.navigate({ section: 'colors', view });
+  // the page of the work, a stage or a page beside one, kept in the draft: the opening resumes it
+  useEffect(() => {
+    if (placeOf(route)) studio.workPlace.value = hrefOf(route);
+  }, [hrefOf(route)]);
   // the foot of a stage, handed to its page (stages.tsx); none on a page that is no stage
   const foot = placeOf(route)?.place === 'stage' ? <StageFoot route={route} /> : undefined;
 
@@ -96,14 +105,30 @@ export function Studio({ state, router }: StudioProps = {}) {
           <StudioBar route={route} />
           {/* the stages in order, on a stage and on a page beside one (stages.tsx) */}
           <StageBar route={route} onOpen={(next) => nav.navigate(next)} />
+          <WorkNotices />
+          {route.section === 'colours' && (
+            <div class="studio-section">
+              <ColoursPage foot={foot} />
+            </div>
+          )}
+          {route.section === 'scale' && (
+            <div class="studio-section">
+              <ScalePage route={route} onOpen={(next, options) => nav.navigate(next, options)} />
+            </div>
+          )}
+          {route.section === 'groups' && (
+            <div class="studio-section">
+              <GroupsPage />
+            </div>
+          )}
+          {route.section === 'weights' && (
+            <div class="studio-section">
+              <WeightsPage foot={foot} />
+            </div>
+          )}
           {route.section === 'colors' && (
             <div class="studio-section">
-              <App
-                view={route.view}
-                onNavigate={openColors}
-                foot={foot}
-                lead={<StageLead route={route} />}
-              />
+              <App view={route.view} foot={foot} lead={<StageLead route={route} />} />
             </div>
           )}
           {route.section === 'exceptions' && <ExceptionsPage foot={foot} />}
@@ -119,8 +144,8 @@ export function Studio({ state, router }: StudioProps = {}) {
             />
           )}
           {route.section === 'behavior' && <RulesPage page={route.page} />}
-          <PendingExport onReview={() => openColors('contrast')} />
-          <UndoOpening />
+          <PendingExport onReview={() => nav.navigate({ section: 'colors', view: 'contrast' })} />
+          <UndoToasts />
         </div>
       </StudioContext.Provider>
     </LangProvider>
@@ -152,15 +177,66 @@ function PendingExport({ onReview }: { onReview: () => void }) {
 }
 
 /**
- * The toast that undoes an opening (#1402): a preset opened over work with changes, said, with
- * Undo, which brings the work back as it stood; it stays until closed (confirm-action,
- * `act-then-undo`: the toast with Undo, `duration=0 dismissible`). On document.body, in the region
- * of the toasts of the application, as the dialog of the gate stands.
+ * What keeps the preset from loading or saving, over every page (#1403: from the head of the pages
+ * of Colors, which every page did not have): the error of a preset that did not load; a draft with
+ * edits of its own over a source that changed, which asks which to keep; the reason the command
+ * refuses saves. A region of the page under the bar and the stages, at the width of a text.
  */
-function UndoOpening() {
+function WorkNotices() {
+  const studio = useStudio();
+  const t = useT();
+  const notice = studio.notice.value;
+  const conflict = studio.conflict.value;
+  const served = studio.served.value;
+  const shown = notice || conflict || served?.readOnly;
+  if (!shown) return null;
+  return (
+    <div class="flex-none px-(--magma-width-page-gutter) pt-inset">
+      {notice ? (
+        <mds-banner class="max-w-text" variant="error">
+          {say(t, notice)}
+        </mds-banner>
+      ) : conflict ? (
+        <mds-banner class="draft-conflict max-w-text" variant="warning">
+          {t('{reason}, and the draft restored from this browser has edits of its own.', {
+            reason: reasonText(t, conflict.reason),
+          })}
+          <mds-button
+            slot="action"
+            type="button"
+            variant="dark"
+            tone="outline"
+            label={t(conflict.label)}
+            onClick={() => resolveConflict(studio, true)}
+          ></mds-button>
+          <mds-button
+            slot="action"
+            type="button"
+            label={t('Keep the draft')}
+            onClick={() => resolveConflict(studio, false)}
+          ></mds-button>
+        </mds-banner>
+      ) : (
+        <mds-banner class="max-w-text" variant="info">
+          {t('Saving is off: {reason}', { reason: served?.readOnly ?? '' })}
+        </mds-banner>
+      )}
+    </div>
+  );
+}
+
+/**
+ * The toasts that undo what took work away, with no confirmation (confirm-action, `act-then-undo`:
+ * the toast with Undo, `duration=0 dismissible`): a preset opened over work with changes (#1402),
+ * a family or a scale deleted, a scale taken back to its built-in steps (#1403, state/undo.ts). Each stays until closed; closed by the person or by Undo, what it kept
+ * goes either way. On document.body, in the region of the toasts of the application, as the dialog
+ * of the gate stands.
+ */
+function UndoToasts() {
   const studio = useStudio();
   const t = useT();
   const opening = studio.lastOpening.value;
+  const undo = studio.lastUndo.value;
   return createPortal(
     <mds-toast-region>
       {opening && (
@@ -168,10 +244,8 @@ function UndoOpening() {
           visible
           duration={0}
           dismissible
-          onmdsToastClose={(event: CustomEvent<{ reason?: string }>) => {
-            // closed by the person or by Undo: the work it kept goes either way
+          onmdsToastClose={() => {
             if (studio.lastOpening.peek() === opening) forgetOpening(studio);
-            void event;
           }}
         >
           {say(t, opening.said)}
@@ -182,6 +256,27 @@ function UndoOpening() {
             tone="outline"
             label={t('Undo')}
             onClick={() => undoOpening(studio)}
+          ></mds-button>
+        </mds-toast>
+      )}
+      {undo && (
+        <mds-toast
+          visible
+          duration={0}
+          dismissible
+          data-undo
+          onmdsToastClose={() => {
+            if (studio.lastUndo.peek() === undo) forgetUndo(studio);
+          }}
+        >
+          {say(t, undo.said)}
+          <mds-button
+            slot="action"
+            size="sm"
+            variant="dark"
+            tone="outline"
+            label={t('Undo')}
+            onClick={() => undoLast(studio)}
           ></mds-button>
         </mds-toast>
       )}
@@ -274,6 +369,10 @@ function StudioBar({ route }: { route: Route }) {
   const actions = useConfigMenu();
   const exit = exitOf(studio);
   const saves = studio.served.value !== null && !studio.served.value.readOnly;
+  // a save would write the draft over a file that changed while a conflict waits for an answer:
+  // the exit waits too, the notice over the page says why (WorkNotices, #1403: Save went from the
+  // head of the pages of Colors, where it waited the same way)
+  const held = saves && studio.conflict.value !== null;
   // the formats of the menu of the exit: the preset as JSON only when the exit saves it
   const formats = actions.filter((action) => saves || action.id !== 'config');
   const behaviorMenu = useRef<HTMLMdsDropdownElement>(null);
@@ -309,6 +408,15 @@ function StudioBar({ route }: { route: Route }) {
               )}
             </span>
           </a>
+          {/* what stands outside the stages: Groups, the Theme section, the rules (#1403) */}
+          <mds-button
+            slot="nav"
+            href={hrefOf({ section: 'groups' })}
+            variant="dark"
+            tone={sectionTone('groups')}
+            aria-current={route.section === 'groups' ? 'page' : undefined}
+            label={t('Groups')}
+          ></mds-button>
           <mds-button
             slot="nav"
             href={hrefOf({ section: 'theme' })}
@@ -335,6 +443,7 @@ function StudioBar({ route }: { route: Route }) {
             icon={saves ? 'mi/baseline/save' : 'mi/baseline/file-download'}
             label={t(exit.label)}
             await={studio.saving.value || undefined}
+            disabled={held || undefined}
             onmdsButtonDropdownClick={() => guard(studio, exitOf(studio))}
           >
             <ConfigItems actions={formats} />
@@ -343,6 +452,15 @@ function StudioBar({ route }: { route: Route }) {
         <div slot="menu" class="studio-menu">
           {/* what the bar hides on a narrow window (style.css), then the preferences */}
           <nav class="studio-menu-nav" aria-label={t('Studio')}>
+            <mds-button
+              href={hrefOf({ section: 'groups' })}
+              icon="mi/baseline/workspaces"
+              variant="dark"
+              tone={sectionTone('groups')}
+              aria-current={route.section === 'groups' ? 'page' : undefined}
+              class="studio-menu-link"
+              label={t('Groups')}
+            ></mds-button>
             <mds-button
               href={hrefOf({ section: 'theme' })}
               icon={THEME_PAGE.icon}
@@ -369,6 +487,7 @@ function StudioBar({ route }: { route: Route }) {
               class="studio-menu-link"
               label={t(exit.label)}
               data-action="exit"
+              disabled={held || undefined}
               onClick={() => guard(studio, exitOf(studio))}
             ></mds-button>
             <ConfigItems actions={formats} />

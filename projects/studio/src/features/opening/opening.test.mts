@@ -35,7 +35,7 @@ const cards = () => [...root.querySelectorAll('mds-card')]
 const titles = () => cards().map((card) => card.querySelector('mds-text[tag="h2"]')?.textContent)
 const button = (label: string) =>
   [...root.querySelectorAll<HTMLElement>('mds-button')].find((one) => textOf(one) === label)!
-const colours: Route = { section: 'colors', view: 'colors' }
+const colours: Route = { section: 'colours' }
 
 test('the starts are cards in line, with no draft to resume when the work has no change', async () => {
   const studio = startStudio()
@@ -51,7 +51,7 @@ test('the draft comes first, and resuming it is the main action, at the stage it
   updateConfig(studio, (draft) => {
     draft.smooth = true
   })
-  studio.colorsView.value = 'surface'
+  studio.workPlace.value = '#/weights'
   const opened = show(studio)
   expect(titles()[0]).toBe('Your draft')
   const draft = cards()[0]
@@ -63,7 +63,7 @@ test('the draft comes first, and resuming it is the main action, at the stage it
   expect([resume.getAttribute('variant'), resume.getAttribute('tone')]).toEqual([null, null])
   expect(button("Open Magma's preset").getAttribute('tone')).toBe('weak')
   resume.click()
-  expect(opened).toEqual([{ section: 'colors', view: 'surface' }])
+  expect(opened).toEqual([{ section: 'weights' }])
   // the work is not touched
   expect(studio.config.value.smooth).toBe(true)
 })

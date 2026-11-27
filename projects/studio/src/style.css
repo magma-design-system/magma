@@ -162,36 +162,6 @@
   align-items: center;
 }
 
-.studio-page-actions {
-  display: flex;
-  gap: var(--magma-rhythm-inline);
-  align-items: center;
-}
-
-/*
-  Under 380 px of the head (--magma-container-actions, 23.75rem) the actions stack at the full
-  width, in the order of the row, the main one at the bottom (page-header, Layout;
-  actions/stacked); above it the row stays on one line. The layout is the container, not the
-  head, which would be the containing block of anything fixed its actions open (position: fixed
-  under layout containment) inside the region that scrolls: the head is as wide as it,
-  less the gutters of the page (--magma-width-page-gutter, 1.5rem on each side), wherever the list
-  of the families stands (beside the page only from 41.75rem, palette.css), so 23.75rem of head
-  is 26.75rem of layout. Literals, since a container query reads no var().
-*/
-
-@container colors-layout (width < 26.75rem) {
-  .studio-page-actions {
-    flex-basis: 100%;
-    flex-direction: column;
-  }
-
-  /* the host of mds-button sets align-self: flex-start, which beats align-items */
-
-  .studio-page-actions > * {
-    align-self: stretch;
-  }
-}
-
 .studio-page {
   position: relative;
   display: grid;
@@ -283,21 +253,13 @@
   align-self: center;
 }
 
-/* the pages of Colors: the list of the Palette beside the region that scrolls, or that region
-   alone; the head of the page and the notices are the first things of the region, so they
-   scroll with the page and head the larger column (vittorio, 2026-11-05) */
+/* the pages of today's Colors section that no view has replaced yet (app.tsx): the region that
+   scrolls, alone; the head of the page is its first thing, so it scrolls with the page (vittorio,
+   2026-11-05). Colours lays its list beside its page with its own classes (#1403). */
 .layout {
-  container: colors-layout / inline-size;
   display: grid;
-
-  /* a row for the list above the page, empty while the list stands beside it (the rule of the
-     list in palette.css): each child takes its lines, since a container cannot query itself */
-  grid-template: auto minmax(0, 1fr) / calc(var(--spacing) * 6000) 1fr;
+  grid-template: minmax(0, 1fr) / 1fr;
   height: 100%;
-}
-
-.layout.no-sidebar {
-  grid-template-columns: 1fr;
 }
 
 .content {
@@ -313,10 +275,5 @@
    section below it */
 .content > .studio-page-head {
   padding: 0;
-  margin-block-end: var(--magma-rhythm-between-sections);
-}
-
-.studio-notice {
-  max-width: var(--magma-width-reading);
   margin-block-end: var(--magma-rhythm-between-sections);
 }

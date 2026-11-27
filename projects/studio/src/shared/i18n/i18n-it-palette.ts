@@ -3,6 +3,10 @@
   text it translates is the key, and a key lives in one part only (test/i18n.test.mts).
 */
 export const IT_PALETTE: Record<string, string> = {
+  // the switch of the surfaces of a family (Colours) and of a group (Groups), #1403
+  'Generate surfaces': 'Genera superfici',
+  'Always on for the status colours: banners, toasts and badges paint their text on their tint, which needs the text roles the surfaces generate. A status colour is never a theme.':
+    'Sempre attiva per i colori di stato: banner, toast e badge dipingono il testo sulla loro tinta, che ha bisogno dei ruoli del testo generati con le superfici. Un colore di stato non è mai un tema.',
   // the Palette: the list of the families and the family selected (app.tsx)
   'hue shifting of its own, over the global one':
     'spostamento di tonalità proprio, sopra quello globale',
@@ -92,8 +96,6 @@ export const IT_PALETTE: Record<string, string> = {
   'Actions of {name}': 'Azioni di {name}',
   'Delete color': 'Elimina colore',
   'built-in variant: cannot be deleted': 'variante integrata: non si può eliminare',
-  'Global settings': 'Impostazioni globali',
-  'The families of colour': 'Le famiglie di colore',
   'Add color': 'Aggiungi colore',
   'New reference': 'Nuovo riferimento',
   'New color': 'Nuovo colore',
@@ -108,28 +110,12 @@ export const IT_PALETTE: Record<string, string> = {
   'Add reference': 'Aggiungi riferimento',
 
   // the line under the title of each page of Colors (app.tsx)
-  'The families of colour of the configuration, each solved into a ramp of steps in light and dark.':
-    'Le famiglie di colore della configurazione, ognuna risolta in una rampa di gradini in chiaro e in scuro.',
-  'The contrast ratios the families solve their steps at, against the background of the mode.':
-    'I rapporti di contrasto a cui le famiglie risolvono i loro gradini, rispetto allo sfondo della modalità.',
-  'The families that generate surfaces, and the balances: the lightness of the surfaces and borders, the targets of the text.':
-    'Le famiglie che generano superfici, e gli equilibri: la luminosità delle superfici e dei bordi, gli obiettivi del testo.',
   'Each family with surfaces, status aside, is a theme: its name, its accents and the CSS that switches it in.':
     'Ogni famiglia con superfici, tranne quelle di stato, è un tema: il suo nome, i suoi accenti e il CSS che lo attiva.',
-  'The ratios, formula and export of each group of the configuration.':
-    "I rapporti, la formula e l'esportazione di ogni gruppo della configurazione.",
   'Every pair the contrast gate judges, in each theme and both modes: what the build of Magma would say of this configuration.':
     'Ogni coppia giudicata dalla verifica del contrasto, in ogni tema e in entrambe le modalità: quello che la build di Magma direbbe di questa configurazione.',
 
   // the head of the pages, its saving and the draft restored (app.tsx, state/draft.ts, state/work.ts)
-  'Discard the loaded configuration and every local change, back to the one Magma builds with':
-    'Scarta la configurazione caricata e ogni modifica locale, e torna a quella con cui si compila Magma',
-  Save: 'Salva',
-  'Save *': 'Salva *',
-  'Saving...': 'Salvataggio...',
-  Saved: 'Salvato',
-  'Read-only': 'Sola lettura',
-  'Read-only *': 'Sola lettura *',
   saved: 'salvato',
   'save failed': 'salvataggio non riuscito',
   'save failed ({status})': 'salvataggio non riuscito ({status})',
@@ -185,11 +171,11 @@ export const IT_PALETTE: Record<string, string> = {
   'Export selection': 'Esporta selezione',
   'Save export': 'Salva esportazione',
 
-  // the side of the Palette: the ramps or the theme on a page (palette-side.tsx)
+  // the side of Colours: the ramps or the theme on a page (features/colours/scene-side.tsx)
   Ramps: 'Rampe',
   Show: 'Mostra',
   'The family, as ramps or as a theme': 'La famiglia, come rampe o come tema',
-  'The side of the Palette': 'Il pannello laterale della Palette',
+  'The side of the family': 'Il pannello laterale della famiglia',
   'The theme {theme} on a page of a product': 'Il tema {theme} su una pagina di un prodotto',
   '{list} and {last}': '{list} e {last}',
   '{name} is the family of the theme {theme}, whose surfaces are the whole page':

@@ -27,8 +27,9 @@ keep in step.
   Storybook: `storybook` at the top is its address, `storybook` on a component the id of its
   docs page, which opens at `<storybook>?path=/docs/<id>` (#1148). Beside it, `studio` is the
   address of the published studio, whose pages open at `<studio>#/<page>` (`#/theme`,
-  `#/colors/palette`, #1294). Both are folders of the GitHub Pages site of the repository, where
-  `deploy-site.yml` publishes the site of `main`, and both stand at the top of the
+  `#/colours`, #1294; the addresses of the pages #1403 replaced still open). Both are folders of
+  the GitHub Pages site of the repository, where `deploy-site.yml` publishes the site of `main`,
+  and both stand at the top of the
   `documentation.json` of each component too. And `usage` on each
   component: its hand-written files, keyed by the file name without `.md`, `1. Description`,
   `2. Examples` and `3. Mistakes` (the number only sets the order; `USAGE_FILES` in

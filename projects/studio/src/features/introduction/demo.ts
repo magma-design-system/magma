@@ -29,9 +29,9 @@ import { msg } from '../../shared/i18n/i18n.js';
   themes are printed as the frame of the Theme section paints them (scene-css.ts). Nothing is
   drawn by hand: what the hero shows is what the studio computes.
 
-  Two things are drawn pale, at two levels of the studio: the text (`theme.text`, the balances of
-  Semantic surface), pinned to pale steps of its ramp under the floors of the gate, and the ramp of
-  the accent family, its contrast ratios scaled down (a scale of Contrast scales), which pales the
+  Two things are drawn pale, at two levels of the studio: the text (`theme.text`, the targets of
+  Weights), pinned to pale steps of its ramp under the floors of the gate, and the ramp of the
+  accent family, its contrast ratios scaled down (a contrast scale, the page Scale), which pales the
   ink of the icons and the fill of the main action. The surfaces and the borders stay the ones of
   Magma.
 */

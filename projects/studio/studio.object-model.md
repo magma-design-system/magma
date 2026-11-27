@@ -78,8 +78,9 @@ Domande aperte).
 - **Cosa può modificare**: tutto, comprese le rampe di tutti i token e i pesi, che
   stanno nel preset del prodotto, sopra quello di Magma. In futuro anche padding e
   scala dei componenti. Nessuna azione è riservata a chi bilancia Magma. (persona)
-- **Il numero dei gradini** cambia solo su una scala non integrata: finché una famiglia usa una
-  scala non compatibile con Magma, il preset non vale come tema di Magma. (persona, 2026-11-26)
+- **Il numero dei gradini** cambia solo su una scala non integrata (persona, 2026-11-26). Una
+  scala non compatibile con Magma serve solo alle famiglie che non dipingono nulla di Magma, i
+  casi fuori da Magma: escono nei token, mai sul tema e sui suoi componenti. (persona, 2026-11-27)
 
 ### Fuori dallo studio
 
@@ -127,12 +128,15 @@ deciso il 2026-11-20 con `taxonomy` (persona). Quelle che toccano questo modello
 - **integrata**: una scala di contrasto (o una variante) che arriva con il motore di
   design-tokens; le altre scale non hanno un nome loro;
 - **compatibile con Magma**: una scala con tanti gradini quanti ne nominano i ruoli di Magma (oggi
-  dieci), e per estensione una famiglia su una scala così e un preset le cui famiglie lo sono
-  tutte. (persona, 2026-11-26)
+  dieci), e per estensione una famiglia su una scala così. (persona, 2026-11-26) Ogni famiglia
+  che dipinge Magma lo è; una scala che non lo è serve solo ai casi fuori da Magma. (persona,
+  2026-11-27)
 - **gruppo**: le famiglie di un tipo (`label`, `brand`), con le impostazioni comuni; il **gruppo
   di export** è un'altra cosa, il file delle uscite in cui finisce una famiglia;
 - **casi fuori da Magma**: i colori che si esportano per un uso fuori da Magma, mai "eccezioni",
-  che restano lo sfondo di una funzione. (persona, 2026-11-26)
+  che restano lo sfondo di una funzione (persona, 2026-11-26); un videogioco di Maggioli che
+  genera i suoi colori come Magma, con gruppi e scale suoi. Escono dalla vista **Gruppi**, fuori
+  dai passi. (persona, 2026-11-27)
 
 ## 4. Entità
 
@@ -148,6 +152,7 @@ Preset  (uno per host: quello di Magma, o quello di un prodotto sopra il preset 
 |  '- Tema: tinta -> Famiglia, accenti -> Famiglia, modalità
 |- 4. Eccezioni
 |  '- Eccezione (una funzione) -> componenti che la adottano -> stati -> Candidati
+|- Gruppi di export  (fuori dai passi: famiglie di qualunque gruppo, che escono insieme)
 '- Modifiche (prima e dopo, annulla)
 
 Accanto a ogni passo:
@@ -185,13 +190,12 @@ Altre relazioni:
   - annullare ogni passo. (persona)
 - **Stati**:
   - modificato o no, rispetto a quello caricato; pronto a uscire, cioè verde e giudicato sulla
-    scena in ogni tema e modalità (persona);
-  - vale come tema di Magma o no: no finché una famiglia usa una scala non compatibile con
-    Magma; una scala che nessuna famiglia usa non conta. (proposta, 2026-11-26)
-- **Sempre visibile**: le modifiche fatte (quante, in quale passo); se l'host salva o scarica
-  (persona); quando non vale come tema di Magma (proposta, 2026-11-26).
-- **Uscire quando non vale come tema di Magma**: si può, chiedendo, come con la verifica rossa.
-  (proposta, 2026-11-26)
+    scena in ogni tema e modalità (persona).
+  - Lo stato "vale come tema di Magma o no" del 2026-11-26 non c'è più: una scala non
+    compatibile serve solo alle famiglie che non dipingono, quindi non tocca il tema. (persona,
+    2026-11-27)
+- **Sempre visibile**: le modifiche fatte (quante, in quale passo); se l'host salva o scarica.
+  (persona)
 
 ### Gruppo
 
@@ -204,7 +208,8 @@ Altre relazioni:
   - nasce con il suo primo colore: in "New color" il campo Gruppo accetta un nome nuovo, e un
     "Nuovo gruppo" nell'elenco apre lo stesso dialogo (proposta);
   - regolarne le impostazioni ed esportarne le famiglie, come fa oggi la pagina Groups
-    (progetto; persona: "funziona già"), in una pagina sua, Gruppo (persona, 2026-11-26).
+    (progetto; persona: "funziona già"), nella vista Gruppi, fuori dai passi; la pagina Gruppo
+    decisa il 2026-11-26 non c'è più (persona, 2026-11-27).
 - **Regole** (progetto):
   - il nome non è quello di un gruppo che il motore genera: `surface`, `border`, `text`, `wash`,
     `emphasis`, `inverse`, `fg` (`DERIVED_GROUPS` in design-tokens, `src/lib/text-role.mts`);
@@ -212,6 +217,17 @@ Altre relazioni:
     diventa mai un tema (`src/engine/groups.ts`).
 - **Ordine**: le varianti in cima, poi i gruppi nell'ordine della configurazione; uno nuovo va in
   fondo. (proposta, sulla scelta del 2026-11-05)
+
+### Gruppo di export
+
+- **Scopo**: le famiglie che escono insieme nei loro file, per un caso fuori da Magma (un
+  videogioco) o per un altro uso del prodotto. (persona, 2026-11-27; progetto: pagina Groups)
+- **Contiene**: famiglie di qualunque gruppo, quelle del tema comprese. (persona, 2026-11-27)
+- **Dove finisce**: il nome nel campo `export` di ogni sua famiglia; i file JSON, CSS e GIMP che
+  la contengono. (progetto: `src/engine/exports.ts`)
+- **Azioni**: farlo spuntando famiglie di gruppi diversi, o scegliendo un export esistente;
+  salvarlo nel campo `export`; scaricarne i token in uno zip. (progetto: pagina Groups, "batch
+  export")
 
 ### Famiglia
 
@@ -222,12 +238,14 @@ Altre relazioni:
 - **Figli**: la rampa per modalità, con tanti gradini quanti ne ha la sua scala (01..10 su una
   scala compatibile con Magma) più il seed.
 - **Azioni**: aggiungere, cambiare, eliminare (con annulla), farne un alias (progetto,
-  proposta); da un valore ereditato, andare dove si decide: la pagina Gruppo per un valore del
-  gruppo (persona, 2026-11-26), la vista delle impostazioni del preset per uno del preset
-  (domanda 13).
-- **Stati**: usata da un tema, come tinta o accento, oppure no (persona); su una scala non
-  compatibile con Magma, e allora i ruoli che nominano i suoi gradini non reggono (proposta,
-  2026-11-26; progetto: semantic `hueSteps`).
+  proposta); da un valore ereditato, andare dove si decide: il suo gruppo nella vista Gruppi per
+  un valore del gruppo (persona, 2026-11-26; Gruppi dal 2026-11-27), la vista delle impostazioni
+  del preset per uno del preset (domanda 13).
+- **Stati**: usata da un tema, come tinta o accento, oppure no (persona); **fuori da Magma**
+  quando non dipinge nulla di Magma, né un componente né un tema (progetto: `src/engine/paints.ts`).
+  Solo una famiglia fuori da Magma usa una scala non compatibile: una che dipinge resta su una
+  compatibile, perché i ruoli nominano i suoi gradini per numero. (persona, 2026-11-27; progetto:
+  semantic `hueSteps`)
 - **Stati di un campo**: suo, oppure ereditato (persona, 2026-11-26). Dal gruppo: scala di
   contrasto, formula, export; dal preset: colorspace, smooth, formula, saturazione. La formula
   viene dal gruppo quando il gruppo la fissa, altrimenti dal preset. (progetto: `groups` e le
@@ -236,9 +254,12 @@ Altre relazioni:
   verifica che tocca (persona); il badge della sua scala (proposta, 2026-11-26); per ogni campo
   ereditato, da chi: il gruppo per nome, o il preset (persona, 2026-11-26).
 - **Ordine**: cromatico dentro il suo gruppo, ovunque compaia: l'elenco, i selettori, il preset e
-  i file esportati (persona, 2026-11-26). Il criterio: la tonalità OKLCH del colore chiave, a
-  partire dal rosso; i neutri, che non hanno tonalità, per luminosità; un riferimento prende la
-  tonalità della famiglia che segue. (proposta)
+  i file esportati (persona, 2026-11-26). Il criterio, scelto sul render (persona, 2026-11-27,
+  opzione B): la tonalità OKLCH del colore chiave, da 0 gradi, cioè dal rosso; un riferimento
+  prende la tonalità della famiglia che segue; il gruppo dei neutri (`tone`) dal freddo al caldo,
+  sull'asse b di OKLab, così `porcelain` resta tra i grigi; in un altro gruppo un grigio, con croma
+  sotto 0.03 (la soglia `HUE_READABLE` di `ramp-grade.mts` in design-tokens, sotto la quale la
+  tonalità è rumore), va in testa, per luminosità.
 
 ### Scala di contrasto
 
@@ -255,6 +276,10 @@ Altre relazioni:
 - **Stati**: compatibile con Magma quando ha tanti gradini quanti ne nominano i ruoli (semantic
   `scaleSteps`, oggi 10), altrimenti no. Integrata non vuol dire compatibile: `v1` ne ha 20.
   (persona; progetto: `default-color.json`)
+- **Chi la usa**: una scala non compatibile solo le famiglie fuori da Magma, ed esce solo nei
+  token. Una integrata ridefinita dal preset con un altro numero di gradini, e usata da famiglie
+  che dipingono, è un errore: lo studio lo dice e offre di tornare ai gradini integrati, senza
+  conferma e con annulla. (persona, 2026-11-27: domanda 10)
 - **Perché conta**: i ruoli di Magma nominano i gradini per numero (la superficie di un colore è
   il `09`, il testo il `05`). Con più gradini ogni ruolo cambia valore, con meno punta a gradini
   che non ci sono. Spostare gli obiettivi invece è sicuro: il nome resta e la verifica misura.
@@ -273,6 +298,11 @@ Altre relazioni:
     delle velature.
 - **Dove finisce**: nel preset: il blocco `theme` della configurazione di oggi più i ruoli trasparenti.
 - **Azioni**: regolare con uno slider che mostra il valore; annullare. (persona)
+- **Regola**: in ogni modalità una superficie non è mai più chiara di quella sopra, nell'ordine di
+  profondità sunken <= muted <= default <= raised <= overlay. Non devono essere diverse: livelli
+  uguali sono ammessi, per scelta di design possono essere tutte uguali. Lo slider di una
+  superficie portato oltre la vicina la spinge con sé (persona, 2026-11-27, invece di fermarsi alla
+  vicina o di permettere e segnalare); un preset caricato fuori ordine è segnalato. (proposta)
 - **Stati**: un peso è sbagliato, oltre alla verifica, quando un elemento sparisce in un contesto
   (pagina, card, pozzo). (persona)
 - **Sempre visibile**: il verdetto e il contrasto delle coppie che la modifica sposta. (persona)
@@ -362,16 +392,19 @@ Altre relazioni:
 Si va da un passo all'altro **in ordine**, avanti e indietro. (persona)
 
 ```
-Introduzione -> Partenza -> 1. Colori (-> Scala, -> Gruppo) -> 2. Pesi -> 3. Temi -> 4. Eccezioni -> Giro completo -> uscita
+Introduzione -> Partenza -> 1. Colori (-> Scala) -> 2. Pesi -> 3. Temi -> 4. Eccezioni -> Giro completo -> uscita
+fuori dai passi: Gruppi, la sezione Tema, le Regole
 ```
 
-Scala e Gruppo sono pagine laterali di Colori, non passi: l'ordine dei passi non cambia.
-(persona, 2026-11-26)
+Scala è una pagina laterale di Colori, non un passo: l'ordine dei passi non cambia. (persona,
+2026-11-26) Gruppi sta fuori dai passi, come la sezione Tema e le Regole: serve l'opzione
+secondaria dell'obiettivo e le impostazioni che i gruppi danno alle famiglie. (persona,
+2026-11-27)
 
 La barra dello studio porta sempre con sé:
-- le modifiche fatte e "salva o scarica", cioè ciò che del preset è sempre visibile, e lo stato
-  del preset quando non vale come tema di Magma (proposta, 2026-11-26);
+- le modifiche fatte e "salva o scarica", cioè ciò che del preset è sempre visibile;
 - l'uscita;
+- ciò che sta fuori dai passi: Gruppi (2026-11-27), la sezione Tema, le Regole;
 - le preferenze della persona.
 
 Costruita il 2026-11-27 (persona, sui render): le modifiche sono un pulsante con il loro numero,
@@ -385,7 +418,8 @@ in una barra dei passi (sezione 8, "Passi in ordine").
   pagina Start di oggi e resta. (persona)
 - **Mai qui**: controlli del lavoro.
 - **Intorno**: le viste in ordine, dalla Partenza al Giro completo, ognuna con quello che fa e un
-  link che la apre. (persona, 2026-11-27)
+  link che la apre (persona, 2026-11-27); poi ciò che sta fuori dai passi, Gruppi compreso.
+  (proposta, 2026-11-27)
 - **Ingresso**: l'avvio, il nome dello studio nella barra. **Uscita**: Partenza; ogni vista,
   dall'elenco. (persona, 2026-11-27)
 
@@ -416,16 +450,24 @@ in una barra dei passi (sezione 8, "Passi in ordine").
   - un gruppo nuovo, con "Nuovo gruppo" nell'elenco o con un nome nuovo nel campo Gruppo di un
     colore nuovo (proposta, 2026-11-26);
   - tutti i campi della famiglia, in linea;
-  - la scala, in linea per sceglierla, con il suo badge; si modifica nella sua pagina, Scala;
+  - la scala, in linea per sceglierla, con il suo badge; si modifica nella sua pagina, Scala. Le
+    scale non compatibili si offrono solo a una famiglia fuori da Magma (persona, 2026-11-27);
   - ogni campo ereditato dice da chi eredita, "eredita da `tone`" o "dal preset", con un link a
-    dove si decide: Gruppo per un valore del gruppo, la vista delle impostazioni del preset per
-    uno del preset (persona, 2026-11-26; domanda 13);
+    dove si decide: il gruppo in Gruppi per un valore del gruppo, la vista delle impostazioni del
+    preset per uno del preset (persona, 2026-11-26 e 2026-11-27; domanda 13);
   - la scena del passo, accanto: i componenti che la famiglia dipinge;
   - le coppie toccate, in linea;
   - i temi che la usano, nominati, con un link a Temi. (persona; proposta per gli ultimi due)
-- **Mai qui**: pesi, temi, eccezioni; le impostazioni di un gruppo, che stanno in Gruppo.
-- **Ingresso**: Partenza, o un elemento toccato sulla scena. **Uscita**: Scala; Gruppo; il passo
-  dopo, Pesi.
+- **Come si vede** (persona, sui render, 2026-11-27): l'elenco accanto, con "Aggiungi colore" e
+  "Nuovo gruppo" in testa (lo stesso dialogo, con il campo Gruppo libero) e accanto al nome di
+  ogni gruppo un'icona che lo apre in Gruppi; in testa alla famiglia, sotto il nome, cosa dipinge
+  e in quale tema, poi le coppie toccate in un dettaglio chiuso, con il numero e il verdetto nel
+  titolo; sotto un campo ereditato, la riga che dice da chi; la scala con il badge e il link a
+  Scala; la scena accanto, come oggi.
+- **Mai qui**: pesi, temi, eccezioni; le impostazioni di un gruppo e quelle del preset, che stanno
+  in Gruppi (domanda 13).
+- **Ingresso**: Partenza, un elemento toccato sulla scena, o una famiglia in Gruppi. **Uscita**:
+  Scala; Gruppi; il passo dopo, Pesi.
 
 ### Scala
 
@@ -434,27 +476,48 @@ in una barra dei passi (sezione 8, "Passi in ordine").
 - **Intorno**:
   - le famiglie che la usano, in linea, una come campione;
   - il badge "compatibile con Magma" o no, accanto al nome, con una riga di perché (persona,
-    2026-11-26);
+    2026-11-26); una scala non compatibile dice che serve solo alle famiglie fuori da Magma
+    (persona, 2026-11-27);
   - la distribuzione dei gradini, in linea; il loro numero solo su una scala non integrata, mentre
-    su una integrata una riga dice che per cambiarlo la si duplica (persona, 2026-11-26);
+    su una integrata una riga dice che per cambiarlo la si duplica (persona, 2026-11-26); una
+    integrata ridefinita con un altro numero e usata da famiglie che dipingono è un errore, con
+    l'azione che la riporta ai gradini integrati (persona, 2026-11-27);
   - la scena del campione, accanto: i suoi componenti in ogni stato;
   - le coppie toccate. (progetto, proposta)
-- **Ingresso**: la scala di una famiglia, o quella di un gruppo (2026-11-26). **Uscita**: torna da
-  dove si è arrivati, la famiglia o il gruppo, con un link che lo nomina.
+- **Come si vede** (persona, sui render, 2026-11-27): una scala al centro, su una pagina sua; in
+  testa il ritorno che nomina da dove si è arrivati, il nome con i badge (integrata, compatibile
+  con Magma) e il menu (duplica, rinomina, elimina con annulla), la riga del perché; poi le coppie
+  toccate in un dettaglio chiuso, come in Colori; "Usata da", le famiglie per gruppo, quella
+  scelta è il campione; la distribuzione, senza aggiungere né togliere gradini su una integrata; gli
+  stati del campione accanto. Accanto al nome, la formula e la scala sono due selettori: si apre
+  qualunque scala, anche una che nessuna famiglia usa.
+- **Ingresso**: la scala di una famiglia in Colori, o quella di un gruppo in Gruppi (2026-11-26,
+  2026-11-27); un'altra scala, dai selettori della pagina. **Uscita**: torna da dove si è arrivati,
+  la famiglia o il gruppo, con un link che lo nomina.
 
-### Gruppo
+### Gruppi
 
-- **Entità al centro**: Gruppo. **Scopo**: regolare ciò che le sue famiglie ereditano (scala di
-  contrasto, formula, export) ed esportarne le famiglie. È una pagina sua, come Scala; prende il
-  posto della pagina Groups di oggi. (persona, 2026-11-26)
-- **Intorno** (proposta, 2026-11-26):
-  - le sue famiglie, in ordine cromatico, e per ognuna i valori del gruppo che cambia;
-  - la scala, in linea per sceglierla, con il suo badge e un link a Scala;
-  - la formula e l'export, in linea;
-  - la scena: le famiglie del gruppo sui componenti che dipingono.
-- **Mai qui**: i campi di una famiglia, che stanno in Colori.
-- **Ingresso**: un campo ereditato dal gruppo in Colori, o il gruppo nell'elenco di Colori.
-  **Uscita**: torna alla famiglia, con un link che la nomina; Scala.
+Fuori dai passi, come la sezione Tema e le Regole; è la pagina Groups di oggi, che resta (persona,
+2026-11-27). Prende il posto della pagina Gruppo decisa il 2026-11-26, mai costruita.
+
+- **Entità al centro**: Gruppo. **Scopo**: regolare ciò che le famiglie di ogni gruppo ereditano
+  (scala di contrasto, formula, export) e farne uscire le famiglie, per il tema e per i casi fuori
+  da Magma. (persona, 2026-11-27)
+- **Intorno**:
+  - in testa, il preset: le impostazioni che ogni famiglia eredita (colorspace, smooth, formula,
+    saturazione, spostamento di tonalità) (persona, 2026-11-27: domanda 13);
+  - ogni gruppo, con le sue famiglie in ordine cromatico e le loro rampe; segnate quelle che
+    cambiano un valore del gruppo (progetto: pagina Groups);
+  - la scala, in linea per sceglierla, con il suo badge e un link a Scala; la formula e l'export,
+    in linea (proposta, 2026-11-26);
+  - le famiglie spuntate tra gruppi diversi, o caricate da un export esistente, e le azioni su di
+    loro: salvarle in un gruppo di export, scaricarne i token (persona, 2026-11-27; progetto:
+    "batch export");
+  - ogni famiglia con un link a Colori. (proposta)
+- **Mai qui**: i campi di una famiglia, che stanno in Colori; la creazione di una famiglia, che
+  nasce in Colori anche fuori da Magma. (persona, 2026-11-27)
+- **Ingresso**: la barra; un campo ereditato dal gruppo in Colori. **Uscita**: Colori, sulla
+  famiglia; Scala. (proposta)
 
 ### 2. Pesi
 
@@ -465,7 +528,15 @@ in una barra dei passi (sezione 8, "Passi in ordine").
   - i gruppi in linea in una vista sola: superfici, bordi, testi, trasparenti;
   - la scena del passo, accanto: il prodotto intero, con il fondo come condizione;
   - le coppie toccate, le segnalate distinte e il debito. (persona)
-- **Mai qui**: palette, temi, eccezioni.
+- **Come si vede** (persona, sui render, 2026-11-27): in testa le schede Chiaro e Scuro, una
+  modalità alla volta, con la scena del prodotto accanto che segue la scheda; poi le coppie
+  toccate in un dettaglio chiuso, come in Colori; poi superfici, bordi e testi uno sotto l'altro, i
+  testi con un obiettivo solo per le due modalità, come il motore lo tiene. Costruita come dice
+  Magma oggi, senza `mds-preview`, finché #1487 non arriva in `main` (persona, 2026-11-27).
+- **Ordine delle superfici** (persona, 2026-11-27): uno slider di Superfici portato oltre la vicina
+  la spinge con sé, in su e in giù, così l'ordine di profondità resta (sezione 4, Pesi, Regola).
+- **Mai qui**: palette, temi, eccezioni; l'adesione alle superfici, che è un campo della famiglia
+  (in Colori) e del gruppo (in Gruppi) (persona, 2026-11-27).
 - **Ingresso**: Colori. **Uscita**: Temi.
 
 ### 3. Temi
@@ -505,8 +576,7 @@ in una barra dei passi (sezione 8, "Passi in ordine").
 - **Intorno**:
   - ogni tema per modalità, in linea, con il segno di "guardato";
   - la sua scena e le sue coppie: che bloccano, segnalate e debito;
-  - l'uscita, salvare o scaricare, con una domanda se la verifica è rossa (persona) o se il
-    preset non vale come tema di Magma (proposta, 2026-11-26).
+  - l'uscita, salvare o scaricare, con una domanda se la verifica è rossa. (persona)
 - **Ingresso**: Eccezioni, o l'avviso di un tema rotto. **Uscita**: l'uscita, oppure il passo a
   cui appartiene una coppia.
 
@@ -540,7 +610,7 @@ principio.
 | Partenza | `page-header` | `surfaces` (un elemento di un insieme), `actions` |
 | Colori, Temi | `record-detail` con l'elenco accanto; lacuna: lista e dettaglio (#1262) | `surfaces`, `rhythm` |
 | Scala | `record-detail`; lo stato "compatibile con Magma" come `mds-badge` con la sua etichetta (`record-detail`, `labels-and-values`) | `rhythm` |
-| Gruppo | `record-detail`, come Scala; la scala con il suo `mds-badge` (`labels-and-values`) (proposta, 2026-11-26) | `rhythm` |
+| Gruppi | `list-with-filters`, caso `act-on-many` (una casella per famiglia, le azioni sulle spuntate con quante sono), `page-header`; la scala con il suo `mds-badge` (`labels-and-values`) (proposta, 2026-11-27, da `get_pattern`) | `rhythm` |
 | un valore ereditato | lacuna: nessun pattern dice da chi eredita un campo (cercato nei pattern il 2026-11-26) | |
 | Pesi | lacuna: spazio di lavoro con anteprima | `rhythm`, `titles` |
 | Eccezioni | lacuna: confrontare alternative | `density` |
@@ -596,7 +666,10 @@ principio.
 - **Effetto**: ogni campo ereditato rischia una forma sua.
 - **Risoluzione** (proposta, 2026-11-26): per ora si costruisce con ciò che c'è, il messaggio
   del campo con un link a dove il valore si decide; se lo stesso bisogno torna in un prodotto,
-  diventa un caso di `form-and-validation`. Da confermare con la persona.
+  diventa un caso di `form-and-validation`. Confermata sul render (persona, 2026-11-27, opzione
+  A): il messaggio di `mds-input-field` è solo testo, quindi è una riga sotto il campo, "Eredita
+  dal gruppo tone", "Eredita dal preset", con il nome in un `mds-link`; non sulla riga
+  dell'etichetta.
 
 Finché un conflitto non è risolto, si costruisce come dice il design system.
 
@@ -674,16 +747,28 @@ Finché un conflitto non è risolto, si costruisce come dice il design system.
 10. **Una scala integrata ridefinita** dal preset con un altro numero di gradini
     (`builtin-overridden` in `src/scales.tsx`): il numero resta quello della configurazione
     caricata, come fa oggi "Reset", o torna a quello integrato? (proposta, 2026-11-26)
+    **Risposta** (persona, 2026-11-27): una scala non compatibile serve solo alle famiglie che
+    non dipingono nulla di Magma; se la usano famiglie che dipingono è un errore, e lo studio
+    offre di tornare ai gradini integrati (sezione 4, Scala di contrasto).
 11. **La compatibilità controllata anche dal motore**: dove il preset diventa tema di Magma (la
     build di design-tokens, la CI), una famiglia su una scala non compatibile ferma la build?
     Il badge dello studio direbbe allora la stessa cosa del controllo. (proposta, 2026-11-26)
+    **Risposta** (persona, 2026-11-27): non in #1403. Lo studio impedisce l'errore (il campo
+    Scala di una famiglia che dipinge offre solo scale compatibili); un controllo nella build di
+    design-tokens, per un preset scritto a mano, sarebbe un'issue a parte.
 12. **Chi ordina i colori**: lo studio quando scrive il preset, o anche il motore di
     design-tokens, così esce in ordine anche una configurazione scritta a mano? Proposta: un
     solo ordinamento, nel motore, che lo studio riusa. (proposta, 2026-11-26)
+    **Risposta** (persona, 2026-11-27): lo studio ora, il motore poi. Una funzione pura nel motore
+    dello studio (`src/engine/`) ordina ogni elenco e il preset che lo studio scrive; spostarla in
+    design-tokens, perché anche una configurazione scritta a mano esca in ordine, è un'issue a
+    parte, con il rilascio di design-tokens.
 13. **Le impostazioni del preset** (colorspace, smooth, formula, saturazione): in quale vista si
     regolano? Oggi stanno sotto le famiglie della Palette; nel flusso nessuna vista le ospita, e
-    un campo ereditato dal preset deve portare lì. Proposta: una pagina sua, come Gruppo e Scala,
-    raggiunta dai campi ereditati dal preset. (proposta, 2026-11-26)
+    un campo ereditato dal preset deve portare lì. Proposta: una pagina sua, come Scala, raggiunta
+    dai campi ereditati dal preset. (proposta, 2026-11-26)
+    **Risposta** (persona, 2026-11-27): in Gruppi, in testa: Gruppi è il posto di tutto ciò che le
+    famiglie ereditano, prima il preset e poi ogni gruppo; "Eredita dal preset" porta lì.
 
 ## 11. Deroghe ai principi
 
@@ -736,3 +821,25 @@ confondersi con le eccezioni dei componenti.)
   portava dentro Colori (5); Gruppo e la lacuna del valore ereditato nel design system (7); il
   conflitto "Valore ereditato" (8); la domanda 13 (10). Introduzione, Partenza, Pesi, Temi,
   Eccezioni e Giro completo non cambiano.
+
+### 2026-11-27: i casi fuori da Magma hanno un posto, Gruppi
+
+- **Richiesta** (persona, rispondendo alle domande 10 e 11): le scale non compatibili si usano
+  solo per esportare token, mai sul tema di Magma e sui suoi componenti. Il perché: un videogioco
+  di Maggioli che genera i suoi colori come Magma, con gruppi e scale diversi da quelli del tema.
+  Serve un posto dedicato, separato dal tema, che può comprendere anche le famiglie del tema: c'è
+  già, la pagina Groups.
+- **L'obiettivo è ancora quello?** Sì, com'è scritto: il tema rilasciabile, con l'export fuori da
+  Magma come opzione secondaria. (persona)
+- **Dove si rallenta oggi?** Sempre nell'andare avanti e indietro tra i controlli e la scena.
+  (persona)
+- **Le risposte nuove** (persona): una famiglia fuori da Magma nasce e si modifica in Colori, come
+  le altre; la pagina Groups resta, come vista Gruppi fuori dai passi, e la pagina Gruppo del
+  giro precedente non c'è più; da Gruppi escono gruppi di export, famiglie spuntate tra gruppi
+  diversi.
+- **Cosa è cambiato**: chi fa il tema di un prodotto (2); compatibile con Magma e casi fuori da
+  Magma (3); Preset senza lo stato "vale come tema di Magma", Gruppo, Gruppo di export (nuova),
+  Famiglia con lo stato "fuori da Magma", Scala di contrasto (4); la barra, Introduzione, Colori,
+  Scala e Giro completo ritoccate, Gruppi nuova al posto di Gruppo (5); Gruppi nel design system,
+  su `list-with-filters` (7); le domande 10 e 11 chiuse (10). Partenza, Pesi, Temi ed Eccezioni
+  non cambiano. Nessun conflitto nuovo con il design system.

@@ -2,12 +2,12 @@ import {
   CURVE_PRESETS,
   HUE_SHIFT_EASINGS,
 } from '@maggioli-design-system/design-tokens/src/lib/hue-shift.mjs';
-import type { Option } from './shared/magma/magma.js';
+import type { Option } from '../magma/magma.js';
 
 /*
-  The curves across a scale, as the editors of the Palette offer them: the hue shifting (app.tsx,
-  HueShiftEditor) and the saturation (saturation-editor.tsx) take the same curves of the engine
-  (hue-shift.mts, resolveCurveWeights).
+  The curves across a scale, as the editors of the colours offer them: the hue shifting
+  (hue-shift-editor.tsx) and the saturation (saturation-editor.tsx) take the same curves of the
+  engine (hue-shift.mts, resolveCurveWeights).
 */
 
 // the named curves of the engine, then a custom one edited by its parameters

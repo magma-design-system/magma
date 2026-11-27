@@ -1,7 +1,8 @@
 import { batch } from '@preact/signals';
 import { validateConfig } from '@maggioli-design-system/design-tokens/src/lib/schema.mjs';
+import { presetInOrder } from '../engine/colour-order.js';
 import { msg } from '../shared/i18n/text.js';
-import { clearDraft, hashText, reconcileDraft, type DraftSource } from './draft.js';
+import { hashText, reconcileDraft, type DraftSource } from './draft.js';
 import {
   adoptConfig,
   bundled,
@@ -145,18 +146,6 @@ export async function importConfig(state: StudioState, file: PickedFile): Promis
 }
 
 /**
- * The Reset of the studio: the configuration Magma builds with, on its first family, every local
- * change and the loaded configuration discarded.
- */
-export function resetWork(state: StudioState): void {
-  clearDraft(state.storage);
-  batch(() => {
-    adoptConfig(state, bundled());
-    state.notice.value = null;
-  });
-}
-
-/**
  * Saves the configuration to the file a command serves. Nothing happens on its own, while a save
  * is under way, when the server refuses saves, or while a conflict waits for an answer.
  */
@@ -167,7 +156,10 @@ export async function saveConfig(state: StudioState): Promise<void> {
     state.saving.value = true;
     state.status.value = null;
   });
-  const config = state.config.peek();
+  const before = state.config.peek();
+  // the preset goes out with its families in their order (engine/colour-order.ts): the first save
+  // sorts a configuration once, and the work takes the order it went out in
+  const config = presetInOrder(before);
   try {
     const res = await fetch('/api/config', {
       method: 'PUT',
@@ -183,6 +175,8 @@ export async function saveConfig(state: StudioState): Promise<void> {
     const written = (await res.json().catch(() => ({}))) as { path?: string };
     const json = JSON.stringify(config);
     batch(() => {
+      // nothing changed while it was saved: the work is what went out, in its order
+      if (state.config.peek() === before) state.config.value = config;
       state.savedJson.value = json;
       state.origin.value = { path: written.path ?? served.path, hash: hashText(json), json };
       // the preset left the studio: the changes are counted from it now

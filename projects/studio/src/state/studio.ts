@@ -10,7 +10,7 @@ import { sceneStyle, type SceneStyle } from '../engine/scene-css.js';
 import type { ThemeChoices } from '../engine/theme-choices.js';
 import type { FileOut } from '../engine/exports.js';
 import type { T, Vars } from '../shared/i18n/text.js';
-import { colorsViewOf, type ColorsView } from '../shared/routes/routes.js';
+import { workPlaceOf } from '../shared/routes/routes.js';
 import {
   browserStorage,
   readDraft,
@@ -114,8 +114,11 @@ export interface StudioState {
   selectedName: Signal<string>;
   /** The choices of the Themes page: names, accents, colour modes (engine/theme-choices.ts). */
   themeChoices: Signal<ThemeChoices>;
-  /** The page of Colors the work is on: the one of the draft, then the last one opened. */
-  colorsView: Signal<ColorsView | undefined>;
+  /**
+   * The address of the page of the work, a stage or a page beside one: the one of the draft, then
+   * the last one opened (the shell writes it). The opening resumes the draft there.
+   */
+  workPlace: Signal<string | undefined>;
   /**
    * Names the studio gave a family during this session, after its colour: only these (and the
    * new-N placeholders) keep following the colour; a name the person typed is never touched.
@@ -152,6 +155,12 @@ export interface StudioState {
    * closed, or when nothing was lost.
    */
   lastOpening: Signal<Opening | null>;
+  /**
+   * An action that took work away and asked nothing (a family or a scale deleted, a scale taken
+   * back to its built-in steps), while the toast that undoes it is open (state/undo.ts, the
+   * act-then-undo of confirm-action); null once undone, closed, or once the preset changed again.
+   */
+  lastUndo: Signal<Undoable | null>;
 
   // derived
   /** The configuration as JSON: a change of its content, not of the object. */
@@ -165,8 +174,6 @@ export interface StudioState {
   generation: ReadonlySignal<Generation>;
   /** Served by a command, with edits not saved. */
   dirty: ReadonlySignal<boolean>;
-  /** The configuration differs from the one Magma builds with: Reset does something. */
-  canReset: ReadonlySignal<boolean>;
   /** What changed since the last exit, in the order of the stages (engine/changes.ts). */
   changes: ReadonlySignal<Change[]>;
 
@@ -190,7 +197,18 @@ export interface WorkSnapshot {
   baseline: string;
   selectedName: string;
   loadedRatios: LoadedRatios;
-  colorsView: ColorsView | undefined;
+  workPlace: string | undefined;
+}
+
+/**
+ * An action undone from a toast: what it said, the preset and the family selected before it, and
+ * the preset it left (JSON), which an edit after it leaves behind.
+ */
+export interface Undoable {
+  said: Text;
+  before: CloneableConfig;
+  selectedName: string;
+  after: string;
 }
 
 /** A preset opened over work that had changes: what it said, and the work it took the place of. */
@@ -245,8 +263,6 @@ export function downloadInBrowser({ name, data, type }: FileOut): void {
   URL.revokeObjectURL(url);
 }
 
-const BUNDLED_JSON = JSON.stringify(bundledJson);
-
 /** The preset as the changes are counted on: the configuration and the choices of the themes. */
 export const presetJson = (config: CloneableConfig, choices: ThemeChoices): string =>
   JSON.stringify({ config, choices } satisfies PresetState);
@@ -275,7 +291,7 @@ export function createStudio(options: StudioOptions = {}): StudioState {
     loadedRatios: signal(boot?.loadedRatios ?? ratiosOf(bundled())),
     selectedName: signal(boot ? boot.selectedName : defaultSelected(start.colors)),
     themeChoices,
-    colorsView: signal(colorsViewOf(boot?.view)),
+    workPlace: signal(workPlaceOf(boot?.view)),
     autoNamed: new Set(),
     origin: signal(null),
     conflict: signal(null),
@@ -287,6 +303,7 @@ export function createStudio(options: StudioOptions = {}): StudioState {
     pendingExport: signal(null),
     baseline,
     lastOpening: signal(null),
+    lastUndo: signal(null),
     json,
     report,
     verdict: computed(() => report.value.verdict),
@@ -299,7 +316,6 @@ export function createStudio(options: StudioOptions = {}): StudioState {
       }
     }),
     dirty: computed(() => served.value !== null && json.value !== savedJson.value),
-    canReset: computed(() => json.value !== BUNDLED_JSON),
     changes: computed(() =>
       changesOf(base.value, { config: config.value, choices: themeChoices.value }),
     ),
@@ -320,7 +336,7 @@ export function createStudio(options: StudioOptions = {}): StudioState {
     const draft = {
       config: state.config.value,
       selectedName: state.selectedName.value,
-      view: state.colorsView.value ?? 'colors',
+      view: state.workPlace.value ?? '#/colours',
       loadedRatios: state.loadedRatios.value,
       baseline: state.baseline.value,
     };
@@ -344,9 +360,16 @@ export function createStudio(options: StudioOptions = {}): StudioState {
     if (first) first = false;
     else writeThemeChoices(choices, storage);
   });
+  // an undo holds while the preset is the one the action left: an edit after it closes the toast,
+  // so Undo never takes back more than the action did
+  const stopUndo = effect(() => {
+    const undo = state.lastUndo.value;
+    if (undo && state.json.value !== undo.after) state.lastUndo.value = null;
+  });
   state.dispose = () => {
     stopDraft();
     stopChoices();
+    stopUndo();
   };
   return state;
 }

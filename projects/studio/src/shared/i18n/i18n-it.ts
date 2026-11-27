@@ -38,9 +38,6 @@ export const IT_SHELL: Record<string, string> = {
   Preferences: 'Preferenze',
 
   // the pages of the sections (shared/routes/routes.ts)
-  Palette: 'Palette',
-  'Contrast scales': 'Scale di contrasto',
-  'Semantic surface': 'Superficie semantica',
   Themes: 'Temi',
   Groups: 'Gruppi',
   'Contrast check': 'Verifica del contrasto',
@@ -62,7 +59,45 @@ export const IT_SHELL: Record<string, string> = {
   'You opened a theme of yours from {colour}.': 'Hai aperto un tuo tema dal colore {colour}.',
   'You opened {file}.': 'Hai aperto {file}.',
   Undo: 'Annulla',
-  // the indicators of the play of the introduction, a column of Semantic surface
+  // a pair of the contrast check, in Contrast check and in Colours
+  '{fg} on {bg}': '{fg} su {bg}',
+  // the badge of a contrast scale, in Colours and in Scale (#1403)
+  'Compatible with Magma': 'Compatibile con Magma',
+  'Not compatible with Magma': 'Non compatibile con Magma',
+  // the link to the page of a scale, in Colours and in Groups
+  'Open the scale {scale}': 'Apri la scala {scale}',
+  // the pairs of the contrast check a family or a scale touches (shared/ui/touched-pairs.tsx)
+  '{count} pair touched': '{count} coppia toccata',
+  '{count} pairs touched': '{count} coppie toccate',
+  'all above their floor, in light and in dark': 'tutte sopra la soglia, in chiaro e in scuro',
+  'all above their floor, in light': 'tutte sopra la soglia, in chiaro',
+  'all above their floor, in dark': 'tutte sopra la soglia, in scuro',
+  '{count} under its floor': '{count} sotto la soglia',
+  '{count} under their floor': '{count} sotto la soglia',
+  '{count} pair accepted by the baseline': '{count} accettata dalla baseline',
+  '{count} pairs accepted by the baseline': '{count} accettate dalla baseline',
+  'No pair of the contrast check: it changes none.':
+    'Nessuna coppia della verifica: non ne cambia nessuna.',
+  'Measuring the pairs it touches...': 'Misuro le coppie che tocca...',
+  passes: 'passa',
+  fails: 'non passa',
+  'accepted by the baseline': 'accettata dalla baseline',
+  'below its target': "sotto l'obiettivo",
+  'measured, not judged': 'misurata, non giudicata',
+  'The pairs it touches': 'Le coppie che tocca',
+  // a family deleted, undone from a toast of the shell (#1403)
+  '{name} deleted.': '{name} eliminato.',
+  'The scale {name} deleted.': 'Scala {name} eliminata.',
+  'The scale {name} back to its {count} built-in steps.':
+    'La scala {name} è tornata ai suoi {count} gradini integrati.',
+  // the name of a new group (engine/families.ts, groupNameProblem)
+  'Write the name of the group.': 'Scrivi il nome del gruppo.',
+  'A letter first, then letters, digits and hyphens: it names the tokens.':
+    'Prima una lettera, poi lettere, cifre e trattini: dà il nome ai token.',
+  'The engine makes a group by this name from the families: choose another.':
+    'Il motore crea un gruppo con questo nome dalle famiglie: scegline un altro.',
+  'The group variant holds references alone.': 'Il gruppo variant contiene solo riferimenti.',
+  // the indicators of the play of the introduction, and the group of the texts of Weights
   Texts: 'Testi',
   'Save the preset': 'Salva il preset',
   'Download the preset': 'Scarica il preset',

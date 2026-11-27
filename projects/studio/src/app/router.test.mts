@@ -6,9 +6,9 @@ import { createRouter, memoryLocation } from './router.js'
 // The router follows a location: in memory here, as for a host that owns the address of its page
 // (#695)
 test('the router opens the page of the address, else the first page, its address written in place', () => {
-  const groups = memoryLocation('#/colors/groups')
-  expect(createRouter({ location: groups }).route.value).toEqual({ section: 'colors', view: 'groups' })
-  expect(groups.entries).toEqual(['#/colors/groups'])
+  const themes = memoryLocation('#/colors/themes')
+  expect(createRouter({ location: themes }).route.value).toEqual({ section: 'colors', view: 'themes' })
+  expect(themes.entries).toEqual(['#/colors/themes'])
 
   for (const start of ['', '#', '#/colors/nothing']) {
     const location = memoryLocation(start)
@@ -21,15 +21,15 @@ test('the router opens the page of the address, else the first page, its address
 test('navigate opens a page as its link does; replace writes its address in place', () => {
   const location = memoryLocation('#/introduction')
   const router = createRouter({ location })
-  router.navigate({ section: 'colors', view: 'scales' })
-  expect(router.route.value).toEqual({ section: 'colors', view: 'scales' })
-  expect(location.entries).toEqual(['#/introduction', '#/colors/contrast-scales'])
+  router.navigate({ section: 'scale', formula: 'wcag3', name: 'tone' })
+  expect(router.route.value).toEqual({ section: 'scale', formula: 'wcag3', name: 'tone' })
+  expect(location.entries).toEqual(['#/introduction', '#/colours/scale/wcag3/tone'])
 
   // a choice made in the Theme section: no page to go back to
   router.navigate({ section: 'theme' })
   router.navigate({ section: 'theme', theme: 'editorial', mode: 'dark' }, { replace: true })
   expect(router.route.value).toEqual({ section: 'theme', theme: 'editorial', mode: 'dark' })
-  expect(location.entries).toEqual(['#/introduction', '#/colors/contrast-scales', '#/theme/editorial/dark'])
+  expect(location.entries).toEqual(['#/introduction', '#/colours/scale/wcag3/tone', '#/theme/editorial/dark'])
 
   // the page shown again writes nothing
   router.navigate({ section: 'theme', theme: 'editorial', mode: 'dark' })
@@ -67,9 +67,17 @@ test('an alias opens its page and writes the address of the page in its place', 
   const router = createRouter({ location })
   expect(router.route.value).toEqual({ section: 'introduction' })
   expect(location.entries).toEqual(['#/introduction'])
-  location.go('#/colors/palette')
+  location.go('#/colors/themes')
   location.go('#/start')
   expect(router.route.value).toEqual({ section: 'introduction' })
   // in place: back leads to the page before it, not to the alias
-  expect(location.entries).toEqual(['#/introduction', '#/colors/palette', '#/introduction'])
+  expect(location.entries).toEqual(['#/introduction', '#/colors/themes', '#/introduction'])
+  // #1403: the address of the Palette opens Colours, which took its place
+  location.go('#/colors/palette')
+  expect(router.route.value).toEqual({ section: 'colours' })
+  expect(location.read()).toBe('#/colours')
+  // and the address of Contrast scales opens the page of the default scale
+  location.go('#/colors/contrast-scales')
+  expect(router.route.value).toEqual({ section: 'scale', formula: 'wcag3', name: 'default' })
+  expect(location.read()).toBe('#/colours/scale/wcag3/default')
 })

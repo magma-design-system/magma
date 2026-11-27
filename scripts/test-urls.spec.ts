@@ -149,13 +149,27 @@ describe('rowsOf', () => {
     );
     assert.ok(rows[0].links.some((link) => link.url === 'http://localhost:5177/#/theme'));
     // the views of the flow the studio has beside the pages of Colors (#1402)
-    for (const view of ['#/introduction', '#/opening', '#/exceptions'])
+    for (const view of [
+      '#/introduction',
+      '#/opening',
+      '#/colours',
+      '#/weights',
+      '#/groups',
+      '#/exceptions',
+    ])
       assert.ok(
         rows[0].links.some((link) => link.url === `http://localhost:5177/${view}`),
         view,
       );
+    // a change of the tokens: the stages Colours and Weights, the pages of Colors, the view Groups
+    // (#1403)
+    assert.equal(rows[1].links[0].url, 'http://localhost:5177/#/colours');
+    assert.equal(rows[1].links[1].url, 'http://localhost:5177/#/weights');
+    assert.equal(rows[1].links.at(-1)?.url, 'http://localhost:5177/#/groups');
     assert.ok(
-      rows[1].links.every((link) => link.url.startsWith('http://localhost:5177/#/colors/')),
+      rows[1].links
+        .slice(2, -1)
+        .every((link) => link.url.startsWith('http://localhost:5177/#/colors/')),
     );
     assert.deepEqual(rows[2].links, [
       { label: 'actions/banner', url: 'http://localhost:5180/view/previews/actions/banner' },

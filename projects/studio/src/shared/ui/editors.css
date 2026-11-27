@@ -1,0 +1,128 @@
+/*
+  The short sheet of the editors of a curve (hue-shift-editor.tsx, saturation-editor.tsx, out of
+  palette.css with #1403): the data their charts draw, a bar or a mark for each step of a ramp. Their
+  layout is in their classes; the threshold of two columns (--container-two-fields) in
+  src/tailwind.css.
+*/
+
+/* the intensity of the hue shift along the steps: a bar of data for each step, on a track */
+
+.palette-weights {
+  align-items: end;
+  block-size: 3lh;
+  display: flex;
+  gap: var(--magma-rhythm-inline);
+}
+
+.palette-weight {
+  align-items: end;
+  background-color: rgb(var(--magma-surface-sunken));
+  block-size: 100%;
+  border-radius: var(--magma-radius-xs);
+  corner-shape: var(--magma-corner-shape);
+  display: flex;
+  flex: 1;
+}
+
+.palette-weight-fill {
+  background-color: rgb(var(--magma-accent-emphasis));
+  border-radius: var(--magma-radius-xs);
+  corner-shape: var(--magma-corner-shape);
+  inline-size: 100%;
+}
+
+/* a chart of the saturation curve: its caption above, the ends of its axis under it */
+
+.palette-chart {
+  display: grid;
+  gap: var(--magma-rhythm-label-control);
+  margin: 0;
+}
+
+.palette-chart > figcaption {
+  display: grid;
+}
+
+.palette-chart-ends {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* the change of the saturation of each step: a track per step, the line of no change across its
+   middle, the bar up toward the most vivid colour or down toward grey */
+
+.palette-amounts {
+  block-size: 4lh;
+  display: flex;
+  gap: var(--magma-rhythm-inline);
+}
+
+.palette-amount {
+  background-color: rgb(var(--magma-surface-sunken));
+  border-radius: var(--magma-radius-xs);
+  corner-shape: var(--magma-corner-shape);
+  display: grid;
+  flex: 1;
+  grid-template-rows: 1fr 1fr;
+}
+
+.palette-amount-up {
+  align-items: end;
+  border-block-end: thin solid rgb(var(--magma-border-strong));
+  display: flex;
+}
+
+.palette-amount-down {
+  align-items: start;
+  display: flex;
+}
+
+.palette-amount-fill {
+  background-color: rgb(var(--magma-accent-emphasis));
+  border-radius: var(--magma-radius-xs);
+  corner-shape: var(--magma-corner-shape);
+  inline-size: 100%;
+}
+
+/* down is toward grey: a grey bar */
+
+.palette-amount-down .palette-amount-fill {
+  background-color: rgb(var(--magma-text-subtle));
+}
+
+/* the relative saturation of each step: a track per step from grey (its bottom) to the most vivid
+   colour (its top), a ring before the curve, a dot in the colour of the step with it; a mark is a
+   step of the spacing (16px), its centre on the datum */
+
+.palette-saturation {
+  block-size: 8lh;
+  display: flex;
+  gap: var(--magma-rhythm-inline);
+  padding-block: calc(var(--spacing) * 200);
+}
+
+.palette-saturation-step {
+  background-color: rgb(var(--magma-surface-sunken));
+  border-radius: var(--magma-radius-full);
+  corner-shape: var(--magma-corner-shape);
+  flex: 1;
+  position: relative;
+}
+
+.palette-saturation-before,
+.palette-saturation-after {
+  aspect-ratio: 1;
+  border-radius: var(--magma-radius-full);
+  inline-size: calc(var(--spacing) * 400);
+  inset-inline-start: 50%;
+  position: absolute;
+  translate: -50% 50%;
+}
+
+.palette-saturation-before {
+  border: thin dashed rgb(var(--magma-text-muted));
+}
+
+.palette-saturation-after {
+  border: thin solid rgb(var(--magma-border-default));
+}

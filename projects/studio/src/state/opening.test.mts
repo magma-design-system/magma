@@ -62,7 +62,7 @@ test('a brand colour opens Magma\'s preset with its family, its variant and a th
 test('opening over work with changes keeps it for the toast; Undo brings it back as it stood', async () => {
   const studio = await changed()
   studio.selectedName.value = 'label.red'
-  studio.colorsView.value = 'surface'
+  studio.workPlace.value = '#/colors/semantic-surface'
   const before = {
     config: studio.config.value,
     choices: studio.themeChoices.value,
@@ -77,7 +77,7 @@ test('opening over work with changes keeps it for the toast; Undo brings it back
   expect(studio.config.value).toEqual(before.config)
   expect(studio.themeChoices.value).toEqual(before.choices)
   expect(studio.changes.value).toEqual(before.changes)
-  expect([studio.selectedName.value, studio.colorsView.value]).toEqual(['label.red', 'surface'])
+  expect([studio.selectedName.value, studio.workPlace.value]).toEqual(['label.red', '#/colors/semantic-surface'])
   expect(studio.lastOpening.value).toBeNull()
   // closing the toast forgets the work it kept
   openMagma(studio)

@@ -1,0 +1,43 @@
+/*
+  The short sheet of Weights (#1403; the sheet of Semantic surface until then): what its classes do
+  not write. The rows of a group of weights, the role beside its slider, the same columns in every
+  group so they line up, and the frame of the scene beside. Sizes from the steps of --spacing,
+  colours from the semantic roles.
+*/
+
+.weights-grid {
+  align-items: center;
+  display: grid;
+  gap: var(--magma-rhythm-label-control) var(--magma-rhythm-between-fields);
+  grid-template-columns: calc(var(--spacing) * 5600) minmax(0, 1fr);
+}
+
+/* the texts carry a third column: the floor of the check beside each target */
+
+.weights-grid--floor {
+  grid-template-columns: calc(var(--spacing) * 5600) minmax(0, 1fr) calc(var(--spacing) * 3600);
+}
+
+/*
+  Narrow, each role stands over its slider, and the floor of a text under it: the slider keeps the
+  width mds-input-range does not shrink under. Literal, since a container query reads no var()
+  (the role, a slider and the floor: 14rem + 9rem + 9rem and two gaps).
+*/
+
+@container weights (width < 35rem) {
+  .weights-grid,
+  .weights-grid--floor {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* the scene beside: a page of a product small as a phone, as the side of Colours draws it */
+
+.weights-frame {
+  aspect-ratio: 9 / 16;
+  border: thin solid rgb(var(--magma-border-muted));
+  border-radius: var(--magma-radius-lg);
+  corner-shape: var(--magma-corner-shape);
+  inline-size: 100%;
+  max-block-size: 75dvh;
+}
