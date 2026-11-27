@@ -1,3 +1,4 @@
+import type { ComponentChild } from 'preact';
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import initialConfigJson from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json';
 import type {
@@ -12,7 +13,6 @@ import {
 } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
 import { COLORSPACES } from '@maggioli-design-system/design-tokens/src/lib/schema.mjs';
 import { GroupsManager } from './groups.js';
-import { DiffView } from './features/diffs/diffs.js';
 import { BatchExportModal } from './batch.js';
 import {
   CURVE_PRESETS,
@@ -87,7 +87,7 @@ import { MARK, colorspaceVerdict, type ColorspaceVerdict } from './colorspace-ve
 type View = ColorsView;
 
 // the color list on the left drives only the per-color views (edit a color,
-// sample its contrast scales). Surfaces, groups and diff operate on the whole
+// sample its contrast scales). Surfaces, groups and the checks operate on the whole
 // config, so the column - and its always-present selection - is hidden there.
 const COLOR_LIST_VIEWS = new Set<View>(['colors', 'scales']);
 
@@ -758,6 +758,16 @@ interface AppProps {
   view?: View;
   /** Opens a view: the shell follows its link. */
   onNavigate?: (view: View) => void;
+  /**
+   * The foot of the stage the view is (app/stages.tsx, #1402), at the end of the region that
+   * scrolls: the shell hands it in, so the page knows nothing of the flow.
+   */
+  foot?: ComponentChild;
+  /**
+   * The head of the stage above the title: the way back of a page beside a stage, the links to the
+   * pages beside it (app/stages.tsx, StageLead), handed in by the shell.
+   */
+  lead?: ComponentChild;
 }
 
 /** One line under the title of each view: what it holds. */
@@ -778,10 +788,9 @@ const VIEW_SUMMARY: Record<View, string> = {
   contrast: msg(
     'Every pair the contrast gate judges, in each theme and both modes: what the build of Magma would say of this configuration.',
   ),
-  diff: msg('The palette against the configuration Magma builds with.'),
 };
 
-export function App({ view: routedView, onNavigate }: AppProps = {}) {
+export function App({ view: routedView, onNavigate, foot, lead }: AppProps = {}) {
   const t = useT();
   // the work is the state's (state/studio.ts, #1400): the pages read it and change it through its
   // actions, so it outlives them; what is left here is the state of the page
@@ -1062,7 +1071,7 @@ export function App({ view: routedView, onNavigate }: AppProps = {}) {
   // palette). Shared by the alias editor and the "new reference" flow.
   const aliasTargets = config.colors.filter((color) => !isAliasColor(color)).map((c) => c.name);
 
-  // the surfaces/groups/diff views work on the whole config, not a single
+  // the surfaces/groups/contrast views work on the whole config, not a single
   // color, so the picker column is dropped and the content spans full width
   const showSidebar = COLOR_LIST_VIEWS.has(view);
 
@@ -1095,7 +1104,7 @@ export function App({ view: routedView, onNavigate }: AppProps = {}) {
         {/* the actions of the page (the page-header block of Magma): Reset in view, the one
             action left once the menu of the others had nothing else (vittorio, 2026-11-09), then
             Save when a command serves the studio, last. What brings a configuration in and takes
-            it out is the Config menu of the bar (shell.tsx, app/config-menu.tsx) */}
+            it out is the Config menu of the bar (app/shell.tsx, app/config-menu.tsx) */}
         <div class="studio-page-actions">
           {studio.status.value && (
             <mds-text typography="caption" tag="span" class="studio-muted" role="status">
@@ -1459,6 +1468,7 @@ export function App({ view: routedView, onNavigate }: AppProps = {}) {
       )}
 
       <main class="content" ref={content}>
+        {view !== 'surface' && lead}
         {view !== 'surface' && pageTop}
 
         {view === 'colors' && selected && (
@@ -1651,7 +1661,7 @@ export function App({ view: routedView, onNavigate }: AppProps = {}) {
           />
         )}
         {view === 'contrast' && <ContrastCheck report={report} />}
-        {view === 'diff' && <DiffView config={config} />}
+        {foot && <div class="mt-between-sections">{foot}</div>}
       </main>
 
       {batchModal && (

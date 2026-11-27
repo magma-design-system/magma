@@ -5,7 +5,8 @@ import committedConfig from '@maggioli-design-system/design-tokens/.magma-design
 import { DEFAULT_TARGETS } from '@maggioli-design-system/design-tokens/src/lib/contrast-gate.js'
 import { TEXT_ROLES } from '@maggioli-design-system/design-tokens/src/lib/text-role.mjs'
 
-import { BEHAVIOR_PAGES, COLORS_PAGES, hrefOf } from '../src/shared/routes/routes.js'
+import { LangProvider } from '../../shared/i18n/i18n.js'
+import { hrefOf, STAGES } from '../../shared/routes/routes.js'
 import {
   CHECKS,
   DEMO_STEPS,
@@ -18,17 +19,17 @@ import {
   magmaSteps,
   rampAt,
   textAt,
-} from '../src/start-demo.js'
-import { gateReport } from '../src/engine/gate.js'
-import { FEATURES, LEVELS, PLAY_MS, StartPage } from '../src/start.js'
-import { textOf } from './text.mjs'
+} from './demo.js'
+import { gateReport } from '../../engine/gate.js'
+import { FEATURES, FLOW, IntroductionPage, PLAY_MS } from './introduction.js'
+import { textOf } from '../../../test/text.mjs'
 
-// The Start page (start.tsx), an introduction: a hero whose play, once, is the engine of the studio
-// on the configuration of Magma drawn pale, its text pinned to pale steps and the ramp of its accent
-// faded, then brought back, told by three trays around the banner it paints; the steps
-// of the work; the levels, from one colour to the whole product, each with its pages. jsdom does
-// not upgrade the Magma components: the tests read the markup the page writes, the native elements
-// by their role and name, the Magma ones by their tag and attributes.
+// The introduction (introduction.tsx; the Start page until #1402): a hero whose play, once, is the
+// engine of the studio on the configuration of Magma drawn pale, its text pinned to pale steps and
+// the ramp of its accent faded, then brought back, told by three trays around the banner it paints,
+// and the way out to the opening; then the stages in order, each with what it does and its link.
+// jsdom does not upgrade the Magma components: the tests read the markup the page writes, the
+// native elements by their role and name, the Magma ones by their tag and attributes.
 
 const root = document.createElement('div')
 document.body.append(root)
@@ -58,12 +59,10 @@ const bar = () => root.querySelector('mds-progress')!
 const verdict = () => bar().previousElementSibling?.textContent ?? undefined
 const readings = () => [...stage().querySelectorAll('dl mds-badge')].map((one) => one.getAttribute('variant'))
 const replay = () => stage().querySelector<HTMLElement>('mds-button')!
-// the line under the levels, the checks of every level
-const checks = () => within(root).getByText(/^At every level,/)
 const motion = (less: boolean) => vi.stubGlobal('matchMedia', () => ({ matches: less }))
 // the banner loaded, as the browser says it: jsdom loads no iframe, and the play waits for it
 const showHero = () => {
-  render(h(StartPage, {}), root)
+  render(h(IntroductionPage, {}), root)
   banner().dispatchEvent(new Event('load'))
 }
 
@@ -220,61 +219,71 @@ test('with less motion asked, the play does not run by itself: the banner stands
   await vi.waitFor(() => expect(verdict()).toBe('All contrasts are OK'))
   expect(open()).toEqual(['fixed'])
   expect(phase()).toBe('fixed')
-  // the one control of the hero
-  expect([...hero().querySelectorAll('mds-button, input, button')]).toEqual([replay()])
+  // the one control of the play; the other of the hero is its way out, a link
+  expect([...stage().querySelectorAll('mds-button, input, button')]).toEqual([replay()])
+  expect([...hero().querySelectorAll('mds-button:not([href]), input, button')]).toEqual([replay()])
   await new Promise((done) => setTimeout(done, 600))
   expect(open()).toEqual(['fixed'])
 })
 
-test('the levels go from one colour to the whole product, and lead to every page of the bar', () => {
-  expect(LEVELS.map(({ name }) => name)).toEqual(['Colour', 'Role', 'Theme', 'Product', 'Composition'])
-  render(h(StartPage, {}), root)
-  // the pages of each level, a navigation named after it
-  const levels = within(root).getByRole('region', { name: 'Where each change is made' })
-  const pages = within(levels).getAllByRole('navigation', { name: /^The pages of / })
-  const linked = [
-    ...pages.flatMap((nav) => [...nav.querySelectorAll('mds-button')].map((one) => one.getAttribute('href'))),
-    // the checks, in the line under the levels
-    ...[...checks().querySelectorAll('mds-link')].map((one) => one.getAttribute('href')),
-  ]
-  const every = [
-    ...COLORS_PAGES.map(({ id }) => hrefOf({ section: 'colors', view: id })),
-    hrefOf({ section: 'theme' }),
-    ...BEHAVIOR_PAGES.map(({ id }) => hrefOf({ section: 'behavior', page: id })),
-  ]
-  expect(new Set(linked)).toEqual(new Set(every))
-  expect(linked.length).toBe(every.length)
-})
-
-// written with Magma wherever Magma has the component: a list of text is an mds-list, a link in
-// running text an mds-link; the steps and the levels stay lists of the platform, since an
-// mds-list-item holds text only and theirs hold titles and links
-test('the Start page uses the lists and the links of Magma where they hold what it writes', () => {
+// written with Magma wherever Magma has the component: a list of text is an mds-list; the stages
+// stay a list of the platform, since an mds-list-item holds text only and a stage holds a title, a
+// sentence and a link
+test('the introduction uses the lists of Magma where they hold what it writes', () => {
   motion(true)
-  render(h(StartPage, {}), root)
+  render(h(IntroductionPage, {}), root)
   expect(root.querySelectorAll('ul, a')).toHaveLength(0)
   // what the studio offers, lines of text: the items of an mds-list
   const features = FEATURES.map((feature) => within(root).getByText(feature))
   expect(features.map((one) => [one.localName, one.parentElement?.localName])).toEqual(
     FEATURES.map(() => ['mds-list-item', 'mds-list']),
   )
-  expect(checks().querySelectorAll('mds-link')).toHaveLength(2)
 })
 
-test('the steps of the work, in their order, each with the page it starts on', () => {
-  render(h(StartPage, {}), root)
+test('the hero leads out to the opening, the one way out of the introduction', () => {
+  motion(true)
+  render(h(IntroductionPage, {}), root)
+  const start = [...hero().querySelectorAll('mds-button[href]')]
+  expect(start.map((one) => [textOf(one), one.getAttribute('href')])).toEqual([['Get started', '#/opening']])
+})
+
+// the stages in order, from the opening to the full review (studio.object-model.md, section 5),
+// each with what it does and the link that opens it, in the primary weak tone (vittorio, 2026-11-27)
+test('the stages in order, each with what it does and the link that opens it', () => {
+  render(h(IntroductionPage, {}), root)
   const work = within(root).getByRole('region', { name: 'How the work goes' })
-  const steps = within(work).getAllByRole('listitem')
-  expect(steps.map((one) => one.querySelector('mds-text[tag="h3"]')?.textContent?.trim())).toEqual([
-    'Start from a configuration',
-    'Change it where the change belongs',
-    'Keep the contrast gate green',
-    'Judge it on a product, then take it',
+  const rows = within(work).getAllByRole('listitem')
+  const row = (one: Element) => ({
+    caption: one.querySelector('mds-text[typography="caption"]')?.textContent,
+    name: one.querySelector('mds-text[tag="h3"]')?.textContent,
+    link: [textOf(one.querySelector('mds-button')), one.querySelector('mds-button')?.getAttribute('href')],
+  })
+  expect(rows.map(row)).toEqual([
+    { caption: 'Before the stages', name: 'Opening', link: ['Open Opening', '#/opening'] },
+    { caption: 'Stage 1', name: 'Colors', link: ['Open Colors', '#/colors/palette'] },
+    { caption: 'Stage 2', name: 'Weights', link: ['Open Weights', '#/colors/semantic-surface'] },
+    { caption: 'Stage 3', name: 'Themes', link: ['Open Themes', '#/colors/themes'] },
+    { caption: 'Stage 4', name: 'Exceptions', link: ['Open Exceptions', '#/exceptions'] },
+    { caption: 'After the stages', name: 'Full review', link: ['Open Full review', '#/colors/contrast-check'] },
   ])
-  expect(steps.map((one) => one.querySelector('mds-button')?.getAttribute('href') ?? null)).toEqual([
-    '#/colors/palette',
-    null,
-    '#/colors/contrast-check',
-    '#/theme',
+  // the stages are those of the table of the pages, in its order
+  expect(FLOW.slice(1).map(({ route }) => hrefOf(route))).toEqual(STAGES.map(({ route }) => hrefOf(route)))
+  // each says what it does; its link an action, in the primary weak tone
+  for (const one of rows) {
+    expect(one.querySelector('mds-text[typography="detail"]')?.textContent).toBeTruthy()
+    const link = one.querySelector('mds-button')!
+    expect([link.getAttribute('variant'), link.getAttribute('tone')]).toEqual(['primary', 'weak'])
+  }
+})
+
+test('the introduction speaks Italian from its own catalogue, the names of the stages from the studio', () => {
+  motion(true)
+  render(h(LangProvider, { value: 'it' }, h(IntroductionPage, {})), root)
+  const heroIt = within(root).getByRole('region', { name: 'Il tema del tuo prodotto, leggibile da tutti' })
+  expect(textOf(heroIt.querySelector('mds-button[href]'))).toBe('Comincia')
+  const work = within(root).getByRole('region', { name: 'Come si lavora' })
+  const names = within(work).getAllByRole('listitem').map((one) => textOf(one.querySelector('mds-button')))
+  expect(names).toEqual([
+    'Apri Partenza', 'Apri Colori', 'Apri Pesi', 'Apri Temi', 'Apri Eccezioni', 'Apri Giro completo',
   ])
 })

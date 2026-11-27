@@ -1,11 +1,12 @@
 import { exportOf, selectionOf, type ExportKind } from '../engine/exports.js';
 import { msg } from '../shared/i18n/text.js';
-import type { ExportAction, StudioState } from './studio.js';
+import { markExited, type ExportAction, type StudioState } from './studio.js';
+import { saveConfig } from './work.js';
 
 /*
   What hands the configuration out of the studio (#1400, out of app.tsx), each through the
   contrast gate (#698): an export while the gate fails asks first, never the silent default. The
-  dialog that asks is the shell's (shell.tsx), drawn from `pendingExport`, so the Config menu of
+  dialog that asks is the shell's (app/shell.tsx), drawn from `pendingExport`, so the Config menu of
   the bar exports from any section.
 */
 
@@ -20,6 +21,32 @@ export function confirmExport(state: StudioState): void {
   const action = state.pendingExport.peek();
   state.pendingExport.value = null;
   void action?.run();
+}
+
+/** The preset downloaded as JSON: once it has left, the changes are counted from it. */
+export function downloadPreset(state: StudioState): ExportAction {
+  return {
+    label: msg('Download the preset'),
+    proceed: msg('Download anyway'),
+    run: () => {
+      exportConfig(state, 'config');
+      markExited(state);
+    },
+  };
+}
+
+/**
+ * The exit of the preset (the register: exit), the way forward of the last stage and the action
+ * of the bar: saved into the file a command serves when it takes saves, downloaded as JSON on its
+ * own (the site on Pages, a command that refuses saves). Run it through `guard`, which asks first
+ * while the gate fails (object model, Verification: leaving with it red is allowed, asking). Once
+ * the preset has left, the changes are counted from it (markExited; a save marks it on success).
+ */
+export function exitOf(state: StudioState): ExportAction {
+  const served = state.served.peek();
+  return served && !served.readOnly
+    ? { label: msg('Save the preset'), proceed: msg('Save anyway'), run: () => saveConfig(state) }
+    : downloadPreset(state);
 }
 
 /** The person does not export: the action held goes. */

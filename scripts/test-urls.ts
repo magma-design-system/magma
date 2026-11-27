@@ -39,6 +39,7 @@ import { PORT as PREVIEWS_PORT, SOURCES } from '../projects/mcp/scripts/serve-pr
 import {
   BEHAVIOR_PAGES,
   COLORS_PAGES,
+  HOME,
   hrefOf,
   type Route,
 } from '../projects/studio/src/shared/routes/routes.ts';
@@ -122,10 +123,19 @@ const storyUrl = (base: string, entry: StoryEntry) =>
 
 const studioPages = (base: string, only?: 'colors'): { label: string; url: string }[] => {
   const routes: { label: string; route: Route }[] = [
+    // the views of the flow before the stages (#1402), for a change of the studio
+    ...(only
+      ? []
+      : [
+          { label: 'Introduction', route: HOME },
+          { label: 'Opening', route: { section: 'opening' } as Route },
+        ]),
     ...COLORS_PAGES.map((page) => ({
       label: `Colors / ${page.label}`,
       route: { section: 'colors', view: page.id } as Route,
     })),
+    // the stage with no page of Colors (#1402)
+    ...(only ? [] : [{ label: 'Exceptions', route: { section: 'exceptions' } as Route }]),
     ...(only ? [] : [{ label: 'Theme', route: { section: 'theme' } as Route }]),
     ...(only
       ? []

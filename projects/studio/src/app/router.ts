@@ -82,9 +82,10 @@ export interface Router {
 }
 
 /**
- * A router on a location. An address that names a page opens it; an empty one, or one of the
- * studio that names no page, opens `fallback` and writes its address in place; a hash that is no
- * address of the studio (an anchor) is left alone, the page shown kept.
+ * A router on a location. An address that names a page opens it, an alias writing the address of
+ * its page in place; an empty one, or one of the studio that names no page, opens `fallback` and
+ * writes its address in place; a hash that is no address of the studio (an anchor) is left alone,
+ * the page shown kept.
  */
 export function createRouter({
   location = hashLocation(),
@@ -98,8 +99,11 @@ export function createRouter({
     const hash = location.read();
     if (hash !== '' && hash !== '#' && !isAddress(hash)) return;
     const next = routeOf(hash);
-    if (next) show(next);
-    else {
+    if (next) {
+      // an alias (#/start) opens its page, whose address takes its place
+      if (hash !== '' && hrefOf(next) !== hash) location.write(hrefOf(next), true);
+      show(next);
+    } else {
       location.write(hrefOf(fallback), true);
       show(fallback);
     }

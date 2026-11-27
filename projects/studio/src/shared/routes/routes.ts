@@ -14,9 +14,17 @@ import { msg } from '../i18n/text.js';
   - Colors: the views of the tokens playground, each a page of its own;
   - Theme: the theme full screen, with its controls over it;
   - Behavior: the design language, the patterns and the blocks.
-  Before them the Start page (start.tsx): what the studio does, the steps of the work and what
-  each section changes; the name of the studio at the start of the bar (app-shell, `product`)
-  links to it. It is no page of a menu, so it has no row in PAGES: its address is `#/start`.
+  Before them the introduction (features/introduction/, the Start page until #1402): what the
+  studio is for and the stages in order; the name of the studio at the start of the bar
+  (app-shell, `product`) links to it, and so does a start with no address. Then the opening
+  (features/opening/): the preset to work on. Neither is a page of a menu, so neither has a row in
+  PAGES: their addresses are `#/introduction` and `#/opening`. `#/start`, the address of the Start
+  page, opens the introduction too (GLOSSARY.md, decision 13), and the router writes its address
+  in its place.
+
+  The stages of the balancing (#1402, STAGES below) run through those pages in the order of the
+  work: until #1403 and #1404 build their views, each stage opens the page of today that does its
+  work, at the address it has today, so no link written before breaks.
 
   A hash that does not start with `#/` is no address of the studio but the anchor of a heading of
   the page that hosts it (Starlight): it names no page.
@@ -34,7 +42,6 @@ export const COLORS_VIEWS = [
   'themes',
   'groups',
   'contrast',
-  'diff',
 ] as const;
 export type ColorsView = (typeof COLORS_VIEWS)[number];
 
@@ -58,13 +65,17 @@ export type ModeView = (typeof MODE_VIEWS)[number];
  * (vittorio, 2026-11-07), and the address follows the choices made in the section.
  */
 export type Route =
-  | { section: 'start' }
+  | { section: 'introduction' }
+  /** The opening: the preset to work on (#1402). */
+  | { section: 'opening' }
   | { section: 'colors'; view: ColorsView }
   | { section: 'theme'; theme?: string; mode?: ModeView }
-  | { section: 'behavior'; page: BehaviorPage };
+  | { section: 'behavior'; page: BehaviorPage }
+  /** The stage of the exceptions, a page of its own until #1404 builds it (#1402). */
+  | { section: 'exceptions' };
 
 /** A section of the bar: its pages are the rows of PAGES that name it. */
-export type Section = Exclude<Route['section'], 'start'>;
+export type Section = Exclude<Route['section'], 'introduction' | 'opening' | 'exceptions'>;
 
 export interface MenuItem<Id extends string> {
   id: Id;
@@ -120,8 +131,8 @@ export const PAGES: readonly Page[] = [
     label: msg('Groups'),
     icon: 'mi/baseline/workspaces',
   },
-  // the pages that check the work against what Magma builds: the contrast gate, the committed
-  // palette
+  // the page that checks the work against what Magma builds: the contrast gate (Diffs, the
+  // palette against Magma's, went in #1402: the changes are the bar's)
   {
     section: 'colors',
     id: 'contrast',
@@ -129,13 +140,6 @@ export const PAGES: readonly Page[] = [
     label: msg('Contrast check'),
     icon: 'mi/baseline/fact-check',
     apart: true,
-  },
-  {
-    section: 'colors',
-    id: 'diff',
-    slug: 'diffs',
-    label: msg('Diffs'),
-    icon: 'mi/baseline/difference',
   },
   { section: 'theme', id: 'theme', slug: '', label: msg('Theme'), icon: 'mi/baseline/format-size' },
   {
@@ -172,14 +176,19 @@ export const BEHAVIOR_PAGES: MenuItem<BehaviorPage>[] = pagesOf('behavior');
 export const THEME_PAGE: MenuItem<'theme'> = pagesOf('theme')[0];
 
 /**
- * The first page of the studio: the Start page, which says what the studio does and where each
- * change is made, before the work starts on the palette. A start with no address opens it.
+ * The first page of the studio: the introduction, which says what the studio is for and the
+ * stages in order, before the opening. A start with no address opens it.
  */
-export const HOME: Route = { section: 'start' };
+export const HOME: Route = { section: 'introduction' };
+
+/** The address of the Start page the introduction was, kept so a link written before opens it. */
+export const START_ALIAS = '#/start';
 
 /** The address of a page, as a link writes it: `#/colors/palette`. */
 export function hrefOf(route: Route): string {
-  if (route.section === 'start') return '#/start';
+  if (route.section === 'introduction') return '#/introduction';
+  if (route.section === 'opening') return '#/opening';
+  if (route.section === 'exceptions') return '#/exceptions';
   if (route.section === 'theme') {
     if (!route.theme) return '#/theme';
     return route.mode ? `#/theme/${route.theme}/${route.mode}` : `#/theme/${route.theme}`;
@@ -196,7 +205,10 @@ export const isAddress = (hash: string): boolean => hash.startsWith('#/');
 export function routeOf(hash: string): Route | undefined {
   if (!isAddress(hash)) return undefined;
   const [section, slug, ...rest] = hash.slice(2).split('/');
-  if (section === 'start') return slug === undefined ? { section: 'start' } : undefined;
+  if (hash === START_ALIAS) return { section: 'introduction' };
+  if (section === 'introduction' || section === 'opening')
+    return slug === undefined ? { section } : undefined;
+  if (section === 'exceptions') return slug === undefined ? { section: 'exceptions' } : undefined;
   if (section === 'theme') {
     if (!slug) return rest.length ? undefined : { section: 'theme' };
     // a theme by its name, as a theme is named (THEME_NAME of design-tokens), then a mode: the
@@ -216,4 +228,127 @@ export function routeOf(hash: string): Route | undefined {
     return page && { section: 'behavior', page: page.id };
   }
   return undefined;
+}
+
+/**
+ * The stages of the balancing, in their order (studio.object-model.md, section 5): the four
+ * stages, numbered, then the full review. The pattern of the studio says how they show
+ * (magma/patterns/stages-in-order.md): under the bar, the current one marked, each with the way
+ * back and the way forward. Until #1403 and #1404 build their views, a stage opens the page of
+ * today that does its work, and the pages beside it are those of today that it holds.
+ */
+export type StageId = 'colours' | 'weights' | 'themes' | 'exceptions' | 'full-review';
+
+export interface Stage {
+  id: StageId;
+  /** The name of the stage, in English (msg), translated where it is drawn. */
+  label: string;
+  icon: string;
+  /** A stage of the four, with its number; the full review comes after them, with none. */
+  numbered: boolean;
+  /** The page the stage opens. */
+  route: Route;
+  /** The pages beside it, reached from it: the stage stays the current one there. */
+  beside: Route[];
+}
+
+export const STAGES: readonly Stage[] = [
+  {
+    id: 'colours',
+    label: msg('Colors'),
+    icon: 'mi/baseline/palette',
+    numbered: true,
+    route: { section: 'colors', view: 'colors' },
+    // Scale and Group in the object model, today Contrast scales and Groups
+    beside: [
+      { section: 'colors', view: 'scales' },
+      { section: 'colors', view: 'groups' },
+    ],
+  },
+  {
+    id: 'weights',
+    label: msg('Weights'),
+    icon: 'mi/baseline/account-tree',
+    numbered: true,
+    route: { section: 'colors', view: 'surface' },
+    beside: [],
+  },
+  {
+    id: 'themes',
+    label: msg('Themes'),
+    icon: 'mi/baseline/theater-comedy',
+    numbered: true,
+    route: { section: 'colors', view: 'themes' },
+    beside: [],
+  },
+  {
+    id: 'exceptions',
+    label: msg('Exceptions'),
+    icon: 'mi/baseline/tune',
+    numbered: true,
+    route: { section: 'exceptions' },
+    beside: [],
+  },
+  {
+    id: 'full-review',
+    label: msg('Full review'),
+    icon: 'mi/baseline/fact-check',
+    numbered: false,
+    route: { section: 'colors', view: 'contrast' },
+    beside: [],
+  },
+];
+
+/** The view before the first stage, where its way back leads: the opening. */
+export const BEFORE_STAGES: { route: Route; label: string } = {
+  route: { section: 'opening' },
+  label: msg('Opening'),
+};
+
+/** Where a page stands in the flow: a stage, a page beside one, or neither (undefined). */
+export interface Place {
+  stage: Stage;
+  /** The position of the stage in STAGES, from 0. */
+  index: number;
+  place: 'stage' | 'side-page';
+}
+
+/** Where a page stands in the flow, or undefined for a page that is no stage nor beside one. */
+export function placeOf(route: Route): Place | undefined {
+  const href = hrefOf(route);
+  for (const [index, stage] of STAGES.entries()) {
+    if (hrefOf(stage.route) === href) return { stage, index, place: 'stage' };
+    if (stage.beside.some((page) => hrefOf(page) === href))
+      return { stage, index, place: 'side-page' };
+  }
+  return undefined;
+}
+
+/** A view the way back or the way forward of a stage opens: its page, and its name. */
+export interface StageLink {
+  route: Route;
+  /** The name of the view, in English (msg), translated where it is drawn. */
+  label: string;
+  /** The number of the stage it opens, for a stage of the four. */
+  number?: number;
+}
+
+const linkTo = (index: number): StageLink => {
+  const stage = STAGES[index];
+  return {
+    route: stage.route,
+    label: stage.label,
+    number: stage.numbered ? index + 1 : undefined,
+  };
+};
+
+/**
+ * The views before and after a stage: the stage before it, or the view before the stages; the
+ * stage after it, or none after the last, whose way forward is the exit.
+ */
+export function aroundStage(index: number): { before: StageLink; after?: StageLink } {
+  return {
+    before: index > 0 ? linkTo(index - 1) : { ...BEFORE_STAGES },
+    after: index < STAGES.length - 1 ? linkTo(index + 1) : undefined,
+  };
 }

@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
 
-import { cancelExport, confirmExport, exportConfig, exportSelection, guard } from './exports.js'
+import { cancelExport, confirmExport, exitOf, exportConfig, exportSelection, guard } from './exports.js'
 import { updateConfig } from './studio.js'
 import { quietStudio } from './testing.mjs'
 
@@ -65,4 +65,32 @@ test('the tokens of a configuration the generator refuses are not handed over: t
   expect(studio.files.map(({ name }) => name)).toEqual(['magma-design-tokensrc.json'])
   exportSelection(studio, ['label.lost'])
   expect(studio.notice.value).toMatchObject({ text: 'Could not export the selection: {error}' })
+})
+
+// The exit of the preset (#1402): the way forward of the last stage, and the action of the bar
+test('the exit downloads the preset on its own, saves it where a command takes saves', () => {
+  const studio = quietStudio()
+  const download = exitOf(studio)
+  expect([download.label, download.proceed]).toEqual(['Download the preset', 'Download anyway'])
+  void download.run()
+  expect(studio.files.map(({ name }) => name)).toEqual(['magma-design-tokensrc.json'])
+  expect(JSON.parse(studio.files[0].data as string)).toEqual(studio.config.value)
+
+  // a command that refuses saves: the preset is downloaded
+  studio.served.value = { path: 'package.json', readOnly: 'a configuration in package.json' }
+  expect(exitOf(studio).label).toBe('Download the preset')
+  // a command that takes saves: the preset is saved into its file
+  studio.served.value = { path: '.magma-design-tokensrc.json', readOnly: null }
+  const save = exitOf(studio)
+  expect([save.label, save.proceed]).toEqual(['Save the preset', 'Save anyway'])
+})
+
+test('the exit goes through the gate: while it fails, the dialog asks first', () => {
+  const studio = quietStudio()
+  failGate(studio)
+  guard(studio, exitOf(studio))
+  expect(studio.files).toEqual([])
+  expect(studio.pendingExport.value?.label).toBe('Download the preset')
+  confirmExport(studio)
+  expect(studio.files.map(({ name }) => name)).toEqual(['magma-design-tokensrc.json'])
 })

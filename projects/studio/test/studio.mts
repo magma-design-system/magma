@@ -19,11 +19,10 @@ export const inStudio = (studio: StudioState, ...pages: ComponentChild[]) =>
   h(StudioContext.Provider, { value: studio }, ...pages)
 
 /**
- * The actions of the Config menu as the bar draws them, handed to `take` at each draw, and the
- * picker of Import config: the menu beside a page, without the rest of the bar.
+ * The actions of the menu of the exit as the bar draws them, handed to `take` at each draw: the
+ * menu beside a page, without the rest of the bar.
  */
 export function ConfigMenu ({ take }: { take: (actions: ConfigAction[]) => void }) {
-  const { actions, input } = useConfigMenu(() => undefined)
-  take(actions)
-  return input
+  take(useConfigMenu())
+  return null
 }

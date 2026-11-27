@@ -3,6 +3,7 @@ import { createContext } from 'preact';
 import { useContext } from 'preact/hooks';
 import bundledJson from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json';
 import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
+import { changesOf, type Change, type PresetState } from '../engine/changes.js';
 import { gateReport, type GateReport, type GateVerdict } from '../engine/gate.js';
 import { generateScales, type ColorScales } from '../engine/generator.js';
 import { sceneStyle, type SceneStyle } from '../engine/scene-css.js';
@@ -138,6 +139,19 @@ export interface StudioState {
   notice: Signal<Text | null>;
   /** An export asked while the gate fails: the dialog of the gate asks first (exports.ts). */
   pendingExport: Signal<ExportAction | null>;
+  /**
+   * The preset at the last exit, as JSON (`presetJson`): what the changes of the bar are counted
+   * from (#1402, the person chose the last exit on 2026-11-27). Opening a preset starts it from
+   * that preset (adoptConfig), the exit brings it to the preset now (markExited); it is kept in the
+   * draft, so a reload keeps the count.
+   */
+  baseline: Signal<string>;
+  /**
+   * The last preset the opening opened over work that had changes, and that work, for the toast
+   * that undoes it (state/opening.ts, the act-then-undo of confirm-action); null once undone or
+   * closed, or when nothing was lost.
+   */
+  lastOpening: Signal<Opening | null>;
 
   // derived
   /** The configuration as JSON: a change of its content, not of the object. */
@@ -153,6 +167,8 @@ export interface StudioState {
   dirty: ReadonlySignal<boolean>;
   /** The configuration differs from the one Magma builds with: Reset does something. */
   canReset: ReadonlySignal<boolean>;
+  /** What changed since the last exit, in the order of the stages (engine/changes.ts). */
+  changes: ReadonlySignal<Change[]>;
 
   // what the state reaches outside
   /** Where the draft and the theme choices are kept. */
@@ -165,6 +181,23 @@ export interface StudioState {
   boot: StudioDraft | null;
   /** Stops the effects: the draft and the choices are no longer written. */
   dispose: () => void;
+}
+
+/** The work as it stood, every part a preset is opened over: what undoing an opening restores. */
+export interface WorkSnapshot {
+  config: CloneableConfig;
+  choices: ThemeChoices;
+  baseline: string;
+  selectedName: string;
+  loadedRatios: LoadedRatios;
+  colorsView: ColorsView | undefined;
+}
+
+/** A preset opened over work that had changes: what it said, and the work it took the place of. */
+export interface Opening {
+  /** What was opened, in English (msg) with its places, translated where it is drawn. */
+  said: Text;
+  previous: WorkSnapshot;
 }
 
 export interface StudioOptions {
@@ -214,6 +247,10 @@ export function downloadInBrowser({ name, data, type }: FileOut): void {
 
 const BUNDLED_JSON = JSON.stringify(bundledJson);
 
+/** The preset as the changes are counted on: the configuration and the choices of the themes. */
+export const presetJson = (config: CloneableConfig, choices: ThemeChoices): string =>
+  JSON.stringify({ config, choices } satisfies PresetState);
+
 /**
  * A state of the studio: the draft kept in the storage restored, else the configuration Magma
  * builds with. The start-up check (checkSource, work.ts) then decides between the draft and its
@@ -230,6 +267,8 @@ export function createStudio(options: StudioOptions = {}): StudioState {
   const report = computed(() => gateReport(config.value, themeChoices.value));
   const served = signal<Served | null>(null);
   const savedJson = signal<string | null>(null);
+  const baseline = signal(boot?.baseline ?? presetJson(start, themeChoices.peek()));
+  const base = computed(() => JSON.parse(baseline.value) as PresetState);
 
   const state: StudioState = {
     config,
@@ -246,6 +285,8 @@ export function createStudio(options: StudioOptions = {}): StudioState {
     status: signal(null),
     notice: signal(null),
     pendingExport: signal(null),
+    baseline,
+    lastOpening: signal(null),
     json,
     report,
     verdict: computed(() => report.value.verdict),
@@ -259,6 +300,9 @@ export function createStudio(options: StudioOptions = {}): StudioState {
     }),
     dirty: computed(() => served.value !== null && json.value !== savedJson.value),
     canReset: computed(() => json.value !== BUNDLED_JSON),
+    changes: computed(() =>
+      changesOf(base.value, { config: config.value, choices: themeChoices.value }),
+    ),
     storage,
     api: options.api ?? !pageSaysNoApi(),
     download: options.download ?? downloadInBrowser,
@@ -278,6 +322,7 @@ export function createStudio(options: StudioOptions = {}): StudioState {
       selectedName: state.selectedName.value,
       view: state.colorsView.value ?? 'colors',
       loadedRatios: state.loadedRatios.value,
+      baseline: state.baseline.value,
     };
     if (conflict) {
       writeDraft({ ...draft, source: boot?.source, edited: true }, storage);
@@ -326,10 +371,17 @@ export function adoptConfig(state: StudioState, next: CloneableConfig, keep = fa
   batch(() => {
     state.config.value = next;
     state.loadedRatios.value = ratiosOf(next);
+    // a preset opened: the changes are counted from it
+    state.baseline.value = presetJson(next, state.themeChoices.peek());
     const name = state.selectedName.peek();
     if (!keep || !next.colors.some((color) => color.name === name))
       state.selectedName.value = defaultSelected(next.colors);
   });
+}
+
+/** The preset left the studio (saved or downloaded): the changes are counted from it now. */
+export function markExited(state: StudioState): void {
+  state.baseline.value = presetJson(state.config.peek(), state.themeChoices.peek());
 }
 
 /** The state of the studio the page is drawn in (the shell provides it). */

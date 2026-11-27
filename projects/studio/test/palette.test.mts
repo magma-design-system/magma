@@ -643,7 +643,7 @@ test('choosing a reference in the dialog makes a reference in the variant group'
   expect(heading()).toBe('variant.sky')
 })
 
-test('the head of a page keeps Reset in view; the Config menu brings the configuration in and takes it out', async () => {
+test('the head of a page keeps Reset in view; the menu of the exit takes the configuration out', async () => {
   // nothing that imports or exports is left in the head, and no menu for one action
   const head = pageHead()!
   expect(head.querySelector('mds-button-dropdown')).toBeNull()
@@ -654,13 +654,12 @@ test('the head of a page keeps Reset in view; the Config menu brings the configu
 
   // the actions, in their order, each with the format it reads or hands over
   expect(actions.map(({ label, format }) => [label, format])).toEqual([
-    ['Import config', 'json'],
-    ['Copy JSON', undefined],
+    ['Download the preset', 'json'],
     ['Download all tokens', 'misc'],
-    ['Download config', 'json'],
     ['Download Figma tokens', 'DTCG'],
     ['Download CSS tokens', 'css'],
     ['Download GIMP palette', 'gpl'],
+    ['Copy JSON', undefined],
   ])
 
   // each download hands over the file it says
@@ -686,11 +685,8 @@ test('the head of a page keeps Reset in view; the Config menu brings the configu
   } finally {
     click.mockRestore()
   }
-  // Import config opens the file picker of the menu
-  const picker = root.querySelector<HTMLInputElement>('input[type="file"]')!
-  const opened = vi.spyOn(picker, 'click').mockImplementation(() => undefined)
-  actions.find((one) => one.id === 'import')!.run()
-  expect(opened).toHaveBeenCalled()
+  // what brings a preset in is the opening's (#1402)
+  expect(actions.find((one) => one.id === 'import')).toBeUndefined()
 })
 
 test('Reset, in view, takes the configuration back to the one Magma builds with once it has an edit', async () => {

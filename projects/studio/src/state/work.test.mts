@@ -10,6 +10,7 @@ import {
   resolveConflict,
   saveConfig,
 } from './work.js'
+import { exitOf } from './exports.js'
 import { bundledConfig, memoryStorage, quietStudio } from './testing.mjs'
 
 // Where the work comes from and where it goes (#1400): the start-up check of the draft against
@@ -169,4 +170,97 @@ test('the build on disk says how it went', async () => {
   vi.stubGlobal('fetch', async () => Response.json({}, { status: 500 }))
   await buildTokens(studio)
   expect(studio.status.value).toEqual({ text: 'build failed ({status})', vars: { status: 500 } })
+})
+
+// The changes of the bar (#1402): counted from the preset at the last exit, which opening a preset
+// starts and the exit brings to the preset now (the person chose the last exit, 2026-11-27)
+test('the changes are counted from the preset opened, and kept in the draft over a reload', async () => {
+  const storage = memoryStorage()
+  const studio = quietStudio(storage)
+  await checkSource(studio)
+  expect(studio.changes.value).toEqual([])
+  updateConfig(studio, (draft) => {
+    draft.smooth = true
+  })
+  studio.themeChoices.value = { ...studio.themeChoices.value, names: { 'tone.bisque': 'warm' } }
+  expect(studio.changes.value.map(({ stage }) => stage)).toEqual(['colours', 'themes'])
+  // a reload: the draft keeps the preset the changes are counted from
+  const again = quietStudio(storage)
+  await checkSource(again)
+  expect(again.changes.value.map(({ stage }) => stage)).toEqual(['colours', 'themes'])
+})
+
+test('opening a preset starts the count from it: an import, the Reset, the source taken over a draft', async () => {
+  const studio = quietStudio()
+  await checkSource(studio)
+  updateConfig(studio, (draft) => {
+    draft.smooth = true
+  })
+  expect(studio.changes.value).toHaveLength(1)
+  const product = { ...disk, colors: disk.colors.slice(2) }
+  await importConfig(studio, { name: 'product.json', text: async () => JSON.stringify(product) })
+  expect(studio.changes.value).toEqual([])
+  updateConfig(studio, (draft) => {
+    draft.smooth = true
+  })
+  resetWork(studio)
+  expect(studio.changes.value).toEqual([])
+
+  // a draft with edits over a changed file: taking the file counts from the file
+  serve(changed)
+  const draft: StudioDraft = {
+    config: { ...disk, smooth: true } as CloneableConfig,
+    selectedName: 'tone.neutral',
+    view: 'colors',
+    source: { path: PATH, hash: hashText(JSON.stringify(disk)) },
+    edited: true,
+  }
+  const taking = servedOn(draft)
+  await checkSource(taking)
+  expect(taking.conflict.value).not.toBeNull()
+  resolveConflict(taking, true)
+  expect(taking.changes.value).toEqual([])
+})
+
+test('a draft written before it kept the last exit counts its changes from its source', async () => {
+  const storage = memoryStorage()
+  const draft: StudioDraft = {
+    config: { ...disk, smooth: true } as CloneableConfig,
+    selectedName: 'tone.neutral',
+    view: 'colors',
+    source: { path: null, hash: hashText(JSON.stringify(disk)) },
+    edited: true,
+  }
+  storage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft))
+  const studio = quietStudio(storage)
+  await checkSource(studio)
+  expect(studio.config.value.smooth).toBe(true)
+  expect(studio.changes.value.map(({ field }) => field?.text)).toEqual(['Smooth'])
+})
+
+test('the exit brings the changes to none: a download, or a save the command took', async () => {
+  const studio = quietStudio()
+  await checkSource(studio)
+  updateConfig(studio, (draft) => {
+    draft.smooth = true
+  })
+  await exitOf(studio).run()
+  expect(studio.changes.value).toEqual([])
+
+  serve(disk)
+  const served = servedOn()
+  await checkSource(served)
+  updateConfig(served, (draft) => {
+    draft.smooth = true
+  })
+  expect(exitOf(served).label).toBe('Save the preset')
+  await exitOf(served).run()
+  expect(served.changes.value).toEqual([])
+  // a save the command refused leaves the count as it was
+  serve(disk, () => Response.json({ error: 'disk full' }, { status: 500 }))
+  updateConfig(served, (draft) => {
+    draft.smooth = false
+  })
+  await saveConfig(served)
+  expect(served.changes.value).toHaveLength(1)
 })

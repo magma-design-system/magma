@@ -28,6 +28,7 @@ The studio speaks to the person with "tu", as the Italian of Magma does (README,
 | 10 | none (2026-11-26): a new concept, **compatibile con Magma** / **Magma-compatible**, and the built-in mark the interface already shows ("Integrata") | new rows; a scale that is not built-in gets no name of its own, so the words do not grow | register; model |
 | 11 | "eccezione" (IT): the person said "eccezioni" for the colours exported for a use outside Magma (2026-11-26); the register's exception is the background of a function | no rename: those colours are **casi fuori da Magma** / **cases outside Magma**, a phrase, not a concept of the studio | model |
 | 12 | "gruppo" (IT): a group of families and an export group meet on the Groups page | qualify: the export group is always **gruppo di export** / **export group** (the interface says "export"); **gruppo** alone is the group of families | register; model |
+| 13 | "start" (EN, 2026-11-27): today's Start page vs "the start" of a theme from a brand colour, in this register (`candidate`) | rename: the page that says what the studio is for is the **introduction** / **Introduzione**, the view that opens the preset the **opening** / **Partenza** (#1402); the code follows (`StartPage`, `section: 'start'`); the address becomes `#/introduction`, and `#/start` stays as an alias that opens it, so a link written before keeps working | register; README; code (`src/features/introduction/`, `src/shared/routes/routes.ts`) |
 
 ## Taxonomy register
 
@@ -64,8 +65,10 @@ The studio speaks to the person with "tu", as the Italian of Magma does (README,
 | `mode` | mode | modalità | light or dark | | theme (`color.modes`) | condition (proposed) | | `color.modes`, `pref-mode-*` |
 | `exception` | exception | eccezione | the colour or background of a function shared by several components that comes neither from the palette nor from a surface: the band of tabs and filters (person) | an accepted pair | preset (proposed: decided once, the same in every theme) | | role (band, track, field...); the components that adopt it | `transparent`, `fieldRoles` (semantic, today) |
 | `component-state` | state | stato | rest, hover, active, current, disabled of a component | a status colour | exception (proposed: the grid of its components) | | | `:hover`, `active`, `current`, `disabled` |
-| `candidate` | candidate | candidato | a generated, measured alternative, seen one at a time: of an exception, or of a theme from a brand colour (person) | a change | exception, or the start (proposed: one parent per instance) | | | (none yet) |
-| `stage` | stage | passo | one step of the balancing flow: colours, weights, themes, exceptions (person) | a ramp step; a wash level | (root of the flow) | | | `src/shared/routes/routes.ts` (today: sections and views) |
+| `candidate` | candidate | candidato | a generated, measured alternative, seen one at a time: of an exception, or of a theme from a brand colour (person) | a change | exception, or the opening (proposed: one parent per instance) | | | (none yet) |
+| `introduction` | introduction | Introduzione | the first view of the studio: what it is for, with no control of the work; its way out is the opening (person, model section 5) | a stage; the opening | (root of the flow) | | | `src/features/introduction/`, `#/introduction` (alias `#/start`, the address of the Start page it was) |
+| `opening` | opening | Partenza | the view that opens the preset to work on: Magma's preset, a ready theme, a brand colour, the draft at the stage it was on (person, model section 5) | a stage; the introduction; the exit | (root of the flow) | | preset, ready-theme, draft (model section 5) | `src/features/opening/`, `#/opening` |
+| `stage` | stage | passo | one step of the balancing flow: colours, weights, themes, exceptions (person) | a ramp step; a wash level | (root of the flow) | | | `STAGES` of `src/shared/routes/routes.ts`, `src/app/stages.tsx`, the pattern of the studio `magma/patterns/stages-in-order.md` |
 | `scene` | scene | scena | the product page a stage is judged on; it changes with the stage (person) | the verification | stage (proposed) | | theme | `scene.html`, `states.html` |
 | `condition` | condition | condizione | what the scene is judged under: mode, more contrast, breakpoint, ground (person) | | scene (`applyFrame`, `applyPrefs`) | | | `scene-prefs.tsx` |
 | `ground` | ground | fondo | what lies under an element: page, card, well, coloured fill (person) | a surface role | condition (proposed) | | surface (page, card, well) | `TRANSPARENT_SURFACES` (gate, partial) |
@@ -75,8 +78,8 @@ The studio speaks to the person with "tu", as the Italian of Magma does (README,
 | `floor` | floor | soglia | the Lc or ratio the verification holds a pair to | a target | verification (`DEFAULT_TARGETS`) | | | `GateTargets` |
 | `reported-pair` | reported pair | coppia segnalata | a pair under a target that does not block | an accepted pair | verification | pair (severity `warn`) | | `severity: 'warn'` |
 | `accepted-pair` | known offender | coppia accettata | a pair under its floor that the baseline accepts: debt in view (person) | an exception | verification (`contrast-baseline.json`) | pair | | `baseline`, `baselinedFailures` |
-| `change` | change | modifica | one edit, compared with the last exit | a candidate | preset (the draft, `state/draft.ts`) | | | `state/draft.ts` |
-| `exit` | exit | uscita | saving the preset (command) or downloading it (Pages) | | preset | | | `app/config-menu.tsx`, `state/exports.ts`, `engine/exports.ts` |
+| `change` | change | modifica | one edit, compared with the last exit | a candidate | preset (the draft, `state/draft.ts`) | | | `src/engine/changes.ts`, `changes` and `baseline` of `src/state/studio.ts` (counted from the last exit, 2026-11-27) |
+| `exit` | exit | uscita | saving the preset (command) or downloading it (Pages) | | preset | | | `exitOf` of `src/state/exports.ts`, the split button of the bar (`src/app/shell.tsx`) and its menu (`src/app/config-menu.tsx`), `engine/exports.ts` |
 | `full-review` | full review | giro completo | judging each theme in each mode before the exit, each marked as reviewed (person) | the verification | (root of the flow) | stage (proposed) | verification | (none yet) |
 | `hue` | hue | tonalità | the hue of a colour, in OKLCH degrees | a family | family | | | `hueShift` |
 | `hue-shift` | hue shift | spostamento di tonalità | the turn of the hue at the dark and light ends of a ramp | the saturation curve | family (config `colors[].hueShift`, or the root) | | | `hueShift` |
@@ -92,7 +95,7 @@ The studio speaks to the person with "tu", as the Italian of Magma does (README,
 - `variant.primary` points at `brand.maggioli` and outlives a change of it: family refers to family (alias).
 - `editorial` names `bisque` without containing it: theme refers to family.
 - `--magma-band` lies on any ground and outlives it: band refers to ink, ground is a condition, not a parent.
-- A candidate has one parent per instance (an exception, or the start of a theme from a brand colour): two possible parents for the type, never two at once. Proposed until the studio holds candidates.
+- A candidate has one parent per instance (an exception, or the opening of a theme from a brand colour): two possible parents for the type, never two at once. Proposed until the studio holds candidates.
 - `v1` is built-in and has twenty steps (`default-color.json`): built-in does not mean Magma-compatible. Compatibility is the number of steps alone, read from semantic `scaleSteps`; a scale no family uses changes nothing.
 - Edges marked (proposed) have no source in the data yet: scene in stage, ground in condition, exception in preset, component-state in exception.
 
@@ -101,11 +104,12 @@ The studio speaks to the person with "tu", as the Italian of Magma does (README,
 balances / bilanciamenti; configuration / configurazione (as a name of the whole); known offender's
 Italian "eccezione nota"; "Famiglie di stato"; "Livelli di luminosità"; "livello" for the
 Start sections; "proposta"; the page "Semantic surface" / "Superficie semantica" (it becomes the
-Weights stage).
+Weights stage); the "Start" page (it is the introduction, 2026-11-27); the page "Diffs" / "Differenze"
+and the menu "Config" / "Configurazione" (the changes and the exit of the bar, 2026-11-27).
 
 Until the redesign of the studio (`studio.object-model.md`) the pages keep the names they have
-today: the sections Colors / Colori, Theme / Tema, Behavior / Regole and the menu Config /
-Configurazione; "known offender" / "eccezione nota"; "Status families" / "Famiglie di stato";
+today: the stage Colors / Colori (the Palette), the sections Theme / Tema and Behavior / Regole;
+"known offender" / "eccezione nota"; "Status families" / "Famiglie di stato";
 "Lightness levels" / "Livelli di luminosità"; "Semantic surface" / "Superficie semantica"; the
 levels of the Start page. The redesign brings them to the names of this register, decided on
 2026-11-20 (person).

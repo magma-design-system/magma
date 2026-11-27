@@ -5,7 +5,7 @@ import { MODE_NAMES, measure, useContrastCheckT } from './contrast-check.js';
 
 /*
   The dialog an export opens while the contrast gate fails (#698; #1401, out of contrast.tsx), on
-  the report of the state: the bar of the studio opens it (shell.tsx, PendingExport). Written in
+  the report of the state: the bar of the studio opens it (app/shell.tsx, PendingExport). Written in
   the classes of Magma (src/tailwind.css), its texts in the catalogue of Contrast check.
 */
 

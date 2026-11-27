@@ -3,7 +3,7 @@ import { followLanguage } from './i18n-previews.js';
 
 /*
   How the studio sets a theme on a page of its own (an iframe): the scene and the groups of the
-  Theme section (shell.tsx), the preview beside the Palette (palette-side.tsx). The page is a
+  Theme section (theme-section.tsx), the preview beside the Palette (palette-side.tsx). The page is a
   document of its own, so what is set on its <html> moves it and leaves the studio alone (#695,
   "The dogfooding constraint").
 */

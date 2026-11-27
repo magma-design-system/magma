@@ -51,6 +51,11 @@ export interface StudioDraft<View extends string = string> {
    * (studio.ts, #1330); missing in drafts written before it.
    */
   loadedRatios?: LoadedRatios;
+  /**
+   * The preset at the last exit, as JSON, what the changes of the bar are counted from
+   * (studio.ts, #1402); missing in drafts written before it.
+   */
+  baseline?: string;
 }
 
 export type DraftDecision =

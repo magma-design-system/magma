@@ -19,22 +19,39 @@ stops instead of opening a second instance on another port.
 ## The shell
 
 The bar of the studio follows the app-shell block of Magma (the logo, "Magma Studio" and under it
-the version of the Magma it runs on, which `build/vendor.ts` writes into the page) and holds three
-sections, in the order of the work (#693, decided 2026-11-05). The logo is the Magma mark of
-`identity`, blue, and its white version in the dark mode, as the favicon and the docs site show
-it: the sheets of the studio have no `dark:`, so `src/dark-mode.ts` matches the `<html>` of the
-studio against `darkScheme` of design-tokens, the list the dark palette of Magma is printed from,
-and the mark flips with the roles (the mode in the menu, light, dark or system, and the scheme a
-theme is locked to).
+the version of the Magma it runs on, which `build/vendor.ts` writes into the page). The logo is the
+Magma mark of `identity`, blue, and its white version in the dark mode, as the favicon and the docs
+site show it: the sheets of the studio have no `dark:`, so `src/dark-mode.ts` matches the `<html>`
+of the studio against `darkScheme` of design-tokens, the list the dark palette of Magma is printed
+from, and the mark flips with the roles (the mode in the menu, light, dark or system, and the scheme
+a theme is locked to).
 
-| Section | Pages | What it is |
-| --- | --- | --- |
-| **Colors** (a menu) | Palette, Contrast scales, Semantic surface, Themes, Groups, then Contrast check and Diffs | the tokens playground that used to live in `design-tokens` (#695), one page per view; the menu opens with the verdict of the contrast gate on the configuration being edited, and the button of the section counts the pairs that fail it (#698) |
-| **Theme** | one page | the theme on a scene of a product in an iframe, the whole section, and a bar at the bottom: the theme to show, one button per axis (typography, shape, density, depth, the preferences of the person, dimension), then the ruler of the preview (the view and the width of the frame) |
-| **Behavior** (a menu) | Design language, Patterns, Blocks | what Magma decided and the layer of a product, read-only; placeholders until their turn (#693, "The plan") |
+The studio is one flow, the views of [`studio.object-model.md`](studio.object-model.md) (section
+5), in order (#1402): the **introduction** (`#/introduction`), the **opening** (`#/opening`), then
+the stages, **Colours**, **Weights**, **Themes**, **Exceptions**, and the **full review**, then the
+exit. A start with no address opens the introduction, and so does `#/start`, the address of the
+Start page it was (the router writes `#/introduction` in its place); the name of the studio at the
+start of the bar links to it.
 
-Before them comes the **Start page** (`#/start`, below): a start with no address opens it, and
-the name of the studio at the start of the bar links to it.
+| Where | What it holds (`src/app/`) |
+| --- | --- |
+| **The bar** (`shell.tsx`, option A of its renders, 2026-11-27) | the product; the **Theme** section and the **rules** (Behavior, a menu), outside the stages until their place is decided; then the work, always in view: the **changes** since the last exit, a button with their count that opens them by stage (`changes.tsx`), and the **exit**, a split button that saves the preset where a command takes saves and downloads it otherwise, through the contrast gate, the other formats in its menu (`config-menu.tsx`); the menu of the person at the end |
+| **The stages** (`stages.tsx`) | under the bar, on a stage and on a page beside one, the stages in order in an `mds-stepper-bar`, the current one marked, the ones before it done and opened from it; at the end of a stage, the way back and the way forward named after where they lead, the last stage ending with the exit |
+
+The stages are the pattern of the studio in its layer,
+[`magma/patterns/stages-in-order.md`](magma/patterns/stages-in-order.md): Magma has no pattern for
+stages in order (object model, section 8), so the studio writes its own, which the MCP server of
+Magma reads (`get_pattern`) and checks (`layerErrors`). Until #1403 and #1404 build their views, a
+stage opens the page of today that does its work, at the address it has today (`STAGES` of
+`src/shared/routes/routes.ts`): Colours the Palette, with Contrast scales and Groups beside it
+(linked from its head, and leading back to it), Weights Semantic surface, Themes the Themes page,
+the full review Contrast check; Exceptions has a page that says what it will hold
+(`src/features/exceptions/`). Diffs went: the changes of the bar take its place.
+
+The changes count every value of the preset that differs from the preset at the last exit
+(`src/engine/changes.ts`, chosen 2026-11-27): a save or a download brings the count back to none,
+and opening a preset starts it from that preset. The state keeps that preset in the draft
+(`baseline`, `src/state/studio.ts`), so a reload keeps the count.
 
 Every page is a link with an address in the hash (`#/colors/palette`, `#/theme`,
 `#/behavior/patterns`, `src/shared/routes/routes.ts`), so the studio works from whatever folder serves it.
@@ -42,17 +59,16 @@ The Theme section may name the theme and the mode it opens on, `#/theme/editoria
 address follows the choices made there, replaced in place, so a reload or a link shows the same
 theme in the same mode. A hash that does not start with `#/` is left alone: the anchor of a
 heading of a page that hosts the studio. The work is the state's, not a page's (`src/state/`,
-#1400): the Colors pages are mounted only under Colors, and the bar, the Theme section and the
-Start page read the same state. Each page of Colors opens with the
+#1400): the Colors pages are mounted only under Colors, and the bar, the Theme section, the
+introduction and the opening read the same state. Each page of Colors opens with the
 head of the page-header block, the first thing of the region that scrolls (it scrolls with the
 page, and beside the list of the Palette it heads the larger column): the title with the verdict
 of the contrast gate beside it, one line, then the actions: Reset, in view since it is the only
 one left, and Save, last, when a command serves the studio. Under 380 px of the head (on a phone)
-the actions stack at the full width, as `actions/stacked` has them, Save at the bottom. What brings a configuration in and takes it out is not an action of a page but the
-**Config** menu of the bar, after the sections (`src/app/config-menu.tsx`): the actions are the
-state's (`src/state/work.ts`, `src/state/exports.ts`), so the menu works from any section, and the
-bar draws them, in its dropdown and in the menu of a narrow window, each with the format it reads
-or hands over in a badge.
+the actions stack at the full width, as `actions/stacked` has them, Save at the bottom. What takes
+a preset out is not an action of a page but the exit of the bar, and what brings one in is the
+opening; the actions are the state's (`src/state/work.ts`, `src/state/exports.ts`,
+`src/state/opening.ts`), so they work from any page.
 
 The Theme section shows the scene (`scene.html`) in an iframe, a document of its own: the theme is
 set on its `<html>` (`data-theme-name`), and so are the preferences of the person, as the
@@ -130,8 +146,8 @@ default, light only or dark only; the mode it does not offer stays in view, dimm
 The studio speaks English and Italian (#1336). The menu at the end of the bar, at every width,
 holds the preferences of the person: the language first, the one people asked for, then the mode,
 the contrast and the animations, the `mds-pref-*` of Magma in an `mds-pref` with `live-language`.
-On a window narrower than the `tablet` breakpoint, where the bar hides its sections, the menu holds
-them above the preferences (`src/style.css`, held to `screen.tablet.min` by `test/shell.test.mts`).
+On a window narrower than the `tablet` breakpoint, where the bar hides the rest, the menu holds
+it above the preferences (`src/style.css`, held to `screen.tablet.min` by `test/shell.test.mts`).
 No theme (the studio edits themes, it does not wear one) and no consumption.
 
 - **Where the language lives**: `<html lang>`, which `mds-pref-language` writes and every Magma
@@ -148,7 +164,8 @@ No theme (the studio edits themes, it does not wear one) and no consumption.
   and fails on a text with no Italian, an Italian text no source uses, placeholders that differ and
   a text of the interface written outside `t()`, and on a text of a page of `features/` found in
   another page's catalogue. The tests of the pages run in English, and each page of `features/`
-  in Italian once.
+  in Italian once. The test reads every source as TSX, so a generic arrow, `const f = <T>(x: T) =>`,
+  reads as markup there: write it as a `function`.
 - **Components that read their text once**: `mds-button` and `mds-badge` copy the text of their
   slot into their `label` once, so the studio writes their text in `label`; `mds-input-switch` and
   `mds-input-range` read theirs once into the name of their control, so one that holds a translated
@@ -165,10 +182,11 @@ No theme (the studio edits themes, it does not wear one) and no consumption.
   the redesign of [`studio.object-model.md`](studio.object-model.md); until it lands the pages
   keep the names the register lists as the interface of today).
 
-## The Start page
+## The introduction and the opening
 
-The first page of the studio (`src/start.tsx`) is an introduction, not a tool: it says what the
-studio is for, the steps of the work and what each section changes, in three parts:
+The first page of the studio (`src/features/introduction/`, the Start page until #1402) is an
+introduction, not a tool: it says what the studio is for, with no control of the work, in two
+parts, chosen on their renders (2026-11-27):
 
 - **the hero**: what the studio is for and what it offers (`FEATURES`, each line with its source
   in the code, an `mds-list`), on a band of the accent, beside a short play. A banner of a product
@@ -188,24 +206,35 @@ studio is for, the steps of the work and what each section changes, in three par
   the source of each beside it), and an `mds-progress` of the pairs brought back over their floor
   (`solved`), red while every indicator is under its floor, yellow once one meets it, green when
   the gate passes (`tone`). Each step runs what an edit on the pages of Colors runs
-  (`src/start-demo.ts`), so nothing the play shows is drawn by hand; the last step is the
+  (`demo.ts`), so nothing the play shows is drawn by hand; the last step is the
   committed configuration, untouched. The play runs once, in under five seconds (`PLAY_MS`), so
   it needs no pause (WCAG 2.2.2); Replay plays it again and gets the focus back at the end. The
   banner stays where it is, the room of its trays kept, so the band never changes height. Its
   figures are hidden from assistive technologies, the trays back behind the banner are `inert`,
   and a caption hidden from the eye says what the play shows. With less motion asked
   (`prefers-reduced-motion`) the play does not run by itself and the trays do not move. The
-  elastic is a `linear()` curve of `start.css`, a light bounce beside it to compare
-  (`--start-ease-tray`); the banner is a document of its own (`applyFrame`), its height read by
-  the hero, which CSS cannot give an iframe;
-- **the steps of the work**: start from a configuration (the first step offers to continue on the
-  page of Colors the draft was on, else it opens the palette), change it at its level, keep the
-  gate green, judge it on a product and take it;
-- **the levels**, from the finest to the broadest, each built on the one before: Colour (Palette,
-  Contrast scales, Groups), Role (Semantic surface), Theme (Themes), Product (the Theme section),
-  Composition (Behavior), each with what a change acts on, what it reaches and its pages; the
-  checks (Contrast check, Diffs) in the line under them. `test/start.test.mts` holds every page of
-  the bar to a link of the page, so a new page needs its level.
+  elastic is a `linear()` curve of `introduction.css`, a light bounce beside it to compare
+  (`--intro-ease-tray`); the banner is a document of its own (`applyFrame`), its height read by
+  the hero, which CSS cannot give an iframe. Under the text, **Get started**, the one way out of
+  the introduction, leads to the opening;
+- **how the work goes**: the views in order, from the opening to the full review (`FLOW`), a row
+  each with its icon, its place, what it does and the link that opens it, in the primary weak
+  tone, so it reads as an action without competing with Get started; then the line of what is
+  outside the stages, the Theme section and the rules. The list is written in the classes of
+  Magma; the sheet keeps the frame of the page and the hero.
+
+The **opening** (`src/features/opening/`) opens the preset to work on, its starts as cards, all in
+line: the draft first when the work has changes, resumed on the stage it was on as the main
+action of the page; Magma's preset, or the preset of a project from its file (Import a preset);
+a ready theme, with its look and its modes; a brand colour. A ready theme makes a theme of the
+product, a copy of the family of its tint in the `tone` group with its accents and its modes
+(`my-editorial`, renamed on the Themes page); a brand colour becomes a family of `brand`, a
+`variant` that points at it and a theme of the product with its accent on it (`my-brand`,
+`src/engine/opening.ts`). Every start leads on to Colours. The short name of the copy is its own,
+with no hyphen: the themes and their surfaces are keyed by the short name of a family. Opening
+over work with changes keeps it: a toast in the region of the toasts says what opened, with
+**Undo** (confirm-action, `act-then-undo`, `src/state/opening.ts`). The candidates of a brand
+colour, alternatives generated and measured, are new work of the engine, not built here.
 
 ## The pages in Magma
 
@@ -354,9 +383,9 @@ mode (#1274) is never painted in the other, since `mds-pref-theme` locks it, so 
 "not offered" and fail nothing.
 
 The verdict is in view while the configuration is edited: beside the title of every page of
-Colors (the status of the page-header block), as a count on the Colors button of the bar, which
-stays in view wherever the page scrolls (`mds-notification`), at the head of the Colors menu, and
-per mode on each card of the Themes page. On **Semantic surface**, where the balances are tuned,
+Colors (the status of the page-header block), per mode on each card of the Themes page, and on the
+full review, Contrast check (the count on the Colors button of the bar went with that menu,
+#1402: the exit asks while the gate fails). On **Semantic surface**, where the balances are tuned,
 the pairs themselves head the column of the preview (`src/gate-summary.tsx`, #1418), which stays in
 view while the levels scroll: one line per pair and mode over the themes it fails in
 (`gateFailureGroups`), how far under its target, and the way to Contrast check; the preview below
@@ -395,7 +424,7 @@ flowchart LR
   ID["identity<br/>logo-magma.svg, logo-magma-white.svg"]
   ST["styles<br/>dist/tailwind"]
   subgraph stu["studio<br/>an app, not on npm"]
-    SHELL["src/shell.tsx, src/app/, src/start.tsx<br/>the bar, the router, Start, Colors, Theme, Behavior"]
+    SHELL["src/app/, src/features/<br/>the bar, the stages, the router,<br/>the introduction, the opening, the rules"]
     STATE["src/state/<br/>the work in signals, the draft, the actions"]
     APP["src/app.tsx<br/>the pages of Colors"]
     SURF["src/surfaces.tsx, src/themes.tsx<br/>balances, themes, names"]
@@ -457,7 +486,8 @@ The folders of the studio (#1397; #1399 moved the files into them, #1400 added `
 - `build/`: what runs in Node, never in a page: the plugins of Vite (`vendor.ts`, `magma-api.ts`,
   `favicons.ts`) and the commands (`site.ts`, `cover.ts`).
 - `src/engine/`: what computes and paints, with no Preact and no state: `generator`, `gate`,
-  `paints`, `scene-css`, `formats`, `hue-ends`, `color-names`, the model of the themes
+  `paints`, `scene-css`, `formats`, `hue-ends`, `color-names`, the changes of the preset
+  (`changes`), what the opening opens (`opening`), the model of the themes
   (`themes.ts`), of the theme choices (`theme-choices.ts`) and the groups kept for the status
   colours (`groups.ts`), `chalk-stub`.
 - `src/shared/`: what several pages use: `magma/` (the bridges to the components and the types of
@@ -468,11 +498,12 @@ The folders of the studio (#1397; #1399 moved the files into them, #1400 added `
   family selected, the theme choices and where the work comes from as signals; the gate, its
   verdict, the CSS of the scene and the ramps as computed values; the draft written by an effect,
   checked against its source (`draft.ts`, `work.ts`). The actions are named functions, one file
-  per area (`palette`, `scales`, `surfaces`, `groups`, `theme-choices`, `exports`, `work`), each
-  tested in Node.
-- `src/app/`: the router (`router.ts`: one table of the pages for the menus and the addresses,
-  `navigate(route, { replace })`, a location in the hash or in memory, a hash that does not start
-  with `#/` left alone) and the Config menu of the bar (`config-menu.tsx`).
+  per area (`palette`, `scales`, `surfaces`, `groups`, `theme-choices`, `exports`, `work`,
+  `opening`), each tested in Node.
+- `src/app/`: the shell and its bar (`shell.tsx`, since #1402), the router (`router.ts`:
+  `navigate(route, { replace })`, a location in the hash or in memory, an alias written over by
+  the address of its page, a hash that does not start with `#/` left alone), the stages in order
+  (`stages.tsx`), the changes (`changes.tsx`) and the menu of the exit (`config-menu.tsx`).
 - `src/tailwind.css`: the entry of Tailwind (#1401), the Tailwind layer of Magma as
   `docs/agents/assets.md` writes it, with the theme of Magma imported as `reference`, so the
   bundle declares none of its variables and each utility reads the one of the Magma the page
@@ -481,13 +512,14 @@ The folders of the studio (#1397; #1399 moved the files into them, #1400 added `
   define (all but two literals, each with its reason), that the bundle declares none, and that
   every class a page of `features/` writes reaches the bundle: written whole in a string, never
   glued to an expression (`gap-200${...}`), which the scanner of Tailwind does not read.
-- `src/features/`: one folder per page (#1401: `diffs`, `contrast-check`, and `rules`, the pages
-  of Behavior), the shape the other pages take in #1402-#1404. A page is written in the classes of
+- `src/features/`: one folder per page: `contrast-check` and `rules`, the pages of Behavior
+  (#1401); `introduction`, `opening` and `exceptions` (#1402), the shape the other pages take in
+  #1403-#1404. A page is written in the classes of
   Magma; its short sheet keeps what classes do not write, the data its previews paint (the steps of
   a ramp, the sample of a pair); its Italian catalogue (`i18n-it.ts`) goes to the translator
   (`useT(IT_...)`), which looks there before the catalogue of `shared/`; its tests sit beside it.
-- the rest of `src/`: the shell and the pages not moved yet, until #1402-#1404 move them into
-  `features/` and the shell into `app/`.
+- the rest of `src/`: the pages not moved yet, the Theme section (`theme-section.tsx`) and the pages
+  of Colors, until #1403-#1404 build the views that replace them.
 
 Imports go one way, and ESLint holds it (`no-restricted-imports` in `eslint.config.mjs`): a file
 of `engine` imports no other file of the studio but `shared/i18n/text.ts`, and types alone from
@@ -496,7 +528,8 @@ of `engine` imports no other file of the studio but `shared/i18n/text.ts`, and t
 `app/` or another part of `shared`; a page of `features/` imports the engine, the state and
 `shared`, never `app/`, the shell, a page not moved yet or another page: its links go through the
 table of the pages, its data through the state. A test sits beside its module and may import what
-it is tested with. `test/` keeps the checks of the build, of the site and of the translations, and the
+it is tested with. The tests (`*.mts`) keep a style of their own, with no semicolons, which prettier
+does not write: lint-staged formats the `.ts` and `.tsx` only, so never run prettier on a folder. `test/` keeps the checks of the build, of the site and of the translations, and the
 tests of the pages until the pages move. Vitest runs `src/engine/`, `src/state/`, the table of
 the pages, the router and the checks of the build in Node, every other `*.test.mts` in jsdom,
 every `*.e2e.mts` in Chromium.
@@ -524,7 +557,7 @@ phone, light or dark, painted with the configuration at every change, in the the
 and with the elements it paints first in the page, below; `src/palette-side.tsx`), **Contrast
 scales**, **Semantic surface** (opt families into the surface engine, tune
 the surface/border/text levels), **Themes** (each opted family, status aside, as a named theme, with its accent
-assignment, its colour modes and the verdict of the contrast gate per mode), **Groups**, **Contrast check** (every pair of the contrast gate, above) and **Diffs**. Selecting a color from the sidebar while in contrast scales
+assignment, its colour modes and the verdict of the contrast gate per mode), **Groups**, **Contrast check** (every pair of the contrast gate, above). Selecting a color from the sidebar while in contrast scales
 keeps you there, since the scale samples follow the selected color. The list stands beside the
 page while the page keeps the room of the row of actions of its head (41.75rem of the layout);
 narrower, on a phone, it goes above the page, folded into a bar with the family selected and an
@@ -571,24 +604,22 @@ ring before the curve and a dot in the colour of the step with it, as the refere
 draws it; the global group draws the family in view too. The list badges a family with a curve
 `sat`, one of its own over a global one `sat+`, beside `hs`/`hs+` (`src/saturation-editor.tsx`).
 
-The **diff** view compares the current palette against the one generated from the committed
-configuration (the bundled `.magma-design-tokensrc.json`): it lists the colors whose steps
-changed - outlining each changed step and badging the color with the largest perceptual distance
-(deltaE) - plus any colors added or removed. The generated token files under
-`design-tokens/tokens/color/generated/` are build artifacts and not committed, so the committed
-config is the baseline.
+What changed is the bar's (#1402, "The shell" above): the page Diffs, which compared the palette
+with the one generated from the bundled configuration, went with it; the changes are counted from
+the preset at the last exit, each with its value before and after.
 
-The studio works with any configuration, not just the repo one. The **Config** menu of the bar,
-open from any section, brings one in and takes it out; the badge of each action names the format:
+The studio works with any configuration, not just the repo one. The opening brings one in
+(**Import a preset**, a `.magma-design-tokensrc.json` from disk; an error shows on the opening),
+and the exit of the bar takes it out, from any page: the split button saves or downloads the
+preset, and its menu holds the other formats, the badge of each naming it:
 
-- **Import config** (json) - opens a `.magma-design-tokensrc.json` from disk; an error shows on
-  the pages of Colors, which the import opens;
 - **Copy JSON** - copies the edited configuration to the clipboard (the menu stays open to say
   Copied!);
 - **Download all tokens** (misc) - the configuration, the generated JSON tokens (whole palette +
   one file per export group) and the CSS and GIMP renders, mirroring the `dist` layout of
   `design-tokens`;
-- **Download config** (json) - just the `.magma-design-tokensrc.json`;
+- **Download the preset** (json) - just the `.magma-design-tokensrc.json`, in the menu when the
+  split button saves;
 - **Download Figma tokens** (DTCG) - the color palette in the W3C DTCG format, one file per theme
   mode, zipped together (the "Figma export" of the `design-tokens` README);
 - **Download CSS tokens** (css) - `colors-hex.css` / `colors-rgb.css` for the whole palette plus
@@ -627,7 +658,7 @@ the draft cannot overwrite the newer file by mistake.
 Served by a command that answers `GET` / `PUT /api/config` and `POST /api/build` (the `ui` command
 of `design-tokens` did it until version 16; the command of the studio comes with #695), the
 studio loads the configuration on disk, adds **Save** to the head of the pages of Colors and
-**Build tokens on disk** to the Config menu. Run on its own, the API is absent and editing stays in memory.
+**Build tokens on disk** to the menu of the exit, whose split button saves the preset. Run on its own, the API is absent and editing stays in memory.
 
 New colors are created from a dialog: pick the value and the name auto-completes underneath from
 the "Name That Color" vocabulary (via [color-namer](https://github.com/colorjs/color-namer), ~1500
@@ -662,7 +693,7 @@ or a family from `sine` to `circ` as `-in`, `-out` or `-in-out`: the named easin
 `manual` by dragging a marker or editing a stop directly; picked from `manual`, an easing starts
 from the stops on screen. **Reset**, beside the distribution, takes a scale back to the steps of
 the configuration last loaded, on `manual`: the one the studio opened with (the bundled one, or
-the file a command serves), the one imported from the Config menu, or the one the Reset of the
+the file a command serves), the one imported from the opening, or the one the Reset of the
 page brings back; a save loads nothing. It is off when the scale holds those steps already, and on
 a scale that configuration did not have; the draft keeps what was loaded over a reload (#1330).
 Scale values are contrast against the theme background (0 = on the background, max = strongest contrast), so the same scale yields
