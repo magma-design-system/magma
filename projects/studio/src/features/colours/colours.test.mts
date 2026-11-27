@@ -8,7 +8,8 @@ import { ColoursPage } from './colours.js'
 import type { ConfigAction } from '../../app/config-menu.js'
 import { nearestColorName } from '../../engine/color-names.js'
 import { updateConfig, type StudioState } from '../../state/studio.js'
-import { selectFamily } from '../../state/palette.js'
+import { selectFamily, setGlobal } from '../../state/palette.js'
+import { act } from 'preact/test-utils'
 import { ConfigMenu, inStudio, startStudio } from '../../../test/studio.mjs'
 
 // The stage Colours in Magma (#1403, the Palette until then): the list of the families, the
@@ -66,11 +67,6 @@ const list = () => within(root).getByRole('complementary', { name: 'The families
 const toggle = () => root.querySelector<HTMLElement>('mds-button[aria-controls="colours-list"]')
 /** The settings of the family shown: the region its title names. */
 const colorSection = () => within(root).getByRole('region', { name: heading() })
-/** The settings of the whole configuration: the details of Magma titled Global settings. */
-const globalSettings = () =>
-  [...root.querySelectorAll('mds-details')].find(
-    (details) => details.querySelector('mds-text[slot="title"]')?.textContent?.trim() === 'Global settings',
-  )!
 /** A group of fields of the form in the scope, by its name: the legend of a fieldset. */
 const fieldGroup = (scope: Element, name: string) =>
   within(scope as HTMLElement).getByRole('group', { name })
@@ -221,7 +217,7 @@ test('the base colour follows its colour field, which hands back colours only', 
   await vi.waitFor(() => expect(base.getAttribute('value')).toBe('#123456'))
 })
 
-test('Smooth switches the colour, and the one of the global settings the configuration', async () => {
+test('Smooth switches the colour; the settings of the preset are not in Colours', async () => {
   emit(switchLabelled('Smooth', colorSection()), 'mdsInputSwitchChange', {
     name: '',
     checked: true,
@@ -229,24 +225,12 @@ test('Smooth switches the colour, and the one of the global settings the configu
   })
   await vi.waitFor(() => expect(color('tone.neutral')?.smooth).toBe(true))
   expect(latest().smooth).toBeFalsy()
-
-  // the global settings start closed: the page opens on the family, not on the settings of all;
-  // their hue shifting says it is the global one, apart from the one of the family
-  expect(globalSettings().hasAttribute('opened')).toBe(false)
-  // apart from the settings of the family, after them
-  expect(colorSection().compareDocumentPosition(globalSettings()) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
-  // a group of fields each, named by its legend
-  expect(fieldGroup(globalSettings(), 'Global hue shifting').querySelector('legend')).not.toBeNull()
+  // the hue shifting of the family, a group of fields named by its legend; the global one is in
+  // Groups (question 13 of the object model)
   expect(fieldGroup(colorSection(), 'Hue shifting').querySelector('legend')).not.toBeNull()
-  expect(within(colorSection()).queryByRole('group', { name: 'Global hue shifting' })).toBeNull()
-
-  emit(switchLabelled('Smooth', globalSettings()), 'mdsInputSwitchChange', {
-    name: '',
-    checked: true,
-    value: '',
-  })
-  await vi.waitFor(() => expect(latest().smooth).toBe(true), SLOW)
-}, 30_000)
+  expect(within(root).queryByRole('group', { name: 'Global hue shifting' })).toBeNull()
+  expect(root.querySelector('#palette-global-saturation')).toBeNull()
+})
 
 test('a custom hue shift shows its sliders and writes what they give', async () => {
   const group = familyHueShift()
@@ -275,8 +259,8 @@ test('a hue shift of its own over a global one shows hs+, an inherited one hs', 
       values: ['custom'],
     })
 
-  // the global hue shift: every family inherits it
-  custom(globalSettings())
+  // the global hue shift, set in Groups: every family inherits it
+  act(() => setGlobal(studio, 'hueShift', { dark: -18, light: 18, curve: 'smooth' }))
   await vi.waitFor(() => expect(latest().hueShift).toBeDefined())
   await vi.waitFor(() => expect(badge('info')).toBe('hs'))
 
@@ -398,20 +382,9 @@ test('a custom saturation curve starts flat, its ends linked, and writes what th
 
 test('a global saturation curve marks the families with sat, one of their own over it with sat+', async () => {
   const badge = (name: string) => item(name).parentElement?.querySelector('mds-badge')?.getAttribute('label')
-  const global = root.querySelector('#palette-global-saturation')!
-  expect(global.querySelector('legend')?.textContent?.trim()).toBe('Global saturation')
-  chooseMode(global, 'custom')
-  await vi.waitFor(
-    () => expect(latest().saturation).toEqual({ dark: 0, light: 0, curve: 'smooth' }),
-    SLOW,
-  )
-  // a flat curve changes no step, and no family says it has one
-  expect(badge('info')).toBeUndefined()
-  await vi.waitFor(() => expect(global.querySelectorAll('mds-input-range')).toHaveLength(2))
-  emit(field('Light (%)', global).querySelector('mds-input-range')!, 'mdsInputRangeChange', 50)
-  await vi.waitFor(() => expect(latest().saturation).toMatchObject({ dark: 50, light: 50 }), SLOW)
+  // the global curve, set in Groups
+  act(() => setGlobal(studio, 'saturation', { dark: 50, light: 50, curve: 'smooth' }))
   await vi.waitFor(() => expect(badge('info')).toBe('sat'), SLOW)
-
   // a curve of its own on top of it
   chooseMode(saturationGroup(), 'custom')
   await vi.waitFor(() => expect(saturationGroup().querySelectorAll('mds-input-range')).toHaveLength(2))
@@ -684,12 +657,12 @@ test('the families stand in chromatic order inside their groups, the variants fi
   expect(namesIn('status')).toEqual(['error', 'warning', 'success', 'info'])
   // each group leads to its place in Groups, named after it
   const link = list().querySelector('mds-button[aria-label="The group tone, in Groups"]')!
-  expect(link.getAttribute('href')).toBe('#/colors/groups')
+  expect(link.getAttribute('href')).toBe('#/groups')
 })
 
 test('a value the family does not set says from whom it comes, with a link to where it is decided', async () => {
   expect(inherits('Contrast scale')?.textContent).toBe('Inherits from the group tone')
-  expect(inherits('Contrast scale')?.querySelector('mds-link')?.getAttribute('href')).toBe('#/colors/groups')
+  expect(inherits('Contrast scale')?.querySelector('mds-link')?.getAttribute('href')).toBe('#/groups')
   expect(inherits('Formula')?.textContent).toBe('Inherits from the preset')
   expect(inherits('Colorspace')?.textContent).toBe('Inherits from the preset')
   // its own export groups come from nowhere else

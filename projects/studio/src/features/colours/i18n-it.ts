@@ -15,7 +15,6 @@ export const IT_COLOURS: Record<string, string> = {
   'Inherits from the {preset}': 'Eredita dal {preset}',
   preset: 'preset',
   // the contrast scale of the family, with its badge
-  'Open the scale {scale}': 'Apri la scala {scale}',
   'The roles of Magma name {steps} steps by number: on {count} steps they do not hold. A family that paints Magma takes a scale of {steps} steps.':
     'I ruoli di Magma nominano {steps} gradini per numero: su {count} gradini non reggono. Una famiglia che dipinge Magma prende una scala di {steps} gradini.',
   '{name} ({count} steps, for the cases outside Magma)':

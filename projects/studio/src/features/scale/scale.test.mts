@@ -73,7 +73,7 @@ test('the head: the way back named after where the person came from, the badges,
   act(() => render(null, root))
   show({ ...TONE, group: 'tone' })
   const toGroup = head().querySelector('mds-button[icon="mi/baseline/arrow-back"]')!
-  expect([toGroup.getAttribute('label'), toGroup.getAttribute('href')]).toEqual(['The group tone', '#/colors/groups'])
+  expect([toGroup.getAttribute('label'), toGroup.getAttribute('href')]).toEqual(['The group tone', '#/groups'])
 })
 
 test('a scale that is not Magma-compatible says it serves only the cases outside Magma', () => {

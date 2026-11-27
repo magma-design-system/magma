@@ -1,24 +1,18 @@
 import type { ComponentChild } from 'preact';
-import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
-import type { Formula } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
-import { resolveExport } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
-import { GroupsManager } from './groups.js';
-import { BatchExportModal } from './batch.js';
+import { useEffect, useRef } from 'preact/hooks';
 import { SurfaceManager } from './surfaces.js';
 import { COLORS_PAGES, type ColorsView } from './shared/routes/routes.js';
 import { ThemesManager } from './themes.js';
 import { ContrastCheck } from './features/contrast-check/contrast-check.js';
 import { GateBadge } from './shared/ui/verdict.js';
 import { useStudio, type ExportAction } from './state/studio.js';
-import { builtinScalesOf, scalesOf, type RatioSet } from './state/scales.js';
 import { toggleGroupSurface, toggleSurface, updateBalances } from './state/surfaces.js';
-import { setExports, updateGroup } from './state/groups.js';
-import { exportSelection, guard } from './state/exports.js';
+import { guard } from './state/exports.js';
 import { msg, useT } from './shared/i18n/i18n.js';
 
 /*
   The pages of today's Colors section that no view of the object model has replaced yet (#1403
-  took the Palette out to features/colours/): Contrast scales, Semantic surface, Themes, Groups and
+  took the Palette, Contrast scales and Groups out to features/): Semantic surface, Themes and
   Contrast check, each the whole width of the section, under the head of the page (its title, the
   verdict of the contrast check beside it, one line of what it holds). What brings a preset in is
   the opening, what takes it out the exit of the bar, what keeps it from loading the notices the
@@ -52,7 +46,6 @@ const VIEW_SUMMARY: Record<View, string> = {
   themes: msg(
     'Each family with surfaces, status aside, is a theme: its name, its accents and the CSS that switches it in.',
   ),
-  groups: msg('The ratios, formula and export of each group of the configuration.'),
   contrast: msg(
     'Every pair the contrast gate judges, in each theme and both modes: what the build of Magma would say of this configuration.',
   ),
@@ -61,7 +54,7 @@ const VIEW_SUMMARY: Record<View, string> = {
 export function App({ view, foot, lead }: AppProps) {
   const t = useT();
   // the work is the state's (state/studio.ts, #1400): the pages read it and change it through its
-  // actions, so it outlives them; what is left here is the state of the page
+  // actions, so it outlives them
   const studio = useStudio();
   const config = studio.config.value;
   // the contrast gate on the working config and the themes of the Themes page, at every edit
@@ -73,104 +66,10 @@ export function App({ view, foot, lead }: AppProps) {
   useEffect(() => {
     if (content.current) content.current.scrollTop = 0;
   }, [view]);
-  const [batchSelection, setBatchSelection] = useState<Set<string>>(() => new Set());
-  const [batchModal, setBatchModal] = useState<{ names: string[]; initialExport: string } | null>(
-    null,
-  );
-
-  // the variants first, at the top of the groups: the first of them is where the work starts
-  // (vittorio, 2026-11-05); the other groups in the order of the configuration
-  const groups = useMemo(() => {
-    const map = new Map<string, typeof config.colors>();
-    if (config.colors.some((color) => color.name.split('.')[0] === 'variant'))
-      map.set('variant', []);
-    config.colors.forEach((color) => {
-      const group = color.name.split('.')[0];
-      if (!map.has(group)) map.set(group, []);
-      map.get(group)!.push(color);
-    });
-    return map;
-  }, [config]);
-
-  // the ramps of every family, solved only for the Groups page (a computed of the state)
-  const generation = view === 'groups' ? studio.generation.value : null;
-
-  // effective ratio scales: config entries layered over the built-in ones,
-  // exactly like the generator merges them. A null entry in the config is
-  // the sentinel for a deleted built-in scale and is filtered out.
-  const ratioSetFor = (formula: Formula): RatioSet => scalesOf(config.ratios, formula);
-
-  // origin of a scale relative to the built-in defaults. Comparing stops
-  // (rather than mere presence in config.ratios) keeps the tag correct even
-  // though writeScale materializes untouched built-ins back into the config.
-  const scaleOrigin = (
-    formula: Formula,
-    name: string,
-  ): 'custom' | 'builtin' | 'builtin-overridden' => {
-    const builtin = builtinScalesOf(formula)[name];
-    if (!Array.isArray(builtin)) return 'custom';
-    const current = ratioSetFor(formula)[name];
-    const overridden =
-      !!current &&
-      (current.length !== builtin.length || current.some((value, i) => value !== builtin[i]));
-    return overridden ? 'builtin-overridden' : 'builtin';
-  };
-  const scaleLabel = (formula: Formula, name: string): string => {
-    const origin = scaleOrigin(formula, name);
-    if (origin === 'builtin') return t('{name} (built-in)', { name });
-    if (origin === 'builtin-overridden') return t('{name} (built-in, overridden)', { name });
-    return name;
-  };
 
   // an export while the gate fails asks first: never the silent default (#698). The dialog is the
   // shell's, so the exit of the bar asks it from any section
   const ask = (action: ExportAction) => guard(studio, action);
-
-  // a dialog of the page closes when another page opens: the dialog of the gate leads from the
-  // Batch export of Groups to Contrast check
-  const shownView = useRef(view);
-  useEffect(() => {
-    if (shownView.current === view) return;
-    shownView.current = view;
-    setBatchModal(null);
-  }, [view]);
-
-  const toggleBatch = (name: string) =>
-    setBatchSelection((prev) => {
-      const next = new Set(prev);
-      if (next.has(name)) next.delete(name);
-      else next.add(name);
-      return next;
-    });
-
-  // color names in config order, for a stable modal list
-  const namesInOrder = (predicate: (color: (typeof config.colors)[number]) => boolean): string[] =>
-    config.colors.filter(predicate).map((color) => color.name);
-
-  const openBatch = () =>
-    setBatchModal({
-      names: namesInOrder((color) => batchSelection.has(color.name)),
-      initialExport: '',
-    });
-
-  const selectByExport = (exportName: string) => {
-    const names = namesInOrder((color) =>
-      (resolveExport(color, config) ?? []).includes(exportName),
-    );
-    setBatchSelection(new Set(names));
-    setBatchModal({ names, initialExport: exportName });
-  };
-
-  const saveBatch = (names: string[], exportList: string[] | undefined) => {
-    setExports(studio, names, exportList);
-    setBatchModal(null);
-    setBatchSelection(new Set());
-  };
-
-  // every export name referenced by the config, for the select-by-export control
-  const allExportNames = [
-    ...new Set(config.colors.flatMap((color) => resolveExport(color, config) ?? [])),
-  ].sort();
 
   // the head of the page: the first thing of the region that scrolls, or, on Semantic surface,
   // the start of its first column (surfaces.tsx), where the opt-in of the surfaces stands beside it
@@ -210,42 +109,9 @@ export function App({ view, foot, lead }: AppProps) {
         )}
         {/* Themes are DERIVED from the surfaces opt-in of the view above - same axis, one step down. */}
         {view === 'themes' && <ThemesManager config={config} report={report} guard={ask} />}
-        {view === 'groups' && (
-          <GroupsManager
-            config={config}
-            groups={groups}
-            scaleNamesFor={(formula) => Object.keys(ratioSetFor(formula))}
-            labelFor={scaleLabel}
-            preview={generation?.scales ?? null}
-            previewError={generation?.error ?? null}
-            onUpdateGroup={(groupName, patch) => updateGroup(studio, groupName, patch)}
-            selected={batchSelection}
-            onToggleSelect={toggleBatch}
-            exportNames={allExportNames}
-            onSelectByExport={selectByExport}
-            onOpenBatch={openBatch}
-          />
-        )}
         {view === 'contrast' && <ContrastCheck report={report} />}
         {foot && <div class="mt-between-sections">{foot}</div>}
       </main>
-
-      {batchModal && (
-        <BatchExportModal
-          names={batchModal.names}
-          config={config}
-          initialExport={batchModal.initialExport}
-          onSave={saveBatch}
-          onExport={(names) =>
-            ask({
-              label: msg('Export selection'),
-              proceed: msg('Export anyway'),
-              run: () => exportSelection(studio, names),
-            })
-          }
-          onClose={() => setBatchModal(null)}
-        />
-      )}
     </div>
   );
 }

@@ -12,6 +12,7 @@ import { GateDialog } from '../features/contrast-check/gate-dialog.js';
 import { RulesPage } from '../features/rules/rules.js';
 import { ColoursPage } from '../features/colours/colours.js';
 import { ScalePage } from '../features/scale/scale.js';
+import { GroupsPage } from '../features/groups/groups.js';
 import { ExceptionsPage } from '../features/exceptions/exceptions.js';
 import { IntroductionPage } from '../features/introduction/introduction.js';
 import { OpeningPage } from '../features/opening/opening.js';
@@ -112,6 +113,11 @@ export function Studio({ state, router }: StudioProps = {}) {
           {route.section === 'scale' && (
             <div class="studio-section">
               <ScalePage route={route} onOpen={(next, options) => nav.navigate(next, options)} />
+            </div>
+          )}
+          {route.section === 'groups' && (
+            <div class="studio-section">
+              <GroupsPage />
             </div>
           )}
           {route.section === 'colors' && (
@@ -396,6 +402,15 @@ function StudioBar({ route }: { route: Route }) {
               )}
             </span>
           </a>
+          {/* what stands outside the stages: Groups, the Theme section, the rules (#1403) */}
+          <mds-button
+            slot="nav"
+            href={hrefOf({ section: 'groups' })}
+            variant="dark"
+            tone={sectionTone('groups')}
+            aria-current={route.section === 'groups' ? 'page' : undefined}
+            label={t('Groups')}
+          ></mds-button>
           <mds-button
             slot="nav"
             href={hrefOf({ section: 'theme' })}
@@ -431,6 +446,15 @@ function StudioBar({ route }: { route: Route }) {
         <div slot="menu" class="studio-menu">
           {/* what the bar hides on a narrow window (style.css), then the preferences */}
           <nav class="studio-menu-nav" aria-label={t('Studio')}>
+            <mds-button
+              href={hrefOf({ section: 'groups' })}
+              icon="mi/baseline/workspaces"
+              variant="dark"
+              tone={sectionTone('groups')}
+              aria-current={route.section === 'groups' ? 'page' : undefined}
+              class="studio-menu-link"
+              label={t('Groups')}
+            ></mds-button>
             <mds-button
               href={hrefOf({ section: 'theme' })}
               icon={THEME_PAGE.icon}

@@ -8,7 +8,6 @@ import {
   resolveFormula,
   resolveRatiosName,
 } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
-import { COLORSPACES } from '@maggioli-design-system/design-tokens/src/lib/schema.mjs';
 import { hasSaturation } from '@maggioli-design-system/design-tokens/src/lib/saturation.mjs';
 import { nearestColorName } from '../../engine/color-names.js';
 import { chromaticOrder, groupOf, groupsInOrder } from '../../engine/colour-order.js';
@@ -30,8 +29,6 @@ import { Check, ColorInput, Field, Select, TextInput } from '../../shared/magma/
 import { msg, plural, rich, useT, type T } from '../../shared/i18n/i18n.js';
 import { GateBadge } from '../../shared/ui/verdict.js';
 import { TouchedPairs } from '../../shared/ui/touched-pairs.js';
-import { HueShiftEditor } from '../../shared/ui/hue-shift-editor.js';
-import { SaturationEditor } from '../../shared/ui/saturation-editor.js';
 import { GROUPS_PAGE, hrefOf, stageOf } from '../../shared/routes/routes.js';
 import {
   addFamily,
@@ -40,7 +37,6 @@ import {
   duplicateFamily,
   patchFamily,
   selectFamily,
-  setGlobal,
 } from '../../state/palette.js';
 import { builtinScalesOf, scalesOf } from '../../state/scales.js';
 import { useStudio } from '../../state/studio.js';
@@ -58,7 +54,8 @@ import './colours.css';
   its page; the scene beside it. Chosen on its renders (vittorio, 2026-11-27): the list as today
   with New group beside Add color and an icon beside each group to its place in Groups; the pairs
   in a closed detail under the name, their count and their verdict in its title; the inherited
-  value on a line under its field. Built as Magma says today: record-detail with the list beside,
+  value on a line under its field; the settings of the preset are in Groups (question 13 of the
+  model). Built as Magma says today: record-detail with the list beside,
   until list and detail (#1262) lands; these renders are its proposals.
 */
 
@@ -435,16 +432,6 @@ export function ColoursPage({ foot }: { foot?: ComponentChild }) {
                     ></mds-button>
                   </div>
                 </mds-dropdown>
-                {/* the settings of the whole preset, closed at first, apart from the family
-                  (vittorio, 2026-11-05): here until Groups holds them (question 13 of the model) */}
-                <div class="mt-between-sections @side/family:col-start-1">
-                  <GlobalSettings
-                    t={t}
-                    config={config}
-                    before={flatRamps?.light ?? null}
-                    after={ramps?.light ?? null}
-                  />
-                </div>
               </div>
             </div>
           )}
@@ -629,62 +616,6 @@ function PaintsLine({
         ? parts.flatMap((part, index) => (index ? ['; ', ...part] : part)).concat('.')
         : t('It paints nothing of Magma: a case outside Magma, which goes out as tokens alone.')}
     </mds-text>
-  );
-}
-
-/** The settings of the whole preset: here until Groups holds them (question 13 of the model). */
-function GlobalSettings({
-  t,
-  config,
-  before,
-  after,
-}: {
-  t: T;
-  config: MagmaConfig;
-  before: ColorScales['light'] | null;
-  after: ColorScales['light'] | null;
-}) {
-  const studio = useStudio();
-  return (
-    <mds-details class="grid">
-      <mds-text slot="title" typography="part" tag="span">
-        {t('Global settings')}
-      </mds-text>
-      <div class="grid gap-between-groups">
-        <div class="grid grid-cols-[repeat(auto-fill,minmax(min(100%,calc(var(--magma-width-form)/2)),1fr))] items-start gap-between-fields">
-          <Field label={t('Colorspace')}>
-            <Select
-              value={config.colorspace ?? 'HSL'}
-              options={COLORSPACES.map((space) => ({ value: space, label: space }))}
-              onValue={(colorspace) => setGlobal(studio, 'colorspace', colorspace)}
-            />
-          </Field>
-          <div class="flex min-h-1200 items-end">
-            <Check
-              type="switch"
-              checked={config.smooth ?? false}
-              onChecked={(checked) => setGlobal(studio, 'smooth', checked)}
-            >
-              {t('Smooth')}
-            </Check>
-          </div>
-        </div>
-        <HueShiftEditor
-          title={t('Global hue shifting')}
-          value={config.hueShift}
-          onChange={(hueShift) => setGlobal(studio, 'hueShift', hueShift)}
-        />
-        {/* the global curve, drawn on the family in view */}
-        <SaturationEditor
-          title={t('Global saturation')}
-          id="palette-global-saturation"
-          value={config.saturation}
-          before={before}
-          after={after}
-          onChange={(saturation) => setGlobal(studio, 'saturation', saturation)}
-        />
-      </div>
-    </mds-details>
   );
 }
 

@@ -63,17 +63,19 @@ const links = (scope: Element | null) =>
 // The bar (#1402, option A of its renders): the product, the Theme section and the rules, then the
 // work, always in view: the changes since the last exit and the exit, saved or downloaded in one
 // click, the other formats in the menu of its split button. The stages stand under it.
-test('the bar names the Theme section and the rules, then the changes and the exit', async () => {
+test('the bar names Groups, the Theme section and the rules, then the changes and the exit', async () => {
   await at('#/behavior/patterns')
   const nav = [...root.querySelectorAll('mds-header-bar > [slot="nav"]')]
+  // what stands outside the stages first: Groups (#1403), the Theme section, the rules
   expect(nav.map((one) => [one.localName, textOf(one) ?? (one as { label?: string }).label])).toEqual([
+    ['mds-button', 'Groups'],
     ['mds-button', 'Theme'],
     ['mds-button', 'Behavior'],
     ['mds-button', 'No changes'],
     ['mds-button-dropdown', 'Download the preset'],
   ])
   // the section of the page shown, marked; no menu of Colors, no Config
-  expect(nav[1].getAttribute('tone')).toBe('weak')
+  expect(nav[2].getAttribute('tone')).toBe('weak')
   expect(root.querySelector('#studio-colors, #studio-config')).toBeNull()
   const behavior = [...root.querySelectorAll('mds-dropdown')].find(
     (menu) => String((menu as { target?: string }).target ?? menu.getAttribute('target')) === '#studio-behavior',
@@ -193,7 +195,7 @@ test('a start with no address opens the introduction, which the name of the stud
   expect(product().getAttribute('href')).toBe('#/introduction')
   // no section of the bar is the one on screen; the changes are outlined
   const nav = [...root.querySelectorAll('mds-header-bar > mds-button[slot="nav"]')]
-  expect(nav.map((one) => one.getAttribute('tone'))).toEqual(['text', 'text', 'outline'])
+  expect(nav.map((one) => one.getAttribute('tone'))).toEqual(['text', 'text', 'text', 'outline'])
   // its way out, the opening
   expect(links(start).find(({ text }) => text === 'Get started')?.href).toBe('#/opening')
 })
@@ -453,9 +455,9 @@ test('the studio follows the language of <html lang> at once', async () => {
   try {
     await at('#/introduction')
     const nav = () => [...root.querySelectorAll('mds-header-bar > mds-button[slot="nav"]')].map((one) => textOf(one))
-    expect(nav()).toEqual(['Tema', 'Regole', 'Nessuna modifica'])
+    expect(nav()).toEqual(['Gruppi', 'Tema', 'Regole', 'Nessuna modifica'])
     document.documentElement.lang = 'en'
-    await vi.waitFor(() => expect(nav()).toEqual(['Theme', 'Behavior', 'No changes']))
+    await vi.waitFor(() => expect(nav()).toEqual(['Groups', 'Theme', 'Behavior', 'No changes']))
   } finally {
     document.documentElement.lang = ''
   }

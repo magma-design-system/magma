@@ -29,14 +29,14 @@ test('a state restores the draft kept in its storage: the configuration, the fam
   const storage = memoryStorage()
   const config = bundledConfig()
   config.colors = config.colors.slice(2)
-  const draft: StudioDraft = { config, selectedName: config.colors[1].name, view: 'groups' }
+  const draft: StudioDraft = { config, selectedName: config.colors[1].name, view: 'themes' }
   storage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft))
   const studio = quietStudio(storage)
   expect(studio.config.value).toEqual(config)
   expect(studio.selectedName.value).toBe(config.colors[1].name)
   // a draft saved before #1403 names a page of Colors by its id: its address, which the router
   // takes on to the view that replaced it
-  expect(studio.workPlace.value).toBe('#/colors/groups')
+  expect(studio.workPlace.value).toBe('#/colors/themes')
   for (const [view, place] of [
     ['colors', '#/colours'],
     ['#/colours', '#/colours'],

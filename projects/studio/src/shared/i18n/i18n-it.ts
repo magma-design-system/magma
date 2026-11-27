@@ -65,6 +65,8 @@ export const IT_SHELL: Record<string, string> = {
   // the badge of a contrast scale, in Colours and in Scale (#1403)
   'Compatible with Magma': 'Compatibile con Magma',
   'Not compatible with Magma': 'Non compatibile con Magma',
+  // the link to the page of a scale, in Colours and in Groups
+  'Open the scale {scale}': 'Apri la scala {scale}',
   // the pairs of the contrast check a family or a scale touches (shared/ui/touched-pairs.tsx)
   '{count} pair touched': '{count} coppia toccata',
   '{count} pairs touched': '{count} coppie toccate',

@@ -6,9 +6,9 @@ import { createRouter, memoryLocation } from './router.js'
 // The router follows a location: in memory here, as for a host that owns the address of its page
 // (#695)
 test('the router opens the page of the address, else the first page, its address written in place', () => {
-  const groups = memoryLocation('#/colors/groups')
-  expect(createRouter({ location: groups }).route.value).toEqual({ section: 'colors', view: 'groups' })
-  expect(groups.entries).toEqual(['#/colors/groups'])
+  const themes = memoryLocation('#/colors/themes')
+  expect(createRouter({ location: themes }).route.value).toEqual({ section: 'colors', view: 'themes' })
+  expect(themes.entries).toEqual(['#/colors/themes'])
 
   for (const start of ['', '#', '#/colors/nothing']) {
     const location = memoryLocation(start)

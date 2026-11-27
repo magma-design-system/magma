@@ -26,6 +26,7 @@ const pages: Route[] = [
   { section: 'introduction' },
   { section: 'opening' },
   { section: 'colours' },
+  { section: 'groups' },
   { section: 'scale', formula: 'wcag3', name: 'tone' },
   { section: 'scale', formula: 'wcag2', name: 'v1', group: 'tone' },
   { section: 'exceptions' },
@@ -84,7 +85,7 @@ test('one table holds the pages: the menus of Colors and Behavior, and the Theme
     ...BEHAVIOR_PAGES.map(() => 'behavior'),
   ])
   expect(COLORS_PAGES.map(({ label }) => label)).toEqual([
-    'Semantic surface', 'Themes', 'Groups', 'Contrast check',
+    'Semantic surface', 'Themes', 'Contrast check',
   ])
   expect(BEHAVIOR_PAGES.map(({ label }) => label)).toEqual(['Design language', 'Patterns', 'Blocks'])
   expect([THEME_PAGE.label, THEME_PAGE.icon]).toEqual(['Theme', 'mi/baseline/format-size'])
@@ -103,6 +104,9 @@ test('the ids of the pages of Colors and of the modes are those the table and th
   // the Palette went with #1403: Colours took its place
   expect(colorsViewOf('colors')).toBeUndefined()
   expect(colorsViewOf('scales')).toBeUndefined()
+  expect(colorsViewOf('groups')).toBeUndefined()
+  expect(routeOf('#/colors/groups')).toEqual({ section: 'groups' })
+  expect(workPlaceOf('groups')).toBe('#/colours')
   for (const mode of MODE_VIEWS)
     expect(routeOf(hrefOf({ section: 'theme', theme: 'editorial', mode }))).toEqual({
       section: 'theme',
@@ -138,7 +142,8 @@ test('a page is a stage, a page beside one, or outside the flow', () => {
   // Scale and Group beside Colours: the page of any scale, today's Groups
   expect(where({ section: 'scale', formula: 'wcag3', name: 'tone' })).toBe('side-page of colours (0)')
   expect(where({ section: 'scale', formula: 'wcag2', name: 'v1', group: 'tone' })).toBe('side-page of colours (0)')
-  expect(where({ section: 'colors', view: 'groups' })).toBe('side-page of colours (0)')
+  // Groups went out of the stages (#1403)
+  expect(where({ section: 'groups' })).toBeUndefined()
   expect(where({ section: 'colors', view: 'surface' })).toBe('stage of weights (1)')
   expect(where({ section: 'colors', view: 'themes' })).toBe('stage of themes (2)')
   expect(where({ section: 'exceptions' })).toBe('stage of exceptions (3)')

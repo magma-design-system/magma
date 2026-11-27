@@ -33,10 +33,11 @@ import { msg } from '../i18n/text.js';
 /**
  * The pages of today's Colors section still standing, by the id a draft saved before #1403 carries
  * (`view`, state/draft.ts): the table gives each its address and its name. 'surface' is Semantic
- * surface, an id kept from before the views were split. The Palette ('colors') and Contrast scales
- * ('scales') went with #1403: Colours and Scale took their places.
+ * surface, an id kept from before the views were split. The Palette ('colors'), Contrast scales
+ * ('scales') and Groups ('groups') went with #1403: Colours, Scale and the view Groups took their
+ * places.
  */
-export const COLORS_VIEWS = ['surface', 'themes', 'groups', 'contrast'] as const;
+export const COLORS_VIEWS = ['surface', 'themes', 'contrast'] as const;
 export type ColorsView = (typeof COLORS_VIEWS)[number];
 
 /** The page of Colors a draft names, if it is one. */
@@ -69,6 +70,11 @@ export type Route =
    * reached from a family, or from a group, which the way back names.
    */
   | { section: 'scale'; formula: Formula; name: string; group?: string }
+  /**
+   * The view Groups (#1403, features/groups/): what the families inherit, the settings of the
+   * preset and of each group, and the export groups; outside the stages, as the Theme section.
+   */
+  | { section: 'groups' }
   | { section: 'colors'; view: ColorsView }
   | { section: 'theme'; theme?: string; mode?: ModeView }
   | { section: 'behavior'; page: BehaviorPage }
@@ -78,7 +84,7 @@ export type Route =
 /** A section of the bar: its pages are the rows of PAGES that name it. */
 export type Section = Exclude<
   Route['section'],
-  'introduction' | 'opening' | 'colours' | 'scale' | 'exceptions'
+  'introduction' | 'opening' | 'colours' | 'scale' | 'groups' | 'exceptions'
 >;
 
 export interface MenuItem<Id extends string> {
@@ -113,13 +119,6 @@ export const PAGES: readonly Page[] = [
     slug: 'themes',
     label: msg('Themes'),
     icon: 'mi/baseline/theater-comedy',
-  },
-  {
-    section: 'colors',
-    id: 'groups',
-    slug: 'groups',
-    label: msg('Groups'),
-    icon: 'mi/baseline/workspaces',
   },
   // the page that checks the work against what Magma builds: the contrast gate (Diffs, the
   // palette against Magma's, went in #1402: the changes are the bar's)
@@ -183,6 +182,7 @@ export const ALIASES: Readonly<Record<string, Route>> = {
   [START_ALIAS]: { section: 'introduction' },
   '#/colors/palette': { section: 'colours' },
   '#/colors/contrast-scales': { section: 'scale', formula: 'wcag3', name: 'default' },
+  '#/colors/groups': { section: 'groups' },
 };
 
 /** The formulas a contrast scale is written for, as the configuration names them. */
@@ -194,6 +194,7 @@ export function hrefOf(route: Route): string {
   if (route.section === 'introduction') return '#/introduction';
   if (route.section === 'opening') return '#/opening';
   if (route.section === 'colours') return '#/colours';
+  if (route.section === 'groups') return '#/groups';
   if (route.section === 'scale')
     return `#/colours/scale/${route.formula}/${route.name}${route.group ? `/from/${route.group}` : ''}`;
   if (route.section === 'exceptions') return '#/exceptions';
@@ -222,7 +223,12 @@ export function routeOf(hash: string): Route | undefined {
     if (from === undefined) return { section: 'scale', formula: known, name };
     return from === 'from' && group ? { section: 'scale', formula: known, name, group } : undefined;
   }
-  if (section === 'introduction' || section === 'opening' || section === 'colours')
+  if (
+    section === 'introduction' ||
+    section === 'opening' ||
+    section === 'colours' ||
+    section === 'groups'
+  )
     return slug === undefined ? { section } : undefined;
   if (section === 'exceptions') return slug === undefined ? { section: 'exceptions' } : undefined;
   if (section === 'theme') {
@@ -275,9 +281,9 @@ export const STAGES: readonly Stage[] = [
     icon: 'mi/baseline/palette',
     numbered: true,
     route: { section: 'colours' },
-    // Groups until it moves out of the stages; Scale is beside it too, at the address of any scale
-    // (placeOf)
-    beside: [{ section: 'colors', view: 'groups' }],
+    // Scale stands beside it, at the address of any scale (placeOf); Groups went out of the
+    // stages (#1403)
+    beside: [],
   },
   {
     id: 'weights',
@@ -327,7 +333,7 @@ export const scaleRoute = (formula: Formula, name: string, group?: string): Rout
   name,
   ...(group ? { group } : {}),
 });
-export const GROUPS_PAGE: Route = { section: 'colors', view: 'groups' };
+export const GROUPS_PAGE: Route = { section: 'groups' };
 
 /** The view before the first stage, where its way back leads: the opening. */
 export const BEFORE_STAGES: { route: Route; label: string } = {
@@ -344,6 +350,8 @@ export function workPlaceOf(view: unknown): string | undefined {
   if (typeof view !== 'string') return undefined;
   if (view === 'colors') return '#/colours';
   if (view === 'scales') return '#/colors/contrast-scales';
+  // Groups stood beside Colours; the view that replaced it is outside the stages
+  if (view === 'groups') return '#/colours';
   const page = colorsViewOf(view);
   if (page) return hrefOf({ section: 'colors', view: page });
   return routeOf(view) ? view : undefined;

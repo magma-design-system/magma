@@ -3,10 +3,9 @@ import type {
   ColorConfig,
   MagmaConfig,
 } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
-import { generateScales } from './engine/generator.js';
-import { useT } from './shared/i18n/i18n.js';
-import { Check, Field, TextInput } from './shared/magma/magma.js';
-import './batch.css';
+import { generateScales } from '../../engine/generator.js';
+import { useT } from '../../shared/i18n/i18n.js';
+import { Check, Field, TextInput } from '../../shared/magma/magma.js';
 
 interface BatchExportModalProps {
   /** colors that entered the batch (names), in config order */
@@ -82,22 +81,32 @@ export function BatchExportModal({
       >
         <div class="studio-dialog">
           {error && <mds-banner variant="error">{error}</mds-banner>}
-          <div class="batch-list" role="group" aria-label={t('The colors of the batch')}>
+          <div
+            class="grid grid-cols-[auto_1fr] items-center gap-inline"
+            role="group"
+            aria-label={t('The colors of the batch')}
+          >
             {names.map((name) => {
               const color = colorsByName.get(name);
               const light = scales?.get(name)?.light;
               return (
-                <div class={`batch-row ${checked.has(name) ? '' : 'dropped'}`}>
+                <div class="contents">
                   <Check checked={checked.has(name)} onChecked={() => toggle(name)}>
-                    <span class="batch-row-name">
+                    <span class="inline-flex items-center gap-inline">
                       <span class="studio-swatch" style={{ background: color?.color }} />
                       {name}
                     </span>
                   </Check>
                   {light && (
-                    <span class="batch-row-scale">
+                    <span
+                      class={
+                        checked.has(name)
+                          ? 'flex overflow-hidden rounded-sm'
+                          : 'flex overflow-hidden rounded-sm opacity-40'
+                      }
+                    >
                       {light.map((step) => (
-                        <span class="batch-swatch" style={{ background: step.value }} />
+                        <span class="groups-step" style={{ background: step.value }} />
                       ))}
                     </span>
                   )}

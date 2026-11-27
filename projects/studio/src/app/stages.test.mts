@@ -71,12 +71,9 @@ test('on a stage the stepper shows the stages in order under the bar, the curren
 })
 
 test('a page beside a stage keeps its stage current, and has no foot', async () => {
-  await at('#/colors/contrast-scales')
-  expect(stepper()?.getAttribute('items-done')).toBe('1')
-  expect(foot()).toBeNull()
-  location.hash = '#/colors/groups'
-  await vi.waitFor(() => expect(root.querySelector('.content')).not.toBeNull())
-  expect(stepper()?.getAttribute('items-done')).toBe('1')
+  // the page of a scale, beside Colours (#1403)
+  await at('#/colours/scale/wcag3/tone')
+  await vi.waitFor(() => expect(stepper()?.getAttribute('items-done')).toBe('1'))
   expect(foot()).toBeNull()
 })
 

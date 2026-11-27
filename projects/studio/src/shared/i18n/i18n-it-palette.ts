@@ -92,7 +92,6 @@ export const IT_PALETTE: Record<string, string> = {
   'Actions of {name}': 'Azioni di {name}',
   'Delete color': 'Elimina colore',
   'built-in variant: cannot be deleted': 'variante integrata: non si può eliminare',
-  'Global settings': 'Impostazioni globali',
   'Add color': 'Aggiungi colore',
   'New reference': 'Nuovo riferimento',
   'New color': 'Nuovo colore',
@@ -111,8 +110,6 @@ export const IT_PALETTE: Record<string, string> = {
     'Le famiglie che generano superfici, e gli equilibri: la luminosità delle superfici e dei bordi, gli obiettivi del testo.',
   'Each family with surfaces, status aside, is a theme: its name, its accents and the CSS that switches it in.':
     'Ogni famiglia con superfici, tranne quelle di stato, è un tema: il suo nome, i suoi accenti e il CSS che lo attiva.',
-  'The ratios, formula and export of each group of the configuration.':
-    "I rapporti, la formula e l'esportazione di ogni gruppo della configurazione.",
   'Every pair the contrast gate judges, in each theme and both modes: what the build of Magma would say of this configuration.':
     'Ogni coppia giudicata dalla verifica del contrasto, in ogni tema e in entrambe le modalità: quello che la build di Magma direbbe di questa configurazione.',
 

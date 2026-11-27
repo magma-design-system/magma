@@ -41,8 +41,6 @@ export const IT_THEMES: Record<string, string> = {
 
   // the Groups page (groups.tsx)
   'overrides the group: {overrides}': 'diverso dal gruppo: {overrides}',
-  'Ratios, formula and export are managed per token group here (the {groups} section of the configuration). Tick colors across groups to set their export together, or pick an existing export to load every color that uses it. Group selected lifts the ticked colors into a section on top, to compare them.':
-    "Qui rapporti, formula ed esportazione si gestiscono per gruppo di token (la sezione {groups} della configurazione). Spunta colori di gruppi diversi per impostarne insieme l'esportazione, o scegli un'esportazione esistente per caricare ogni colore che la usa. Raggruppa selezionati porta i colori spuntati in una sezione in alto, per confrontarli.",
   // "Selezionati: 3", not "3 selezionati": the English has one form for every count, so the
   // Italian takes the one that agrees with every count
   '{count} selected': 'Selezionati: {count}',
@@ -50,7 +48,6 @@ export const IT_THEMES: Record<string, string> = {
   'Group selected': 'Raggruppa selezionati',
   'Select by export': 'Seleziona per esportazione',
   'Choose an export': "Scegli un'esportazione",
-  Ratios: 'Rapporti',
   'inherit ({value})': 'eredita ({value})',
   'e.g. palette, default': 'es. palette, default',
   'Selected colors': 'Colori selezionati',
