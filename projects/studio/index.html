@@ -39,6 +39,10 @@
   </head>
   <body>
     <div id="app"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <!-- the page is a host of the studio like the others: it mounts it (src/main.tsx, #1404) -->
+    <script type="module">
+      import { mount } from '/src/main.tsx';
+      mount(document.getElementById('app'));
+    </script>
   </body>
 </html>
