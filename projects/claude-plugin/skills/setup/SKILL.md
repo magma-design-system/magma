@@ -1,6 +1,6 @@
 ---
 name: setup
-description: Bring the Magma design system (the @maggioli-design-system packages) into a project. Pick the package of its framework (web components, React, Angular), install it, then run the bootstrap of the installed AGENTS.md (styles, fonts, icons, registration, editor, lint, MCP server) and check the result. Use when asked to install, add or set up Magma, or to fix a Magma setup that does not work.
+description: Bring the Magma design system (@maggioli-design-system) into a project - the package of its framework (web components, React, Angular), the bootstrap of the installed AGENTS.md, the check. Use when asked to install, add or set up Magma, or to fix a Magma setup that does not work.
 license: MIT
 compatibility: A Node.js project with npm, pnpm or yarn. Uses the magma MCP server of this plugin once Magma is installed.
 metadata:

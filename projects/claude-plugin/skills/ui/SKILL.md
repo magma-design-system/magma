@@ -1,6 +1,6 @@
 ---
 name: ui
-description: How to write interface code in a project that uses the Magma design system (mds-* web components, the MdsX wrappers of React and Angular, the Magma Tailwind classes and roles). Find the component, read its API and how the framework writes it, paint with roles, check icon slugs and the markup before saving. Use whenever building or changing UI in a Magma project.
+description: How to write interface code in a project that uses Magma (mds-* components, the React and Angular wrappers, the Tailwind classes and roles) - find the component, read its API, paint with roles, check the markup. Use whenever building or changing UI in a Magma project.
 license: MIT
 compatibility: A project with @maggioli-design-system/magma installed. Uses the magma MCP server of this plugin; without it, the guides installed with the package.
 metadata:
@@ -11,43 +11,53 @@ metadata:
 
 # Write UI with Magma
 
-Magma answers from the version installed in this project: ask it instead of guessing. Arguments given with the command, if any: $ARGUMENTS.
+Magma answers from the version installed in this project: ask the magma MCP server instead of guessing, and never invent a prop, a value, an event, a role or an icon slug. Arguments given with the command, if any: $ARGUMENTS.
+
+## Before you start
 
 Once per session, before the first change, call `check_setup`: when it reports the Magma block missing from the project's agent file (`agent-context`), propose to write it as the guide it names says, so the agents of the colleagues know Magma is there; mention what else it reports.
 
-## The procedure
+## Pick your path
 
-1. **The flow.** When the UI tells the person something or makes them wait or decide (a message, a confirmation, an empty, a loading or a failed part), `get_pattern` with the need in words, then with the pattern and the values of its variables you know: it returns the case to follow, the same in every product, with the rules of the design language it relies on (`rules`), and the pattern's "Always true" rules. Compose the case from the parts its `use` names, each with its role when the answer gives one, in the order of its preview, a value in angle brackets the text your application writes there; read the stage of the preview as context only (its elements marked `data-stage` are the page around the case, not part of it), then add what your situation needs. Tell the user when no pattern covers the task, or only a candidate, and which choice you made instead. Before composing it by hand, find the components that hold its role (`find_component` with the need in words) and render them in your context: one that does the job is used as it is; one that holds the role but does not fit is reported (`get_guide` reporting), never worked around with a second way of your own; when none holds the role, the missing component is proposed with a prototype, markup marked `data-prototype="<the tag you propose>"` and rendered (`get_guide` reporting, section "A component Magma lacks"). The choice you make where no pattern covers the task is shown rendered before you build on it. An open choice the product wants fixed for good goes in its layer, not in the code: `/magma:pattern-layer`.
-2. **The component.** `find_component` with the need in words; then `get_component` for its API (props and their values, events, slots, parts) and the rules of the design language that govern it (`rules`: what it draws by itself, such as the inset of `mds-banner`, you do not add again), and `get_usage` for how the project's framework writes it. Never invent a prop, a value or an event name.
-3. **The composition.** How the parts stand together (the space between two elements, and the other rules of composition) is decided by the domains of the design language, which `get_pattern` lists first (kind `design-language`; `foundation` with magma 2.11 and before): read the one you need with `get_guide` by its id (`rhythm`: the space between two elements is the step of their relation, never one picked by eye), and follow the `rules` the answers above give. A section of a page that Magma ships as a building block (kind `block`, such as `page-header`, the head of a page) is laid out from `get_pattern` with its id and the values of its variables: the regions it returns, in that order.
-4. **Colour, spacing, classes.** Paint with roles, never with Tailwind's palette or a raw palette step: `list_tokens` finds the role for a need, `suggest_role` the role for a colour you were given. Magma spacing steps are hundredths of a rem (`p-400` is 16px, `p-4` is 0.16px): `explain_class` on any class you are not sure of.
-5. **Icons.** `find_icon` for a slug that exists in the sets the project serves; check every slug before writing it in `icon="..."`.
-6. **Before saving.** `check_markup` on the template or the stylesheet you wrote; fix what it reports.
-7. **After writing.** Run the project's lint (ESLint and Stylelint with the Magma presets).
+1. **Build or change an interface with what Magma has**, such as a form, a settings page, a list with its filters or the message after an action: read [references/compose.md](references/compose.md).
+2. **Magma lacks what the job needs**: no component holds the role, one holds it and does not fit, or no pattern covers the task: read [references/gap.md](references/gap.md).
+3. **The person has to decide** on an interface, such as a layout, where a message goes or which of two components: read [references/show.md](references/show.md).
 
-When the person has to decide on an interface (a layout, where a message goes, which of two components), show it, never words alone: `render_preview` each option with the real components and texts, read its report and fix the markup until it is representative, then send the person the image files, which Claude Code does not show them by itself. Ask with each image, a name and one line, the recommended option first; let them flag an image, and keep an empty field for an answer of their own: render what you understood of it and act only once they confirm. The procedure: `get_guide` mcp, section "Show the person what you mean".
+Most jobs take path 1. When one part of it meets path 2 or 3, follow that path for that part, then go back. Every path ends the same way: "When you are done", below.
 
-When a rule is not clear, read the section you need with `get_guide` (conventions, color, typography, theming, or a domain of the design language such as rhythm).
+The tools of the server, and what each one answers: [references/tools.md](references/tools.md).
 
-When the tools do not give you what the task needs (you would read Magma's files by hand or guess, or an answer carries `gap`), tell the user, and at the end of the task propose an issue on Magma, one per missing capability: `get_guide` reporting, section "A tool or an answer the MCP server is missing"; a component Magma lacks with its proposal and the image of its prototype, section "A component Magma lacks". Open it only once the user agrees.
+## Rules for every path
 
-## The tools of the magma server
+- Use the `mds-*` component, never the raw element it replaces
+- Never put an interactive component inside another interactive element
+- Write only the values a prop accepts: `tone`, `variant` and `size` take different values on each component (lint: `magma/valid-attribute-values`)
+- Turn a boolean prop off by removing its attribute, never with `"false"` (lint: `magma/no-false-boolean`)
+- Never write a deprecated prop (lint: `magma/no-deprecated`)
+- Give every control a name: `label` or `aria-label` on a component shown with its icon alone, `alt` on an image (lint: `magma/accessible-name`)
+- Pass text through the `label` prop when the component documents one
+- Listen to the documented `mds*` events, not to the native `change` or `input`
+- Style a component only through its public custom properties and its documented parts (lint: `magma/no-internal-tokens`)
+- Paint with the semantic roles (`bg-surface-default`, `text-fg-muted`), never with Tailwind's palette or a literal colour (lint: `magma/no-raw-palette-classes`, `magma/no-raw-color`)
+- Never write dark mode by hand with a `prefers-color-scheme` query (lint: `magma/no-color-scheme-override`)
+- Set text with the semantic typography utilities (`text-title-h3`, `text-info-detail`), never composed from `font-*` and `text-*` primitives
+- Write the Magma spacing steps in full: `p-400` is 1rem, while Tailwind's `p-4` is 0.01rem
+- Space two elements by the step of their relation, never by a value picked by eye
+- Reference an icon by a slug of the sets the project serves, never an inline `<svg>` or an imported icon package
+- Keep Magma's focus styles (`focus-bounce`, `focus-zoom`), never hand-rolled ones
 
-| Tool | What it answers |
-| --- | --- |
-| `find_component` | Find the Magma components that fit a need, described in words ("a date range picker", "a dismissible notice"). |
-| `get_component` | The API of one Magma component in the installed version: props with their type, allowed values and default, events with their detail, methods, slots, parts and public CSS custom properties (the only ones a product sets; the internal ones are counted, they may change in any release), the files of its usage guide (examples, mistakes), and in rules the rules of the design language that govern it (the relations and rules of the domains of the design language it carries or that write it, each with its domain and its text; the whole domain with get_guide). |
-| `get_usage` | How to write one Magma component in a framework: the import, the element or wrapper name, every prop and event as that framework writes them (attribute, React prop and onMdsX handler, Angular [input] and (output)), an example and the traps of that framework. |
-| `list_tokens` | The Magma roles and tokens of the installed version, each with what it is for, its CSS custom property, its light value and the Tailwind class that reads it. |
-| `suggest_role` | The semantic role to use instead of a raw colour: a literal (#f5f5f5, rgb(...), oklch(...)), a Tailwind class (bg-gray-100, text-tone-neutral-03, shadow-gray-900/20) or a palette step (--tone-neutral-09). |
-| `explain_class` | What a Tailwind class does with the Magma theme: the token it reads and its value, the Magma utility it is, or the trap it falls in (p-4 is 0.01rem in Magma, not 16px; bg-white ignores the theme). |
-| `find_icon` | Icon slugs that exist in the sets the project installed (mi/<variant>/<name> from @material-icons/svg, mdi/<name> from @mdi/svg, mgg/<name> from svg-icons). |
-| `get_guide` | The guides Magma ships for agents (installation, conventions, color, typography, theming, lint...) and the domains of the design language, the rules of composition (kind design-language, such as rhythm: the space between elements): without arguments the list with their sections, with a guide its headings (a domain also the previews of its cases and rules, for render_preview), with a guide and a section the text of that section only. |
-| `get_pattern` | The patterns Magma ships: the solution to a task across components (where a message goes, confirming an action, an empty, a loading or a failed part), the same in every product; first the domains of the design language (kind design-language), the rules of composition every pattern stands on (the space between elements, ...), then the building blocks (kind block), the sections of a page that come back in several patterns (the page header). |
-| `check_markup` | Run the Magma lint on a snippet before writing it: prop values outside their union, "false" booleans, icon-only controls without a name, raw palette classes (templates and @apply), raw colours and prefers-color-scheme queries (CSS). |
-| `check_setup` | Look at the project and list what its Magma integration misses, each with the guide that fixes it: design-tokens and styles installed in the range magma depends on, the React or Angular wrapper at magma's version, the fonts of the typography, an icon set, the icon path, the lint in ESLint and Stylelint, this server in the client configuration. |
-| `render_preview` | Render HTML with Magma components on the magma installed in the project, offline, and get the image (to look at, and to show the person) with its file, and a report of what in it is not representative: a component unknown or not hydrated, an element with no size, a component that shows one flat colour, a console error, an icon, a font or an image that did not load, a word broken across lines, content cut. |
+A rule marked lint is caught, in full or in part, by that rule of the Magma lint: `check_markup` runs it on a snippet. The others are yours to keep. Each rule is explained in the guide of the mistakes to avoid with any component (`get_guide` mistakes, section "The rules"), which links the guide that decides it; read that one with `get_guide` when a rule is not clear (conventions, color, typography, theming, or a domain of the design language such as rhythm).
+
+## When you are done
+
+1. `check_markup` on each template and stylesheet you wrote; fix what it reports.
+2. Run the project's lint (ESLint and Stylelint with the Magma presets) and, when it has one, its type check; read the exit code, not only the output.
+3. Report to the person, in this order:
+   - what you used: the pattern and its case, the components; the prototype you proposed (path 2); the option the person chose (path 3);
+   - each command you ran, with its exit code;
+   - what you could not check, such as a page you did not render;
+   - what Magma did not give you: a tool or an answer you lacked (you read Magma's files by hand or guessed, or an answer carried `gap`), a component that does not fit, a component or a pattern that is missing. Propose an issue on Magma for each, as path 2 says, and open it only once the person agrees.
 
 ## Without the server
 
-Read the guides installed with the package: `node_modules/@maggioli-design-system/magma/AGENTS.md`, its `agents/*.md` (conventions, color, typography, theming, lint), the domains of the design language in its `agents/patterns/` (the files of `kind: design-language`, or `kind: foundation` with magma 2.11 and before, such as `rhythm.md`) and, for one component, `dist/collection/components/<tag>/AGENTS.md`, which links the files of its examples and mistakes beside it.
+The paths and the rules hold: where a path calls a tool, read the guide it answers from. The guides installed with the package: `node_modules/@maggioli-design-system/magma/AGENTS.md`, its `agents/*.md` (mistakes, conventions, color, typography, theming, lint, reporting), the domains of the design language in its `agents/patterns/` (the files of `kind: design-language`, or `kind: foundation` with magma 2.11 and before, such as `rhythm.md`) and, for one component, `dist/collection/components/<tag>/AGENTS.md`, which links the files of its examples and mistakes beside it.

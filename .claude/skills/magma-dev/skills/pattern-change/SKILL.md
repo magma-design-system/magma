@@ -1,6 +1,6 @@
 ---
 name: pattern-change
-description: Change a Magma pattern of this repository (docs/agents/patterns/<id>.md) - a case, a rule, an open choice, its id - showing first why the current answer was decided, and asking whether the change is the default for every product or a choice of one product's layer. Use when a maintainer asks to change, fix, rename or extend a pattern.
+description: Change a Magma pattern of this repository (a case, a rule, an open choice, its id), first showing why it was decided and asking whether the change is the default for every product or one product's layer. Use when a maintainer asks to change, fix, rename or extend a pattern.
 argument-hint: <id> [what to change]
 ---
 

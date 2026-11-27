@@ -1,6 +1,6 @@
 ---
 name: component-new
-description: Build a new Magma web component in this repository from the proposal a pattern made (its issue, its API, its data-prototype) - scaffold, design decisions as knobs on :host, States story, tests, usage docs, the component in place of its prototype, v2:design-audit before the pull request. Use when a maintainer asks to build or add a component, or a pattern decided on a new one.
+description: Build a new Magma web component in this repository from the proposal a pattern made - scaffold, API, design decisions on :host, States story, tests, usage docs, the v2:design-audit gate, pull request. Use when a maintainer asks to build or add a component, or a pattern decided on a new one.
 argument-hint: <the issue of the proposal, or the tag of the component>
 ---
 
