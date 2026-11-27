@@ -62,9 +62,12 @@ const runAction = (id: string) =>
   act(() => root.querySelector<HTMLElement>(`#studio-exit mds-button[data-action="${id}"]`)!.click())
 
 /** The studio on a page of Colors, restored on a draft of a configuration. */
-const openOn = async (draft: MagmaConfig, view = 'colors') => {
+const openOn = async (draft: MagmaConfig, view = 'colours') => {
   storeDraft(draft, view)
-  location.hash = `#/colors/${COLORS_PAGES.find((page) => page.id === view)!.slug}`
+  location.hash =
+    view === 'colours'
+      ? '#/colours'
+      : `#/colors/${COLORS_PAGES.find((page) => page.id === view)!.slug}`
   render(h(Studio, {}), root)
   await vi.waitFor(() => {
     if (!root.querySelector('mds-text[tag="h1"]')) throw new Error('no page yet')

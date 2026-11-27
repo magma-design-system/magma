@@ -2,7 +2,7 @@ import { batch } from '@preact/signals';
 import { validateConfig } from '@maggioli-design-system/design-tokens/src/lib/schema.mjs';
 import { presetInOrder } from '../engine/colour-order.js';
 import { msg } from '../shared/i18n/text.js';
-import { clearDraft, hashText, reconcileDraft, type DraftSource } from './draft.js';
+import { hashText, reconcileDraft, type DraftSource } from './draft.js';
 import {
   adoptConfig,
   bundled,
@@ -143,18 +143,6 @@ export async function importConfig(state: StudioState, file: PickedFile): Promis
     };
     return false;
   }
-}
-
-/**
- * The Reset of the studio: the configuration Magma builds with, on its first family, every local
- * change and the loaded configuration discarded.
- */
-export function resetWork(state: StudioState): void {
-  clearDraft(state.storage);
-  batch(() => {
-    adoptConfig(state, bundled());
-    state.notice.value = null;
-  });
 }
 
 /**

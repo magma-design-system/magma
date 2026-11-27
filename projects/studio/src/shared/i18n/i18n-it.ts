@@ -38,7 +38,6 @@ export const IT_SHELL: Record<string, string> = {
   Preferences: 'Preferenze',
 
   // the pages of the sections (shared/routes/routes.ts)
-  Palette: 'Palette',
   'Contrast scales': 'Scale di contrasto',
   'Semantic surface': 'Superficie semantica',
   Themes: 'Temi',
@@ -62,6 +61,17 @@ export const IT_SHELL: Record<string, string> = {
   'You opened a theme of yours from {colour}.': 'Hai aperto un tuo tema dal colore {colour}.',
   'You opened {file}.': 'Hai aperto {file}.',
   Undo: 'Annulla',
+  // a pair of the contrast check, in Contrast check and in Colours
+  '{fg} on {bg}': '{fg} su {bg}',
+  // a family deleted, undone from a toast of the shell (#1403)
+  '{name} deleted.': '{name} eliminato.',
+  // the name of a new group (engine/families.ts, groupNameProblem)
+  'Write the name of the group.': 'Scrivi il nome del gruppo.',
+  'A letter first, then letters, digits and hyphens: it names the tokens.':
+    'Prima una lettera, poi lettere, cifre e trattini: dà il nome ai token.',
+  'The engine makes a group by this name from the families: choose another.':
+    'Il motore crea un gruppo con questo nome dalle famiglie: scegline un altro.',
+  'The group variant holds references alone.': 'Il gruppo variant contiene solo riferimenti.',
   // the indicators of the play of the introduction, a column of Semantic surface
   Texts: 'Testi',
   'Save the preset': 'Salva il preset',

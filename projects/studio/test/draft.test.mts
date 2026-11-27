@@ -9,7 +9,7 @@ import {
   reconcileDraft,
   type StudioDraft,
 } from '../src/state/draft.js'
-import { App } from '../src/app.js'
+import { Studio } from '../src/app/shell.js'
 import type { ConfigAction } from '../src/app/config-menu.js'
 import { translator } from '../src/shared/i18n/i18n.js'
 import { ConfigMenu, inStudio, startStudio } from './studio.mjs'
@@ -96,6 +96,7 @@ document.body.append(root)
 
 afterEach(() => {
   render(null, root)
+  location.hash = ''
   localStorage.clear()
   vi.unstubAllGlobals()
 })
@@ -125,12 +126,22 @@ const isDisabled = (el: HTMLElement | undefined): boolean =>
 // the banner of the conflict: the banner of Magma that offers to keep the draft
 const conflict = (): Element | null | undefined => button('Keep the draft')?.closest('mds-banner')
 
+// the exit of the bar: the split button that saves the preset where a command takes saves
+const exit = () => root.querySelector<HTMLElement>('#studio-exit')
+
+/** The whole studio on Colours, its notices over the page (#1403: the shell shows them). */
+function open (...beside: ReturnType<typeof h>[]) {
+  location.hash = '#/colours'
+  const state = startStudio()
+  render(inStudio(state, h(Studio, { state }), ...beside), root)
+}
+
 test('the app asks before a draft with edits wins over a changed file, and can take the file', async () => {
   localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(
     draftOf(edits, { path: PATH, hash: hashText(diskJson) }, true),
   ))
   serve(changed)
-  render(inStudio(startStudio(), h(App, {})), root)
+  open()
 
   const banner = await vi.waitFor(() => {
     const el = conflict()
@@ -140,8 +151,9 @@ test('the app asks before a draft with edits wins over a changed file, and can t
   // a warning: the draft and the file disagree, nothing is lost yet
   expect(banner.getAttribute('variant')).toBe('warning')
   expect(banner.textContent).toContain(`${PATH} changed after this draft was saved`)
-  // saving now would write the draft over the file that changed
-  expect(isDisabled(button('Save *'))).toBe(true)
+  // saving now would write the draft over the file that changed: the exit waits for the answer
+  expect(exit()?.getAttribute('label')).toBe('Save the preset')
+  expect(isDisabled(exit()!)).toBe(true)
   // until answered, the stored draft keeps its old stamp: a reload asks again
   expect(storedDraft().source).toEqual({ path: PATH, hash: hashText(diskJson) })
 
@@ -155,7 +167,7 @@ test('the app asks before a draft with edits wins over a changed file, and can t
     expect(draft.source).toEqual({ path: PATH, hash: hashText(changedJson) })
     expect(draft.edited).toBe(false)
   })
-  expect(isDisabled(button('Saved'))).toBe(true)
+  expect(isDisabled(exit()!)).toBe(false)
 })
 
 test('keeping the draft restamps it on the file now on disk, with its edits unsaved', async () => {
@@ -163,7 +175,7 @@ test('keeping the draft restamps it on the file now on disk, with its edits unsa
     draftOf(edits, { path: PATH, hash: hashText(diskJson) }, true),
   ))
   serve(changed)
-  render(inStudio(startStudio(), h(App, {})), root)
+  open()
 
   await vi.waitFor(() => {
     if (!button('Keep the draft')) throw new Error('no conflict banner yet')
@@ -176,7 +188,7 @@ test('keeping the draft restamps it on the file now on disk, with its edits unsa
     expect(draft.edited).toBe(true)
   })
   expect(conflict()).toBeUndefined()
-  expect(isDisabled(button('Save *'))).toBe(false)
+  expect(isDisabled(exit()!)).toBe(false)
 })
 
 test('a draft made on the file still on disk is restored without asking', async () => {
@@ -184,10 +196,10 @@ test('a draft made on the file still on disk is restored without asking', async 
     draftOf(edits, { path: PATH, hash: hashText(diskJson) }, true),
   ))
   serve(disk)
-  render(inStudio(startStudio(), h(App, {})), root)
+  open()
 
   await vi.waitFor(() => {
-    if (!button('Save *')) throw new Error('server mode not adopted yet')
+    if (exit()?.getAttribute('label') !== 'Save the preset') throw new Error('server mode not adopted yet')
   })
   expect(conflict()).toBeUndefined()
   expect(storedDraft().config).toEqual(edits)
@@ -204,10 +216,7 @@ test('on the static site the studio asks no API and edits in memory', async () =
   })
   try {
     let actions: ConfigAction[] = []
-    render(
-      inStudio(startStudio(), h(App, {}), h(ConfigMenu, { take: (handed: ConfigAction[]) => (actions = handed) })),
-      root,
-    )
+    open(h(ConfigMenu, { take: (handed: ConfigAction[]) => (actions = handed) }))
     // the start-up check ran on the bundled config, the source of a studio with no API
     await vi.waitFor(() => {
       expect(storedDraft().source).toEqual({ path: null, hash: hashText(diskJson) })
@@ -216,7 +225,7 @@ test('on the static site the studio asks no API and edits in memory', async () =
     // the configuration leaves by the Config menu of the bar, with nothing to save or build
     expect(actions.map(({ id }) => id)).toContain('copy')
     expect(actions.map(({ id }) => id)).not.toContain('build')
-    expect(button('Save')).toBeUndefined()
+    expect(exit()?.getAttribute('label')).toBe('Download the preset')
   } finally {
     meta.remove()
   }

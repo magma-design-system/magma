@@ -67,9 +67,13 @@ test('an alias opens its page and writes the address of the page in its place', 
   const router = createRouter({ location })
   expect(router.route.value).toEqual({ section: 'introduction' })
   expect(location.entries).toEqual(['#/introduction'])
-  location.go('#/colors/palette')
+  location.go('#/colors/contrast-scales')
   location.go('#/start')
   expect(router.route.value).toEqual({ section: 'introduction' })
   // in place: back leads to the page before it, not to the alias
-  expect(location.entries).toEqual(['#/introduction', '#/colors/palette', '#/introduction'])
+  expect(location.entries).toEqual(['#/introduction', '#/colors/contrast-scales', '#/introduction'])
+  // #1403: the address of the Palette opens Colours, which took its place
+  location.go('#/colors/palette')
+  expect(router.route.value).toEqual({ section: 'colours' })
+  expect(location.read()).toBe('#/colours')
 })

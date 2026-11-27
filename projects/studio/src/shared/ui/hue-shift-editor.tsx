@@ -15,6 +15,7 @@ import {
   type CurveKind,
   type CurvePreset,
 } from './curves.js';
+import './editors.css';
 
 /*
   The hue shifting of a family, or of the whole preset (out of app.tsx, #1403): the turn of the hue
@@ -118,14 +119,14 @@ export function HueShiftEditor({
   // one box of the fieldset: Chromium, given a new child of a fieldset in the frame a select of
   // Magma changes, drops the box of that select until its style is computed again
   return (
-    <fieldset class="palette-group" id={id}>
-      <legend>
+    <fieldset class="m-0 min-w-0 border-0 p-0" id={id}>
+      <legend class="pb-title-content">
         <mds-text typography="group" tag="span">
           {title ?? t('Hue shifting')}
         </mds-text>
       </legend>
-      <div class="palette-group-content">
-        <div class="palette-fields">
+      <div class="@container/fields grid gap-between-fields">
+        <div class="grid grid-cols-[repeat(auto-fill,minmax(min(100%,calc(var(--magma-width-form)/2)),1fr))] items-start gap-between-fields">
           <Field label={t('Mode')}>
             <Select
               value={mode}
@@ -173,22 +174,28 @@ export function HueShiftEditor({
                   width of a form: Dark above Light on tracks of one width, so the handles show
                   the link (in a column: linked; symmetric about the middle: mirror), the link in
                   the head of the box (vittorio, 2026-11-05) */}
-              <div class="palette-ends" role="group" aria-labelledby={endsTitle}>
-                <div class="palette-ends-head">
+              <div
+                class="col-span-full grid gap-between-fields rounded-sm border border-border-muted p-inset @two-fields/fields:col-span-2 @two-fields/fields:col-start-1"
+                role="group"
+                aria-labelledby={endsTitle}
+              >
+                <div class="flex flex-wrap items-center justify-between gap-inline">
                   <mds-text id={endsTitle} typography="label" tag="p">
                     {t('The two ends')}
                   </mds-text>
-                  <Select
-                    label={t('Ends')}
-                    value={ends}
-                    options={HUE_ENDS.map((one) => ({ ...one, label: t(one.label) }))}
-                    onValue={(next) => {
-                      setEnds(next as HueEnds);
-                      // the light end takes the link at once, from the dark one
-                      const aligned = moveEnd(next as HueEnds, { dark, light }, 'dark', dark);
-                      if (aligned.light !== light) patch(aligned);
-                    }}
-                  />
+                  <div class="w-[calc(var(--magma-width-form)/3)]">
+                    <Select
+                      label={t('Ends')}
+                      value={ends}
+                      options={HUE_ENDS.map((one) => ({ ...one, label: t(one.label) }))}
+                      onValue={(next) => {
+                        setEnds(next as HueEnds);
+                        // the light end takes the link at once, from the dark one
+                        const aligned = moveEnd(next as HueEnds, { dark, light }, 'dark', dark);
+                        if (aligned.light !== light) patch(aligned);
+                      }}
+                    />
+                  </div>
                 </div>
                 <Field label={t('Dark (degrees)')}>
                   <Range
@@ -212,7 +219,7 @@ export function HueShiftEditor({
               {/* the intensity of the shift per step, under the box and as wide */}
               {weights && (
                 <div
-                  class="palette-weights"
+                  class="palette-weights col-span-full @two-fields/fields:col-span-2 @two-fields/fields:col-start-1"
                   role="img"
                   aria-label={t('Shift intensity per step (10-step scale)')}
                   title={t('shift intensity per step (10-step scale)')}

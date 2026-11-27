@@ -11,6 +11,7 @@ import whiteMark from '@maggioli-design-system/identity/dist/internal/magma-desi
 import { Studio, applyFrame } from '../src/app/shell.js'
 import { createStudio, type StudioState } from '../src/state/studio.js'
 import { THEME_CHOICES_KEY, setThemeModes, setThemeName } from '../src/state/theme-choices.js'
+import { deleteFamily } from '../src/state/palette.js'
 import { startStudio } from './studio.mjs'
 import { textOf } from './text.mjs'
 
@@ -101,7 +102,7 @@ test('the changes of the bar: how many since the last exit, listed by stage, eac
   await vi.waitFor(() => expect(button()).toBe('3 changes'))
   expect(panel().querySelector('[id="studio-changes-title"]')?.textContent).toBe('3 changes since the last exit')
   expect(links(panel())).toEqual([
-    { text: '1. Colors: 2 changes', href: '#/colors/palette', current: null },
+    { text: '1. Colors: 2 changes', href: '#/colours', current: null },
     { text: '2. Weights: 1 change', href: '#/colors/semantic-surface', current: null },
   ])
   const lines = [...panel().querySelectorAll('mds-text[tag="p"].ps-inset')].map((one) => one.textContent)
@@ -384,7 +385,7 @@ test('the bar says the version of the Magma the studio runs on, under its name',
   const meta = Object.assign(document.createElement('meta'), { name: 'magma-version', content: '2.11.0' })
   document.head.append(meta)
   try {
-    await at('#/colors/palette')
+    await at('#/colours')
     // the lines of the name of the studio: its name, then the version
     const [name, version] = [...product().querySelectorAll('mds-text')]
     expect(name.textContent?.trim()).toBe('Magma Studio')
@@ -395,7 +396,7 @@ test('the bar says the version of the Magma the studio runs on, under its name',
   }
   // served without vendor.ts (a test, a page of its own): no version rather than a wrong one
   render(null, root)
-  await at('#/colors/palette')
+  await at('#/colours')
   expect([...product().querySelectorAll('mds-text')].map((one) => one.textContent?.trim())).toEqual(['Magma Studio'])
 })
 
@@ -495,7 +496,7 @@ test('the opening opens a preset and leads to Colours; over work with changes a 
     return found
   })
   start.click()
-  await vi.waitFor(() => expect(location.hash).toBe('#/colors/palette'))
+  await vi.waitFor(() => expect(location.hash).toBe('#/colours'))
   expect(studio.selectedName.value).toBe('tone.myeditorial')
   // the toast, on the body, in the region of the toasts
   const toast = await vi.waitFor(() => {
@@ -509,4 +510,45 @@ test('the opening opens a preset and leads to Colours; over work with changes a 
   await vi.waitFor(() => expect(document.querySelector('mds-toast-region > mds-toast')).toBeNull())
   expect(studio.config.value.smooth).toBe(true)
   expect(studio.config.value.colors.some(({ name }) => name === 'tone.myeditorial')).toBe(false)
+})
+
+// ---- #1403: what the shell took from the head of the pages of Colors ----
+
+test('a family deleted asks nothing and is undone from a toast of the shell', async () => {
+  const state = startStudio()
+  await at('#/colours', state)
+  deleteFamily(state, 'label.red')
+  const toast = await vi.waitFor(() => {
+    const found = document.body.querySelector('mds-toast[data-removal="label.red"]')
+    if (!found) throw new Error('no toast yet')
+    return found
+  })
+  expect(toast.textContent).toContain('label.red deleted.')
+  expect([toast.getAttribute('duration'), toast.hasAttribute('dismissible')]).toEqual(['0', true])
+  toast.querySelector<HTMLElement>('mds-button[label="Undo"]')!.click()
+  await vi.waitFor(() => expect(state.config.value.colors.some((one) => one.name === 'label.red')).toBe(true))
+  await vi.waitFor(() => expect(document.body.querySelector('mds-toast[data-removal]')).toBeNull())
+})
+
+test('what keeps the preset from loading stands over every page, a stage or not', async () => {
+  const state = startStudio()
+  state.notice.value = { text: 'the file is broken', plain: true }
+  for (const hash of ['#/colours', '#/exceptions', '#/theme', '#/opening']) {
+    await at(hash, state)
+    const banner = root.querySelector('mds-banner[variant="error"]')
+    expect(banner?.textContent, hash).toBe('the file is broken')
+    render(null, root)
+  }
+})
+
+test('the page of the work is the stage or the page beside one last opened, which the draft keeps', async () => {
+  const state = startStudio()
+  await at('#/colours', state)
+  await vi.waitFor(() => expect(state.workPlace.value).toBe('#/colours'))
+  location.hash = '#/colors/contrast-scales'
+  await vi.waitFor(() => expect(state.workPlace.value).toBe('#/colors/contrast-scales'))
+  // a page outside the flow leaves it where it was
+  location.hash = '#/theme'
+  await vi.waitFor(() => expect(root.querySelector('mds-toolbar, [role="toolbar"]')).not.toBeNull())
+  expect(state.workPlace.value).toBe('#/colors/contrast-scales')
 })

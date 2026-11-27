@@ -265,7 +265,7 @@
 /*
   The states of the sample colour on each scale (states.ts): the line that says what they show
   and the mode, then beside each card its page of states, as tall as what it shows and as wide as
-  the side of the Palette (26rem, palette.css), which holds an action at every tone and state.
+  the side of Colours (26rem, features/colours/colours.css), which holds an action at every tone and state.
   Where the page has the room of a card and of the states (60rem, the width at which the Palette
   sets its side beside the detail), they stand beside the card; narrower, under it.
 */

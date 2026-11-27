@@ -3,7 +3,7 @@ import { followLanguage } from './i18n-previews.js';
 
 /*
   How the studio sets a theme on a page of its own (an iframe): the scene and the groups of the
-  Theme section (theme-section.tsx), the preview beside the Palette (palette-side.tsx). The page is a
+  Theme section (theme-section.tsx), the scene beside the family in Colours (features/colours/scene-side.tsx). The page is a
   document of its own, so what is set on its <html> moves it and leaves the studio alone (#695,
   "The dogfooding constraint").
 */
@@ -76,7 +76,7 @@ export function applyFrame(
 const CONFIGURATION_STYLE = 'studio-configuration';
 
 /**
- * Marks on a page the elements that paint with the family the Palette edits (palette-side.tsx,
+ * Marks on a page the elements that paint with the family Colours edits (features/colours/scene-side.tsx,
  * paints.ts): `data-studio-painted` on each of them, and on <html> `data-studio-paints` with the
  * family, under which the page puts first what holds them (scene.html). A family that marks
  * nothing, or none, leaves the page as it is. The tags marked, in the order of the page.

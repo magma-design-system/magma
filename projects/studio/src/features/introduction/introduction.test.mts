@@ -260,7 +260,7 @@ test('the stages in order, each with what it does and the link that opens it', (
   })
   expect(rows.map(row)).toEqual([
     { caption: 'Before the stages', name: 'Opening', link: ['Open Opening', '#/opening'] },
-    { caption: 'Stage 1', name: 'Colors', link: ['Open Colors', '#/colors/palette'] },
+    { caption: 'Stage 1', name: 'Colors', link: ['Open Colors', '#/colours'] },
     { caption: 'Stage 2', name: 'Weights', link: ['Open Weights', '#/colors/semantic-surface'] },
     { caption: 'Stage 3', name: 'Themes', link: ['Open Themes', '#/colors/themes'] },
     { caption: 'Stage 4', name: 'Exceptions', link: ['Open Exceptions', '#/exceptions'] },

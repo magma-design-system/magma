@@ -1,0 +1,108 @@
+import chroma from 'chroma-js';
+import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
+import type { Mode } from '@maggioli-design-system/design-tokens/src/lib/contrast-gate.js';
+import { gateReport, type GateReport, type PairState } from './gate.js';
+import { NO_THEME_CHOICES, type ThemeChoices } from './theme-choices.js';
+
+/*
+  The pairs of the contrast check a family touches (#1403): the pairs its change moves, which
+  Colours keeps in view beside the family (studio.object-model.md, section 4, Family, "Sempre
+  visibile": what it paints and the pairs of the check it touches). Measured, not mapped: the check
+  runs again with the key colour of the family turned far away, in hue and in lightness, and every
+  pair whose measure moves is one the family touches. So the answer comes from the engine of the
+  check itself, every link of a role to a family included, and needs no table of its own. A
+  reference touches what the family it follows touches: it paints what its source paints
+  (color.mts, the alias re-exports the resolved ramp of its source).
+
+  Pure: no Preact, no state, no document. Some 75 ms on the preset of Magma, so the view measures
+  it after the render that changed the family.
+*/
+
+/** A pair in one theme and one mode: the key of a cell of the report. */
+export const cellKey = (theme: string, fg: string, bg: string, mode: Mode): string =>
+  `${theme}|${fg}|${bg}|${mode}`;
+
+const MODES: Mode[] = ['light', 'dark'];
+
+/** The measure of every cell of a report, by its key. */
+function measures(report: GateReport): Map<string, number> {
+  const cells = new Map<string, number>();
+  for (const theme of report.themes)
+    for (const pair of theme.pairs)
+      for (const mode of MODES) {
+        const cell = pair.cells[mode];
+        if (cell) cells.set(cellKey(theme.name, pair.fg, pair.bg, mode), cell.achieved);
+      }
+  return cells;
+}
+
+/** A colour far from `hex`: the opposite hue, the lightness moved by a third, a vivid chroma. */
+function farFrom(hex: string): string {
+  const [lightness, , hue] = chroma(hex).oklch();
+  const turned = Number.isNaN(hue) ? 300 : (hue + 180) % 360;
+  return chroma.oklch(lightness > 0.5 ? lightness - 0.3 : lightness + 0.3, 0.15, turned).hex();
+}
+
+/**
+ * The cells of the check a family moves: the keys of `cellKey`, empty for a family that touches
+ * none (a label colour, which no pair of the check measures) or one with no colour to move.
+ */
+export function touchedCells(
+  config: MagmaConfig,
+  name: string,
+  choices: ThemeChoices = NO_THEME_CHOICES,
+): Set<string> {
+  const family = config.colors.find((one) => one.name === name);
+  // a reference moves with the family it follows
+  const source = family?.alias ? config.colors.find((one) => one.name === family.alias) : family;
+  if (!source?.color || !chroma.valid(source.color)) return new Set();
+  const moved = JSON.parse(JSON.stringify(config)) as MagmaConfig;
+  const target = moved.colors.find((one) => one.name === source.name)!;
+  target.color = farFrom(source.color) as typeof target.color;
+  const before = measures(gateReport(config, choices));
+  const after = measures(gateReport(moved, choices));
+  return new Set([...before.keys()].filter((key) => after.get(key) !== before.get(key)));
+}
+
+/** The pairs a family touches, as the view counts them: per pair of roles in a theme. */
+export interface TouchedPair {
+  theme: string;
+  fg: string;
+  bg: string;
+  /** The state of the pair in each mode it is touched in. */
+  states: Partial<Record<Mode, PairState>>;
+}
+
+/** The pairs of a report among the cells a family touches, each with its state in each mode. */
+export function touchedPairs(report: GateReport, cells: ReadonlySet<string>): TouchedPair[] {
+  const pairs: TouchedPair[] = [];
+  for (const theme of report.themes)
+    for (const pair of theme.pairs) {
+      const states: TouchedPair['states'] = {};
+      for (const mode of MODES)
+        if (cells.has(cellKey(theme.name, pair.fg, pair.bg, mode)) && pair.cells[mode])
+          states[mode] = pair.cells[mode].state;
+      if (Object.keys(states).length)
+        pairs.push({ theme: theme.name, fg: pair.fg, bg: pair.bg, states });
+    }
+  return pairs;
+}
+
+/** How the pairs a family touches stand: how many, and how many fail, are accepted or below. */
+export interface TouchedSummary {
+  pairs: number;
+  fail: number;
+  accepted: number;
+  below: number;
+}
+
+export function touchedSummary(pairs: readonly TouchedPair[]): TouchedSummary {
+  const count = (state: PairState) =>
+    pairs.filter((pair) => Object.values(pair.states).includes(state)).length;
+  return {
+    pairs: pairs.length,
+    fail: count('fail'),
+    accepted: count('accepted'),
+    below: count('below'),
+  };
+}

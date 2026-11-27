@@ -31,18 +31,12 @@ import { msg } from '../i18n/text.js';
 */
 
 /**
- * The pages of the Colors section, by the id a saved draft carries (`view`, state/draft.ts): the
- * table gives each its address and its name. 'colors' is the Palette and 'surface' Semantic
- * surface: ids kept from before the views were split, so the drafts saved then keep working.
+ * The pages of today's Colors section still standing, by the id a draft saved before #1403 carries
+ * (`view`, state/draft.ts): the table gives each its address and its name. 'surface' is Semantic
+ * surface, an id kept from before the views were split. The Palette ('colors') went with #1403:
+ * Colours took its place (`#/colours`).
  */
-export const COLORS_VIEWS = [
-  'colors',
-  'scales',
-  'surface',
-  'themes',
-  'groups',
-  'contrast',
-] as const;
+export const COLORS_VIEWS = ['scales', 'surface', 'themes', 'groups', 'contrast'] as const;
 export type ColorsView = (typeof COLORS_VIEWS)[number];
 
 /** The page of Colors a draft names, if it is one. */
@@ -68,6 +62,8 @@ export type Route =
   | { section: 'introduction' }
   /** The opening: the preset to work on (#1402). */
   | { section: 'opening' }
+  /** The stage Colours, the family at its centre (#1403, features/colours/). */
+  | { section: 'colours' }
   | { section: 'colors'; view: ColorsView }
   | { section: 'theme'; theme?: string; mode?: ModeView }
   | { section: 'behavior'; page: BehaviorPage }
@@ -75,7 +71,10 @@ export type Route =
   | { section: 'exceptions' };
 
 /** A section of the bar: its pages are the rows of PAGES that name it. */
-export type Section = Exclude<Route['section'], 'introduction' | 'opening' | 'exceptions'>;
+export type Section = Exclude<
+  Route['section'],
+  'introduction' | 'opening' | 'colours' | 'exceptions'
+>;
 
 export interface MenuItem<Id extends string> {
   id: Id;
@@ -96,13 +95,6 @@ export type Page =
 
 /** The pages of the studio, one table for the menus and the addresses, in the order of the bar. */
 export const PAGES: readonly Page[] = [
-  {
-    section: 'colors',
-    id: 'colors',
-    slug: 'palette',
-    label: msg('Palette'),
-    icon: 'mi/baseline/palette',
-  },
   {
     section: 'colors',
     id: 'scales',
@@ -184,10 +176,21 @@ export const HOME: Route = { section: 'introduction' };
 /** The address of the Start page the introduction was, kept so a link written before opens it. */
 export const START_ALIAS = '#/start';
 
+/**
+ * The addresses of the pages that went, each opening the view that took its place, whose address
+ * the router writes over it (app/router.ts): a link written before, from the docs site or a note,
+ * keeps working (#1403).
+ */
+export const ALIASES: Readonly<Record<string, Route>> = {
+  [START_ALIAS]: { section: 'introduction' },
+  '#/colors/palette': { section: 'colours' },
+};
+
 /** The address of a page, as a link writes it: `#/colors/palette`. */
 export function hrefOf(route: Route): string {
   if (route.section === 'introduction') return '#/introduction';
   if (route.section === 'opening') return '#/opening';
+  if (route.section === 'colours') return '#/colours';
   if (route.section === 'exceptions') return '#/exceptions';
   if (route.section === 'theme') {
     if (!route.theme) return '#/theme';
@@ -205,8 +208,8 @@ export const isAddress = (hash: string): boolean => hash.startsWith('#/');
 export function routeOf(hash: string): Route | undefined {
   if (!isAddress(hash)) return undefined;
   const [section, slug, ...rest] = hash.slice(2).split('/');
-  if (hash === START_ALIAS) return { section: 'introduction' };
-  if (section === 'introduction' || section === 'opening')
+  if (ALIASES[hash]) return ALIASES[hash];
+  if (section === 'introduction' || section === 'opening' || section === 'colours')
     return slug === undefined ? { section } : undefined;
   if (section === 'exceptions') return slug === undefined ? { section: 'exceptions' } : undefined;
   if (section === 'theme') {
@@ -258,8 +261,8 @@ export const STAGES: readonly Stage[] = [
     label: msg('Colors'),
     icon: 'mi/baseline/palette',
     numbered: true,
-    route: { section: 'colors', view: 'colors' },
-    // Scale and Group in the object model, today Contrast scales and Groups
+    route: { section: 'colours' },
+    // Scale in the object model, today Contrast scales; Groups until it moves out of the stages
     beside: [
       { section: 'colors', view: 'scales' },
       { section: 'colors', view: 'groups' },
@@ -299,11 +302,35 @@ export const STAGES: readonly Stage[] = [
   },
 ];
 
+/** A stage by its id. */
+export const stageOf = (id: StageId): Stage => STAGES.find((stage) => stage.id === id)!;
+
+/**
+ * The pages Colours leads to (#1403): the page of a contrast scale (Scale in the object model,
+ * today Contrast scales), the page of the groups and of the settings of the preset (Groups), the
+ * stage of the themes. Named here, so their addresses change in one place.
+ */
+export const SCALE_PAGE: Route = { section: 'colors', view: 'scales' };
+export const GROUPS_PAGE: Route = { section: 'colors', view: 'groups' };
+
 /** The view before the first stage, where its way back leads: the opening. */
 export const BEFORE_STAGES: { route: Route; label: string } = {
   route: { section: 'opening' },
   label: msg('Opening'),
 };
+
+/**
+ * The address of the page of the work a draft names: the address it keeps since #1403, or the id
+ * of a page of today's Colors section a draft saved before carries (its address, which the router
+ * takes to the view that replaced it). Undefined for anything else.
+ */
+export function workPlaceOf(view: unknown): string | undefined {
+  if (typeof view !== 'string') return undefined;
+  if (view === 'colors') return '#/colours';
+  const page = colorsViewOf(view);
+  if (page) return hrefOf({ section: 'colors', view: page });
+  return routeOf(view) ? view : undefined;
+}
 
 /** Where a page stands in the flow: a stage, a page beside one, or neither (undefined). */
 export interface Place {

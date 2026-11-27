@@ -4,16 +4,17 @@ import { within } from '@testing-library/preact'
 
 import initialConfig from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json'
 import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs'
-import { translator } from '../src/shared/i18n/i18n.js'
-import { PaletteSide, paintsLine } from '../src/palette-side.js'
-import { paintedBy } from '../src/engine/paints.js'
-import { sceneStyle } from '../src/engine/scene-css.js'
-import { createStudio, type StudioState } from '../src/state/studio.js'
-import { setThemeModes } from '../src/state/theme-choices.js'
-import { inStudio } from './studio.mjs'
+import { translator } from '../../shared/i18n/i18n.js'
+import { SceneSide, paintsLine } from './scene-side.js'
+import { paintedBy } from '../../engine/paints.js'
+import { sceneStyle } from '../../engine/scene-css.js'
+import { createStudio, type StudioState } from '../../state/studio.js'
+import { setThemeModes } from '../../state/theme-choices.js'
+import { inStudio } from '../../../test/studio.mjs'
 
-// The side of the Palette: the ramps of the family, or the theme on a page of a product, small as
-// a phone, painted with the configuration at every change, what the family paints first (#1308).
+// The side of Colours (the side of the Palette until #1403): the ramps of the family, or the theme
+// on a page of a product, small as a phone, painted with the preset at every change, what the
+// family paints first (#1308).
 // jsdom does not upgrade the components nor loads the page of the frame: the test dispatches the
 // events they emit and reads the markup the side writes.
 
@@ -30,10 +31,18 @@ afterEach(() => {
   render(null, root)
 })
 
-// the ramps the Palette hands to the side, a stand-in the test finds by its text
+// the ramps Colours hands to the side, a stand-in the test finds by its text; what the family
+// paints and the CSS of the scene, solved as Colours solves them on the state
 const RAMPS = 'the ramps of the family'
-const show = (family: string) =>
-  render(inStudio(studio, h(PaletteSide, { config, family, ramps: h('p', null, RAMPS) })), root)
+const show = (family: string) => {
+  const choices = studio.themeChoices.peek()
+  const scene = sceneStyle(config, choices)
+  const painted = paintedBy(family, { config, themes: scene.themes, choices })
+  render(
+    inStudio(studio, h(SceneSide, { family, painted, scene: scene.css, ramps: h('p', null, RAMPS) })),
+    root,
+  )
+}
 /** The side, a complementary region named for what it shows. */
 const side = () => within(root).getByRole('complementary', { name: 'The family, as ramps or as a theme' })
 /** The filters of the side: the tabs of Magma in its toolbar, what it shows and in which mode. */

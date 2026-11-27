@@ -41,7 +41,6 @@ export const IT_CONTRAST_CHECK: Record<string, string> = {
   '{light} light, {dark} dark': '{light} in chiaro, {dark} in scuro',
   enforced: 'verificata',
   reported: 'segnalata',
-  '{fg} on {bg}': '{fg} su {bg}',
   Pair: 'Coppia',
   'The pairs and the targets of {command}, in every theme of the Themes page. A mode a theme is not offered in is measured, not judged.':
     'Le coppie e gli obiettivi di {command}, in ogni tema della pagina Temi. Una modalità in cui un tema non è offerto si misura, ma non si giudica.',

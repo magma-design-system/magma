@@ -20,6 +20,7 @@ import type { Step } from '../../engine/generator.js';
 import { HUE_ENDS, endsOf, moveEnd, type HueEnds } from '../../engine/hue-ends.js';
 import { Field, Range, Select, type Option } from '../magma/magma.js';
 import { useT } from '../i18n/i18n.js';
+import './editors.css';
 
 /*
   The saturation curve of a scale (#1439, vittorio 2026-11-18), the group beside the hue shifting
@@ -168,14 +169,14 @@ export function SaturationEditor({
   // a group of fields of the form, as the one of the hue shifting: what comes and goes with the
   // mode stays inside one box of the fieldset (a Chromium trap, see HueShiftEditor)
   return (
-    <fieldset class="palette-group" id={id}>
-      <legend>
+    <fieldset class="m-0 min-w-0 border-0 p-0" id={id}>
+      <legend class="pb-title-content">
         <mds-text typography="group" tag="span">
           {title ?? t('Saturation')}
         </mds-text>
       </legend>
-      <div class="palette-group-content">
-        <div class="palette-fields">
+      <div class="@container/fields grid gap-between-fields">
+        <div class="grid grid-cols-[repeat(auto-fill,minmax(min(100%,calc(var(--magma-width-form)/2)),1fr))] items-start gap-between-fields">
           <Field label={t('Mode')}>
             <Select
               value={mode}
@@ -219,21 +220,27 @@ export function SaturationEditor({
                   </Field>
                 </>
               )}
-              <div class="palette-ends" role="group" aria-labelledby={endsTitle}>
-                <div class="palette-ends-head">
+              <div
+                class="col-span-full grid gap-between-fields rounded-sm border border-border-muted p-inset @two-fields/fields:col-span-2 @two-fields/fields:col-start-1"
+                role="group"
+                aria-labelledby={endsTitle}
+              >
+                <div class="flex flex-wrap items-center justify-between gap-inline">
                   <mds-text id={endsTitle} typography="label" tag="p">
                     {t('The two ends')}
                   </mds-text>
-                  <Select
-                    label={t('Ends')}
-                    value={ends}
-                    options={HUE_ENDS.map((one) => ({ ...one, label: t(one.label) }))}
-                    onValue={(next) => {
-                      setEnds(next as HueEnds);
-                      const aligned = moveEnd(next as HueEnds, { dark, light }, 'dark', dark);
-                      if (aligned.light !== light) patch(aligned);
-                    }}
-                  />
+                  <div class="w-[calc(var(--magma-width-form)/3)]">
+                    <Select
+                      label={t('Ends')}
+                      value={ends}
+                      options={HUE_ENDS.map((one) => ({ ...one, label: t(one.label) }))}
+                      onValue={(next) => {
+                        setEnds(next as HueEnds);
+                        const aligned = moveEnd(next as HueEnds, { dark, light }, 'dark', dark);
+                        if (aligned.light !== light) patch(aligned);
+                      }}
+                    />
+                  </div>
                 </div>
                 <Field label={t('Dark (%)')}>
                   <Range
@@ -257,7 +264,7 @@ export function SaturationEditor({
               {/* the change of each step, from the darkest to the lightest: up toward the most
                   vivid colour, down toward grey, around the line of no change */}
               {amounts && (
-                <figure class="palette-chart">
+                <figure class="palette-chart col-span-full @two-fields/fields:col-span-2 @two-fields/fields:col-start-1">
                   <figcaption>
                     <mds-text typography="label" tag="span">
                       {t('Change per step')}
@@ -295,7 +302,7 @@ export function SaturationEditor({
               {/* the saturation of each step of the ramp in view: a ring before the curve, a dot
                   in the colour of the step with it */}
               {points && (
-                <figure class="palette-chart">
+                <figure class="palette-chart col-span-full @two-fields/fields:col-span-2 @two-fields/fields:col-start-1">
                   <figcaption>
                     <mds-text typography="label" tag="span">
                       {t('Saturation per step, light mode')}

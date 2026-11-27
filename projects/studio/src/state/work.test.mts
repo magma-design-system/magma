@@ -6,7 +6,6 @@ import {
   buildTokens,
   checkSource,
   importConfig,
-  resetWork,
   resolveConflict,
   saveConfig,
 } from './work.js'
@@ -102,22 +101,6 @@ test('a configuration imported is loaded on its first family; one refused says w
   expect(studio.notice.value?.vars?.error).toMatchObject({ plain: true })
 })
 
-test('the Reset takes back the configuration Magma builds with and forgets the draft', async () => {
-  const storage = memoryStorage()
-  const studio = quietStudio(storage)
-  await checkSource(studio)
-  updateConfig(studio, (draft) => {
-    draft.colors = draft.colors.slice(3)
-  })
-  studio.notice.value = { text: 'something' }
-  resetWork(studio)
-  expect(studio.config.value).toEqual(disk)
-  expect(studio.notice.value).toBeNull()
-  expect(studio.canReset.value).toBe(false)
-  // the draft written again is the one of the configuration of Magma, no edit of its own
-  expect(JSON.parse(storage.items.get(DRAFT_STORAGE_KEY)!).edited).toBe(false)
-})
-
 test('a save writes the configuration to the file and makes it the source; a refusal says why', async () => {
   vi.useFakeTimers()
   try {
@@ -195,7 +178,7 @@ test('the changes are counted from the preset opened, and kept in the draft over
   expect(again.changes.value.map(({ stage }) => stage)).toEqual(['colours', 'themes'])
 })
 
-test('opening a preset starts the count from it: an import, the Reset, the source taken over a draft', async () => {
+test('opening a preset starts the count from it: an import, the source taken over a draft', async () => {
   const studio = quietStudio()
   await checkSource(studio)
   updateConfig(studio, (draft) => {
@@ -204,11 +187,6 @@ test('opening a preset starts the count from it: an import, the Reset, the sourc
   expect(studio.changes.value).toHaveLength(1)
   const product = { ...disk, colors: disk.colors.slice(2) }
   await importConfig(studio, { name: 'product.json', text: async () => JSON.stringify(product) })
-  expect(studio.changes.value).toEqual([])
-  updateConfig(studio, (draft) => {
-    draft.smooth = true
-  })
-  resetWork(studio)
   expect(studio.changes.value).toEqual([])
 
   // a draft with edits over a changed file: taking the file counts from the file

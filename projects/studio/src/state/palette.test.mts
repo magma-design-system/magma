@@ -6,9 +6,11 @@ import {
   autoNameFamily,
   deleteFamily,
   duplicateFamily,
+  forgetRemoval,
   patchFamily,
   selectFamily,
   setGlobal,
+  undoRemoval,
   type NewFamily,
 } from './palette.js'
 import { familyOf, quietStudio } from './testing.mjs'
@@ -113,4 +115,24 @@ test('the global settings: a value set, a curve removed', () => {
   expect(studio.config.value.saturation).toEqual({ dark: 10, light: 20, curve: 'smooth' })
   setGlobal(studio, 'saturation', undefined)
   expect(studio.config.value).not.toHaveProperty('saturation')
+})
+
+test('a family deleted asks nothing and comes back where it stood, the selection with it', () => {
+  const studio = quietStudio()
+  selectFamily(studio, 'label.red')
+  const names = studio.config.value.colors.map((one) => one.name)
+  const red = familyOf(studio, 'label.red')
+  deleteFamily(studio, 'label.red')
+  expect(studio.config.value.colors.map((one) => one.name)).not.toContain('label.red')
+  expect(studio.lastRemoval.value).toMatchObject({ index: names.indexOf('label.red'), selectedName: 'label.red' })
+  undoRemoval(studio)
+  expect(studio.config.value.colors.map((one) => one.name)).toEqual(names)
+  expect(familyOf(studio, 'label.red')).toEqual(red)
+  expect(studio.selectedName.value).toBe('label.red')
+  expect(studio.lastRemoval.value).toBeNull()
+  // closed, the removal stays
+  deleteFamily(studio, 'label.red')
+  forgetRemoval(studio)
+  undoRemoval(studio)
+  expect(studio.config.value.colors.map((one) => one.name)).not.toContain('label.red')
 })

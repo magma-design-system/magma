@@ -35,7 +35,7 @@ const cards = () => [...root.querySelectorAll('mds-card')]
 const titles = () => cards().map((card) => card.querySelector('mds-text[tag="h2"]')?.textContent)
 const button = (label: string) =>
   [...root.querySelectorAll<HTMLElement>('mds-button')].find((one) => textOf(one) === label)!
-const colours: Route = { section: 'colors', view: 'colors' }
+const colours: Route = { section: 'colours' }
 
 test('the starts are cards in line, with no draft to resume when the work has no change', async () => {
   const studio = startStudio()
@@ -51,7 +51,7 @@ test('the draft comes first, and resuming it is the main action, at the stage it
   updateConfig(studio, (draft) => {
     draft.smooth = true
   })
-  studio.colorsView.value = 'surface'
+  studio.workPlace.value = '#/colors/semantic-surface'
   const opened = show(studio)
   expect(titles()[0]).toBe('Your draft')
   const draft = cards()[0]

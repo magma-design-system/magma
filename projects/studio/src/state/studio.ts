@@ -2,7 +2,10 @@ import { batch, computed, effect, signal, type ReadonlySignal, type Signal } fro
 import { createContext } from 'preact';
 import { useContext } from 'preact/hooks';
 import bundledJson from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json';
-import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
+import type {
+  ColorConfig,
+  MagmaConfig,
+} from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
 import { changesOf, type Change, type PresetState } from '../engine/changes.js';
 import { gateReport, type GateReport, type GateVerdict } from '../engine/gate.js';
 import { generateScales, type ColorScales } from '../engine/generator.js';
@@ -10,7 +13,7 @@ import { sceneStyle, type SceneStyle } from '../engine/scene-css.js';
 import type { ThemeChoices } from '../engine/theme-choices.js';
 import type { FileOut } from '../engine/exports.js';
 import type { T, Vars } from '../shared/i18n/text.js';
-import { colorsViewOf, type ColorsView } from '../shared/routes/routes.js';
+import { workPlaceOf } from '../shared/routes/routes.js';
 import {
   browserStorage,
   readDraft,
@@ -114,8 +117,11 @@ export interface StudioState {
   selectedName: Signal<string>;
   /** The choices of the Themes page: names, accents, colour modes (engine/theme-choices.ts). */
   themeChoices: Signal<ThemeChoices>;
-  /** The page of Colors the work is on: the one of the draft, then the last one opened. */
-  colorsView: Signal<ColorsView | undefined>;
+  /**
+   * The address of the page of the work, a stage or a page beside one: the one of the draft, then
+   * the last one opened (the shell writes it). The opening resumes the draft there.
+   */
+  workPlace: Signal<string | undefined>;
   /**
    * Names the studio gave a family during this session, after its colour: only these (and the
    * new-N placeholders) keep following the colour; a name the person typed is never touched.
@@ -152,6 +158,12 @@ export interface StudioState {
    * closed, or when nothing was lost.
    */
   lastOpening: Signal<Opening | null>;
+  /**
+   * A family deleted, with where it stood and the family selected before, while the toast that
+   * undoes it is open (state/palette.ts, the act-then-undo of confirm-action: a deletion asks
+   * nothing and is undone); null once undone or closed.
+   */
+  lastRemoval: Signal<Removal | null>;
 
   // derived
   /** The configuration as JSON: a change of its content, not of the object. */
@@ -165,8 +177,6 @@ export interface StudioState {
   generation: ReadonlySignal<Generation>;
   /** Served by a command, with edits not saved. */
   dirty: ReadonlySignal<boolean>;
-  /** The configuration differs from the one Magma builds with: Reset does something. */
-  canReset: ReadonlySignal<boolean>;
   /** What changed since the last exit, in the order of the stages (engine/changes.ts). */
   changes: ReadonlySignal<Change[]>;
 
@@ -190,7 +200,14 @@ export interface WorkSnapshot {
   baseline: string;
   selectedName: string;
   loadedRatios: LoadedRatios;
-  colorsView: ColorsView | undefined;
+  workPlace: string | undefined;
+}
+
+/** A family deleted: the family as it was, its place in the preset, the family selected before. */
+export interface Removal {
+  family: ColorConfig;
+  index: number;
+  selectedName: string;
 }
 
 /** A preset opened over work that had changes: what it said, and the work it took the place of. */
@@ -245,8 +262,6 @@ export function downloadInBrowser({ name, data, type }: FileOut): void {
   URL.revokeObjectURL(url);
 }
 
-const BUNDLED_JSON = JSON.stringify(bundledJson);
-
 /** The preset as the changes are counted on: the configuration and the choices of the themes. */
 export const presetJson = (config: CloneableConfig, choices: ThemeChoices): string =>
   JSON.stringify({ config, choices } satisfies PresetState);
@@ -275,7 +290,7 @@ export function createStudio(options: StudioOptions = {}): StudioState {
     loadedRatios: signal(boot?.loadedRatios ?? ratiosOf(bundled())),
     selectedName: signal(boot ? boot.selectedName : defaultSelected(start.colors)),
     themeChoices,
-    colorsView: signal(colorsViewOf(boot?.view)),
+    workPlace: signal(workPlaceOf(boot?.view)),
     autoNamed: new Set(),
     origin: signal(null),
     conflict: signal(null),
@@ -287,6 +302,7 @@ export function createStudio(options: StudioOptions = {}): StudioState {
     pendingExport: signal(null),
     baseline,
     lastOpening: signal(null),
+    lastRemoval: signal(null),
     json,
     report,
     verdict: computed(() => report.value.verdict),
@@ -299,7 +315,6 @@ export function createStudio(options: StudioOptions = {}): StudioState {
       }
     }),
     dirty: computed(() => served.value !== null && json.value !== savedJson.value),
-    canReset: computed(() => json.value !== BUNDLED_JSON),
     changes: computed(() =>
       changesOf(base.value, { config: config.value, choices: themeChoices.value }),
     ),
@@ -320,7 +335,7 @@ export function createStudio(options: StudioOptions = {}): StudioState {
     const draft = {
       config: state.config.value,
       selectedName: state.selectedName.value,
-      view: state.colorsView.value ?? 'colors',
+      view: state.workPlace.value ?? '#/colours',
       loadedRatios: state.loadedRatios.value,
       baseline: state.baseline.value,
     };

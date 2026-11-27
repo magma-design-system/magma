@@ -9,7 +9,7 @@ import {
 } from '../../engine/opening.js';
 import { ColorInput, Field } from '../../shared/magma/magma.js';
 import { plural, useT, type T } from '../../shared/i18n/i18n.js';
-import { COLORS_PAGES, placeOf, STAGES, type Route } from '../../shared/routes/routes.js';
+import { COLORS_PAGES, placeOf, routeOf, STAGES, type Route } from '../../shared/routes/routes.js';
 import { openBrandColour, openImported, openMagma, openReadyTheme } from '../../state/opening.js';
 import { bundled, say, useStudio } from '../../state/studio.js';
 import { IT_OPENING } from './i18n-it.js';
@@ -134,8 +134,10 @@ export function OpeningPage({ onOpen }: { onOpen: (route: Route) => void }) {
   const picker = useRef<HTMLInputElement>(null);
   const [brand, setBrand] = useState('#0a7c86');
   const changes = studio.changes.value.length;
-  const view = studio.colorsView.value;
-  const resume = draftRoute(view && { section: 'colors', view });
+  // the page of the work the draft was on: an address of today, or one the router takes to the
+  // view that replaced it (routes.ts, ALIASES)
+  const place = studio.workPlace.value;
+  const resume = draftRoute(place ? routeOf(place) : undefined);
   const notice = studio.notice.value;
   const toColours = () => onOpen(STAGES[0].route);
   return (

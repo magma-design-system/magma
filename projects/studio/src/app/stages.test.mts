@@ -60,7 +60,7 @@ test('on a stage the stepper shows the stages in order under the bar, the curren
   expect(bar.compareDocumentPosition(stages()!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
   // each stage of its own page opens with its position
   for (const [hash, done] of [
-    ['#/colors/palette', '1'],
+    ['#/colours', '1'],
     ['#/colors/themes', '3'],
     ['#/exceptions', '4'],
     ['#/colors/contrast-check', '5'],
@@ -92,7 +92,7 @@ test('a page that is no stage has neither the stepper nor the foot', async () =>
 test('the foot of a stage leads back and forward, named after where it leads, at the end of the page', async () => {
   await at('#/colors/semantic-surface')
   expect(footButtons()).toEqual([
-    { text: '1. Colors', href: '#/colors/palette' },
+    { text: '1. Colors', href: '#/colours' },
     { text: '3. Themes', href: '#/colors/themes' },
   ])
   // the way back outlined first, the way forward the main action, last
@@ -103,7 +103,7 @@ test('the foot of a stage leads back and forward, named after where it leads, at
   expect(content.contains(foot())).toBe(true)
   expect(content.lastElementChild?.contains(foot())).toBe(true)
   // the first stage leads back to the view before the stages
-  location.hash = '#/colors/palette'
+  location.hash = '#/colours'
   await vi.waitFor(() =>
     expect(footButtons()).toEqual([
       { text: 'Opening', href: '#/opening' },
@@ -141,7 +141,7 @@ test('the last stage ends with the exit, which downloads the preset through the 
 test('a done stage of the stepper opens its stage, as a link would', async () => {
   await at('#/colors/themes')
   items()[0].dispatchEvent(new CustomEvent('mdsStepperBarItemDone', { detail: { value: 'colours' } }))
-  await vi.waitFor(() => expect(location.hash).toBe('#/colors/palette'))
+  await vi.waitFor(() => expect(location.hash).toBe('#/colours'))
   await vi.waitFor(() => expect(stepper()?.getAttribute('items-done')).toBe('1'))
 })
 

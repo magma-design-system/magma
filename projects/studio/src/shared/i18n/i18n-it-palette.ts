@@ -93,7 +93,6 @@ export const IT_PALETTE: Record<string, string> = {
   'Delete color': 'Elimina colore',
   'built-in variant: cannot be deleted': 'variante integrata: non si può eliminare',
   'Global settings': 'Impostazioni globali',
-  'The families of colour': 'Le famiglie di colore',
   'Add color': 'Aggiungi colore',
   'New reference': 'Nuovo riferimento',
   'New color': 'Nuovo colore',
@@ -108,8 +107,6 @@ export const IT_PALETTE: Record<string, string> = {
   'Add reference': 'Aggiungi riferimento',
 
   // the line under the title of each page of Colors (app.tsx)
-  'The families of colour of the configuration, each solved into a ramp of steps in light and dark.':
-    'Le famiglie di colore della configurazione, ognuna risolta in una rampa di gradini in chiaro e in scuro.',
   'The contrast ratios the families solve their steps at, against the background of the mode.':
     'I rapporti di contrasto a cui le famiglie risolvono i loro gradini, rispetto allo sfondo della modalità.',
   'The families that generate surfaces, and the balances: the lightness of the surfaces and borders, the targets of the text.':
@@ -122,14 +119,6 @@ export const IT_PALETTE: Record<string, string> = {
     'Ogni coppia giudicata dalla verifica del contrasto, in ogni tema e in entrambe le modalità: quello che la build di Magma direbbe di questa configurazione.',
 
   // the head of the pages, its saving and the draft restored (app.tsx, state/draft.ts, state/work.ts)
-  'Discard the loaded configuration and every local change, back to the one Magma builds with':
-    'Scarta la configurazione caricata e ogni modifica locale, e torna a quella con cui si compila Magma',
-  Save: 'Salva',
-  'Save *': 'Salva *',
-  'Saving...': 'Salvataggio...',
-  Saved: 'Salvato',
-  'Read-only': 'Sola lettura',
-  'Read-only *': 'Sola lettura *',
   saved: 'salvato',
   'save failed': 'salvataggio non riuscito',
   'save failed ({status})': 'salvataggio non riuscito ({status})',
@@ -185,7 +174,7 @@ export const IT_PALETTE: Record<string, string> = {
   'Export selection': 'Esporta selezione',
   'Save export': 'Salva esportazione',
 
-  // the side of the Palette: the ramps or the theme on a page (palette-side.tsx)
+  // the side of Colours: the ramps or the theme on a page (features/colours/scene-side.tsx)
   Ramps: 'Rampe',
   Show: 'Mostra',
   'The family, as ramps or as a theme': 'La famiglia, come rampe o come tema',

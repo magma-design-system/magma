@@ -11,6 +11,7 @@ import { App } from '../src/app.js'
 import { LangProvider, type Lang } from '../src/shared/i18n/i18n.js'
 import { createStudio } from '../src/state/studio.js'
 import { importConfig } from '../src/state/work.js'
+import { openMagma } from '../src/state/opening.js'
 import { inStudio, startStudio } from './studio.mjs'
 import { textOf } from './text.mjs'
 
@@ -445,9 +446,10 @@ test('after an import, Reset takes a scale back to the steps of the file importe
     click(reset('default'))
     expect(stops('default')).toEqual(imported.map(String))
 
-    // the Reset of the page loads the bundled configuration again: its steps are the loaded ones
+    // Magma's preset opened again (the opening, #1402; the Reset of the page until #1403): its
+    // steps are the loaded ones
     emit(stop('default', 1), 'mdsInputChange', { value: '9' })
-    click(root.querySelector<HTMLElement>('#studio-reset')!)
+    act(() => openMagma(state))
     await vi.waitFor(() => expect(stops('default')).toEqual(builtin), SLOW)
     expect(reset('default').hasAttribute('disabled')).toBe(true)
   } finally {
