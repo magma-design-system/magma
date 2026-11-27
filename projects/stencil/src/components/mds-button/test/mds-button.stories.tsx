@@ -15,6 +15,7 @@ import { ToneVariantType } from '@type/tone';
 import { useEffect, useState } from 'react';
 import { expect, fn, waitFor } from 'storybook/test';
 import { textAnimateDictionary } from '@component/mds-text/meta/dictionary';
+import { StateCell, StatesGrid, stateCell } from '@fixture/states';
 
 export default {
   title: 'UI / Actions / Button',
@@ -676,4 +677,265 @@ const VariantsTableTemplate = () => (
 
 export const VariantsTable = {
   render: VariantsTableTemplate,
+};
+
+/**
+ * Every state of the button once the story has opened (#1440, @fixture/states): each variant in
+ * every tone, the service variants, the sizes with and without icon, the icon on either side and
+ * alone, disabled (by the attribute and by a fieldset), waiting, the current view (a switcher, a
+ * bar of links, a section, its icon), a link, a notification, the long label in each truncation and
+ * the animated label. The rows of tones go from the most marked to the least: box, strong, weak,
+ * outline, text; secondary renders as primary, kept for compatibility (docs/agents/variants.md).
+ * The light variant is painted in the paper of the mode, so it sits on the inverse surface, as on
+ * an image or a dark band of a product. A state only an interaction reaches (`play: true`) is
+ * brought there by the play function, which checks the property, not the look. The icon under the
+ * pointer (`icon-hover`) and the hover of each tone need a real pointer, which a play does not
+ * move: mds-button.e2e.ts tests them. `type` and `download` change what a click does, not how the
+ * button looks.
+ */
+interface ButtonState {
+  state: string;
+  play?: boolean;
+  /** the inverse surface, for the variant painted in the paper of the mode */
+  inverse?: boolean;
+  /** the buttons sit in a disabled fieldset */
+  fieldset?: boolean;
+  /** a count in the notification slot of each button */
+  notification?: number;
+  buttons: Record<string, string | boolean>[];
+}
+
+const stateTones = ['box', 'strong', 'weak', 'outline', 'text'];
+const everyTone = (button: Record<string, string | boolean>): Record<string, string | boolean>[] =>
+  stateTones.map((tone) => ({ ...button, tone }));
+const toneNames = stateTones.join(', ');
+
+// the label each variant takes in a product: what the variant says
+const variantLabels: [ButtonVariantType, string][] = [
+  ['primary', 'Salva'],
+  ['secondary', 'Modifica'],
+  ['ai', 'Riassumi'],
+  ['dark', 'Annulla'],
+  ['light', 'Apri'],
+  ['error', 'Elimina'],
+  ['warning', 'Sospendi'],
+  ['success', 'Approva'],
+  ['info', 'Dettagli'],
+];
+
+const sizeButtons = (size: string): Record<string, string | boolean>[] => [
+  { size, label: 'Aggiungi' },
+  { size, label: 'Aggiungi', icon: 'mi/baseline/add' },
+  { size, icon: 'mi/baseline/add', 'aria-label': 'Aggiungi' },
+];
+
+const longLabel = 'Scarica il riepilogo delle pratiche del trimestre';
+const pressed = 'pressed (strong, weak, outline)';
+const focused = 'focused';
+
+const buttonStates: ButtonState[] = [
+  ...variantLabels.map(([variant, label]) => ({
+    state: `variant ${variant} (${toneNames})`,
+    inverse: variant === 'light',
+    buttons: everyTone({ variant, label, type: 'button' }),
+  })),
+  { state: 'variant google', buttons: [{ variant: 'google', label: 'Accedi con Google' }] },
+  { state: 'variant apple', buttons: [{ variant: 'apple', label: 'Accedi con Apple' }] },
+  { state: 'size sm', buttons: sizeButtons('sm') },
+  { state: 'size md (default)', buttons: sizeButtons('md') },
+  { state: 'size lg', buttons: sizeButtons('lg') },
+  { state: 'size xl', buttons: sizeButtons('xl') },
+  { state: 'icon left (default)', buttons: [{ label: 'Aggiungi', icon: 'mi/baseline/add' }] },
+  {
+    state: 'icon right',
+    buttons: [{ label: 'Avanti', icon: 'mi/baseline/arrow-forward', 'icon-position': 'right' }],
+  },
+  {
+    state: 'icon only, named by aria-label (strong, weak, outline, text)',
+    buttons: ['strong', 'weak', 'outline', 'text'].map((tone) => ({
+      icon: 'mi/baseline/delete',
+      'aria-label': 'Elimina la pratica',
+      variant: 'error',
+      tone,
+    })),
+  },
+  {
+    state: 'icon only, named from its slug',
+    buttons: [{ icon: 'mi/baseline/print', variant: 'dark', tone: 'weak' }],
+  },
+  {
+    state: `disabled (${toneNames})`,
+    buttons: everyTone({ label: 'Salva', disabled: true }),
+  },
+  {
+    state: 'disabled, icon only',
+    buttons: [{ icon: 'mi/baseline/delete', 'aria-label': 'Elimina la pratica', disabled: true }],
+  },
+  {
+    state: 'disabled by its fieldset',
+    fieldset: true,
+    buttons: [{ label: 'Salva' }, { label: 'Annulla', variant: 'dark', tone: 'outline' }],
+  },
+  {
+    state: 'await (strong, weak, outline)',
+    buttons: ['strong', 'weak', 'outline'].map((tone) => ({
+      label: 'Salvataggio in corso',
+      tone,
+      await: true,
+    })),
+  },
+  {
+    state: 'await, with icon',
+    buttons: [{ label: 'Invio in corso', icon: 'mi/baseline/send', await: true }],
+  },
+  {
+    state: 'await, icon only',
+    buttons: [{ icon: 'mi/baseline/send', 'aria-label': 'Invia', await: true }],
+  },
+  {
+    state: 'current, a switcher',
+    buttons: [
+      { label: 'Giorno', tone: 'weak', type: 'button' },
+      { label: 'Settimana', tone: 'weak', type: 'button', current: true },
+      { label: 'Mese', tone: 'weak', type: 'button' },
+    ],
+  },
+  {
+    state: `current (${toneNames})`,
+    buttons: everyTone({ label: 'Settimana', type: 'button', current: true }),
+  },
+  {
+    state: 'current page, a bar of links',
+    buttons: [
+      { label: 'Pratiche', href: '#pratiche', variant: 'dark', tone: 'text', current: true },
+      { label: 'Contatti', href: '#contatti', variant: 'dark', tone: 'text' },
+      { label: 'Scadenze', href: '#scadenze', variant: 'dark', tone: 'text' },
+    ],
+  },
+  {
+    state: 'current section, a link back',
+    buttons: [
+      { label: 'Pratiche', href: '#pratiche', variant: 'dark', tone: 'text', current: 'section' },
+      { label: 'Contatti', href: '#contatti', variant: 'dark', tone: 'text' },
+    ],
+  },
+  {
+    state: 'current, with icon-current',
+    buttons: [
+      {
+        label: 'Home',
+        href: '#home',
+        variant: 'dark',
+        tone: 'text',
+        icon: 'mi/outline/home',
+        'icon-current': 'mi/baseline/home',
+      },
+      {
+        label: 'Pratiche',
+        href: '#pratiche',
+        variant: 'dark',
+        tone: 'text',
+        icon: 'mi/outline/folder',
+        'icon-current': 'mi/baseline/folder',
+        current: true,
+      },
+    ],
+  },
+  {
+    state: 'link (href)',
+    buttons: [{ label: 'Vai alle pratiche', href: '#pratiche', tone: 'outline' }],
+  },
+  {
+    state: 'link, new tab',
+    buttons: [
+      {
+        label: 'Visita il sito',
+        href: 'https://www.maggioli.it',
+        target: 'blank',
+        icon: 'mi/baseline/open-in-new',
+        'icon-position': 'right',
+        tone: 'weak',
+      },
+    ],
+  },
+  {
+    state: 'notification',
+    notification: 12,
+    buttons: [{ label: 'Messaggi', icon: 'mi/baseline/email', variant: 'dark', tone: 'weak' }],
+  },
+  {
+    state: 'long label, truncate word (default)',
+    buttons: [{ label: longLabel, class: 'max-w-6400' }],
+  },
+  {
+    state: 'long label, truncate all',
+    buttons: [{ label: longLabel, truncate: 'all', class: 'max-w-6400' }],
+  },
+  {
+    state: 'long label, truncate none',
+    buttons: [{ label: longLabel, truncate: 'none', class: 'max-w-6400' }],
+  },
+  { state: 'animation yugop', buttons: [{ label: 'Conferma azione', animation: 'yugop' }] },
+  {
+    state: pressed,
+    play: true,
+    buttons: ['strong', 'weak', 'outline'].map((tone) => ({ label: 'Salva', tone })),
+  },
+  { state: focused, play: true, buttons: [{ label: 'Salva' }] },
+];
+
+const TemplateStates = () => (
+  <StatesGrid>
+    {buttonStates.map(({ state, play, inverse, fieldset, notification, buttons }) => {
+      const row = buttons.map((props, index) => (
+        <mds-button key={String(index)} {...props}>
+          {notification !== undefined && (
+            <mds-notification slot="notification" value={notification}></mds-notification>
+          )}
+        </mds-button>
+      ));
+      const layout = `flex flex-wrap items-center gap-200${inverse ? ' bg-surface-inverse p-400 rounded-lg' : ''}`;
+      return (
+        <StateCell key={state} state={state} play={play}>
+          {fieldset ? (
+            <fieldset disabled class={`${layout} border-0 m-0 min-w-0 p-0`}>
+              {row}
+            </fieldset>
+          ) : (
+            <div class={layout}>{row}</div>
+          )}
+        </StateCell>
+      );
+    })}
+  </StatesGrid>
+);
+
+/** The buttons of a cell, once every Magma element of the cell has loaded. */
+const loadedButtons = async (canvasElement: HTMLElement, state: string) => {
+  const cell = stateCell(canvasElement, state);
+  const elements = Array.from(cell.querySelectorAll('*')).filter((element) =>
+    element.tagName.startsWith('MDS-'),
+  );
+  await waitFor(() => elements.forEach((element) => expect(element).toHaveAttribute('hydrated')));
+  return Array.from(cell.querySelectorAll('mds-button')) as HTMLMdsButtonElement[];
+};
+
+const playStates = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+  // pressed and held: the host listens to mousedown, and lets go on mouseup or mouseout
+  const held = await loadedButtons(canvasElement, pressed);
+  held.forEach((button) => button.dispatchEvent(new MouseEvent('mousedown', { bubbles: true })));
+  // the host is the tab stop of the button
+  const [focus] = await loadedButtons(canvasElement, focused);
+  focus.focus();
+
+  // the property, not the attribute: Stencil reflects it on the next frame, and a hidden page
+  // draws no frame
+  await waitFor(() => held.forEach((button) => expect(button).toHaveProperty('active', true)));
+  await waitFor(() => expect(canvasElement.ownerDocument.activeElement).toBe(focus));
+};
+
+export const States = {
+  render: TemplateStates,
+
+  play: playStates,
 };

@@ -1,4 +1,6 @@
 import { h } from '@stencil/core';
+import { expect, waitFor } from 'storybook/test';
+import { StateCell, StatesGrid, stateCell } from '@fixture/states';
 import { useState, useEffect, useRef } from 'react';
 import {
   modalPositionDictionary,
@@ -729,4 +731,157 @@ export const UseCaseNestedModal = {
 
 export const EventModalShow = {
   render: ShowTemplate,
+};
+
+/**
+ * Every state of the modal once the story has opened (#1440, @fixture/states), each on a screen
+ * of its own: an open modal covers the page, so a cell holds a screen of the size of the viewport
+ * scaled to a quarter, the size the window is laid out against (`vw`, `dvh`), which the scale
+ * also makes the box its fixed dialog is placed in. So the window keeps its width, its height,
+ * its margins and the place of the close button at each position, smaller.
+ *
+ * - The open screens are opened with `hide-backdrop`: the default opens the dialog with
+ *   `showModal()`, in the top layer over the whole page and every cell, its backdrop dimming the
+ *   page. That one is in the Default story; here the window is shown without its backdrop, as a
+ *   modal with `hide-backdrop` is in a product.
+ * - `overflow="manual"`: the default stops the body from scrolling while a modal is open, which
+ *   would stop the page of the story.
+ * - `animation` (slide, 3d, custom) is the motion of the entry and the exit, the open window being
+ *   the same: the QAMatrix story plays them. `interaction` (strict, relaxed) changes what closes
+ *   the modal, not what it shows.
+ * - The window is named as a product names it (`aria-label`).
+ *
+ * A state only an interaction reaches (`play: true`) is brought there by the play function, which
+ * checks `opened`, the native dialog and the focus, not the look: the close button, which closes
+ * the modal whatever its interaction, and a modal the page opens once loaded, as a click on a
+ * button does, which moves the focus to the first control of its window. Each window opened moves
+ * the focus into it, so the last one opened holds it: that is this cell, opened last.
+ */
+interface ModalState {
+  state: string;
+  play?: boolean;
+  modal?: Record<string, string | boolean>;
+  // what the window holds: the built-in window with a header and a footer, its content alone, a
+  // content taller than the screen, or a window of its own
+  window?: 'parts' | 'content' | 'tall' | 'own';
+}
+
+const shown = {
+  'aria-label': 'Nuova pratica',
+  'hide-backdrop': true,
+  overflow: 'manual',
+  opened: true,
+};
+
+const modalStates: ModalState[] = [
+  { state: 'closed', modal: { 'aria-label': 'Nuova pratica', overflow: 'manual' } },
+  { state: 'open, center (default)', modal: shown },
+  ...['top', 'bottom', 'left', 'right', 'top-left', 'top-right', 'bottom-left', 'bottom-right'].map(
+    (position) => ({ state: `open, ${position}`, modal: { ...shown, position } }),
+  ),
+  { state: 'open, content alone', modal: shown, window: 'content' },
+  { state: 'open, content taller than the screen', modal: shown, window: 'tall' },
+  {
+    state: 'open, a window of its own',
+    modal: { ...shown, 'aria-label': 'Eliminare la pratica?' },
+    window: 'own',
+  },
+  { state: 'closed by its close button', play: true, modal: shown },
+  {
+    state: 'opened by the page, the focus in its window',
+    play: true,
+    modal: { 'aria-label': 'Nuova pratica', 'hide-backdrop': true, overflow: 'manual' },
+  },
+];
+
+const caseText =
+  "Indica il richiedente e l'oggetto della pratica: il protocollo assegna il numero quando la invii.";
+
+// what the window of a modal holds, by its parts
+const modalWindow = (kind: ModalState['window'] = 'parts') => {
+  if (kind === 'own') {
+    return [
+      <mds-banner key="own" slot="window" tone="box" headline="Eliminare la pratica?">
+        <mds-text typography="detail">La pratica e i suoi allegati saranno eliminati.</mds-text>
+        <mds-button slot="action" label="Annulla" variant="dark" tone="text"></mds-button>
+        <mds-button slot="action" label="Elimina" variant="error"></mds-button>
+      </mds-banner>,
+    ];
+  }
+  const content = (
+    <div key="content" class="p-600 grid gap-400">
+      {(kind === 'tall' ? Array.from({ length: 16 }, (_value, index) => index) : [0]).map(
+        (index) => (
+          <mds-text key={index}>{caseText}</mds-text>
+        ),
+      )}
+    </div>
+  );
+  if (kind !== 'parts') return [content];
+  return [
+    <header key="top" slot="top" class="p-600">
+      <mds-text typography="h5">Nuova pratica</mds-text>
+    </header>,
+    content,
+    <footer key="bottom" slot="bottom" class="p-600 flex justify-end gap-400">
+      <mds-button label="Annulla" variant="dark" tone="text"></mds-button>
+      <mds-button label="Invia"></mds-button>
+    </footer>,
+  ];
+};
+
+// A screen of the page at a quarter of its size: the size of the viewport, scaled down
+const Screen = ({ children }: { children?: unknown }) => (
+  <div class="w-[25vw] h-[25dvh] overflow-hidden rounded-sm ring ring-border-muted">
+    <div class="w-screen h-dvh origin-top-left scale-25 bg-surface-default">{children}</div>
+  </div>
+);
+
+const TemplateStates = () => (
+  <StatesGrid>
+    {modalStates.map(({ state, play, modal, window }) => (
+      <StateCell key={state} state={state} play={play}>
+        <Screen>
+          <mds-modal {...modal}>{modalWindow(window)}</mds-modal>
+        </Screen>
+      </StateCell>
+    ))}
+  </StatesGrid>
+);
+
+/** The modal of a cell and its native dialog, once every Magma element of the cell has loaded. */
+const loadedModal = async (canvasElement: HTMLElement, state: string) => {
+  const cell = stateCell(canvasElement, state);
+  const elements = Array.from(cell.querySelectorAll('*')).filter((element) =>
+    element.tagName.startsWith('MDS-'),
+  );
+  await waitFor(() => elements.forEach((element) => expect(element).toHaveAttribute('hydrated')));
+  const modal = cell.querySelector('mds-modal') as HTMLMdsModalElement;
+  return { modal, dialog: modal.shadowRoot!.querySelector('dialog') as HTMLDialogElement };
+};
+
+const playStates = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+  const closed = await loadedModal(canvasElement, 'closed by its close button');
+  await waitFor(() => expect(closed.dialog).toHaveProperty('open', true));
+  // the button listens on its host, in the shadow root of the modal
+  (closed.modal.shadowRoot!.querySelector('.action-close') as HTMLElement).click();
+
+  // the properties, not the attributes: Stencil reflects them on the next frame, and a hidden
+  // page draws no frame
+  await waitFor(() => expect(closed.modal.opened).toBeFalsy());
+  await waitFor(() => expect(closed.dialog).toHaveProperty('open', false));
+
+  // last, so that no other window takes the focus from it
+  const opened = await loadedModal(canvasElement, 'opened by the page, the focus in its window');
+  opened.modal.opened = true;
+  await waitFor(() => expect(opened.dialog).toHaveProperty('open', true));
+  await waitFor(() =>
+    expect(document.activeElement).toBe(opened.modal.querySelector('footer mds-button')),
+  );
+};
+
+export const States = {
+  render: TemplateStates,
+
+  play: playStates,
 };
