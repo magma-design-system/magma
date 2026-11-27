@@ -119,8 +119,8 @@ test('the changes of the bar: how many since the last exit, listed by stage, eac
 })
 
 // The exit (#1402): the preset saved or downloaded by the split button, through the gate; its menu
-// the other formats, each with the format of what it hands over in a badge the click goes through,
-// Import config last, apart, until the opening holds it; the menu of a narrow window lists them too
+// the other formats, each with the format of what it hands over in a badge the click goes through;
+// what brings a preset in is the opening's; the menu of a narrow window lists them too
 test('the exit saves or downloads the preset in one click, the other formats in its menu', async () => {
   await at('#/theme')
   const exit = root.querySelector('#studio-exit')!
@@ -139,18 +139,17 @@ test('the exit saves or downloads the preset in one click, the other formats in 
     ['Download CSS tokens', 'css'],
     ['Download GIMP palette', 'gpl'],
     ['Copy JSON', null],
-    ['Import config', 'json'],
   ])
   // the format is part of the name of the action, its badge hidden
   const figma = exit.querySelector('mds-button[data-action="figma"]')!
   expect(figma.getAttribute('aria-label')).toBe('Download Figma tokens, DTCG')
   expect(figma.parentElement?.querySelector('mds-badge')?.getAttribute('aria-hidden')).toBe('true')
-  // Import config apart, after a separator
-  expect(exit.querySelectorAll('mds-separator').length).toBe(1)
+  // on its own nothing stands apart: no separator
+  expect(exit.querySelectorAll('mds-separator').length).toBe(0)
   // and in the menu of a narrow window, the exit first
   const narrow = within(root).getByRole('navigation', { name: 'Studio' })
   expect([...narrow.querySelectorAll('mds-button[data-action]')].map((one) => one.getAttribute('data-action')))
-    .toEqual(['exit', 'zip', 'figma', 'css', 'gimp', 'copy', 'import'])
+    .toEqual(['exit', 'zip', 'figma', 'css', 'gimp', 'copy'])
   // a download of its menu from the Theme section hands over its file
   const files: string[] = []
   vi.stubGlobal('URL', Object.assign(Object.create(URL), {
@@ -179,7 +178,7 @@ test('served by a command that takes saves, the exit saves the preset and its me
   expect((exit as { label?: string }).label ?? exit.getAttribute('label')).toBe('Save the preset')
   expect(exit.getAttribute('icon')).toBe('mi/baseline/save')
   expect([...exit.querySelectorAll('mds-button[data-action]')].map((one) => one.getAttribute('data-action')))
-    .toEqual(['config', 'zip', 'figma', 'css', 'gimp', 'copy', 'build', 'import'])
+    .toEqual(['config', 'zip', 'figma', 'css', 'gimp', 'copy', 'build'])
 })
 
 // The introduction comes before the stages (features/introduction/, the Start page until #1402):
@@ -481,4 +480,33 @@ test('a frame follows the theme, the mode and the contrast it is given, not thos
   // no configuration yet: the frame shows the installed Magma alone
   applyFrame(scene, { theme: 'business', scheme: 'light', contrast: false })
   expect(scene.getElementById('studio-configuration')).toBeNull()
+})
+
+// The opening (#1402): its page at its address; a preset opened over work with changes says so in a
+// toast with Undo, which brings the work back as it stood (confirm-action, act-then-undo)
+test('the opening opens a preset and leads to Colours; over work with changes a toast offers Undo', async () => {
+  const studio = createStudio({ api: false })
+  await at('#/opening', studio)
+  expect(root.querySelector('mds-text[tag="h1"]')?.textContent).toBe('Opening')
+  studio.config.value = { ...studio.config.value, smooth: true } as typeof studio.config.value
+  const start = await vi.waitFor(() => {
+    const found = [...root.querySelectorAll<HTMLElement>('mds-button')].find((one) => textOf(one) === 'Start from editorial')
+    if (!found) throw new Error('no start yet')
+    return found
+  })
+  start.click()
+  await vi.waitFor(() => expect(location.hash).toBe('#/colors/palette'))
+  expect(studio.selectedName.value).toBe('tone.myeditorial')
+  // the toast, on the body, in the region of the toasts
+  const toast = await vi.waitFor(() => {
+    const found = document.querySelector('mds-toast-region > mds-toast')
+    if (!found) throw new Error('no toast yet')
+    return found
+  })
+  expect([toast.getAttribute('duration'), toast.hasAttribute('dismissible')]).toEqual(['0', true])
+  expect(toast.textContent).toBe('You opened a theme of yours from editorial.')
+  toast.querySelector<HTMLElement>('mds-button[slot="action"]')!.click()
+  await vi.waitFor(() => expect(document.querySelector('mds-toast-region > mds-toast')).toBeNull())
+  expect(studio.config.value.smooth).toBe(true)
+  expect(studio.config.value.colors.some(({ name }) => name === 'tone.myeditorial')).toBe(false)
 })

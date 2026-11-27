@@ -158,7 +158,6 @@ export const IT_PALETTE: Record<string, string> = {
 
   // what brings a configuration in and takes it out (app/config-menu.tsx, state/exports.ts), and the button of
   // the gate dialog that runs it anyway (features/contrast-check/gate-dialog.tsx)
-  'Import config': 'Importa configurazione',
   'it does not match the schema': 'non corrisponde allo schema',
   'Could not load {file}: {error}': 'Impossibile caricare {file}: {error}',
   'Warning: {hex} is already used by "{name}"': 'Attenzione: {hex} è già usato da "{name}"',

@@ -56,6 +56,12 @@ export const IT_SHELL: Record<string, string> = {
   Exceptions: 'Eccezioni',
   'Full review': 'Giro completo',
   Opening: 'Partenza',
+  // the toast that undoes an opening (app/shell.tsx, state/opening.ts)
+  "You opened Magma's preset.": 'Hai aperto il preset di Magma.',
+  'You opened a theme of yours from {theme}.': 'Hai aperto un tuo tema da {theme}.',
+  'You opened a theme of yours from {colour}.': 'Hai aperto un tuo tema dal colore {colour}.',
+  'You opened {file}.': 'Hai aperto {file}.',
+  Undo: 'Annulla',
   // the indicators of the play of the introduction, a column of Semantic surface
   Texts: 'Testi',
   'Save the preset': 'Salva il preset',

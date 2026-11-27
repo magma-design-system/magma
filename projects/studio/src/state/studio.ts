@@ -146,6 +146,12 @@ export interface StudioState {
    * draft, so a reload keeps the count.
    */
   baseline: Signal<string>;
+  /**
+   * The last preset the opening opened over work that had changes, and that work, for the toast
+   * that undoes it (state/opening.ts, the act-then-undo of confirm-action); null once undone or
+   * closed, or when nothing was lost.
+   */
+  lastOpening: Signal<Opening | null>;
 
   // derived
   /** The configuration as JSON: a change of its content, not of the object. */
@@ -175,6 +181,23 @@ export interface StudioState {
   boot: StudioDraft | null;
   /** Stops the effects: the draft and the choices are no longer written. */
   dispose: () => void;
+}
+
+/** The work as it stood, every part a preset is opened over: what undoing an opening restores. */
+export interface WorkSnapshot {
+  config: CloneableConfig;
+  choices: ThemeChoices;
+  baseline: string;
+  selectedName: string;
+  loadedRatios: LoadedRatios;
+  colorsView: ColorsView | undefined;
+}
+
+/** A preset opened over work that had changes: what it said, and the work it took the place of. */
+export interface Opening {
+  /** What was opened, in English (msg) with its places, translated where it is drawn. */
+  said: Text;
+  previous: WorkSnapshot;
 }
 
 export interface StudioOptions {
@@ -263,6 +286,7 @@ export function createStudio(options: StudioOptions = {}): StudioState {
     notice: signal(null),
     pendingExport: signal(null),
     baseline,
+    lastOpening: signal(null),
     json,
     report,
     verdict: computed(() => report.value.verdict),

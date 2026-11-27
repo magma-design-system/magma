@@ -12,8 +12,10 @@ import { GateDialog } from '../features/contrast-check/gate-dialog.js';
 import { RulesPage } from '../features/rules/rules.js';
 import { ExceptionsPage } from '../features/exceptions/exceptions.js';
 import { IntroductionPage } from '../features/introduction/introduction.js';
+import { OpeningPage } from '../features/opening/opening.js';
+import { forgetOpening, undoOpening } from '../state/opening.js';
 import { ThemePage } from '../theme-section.js';
-import { createStudio, StudioContext, useStudio, type StudioState } from '../state/studio.js';
+import { createStudio, say, StudioContext, useStudio, type StudioState } from '../state/studio.js';
 import { cancelExport, confirmExport, exitOf, guard } from '../state/exports.js';
 import { checkSource } from '../state/work.js';
 import { LANGS, LangProvider, useLang, useT } from '../shared/i18n/i18n.js';
@@ -91,14 +93,7 @@ export function Studio({ state, router }: StudioProps = {}) {
     <LangProvider value={lang}>
       <StudioContext.Provider value={studio}>
         <div class="studio">
-          <StudioBar
-            route={route}
-            // an import opens the pages of Colors: the configuration loaded on the Palette, or
-            // the notice of why it was not on the page of Colors the work is on
-            onImported={(loaded) =>
-              openColors(loaded ? 'colors' : (studio.colorsView.peek() ?? 'colors'))
-            }
-          />
+          <StudioBar route={route} />
           {/* the stages in order, on a stage and on a page beside one (stages.tsx) */}
           <StageBar route={route} onOpen={(next) => nav.navigate(next)} />
           {route.section === 'colors' && (
@@ -113,6 +108,7 @@ export function Studio({ state, router }: StudioProps = {}) {
           )}
           {route.section === 'exceptions' && <ExceptionsPage foot={foot} />}
           {route.section === 'introduction' && <IntroductionPage />}
+          {route.section === 'opening' && <OpeningPage onOpen={(next) => nav.navigate(next)} />}
           {route.section === 'theme' && (
             <ThemePage
               theme={route.theme}
@@ -124,6 +120,7 @@ export function Studio({ state, router }: StudioProps = {}) {
           )}
           {route.section === 'behavior' && <RulesPage page={route.page} />}
           <PendingExport onReview={() => openColors('contrast')} />
+          <UndoOpening />
         </div>
       </StudioContext.Provider>
     </LangProvider>
@@ -150,6 +147,45 @@ function PendingExport({ onReview }: { onReview: () => void }) {
         onReview();
       }}
     />,
+    document.body,
+  );
+}
+
+/**
+ * The toast that undoes an opening (#1402): a preset opened over work with changes, said, with
+ * Undo, which brings the work back as it stood; it stays until closed (confirm-action,
+ * `act-then-undo`: the toast with Undo, `duration=0 dismissible`). On document.body, in the region
+ * of the toasts of the application, as the dialog of the gate stands.
+ */
+function UndoOpening() {
+  const studio = useStudio();
+  const t = useT();
+  const opening = studio.lastOpening.value;
+  return createPortal(
+    <mds-toast-region>
+      {opening && (
+        <mds-toast
+          visible
+          duration={0}
+          dismissible
+          onmdsToastClose={(event: CustomEvent<{ reason?: string }>) => {
+            // closed by the person or by Undo: the work it kept goes either way
+            if (studio.lastOpening.peek() === opening) forgetOpening(studio);
+            void event;
+          }}
+        >
+          {say(t, opening.said)}
+          <mds-button
+            slot="action"
+            size="sm"
+            variant="dark"
+            tone="outline"
+            label={t('Undo')}
+            onClick={() => undoOpening(studio)}
+          ></mds-button>
+        </mds-toast>
+      )}
+    </mds-toast-region>,
     document.body,
   );
 }
@@ -232,17 +268,10 @@ const behaviorRoute = (page: BehaviorPage): Route => ({ section: 'behavior', pag
  * (vittorio, 2026-11-27, option A). The menu at the end, at every width, holds the preferences of
  * the person; on a narrow window, where the bar hides the rest, it holds that first.
  */
-function StudioBar({
-  route,
-  onImported,
-}: {
-  route: Route;
-  /** After Import config read a file: whether it was loaded. */
-  onImported: (loaded: boolean) => void;
-}) {
+function StudioBar({ route }: { route: Route }) {
   const studio = useStudio();
-  // what the menu of the exit runs, on the state; the picker of Import config drawn once
-  const { actions, input: configPicker } = useConfigMenu(onImported);
+  // what the menu of the exit runs, on the state
+  const actions = useConfigMenu();
   const exit = exitOf(studio);
   const saves = studio.served.value !== null && !studio.served.value.readOnly;
   // the formats of the menu of the exit: the preset as JSON only when the exit saves it
@@ -359,7 +388,6 @@ function StudioBar({
         </div>
       </mds-dropdown>
       <ChangesPanel panel={changesPanel} />
-      {configPicker}
     </>
   );
 }

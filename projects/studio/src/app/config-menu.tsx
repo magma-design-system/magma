@@ -2,19 +2,19 @@
   The menu of the exit, in the bar (app/shell.tsx; the Config menu until #1402): the preset saved
   or downloaded is the action of the split button, and its menu holds the other ways out of the
   studio, the formats of today: the preset as JSON, the tokens, the Figma tokens, the CSS, a GIMP
-  palette, a copy of the JSON, the build on disk when a command serves the studio. Import config
-  brings a preset in: it stays last, apart, until the opening holds it (#1402). The actions are the
+  palette, a copy of the JSON, the build on disk when a command serves the studio. What brings a
+  preset in is the opening's (features/opening/, Import a preset). The actions are the
   state's (state/work.ts, state/exports.ts), each through the contrast gate before anything leaves,
   so the menu works from any page; the bar draws them, in the menu of its split button and in the
-  menu of a narrow window. Each says beside its label the format of what it reads or hands over, a
-  badge the click goes through.
+  menu of a narrow window. Each says beside its label the format of what it hands over, a badge
+  the click goes through.
 */
-import { useRef, useState } from 'preact/hooks';
+import { useState } from 'preact/hooks';
 import type { ExportKind } from '../engine/exports.js';
 import { useT, msg } from '../shared/i18n/i18n.js';
 import { copyConfig, downloadPreset, exportConfig, guard } from '../state/exports.js';
 import { useStudio } from '../state/studio.js';
-import { buildTokens, importConfig } from '../state/work.js';
+import { buildTokens } from '../state/work.js';
 
 /** An action of the menu: what it is called, what it reads or hands over, what it runs. */
 export interface ConfigAction {
@@ -43,14 +43,9 @@ const DOWNLOADS: Array<{ kind: Exclude<ExportKind, 'config'>; label: string; for
   { kind: 'gimp', label: msg('Download GIMP palette'), format: 'gpl' },
 ];
 
-/**
- * The actions of the menu of the exit on the state of the studio, and the picker of Import config,
- * drawn once beside them. `onImported` runs after a file is read: the pages show the preset
- * loaded, or the notice of why it was not.
- */
-export function useConfigMenu(onImported: (loaded: boolean) => void) {
+/** The actions of the menu of the exit on the state of the studio. */
+export function useConfigMenu() {
   const studio = useStudio();
-  const picker = useRef<HTMLInputElement>(null);
   const [copied, setCopied] = useState(false);
   const served = studio.served.value !== null;
   const copy = async () => {
@@ -102,30 +97,8 @@ export function useConfigMenu(onImported: (loaded: boolean) => void) {
           },
         ]
       : []),
-    {
-      id: 'import',
-      label: msg('Import config'),
-      format: 'json',
-      icon: 'mi/baseline/upload-file',
-      apart: true,
-      run: () => picker.current?.click(),
-    },
   ];
-  const input = (
-    <input
-      ref={picker}
-      type="file"
-      accept=".json,application/json"
-      hidden
-      onChange={async (event) => {
-        const field = event.target as HTMLInputElement;
-        const file = field.files?.[0];
-        field.value = '';
-        if (file) onImported(await importConfig(studio, file));
-      }}
-    />
-  );
-  return { actions, input };
+  return actions;
 }
 
 /** The actions, a button each, its format in a badge over its end. */
