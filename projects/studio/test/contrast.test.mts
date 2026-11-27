@@ -10,7 +10,6 @@ import { DRAFT_STORAGE_KEY, hashText, type StudioDraft } from '../src/state/draf
 import { gateReport } from '../src/engine/gate.js'
 import { ThemesManager } from '../src/themes.js'
 import { inStudio, startStudio } from './studio.mjs'
-import { textOf } from './text.mjs'
 
 // The contrast gate in the studio (#698): its verdict beside the title of every page of Colors
 // and on each card of Themes, live while the configuration is edited; and an export that asks
@@ -58,11 +57,9 @@ const storeDraft = (draft: MagmaConfig, view = 'colors') => {
   localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(stored))
 }
 
-/** An action of the Config menu of the bar, run as a click on its button. */
+/** An action of the menu of the exit of the bar, run as a click on its button. */
 const runAction = (id: string) =>
-  act(() =>
-    root.querySelector<HTMLElement>(`mds-dropdown[target="#studio-config"] mds-button[data-action="${id}"]`)!.click(),
-  )
+  act(() => root.querySelector<HTMLElement>(`#studio-exit mds-button[data-action="${id}"]`)!.click())
 
 /** The studio on a page of Colors, restored on a draft of a configuration. */
 const openOn = async (draft: MagmaConfig, view = 'colors') => {
@@ -103,32 +100,31 @@ test('the title of every page of Colors carries the verdict of the gate on the c
   expect(label).toMatch(/^\d+ contrasts below target$/)
 })
 
-test('the Colors section counts the pairs that fail, in the bar, in view wherever the work is', async () => {
+// #1402: the menu of Colors and its count of the pairs went with the stages; the verdict stays
+// beside the title of every stage, and the exit of the bar asks while the gate fails
+test('while the gate fails, the exit of the bar asks first, from any page', async () => {
   storeDraft(failing())
   location.hash = '#/theme'
   try {
     render(h(Studio, {}), root)
-    const verdict = gateReport(failing()).verdict
-    const notification = await vi.waitFor(() => {
-      const found = root.querySelector('#studio-colors mds-notification[slot="notification"]')
-      if (!found) throw new Error('no count yet')
+    const exit = await vi.waitFor(() => {
+      const found = root.querySelector<HTMLElement>('#studio-exit')
+      if (!found) throw new Error('no exit yet')
       return found
     })
-    expect(verdict.state === 'fail' && String(verdict.violations)).toBe(notification.getAttribute('value'))
-    expect(notification.getAttribute('max')).toBe('99')
-    // the name of the section stays its own: the count is read with it, not in place of it
-    expect(textOf(root.querySelector('#studio-colors'))).toBe('Colors')
-
-    // a configuration that passes shows no count
-    render(null, root)
-    localStorage.clear()
-    render(h(Studio, {}), root)
-    await vi.waitFor(() => {
-      // the verdict at the head of the Colors menu
-      if (!root.querySelector('mds-dropdown[target="#studio-colors"] mds-badge'))
-        throw new Error('no verdict yet')
+    expect(root.querySelector('#studio-colors')).toBeNull()
+    expect(exit.getAttribute('label') ?? (exit as { label?: string }).label).toBe('Download the preset')
+    await act(() => {
+      exit.dispatchEvent(new CustomEvent('mdsButtonDropdownClick'))
     })
-    expect(root.querySelector('#studio-colors mds-notification')).toBeNull()
+    const dialog = await vi.waitFor(() => {
+      const found = document.querySelector('mds-modal')
+      if (!found) throw new Error('no dialog yet')
+      return found
+    })
+    expect(dialog.textContent).toContain('Download the preset hands out')
+    await act(() => magmaButton('Cancel')!.click())
+    expect(document.querySelector('mds-modal')).toBeNull()
   } finally {
     location.hash = ''
   }
@@ -168,10 +164,12 @@ test('while the gate fails, an export asks first: Cancel never exports, the verb
     expect(document.querySelector('mds-modal')).toBeNull()
     expect(files).toEqual(['magma-design-tokens.zip'])
 
-    // every way out asks: a download of the menu, the copy of the configuration
+    // every way out asks: the exit of the bar, a download of its menu, the copy of the preset
     files.length = 0
-    await runAction('config')
-    expect(document.querySelector('mds-modal')?.textContent).toContain('Download config hands out')
+    await act(() => {
+      root.querySelector('#studio-exit')!.dispatchEvent(new CustomEvent('mdsButtonDropdownClick'))
+    })
+    expect(document.querySelector('mds-modal')?.textContent).toContain('Download the preset hands out')
     expect(files).toEqual([])
     await act(() => magmaButton('Cancel')!.click())
     await runAction('copy')

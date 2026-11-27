@@ -258,7 +258,7 @@ test('the Start page uses the lists and the links of Magma where they hold what 
   expect(features.map((one) => [one.localName, one.parentElement?.localName])).toEqual(
     FEATURES.map(() => ['mds-list-item', 'mds-list']),
   )
-  expect(checks().querySelectorAll('mds-link')).toHaveLength(2)
+  expect(checks().querySelectorAll('mds-link')).toHaveLength(1)
 })
 
 test('the steps of the work, in their order, each with the page it starts on', () => {

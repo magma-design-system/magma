@@ -568,22 +568,13 @@ function Levels() {
         ))}
       </ol>
       <mds-text typography="detail" tag="p" class="studio-muted start-checks">
-        {rich(
-          t,
-          'At every level, {check} lists every pair the gate judges, and {diffs} compares the palette with the one Magma builds with.',
-          {
-            check: (
-              <mds-link href={hrefOf({ section: 'colors', view: 'contrast' })}>
-                {t(colorsPage('contrast').label)}
-              </mds-link>
-            ),
-            diffs: (
-              <mds-link href={hrefOf({ section: 'colors', view: 'diff' })}>
-                {t(colorsPage('diff').label)}
-              </mds-link>
-            ),
-          },
-        )}
+        {rich(t, 'At every level, {check} lists every pair the gate judges.', {
+          check: (
+            <mds-link href={hrefOf({ section: 'colors', view: 'contrast' })}>
+              {t(colorsPage('contrast').label)}
+            </mds-link>
+          ),
+        })}
       </mds-text>
     </section>
   );

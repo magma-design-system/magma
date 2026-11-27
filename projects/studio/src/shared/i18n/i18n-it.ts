@@ -34,7 +34,6 @@ export const IT_SHELL: Record<string, string> = {
   // blocks), and Comportamento with Configurazione does not fit the bar at 768px (vittorio,
   // 2026-11-10)
   Behavior: 'Regole',
-  Config: 'Configurazione',
   Studio: 'Studio',
   Preferences: 'Preferenze',
 
@@ -45,7 +44,6 @@ export const IT_SHELL: Record<string, string> = {
   Themes: 'Temi',
   Groups: 'Gruppi',
   'Contrast check': 'Verifica del contrasto',
-  Diffs: 'Differenze',
   'Design language': 'Linguaggio di design',
   Patterns: 'Pattern',
   Blocks: 'Blocchi',
@@ -53,12 +51,42 @@ export const IT_SHELL: Record<string, string> = {
   // register (GLOSSARY.md): the stepper, the foot of a stage, the exit (state/exports.ts)
   Stages: 'Passi',
   'The stage before and after': 'Il passo prima e quello dopo',
+  'Beside {stage}': 'Accanto a {stage}',
   Weights: 'Pesi',
   Exceptions: 'Eccezioni',
   'Full review': 'Giro completo',
   Introduction: 'Introduzione',
   'Save the preset': 'Salva il preset',
   'Download the preset': 'Scarica il preset',
+  // the changes in the bar (app/changes.tsx), what changed (engine/changes.ts)
+  Preset: 'Preset',
+  'No changes': 'Nessuna modifica',
+  '{count} change': '{count} modifica',
+  '{count} changes': '{count} modifiche',
+  '{count} change since the last exit': "{count} modifica dall'ultima uscita",
+  '{count} changes since the last exit': "{count} modifiche dall'ultima uscita",
+  'No changes since the last exit.': "Nessuna modifica dall'ultima uscita.",
+  // what entered or left the preset: a family, a scale, a group, so no agreement with a gender
+  'new in the preset': 'entra nel preset',
+  'gone from the preset': 'esce dal preset',
+  '{field}: from {before} to {after}': '{field}: da {before} a {after}',
+  'from {before} to {after}': 'da {before} a {after}',
+  '{field}: now {after}': '{field}: ora {after}',
+  'now {after}': 'ora {after}',
+  '{field}: was {before}': '{field}: era {before}',
+  'was {before}': 'era {before}',
+  '{field}: a new value': '{field}: un valore nuovo',
+  'a new value': 'un valore nuovo',
+  'Base colour': 'Colore base',
+  'Contrast scale': 'Scala di contrasto',
+  'Hue shift': 'Spostamento di tonalità',
+  'scale {name}': 'scala {name}',
+  'group {name}': 'gruppo {name}',
+  '{role}, {mode}': '{role}, {mode}',
+  'theme of {family}': 'tema di {family}',
+  'the preset': 'il preset',
+  yes: 'sì',
+  no: 'no',
   // the Theme section (theme-section.tsx)
   Typography: 'Tipografia',
   Shape: 'Forma',
@@ -175,8 +203,8 @@ export const IT_SHELL: Record<string, string> = {
   'You act on': 'Agisci su',
   'It reaches': 'Raggiunge',
   'The pages of {level}': 'Le pagine di {level}',
-  'At every level, {check} lists every pair the gate judges, and {diffs} compares the palette with the one Magma builds with.':
-    'A ogni livello, {check} elenca ogni coppia giudicata dalla verifica, e {diffs} confronta la palette con quella con cui si compila Magma.',
+  'At every level, {check} lists every pair the gate judges.':
+    'A ogni livello, {check} elenca ogni coppia giudicata dalla verifica.',
 };
 
 /** The catalogue: every part, each key in one of them. */

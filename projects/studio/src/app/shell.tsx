@@ -6,22 +6,21 @@ import logo from '@maggioli-design-system/identity/dist/internal/magma-design-sy
 import logoWhite from '@maggioli-design-system/identity/dist/internal/magma-design-system/logo-magma-white.svg?url';
 import { App } from '../app.js';
 import { useDarkMode } from '../dark-mode.js';
-import { GateBadge } from '../shared/ui/verdict.js';
-import { ConfigItems, useConfigMenu, type ConfigAction } from './config-menu.js';
+import { ChangesButton, ChangesPanel } from './changes.js';
+import { ConfigItems, useConfigMenu } from './config-menu.js';
 import { GateDialog } from '../features/contrast-check/gate-dialog.js';
 import { RulesPage } from '../features/rules/rules.js';
 import { ExceptionsPage } from '../features/exceptions/exceptions.js';
 import { StartPage } from '../start.js';
 import { ThemePage } from '../theme-section.js';
 import { createStudio, StudioContext, useStudio, type StudioState } from '../state/studio.js';
-import { cancelExport, confirmExport } from '../state/exports.js';
+import { cancelExport, confirmExport, exitOf, guard } from '../state/exports.js';
 import { checkSource } from '../state/work.js';
 import { LANGS, LangProvider, useLang, useT } from '../shared/i18n/i18n.js';
 import { createRouter, type Router } from './router.js';
-import { StageBar, StageFoot } from './stages.js';
+import { StageBar, StageFoot, StageLead } from './stages.js';
 import {
   BEHAVIOR_PAGES,
-  COLORS_PAGES,
   HOME,
   hrefOf,
   placeOf,
@@ -104,7 +103,12 @@ export function Studio({ state, router }: StudioProps = {}) {
           <StageBar route={route} onOpen={(next) => nav.navigate(next)} />
           {route.section === 'colors' && (
             <div class="studio-section">
-              <App view={route.view} onNavigate={openColors} foot={foot} />
+              <App
+                view={route.view}
+                onNavigate={openColors}
+                foot={foot}
+                lead={<StageLead route={route} />}
+              />
             </div>
           )}
           {route.section === 'exceptions' && <ExceptionsPage foot={foot} />}
@@ -217,9 +221,17 @@ function StudioPrefs() {
   );
 }
 
-const colorsRoute = (view: ColorsView): Route => ({ section: 'colors', view });
 const behaviorRoute = (page: BehaviorPage): Route => ({ section: 'behavior', page });
 
+/**
+ * The bar of the studio (#1402): the product, then what is outside the stages (the Theme section
+ * and the rules, where #1401 left them), then the work, always in view: the changes since the last
+ * exit (changes.tsx) and the exit, a split button that saves or downloads the preset in one click,
+ * the other formats in its menu (config-menu.tsx). The stages are not in it: they stand under it
+ * (stages.tsx, the pattern stages-in-order of the layer of the studio). Chosen on its render
+ * (vittorio, 2026-11-27, option A). The menu at the end, at every width, holds the preferences of
+ * the person; on a narrow window, where the bar hides the rest, it holds that first.
+ */
 function StudioBar({
   route,
   onImported,
@@ -228,22 +240,19 @@ function StudioBar({
   /** After Import config read a file: whether it was loaded. */
   onImported: (loaded: boolean) => void;
 }) {
-  // the verdict of the contrast gate on the work, wherever it is edited (#698)
-  const verdict = useStudio().verdict.value;
-  // what the Config menu runs, on the state; the picker of Import config drawn once
-  const { actions: configActions, input: configPicker } = useConfigMenu(onImported);
-  const colorsMenu = useRef<HTMLMdsDropdownElement>(null);
+  const studio = useStudio();
+  // what the menu of the exit runs, on the state; the picker of Import config drawn once
+  const { actions, input: configPicker } = useConfigMenu(onImported);
+  const exit = exitOf(studio);
+  const saves = studio.served.value !== null && !studio.served.value.readOnly;
+  // the formats of the menu of the exit: the preset as JSON only when the exit saves it
+  const formats = actions.filter((action) => saves || action.id !== 'config');
   const behaviorMenu = useRef<HTMLMdsDropdownElement>(null);
-  const configMenu = useRef<HTMLMdsDropdownElement>(null);
-  // an action of the Config menu closes it, unless the action keeps it open to say what it did
-  const ranConfig = (action: ConfigAction) => {
-    if (!action.keepOpen && configMenu.current) configMenu.current.visible = false;
-  };
-  // following a link of a menu closes it
+  const changesPanel = useRef<HTMLMdsDropdownElement>(null);
+  // following a link of a menu or of the panel of the changes closes it
   useEffect(() => {
-    for (const menu of [colorsMenu.current, behaviorMenu.current]) if (menu) menu.visible = false;
+    for (const menu of [behaviorMenu.current, changesPanel.current]) if (menu) menu.visible = false;
   }, [hrefOf(route)]);
-  const colorsView = route.section === 'colors' ? route.view : undefined;
   const behaviorPage = route.section === 'behavior' ? route.page : undefined;
   const sectionTone = (section: Route['section']) => (route.section === section ? 'weak' : 'text');
   const version = magmaVersionOf();
@@ -273,25 +282,6 @@ function StudioBar({
           </a>
           <mds-button
             slot="nav"
-            id="studio-colors"
-            variant="dark"
-            tone={sectionTone('colors')}
-            icon="mi/baseline/expand-more"
-            icon-position="right"
-            label={t('Colors')}
-          >
-            {/* the pairs that fail the contrast gate, on the section, in view wherever the
-                configuration is edited (#698); no pulse, the count moves with every edit */}
-            {verdict?.state === 'fail' && (
-              <mds-notification
-                slot="notification"
-                value={verdict.violations}
-                max={99}
-              ></mds-notification>
-            )}
-          </mds-button>
-          <mds-button
-            slot="nav"
             href={hrefOf({ section: 'theme' })}
             variant="dark"
             tone={sectionTone('theme')}
@@ -307,24 +297,23 @@ function StudioBar({
             icon-position="right"
             label={t('Behavior')}
           ></mds-button>
-          <mds-button
+          <ChangesButton />
+          {/* the exit: saved or downloaded in one click, through the gate; the other formats in
+              its menu */}
+          <mds-button-dropdown
             slot="nav"
-            id="studio-config"
-            variant="dark"
-            tone="text"
-            icon="mi/baseline/expand-more"
-            icon-position="right"
-            label={t('Config')}
-          ></mds-button>
+            id="studio-exit"
+            icon={saves ? 'mi/baseline/save' : 'mi/baseline/file-download'}
+            label={t(exit.label)}
+            await={studio.saving.value || undefined}
+            onmdsButtonDropdownClick={() => guard(studio, exitOf(studio))}
+          >
+            <ConfigItems actions={formats} />
+          </mds-button-dropdown>
         </mds-header-bar>
         <div slot="menu" class="studio-menu">
-          {/* the sections, where the bar hides them (style.css), then the preferences */}
+          {/* what the bar hides on a narrow window (style.css), then the preferences */}
           <nav class="studio-menu-nav" aria-label={t('Studio')}>
-            <mds-text typography="detail" tag="p" class="studio-menu-title">
-              {t('Colors')}
-            </mds-text>
-            <MenuLinks items={COLORS_PAGES} current={colorsView} routeOf={colorsRoute} />
-            <mds-separator></mds-separator>
             <mds-button
               href={hrefOf({ section: 'theme' })}
               icon={THEME_PAGE.icon}
@@ -341,23 +330,24 @@ function StudioBar({
             <MenuLinks items={BEHAVIOR_PAGES} current={behaviorPage} routeOf={behaviorRoute} />
             <mds-separator></mds-separator>
             <mds-text typography="detail" tag="p" class="studio-menu-title">
-              {t('Config')}
+              {t('Preset')}
             </mds-text>
-            <ConfigItems actions={configActions} />
+            <mds-button
+              type="button"
+              variant="dark"
+              tone="text"
+              icon={saves ? 'mi/baseline/save' : 'mi/baseline/file-download'}
+              class="studio-menu-link"
+              label={t(exit.label)}
+              data-action="exit"
+              onClick={() => guard(studio, exitOf(studio))}
+            ></mds-button>
+            <ConfigItems actions={formats} />
             <mds-separator></mds-separator>
           </nav>
           <StudioPrefs />
         </div>
       </mds-header>
-      <mds-dropdown ref={colorsMenu} target="#studio-colors" placement="bottom" strategy="fixed">
-        <div class="studio-dropdown">
-          <div class="studio-dropdown-head">
-            <GateBadge verdict={verdict} />
-          </div>
-          <mds-separator></mds-separator>
-          <MenuLinks items={COLORS_PAGES} current={colorsView} routeOf={colorsRoute} />
-        </div>
-      </mds-dropdown>
       <mds-dropdown
         ref={behaviorMenu}
         target="#studio-behavior"
@@ -368,16 +358,7 @@ function StudioBar({
           <MenuLinks items={BEHAVIOR_PAGES} current={behaviorPage} routeOf={behaviorRoute} />
         </div>
       </mds-dropdown>
-      <mds-dropdown
-        ref={configMenu}
-        target="#studio-config"
-        placement="bottom-end"
-        strategy="fixed"
-      >
-        <div class="studio-dropdown">
-          <ConfigItems actions={configActions} onRun={ranConfig} />
-        </div>
-      </mds-dropdown>
+      <ChangesPanel panel={changesPanel} />
       {configPicker}
     </>
   );

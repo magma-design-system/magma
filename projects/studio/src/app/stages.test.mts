@@ -81,7 +81,7 @@ test('a page beside a stage keeps its stage current, and has no foot', async () 
 })
 
 test('a page that is no stage has neither the stepper nor the foot', async () => {
-  for (const hash of ['#/start', '#/theme', '#/behavior/patterns', '#/colors/diffs']) {
+  for (const hash of ['#/start', '#/theme', '#/behavior/patterns']) {
     await at(hash)
     expect(stages()).toBeNull()
     expect(foot()).toBeNull()

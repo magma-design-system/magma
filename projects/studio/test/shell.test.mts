@@ -60,70 +60,99 @@ const links = (scope: Element | null) =>
     current: link.getAttribute('aria-current'),
   }))
 
-test('the bar names the three sections, Colors and Behavior opening their pages from a menu, then Config', async () => {
-  await at('#/colors/groups')
-  const nav = [...root.querySelectorAll('mds-header-bar > mds-button[slot="nav"]')]
-  expect(nav.map((one) => textOf(one))).toEqual(['Colors', 'Theme', 'Behavior', 'Config'])
-  expect(nav[0].getAttribute('tone')).toBe('weak')
-
-  const [colors, behavior] = [...root.querySelectorAll('mds-dropdown')].filter((menu) =>
-    ['#studio-colors', '#studio-behavior'].includes(String((menu as { target?: string }).target ?? menu.getAttribute('target'))),
-  )
-  expect(links(colors).map(({ text }) => text)).toEqual([
-    'Palette', 'Contrast scales', 'Semantic surface', 'Themes', 'Groups', 'Contrast check', 'Diffs',
+// The bar (#1402, option A of its renders): the product, the Theme section and the rules, then the
+// work, always in view: the changes since the last exit and the exit, saved or downloaded in one
+// click, the other formats in the menu of its split button. The stages stand under it.
+test('the bar names the Theme section and the rules, then the changes and the exit', async () => {
+  await at('#/behavior/patterns')
+  const nav = [...root.querySelectorAll('mds-header-bar > [slot="nav"]')]
+  expect(nav.map((one) => [one.localName, textOf(one) ?? (one as { label?: string }).label])).toEqual([
+    ['mds-button', 'Theme'],
+    ['mds-button', 'Behavior'],
+    ['mds-button', 'No changes'],
+    ['mds-button-dropdown', 'Download the preset'],
   ])
-  expect(links(colors).find(({ current }) => current === 'page')?.href).toBe('#/colors/groups')
-  // the outline icons, the filled one for the page shown
-  const icons = [...colors.querySelectorAll('mds-button[href]')].map((link) => link.getAttribute('icon'))
-  expect(icons).toEqual([
-    'mi/outline/palette', 'mi/outline/contrast', 'mi/outline/account-tree', 'mi/outline/theater-comedy',
-    'mi/baseline/workspaces', 'mi/outline/fact-check', 'mi/outline/difference',
-  ])
+  // the section of the page shown, marked; no menu of Colors, no Config
+  expect(nav[1].getAttribute('tone')).toBe('weak')
+  expect(root.querySelector('#studio-colors, #studio-config')).toBeNull()
+  const behavior = [...root.querySelectorAll('mds-dropdown')].find(
+    (menu) => String((menu as { target?: string }).target ?? menu.getAttribute('target')) === '#studio-behavior',
+  )!
   expect(links(behavior).map(({ text }) => text)).toEqual(['Design language', 'Patterns', 'Blocks'])
-  // the verdict of the contrast gate heads the Colors menu, once the configuration is judged
-  const badge = await vi.waitFor(() => {
-    const found = colors.querySelector('mds-badge')
-    if (!found) throw new Error('no verdict yet')
-    return found
-  })
-  expect(badge.getAttribute('label')).toBe('All contrasts are OK')
+  expect(links(behavior).find(({ current }) => current === 'page')?.href).toBe('#/behavior/patterns')
 })
 
-// Config, after the sections of the bar, a menu of actions (config-menu.tsx): it brings a
-// configuration in and takes it out from any section, each action with the format of what it reads
-// or hands over in a badge the click goes through; the menu of a narrow window lists them too
-test('the Config menu of the bar imports and exports the configuration from any section', async () => {
+test('the changes of the bar: how many since the last exit, listed by stage, each a link to it', async () => {
+  const studio = createStudio({ api: false })
+  await at('#/theme', studio)
+  const button = () => textOf(root.querySelector('#studio-changes'))
+  const panel = () =>
+    [...root.querySelectorAll('mds-dropdown')].find(
+      (menu) => String((menu as { target?: string }).target ?? menu.getAttribute('target')) === '#studio-changes',
+    )!
+  expect(button()).toBe('No changes')
+  expect(panel().textContent).toContain('No changes since the last exit.')
+  // two values of Colours, one of Weights
+  studio.config.value = {
+    ...studio.config.value,
+    smooth: true,
+    colorspace: 'OKLCH',
+    theme: { ...studio.config.value.theme!, text: { ...studio.config.value.theme!.text, muted: 75 } },
+  } as typeof studio.config.value
+  await vi.waitFor(() => expect(button()).toBe('3 changes'))
+  expect(panel().querySelector('[id="studio-changes-title"]')?.textContent).toBe('3 changes since the last exit')
+  expect(links(panel())).toEqual([
+    { text: '1. Colors: 2 changes', href: '#/colors/palette', current: null },
+    { text: '2. Weights: 1 change', href: '#/colors/semantic-surface', current: null },
+  ])
+  const lines = [...panel().querySelectorAll('mds-text[tag="p"].ps-inset')].map((one) => one.textContent)
+  expect(lines).toEqual([
+    'the preset: Colorspace: from HSL to OKLCH',
+    'the preset: Smooth: from no to yes',
+    `text-muted: from ${(initialConfig as { theme: { text: { muted: number } } }).theme.text.muted} to 75`,
+  ])
+  // the exit brings the count back to none
+  const files: string[] = []
+  studio.download = (file) => void files.push(file.name)
+  root.querySelector('#studio-exit')!.dispatchEvent(new CustomEvent('mdsButtonDropdownClick'))
+  await vi.waitFor(() => expect(button()).toBe('No changes'))
+  expect(files).toEqual(['magma-design-tokensrc.json'])
+})
+
+// The exit (#1402): the preset saved or downloaded by the split button, through the gate; its menu
+// the other formats, each with the format of what it hands over in a badge the click goes through,
+// Import config last, apart, until the opening holds it; the menu of a narrow window lists them too
+test('the exit saves or downloads the preset in one click, the other formats in its menu', async () => {
   await at('#/theme')
-  const menu = [...root.querySelectorAll('mds-dropdown')].find(
-    (one) => String((one as { target?: string }).target ?? one.getAttribute('target')) === '#studio-config',
-  )!
-  // each action a button, the badge of its format right after it
+  const exit = root.querySelector('#studio-exit')!
+  expect((exit as { label?: string }).label ?? exit.getAttribute('label')).toBe('Download the preset')
+  // each format a button, the badge of its format right after it
   const items = () =>
-    [...menu.querySelectorAll('mds-button')].map((button) => [
+    [...exit.querySelectorAll('mds-button')].map((button) => [
       button.getAttribute('label'),
       button.nextElementSibling?.localName === 'mds-badge' ? button.nextElementSibling.getAttribute('label') : null,
     ])
   await vi.waitFor(() => expect(items().length).toBeGreaterThan(0))
+  // on its own the studio downloads the preset: the menu does not repeat it
   expect(items()).toEqual([
-    ['Import config', 'json'],
-    ['Copy JSON', null],
     ['Download all tokens', 'misc'],
-    ['Download config', 'json'],
     ['Download Figma tokens', 'DTCG'],
     ['Download CSS tokens', 'css'],
     ['Download GIMP palette', 'gpl'],
+    ['Copy JSON', null],
+    ['Import config', 'json'],
   ])
   // the format is part of the name of the action, its badge hidden
-  const figma = menu.querySelector('mds-button[data-action="figma"]')!
+  const figma = exit.querySelector('mds-button[data-action="figma"]')!
   expect(figma.getAttribute('aria-label')).toBe('Download Figma tokens, DTCG')
   expect(figma.parentElement?.querySelector('mds-badge')?.getAttribute('aria-hidden')).toBe('true')
-  // the take-outs after a separator
-  expect(menu.querySelectorAll('mds-separator').length).toBe(1)
-  // and in the menu of a narrow window
+  // Import config apart, after a separator
+  expect(exit.querySelectorAll('mds-separator').length).toBe(1)
+  // and in the menu of a narrow window, the exit first
   const narrow = within(root).getByRole('navigation', { name: 'Studio' })
-  expect([...narrow.querySelectorAll('mds-button[data-action]')].map((one) => one.getAttribute('label')))
-    .toContain('Import config')
-  // a download from the Theme section hands over its file
+  expect([...narrow.querySelectorAll('mds-button[data-action]')].map((one) => one.getAttribute('data-action')))
+    .toEqual(['exit', 'zip', 'figma', 'css', 'gimp', 'copy', 'import'])
+  // a download of its menu from the Theme section hands over its file
   const files: string[] = []
   vi.stubGlobal('URL', Object.assign(Object.create(URL), {
     createObjectURL: () => 'blob:tokens',
@@ -135,12 +164,23 @@ test('the Config menu of the bar imports and exports the configuration from any 
       files.push(this.download)
     })
   try {
-    menu.querySelector<HTMLElement>('mds-button[data-action="config"]')!.click()
-    await vi.waitFor(() => expect(files).toEqual(['magma-design-tokensrc.json']))
+    exit.querySelector<HTMLElement>('mds-button[data-action="css"]')!.click()
+    await vi.waitFor(() => expect(files).toEqual(['magma-css.zip']))
   } finally {
     click.mockRestore()
     vi.unstubAllGlobals()
   }
+})
+
+test('served by a command that takes saves, the exit saves the preset and its menu downloads it', async () => {
+  const studio = createStudio({ api: false })
+  studio.served.value = { path: '/project/.magma-design-tokensrc.json', readOnly: null }
+  await at('#/theme', studio)
+  const exit = root.querySelector('#studio-exit')!
+  expect((exit as { label?: string }).label ?? exit.getAttribute('label')).toBe('Save the preset')
+  expect(exit.getAttribute('icon')).toBe('mi/baseline/save')
+  expect([...exit.querySelectorAll('mds-button[data-action]')].map((one) => one.getAttribute('data-action')))
+    .toEqual(['config', 'zip', 'figma', 'css', 'gimp', 'copy', 'build', 'import'])
 })
 
 // The Start page comes before the sections (start.tsx): a start with no address opens it, the
@@ -152,9 +192,9 @@ test('a start with no address opens the Start page, which the name of the studio
   const start = startPage()
   expect(start?.querySelector('mds-text[tag="h1"]')?.textContent?.trim()).toBe(START_TITLE)
   expect(product().getAttribute('href')).toBe('#/start')
-  // no section of the bar is the one on screen, and Config is no section
+  // no section of the bar is the one on screen; the changes are outlined
   const nav = [...root.querySelectorAll('mds-header-bar > mds-button[slot="nav"]')]
-  expect(nav.map((one) => one.getAttribute('tone'))).toEqual(['text', 'text', 'text', 'text'])
+  expect(nav.map((one) => one.getAttribute('tone'))).toEqual(['text', 'text', 'outline'])
   expect(links(start).find(({ text }) => text === 'Open the palette')?.href).toBe('#/colors/palette')
 })
 
@@ -438,9 +478,9 @@ test('the studio follows the language of <html lang> at once', async () => {
   try {
     await at('#/start')
     const nav = () => [...root.querySelectorAll('mds-header-bar > mds-button[slot="nav"]')].map((one) => textOf(one))
-    expect(nav()).toEqual(['Colori', 'Tema', 'Regole', 'Configurazione'])
+    expect(nav()).toEqual(['Tema', 'Regole', 'Nessuna modifica'])
     document.documentElement.lang = 'en'
-    await vi.waitFor(() => expect(nav()).toEqual(['Colors', 'Theme', 'Behavior', 'Config']))
+    await vi.waitFor(() => expect(nav()).toEqual(['Theme', 'Behavior', 'No changes']))
   } finally {
     document.documentElement.lang = ''
   }

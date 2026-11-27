@@ -5,6 +5,8 @@ import { clearDraft, hashText, reconcileDraft, type DraftSource } from './draft.
 import {
   adoptConfig,
   bundled,
+  markExited,
+  presetJson,
   ratiosOf,
   type CloneableConfig,
   type StudioState,
@@ -87,6 +89,10 @@ export async function checkSource(state: StudioState): Promise<void> {
       };
     // a draft written before drafts kept what was loaded (#1330) was made on this source
     if (boot && !boot.loadedRatios) state.loadedRatios.value = ratiosOf(sourceConfig);
+    // a draft kept, written before drafts kept the last exit (#1402): its changes are counted
+    // from the source it was made on
+    if (decision.use === 'draft' && boot && !boot.baseline)
+      state.baseline.value = presetJson(sourceConfig, state.themeChoices.peek());
     state.origin.value = { ...source, json };
   });
 }
@@ -179,6 +185,8 @@ export async function saveConfig(state: StudioState): Promise<void> {
     batch(() => {
       state.savedJson.value = json;
       state.origin.value = { path: written.path ?? served.path, hash: hashText(json), json };
+      // the preset left the studio: the changes are counted from it now
+      if (state.json.peek() === json) markExited(state);
     });
     sayForAMoment(state, { text: msg('saved') }, 1500);
   } catch (error) {

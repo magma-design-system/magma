@@ -38,7 +38,6 @@ export const COLORS_VIEWS = [
   'themes',
   'groups',
   'contrast',
-  'diff',
 ] as const;
 export type ColorsView = (typeof COLORS_VIEWS)[number];
 
@@ -126,8 +125,8 @@ export const PAGES: readonly Page[] = [
     label: msg('Groups'),
     icon: 'mi/baseline/workspaces',
   },
-  // the pages that check the work against what Magma builds: the contrast gate, the committed
-  // palette
+  // the page that checks the work against what Magma builds: the contrast gate (Diffs, the
+  // palette against Magma's, went in #1402: the changes are the bar's)
   {
     section: 'colors',
     id: 'contrast',
@@ -135,13 +134,6 @@ export const PAGES: readonly Page[] = [
     label: msg('Contrast check'),
     icon: 'mi/baseline/fact-check',
     apart: true,
-  },
-  {
-    section: 'colors',
-    id: 'diff',
-    slug: 'diffs',
-    label: msg('Diffs'),
-    icon: 'mi/baseline/difference',
   },
   { section: 'theme', id: 'theme', slug: '', label: msg('Theme'), icon: 'mi/baseline/format-size' },
   {

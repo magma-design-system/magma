@@ -76,7 +76,7 @@ test('one table holds the pages: the menus of Colors and Behavior, and the Theme
     ...BEHAVIOR_PAGES.map(() => 'behavior'),
   ])
   expect(COLORS_PAGES.map(({ label }) => label)).toEqual([
-    'Palette', 'Contrast scales', 'Semantic surface', 'Themes', 'Groups', 'Contrast check', 'Diffs',
+    'Palette', 'Contrast scales', 'Semantic surface', 'Themes', 'Groups', 'Contrast check',
   ])
   expect(BEHAVIOR_PAGES.map(({ label }) => label)).toEqual(['Design language', 'Patterns', 'Blocks'])
   expect([THEME_PAGE.label, THEME_PAGE.icon]).toEqual(['Theme', 'mi/baseline/format-size'])
@@ -88,7 +88,9 @@ test('one table holds the pages: the menus of Colors and Behavior, and the Theme
 // ids came down from state/draft.ts and scene-prefs.tsx, so the table imports no page)
 test('the ids of the pages of Colors and of the modes are those the table and the addresses use', () => {
   expect(COLORS_PAGES.map(({ id }) => id)).toEqual([...COLORS_VIEWS])
-  expect(colorsViewOf('diff')).toBe('diff')
+  expect(colorsViewOf('contrast')).toBe('contrast')
+  // Diffs went in #1402: a draft saved on it opens on the page of Colors it lands on
+  expect(colorsViewOf('diff')).toBeUndefined()
   expect(colorsViewOf('palette')).toBeUndefined()
   for (const mode of MODE_VIEWS)
     expect(routeOf(hrefOf({ section: 'theme', theme: 'editorial', mode }))).toEqual({
@@ -135,7 +137,6 @@ test('a page is a stage, a page beside one, or outside the flow', () => {
     { section: 'theme' },
     { section: 'theme', theme: 'editorial', mode: 'dark' },
     { section: 'behavior', page: 'patterns' },
-    { section: 'colors', view: 'diff' },
   ] as Route[])
     expect(placeOf(route)).toBeUndefined()
 })

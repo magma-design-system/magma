@@ -120,8 +120,6 @@ export const IT_PALETTE: Record<string, string> = {
     "I rapporti, la formula e l'esportazione di ogni gruppo della configurazione.",
   'Every pair the contrast gate judges, in each theme and both modes: what the build of Magma would say of this configuration.':
     'Ogni coppia giudicata dalla verifica del contrasto, in ogni tema e in entrambe le modalità: quello che la build di Magma direbbe di questa configurazione.',
-  'The palette against the configuration Magma builds with.':
-    'La palette a confronto con la configurazione con cui si compila Magma.',
 
   // the head of the pages, its saving and the draft restored (app.tsx, state/draft.ts, state/work.ts)
   'Discard the loaded configuration and every local change, back to the one Magma builds with':
@@ -167,7 +165,6 @@ export const IT_PALETTE: Record<string, string> = {
   'Copy JSON': 'Copia JSON',
   'Copied!': 'Copiato!',
   'Download all tokens': 'Scarica tutti i token',
-  'Download config': 'Scarica configurazione',
   'Download Figma tokens': 'Scarica token per Figma',
   'Download CSS tokens': 'Scarica token CSS',
   'Download GIMP palette': 'Scarica palette GIMP',

@@ -643,7 +643,7 @@ test('choosing a reference in the dialog makes a reference in the variant group'
   expect(heading()).toBe('variant.sky')
 })
 
-test('the head of a page keeps Reset in view; the Config menu brings the configuration in and takes it out', async () => {
+test('the head of a page keeps Reset in view; the menu of the exit brings the configuration in and takes it out', async () => {
   // nothing that imports or exports is left in the head, and no menu for one action
   const head = pageHead()!
   expect(head.querySelector('mds-button-dropdown')).toBeNull()
@@ -654,13 +654,13 @@ test('the head of a page keeps Reset in view; the Config menu brings the configu
 
   // the actions, in their order, each with the format it reads or hands over
   expect(actions.map(({ label, format }) => [label, format])).toEqual([
-    ['Import config', 'json'],
-    ['Copy JSON', undefined],
+    ['Download the preset', 'json'],
     ['Download all tokens', 'misc'],
-    ['Download config', 'json'],
     ['Download Figma tokens', 'DTCG'],
     ['Download CSS tokens', 'css'],
     ['Download GIMP palette', 'gpl'],
+    ['Copy JSON', undefined],
+    ['Import config', 'json'],
   ])
 
   // each download hands over the file it says
