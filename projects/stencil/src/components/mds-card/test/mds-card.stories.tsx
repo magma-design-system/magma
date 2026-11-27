@@ -1,6 +1,7 @@
 import { h } from '@stencil/core';
 import { expect, waitFor } from 'storybook/test';
 import { URLs } from '../../mds-img/meta/storybook';
+import { StateCell, StatesGrid } from '@fixture/states';
 
 export default {
   title: 'UI / Structure / Card',
@@ -555,4 +556,153 @@ export const LoneActionInAGrid = {
       }
     });
   },
+};
+
+/**
+ * Every state of the card once the story has opened (#1440, @fixture/states). The card names its
+ * layout after the regions it holds, so the states are its layouts: each set of regions, stacked
+ * as in a cell of the grid, then the five layouts that set the media beside the other regions in
+ * a card wider than 30em, in cells two columns wide (from three columns of the grid: a card
+ * reads its own width, never the window). Then the regions as plain elements with their `slot`,
+ * the grid left to the author (`disable-auto-grid`), the colours of a product
+ * (`--mds-card-background` and `--mds-card-color` together), a badge in front of the media (the
+ * `content` slot of mds-card-media), the footer with one action, a card taller than its regions
+ * (the footer at the bottom, the free space above it) and the empty card. The parts
+ * (mds-card-header, -media, -content, -footer) have no story of their own: their states are
+ * here. The card takes no interaction of its own: no state needs a play.
+ */
+interface CardState {
+  state: string;
+  /** the regions, by their initials: header, media, content, footer */
+  regions: string;
+  /** two columns of the grid, for a card wider than 30em */
+  wide?: boolean;
+  card?: Record<string, string | boolean>;
+  style?: Record<string, string>;
+  /** a badge in front of the media */
+  mediaContent?: boolean;
+  /** the footer with one action */
+  oneAction?: boolean;
+  /** the regions as plain elements with their slot */
+  plain?: boolean;
+}
+
+const regionsOf = (initials: string) =>
+  [
+    initials.includes('h') && 'header',
+    initials.includes('m') && 'media',
+    initials.includes('c') && 'content',
+    initials.includes('f') && 'footer',
+  ]
+    .filter(Boolean)
+    .join(', ');
+
+const layouts = ['hmcf', 'hmc', 'hmf', 'hcf', 'mcf', 'hm', 'hc', 'hf', 'mc', 'mf', 'cf'];
+const wideLayouts = ['hmcf', 'hmc', 'hmf', 'mcf', 'mc'];
+
+const cardStates: CardState[] = [
+  ...layouts.map((regions) => ({ state: regionsOf(regions), regions })),
+  { state: 'header only', regions: 'h' },
+  { state: 'media only', regions: 'm' },
+  { state: 'content only', regions: 'c' },
+  { state: 'footer only', regions: 'f' },
+  // each card two columns wide beside a cell one column wide, so the rows stay full
+  ...wideLayouts.flatMap((regions, index): CardState[] => [
+    { state: `wider than 30em: ${regionsOf(regions)}`, regions, wide: true },
+    [
+      { state: 'regions as elements with their slot', regions: 'hmcf', plain: true },
+      { state: 'disable-auto-grid', regions: 'hmcf', card: { 'disable-auto-grid': true } },
+      {
+        state: 'background and text of a product',
+        regions: 'hc',
+        style: {
+          '--mds-card-background': 'rgb(var(--magma-accent-emphasis))',
+          '--mds-card-color': 'rgb(var(--magma-text-on-emphasis))',
+        },
+      },
+      { state: 'a badge in front of the media', regions: 'hmc', mediaContent: true },
+      { state: 'footer with one action', regions: 'hcf', oneAction: true },
+    ][index],
+  ]),
+  {
+    state: 'taller than its regions, the footer at the bottom',
+    regions: 'hf',
+    card: { class: 'min-h-8000' },
+  },
+  { state: 'empty', regions: '' },
+];
+
+const header = (
+  <div class="grid gap-0">
+    <mds-text typography="h6">Richiesta 2026/114</mds-text>
+    <mds-text typography="caption">Ufficio tributi</mds-text>
+  </div>
+);
+const image = <mds-img src={URLs[0]} alt="" class="object-cover"></mds-img>;
+const text = (
+  <mds-text>Il contribuente chiede il rimborso della TARI versata due volte per il 2025.</mds-text>
+);
+const actions = (oneAction?: boolean) =>
+  oneAction
+    ? [
+        <mds-button key="apri" variant="primary" tone="outline">
+          Apri la pratica
+        </mds-button>,
+      ]
+    : [
+        <mds-button key="rifiuta" variant="dark" tone="outline">
+          Rifiuta
+        </mds-button>,
+        <mds-button key="accogli" variant="primary" tone="outline">
+          Accogli
+        </mds-button>,
+      ];
+
+const regionsAsParts = ({ regions, mediaContent, oneAction }: CardState) => [
+  regions.includes('h') && <mds-card-header key="header">{header}</mds-card-header>,
+  regions.includes('m') && (
+    <mds-card-media key="media">
+      {image}
+      {mediaContent && <mds-badge slot="content">In evidenza</mds-badge>}
+    </mds-card-media>
+  ),
+  regions.includes('c') && <mds-card-content key="content">{text}</mds-card-content>,
+  regions.includes('f') && <mds-card-footer key="footer">{actions(oneAction)}</mds-card-footer>,
+];
+
+const regionsAsElements = () => [
+  <div key="header" slot="header">
+    {header}
+  </div>,
+  <mds-img key="media" slot="media" src={URLs[0]} alt="" class="object-cover"></mds-img>,
+  <mds-text key="content" slot="content">
+    Il contribuente chiede il rimborso della TARI versata due volte per il 2025.
+  </mds-text>,
+  <div key="footer" slot="footer" class="flex gap-200 justify-end">
+    {actions()}
+  </div>,
+];
+
+// a card wider than 30em: from three columns of the grid its cell takes two (a container query
+// of the frame, which the cells cannot ask for)
+const wideCells = `@container (width >= 48rem) { ${cardStates
+  .filter(({ wide }) => wide)
+  .map(({ state }) => `section[data-state="${state}"]`)
+  .join(', ')} { grid-column: span 2; } }`;
+
+const TemplateStates = () => (
+  <StatesGrid>
+    <style>{wideCells}</style>
+    {cardStates.map((cardState) => (
+      <StateCell key={cardState.state} state={cardState.state}>
+        <mds-card {...cardState.card} style={cardState.style}>
+          {cardState.plain ? regionsAsElements() : regionsAsParts(cardState)}
+        </mds-card>
+      </StateCell>
+    ))}
+  </StatesGrid>
+);
+
+export const States = {
+  render: TemplateStates,
 };
