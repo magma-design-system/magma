@@ -1,4 +1,5 @@
 import { h } from '@stencil/core';
+import { StateCell, StatesGrid } from '@fixture/states';
 
 export default {
   title: 'UI / Data / Price table',
@@ -345,4 +346,110 @@ export const Default = {
   args: {
     label: 'Report e analisi',
   },
+};
+
+/**
+ * Every state the price table has of its own once the story has opened (#1440, @fixture/states):
+ * the two arrangements its parts make, a plan stacked over its own features (the narrow layout)
+ * and the comparison, the band of the plans over one matrix whose columns line up with them,
+ * with three plans and with two. The table has no props: a product picks the arrangement by the
+ * width it has, so the comparison cells span the whole grid, as wide as a page. What a plan, the
+ * band and the matrix show is in the stories of their parts. No state needs an interaction.
+ */
+interface TableState {
+  state: string;
+  /** the comparison: the band of the plans over one matrix */
+  comparison?: boolean;
+  plans: string[];
+}
+
+const plans = ['Piano base', 'Piano professionale', 'Piano enti'];
+const prices: Record<string, string> = {
+  'Piano base': '49 euro',
+  'Piano professionale': '99 euro',
+  'Piano enti': '149 euro',
+};
+const matrix: [string, ...string[]][] = [
+  ['Firma digitale', 'supported', 'supported', 'supported'],
+  ['Utenti', '10', '20', 'Illimitati'],
+  ['Spazio per utente', '10 GB', '20 GB', '1 TB'],
+  ['Conservazione a norma', 'unsupported', 'supported', 'supported'],
+];
+
+const Plan = ({ name }: { name: string }) => (
+  <mds-price-table-list>
+    <mds-text typography="h5" tag="h4" slot="header">
+      {name}
+    </mds-text>
+    <mds-text typography="detail" slot="header">
+      Per gli uffici che gestiscono le pratiche online.
+    </mds-text>
+    <mds-text typography="h2" tag="p" slot="price">
+      {prices[name]}
+    </mds-text>
+    <mds-button slot="action" variant="dark">
+      Inizia
+    </mds-button>
+  </mds-price-table-list>
+);
+
+const Features = ({ columns }: { columns: number }) => (
+  <mds-price-table-features label="Funzioni incluse">
+    {matrix.map(([feature, ...values]) => (
+      <mds-price-table-features-row key={feature}>
+        <mds-price-table-features-cell type="label">{feature}</mds-price-table-features-cell>
+        {values
+          .slice(0, columns)
+          .map((value, index) =>
+            value === 'supported' || value === 'unsupported' ? (
+              <mds-price-table-features-cell
+                key={index}
+                type={value}
+              ></mds-price-table-features-cell>
+            ) : (
+              <mds-price-table-features-cell key={index}>{value}</mds-price-table-features-cell>
+            ),
+          )}
+      </mds-price-table-features-row>
+    ))}
+  </mds-price-table-features>
+);
+
+const tableStates: TableState[] = [
+  { state: 'stacked, a plan over its features', plans: plans.slice(0, 1) },
+  { state: 'comparison, three plans', comparison: true, plans },
+  { state: 'comparison, two plans', comparison: true, plans: plans.slice(0, 2) },
+];
+
+const TemplateStates = () => (
+  <StatesGrid>
+    {tableStates.map(({ state, comparison, plans: names }) => (
+      <div key={state} class={comparison ? 'col-span-full' : undefined}>
+        <StateCell state={state}>
+          {comparison ? (
+            <mds-price-table>
+              <mds-price-table-header class={names.length === 3 ? 'grid-cols-4' : 'grid-cols-3'}>
+                <mds-text typography="h3" tag="h3">
+                  Scegli il piano per il tuo ufficio
+                </mds-text>
+                {names.map((name) => (
+                  <Plan key={name} name={name}></Plan>
+                ))}
+              </mds-price-table-header>
+              <Features columns={names.length}></Features>
+            </mds-price-table>
+          ) : (
+            <mds-price-table>
+              <Plan name={names[0]}></Plan>
+              <Features columns={1}></Features>
+            </mds-price-table>
+          )}
+        </StateCell>
+      </div>
+    ))}
+  </StatesGrid>
+);
+
+export const States = {
+  render: TemplateStates,
 };

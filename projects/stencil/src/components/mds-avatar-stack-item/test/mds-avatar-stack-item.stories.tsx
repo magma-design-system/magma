@@ -1,4 +1,5 @@
 import { h } from '@stencil/core';
+import { StateCell, StatesGrid } from '@fixture/states';
 import { themeFullVariantAvatarDictionary } from '@type/variant';
 import { toneMinimalVariantDictionary } from '@type/tone';
 
@@ -76,4 +77,78 @@ export const Variant = {
     initials: 'el',
     variant: 'blue',
   },
+};
+
+/**
+ * Every state an item has of its own once the story has opened (#1440, @fixture/states), each in
+ * a stack of its own, three items alike so the overlap and its ring show: initials in the weak
+ * tone it starts from and in the strong one, the photo, the person glyph when nothing is set, each
+ * variant on the glyph in both tones (initials pick their own colour and leave the variant out),
+ * and the count set by hand, which takes the neutral wash of the counter. The sizes, the counter
+ * of `total` and the avatars added later belong to the stack: they are in the story of
+ * mds-avatar-stack. No state needs an interaction.
+ */
+interface ItemState {
+  state: string;
+  items: Record<string, string | number>[];
+}
+
+const initials = ['MR', 'GB', 'LV'];
+const itemVariants = [
+  'primary',
+  'blue',
+  'green',
+  'orange',
+  'violet',
+  'error',
+  'warning',
+  'success',
+  'info',
+];
+
+const itemStates: ItemState[] = [
+  { state: 'initials, tone weak (default)', items: initials.map((value) => ({ initials: value })) },
+  {
+    state: 'initials, tone strong',
+    items: initials.map((value) => ({ initials: value, tone: 'strong' })),
+  },
+  {
+    state: 'photo',
+    items: [
+      { src: './avatar-01-200x200.jpeg', initials: 'MR' },
+      { src: './avatar-03-200x200.jpeg', initials: 'GB' },
+      { src: './avatar-04-200x200.jpeg', initials: 'LV' },
+    ],
+  },
+  { state: 'nothing set, person glyph (weak, strong)', items: [{}, { tone: 'strong' }] },
+  ...itemVariants.map((variant): ItemState => ({
+    state: `variant ${variant}, glyph (weak, strong)`,
+    items: [{ variant }, { variant, tone: 'strong' }],
+  })),
+  {
+    state: 'initials ignore the variant',
+    items: initials.map((value) => ({ initials: value, variant: 'green' })),
+  },
+  { state: 'count set by hand', items: [{ initials: 'MR' }, { initials: 'GB' }, { count: 6 }] },
+  { state: 'count over 99', items: [{ initials: 'MR' }, { count: 240 }] },
+];
+
+const TemplateStates = () => (
+  <StatesGrid>
+    {itemStates.map(({ state, items }) => (
+      <StateCell key={state} state={state}>
+        <div class="flex">
+          <mds-avatar-stack>
+            {items.map((item, index) => (
+              <mds-avatar-stack-item key={index} {...item}></mds-avatar-stack-item>
+            ))}
+          </mds-avatar-stack>
+        </div>
+      </StateCell>
+    ))}
+  </StatesGrid>
+);
+
+export const States = {
+  render: TemplateStates,
 };
