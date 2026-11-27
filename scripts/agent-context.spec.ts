@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import {
   BUDGET,
+  DESCRIPTION,
   PARADIGM,
   checkContext,
   isContext,
@@ -250,6 +251,25 @@ describe('checkContext', () => {
         `${skill}: the description is empty or longer than 1,536 characters (0)`,
       ],
     );
+  });
+
+  it('holds a description in the listing of the skills within DESCRIPTION, for the products too', () => {
+    const skill = '.claude/skills/maint/skills/triage/SKILL.md';
+    const product = 'projects/claude-plugin/skills/ui/SKILL.md';
+    const long = 'Triage. '.repeat(40).trim();
+    const plugin = (flag = '', description = long) => ({
+      '.claude/skills/maint/.claude-plugin/plugin.json': '{"name": "maint-dev"}',
+      [skill]: `---\nname: triage\ndescription: ${description}\n${flag}---\n`,
+      'AGENTS.md': `${AGENTS}\nThe skill \`/maint-dev:triage\`.`,
+    });
+    const over = `the description is ${long.length} characters, over ${DESCRIPTION}: what the skill does, when to use it and the words that call it; the rest goes in its body`;
+    assert.ok(long.length > DESCRIPTION);
+    assert.deepEqual(errorsOf(plugin()), [`${skill}: ${over}`]);
+    assert.deepEqual(errorsOf(plugin('disable-model-invocation: true\n')), []);
+    assert.deepEqual(errorsOf(plugin('', 'x'.repeat(DESCRIPTION))), []);
+    assert.deepEqual(errorsOf({ [product]: `---\nname: ui\ndescription: ${long}\n---\n` }), [
+      `${product}: ${over}`,
+    ]);
   });
 
   it('holds what the files of paradigm-check copy of each other', () => {

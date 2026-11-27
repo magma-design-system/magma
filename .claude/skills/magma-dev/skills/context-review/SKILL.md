@@ -1,6 +1,6 @@
 ---
 name: context-review
-description: Review the agent context of this repository at the end of a unit of work, before its pull request - bring AGENTS.md, docs/, the READMEs and SPECs, the guides of docs/agents/ and the skills up to date with what the branch changed, and check that what every session loads stays small. Use when a unit of work is done, before opening or updating its pull request, or when asked whether the docs and the agent context are current.
+description: Review the agent context of this repository before the pull request of a unit of work - bring AGENTS.md, docs/, the READMEs and the skills up to date with the branch, and keep what every session loads small. Use when a unit of work is done, or when asked whether the docs are current.
 argument-hint: [base branch, main by default]
 ---
 

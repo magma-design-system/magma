@@ -24,7 +24,8 @@
     "skills-directory plugin"); a `name` in a skill's frontmatter is the name of its folder, since
     it would replace the command, and its description is there, at most 1,536 characters, where
     the listing of the skills cuts it (https://code.claude.com/docs/en/skills.md, "Frontmatter
-    reference");
+    reference"), and at most `DESCRIPTION` characters when the skill is in that listing, as every
+    skill of the plugin of the products (projects/claude-plugin/skills) is;
   - counts: a count of the components in figures, three of them ("117 components": a smaller
     number is an example, "two components"), is the number of folders of
     projects/stencil/src/components; a count of tools in the documents of the MCP server
@@ -72,6 +73,18 @@ import { readProjectGraph, sectionOf, type ProjectGraph } from './diagrams.ts';
  * section read for one kind of task into a document the index of AGENTS.md routes to.
  */
 export const BUDGET = 6500;
+
+/**
+ * The longest description of a skill Claude Code lists in every session: what it does, when to
+ * use it, the words that call it; the rest goes in its body (#1575). The listing has a budget of
+ * 1% of the context window, shared with every plugin the person has enabled, and when it does not
+ * fit Claude Code drops the descriptions of the skills used least and keeps their names
+ * (https://code.claude.com/docs/en/skills.md, "Skill descriptions are cut short"): a skill listed
+ * by name only is not chosen from what the person says. On 2026-11-27 seven skills of magma-dev
+ * were listed by name only. It holds the skills of the plugin of the products too, listed there
+ * beside their own plugins; a skill only a person launches is out of the listing, so out of it.
+ */
+export const DESCRIPTION = 300;
 
 /** The folder of the skill that judges the issues and pull requests of contributors (#1546). */
 export const PARADIGM = '.claude/skills/magma-dev/skills/paradigm-check';
@@ -408,6 +421,12 @@ export const checkContext = (repository: Repository): Report => {
       if (!projects.includes(name))
         errors.push(`AGENTS.md: "Sub-projects and build order" lists ${name}, not a project`);
   }
+  const listed = (file: string, description: string) => {
+    if (description.length > DESCRIPTION)
+      errors.push(
+        `${file}: the description is ${description.length} characters, over ${DESCRIPTION}: what the skill does, when to use it and the words that call it; the rest goes in its body`,
+      );
+  };
   const skills = skillsOf(files, read, errors);
   for (const skill of skills) {
     if (!new RegExp(`(^|[\\s\`(,])${literal(skill.command)}\\b`).test(agents))
@@ -421,7 +440,11 @@ export const checkContext = (repository: Repository): Report => {
       errors.push(
         `${skill.file}: the description is empty or longer than 1,536 characters (${description.length})`,
       );
+    else if (keys.get('disable-model-invocation') !== 'true') listed(skill.file, description);
   }
+  for (const file of files)
+    if (/^projects\/claude-plugin\/skills\/[^/]+\/SKILL\.md$/.test(file))
+      listed(file, frontmatter(read(file) ?? '').get('description') ?? '');
 
   // counts
   const components = new Set(
