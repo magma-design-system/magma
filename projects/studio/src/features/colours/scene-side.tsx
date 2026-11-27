@@ -12,7 +12,7 @@ import { IT_COLOURS } from './i18n-it.js';
   room, the ramps of the family, or the scene, a page of a product small as a phone, painted with
   the preset at every change, so a change (a hue shifting above all) shows on real components while
   it is made (vittorio, 2026-11-06). The page is the scene of the Theme section, set as that section
-  sets it (frame.ts) with the palette and the themes the Themes page exports (scene-css.ts); a
+  sets it (frame.ts) with the palette and the themes of the stage Themes (scene-css.ts); a
   theme of one mode is seen in that mode only. Narrower, the side is the ramps alone, in the flow
   of the page: the frame wants the room of a column of its own.
 
