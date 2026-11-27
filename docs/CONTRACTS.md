@@ -237,13 +237,16 @@ keep in step.
 - **Contract**: [`docs/agents/SPEC.md`](agents/SPEC.md) (the entry point and the targets);
   [`projects/stencil/SPEC.md`](../projects/stencil/SPEC.md), "Per-component usage docs".
 - **Read by**: the agents of consumer projects, the MCP `get_guide`, the skills of the Claude
-  Code plugin (`projects/claude-plugin/scripts/skills.ts`), the docs site; the studio reads the
-  tables of the section Variants of `docs/agents/variants.md` and of its section Tones, from the
-  repository (`projects/studio/src/paints.ts`: the colour variants, their kinds, the order of
-  the tones).
+  Code plugin (`projects/claude-plugin/scripts/skills.ts`: the targets of `docs/agents/SPEC.md`,
+  the rules of `docs/agents/lint.md`, and the rule in bold that opens each item of
+  `docs/agents/mistakes.md`, with the rules of the lint the item names, #1581), the docs site;
+  the studio reads the tables of the section Variants of `docs/agents/variants.md` and of its
+  section Tones, from the repository (`projects/studio/src/paints.ts`: the colour variants,
+  their kinds, the order of the tones).
 - **Held by**: `check.usage-docs` (every symbol a guide names exists); `component-docs.ts` fails
   the build on a relative link of a shipped guide that does not resolve inside its package;
-  `agent-docs-lib.spec.ts`; `nx run claude-plugin:check`; for the studio,
+  `agent-docs-lib.spec.ts`; `nx run claude-plugin:check` (an item of `mistakes.md` without its
+  rule in bold, or naming a rule the lint does not have, stops it); for the studio,
   `projects/studio/test/paints.test.mts` (the kinds and the tones it reads).
 - **The Magma block** (#1524): what the install guide writes into a consumer's root agent file
   (step 3.8), between the markers of `projects/lint/src/core/agents.ts`; `magmaBlock` of
