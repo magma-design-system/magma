@@ -55,7 +55,7 @@ export function scaleOfFamily(config: MagmaConfig): (family: string) => string |
 }
 
 /** The families that back a theme, the base first; the extras are the ones not the base. */
-function themeFamilies(config: MagmaConfig, color: Record<string, unknown>) {
+export function themeFamilies(config: MagmaConfig, color: Record<string, unknown>) {
   const surfaces = (color.surface as Record<string, FamilyModes>) ?? {};
   const texts = (color.text as Record<string, FamilyModes>) ?? {};
   // the families of a reserved group are never a theme, as on the Themes page (themes.tsx)

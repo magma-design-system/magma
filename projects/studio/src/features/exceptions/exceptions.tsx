@@ -4,10 +4,13 @@ import { IT_EXCEPTIONS } from './i18n-it.js';
 
 /*
   The stage of the exceptions (#1402): stage 4 of the balancing (studio.object-model.md, section
-  5), with no page today, so the order of the stages holds one that says what it will hold and when
-  it comes; #1404 builds it. Written in the classes of Magma (src/tailwind.css): the page needs no
-  sheet of its own. The foot of the stage (app/stages.tsx) is handed in by the shell, at the end of
-  the region that scrolls.
+  5), with no view yet, so the order of the stages holds a page that says what it will hold and
+  when it comes. It comes after Magma 3 (vittorio, 2026-11-27, #1404): its functions (the band, the
+  track, the frame of the fields) are roles of Magma 3 (`transparent`, `fieldRoles` of
+  semantic.config.ts on the branch 1292-magma-3), and its candidates need an engine that generates
+  and measures them; the model puts the exceptions after the first release too (section 1).
+  Written in the classes of Magma (src/tailwind.css): the page needs no sheet of its own. The foot
+  of the stage (app/stages.tsx) is handed in by the shell, at the end of the region that scrolls.
 */
 
 /** The translator of the page: its own Italian (i18n-it.ts), then the studio's. */
@@ -32,7 +35,7 @@ export function ExceptionsPage({ foot }: { foot?: ComponentChild }) {
       </header>
       <mds-banner variant="info" headline={t('Not built yet')} class="max-w-text">
         {t(
-          'This stage comes with a later part of the studio (#1404): the functions, the components that adopt them, their candidates and the weight they share with Weights. Until then, go on to the full review.',
+          'This stage comes after Magma 3: its functions, the band, the track and the frame of the fields, are roles of Magma 3, and their weights enter the preset with them. Then it holds the functions, the components that adopt them, their candidates and the weight they share with Weights. Until then, go on to the full review.',
         )}
       </mds-banner>
       {foot}

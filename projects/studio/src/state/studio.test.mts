@@ -34,9 +34,9 @@ test('a state restores the draft kept in its storage: the configuration, the fam
   const studio = quietStudio(storage)
   expect(studio.config.value).toEqual(config)
   expect(studio.selectedName.value).toBe(config.colors[1].name)
-  // a draft saved before #1403 names a page of Colors by its id: its address, which the router
-  // takes on to the view that replaced it
-  expect(studio.workPlace.value).toBe('#/colors/themes')
+  // a draft saved before #1404 names a page of Colors by its id: the address of the view that
+  // replaced it (the stage Themes for 'themes')
+  expect(studio.workPlace.value).toBe('#/themes')
   for (const [view, place] of [
     ['colors', '#/colours'],
     ['#/colours', '#/colours'],

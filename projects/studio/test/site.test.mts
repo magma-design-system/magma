@@ -8,7 +8,6 @@ import { chromium, type Browser, type Page } from 'playwright'
 import { afterAll, beforeAll, expect, test } from 'vitest'
 
 import { writeSite } from '../build/site.ts'
-import { COLORS_PAGES } from '../src/shared/routes/routes.ts'
 
 // The studio as a static site (site.ts), served as GitHub Pages serves it: files only, no Vite,
 // under the path of the project site. Each page opens with the icons and the fonts of Magma and
@@ -123,10 +122,14 @@ const LIST_TOGGLE = 'mds-button[aria-controls="colours-list"]'
 const LIST = '#colours-list'
 const PAGE = '#colours-list ~ main'
 
-/** The pages of Colors: the stage Colours, then the pages of today's section, by their address. */
+/**
+ * The stages with a list beside, by their address and their title: Colours, Themes and the full
+ * review (#1403, #1404), each its list folded above the page on a phone.
+ */
 const PAGES_OF_COLORS = [
   { hash: '#/colours', label: 'Colors' },
-  ...COLORS_PAGES.map((page) => ({ hash: `#/colors/${page.slug}`, label: page.label })),
+  { hash: '#/themes', label: 'Themes' },
+  { hash: '#/full-review', label: 'Full review' },
 ]
 
 /** A page of Colors in the tab, once its title is the one of the page and its components are up. */
@@ -150,10 +153,10 @@ async function openColors (tab: Page, hash: string): Promise<void> {
 /** Whether the element the selector names is drawn: it and its ancestors take a box. */
 const drawn = (tab: Page, selector: string) => tab.locator(selector).isVisible()
 
-// The pages of Colors on a phone (#1311): none scrolls sideways, a block of code scrolling inside
-// its own frame; the list of the families of Colours stands folded above the page (its classes,
-// --container-colours-list), its bar opens the list in place of the page and choosing a family
-// folds it again. On a desktop the list stands beside the page and the bar is not drawn.
+// The stages with a list beside on a phone (#1311): none scrolls sideways, a block of code
+// scrolling inside its own frame; the list of the families of Colours stands folded above the page
+// (its classes, --container-list-beside), its bar opens the list in place of the page and choosing
+// a family folds it again. On a desktop the list stands beside the page and the bar is not drawn.
 test.skipIf(!built)(
   'on a phone no page of Colors scrolls sideways, and the list of the families folds above the page',
   async () => {

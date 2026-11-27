@@ -4,18 +4,18 @@ import { act } from 'preact/test-utils'
 
 import initialConfig from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json'
 import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs'
-import { COLORS_PAGES } from '../src/shared/routes/routes.js'
 import { Studio } from '../src/app/shell.js'
 import { DRAFT_STORAGE_KEY, hashText, type StudioDraft } from '../src/state/draft.js'
 import { gateReport } from '../src/engine/gate.js'
-import { ThemesManager } from '../src/themes.js'
-import { inStudio, startStudio } from './studio.mjs'
+import { updateConfig } from '../src/state/studio.js'
+import { startStudio } from './studio.mjs'
 
-// The contrast gate in the studio (#698): its verdict beside the title of every page of Colors
-// and on each card of Themes, live while the configuration is edited; and an export that asks
-// first while the gate fails, never handing out a failing theme by default. The Contrast check
-// page, every pair per theme and mode, is tested beside it (src/features/contrast-check). jsdom does not upgrade the Magma
-// components: the test reads the markup the studio writes and dispatches the events they emit.
+// The contrast gate in the studio (#698): its verdict beside the title of every stage and per mode
+// on each theme of Themes, live while the configuration is edited; an export that asks first while
+// the gate fails, never handing out a failing theme by default; and a theme a change broke, said in
+// a toast (#1404). The full review, every pair per theme and mode, is tested beside it
+// (src/features/full-review). jsdom does not upgrade the Magma components: the test reads the
+// markup the studio writes and dispatches the events they emit.
 
 const root = document.createElement('div')
 document.body.append(root)
@@ -61,13 +61,10 @@ const storeDraft = (draft: MagmaConfig, view = 'colors') => {
 const runAction = (id: string) =>
   act(() => root.querySelector<HTMLElement>(`#studio-exit mds-button[data-action="${id}"]`)!.click())
 
-/** The studio on a page of Colors, restored on a draft of a configuration. */
+/** The studio on a stage, restored on a draft of a configuration. */
 const openOn = async (draft: MagmaConfig, view = 'colours') => {
   storeDraft(draft, view)
-  location.hash =
-    view === 'colours' || view === 'weights'
-      ? `#/${view}`
-      : `#/colors/${COLORS_PAGES.find((page) => page.id === view)!.slug}`
+  location.hash = `#/${view}`
   render(h(Studio, {}), root)
   await vi.waitFor(() => {
     if (!root.querySelector('mds-text[tag="h1"]')) throw new Error('no page yet')
@@ -78,29 +75,30 @@ const badgeOf = (scope: ParentNode | null | undefined) => {
   const badge = scope?.querySelector('mds-badge')
   return { variant: badge?.getAttribute('variant'), label: badge?.getAttribute('label') }
 }
-/** The card of a theme on the Contrast check page: the one its heading names. */
-const themeCard = (theme: string) =>
-  [...root.querySelectorAll('mds-card')].find(
-    (card) => card.querySelector('mds-text[tag="h2"]')?.textContent === theme,
-  )
-/** The verdict of a theme per mode: the group of badges named after the theme. */
-const themeVerdicts = (theme: string) =>
-  [...root.querySelectorAll(`[role="group"][aria-label="The contrast gate on ${theme}"] mds-badge`)]
+/** The themes the list of the full review names, by their headings. */
+const reviewThemes = () =>
+  [...root.querySelectorAll('#full-review-list mds-text[tag="h2"]')].map((one) => one.textContent)
+/** The verdict of a theme per mode in a part of the page: the group of badges named after it. */
+const themeVerdicts = (theme: string, scope = '') =>
+  [...root.querySelectorAll(`${scope} [role="group"][aria-label="The contrast gate on ${theme}"] mds-badge`)]
 /** The head of the page of Colors shown: the header that holds its title. */
 const pageHead = () => root.querySelector('mds-text[tag="h1"]')?.closest('header')
 // over the whole document: the dialog of the gate opens on document.body
 const magmaButton = (label: string) =>
   document.querySelector<HTMLElement>(`mds-button[label="${label}"]`)
 
-test('the title of every page of Colors carries the verdict of the gate on the configuration edited', async () => {
-  await openOn(config(), 'weights')
-  expect(badgeOf(pageHead())).toEqual({ variant: 'success', label: 'All contrasts are OK' })
-  render(null, root)
+test('the title of every stage carries the verdict of the gate on the configuration edited', async () => {
+  for (const view of ['weights', 'themes', 'full-review']) {
+    await openOn(config(), view)
+    expect(badgeOf(pageHead()), view).toEqual({ variant: 'success', label: 'All contrasts are OK' })
+    render(null, root)
 
-  await openOn(failing(), 'weights')
-  const { variant, label } = badgeOf(pageHead())
-  expect(variant).toBe('error')
-  expect(label).toMatch(/^\d+ contrasts below target$/)
+    await openOn(failing(), view)
+    const { variant, label } = badgeOf(pageHead())
+    expect(variant, view).toBe('error')
+    expect(label, view).toMatch(/^\d+ contrasts below target$/)
+    render(null, root)
+  }
 })
 
 // #1402: the menu of Colors and its count of the pairs went with the stages; the verdict stays
@@ -183,33 +181,92 @@ test('while the gate fails, an export asks first: Cancel never exports, the verb
   }
 })
 
-test('the dialog leads to every pair, on the Contrast check page', async () => {
+test('the dialog leads to every pair, on the full review', async () => {
   await openOn(failing())
   await runAction('zip')
   await act(() => magmaButton('See every pair')!.click())
   expect(document.querySelector('mds-modal')).toBeNull()
-  expect(root.querySelector('h1, [tag="h1"]')?.textContent).toBe('Contrast check')
-  for (const { name } of gateReport(failing()).themes) expect(themeCard(name), name).toBeDefined()
+  await vi.waitFor(() => expect(root.querySelector('h1, [tag="h1"]')?.textContent).toBe('Full review'))
+  expect(reviewThemes()).toEqual(gateReport(failing()).themes.map(({ name }) => name))
 })
 
-test('the Themes page says the verdict of each theme per mode, and its export asks through the gate', async () => {
+test('Themes says the verdict of each theme per mode, and the CSS of the themes asks through the gate', async () => {
   const report = gateReport(failing())
-  const asked: Array<{ label: string; proceed: string }> = []
-  render(
-    inStudio(
-      startStudio(),
-      h(ThemesManager, {
-        config: failing(),
-        report,
-        guard: ({ label, proceed }: { label: string; proceed: string }) => asked.push({ label, proceed }),
-      }),
-    ),
-    root,
+  await openOn(failing(), 'themes')
+  const base = report.themes[0]
+  // in the list beside, and again under the name of the theme at the centre
+  for (const scope of ['#themes-list', 'main'])
+    expect(themeVerdicts(base.name, scope).map((badge) => badge.getAttribute('label')), scope).toEqual([
+      `light: ${base.failing.light} below target`,
+      `dark: ${base.failing.dark} below target`,
+    ])
+  // the CSS of the themes leaves from the menu of the exit (#1404), through the gate like the rest
+  await runAction('themes')
+  expect(document.querySelector('mds-modal')?.textContent).toContain(
+    'Download the CSS of the themes hands out',
   )
-  expect(themeVerdicts(report.themes[0].name).map((badge) => badge.getAttribute('label'))).toEqual([
-    `light: ${report.themes[0].failing.light} below target`,
-    `dark: ${report.themes[0].failing.dark} below target`,
-  ])
-  await act(() => magmaButton('Copy CSS')!.click())
-  expect(asked).toEqual([{ label: 'Copy CSS', proceed: 'Copy anyway' }])
+  expect(magmaButton('Download anyway')).not.toBeNull()
+  await act(() => magmaButton('Cancel')!.click())
+})
+
+// #1404: the other themes say nothing until a change breaks one (studio.object-model.md, section 4,
+// Tema); then a toast that stays names it and its mode, with the way to its item of the full review
+// (message-placement, action-failed-elsewhere). A theme that failed already at the last exit is not
+// broken by a change; the full review, which shows them all, has none.
+test('a change that breaks a theme says so in a toast that stays, with the way to its item of the review', async () => {
+  const studio = startStudio()
+  location.hash = '#/weights'
+  render(h(Studio, { state: studio }), root)
+  await vi.waitFor(() => expect(root.querySelector('mds-text[tag="h1"]')).not.toBeNull())
+  const toasts = () => [...document.querySelectorAll('mds-toast[data-broken]')]
+  expect(toasts()).toEqual([])
+
+  await act(() =>
+    updateConfig(studio, (draft) => {
+      draft.theme!.text = failing().theme!.text
+    }),
+  )
+  const report = gateReport(failing())
+  await vi.waitFor(() => expect(toasts().length).toBe(report.themes.length * 2))
+  const editorial = toasts().find((one) => one.getAttribute('data-broken') === 'bisque|dark')!
+  expect(editorial.getAttribute('variant')).toBe('error')
+  expect(editorial.getAttribute('duration')).toBe('0')
+  expect(editorial.hasAttribute('dismissible')).toBe(true)
+  expect(editorial.textContent).toMatch(
+    /^The theme editorial no longer passes the contrast check in dark: \d+ pairs under their floor\./,
+  )
+  expect(editorial.querySelector('mds-button[slot="action"]')?.getAttribute('href')).toBe(
+    '#/full-review/editorial/dark',
+  )
+
+  // closed, it stays closed while the theme stays broken
+  await act(() => {
+    editorial.dispatchEvent(new CustomEvent('mdsToastClose'))
+  })
+  expect(toasts().some((one) => one.getAttribute('data-broken') === 'bisque|dark')).toBe(false)
+
+  // the full review shows them all: no toast there
+  location.hash = '#/full-review'
+  await vi.waitFor(() => expect(toasts()).toEqual([]))
+
+  // mended, nothing to say
+  location.hash = '#/weights'
+  await act(() =>
+    updateConfig(studio, (draft) => {
+      draft.theme!.text = config().theme!.text
+    }),
+  )
+  await vi.waitFor(() => expect(toasts()).toEqual([]))
+})
+
+test('a theme that already failed at the last exit is broken by no change: no toast', async () => {
+  storeDraft(failing())
+  const studio = startStudio()
+  // the preset opened is the one that fails: the changes, and the broken themes, count from it
+  studio.baseline.value = JSON.stringify({ config: failing(), choices: studio.themeChoices.peek() })
+  location.hash = '#/weights'
+  render(h(Studio, { state: studio }), root)
+  await vi.waitFor(() => expect(root.querySelector('mds-text[tag="h1"]')).not.toBeNull())
+  expect(studio.verdict.value.state).toBe('fail')
+  expect(document.querySelectorAll('mds-toast[data-broken]')).toHaveLength(0)
 })

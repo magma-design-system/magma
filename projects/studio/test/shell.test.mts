@@ -141,6 +141,7 @@ test('the exit saves or downloads the preset in one click, the other formats in 
     ['Download Figma tokens', 'DTCG'],
     ['Download CSS tokens', 'css'],
     ['Download GIMP palette', 'gpl'],
+    ['Download the CSS of the themes', 'css'],
     ['Copy JSON', null],
   ])
   // the format is part of the name of the action, its badge hidden
@@ -152,7 +153,7 @@ test('the exit saves or downloads the preset in one click, the other formats in 
   // and in the menu of a narrow window, the exit first
   const narrow = within(root).getByRole('navigation', { name: 'Studio' })
   expect([...narrow.querySelectorAll('mds-button[data-action]')].map((one) => one.getAttribute('data-action')))
-    .toEqual(['exit', 'zip', 'figma', 'css', 'gimp', 'copy'])
+    .toEqual(['exit', 'zip', 'figma', 'css', 'gimp', 'themes', 'copy'])
   // a download of its menu from the Theme section hands over its file
   const files: string[] = []
   vi.stubGlobal('URL', Object.assign(Object.create(URL), {
@@ -167,6 +168,10 @@ test('the exit saves or downloads the preset in one click, the other formats in 
   try {
     exit.querySelector<HTMLElement>('mds-button[data-action="css"]')!.click()
     await vi.waitFor(() => expect(files).toEqual(['magma-css.zip']))
+    // the CSS of the themes, as a theme file of styles takes it (#1404, Copy CSS of the Themes
+    // page until then)
+    exit.querySelector<HTMLElement>('mds-button[data-action="themes"]')!.click()
+    await vi.waitFor(() => expect(files).toEqual(['magma-css.zip', 'themes.css']))
   } finally {
     click.mockRestore()
     vi.unstubAllGlobals()
@@ -181,7 +186,7 @@ test('served by a command that takes saves, the exit saves the preset and its me
   expect((exit as { label?: string }).label ?? exit.getAttribute('label')).toBe('Save the preset')
   expect(exit.getAttribute('icon')).toBe('mi/baseline/save')
   expect([...exit.querySelectorAll('mds-button[data-action]')].map((one) => one.getAttribute('data-action')))
-    .toEqual(['config', 'zip', 'figma', 'css', 'gimp', 'copy', 'build'])
+    .toEqual(['config', 'zip', 'figma', 'css', 'gimp', 'themes', 'copy', 'build'])
 })
 
 // The introduction comes before the stages (features/introduction/, the Start page until #1402):

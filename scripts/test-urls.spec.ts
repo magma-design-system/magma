@@ -133,10 +133,10 @@ describe('rowsOf', () => {
     );
   });
 
-  it('gives the studio its pages, the tokens the Colors pages, a preview its stage', () => {
+  it('gives the studio its pages, the tokens the stages, a preview its stage', () => {
     const rows = rowsOf(
       [
-        'projects/studio/src/app.tsx',
+        'projects/studio/src/app/shell.tsx',
         'projects/design-tokens/a.json',
         'docs/agents/patterns/previews/actions/banner.html',
       ],
@@ -148,12 +148,14 @@ describe('rowsOf', () => {
       ['studio', 'design tokens', 'preview actions/banner'],
     );
     assert.ok(rows[0].links.some((link) => link.url === 'http://localhost:5177/#/theme'));
-    // the views of the flow the studio has beside the pages of Colors (#1402)
+    // the views of the flow and the stages (#1402, #1403, #1404)
     for (const view of [
       '#/introduction',
       '#/opening',
       '#/colours',
       '#/weights',
+      '#/themes',
+      '#/full-review',
       '#/groups',
       '#/exceptions',
     ])
@@ -161,15 +163,10 @@ describe('rowsOf', () => {
         rows[0].links.some((link) => link.url === `http://localhost:5177/${view}`),
         view,
       );
-    // a change of the tokens: the stages Colours and Weights, the pages of Colors, the view Groups
-    // (#1403)
-    assert.equal(rows[1].links[0].url, 'http://localhost:5177/#/colours');
-    assert.equal(rows[1].links[1].url, 'http://localhost:5177/#/weights');
-    assert.equal(rows[1].links.at(-1)?.url, 'http://localhost:5177/#/groups');
-    assert.ok(
-      rows[1].links
-        .slice(2, -1)
-        .every((link) => link.url.startsWith('http://localhost:5177/#/colors/')),
+    // a change of the tokens: the stages that show the colours, then the view Groups (#1403, #1404)
+    assert.deepEqual(
+      rows[1].links.map((link) => link.url.replace('http://localhost:5177/', '')),
+      ['#/colours', '#/weights', '#/themes', '#/full-review', '#/groups'],
     );
     assert.deepEqual(rows[2].links, [
       { label: 'actions/banner', url: 'http://localhost:5180/view/previews/actions/banner' },

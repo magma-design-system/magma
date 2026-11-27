@@ -24,7 +24,7 @@ import { applyFrame } from '../../shared/frames/frame.js';
 import { Range } from '../../shared/magma/magma.js';
 import { msg, plural, useT } from '../../shared/i18n/i18n.js';
 import { stageOf } from '../../shared/routes/routes.js';
-import { BORDER_PURPOSE, SURFACE_PURPOSE, TEXT_PURPOSE } from '../../shared/ui/surface-canvas.js';
+import { BORDER_PURPOSE, SURFACE_PURPOSE, TEXT_PURPOSE } from '../../shared/ui/role-purposes.js';
 import { TouchedPairs } from '../../shared/ui/touched-pairs.js';
 import { GateBadge } from '../../shared/ui/verdict.js';
 import { setBorderLevel, setSurfaceLevel, setTextTarget } from '../../state/surfaces.js';

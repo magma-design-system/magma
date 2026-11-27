@@ -28,6 +28,21 @@ export const IT_SHELL: Record<string, string> = {
 
   // the bar and its menu (app/shell.tsx)
   'for Magma v{version}': 'per Magma v{version}',
+  'Download the CSS of the themes': 'Scarica il CSS dei temi',
+  'Could not build the CSS of the themes: {error}':
+    'Non è stato possibile creare il CSS dei temi: {error}',
+  // a theme a change broke (app/shell.tsx, Toasts, #1404)
+  'The theme {theme} no longer passes the contrast check in {mode}: {count} pair under its floor.':
+    'Il tema {theme} non supera più la verifica del contrasto in modalità {mode}: {count} coppia sotto la soglia.',
+  'The theme {theme} no longer passes the contrast check in {mode}: {count} pairs under their floor.':
+    'Il tema {theme} non supera più la verifica del contrasto in modalità {mode}: {count} coppie sotto la soglia.',
+  'Review it': 'Rivedilo',
+  // a theme deleted, or moved to another tint, undone from a toast (state/themes.ts, #1404)
+  'The theme {theme} takes its tint from {family}.': 'Il tema {theme} prende la tinta da {family}.',
+  'The theme {theme} deleted.': 'Tema {theme} eliminato.',
+  // the scene beside a stage and its conditions (Weights, Themes, the full review)
+  'The scene of the product': 'La scena del prodotto',
+  'More contrast': 'Più contrasto',
   Colors: 'Colori',
   Theme: 'Tema',
   // Regole, not Comportamento: the pages of the section are rules (of composition, patterns,
@@ -40,7 +55,6 @@ export const IT_SHELL: Record<string, string> = {
   // the pages of the sections (shared/routes/routes.ts)
   Themes: 'Temi',
   Groups: 'Gruppi',
-  'Contrast check': 'Verifica del contrasto',
   'Design language': 'Linguaggio di design',
   Patterns: 'Pattern',
   Blocks: 'Blocchi',
@@ -48,7 +62,6 @@ export const IT_SHELL: Record<string, string> = {
   // register (GLOSSARY.md): the stepper, the foot of a stage, the exit (state/exports.ts)
   Stages: 'Passi',
   'The stage before and after': 'Il passo prima e quello dopo',
-  'Beside {stage}': 'Accanto a {stage}',
   Weights: 'Pesi',
   Exceptions: 'Eccezioni',
   'Full review': 'Giro completo',
@@ -69,6 +82,8 @@ export const IT_SHELL: Record<string, string> = {
   // the pairs of the contrast check a family or a scale touches (shared/ui/touched-pairs.tsx)
   '{count} pair touched': '{count} coppia toccata',
   '{count} pairs touched': '{count} coppie toccate',
+  '{count} pair of the theme': '{count} coppia del tema',
+  '{count} pairs of the theme': '{count} coppie del tema',
   'all above their floor, in light and in dark': 'tutte sopra la soglia, in chiaro e in scuro',
   'all above their floor, in light': 'tutte sopra la soglia, in chiaro',
   'all above their floor, in dark': 'tutte sopra la soglia, in scuro',

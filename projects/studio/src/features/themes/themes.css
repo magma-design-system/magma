@@ -1,0 +1,50 @@
+/*
+  The short sheet of Themes (#1404; themes.css of the Colors section until then): what its classes
+  do not write, the colours of the preset its samples paint. The swatch of a theme in the list and
+  of a family under a field, painted with the colour of the family (--themes-swatch, set inline);
+  the samples of an accent on the theme, its fill and its wash. Sizes from the steps of --spacing
+  and the radii of Magma, colours from the semantic roles.
+*/
+
+/* the swatch of a theme in the list: the icon of its button, painted with its tint (the slot of
+   mds-button takes text only, so the colour reaches the icon through its part), a ring of the
+   default border keeping a pale colour visible on the canvas, as in Colours */
+
+.themes-swatch::part(icon) {
+  fill: var(--themes-swatch);
+  stroke: rgb(var(--magma-border-default));
+  stroke-width: calc(var(--spacing) * 25);
+}
+
+/* the swatch of a family named under a field */
+
+.themes-family-swatch {
+  background: var(--themes-swatch);
+  border: thin solid rgb(var(--magma-border-default));
+  border-radius: var(--magma-radius-full);
+  block-size: calc(var(--spacing) * 400);
+  display: inline-block;
+  inline-size: calc(var(--spacing) * 400);
+  vertical-align: middle;
+}
+
+/* an accent on the theme in a mode: its fill with its ink, its soft wash with its ink */
+
+.themes-sample {
+  align-items: center;
+  display: inline-flex;
+  gap: calc(var(--spacing) * 100);
+}
+
+.themes-sample-fill,
+.themes-sample-soft {
+  border-radius: var(--magma-radius-sm);
+  corner-shape: var(--magma-corner-shape);
+  font-size: var(--text-size-info-tip);
+  font-weight: 700;
+  padding: calc(var(--spacing) * 100) calc(var(--spacing) * 200);
+}
+
+.themes-sample-fill {
+  text-transform: capitalize;
+}

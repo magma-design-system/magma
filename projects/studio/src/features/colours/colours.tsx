@@ -29,7 +29,7 @@ import { Check, ColorInput, Field, Select, TextInput } from '../../shared/magma/
 import { msg, plural, rich, useT, type T } from '../../shared/i18n/i18n.js';
 import { GateBadge } from '../../shared/ui/verdict.js';
 import { TouchedPairs } from '../../shared/ui/touched-pairs.js';
-import { GROUPS_PAGE, hrefOf, stageOf } from '../../shared/routes/routes.js';
+import { GROUPS_PAGE, hrefOf, stageOf, themeRoute } from '../../shared/routes/routes.js';
 import {
   addFamily,
   autoNameFamily,
@@ -268,11 +268,11 @@ export function ColoursPage({ foot }: { foot?: ComponentChild }) {
   // the container of the layout, apart from its grid: a container cannot query itself
   return (
     <div class="@container/colours h-full">
-      <div class="grid h-full grid-cols-[calc(var(--spacing)*6000)_minmax(0,1fr)] grid-rows-[auto_minmax(0,1fr)] @max-colours-list/colours:grid-cols-1">
+      <div class="grid h-full grid-cols-[calc(var(--spacing)*6000)_minmax(0,1fr)] grid-rows-[auto_minmax(0,1fr)] @max-list-beside/colours:grid-cols-1">
         {/* where the list stands above the page, folded into the family selected: its arrow at the
           end, as the sections of the bar that open a menu (app-shell); hidden where the list
           stands beside the page (#1311, kept until question 9 of the object model is answered) */}
-        <div class="hidden px-inline pt-inset @max-colours-list/colours:block">
+        <div class="hidden px-inline pt-inset @max-list-beside/colours:block">
           <mds-button
             type="button"
             icon={listOpen ? 'mi/baseline/expand-less' : 'mi/baseline/expand-more'}
@@ -301,8 +301,8 @@ export function ColoursPage({ foot }: { foot?: ComponentChild }) {
         <main
           class={
             listOpen
-              ? 'relative col-start-2 row-span-2 row-start-1 min-h-0 overflow-y-auto px-(--magma-width-page-gutter) pt-inset pb-between-sections @max-colours-list/colours:hidden'
-              : 'relative col-start-2 row-span-2 row-start-1 min-h-0 overflow-y-auto px-(--magma-width-page-gutter) pt-inset pb-between-sections @max-colours-list/colours:col-start-1 @max-colours-list/colours:row-span-1 @max-colours-list/colours:row-start-2'
+              ? 'relative col-start-2 row-span-2 row-start-1 min-h-0 overflow-y-auto px-(--magma-width-page-gutter) pt-inset pb-between-sections @max-list-beside/colours:hidden'
+              : 'relative col-start-2 row-span-2 row-start-1 min-h-0 overflow-y-auto px-(--magma-width-page-gutter) pt-inset pb-between-sections @max-list-beside/colours:col-start-1 @max-list-beside/colours:row-span-1 @max-list-beside/colours:row-start-2'
           }
         >
           {/* the head of the view: its title with the verdict of the contrast check beside it */}
@@ -482,8 +482,8 @@ function FamilyList({
       id="colours-list"
       class={
         open
-          ? 'col-start-1 row-span-2 row-start-1 grid min-h-0 content-start gap-between-fields overflow-y-auto border-e border-border-muted px-inline py-inset @max-colours-list/colours:row-span-1 @max-colours-list/colours:row-start-2 @max-colours-list/colours:border-e-0'
-          : 'col-start-1 row-span-2 row-start-1 grid min-h-0 content-start gap-between-fields overflow-y-auto border-e border-border-muted px-inline py-inset @max-colours-list/colours:hidden'
+          ? 'col-start-1 row-span-2 row-start-1 grid min-h-0 content-start gap-between-fields overflow-y-auto border-e border-border-muted px-inline py-inset @max-list-beside/colours:row-span-1 @max-list-beside/colours:row-start-2 @max-list-beside/colours:border-e-0'
+          : 'col-start-1 row-span-2 row-start-1 grid min-h-0 content-start gap-between-fields overflow-y-auto border-e border-border-muted px-inline py-inset @max-list-beside/colours:hidden'
       }
       aria-label={t('The families of the preset')}
     >
@@ -589,7 +589,6 @@ function PaintsLine({
   uses: ReturnType<typeof themesUsing>;
 }) {
   if (!painted) return null;
-  const themes = hrefOf(stageOf('themes').route);
   const variants = [
     ...new Set(
       painted.variants
@@ -599,7 +598,8 @@ function PaintsLine({
   ];
   const parts: ComponentChild[][] = uses.map((use) =>
     rich(t, USE_TEXT[use.as] ?? USE_TEXT.accent, {
-      theme: <mds-link href={themes}>{use.theme}</mds-link>,
+      // each theme named opens the stage Themes on it (#1404)
+      theme: <mds-link href={hrefOf(themeRoute(use.theme))}>{use.theme}</mds-link>,
     }),
   );
   if (variants.length)

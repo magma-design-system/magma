@@ -31,11 +31,12 @@
 */
 
 @theme {
-  /* Colours (#1403, features/colours/): the list of the families stands beside the page while the
-     page keeps the room of the row of actions of its head (--container-actions of Magma, 23.75rem)
-     inside its gutters (--magma-width-page-gutter, 1.5rem on each side), with the list (15rem):
-     41.75rem of the layout. Under it the list goes above the page, folded into a bar (#1311). */
-  --container-colours-list: 41.75rem;
+  /* a view with its list beside (Colours #1403, Themes #1404): the list stands beside the page while
+     the page keeps the room of the row of actions of its head (--container-actions of Magma,
+     23.75rem) inside its gutters (--magma-width-page-gutter, 1.5rem on each side), with the list
+     (15rem): 41.75rem of the layout. Under it the list goes above the page, folded into a bar
+     (#1311). */
+  --container-list-beside: 41.75rem;
   /* a view has a side, beside its fields, from 60rem of its detail: in Colours the ramps or the
      scene of the family, in Scale the states of its sample. The column of a form (about 30rem,
      widths/reading), the side (26rem, two upright ramps of 12rem and their gap, or an action at

@@ -10,8 +10,8 @@ import { msg } from '../i18n/text.js';
   of Magma, "sections-are-links"), and the address lives in the hash, so the studio works from
   whatever folder serves it: a path of the Pages site, a command inside a project.
 
-  Three sections, in the order of the work (#693, decided 2026-11-05):
-  - Colors: the views of the tokens playground, each a page of its own;
+  Outside the stages, the bar holds two sections (#693, decided 2026-11-05; the Colors section went
+  with #1403 and #1404, its pages became the stages):
   - Theme: the theme full screen, with its controls over it;
   - Behavior: the design language, the patterns and the blocks.
   Before them the introduction (features/introduction/, the Start page until #1402): what the
@@ -22,26 +22,28 @@ import { msg } from '../i18n/text.js';
   page, opens the introduction too (GLOSSARY.md, decision 13), and the router writes its address
   in its place.
 
-  The stages of the balancing (#1402, STAGES below) run through those pages in the order of the
-  work: until #1403 and #1404 build their views, each stage opens the page of today that does its
-  work, at the address it has today, so no link written before breaks.
+  The stages of the balancing (#1402, STAGES below) are views of their own since #1403 and #1404;
+  the addresses of the pages they replaced open them (ALIASES), so no link written before breaks.
 
   A hash that does not start with `#/` is no address of the studio but the anchor of a heading of
   the page that hosts it (Starlight): it names no page.
 */
 
 /**
- * The pages of today's Colors section still standing, by the id a draft saved before #1403 carries
- * (`view`, state/draft.ts): the table gives each its address and its name. The Palette ('colors'),
- * Contrast scales ('scales'), Groups ('groups') and Semantic surface ('surface') went with #1403:
- * Colours, Scale, the view Groups and Weights took their places.
+ * The ids of the pages of the Colors section a draft saved before #1404 may carry (`view`,
+ * state/draft.ts), with the address of the view that took the place of each: the Palette
+ * ('colors'), Contrast scales ('scales'), Groups ('groups') and Semantic surface ('surface') went
+ * with #1403, Themes ('themes') and Contrast check ('contrast') with #1404.
  */
-export const COLORS_VIEWS = ['themes', 'contrast'] as const;
-export type ColorsView = (typeof COLORS_VIEWS)[number];
-
-/** The page of Colors a draft names, if it is one. */
-export const colorsViewOf = (view: unknown): ColorsView | undefined =>
-  COLORS_VIEWS.find((one) => one === view);
+const OLD_VIEWS: Readonly<Record<string, string>> = {
+  colors: '#/colours',
+  scales: '#/colors/contrast-scales',
+  // Groups stood beside Colours; the view that replaced it is outside the stages
+  groups: '#/colours',
+  surface: '#/weights',
+  themes: '#/themes',
+  contrast: '#/full-review',
+};
 
 export type BehaviorPage = 'design-language' | 'patterns' | 'blocks';
 
@@ -76,16 +78,33 @@ export type Route =
   | { section: 'groups' }
   /** The stage Weights (#1403, features/weights/): the weights of the preset, one mode at a time. */
   | { section: 'weights' }
-  | { section: 'colors'; view: ColorsView }
+  /**
+   * The stage Themes (#1404, features/themes/): the theme at its centre, by its name, else the
+   * base theme.
+   */
+  | { section: 'themes'; theme?: string }
+  /**
+   * The full review (#1404, features/full-review/): every theme in every mode, before the exit;
+   * the item at its centre by the name of its theme and its mode, else the first to look at.
+   */
+  | { section: 'full-review'; theme?: string; mode?: 'light' | 'dark' }
   | { section: 'theme'; theme?: string; mode?: ModeView }
   | { section: 'behavior'; page: BehaviorPage }
-  /** The stage of the exceptions, a page of its own until #1404 builds it (#1402). */
+  /** The stage of the exceptions: a page that says when it comes (after Magma 3, #1404). */
   | { section: 'exceptions' };
 
 /** A section of the bar: its pages are the rows of PAGES that name it. */
 export type Section = Exclude<
   Route['section'],
-  'introduction' | 'opening' | 'colours' | 'scale' | 'groups' | 'weights' | 'exceptions'
+  | 'introduction'
+  | 'opening'
+  | 'colours'
+  | 'scale'
+  | 'groups'
+  | 'weights'
+  | 'themes'
+  | 'exceptions'
+  | 'full-review'
 >;
 
 export interface MenuItem<Id extends string> {
@@ -101,29 +120,10 @@ export interface MenuItem<Id extends string> {
 
 /** A page of the studio: the section it is in, the rest as a menu draws it. */
 export type Page =
-  | (MenuItem<ColorsView> & { section: 'colors' })
-  | (MenuItem<'theme'> & { section: 'theme' })
-  | (MenuItem<BehaviorPage> & { section: 'behavior' });
+  (MenuItem<'theme'> & { section: 'theme' }) | (MenuItem<BehaviorPage> & { section: 'behavior' });
 
 /** The pages of the studio, one table for the menus and the addresses, in the order of the bar. */
 export const PAGES: readonly Page[] = [
-  {
-    section: 'colors',
-    id: 'themes',
-    slug: 'themes',
-    label: msg('Themes'),
-    icon: 'mi/baseline/theater-comedy',
-  },
-  // the page that checks the work against what Magma builds: the contrast gate (Diffs, the
-  // palette against Magma's, went in #1402: the changes are the bar's)
-  {
-    section: 'colors',
-    id: 'contrast',
-    slug: 'contrast-check',
-    label: msg('Contrast check'),
-    icon: 'mi/baseline/fact-check',
-    apart: true,
-  },
   { section: 'theme', id: 'theme', slug: '', label: msg('Theme'), icon: 'mi/baseline/format-size' },
   {
     section: 'behavior',
@@ -153,7 +153,6 @@ function pagesOf<S extends Section>(section: S) {
   return PAGES.filter((page): page is Extract<Page, { section: S }> => page.section === section);
 }
 
-export const COLORS_PAGES: MenuItem<ColorsView>[] = pagesOf('colors');
 export const BEHAVIOR_PAGES: MenuItem<BehaviorPage>[] = pagesOf('behavior');
 /** The Theme section, a page of its own: a link of the bar and of the menu of a narrow window. */
 export const THEME_PAGE: MenuItem<'theme'> = pagesOf('theme')[0];
@@ -178,6 +177,8 @@ export const ALIASES: Readonly<Record<string, Route>> = {
   '#/colors/contrast-scales': { section: 'scale', formula: 'wcag3', name: 'default' },
   '#/colors/groups': { section: 'groups' },
   '#/colors/semantic-surface': { section: 'weights' },
+  '#/colors/themes': { section: 'themes' },
+  '#/colors/contrast-check': { section: 'full-review' },
 };
 
 /** The formulas a contrast scale is written for, as the configuration names them. */
@@ -194,12 +195,15 @@ export function hrefOf(route: Route): string {
   if (route.section === 'scale')
     return `#/colours/scale/${route.formula}/${route.name}${route.group ? `/from/${route.group}` : ''}`;
   if (route.section === 'exceptions') return '#/exceptions';
+  if (route.section === 'full-review')
+    return route.theme && route.mode
+      ? `#/full-review/${route.theme}/${route.mode}`
+      : '#/full-review';
+  if (route.section === 'themes') return route.theme ? `#/themes/${route.theme}` : '#/themes';
   if (route.section === 'theme') {
     if (!route.theme) return '#/theme';
     return route.mode ? `#/theme/${route.theme}/${route.mode}` : `#/theme/${route.theme}`;
   }
-  if (route.section === 'colors')
-    return `#/colors/${COLORS_PAGES.find((page) => page.id === route.view)!.slug}`;
   return `#/behavior/${BEHAVIOR_PAGES.find((page) => page.id === route.page)!.slug}`;
 }
 
@@ -227,7 +231,21 @@ export function routeOf(hash: string): Route | undefined {
     section === 'weights'
   )
     return slug === undefined ? { section } : undefined;
-  if (section === 'exceptions') return slug === undefined ? { section: 'exceptions' } : undefined;
+  if (section === 'exceptions') return slug === undefined ? { section } : undefined;
+  if (section === 'full-review') {
+    if (slug === undefined) return { section };
+    // a theme by its name and a mode, the item of the review the toast of a broken theme opens
+    const [mode, ...more] = rest;
+    return THEME_NAME.test(slug) && (mode === 'light' || mode === 'dark') && !more.length
+      ? { section, theme: slug, mode }
+      : undefined;
+  }
+  if (section === 'themes') {
+    // a theme by its name, as a theme is named (THEME_NAME of design-tokens): the stage opens on
+    // the base theme for a name the preset has no theme of
+    if (slug === undefined) return { section: 'themes' };
+    return THEME_NAME.test(slug) && !rest.length ? { section: 'themes', theme: slug } : undefined;
+  }
   if (section === 'theme') {
     if (!slug) return rest.length ? undefined : { section: 'theme' };
     // a theme by its name, as a theme is named (THEME_NAME of design-tokens), then a mode: the
@@ -237,10 +255,6 @@ export function routeOf(hash: string): Route | undefined {
     if (mode === undefined) return { section: 'theme', theme: slug };
     const view = MODE_VIEWS.find((one) => one === mode);
     return view && { section: 'theme', theme: slug, mode: view };
-  }
-  if (section === 'colors') {
-    const page = COLORS_PAGES.find((one) => one.slug === slug);
-    return page && { section: 'colors', view: page.id };
   }
   if (section === 'behavior') {
     const page = BEHAVIOR_PAGES.find((one) => one.slug === slug);
@@ -253,8 +267,7 @@ export function routeOf(hash: string): Route | undefined {
  * The stages of the balancing, in their order (studio.object-model.md, section 5): the four
  * stages, numbered, then the full review. The pattern of the studio says how they show
  * (magma/patterns/stages-in-order.md): under the bar, the current one marked, each with the way
- * back and the way forward. Until #1403 and #1404 build their views, a stage opens the page of
- * today that does its work, and the pages beside it are those of today that it holds.
+ * back and the way forward. The page of a contrast scale stands beside Colours (placeOf).
  */
 export type StageId = 'colours' | 'weights' | 'themes' | 'exceptions' | 'full-review';
 
@@ -267,8 +280,6 @@ export interface Stage {
   numbered: boolean;
   /** The page the stage opens. */
   route: Route;
-  /** The pages beside it, reached from it: the stage stays the current one there. */
-  beside: Route[];
 }
 
 export const STAGES: readonly Stage[] = [
@@ -277,10 +288,9 @@ export const STAGES: readonly Stage[] = [
     label: msg('Colors'),
     icon: 'mi/baseline/palette',
     numbered: true,
-    route: { section: 'colours' },
     // Scale stands beside it, at the address of any scale (placeOf); Groups went out of the
     // stages (#1403)
-    beside: [],
+    route: { section: 'colours' },
   },
   {
     id: 'weights',
@@ -288,15 +298,13 @@ export const STAGES: readonly Stage[] = [
     icon: 'mi/baseline/account-tree',
     numbered: true,
     route: { section: 'weights' },
-    beside: [],
   },
   {
     id: 'themes',
     label: msg('Themes'),
     icon: 'mi/baseline/theater-comedy',
     numbered: true,
-    route: { section: 'colors', view: 'themes' },
-    beside: [],
+    route: { section: 'themes' },
   },
   {
     id: 'exceptions',
@@ -304,15 +312,13 @@ export const STAGES: readonly Stage[] = [
     icon: 'mi/baseline/tune',
     numbered: true,
     route: { section: 'exceptions' },
-    beside: [],
   },
   {
     id: 'full-review',
     label: msg('Full review'),
     icon: 'mi/baseline/fact-check',
     numbered: false,
-    route: { section: 'colors', view: 'contrast' },
-    beside: [],
+    route: { section: 'full-review' },
   },
 ];
 
@@ -331,6 +337,16 @@ export const scaleRoute = (formula: Formula, name: string, group?: string): Rout
   ...(group ? { group } : {}),
 });
 export const GROUPS_PAGE: Route = { section: 'groups' };
+/** The full review on a theme in a mode (#1404): the toast of a broken theme opens it there. */
+export const reviewRoute = (theme?: string, mode?: 'light' | 'dark'): Route => ({
+  section: 'full-review',
+  ...(theme && mode ? { theme, mode } : {}),
+});
+/** The stage Themes on a theme, by its name (#1404): Colours names the themes that use a family. */
+export const themeRoute = (theme?: string): Route => ({
+  section: 'themes',
+  ...(theme ? { theme } : {}),
+});
 
 /** The view before the first stage, where its way back leads: the opening. */
 export const BEFORE_STAGES: { route: Route; label: string } = {
@@ -340,18 +356,12 @@ export const BEFORE_STAGES: { route: Route; label: string } = {
 
 /**
  * The address of the page of the work a draft names: the address it keeps since #1403, or the id
- * of a page of today's Colors section a draft saved before carries (its address, which the router
- * takes to the view that replaced it). Undefined for anything else.
+ * of a page of the Colors section a draft saved before carries (OLD_VIEWS: its address, which the
+ * router takes to the view that replaced it). Undefined for anything else.
  */
 export function workPlaceOf(view: unknown): string | undefined {
   if (typeof view !== 'string') return undefined;
-  if (view === 'colors') return '#/colours';
-  if (view === 'scales') return '#/colors/contrast-scales';
-  // Groups stood beside Colours; the view that replaced it is outside the stages
-  if (view === 'groups') return '#/colours';
-  if (view === 'surface') return '#/weights';
-  const page = colorsViewOf(view);
-  if (page) return hrefOf({ section: 'colors', view: page });
+  if (OLD_VIEWS[view]) return OLD_VIEWS[view];
   return routeOf(view) ? view : undefined;
 }
 
@@ -367,13 +377,9 @@ export interface Place {
 export function placeOf(route: Route): Place | undefined {
   // the page of any scale stands beside Colours (#1403)
   if (route.section === 'scale') return { stage: STAGES[0], index: 0, place: 'side-page' };
-  const href = hrefOf(route);
-  for (const [index, stage] of STAGES.entries()) {
-    if (hrefOf(stage.route) === href) return { stage, index, place: 'stage' };
-    if (stage.beside.some((page) => hrefOf(page) === href))
-      return { stage, index, place: 'side-page' };
-  }
-  return undefined;
+  // a stage at any of its addresses: Themes on any theme (#1404)
+  const index = STAGES.findIndex((stage) => stage.route.section === route.section);
+  return index < 0 ? undefined : { stage: STAGES[index], index, place: 'stage' };
 }
 
 /** A view the way back or the way forward of a stage opens: its page, and its name. */

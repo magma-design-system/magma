@@ -228,3 +228,37 @@ export const gateFailures = (report: GateReport): GateFailure[] =>
         .map((pair) => ({ theme: theme.name, cell: pair.cells[mode] })),
     ),
   );
+
+/** A theme that fails in a mode where the preset at the last exit passed (#1404). */
+export interface BrokenTheme {
+  /** Its name now. */
+  theme: string;
+  family: string;
+  mode: Mode;
+  /** The pairs that fail in that mode now. */
+  failing: number;
+}
+
+/**
+ * The themes a change broke (#1404): each theme and mode that fails the gate now and passed in
+ * the report of the preset at the last exit (the same baseline the changes of the bar are counted
+ * from), matched by the family a theme is drawn from, which a rename leaves alone. A theme that
+ * failed already, or that is new, is not broken by a change: it says nothing (studio.object-model.md,
+ * section 4, Tema: "silenzio finché uno non si rompe").
+ */
+export function brokenSince(before: GateReport, now: GateReport): BrokenTheme[] {
+  const broken: BrokenTheme[] = [];
+  for (const theme of now.themes) {
+    const was = before.themes.find((one) => one.family === theme.family);
+    if (!was) continue;
+    for (const mode of MODES)
+      if (theme.failing[mode] > 0 && was.failing[mode] === 0 && was.modes.includes(mode))
+        broken.push({
+          theme: theme.name,
+          family: theme.family,
+          mode,
+          failing: theme.failing[mode],
+        });
+  }
+  return broken;
+}
