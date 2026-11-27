@@ -18,6 +18,8 @@ not-for:
     use: page-header
   - need: the data of one record, read or changed on its own page
     use: record-detail
+  - need: choosing one item of a list and changing it beside the list
+    use: list-and-detail
   - need: a result that takes time to compute
     use: loading
   - need: where the outcome of saving the changes is told
@@ -27,7 +29,7 @@ assumptions:
   - "The changes are a draft until the person saves them; undoing one follows confirm-action (act at once, then undo)."
 high-stakes: false
 components: [mds-input-field, mds-input, mds-input-select, mds-text, mds-tab, mds-tab-item, mds-preview]
-related: [page-header, app-shell, record-detail, loading, message-placement, confirm-action, widths]
+related: [page-header, app-shell, record-detail, list-and-detail, loading, message-placement, confirm-action, widths]
 validated-on: []
 
 variables:
@@ -129,8 +131,8 @@ page that shows what it did.
 
 Something else fits better:
 
-- choosing one item of a list and changing it beside the list: the list and detail of #1262, a
-  candidate pattern of epic #1487 (the editor of one item can be this pattern);
+- choosing one item of a list and changing it beside the list: `list-and-detail` (the editor of
+  one item can be this pattern);
 - choosing among alternatives the application generated for one choice: the comparison of
   #1489, of the same epic;
 - a page of another site shown to the person: `mds-url-view`, in a dialog;
@@ -304,8 +306,9 @@ Situations every application has, each with its case: they give the examples, th
 
 - `widths` had no box wider than the frame of the page: the result of a page needs the whole
   window. Its case `workspace` comes with this pattern (epic #1487, #1488).
-- No building block for the panels of an editor: written here, until a second pattern lays out
-  the same section (list and detail, #1262), then the block of a workspace.
+- No building block for the panels of an editor: written here. `list-and-detail` lays out panels
+  side by side too (#1262); whether the two are one section, the block of a workspace, is the
+  question of that block.
 - The Mistakes of `mds-url-view` forbid a bare `<iframe>` with no exception: they should point
   the result of an editor here.
 
@@ -322,3 +325,4 @@ Situations every application has, each with its case: they give the examples, th
 | 2026-11-23 | Under the desktop breakpoint the result docks small in a corner, always in view, and a lens zooms it; small, only the image and the lens. | The maintainer's answer on #1488, over a result stuck at the top or a switch between the controls and the result: the preview is never lost while the person corrects. |
 | 2026-11-23 | The result of `beside-own-page` and `docked-small` is `mds-preview` (#1491): the same markup stands beside the controls from the desktop breakpoint and docks under it; the stand-in markup and the gap of `docked-small` go. `beside-in-page` keeps a region of the page. | The component this pattern proposed is built (#1491, with the maintainer): drawn at the width of its box or of the desktop, whichever is wider, scaled down, docked in a tray as the one of `mds-status-bar`, its lens zooming it. A part in it would be drawn wider than it will be in a wider panel. The previews rendered before and after and kept by the maintainer. |
 | 2026-11-23 | A result that is a page goes across the whole window; a part stays in the frame of the page. | The principle of `widths`, a box as wide as its role: a page is judged at the widths of a window, a part at its own; the object model, section 8: the scene does not fit beside the controls in 1280 px. |
+| 2026-11-27 | Points to `list-and-detail` where it named the candidate list and detail of #1262 | The pattern of #1262 is written; the two name each other in `not-for` and `related`. |
