@@ -371,7 +371,9 @@ function ItemDetail({
             )}
           </div>
         </div>
-        <div class="mb-between-groups @side/item:sticky @side/item:top-inset @side/item:col-start-2 @side/item:row-span-5 @side/item:row-start-1 @side/item:mb-0">
+        {/* the scene beside, where the view has the room of a column for it (--container-side);
+          narrower it is not drawn, as in Weights: a page as tall as a phone would push the work down */}
+        <div class="hidden @side/item:sticky @side/item:top-inset @side/item:col-start-2 @side/item:row-span-5 @side/item:row-start-1 @side/item:block">
           <aside class="grid min-w-0 gap-inline" aria-label={t('The scene of the product')}>
             <div class="flex flex-wrap items-center justify-end gap-inline">
               <Check checked={contrast} onChecked={setContrast} type="switch">

@@ -204,7 +204,9 @@ export function ThemesPage({
                   <ThemeVerdict theme={gate} />
                   <TouchedPairs pairs={pairs} whole />
                 </div>
-                <div class="mb-between-groups @side/theme:sticky @side/theme:top-inset @side/theme:col-start-2 @side/theme:row-span-5 @side/theme:row-start-1 @side/theme:mb-0">
+                {/* the scene beside, where the view has the room of a column for it (--container-side);
+                  narrower it is not drawn, as in Weights: a page as tall as a phone would push the work down */}
+                <div class="hidden @side/theme:sticky @side/theme:top-inset @side/theme:col-start-2 @side/theme:row-span-5 @side/theme:row-start-1 @side/theme:block">
                   <SceneBeside t={t} theme={current} css={scene?.css} />
                 </div>
                 <section
