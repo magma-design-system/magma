@@ -1,5 +1,5 @@
 /*
-  The frame of the studio: the shell (src/shell.tsx), the Theme section and the frame of the pages
+  The frame of the studio: the shell (src/app/shell.tsx), the Theme section and the frame of the pages
   of Colors (src/app.tsx). The document itself, its font and its colours, is the one of Magma
   (styles/base.css); each page keeps its rules in the sheet beside its module, all from the tokens
   (src/magma.css). A length the rhythm has no relation for is a step of the spacing scale of Magma,
@@ -62,7 +62,7 @@
 }
 
 /* a panel of controls in a dropdown of the bar of the Theme section, the preferences of the scene
-   (scene-prefs.tsx) or the preview (shell.tsx): each choice its label over its control, as
+   (scene-prefs.tsx) or the preview (theme-section.tsx): each choice its label over its control, as
    mds-pref draws them; the inset is the one of mds-dropdown */
 .studio-panel {
   display: grid;
@@ -75,7 +75,7 @@
   gap: var(--magma-rhythm-label-control);
 }
 
-/* the menu of the bar (shell.tsx): the sections where the bar hides them, then the preferences of
+/* the menu of the bar (app/shell.tsx): the sections where the bar hides them, then the preferences of
    the person */
 .studio-menu {
   display: grid;

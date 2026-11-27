@@ -1095,7 +1095,7 @@ export function App({ view: routedView, onNavigate }: AppProps = {}) {
         {/* the actions of the page (the page-header block of Magma): Reset in view, the one
             action left once the menu of the others had nothing else (vittorio, 2026-11-09), then
             Save when a command serves the studio, last. What brings a configuration in and takes
-            it out is the Config menu of the bar (shell.tsx, app/config-menu.tsx) */}
+            it out is the Config menu of the bar (app/shell.tsx, app/config-menu.tsx) */}
         <div class="studio-page-actions">
           {studio.status.value && (
             <mds-text typography="caption" tag="span" class="studio-muted" role="status">

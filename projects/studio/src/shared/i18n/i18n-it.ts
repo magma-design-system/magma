@@ -26,7 +26,7 @@ export const IT_SHELL: Record<string, string> = {
   Selected: 'Selezionato',
   Disabled: 'Disabilitato',
 
-  // the bar and its menu (shell.tsx)
+  // the bar and its menu (app/shell.tsx)
   'for Magma v{version}': 'per Magma v{version}',
   Colors: 'Colori',
   Theme: 'Tema',
@@ -49,7 +49,7 @@ export const IT_SHELL: Record<string, string> = {
   'Design language': 'Linguaggio di design',
   Patterns: 'Pattern',
   Blocks: 'Blocchi',
-  // the Theme section (shell.tsx)
+  // the Theme section (theme-section.tsx)
   Typography: 'Tipografia',
   Shape: 'Forma',
   Density: 'Densità',

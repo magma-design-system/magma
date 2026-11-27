@@ -1,6 +1,6 @@
 /*
   The favicons of the studio, drawn from the Magma mark of @maggioli-design-system/identity, the
-  one of its bar (src/shell.tsx), as the docs site draws its own (magma-design-system/docs,
+  one of its bar (src/app/shell.tsx), as the docs site draws its own (magma-design-system/docs,
   src/pages/favicons/[file].ts): the SVG for browser tabs, white on a dark scheme; the ICO for the
   browsers without SVG favicons; the touch icon for the home screen of iOS and iPadOS; the
   manifest and its icons for Android and the installed apps.

@@ -430,7 +430,7 @@ const linkOf = <Id extends string>(item: MenuItem<Id>, route: Route) => ({
  * The levels of the studio, from the finest to the broadest: each is built on the one before
  * (the generator solves the roles from the ramps, a theme repoints the roles, a product paints
  * with the theme), so a change reaches every level after it. What each page sets is what its
- * summary says (VIEW_SUMMARY of app.tsx, the panels of shell.tsx).
+ * summary says (VIEW_SUMMARY of app.tsx, the panels of theme-section.tsx).
  */
 export const LEVELS: Level[] = [
   {

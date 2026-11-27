@@ -4,7 +4,7 @@ import { darkScheme } from '@maggioli-design-system/design-tokens/src/formats/da
 /*
   Whether the document of the studio is in the dark mode of Magma, the one its palette turns dark
   in. The sheets of the studio are plain CSS, with no `dark:` variant: what has to change with the
-  mode beyond the roles (the mark of the bar, shell.tsx) reads the list the dark palette and the
+  mode beyond the roles (the mark of the bar, app/shell.tsx) reads the list the dark palette and the
   `dark:` variant of Magma are printed from (design-tokens, src/formats/dark-scheme.ts), so it
   flips exactly when the roles do: the mode of the person (mds-pref-mode in the menu: light, dark,
   system), the scheme a theme is locked to, and the mode of the OS.

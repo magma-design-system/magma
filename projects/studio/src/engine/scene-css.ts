@@ -17,7 +17,7 @@ import {
 /*
   What the frame of the Theme section needs to show the configuration the person edits, not only
   the Magma installed: its themes, for the select, and the CSS that paints them, written into the
-  frame over the stylesheets of that Magma (shell.tsx, applyFrame). Both come from the code that
+  frame over the stylesheets of that Magma (theme-section.tsx, applyFrame). Both come from the code that
   writes the files Magma ships: the palette from the template of colors-rgb.css (formats.ts, the
   one the download uses), the themes from the export of the Themes page (`themesExportCss`), so
   the frame paints what the page exports: the names, the accents and the modes chosen there.

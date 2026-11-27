@@ -5,7 +5,7 @@ import type { ExportAction, StudioState } from './studio.js';
 /*
   What hands the configuration out of the studio (#1400, out of app.tsx), each through the
   contrast gate (#698): an export while the gate fails asks first, never the silent default. The
-  dialog that asks is the shell's (shell.tsx), drawn from `pendingExport`, so the Config menu of
+  dialog that asks is the shell's (app/shell.tsx), drawn from `pendingExport`, so the Config menu of
   the bar exports from any section.
 */
 

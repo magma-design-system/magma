@@ -1,0 +1,376 @@
+import { useEffect, useRef, useState } from 'preact/hooks';
+// the portal of the core: preact/compat would rewrite the events of the whole studio
+// (onChange of an input into onInput, onFocus into onfocusin) the moment it is imported
+import { createPortal } from 'preact';
+import logo from '@maggioli-design-system/identity/dist/internal/magma-design-system/logo-magma.svg?url';
+import logoWhite from '@maggioli-design-system/identity/dist/internal/magma-design-system/logo-magma-white.svg?url';
+import { App } from '../app.js';
+import { useDarkMode } from '../dark-mode.js';
+import { GateBadge } from '../shared/ui/verdict.js';
+import { ConfigItems, useConfigMenu, type ConfigAction } from './config-menu.js';
+import { GateDialog } from '../features/contrast-check/gate-dialog.js';
+import { RulesPage } from '../features/rules/rules.js';
+import { StartPage } from '../start.js';
+import { ThemePage } from '../theme-section.js';
+import { createStudio, StudioContext, useStudio, type StudioState } from '../state/studio.js';
+import { cancelExport, confirmExport } from '../state/exports.js';
+import { checkSource } from '../state/work.js';
+import { LANGS, LangProvider, useLang, useT } from '../shared/i18n/i18n.js';
+import { createRouter, type Router } from './router.js';
+import {
+  BEHAVIOR_PAGES,
+  COLORS_PAGES,
+  HOME,
+  hrefOf,
+  THEME_PAGE,
+  type BehaviorPage,
+  type ColorsView,
+  type MenuItem,
+  type Route,
+} from '../shared/routes/routes.js';
+
+export { applyFrame, type Scheme } from '../shared/frames/frame.js';
+
+/*
+  The shell of the studio (#695; in app/ since #1402): the bar of the application and its three
+  sections, the Start page before them, built with the components of the Magma installed where the
+  studio runs (vendor.ts). The bar follows the
+  app-shell block of Magma; Colors and Behavior open their pages from a menu, a case the block
+  does not have yet (#695). Config, after them, is a menu of actions, not a section: it brings a
+  configuration in and takes it out from any section (config-menu.tsx). The menu at the end of the
+  bar, at every width, holds the preferences of the person (#1336): the language, the mode, the
+  contrast, the animations; on a narrow window, where the bar hides its sections, it holds them
+  first. The Theme section is a page of its own (theme-section.tsx).
+*/
+
+/** The version of the Magma the studio runs on, written into the page by vendor.ts. */
+const magmaVersionOf = () =>
+  document.querySelector<HTMLMetaElement>('meta[name="magma-version"]')?.content || undefined;
+
+/**
+ * What the studio is given, or makes for itself: a host (#695) hands in the state it keeps and a
+ * router on the location it owns.
+ */
+export interface StudioProps {
+  /** The state of the work; without it the studio makes one and checks its source (work.ts). */
+  state?: StudioState;
+  /** The router; without it the studio follows the hash of the window. */
+  router?: Router;
+}
+
+/** A value handed in, or one made at the first render and dropped when the studio goes. */
+function useOwned<T>(given: T | undefined, make: () => T, drop: (made: T) => void): T {
+  const [made] = useState(() => (given ? undefined : make()));
+  useEffect(
+    () => () => {
+      if (made) drop(made);
+    },
+    [],
+  );
+  return given ?? made!;
+}
+
+export function Studio({ state, router }: StudioProps = {}) {
+  // the language of <html lang>, which mds-pref-language of the menu writes: the pages follow it
+  const lang = useLang();
+  // the work is the state's, not a page's (#1400): the pages of Colors are mounted only under
+  // Colors, and the bar, the Theme section and the Start page read the same state
+  const studio = useOwned(state, createStudio, (made) => made.dispose());
+  const nav = useOwned(router, createRouter, (made) => made.dispose());
+  useEffect(() => {
+    if (!state) void checkSource(studio);
+  }, []);
+  const route = nav.route.value;
+  const openColors = (view: ColorsView) => nav.navigate({ section: 'colors', view });
+
+  return (
+    <LangProvider value={lang}>
+      <StudioContext.Provider value={studio}>
+        <div class="studio">
+          <StudioBar
+            route={route}
+            // an import opens the pages of Colors: the configuration loaded on the Palette, or
+            // the notice of why it was not on the page of Colors the work is on
+            onImported={(loaded) =>
+              openColors(loaded ? 'colors' : (studio.colorsView.peek() ?? 'colors'))
+            }
+          />
+          {route.section === 'colors' && (
+            <div class="studio-section">
+              <App view={route.view} onNavigate={openColors} />
+            </div>
+          )}
+          {route.section === 'start' && <StartPage draftView={studio.colorsView.value} />}
+          {route.section === 'theme' && (
+            <ThemePage
+              theme={route.theme}
+              mode={route.mode}
+              onChoose={(theme, mode) =>
+                nav.navigate({ section: 'theme', theme, mode }, { replace: true })
+              }
+            />
+          )}
+          {route.section === 'behavior' && <RulesPage page={route.page} />}
+          <PendingExport onReview={() => openColors('contrast')} />
+        </div>
+      </StudioContext.Provider>
+    </LangProvider>
+  );
+}
+
+/**
+ * The dialog of the contrast gate, over the whole studio, while an export waits for an answer
+ * (state/exports.ts): the Config menu of the bar exports from any section. On document.body, as
+ * the modals of Magma stand.
+ */
+function PendingExport({ onReview }: { onReview: () => void }) {
+  const studio = useStudio();
+  const action = studio.pendingExport.value;
+  if (!action) return null;
+  return createPortal(
+    <GateDialog
+      action={action}
+      report={studio.report.value}
+      onCancel={() => cancelExport(studio)}
+      onConfirm={() => confirmExport(studio)}
+      onReview={() => {
+        cancelExport(studio);
+        onReview();
+      }}
+    />,
+    document.body,
+  );
+}
+
+/**
+ * The icon of a link of a menu: the outline one, the filled one (baseline) for the page shown, so
+ * the current page reads at a glance beside its weak tone (vittorio, 2026-11-06). routes.ts names
+ * the baseline icon; Material draws some the same in both sets (contrast, pattern).
+ */
+export const menuIcon = (icon: string, current: boolean): string =>
+  current ? icon : icon.replace('/baseline/', '/outline/');
+
+/** The links of a menu, the current one marked; a page apart comes after a separator. */
+function MenuLinks<Id extends string>({
+  items,
+  current,
+  routeOf,
+}: {
+  items: MenuItem<Id>[];
+  current?: Id;
+  routeOf: (id: Id) => Route;
+}) {
+  const t = useT();
+  return (
+    <>
+      {items.map((item) => (
+        <>
+          {item.apart && <mds-separator></mds-separator>}
+          <mds-button
+            href={hrefOf(routeOf(item.id))}
+            icon={menuIcon(item.icon, item.id === current)}
+            variant="dark"
+            tone={item.id === current ? 'weak' : 'text'}
+            aria-current={item.id === current ? 'page' : undefined}
+            class="studio-menu-link"
+            label={t(item.label)}
+          ></mds-button>
+        </>
+      ))}
+    </>
+  );
+}
+
+/**
+ * The preferences of the person, at the end of the menu of the bar (#1336): the language first, the
+ * one people asked for, then the mode, the contrast and the animations, each control of Magma
+ * keeping the choice in this browser. No theme (the studio edits themes, it does not wear one) and
+ * no consumption. `live-language`: the studio follows <html lang> at once (i18n.ts), so a change of
+ * language needs no reload.
+ */
+function StudioPrefs() {
+  const t = useT();
+  return (
+    <div class="studio-menu-prefs" role="group" aria-labelledby="studio-menu-prefs">
+      <mds-text typography="detail" tag="p" class="studio-menu-title" id="studio-menu-prefs">
+        {t('Preferences')}
+      </mds-text>
+      <mds-pref live-language>
+        <mds-pref-language>
+          {LANGS.map((code) => (
+            <mds-pref-language-item code={code}></mds-pref-language-item>
+          ))}
+        </mds-pref-language>
+        <mds-pref-mode></mds-pref-mode>
+        <mds-pref-contrast></mds-pref-contrast>
+        <mds-pref-animation></mds-pref-animation>
+      </mds-pref>
+    </div>
+  );
+}
+
+const colorsRoute = (view: ColorsView): Route => ({ section: 'colors', view });
+const behaviorRoute = (page: BehaviorPage): Route => ({ section: 'behavior', page });
+
+function StudioBar({
+  route,
+  onImported,
+}: {
+  route: Route;
+  /** After Import config read a file: whether it was loaded. */
+  onImported: (loaded: boolean) => void;
+}) {
+  // the verdict of the contrast gate on the work, wherever it is edited (#698)
+  const verdict = useStudio().verdict.value;
+  // what the Config menu runs, on the state; the picker of Import config drawn once
+  const { actions: configActions, input: configPicker } = useConfigMenu(onImported);
+  const colorsMenu = useRef<HTMLMdsDropdownElement>(null);
+  const behaviorMenu = useRef<HTMLMdsDropdownElement>(null);
+  const configMenu = useRef<HTMLMdsDropdownElement>(null);
+  // an action of the Config menu closes it, unless the action keeps it open to say what it did
+  const ranConfig = (action: ConfigAction) => {
+    if (!action.keepOpen && configMenu.current) configMenu.current.visible = false;
+  };
+  // following a link of a menu closes it
+  useEffect(() => {
+    for (const menu of [colorsMenu.current, behaviorMenu.current]) if (menu) menu.visible = false;
+  }, [hrefOf(route)]);
+  const colorsView = route.section === 'colors' ? route.view : undefined;
+  const behaviorPage = route.section === 'behavior' ? route.page : undefined;
+  const sectionTone = (section: Route['section']) => (route.section === section ? 'weak' : 'text');
+  const version = magmaVersionOf();
+  const t = useT();
+  const dark = useDarkMode();
+
+  return (
+    <>
+      {/* the menu at every width: the preferences of the person are in it on a wide window too */}
+      <mds-header class="studio-header" menu="all">
+        <mds-header-bar>
+          <a class="studio-product" href={hrefOf(HOME)}>
+            {/* the Magma mark of identity, its white version in the dark mode, as the favicon
+                (favicons.ts) and the docs site (src/components/frame/Logo.astro) show it */}
+            <img src={dark ? logoWhite : logo} alt="" width={40} height={40} />
+            <span class="studio-product-name">
+              <mds-text typography="h6" tag="p">
+                Magma Studio
+              </mds-text>
+              {/* the Magma the studio runs on, under its name */}
+              {version && (
+                <mds-text typography="label" tag="p" class="studio-product-version">
+                  {t('for Magma v{version}', { version })}
+                </mds-text>
+              )}
+            </span>
+          </a>
+          <mds-button
+            slot="nav"
+            id="studio-colors"
+            variant="dark"
+            tone={sectionTone('colors')}
+            icon="mi/baseline/expand-more"
+            icon-position="right"
+            label={t('Colors')}
+          >
+            {/* the pairs that fail the contrast gate, on the section, in view wherever the
+                configuration is edited (#698); no pulse, the count moves with every edit */}
+            {verdict?.state === 'fail' && (
+              <mds-notification
+                slot="notification"
+                value={verdict.violations}
+                max={99}
+              ></mds-notification>
+            )}
+          </mds-button>
+          <mds-button
+            slot="nav"
+            href={hrefOf({ section: 'theme' })}
+            variant="dark"
+            tone={sectionTone('theme')}
+            aria-current={route.section === 'theme' ? 'page' : undefined}
+            label={t('Theme')}
+          ></mds-button>
+          <mds-button
+            slot="nav"
+            id="studio-behavior"
+            variant="dark"
+            tone={sectionTone('behavior')}
+            icon="mi/baseline/expand-more"
+            icon-position="right"
+            label={t('Behavior')}
+          ></mds-button>
+          <mds-button
+            slot="nav"
+            id="studio-config"
+            variant="dark"
+            tone="text"
+            icon="mi/baseline/expand-more"
+            icon-position="right"
+            label={t('Config')}
+          ></mds-button>
+        </mds-header-bar>
+        <div slot="menu" class="studio-menu">
+          {/* the sections, where the bar hides them (style.css), then the preferences */}
+          <nav class="studio-menu-nav" aria-label={t('Studio')}>
+            <mds-text typography="detail" tag="p" class="studio-menu-title">
+              {t('Colors')}
+            </mds-text>
+            <MenuLinks items={COLORS_PAGES} current={colorsView} routeOf={colorsRoute} />
+            <mds-separator></mds-separator>
+            <mds-button
+              href={hrefOf({ section: 'theme' })}
+              icon={THEME_PAGE.icon}
+              variant="dark"
+              tone={sectionTone('theme')}
+              aria-current={route.section === 'theme' ? 'page' : undefined}
+              class="studio-menu-link"
+              label={t(THEME_PAGE.label)}
+            ></mds-button>
+            <mds-separator></mds-separator>
+            <mds-text typography="detail" tag="p" class="studio-menu-title">
+              {t('Behavior')}
+            </mds-text>
+            <MenuLinks items={BEHAVIOR_PAGES} current={behaviorPage} routeOf={behaviorRoute} />
+            <mds-separator></mds-separator>
+            <mds-text typography="detail" tag="p" class="studio-menu-title">
+              {t('Config')}
+            </mds-text>
+            <ConfigItems actions={configActions} />
+            <mds-separator></mds-separator>
+          </nav>
+          <StudioPrefs />
+        </div>
+      </mds-header>
+      <mds-dropdown ref={colorsMenu} target="#studio-colors" placement="bottom" strategy="fixed">
+        <div class="studio-dropdown">
+          <div class="studio-dropdown-head">
+            <GateBadge verdict={verdict} />
+          </div>
+          <mds-separator></mds-separator>
+          <MenuLinks items={COLORS_PAGES} current={colorsView} routeOf={colorsRoute} />
+        </div>
+      </mds-dropdown>
+      <mds-dropdown
+        ref={behaviorMenu}
+        target="#studio-behavior"
+        placement="bottom"
+        strategy="fixed"
+      >
+        <div class="studio-dropdown">
+          <MenuLinks items={BEHAVIOR_PAGES} current={behaviorPage} routeOf={behaviorRoute} />
+        </div>
+      </mds-dropdown>
+      <mds-dropdown
+        ref={configMenu}
+        target="#studio-config"
+        placement="bottom-end"
+        strategy="fixed"
+      >
+        <div class="studio-dropdown">
+          <ConfigItems actions={configActions} onRun={ranConfig} />
+        </div>
+      </mds-dropdown>
+      {configPicker}
+    </>
+  );
+}

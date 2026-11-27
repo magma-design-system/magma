@@ -9,7 +9,7 @@ import initialConfig from '@maggioli-design-system/design-tokens/.magma-design-t
 import blueMark from '@maggioli-design-system/identity/dist/internal/magma-design-system/logo-magma.svg?url'
 import whiteMark from '@maggioli-design-system/identity/dist/internal/magma-design-system/logo-magma-white.svg?url'
 import { DRAFT_STORAGE_KEY, hashText, type StudioDraft } from '../src/state/draft.js'
-import { Studio, applyFrame } from '../src/shell.js'
+import { Studio, applyFrame } from '../src/app/shell.js'
 import { createStudio, type StudioState } from '../src/state/studio.js'
 import { THEME_CHOICES_KEY, setThemeModes, setThemeName } from '../src/state/theme-choices.js'
 import { startStudio } from './studio.mjs'
