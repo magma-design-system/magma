@@ -148,6 +148,12 @@ describe('rowsOf', () => {
       ['studio', 'design tokens', 'preview actions/banner'],
     );
     assert.ok(rows[0].links.some((link) => link.url === 'http://localhost:5177/#/theme'));
+    // the views of the flow the studio has beside the pages of Colors (#1402)
+    for (const view of ['#/introduction', '#/opening', '#/exceptions'])
+      assert.ok(
+        rows[0].links.some((link) => link.url === `http://localhost:5177/${view}`),
+        view,
+      );
     assert.ok(
       rows[1].links.every((link) => link.url.startsWith('http://localhost:5177/#/colors/')),
     );
