@@ -1,4 +1,3 @@
-import type { ComponentChild } from 'preact';
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import {
   BORDER_ROLES,
@@ -49,7 +48,7 @@ const MODE_LABEL: Record<Mode, string> = { light: msg('Light'), dark: msg('Dark'
 /** The name of a mode inside a text. */
 const MODE_NAME: Record<Mode, string> = { light: msg('light'), dark: msg('dark') };
 
-export function WeightsPage({ foot }: { foot?: ComponentChild }) {
+export function WeightsPage() {
   const t = useT(IT_WEIGHTS);
   const studio = useStudio();
   const config = studio.config.value;
@@ -181,7 +180,6 @@ export function WeightsPage({ foot }: { foot?: ComponentChild }) {
           {scene?.themes[0] && <SceneOfMode theme={scene.themes[0]} css={scene.css} mode={mode} />}
         </aside>
       </div>
-      {foot && <div class="mt-between-sections">{foot}</div>}
     </main>
   );
 }

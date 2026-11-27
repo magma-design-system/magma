@@ -68,7 +68,7 @@ test('the tokens of a configuration the generator refuses are not handed over: t
   expect(studio.notice.value).toMatchObject({ text: 'Could not export the selection: {error}' })
 })
 
-// The exit of the preset (#1402): the way forward of the last stage, and the action of the bar
+// The exit of the preset (#1402): the action of the bar
 test('the exit downloads the preset on its own, saves it where a command takes saves', () => {
   const studio = quietStudio()
   const download = exitOf(studio)

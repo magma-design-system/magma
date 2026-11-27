@@ -36,8 +36,8 @@ export function downloadPreset(state: StudioState): ExportAction {
 }
 
 /**
- * The exit of the preset (the register: exit), the way forward of the last stage and the action
- * of the bar: saved into the file a command serves when it takes saves, downloaded as JSON on its
+ * The exit of the preset (the register: exit), the action of the bar (#1595: no stage has a foot
+ * any more): saved into the file a command serves when it takes saves, downloaded as JSON on its
  * own (the site on Pages, a command that refuses saves). Run it through `guard`, which asks first
  * while the gate fails (object model, Verification: leaving with it red is allowed, asking). Once
  * the preset has left, the changes are counted from it (markExited; a save marks it on success).

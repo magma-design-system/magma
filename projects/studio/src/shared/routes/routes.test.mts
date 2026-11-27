@@ -1,8 +1,6 @@
 import { expect, test } from 'vitest'
 
 import {
-  aroundStage,
-  BEFORE_STAGES,
   BEHAVIOR_PAGES,
   COLORS_PAGES,
   COLORS_VIEWS,
@@ -160,22 +158,6 @@ test('a page is a stage, a page beside one, or outside the flow', () => {
     { section: 'behavior', page: 'patterns' },
   ] as Route[])
     expect(placeOf(route)).toBeUndefined()
-})
-
-test('each stage leads back to the view before it and forward to the stage after it, the last to none', () => {
-  const named = (index: number) => {
-    const { before, after } = aroundStage(index)
-    const name = (link?: { label: string; number?: number; route: Route }) =>
-      link && `${link.number ? `${link.number}. ` : ''}${link.label} ${hrefOf(link.route)}`
-    return [name(before), name(after)]
-  }
-  // the first stage leads back to the view before the stages
-  expect(named(0)).toEqual(['Opening #/opening', '2. Weights #/weights'])
-  expect(BEFORE_STAGES.route).toEqual({ section: 'opening' })
-  expect(named(1)).toEqual(['1. Colors #/colours', '3. Themes #/colors/themes'])
-  expect(named(3)).toEqual(['3. Themes #/colors/themes', 'Full review #/colors/contrast-check'])
-  // the full review has no number, and the exit after it
-  expect(named(4)).toEqual(['4. Exceptions #/exceptions', undefined])
 })
 
 // The pages that went keep their address: a link written before opens the view that took their

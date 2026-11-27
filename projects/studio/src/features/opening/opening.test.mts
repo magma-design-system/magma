@@ -42,8 +42,8 @@ test('the starts are cards in line, with no draft to resume when the work has no
   show(studio)
   expect(root.querySelector('mds-text[tag="h1"]')?.textContent).toBe('Opening')
   expect(titles()).toEqual(["Magma's preset", 'A ready theme', 'A brand colour'])
-  // no control of the stages, no verification: no stepper, no verdict
-  expect(root.querySelector('mds-stepper-bar, mds-badge')).toBeNull()
+  // no control of the stages, no verification: no strip of the stages, no verdict
+  expect(root.querySelector('mds-tab-item[href], mds-badge')).toBeNull()
 })
 
 test('the draft comes first, and resuming it is the main action, at the stage it was on', async () => {

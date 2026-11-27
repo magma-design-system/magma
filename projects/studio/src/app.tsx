@@ -24,11 +24,6 @@ interface AppProps {
   /** The view the shell routes to. */
   view: View;
   /**
-   * The foot of the stage the view is (app/stages.tsx, #1402), at the end of the region that
-   * scrolls: the shell hands it in, so the page knows nothing of the flow.
-   */
-  foot?: ComponentChild;
-  /**
    * The head of the stage above the title: the way back of a page beside a stage, the links to the
    * pages beside it (app/stages.tsx, StageLead), handed in by the shell.
    */
@@ -45,7 +40,7 @@ const VIEW_SUMMARY: Record<View, string> = {
   ),
 };
 
-export function App({ view, foot, lead }: AppProps) {
+export function App({ view, lead }: AppProps) {
   const t = useT();
   // the work is the state's (state/studio.ts, #1400): the pages read it and change it through its
   // actions, so it outlives them
@@ -93,7 +88,6 @@ export function App({ view, foot, lead }: AppProps) {
           Groups) - same axis, one step down. */}
         {view === 'themes' && <ThemesManager config={config} report={report} guard={ask} />}
         {view === 'contrast' && <ContrastCheck report={report} />}
-        {foot && <div class="mt-between-sections">{foot}</div>}
       </main>
     </div>
   );
