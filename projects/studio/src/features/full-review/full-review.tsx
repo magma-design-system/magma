@@ -113,8 +113,9 @@ export function FullReviewPage({
   return (
     <div class="@container/review h-full">
       <div class="grid h-full grid-cols-[calc(var(--spacing)*6000)_minmax(0,1fr)] grid-rows-[auto_minmax(0,1fr)] @max-list-beside/review:grid-cols-1">
-        {/* where the list stands above the page, folded into the item at the centre (#1311) */}
-        <div class="hidden px-inline pt-inset @max-list-beside/review:block">
+        {/* where the list stands above the page, folded into the item at the centre (#1311); the
+          list and its bar in the gutter of the page, as in Colours (#1596) */}
+        <div class="hidden px-(--magma-width-page-gutter) pt-inset @max-list-beside/review:block">
           <mds-button
             type="button"
             icon={listOpen ? 'mi/baseline/expand-less' : 'mi/baseline/expand-more'}
@@ -210,8 +211,8 @@ function ReviewList({
       id="full-review-list"
       class={
         open
-          ? 'col-start-1 row-span-2 row-start-1 grid min-h-0 content-start gap-between-fields overflow-y-auto border-e border-border-muted px-inline py-inset @max-list-beside/review:row-span-1 @max-list-beside/review:row-start-2 @max-list-beside/review:border-e-0'
-          : 'col-start-1 row-span-2 row-start-1 grid min-h-0 content-start gap-between-fields overflow-y-auto border-e border-border-muted px-inline py-inset @max-list-beside/review:hidden'
+          ? 'col-start-1 row-span-2 row-start-1 grid min-h-0 content-start gap-between-fields overflow-y-auto border-e border-border-muted px-(--magma-width-page-gutter) py-inset @max-list-beside/review:row-span-1 @max-list-beside/review:row-start-2 @max-list-beside/review:border-e-0'
+          : 'col-start-1 row-span-2 row-start-1 grid min-h-0 content-start gap-between-fields overflow-y-auto border-e border-border-muted px-(--magma-width-page-gutter) py-inset @max-list-beside/review:hidden'
       }
       aria-label={t('The themes to look at, mode by mode')}
     >
