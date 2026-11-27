@@ -4,6 +4,8 @@ import {
   floatingUIStrategyDictionary,
 } from '@type/floating-ui';
 import { h } from '@stencil/core';
+import { expect, waitFor } from 'storybook/test';
+import { StateCell, StatesGrid, stateCell } from '@fixture/states';
 import { typographyTooltipDictionary } from '@type/typography';
 
 export default {
@@ -225,4 +227,160 @@ export const LabelOfAnIconOnlyButton = {
     layout: 'flex justify-center',
     relation: 'label',
   },
+};
+
+/**
+ * Every state of the tooltip once the story has opened (#1440, @fixture/states), each with a
+ * caller of its own in the room its tooltip opens into, so that no tooltip covers another cell.
+ * The visible states are set by `visible`, which nothing on the page takes back: a tooltip hides
+ * on the events of its own caller only, so the open cells do not close each other.
+ *
+ * The placements are pinned (`disable-auto-placement`, `disable-shift`): auto-placement and shift
+ * answer to the viewport, and on a grid taller than the screen they move the tooltip of a cell
+ * below the fold to another side, or out of its cell, so each cell would show where the page was
+ * scrolled to instead of its placement. The default placement, `top` with auto-placement, is the
+ * first open cell, inside the screen; the moves of auto-placement are in the stories AutoPlacement,
+ * Flip and Shift and in the e2e tests. `hideArrow` and `arrowPadding` are internal, so not states.
+ *
+ * A state only an interaction reaches (`play: true`) is brought there by the play function, which
+ * checks `visible`, not the look: the pointer entering the caller, the focus the keyboard gives it
+ * (the tooltip opens on a `:focus-visible` focus only, #1432) and Escape after the pointer, which
+ * hides it until the caller is entered again (WCAG 1.4.13).
+ */
+interface TooltipState {
+  state: string;
+  play?: boolean;
+  // the room of the cell the tooltip opens into, and where the caller stands in it
+  stage: string;
+  // a button with its label by default
+  caller?: Record<string, string>;
+  tooltip?: Record<string, string | boolean>;
+  text?: string;
+}
+
+const tooltipText = 'Scarica il verbale in PDF';
+const download: Record<string, string> = { label: 'Scarica', variant: 'primary', tone: 'weak' };
+const pinned = { 'disable-auto-placement': true, 'disable-shift': true };
+
+// above and below the caller a line of tooltip and its offset; beside it, the width of the cell
+const roomOf = (placement: string): string => {
+  const [side, align] = placement.split('-');
+  if (side === 'left') return 'flex justify-end';
+  if (side === 'right') return 'flex justify-start';
+  const justify = { start: 'justify-start', end: 'justify-end' }[align] ?? 'justify-center';
+  return `flex ${justify} ${side === 'top' ? 'pt-1200' : 'pb-1200'}`;
+};
+
+const pinnedPlacements = [
+  'top-start',
+  'top-end',
+  'bottom',
+  'bottom-start',
+  'bottom-end',
+  'left',
+  'left-start',
+  'left-end',
+  'right',
+  'right-start',
+  'right-end',
+];
+
+const tooltipStates: TooltipState[] = [
+  { state: 'hidden', stage: roomOf('top') },
+  { state: 'visible, top (default)', stage: roomOf('top'), tooltip: { visible: true } },
+  ...pinnedPlacements.map((placement) => ({
+    state: `visible, ${placement}`,
+    stage: roomOf(placement),
+    tooltip: { ...pinned, placement, visible: true },
+  })),
+  {
+    state: 'typography caption',
+    stage: 'flex justify-center pt-1600',
+    tooltip: { ...pinned, typography: 'caption', visible: true },
+  },
+  {
+    state: 'typography detail',
+    stage: 'flex justify-center pt-1600',
+    tooltip: { ...pinned, typography: 'detail', visible: true },
+  },
+  {
+    state: 'long text, wraps',
+    stage: 'flex justify-center pt-2800',
+    tooltip: { ...pinned, visible: true },
+    text: 'Il verbale firmato digitalmente, con gli allegati della seduta e il protocollo di uscita',
+  },
+  {
+    // the tooltip is the only name of an icon-only button
+    state: 'label of an icon-only button',
+    stage: roomOf('top'),
+    caller: { icon: 'mi/baseline/delete', variant: 'dark', tone: 'text' },
+    tooltip: { ...pinned, relation: 'label', visible: true },
+    text: 'Elimina la pratica',
+  },
+  {
+    state: 'strategy absolute',
+    stage: roomOf('top'),
+    tooltip: { ...pinned, strategy: 'absolute', visible: true },
+  },
+  { state: 'shown by the pointer', play: true, stage: roomOf('top'), tooltip: pinned },
+  { state: 'shown by the keyboard focus', play: true, stage: roomOf('top'), tooltip: pinned },
+  { state: 'hidden with Escape', play: true, stage: roomOf('top'), tooltip: pinned },
+];
+
+const TemplateStates = () => (
+  <StatesGrid>
+    {tooltipStates.map(({ state, play, stage, caller, tooltip, text }, index) => (
+      <StateCell key={state} state={state} play={play}>
+        <div class={stage}>
+          <mds-button id={`tooltip-state-${index}`} {...(caller ?? download)}></mds-button>
+          <mds-tooltip target={`#tooltip-state-${index}`} {...tooltip}>
+            {text ?? tooltipText}
+          </mds-tooltip>
+        </div>
+      </StateCell>
+    ))}
+  </StatesGrid>
+);
+
+/** The caller and the tooltip of a cell, once every Magma element of the cell has loaded. */
+const loadedTooltip = async (canvasElement: HTMLElement, state: string) => {
+  const cell = stateCell(canvasElement, state);
+  const elements = Array.from(cell.querySelectorAll('*')).filter((element) =>
+    element.tagName.startsWith('MDS-'),
+  );
+  await waitFor(() => elements.forEach((element) => expect(element).toHaveAttribute('hydrated')));
+  return {
+    caller: cell.querySelector('mds-button') as HTMLMdsButtonElement,
+    tooltip: cell.querySelector('mds-tooltip') as HTMLMdsTooltipElement,
+  };
+};
+
+const playStates = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+  // the tooltip listens to the caller itself: a mouseenter sent to it is the pointer entering
+  const hovered = await loadedTooltip(canvasElement, 'shown by the pointer');
+  hovered.caller.dispatchEvent(new MouseEvent('mouseenter'));
+
+  const escaped = await loadedTooltip(canvasElement, 'hidden with Escape');
+  escaped.caller.dispatchEvent(new MouseEvent('mouseenter'));
+  await waitFor(() => expect(escaped.tooltip).toHaveProperty('visible', true));
+  escaped.caller.dispatchEvent(
+    new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true }),
+  );
+
+  // a focus the browser rings, as the one of the keyboard: a script focus with no click before it.
+  // The page is not scrolled to it: a scroll moves the tooltips of auto-placement
+  const focused = await loadedTooltip(canvasElement, 'shown by the keyboard focus');
+  focused.caller.focus({ preventScroll: true });
+
+  // the property, not the attribute: Stencil reflects it on the next frame, and a hidden page
+  // draws no frame
+  await waitFor(() => expect(hovered.tooltip).toHaveProperty('visible', true));
+  await waitFor(() => expect(escaped.tooltip).toHaveProperty('visible', false));
+  await waitFor(() => expect(focused.tooltip).toHaveProperty('visible', true));
+};
+
+export const States = {
+  render: TemplateStates,
+
+  play: playStates,
 };
