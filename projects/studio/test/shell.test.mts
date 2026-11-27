@@ -185,6 +185,23 @@ test('served by a command that takes saves, the exit saves the preset and its me
 })
 
 // The introduction comes before the stages (features/introduction/, the Start page until #1402):
+// The widths of the studio (docs/agents/patterns/widths.md): a page of the work is the case
+// `workspace`, the bar following the window with the page; the introduction the case `page`, the
+// bar in the column of the page (style.css)
+test('the bar follows the window on a page of the work, the column of the page on the introduction', async () => {
+  const shell = () => root.querySelector('.studio')
+  await at('#/colours')
+  expect(shell()?.getAttribute('data-box')).toBe('workspace')
+  // the sheet takes the frame of the page away from the workspace alone, never from :root
+  const sheet = readFileSync(join(here, '../src/style.css'), 'utf8')
+  expect(sheet).toMatch(/\.studio\[data-box='workspace'\] \{\s*--magma-width-page: none;/)
+  expect(sheet).not.toMatch(/^:root[^{]*\{[^}]*--magma-width-page:/m)
+  location.hash = '#/introduction'
+  await vi.waitFor(() => expect(shell()?.getAttribute('data-box')).toBe('page'))
+  location.hash = '#/theme'
+  await vi.waitFor(() => expect(shell()?.getAttribute('data-box')).toBe('workspace'))
+})
+
 // a start with no address opens it, the name of the studio links back to it, and it leads out to
 // the opening
 test('a start with no address opens the introduction, which the name of the studio links to', async () => {
