@@ -457,13 +457,30 @@ describe('mds-button', () => {
         tabindex: '-1',
       });
       expect(anchor).not.toHaveAttribute('target');
+      expect(anchor).not.toHaveAttribute('rel');
       expect(root).toEqualAttribute('role', 'link');
     });
 
     it('opens in a new tab through the anchor when target is blank', async () => {
       const { root } = await link('target="blank"');
 
-      expect(root.shadowRoot!.querySelector('a')).toEqualAttribute('target', '_blank');
+      expect(root.shadowRoot!.querySelector('a')).toEqualAttributes({
+        target: '_blank',
+        rel: 'noopener noreferrer',
+      });
+    });
+
+    it('opens a new tab without access to the page on Enter, as it does on a script click', async () => {
+      const open = vi.spyOn(window, 'open').mockImplementation(() => null);
+      const { root } = await link('target="blank"');
+      root.focus();
+
+      await userEvent.keyboard('{Enter}');
+
+      await vi.waitFor(() =>
+        expect(open).toHaveBeenCalledWith('#elsewhere', '_blank', 'noopener,noreferrer'),
+      );
+      open.mockRestore();
     });
 
     it('renders no anchor and stays a button without href', async () => {
@@ -570,7 +587,9 @@ describe('mds-button', () => {
 
       root.click();
 
-      await vi.waitFor(() => expect(open).toHaveBeenCalledWith('#elsewhere', '_blank'));
+      await vi.waitFor(() =>
+        expect(open).toHaveBeenCalledWith('#elsewhere', '_blank', 'noopener,noreferrer'),
+      );
 
       const plain = await link();
       plain.root.dispatchEvent(
@@ -714,7 +733,9 @@ describe('mds-button', () => {
 
       const blank = await link('target="blank"');
       blank.root.click();
-      await vi.waitFor(() => expect(open).toHaveBeenCalledWith('#elsewhere', '_blank'));
+      await vi.waitFor(() =>
+        expect(open).toHaveBeenCalledWith('#elsewhere', '_blank', 'noopener,noreferrer'),
+      );
       await settle();
 
       expect(router).not.toHaveBeenCalled();
@@ -1307,8 +1328,8 @@ describe('mds-button', () => {
         return root;
       };
 
-      // the area halfway between rest and hover, until full colours: the selected wash of the
-      // family, a role of the tokens (#1269). The page of the tests loads no semantic layer, so
+      // the area between rest and hover: the selected role of the family, generated
+      // there by the tokens (#1269, #1427). The page of the tests loads no semantic layer, so
       // the button paints the fallback of the role; a value set on the page for the role proves
       // it reads the role itself
       describe('weak', () => {
@@ -1317,8 +1338,9 @@ describe('mds-button', () => {
         it.each([
           ['primary', 'accent-surface-selected'],
           ['ai', 'accent-ai-surface-selected'],
-          ['error', 'danger-wash-soft'],
-          ['info', 'info-wash-soft'],
+          ['error', 'danger-wash-selected'],
+          ['info', 'info-wash-selected'],
+          ['dark', 'wash-selected'],
         ])('paints %s with the selected wash %s, without the ring', async (variant, name) => {
           const root = await current(variant, 'weak');
           const { backgroundColor, boxShadow } = getComputedStyle(root);
@@ -1332,15 +1354,55 @@ describe('mds-button', () => {
         });
       });
 
-      // their hover keeps the area, and so does the current button: its bold label marks it
+      // the selected fill, between the rest and the hover of the band (#1427)
+      describe('strong', () => {
+        afterEach(() => document.documentElement.removeAttribute('style'));
+
+        it.each([
+          ['primary', 'strong', 'accent-emphasis-selected'],
+          ['ai', 'strong', 'accent-ai-emphasis-selected'],
+          ['error', 'strong', 'danger-emphasis-selected'],
+          ['dark', 'strong', 'surface-inverse-selected'],
+        ])(
+          'paints %s %s with the selected fill %s, without the ring',
+          async (variant, tone, name) => {
+            const root = await current(variant, tone);
+            const { backgroundColor, boxShadow } = getComputedStyle(root);
+            expect(backgroundColor).not.toBe(role(root, 'fill'));
+            expect(backgroundColor).not.toBe(role(root, 'fill-hover'));
+            expect(boxShadow).toMatch(/ 0px$/);
+
+            document.documentElement.style.setProperty(`--magma-${name}`, '1 2 3');
+            await settled();
+            expect(getComputedStyle(root).backgroundColor).toBe('rgb(1, 2, 3)');
+          },
+        );
+
+        // box draws no ring at all: its tone sets its bevel in the place of the ring
+        // (mds-button-tone.css), and the current button keeps the bevel it has at rest
+        it('paints primary box with the selected fill accent-emphasis-selected, keeping its bevel', async () => {
+          const { root: rest } = await render(
+            '<mds-button variant="primary" tone="box" label="Here"></mds-button>',
+          );
+          await settled();
+          const bevel = getComputedStyle(rest).boxShadow;
+
+          const root = await current('primary', 'box');
+          const { backgroundColor, boxShadow } = getComputedStyle(root);
+          expect(backgroundColor).not.toBe(role(root, 'fill'));
+          expect(backgroundColor).not.toBe(role(root, 'fill-hover'));
+          expect(boxShadow).toBe(bevel);
+
+          document.documentElement.style.setProperty('--magma-accent-emphasis-selected', '1 2 3');
+          await settled();
+          expect(getComputedStyle(root).backgroundColor).toBe('rgb(1, 2, 3)');
+        });
+      });
+
+      // light keeps its area on hover, and so does the current button: its bold label marks it
       it.each([
-        ['dark', 'weak', 'wash'],
         ['light', 'weak', 'wash'],
-        ...['primary', 'dark', 'light', 'error', 'ai'].map((variant) => [
-          variant,
-          'strong',
-          'fill',
-        ]),
+        ['light', 'strong', 'fill'],
       ])('keeps %s %s on its area at rest, without the ring', async (variant, tone, rest) => {
         const root = await current(variant, tone);
         const { backgroundColor, boxShadow } = getComputedStyle(root);
@@ -1349,17 +1411,123 @@ describe('mds-button', () => {
         expect(boxShadow).toMatch(/ 0px$/);
       });
 
-      // no area at rest: the wash of their hover
-      it.each(
-        ['primary', 'dark', 'light', 'error'].flatMap((variant) => [
-          [variant, 'text'],
-          [variant, 'outline'],
-        ]),
-      )('gives %s %s the wash of its hover', async (variant, tone) => {
-        const root = await current(variant, tone);
+      // no area at rest: the selected wash between none and the wash of their hover (#1427)
+      describe('text and outline', () => {
+        afterEach(() => document.documentElement.removeAttribute('style'));
+
+        it.each(
+          [
+            ['primary', 'accent-surface-subtle-selected'],
+            ['ai', 'accent-ai-surface-subtle-selected'],
+            ['error', 'danger-wash-soft-selected'],
+            ['dark', 'wash-soft-selected'],
+          ].flatMap(([variant, name]) => [
+            [variant, 'text', name],
+            [variant, 'outline', name],
+          ]),
+        )('gives %s %s the selected wash %s', async (variant, tone, name) => {
+          const root = await current(variant, tone);
+          expect(getComputedStyle(root).backgroundColor).not.toBe(role(root, 'text-wash'));
+
+          document.documentElement.style.setProperty(`--magma-${name}`, '1 2 3');
+          await settled();
+          expect(getComputedStyle(root).backgroundColor).toBe('rgb(1, 2, 3)');
+        });
+      });
+
+      // light: its hover paints the inverse, and the current button keeps the wash of its hover
+      it.each(['text', 'outline'])('gives light %s the wash of its hover', async (tone) => {
+        const root = await current('light', tone);
 
         expect(getComputedStyle(root).backgroundColor).toBe(role(root, 'text-wash'));
       });
+    });
+  });
+
+  // The ink of the accents and the status hues is a text role of the family, solved on its
+  // washes (#1427): weak writes with text-default, text and outline with text-muted at rest and
+  // text-default on hover; at rest text and outline of an accent write with its fg, the ink of a
+  // link (#1496). The page loads no semantic layer: a value set on the page for a role proves
+  // the button reads that role.
+  describe('the ink of the label', () => {
+    // the colours transition over --duration-200: read them once it is over
+    const settled = () => new Promise((resolve) => setTimeout(resolve, 400));
+    const park = async () => {
+      const corner = document.createElement('span');
+      corner.style.cssText = 'position: fixed; right: 0; bottom: 0; width: 8px; height: 8px';
+      document.body.append(corner);
+      await userEvent.hover(corner);
+      corner.remove();
+    };
+    const setRoles = (roles: Record<string, string>) =>
+      Object.entries(roles).forEach(([name, value]) =>
+        document.documentElement.style.setProperty(`--magma-${name}`, value),
+      );
+
+    beforeEach(park);
+    afterEach(() => document.documentElement.removeAttribute('style'));
+
+    const families = [
+      ['primary', 'accent'],
+      ['ai', 'accent-ai'],
+      ['error', 'danger'],
+      ['info', 'info'],
+    ];
+
+    it.each(families)(
+      'writes weak %s with %s-text-default, at rest and on hover',
+      async (variant, prefix) => {
+        setRoles({ [`${prefix}-text-default`]: '1 2 3' });
+        const { root } = await render(
+          `<mds-button variant="${variant}" tone="weak" label="Salva"></mds-button>`,
+        );
+        await settled();
+        expect(getComputedStyle(root).color).toBe('rgb(1, 2, 3)');
+
+        await userEvent.hover(root);
+        await settled();
+        expect(getComputedStyle(root).color).toBe('rgb(1, 2, 3)');
+      },
+    );
+
+    // the ink at rest: fg for an accent (#1496), text-muted for a status hue (#1427)
+    const rest: Record<string, string> = { accent: 'fg', 'accent-ai': 'fg' };
+    it.each(
+      families.flatMap(([variant, prefix]) => [
+        [variant, 'text', prefix, rest[prefix] ?? 'text-muted'],
+        [variant, 'outline', prefix, rest[prefix] ?? 'text-muted'],
+      ]),
+    )(
+      'writes %s %s (%s) with its %s at rest and text-default on hover',
+      async (variant, tone, prefix, ink) => {
+        setRoles({ [`${prefix}-${ink}`]: '1 2 3', [`${prefix}-text-default`]: '4 5 6' });
+        const { root } = await render(
+          `<mds-button variant="${variant}" tone="${tone}" label="Salva"></mds-button>`,
+        );
+        await settled();
+        expect(getComputedStyle(root).color).toBe('rgb(1, 2, 3)');
+
+        await userEvent.hover(root);
+        await settled();
+        expect(getComputedStyle(root).color).toBe('rgb(4, 5, 6)');
+      },
+    );
+
+    // dark weak (#1427): the base wash at rest, the strong one on hover, with no ring of its own
+    it('rests dark weak on the base wash and hovers it on the strong one, ring and all', async () => {
+      setRoles({ 'wash-base': '1 2 3', 'wash-strong': '4 5 6', 'border-strong': '7 8 9' });
+      const { root } = await render(
+        '<mds-button variant="dark" tone="weak" label="Salva"></mds-button>',
+      );
+      await settled();
+      expect(getComputedStyle(root).backgroundColor).toBe('rgb(1, 2, 3)');
+
+      await userEvent.hover(root);
+      await settled();
+      const { backgroundColor, boxShadow } = getComputedStyle(root);
+      expect(backgroundColor).toBe('rgb(4, 5, 6)');
+      expect(boxShadow).toContain('rgb(4, 5, 6)');
+      expect(boxShadow).not.toContain('rgb(7, 8, 9)');
     });
   });
 
@@ -1541,12 +1709,14 @@ describe('mds-button', () => {
       expect(markup).not.toMatch(/-webkit-(box-shadow|transition|transform)|-ms-/);
     });
 
-    // 52KB before #831, 22KB after: the ceiling leaves 2KB of room and fails on one more
-    // nested component or on a variant x tone matrix written out again
+    // 52KB before #831, 22KB after, 23.8KB on 2026-11-24, 25.6KB with the selected states and
+    // the text of the accents (#1427: two roles per variant, each with its token fallback): the
+    // ceiling leaves 2KB of room over the last measure and fails on one more nested component or
+    // on a variant x tone matrix written out again
     it('pre-renders well inside the window of gzip', async () => {
       const markup = await renderToString(button);
 
-      expect(markup.length).toBeLessThan(24 * 1024);
+      expect(markup.length).toBeLessThan(28 * 1024);
     });
   });
 });

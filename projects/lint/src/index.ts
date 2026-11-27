@@ -9,3 +9,4 @@ export * from './core/element.js';
 export * from './core/checks.js';
 export * from './core/colors.js';
 export * from './core/patterns.js';
+export * from './core/agents.js';

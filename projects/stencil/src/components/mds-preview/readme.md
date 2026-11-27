@@ -291,23 +291,25 @@ Under the desktop breakpoint the docked result sits over the bottom of the windo
 
 ## CSS Custom Properties
 
-| Name                                   | Description                                                                                                         |
-| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| `--mds-preview-docked-backdrop`        | The tray the docked card sits in, a translucent wash of the text ink at the corner of the window, as mds-status-bar |
-| `--mds-preview-docked-backdrop-filter` | The filter of what the tray covers, a blur                                                                          |
-| `--mds-preview-docked-background`      | The background of the card the docked result sits in, and of the lens on the image                                  |
-| `--mds-preview-docked-padding`         | The padding of the card the docked result sits in, around its head and its frame                                    |
-| `--mds-preview-docked-radius`          | The radius of the card the docked result sits in                                                                    |
-| `--mds-preview-docked-shadow`          | The shadow of the card the docked result sits in, over its tray                                                     |
-| `--mds-preview-docked-width`           | Public. The width of the result docked small under the desktop breakpoint                                           |
-| `--mds-preview-frame-background`       | The background of the frame the result is drawn in                                                                  |
-| `--mds-preview-frame-border-color`     | The colour of the border of the frame                                                                               |
-| `--mds-preview-frame-radius`           | The radius of the frame, and of the lens on the image                                                               |
-| `--mds-preview-gap`                    | The space between the head of the result and its frame                                                              |
-| `--mds-preview-head-gap`               | The space between the title, the conditions and the lens in the head                                                |
-| `--mds-preview-lens-inset`             | The inset of the lens on the image from the corner of the frame                                                     |
-| `--mds-preview-transition-duration`    | The duration of the change of the docked tray, zoomed and shrunk back                                               |
-| `--mds-preview-z-index`                | Public. The stacking of the docked result over the page                                                             |
+| Name                                       | Description                                                                                                         |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------- |
+| `--mds-preview-docked-background`          | The background of the card the docked result sits in, and of the lens on the image                                  |
+| `--mds-preview-docked-padding`             | The padding of the card the docked result sits in, around its head and its frame                                    |
+| `--mds-preview-docked-radius`              | The radius of the card the docked result sits in                                                                    |
+| `--mds-preview-docked-shadow`              | The shadow of the card the docked result sits in, over its tray                                                     |
+| `--mds-preview-docked-width`               | Public. The width of the result docked small under the desktop breakpoint                                           |
+| `--mds-preview-frame-background`           | The background of the frame the result is drawn in                                                                  |
+| `--mds-preview-frame-border-color`         | The colour of the border of the frame                                                                               |
+| `--mds-preview-frame-radius`               | The radius of the frame, and of the lens on the image                                                               |
+| `--mds-preview-gap`                        | The space between the head of the result and its frame                                                              |
+| `--mds-preview-head-gap`                   | The space between the title, the conditions and the lens in the head                                                |
+| `--mds-preview-lens-inset`                 | The inset of the lens on the image from the corner of the frame                                                     |
+| `--mds-preview-transition-duration`        | The duration of the change of the docked tray, zoomed and shrunk back                                               |
+| `--mds-preview-transition-timing-function` | The easing of the change of the docked tray, zoomed and shrunk back                                                 |
+| `--mds-preview-tray-backdrop-filter`       | The filter of what the tray covers, a blur                                                                          |
+| `--mds-preview-tray-background`            | The tray the docked card sits in, a translucent wash of the text ink at the corner of the window, as mds-status-bar |
+| `--mds-preview-tray-radius`                | The radius of the two corners of the tray towards the page                                                          |
+| `--mds-preview-z-index`                    | Public. The stacking of the docked result over the page                                                             |
 
 
 ## Dependencies

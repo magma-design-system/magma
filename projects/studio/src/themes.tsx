@@ -2,6 +2,7 @@ import { useMemo, useState } from 'preact/hooks';
 import { APCAcontrast, sRGBtoY } from 'apca-w3';
 import chroma from 'chroma-js';
 import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
+import { ACCENT_FG_STEPS } from '@maggioli-design-system/design-tokens/src/lib/emphasis.js';
 import { createColorTokens } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
 
 import {
@@ -60,7 +61,6 @@ type FamilyModes = { light: RoleSet; dark: RoleSet };
 // to - so a theme can repoint an accent to any variant (e.g. `variant-secondary`
 // for a future maggioli-editore theme), even one no role uses by default.
 const ACCENT_ROLES = Object.keys(semantic.accents);
-const ACCENT_STEPS = semantic.hueSteps;
 /** tree step keys are numeric without the leading zero (`04` -> `4`). */
 const stepKey = (s: string): string => String(Number(s));
 
@@ -75,6 +75,13 @@ const variantHex = (
   mode: Mode,
   step: string,
 ): string => hex(variants[family.replace('variant-', '')]?.[mode], stepKey(step));
+/** a state generated for a variant family (#1427): `emphasis` (its fill) or `wash` (its base wash). */
+const variantState = (
+  variants: Record<string, FamilyModes>,
+  family: string,
+  mode: Mode,
+  state: 'emphasis' | 'wash',
+): string => hex(variants[family.replace('variant-', '')]?.[mode], state);
 
 /** A ThemeDef of semantic.config.ts as surface, accents and modes (a string is the surface alone). */
 const defOf = (def: (typeof semantic.themes)[string]) =>
@@ -243,11 +250,30 @@ export function ThemesManager({
         light: hex(tones.neutral?.light, 'seed'),
         dark: hex(tones.neutral?.dark, 'seed'),
       };
+      // a variant with the states generated for it (#1427): the rest of its solid fill and its
+      // base wash, what --magma-accent-emphasis and --magma-accent-surface name, beside its ramp
+      const emphasis = (color.emphasis as Record<string, FamilyModes>) ?? {};
+      const wash = (color.wash as Record<string, FamilyModes>) ?? {};
+      const variantSets = Object.fromEntries(
+        Object.entries((color.variant as Record<string, FamilyModes>) ?? {}).map(([key, ramp]) => [
+          key,
+          Object.fromEntries(
+            MODES.map((mode) => [
+              mode,
+              {
+                ...ramp[mode],
+                ...(emphasis[key] ? { emphasis: emphasis[key][mode].default } : {}),
+                ...(wash[key] ? { wash: wash[key][mode].base } : {}),
+              },
+            ]),
+          ) as FamilyModes,
+        ]),
+      );
       return [
         (color.surface as Record<string, FamilyModes>) ?? {},
         (color.text as Record<string, FamilyModes>) ?? {},
         (color.border as Record<string, FamilyModes>) ?? {},
-        (color.variant as Record<string, FamilyModes>) ?? {},
+        variantSets,
         seedByMode,
         null,
       ] as const;
@@ -592,14 +618,15 @@ function ThemeCard({
                   <div class="themes-samples">
                     {ACCENT_ROLES.map((role) => {
                       const variant = accentFor(family, role);
-                      const emphasis = variantHex(variants, variant, mode, ACCENT_STEPS.emphasis);
+                      const emphasis = variantState(variants, variant, mode, 'emphasis');
                       // the fill ink: the seed in light, the canvas in dark (spec 6.5)
                       const onEmph =
                         mode === 'dark' && semantic.onEmphasisDark
                           ? hex(s, semantic.onEmphasisDark)
                           : seeds[mode];
-                      const aSurface = variantHex(variants, variant, mode, ACCENT_STEPS.surface);
-                      const aFg = variantHex(variants, variant, mode, ACCENT_STEPS.fg);
+                      const aSurface = variantState(variants, variant, mode, 'wash');
+                      // its ink on a neutral surface, a step per mode, as the layer generates it (#1496)
+                      const aFg = variantHex(variants, variant, mode, ACCENT_FG_STEPS[mode]);
                       return (
                         <span class="themes-sample">
                           <span

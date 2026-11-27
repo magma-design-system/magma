@@ -261,6 +261,39 @@ describe('mds-button-dropdown chevron', () => {
     await waitForChanges();
     expect(chevron(root)).toEqualAttribute('aria-label', 'Altre azioni per Esporta');
   });
+
+  // the three dots of an item with the menu of its options, as the name of a conversation
+  it('shows the arrow, the icon of dropdown-icon in its place, and the arrow again without it', async () => {
+    mockIconFetch();
+    const { root, waitForChanges } = await render<HTMLMdsButtonDropdownElement>(
+      '<mds-button-dropdown label="Riunione"><mds-button label="Rinomina"></mds-button></mds-button-dropdown>',
+    );
+    const dots = chevron(root) as HTMLMdsButtonElement;
+    const arrow = dots.icon;
+
+    expect(arrow).toContain('<svg');
+
+    root.dropdownIcon = 'mi/baseline/more-horiz';
+    await waitForChanges();
+    expect(dots.icon).toBe('mi/baseline/more-horiz');
+    expect((primaryAction(root) as HTMLMdsButtonElement).icon).toBeUndefined();
+
+    root.dropdownIcon = '';
+    await waitForChanges();
+    expect(dots.icon).toBe(arrow);
+  });
+
+  it('keeps its name with dropdown-icon, and takes no title from the slug of the icon', async () => {
+    mockIconFetch();
+    const { root } = await render(
+      '<mds-button-dropdown label="Riunione" dropdown-icon="mi/baseline/more-horiz"><mds-button label="Rinomina"></mds-button></mds-button-dropdown>',
+    );
+    const dots = chevron(root);
+
+    await vi.waitFor(() => expect(dots).toHaveAttribute('hydrated'));
+    expect(dots).toEqualAttribute('aria-label', 'Altre azioni per Riunione');
+    expect(dots).not.toHaveAttribute('title');
+  });
 });
 
 // #1431: `await` reached both halves, so a split button showed two spinners and two busy buttons
@@ -370,15 +403,22 @@ describe('mds-button-dropdown stretched', () => {
     const host = box(stretched);
     const primary = box(primaryAction(stretched));
     const arrow = box(chevron(stretched));
-    const label = box(primaryAction(stretched).shadowRoot!.querySelector('[part="label"]')!);
+    const labelOf = (dropdown: Element): DOMRect =>
+      box(primaryAction(dropdown).shadowRoot!.querySelector('[part="label"]')!);
+    const label = labelOf(stretched);
 
     expect(host.width).toBeCloseTo(box(stretched.parentElement!).width, 0);
     expect(primary.left).toBeCloseTo(host.left, 0);
     expect(arrow.left).toBeCloseTo(primary.right, 0);
     expect(arrow.right).toBeCloseTo(host.right, 0);
     expect(arrow.width).toBeCloseTo(box(chevron(intrinsic)).width, 0);
-    // the label stays in the middle of the main action, as in a stretched mds-button
-    expect(label.left + label.width / 2).toBeCloseTo(primary.left + primary.width / 2, 0);
+    // the label starts where it starts at the own width of the component, where a stretched
+    // mds-button centres it: a column of split buttons reads down one edge
+    expect(label.left - primary.left).toBeCloseTo(
+      labelOf(intrinsic).left - box(primaryAction(intrinsic)).left,
+      0,
+    );
+    expect(label.left + label.width / 2).toBeLessThan(primary.left + primary.width / 2);
   });
 
   // the footer of a card under 380px stacks its row and stretches every action: the main action

@@ -1,0 +1,30 @@
+import { Component, Host, h } from '@stencil/core';
+import { preferenceStore } from '@common/preference';
+
+/**
+ * Describe here, in one sentence, what {{tag}} is for: the first line of its readme, of its
+ * Storybook page and of the AGENTS.md it ships with.
+ *
+ * {{taxonomy}}
+ * @slot - The content of the component
+ */
+@Component({
+  tag: '{{tag}}',
+  styleUrl: '{{tag}}.css',
+  shadow: true,
+})
+export class {{className}} {
+  render() {
+    // the preferences of <html>, reflected on the host for the pref-* sheets
+    return (
+      <Host
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+        pref-mode={preferenceStore.state.mode}
+        pref-theme-scheme={preferenceStore.state['theme-scheme']}
+      >
+        <slot></slot>
+      </Host>
+    );
+  }
+}

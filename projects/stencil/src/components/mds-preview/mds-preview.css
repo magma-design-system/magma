@@ -3,8 +3,9 @@
 /**
  * @prop --mds-preview-docked-width: Public. The width of the result docked small under the desktop breakpoint
  * @prop --mds-preview-z-index: Public. The stacking of the docked result over the page
- * @prop --mds-preview-docked-backdrop: The tray the docked card sits in, a translucent wash of the text ink at the corner of the window, as mds-status-bar
- * @prop --mds-preview-docked-backdrop-filter: The filter of what the tray covers, a blur
+ * @prop --mds-preview-tray-background: The tray the docked card sits in, a translucent wash of the text ink at the corner of the window, as mds-status-bar
+ * @prop --mds-preview-tray-backdrop-filter: The filter of what the tray covers, a blur
+ * @prop --mds-preview-tray-radius: The radius of the two corners of the tray towards the page
  * @prop --mds-preview-docked-padding: The padding of the card the docked result sits in, around its head and its frame
  * @prop --mds-preview-gap: The space between the head of the result and its frame
  * @prop --mds-preview-head-gap: The space between the title, the conditions and the lens in the head
@@ -16,6 +17,7 @@
  * @prop --mds-preview-frame-radius: The radius of the frame, and of the lens on the image
  * @prop --mds-preview-lens-inset: The inset of the lens on the image from the corner of the frame
  * @prop --mds-preview-transition-duration: The duration of the change of the docked tray, zoomed and shrunk back
+ * @prop --mds-preview-transition-timing-function: The easing of the change of the docked tray, zoomed and shrunk back
  */
 
 /* The knobs of the component, in one place: every length, colour and radius below reads one of
@@ -29,8 +31,9 @@
 
   /* a translucent tray of the text ink, darker than the page in light and lighter in dark, as
      the one of mds-status-bar: not a projected shadow */
-  --mds-preview-docked-backdrop: rgb(var(--magma-text-default) / 0.1);
-  --mds-preview-docked-backdrop-filter: blur(--spacing(250));
+  --mds-preview-tray-background: rgb(var(--magma-text-default) / 0.1);
+  --mds-preview-tray-backdrop-filter: blur(--spacing(250));
+  --mds-preview-tray-radius: var(--magma-radius-xl);
   --mds-preview-docked-padding: --spacing(400);
   --mds-preview-gap: var(--magma-rhythm-title-content);
   --mds-preview-head-gap: var(--magma-rhythm-inline);
@@ -42,6 +45,7 @@
   --mds-preview-frame-radius: var(--magma-radius-md);
   --mds-preview-lens-inset: --spacing(200);
   --mds-preview-transition-duration: var(--duration-300);
+  --mds-preview-transition-timing-function: var(--ease-in-out-circ, cubic-bezier(0.785, 0.135, 0.15, 0.86));
   --private-preview-transition-duration: var(--mds-preview-transition-duration);
 
   /* the height of the lens, the size lg of mds-button: the first step of its scale that reaches
@@ -151,11 +155,9 @@
 @media (width < 1024px) {
   :host(:not([dock='none'])) {
     .box {
-      @apply ease-in-out-circ;
-
-      backdrop-filter: var(--mds-preview-docked-backdrop-filter);
-      background-color: var(--mds-preview-docked-backdrop);
-      border-radius: var(--magma-radius-xl) var(--magma-radius-xl) 0 0;
+      backdrop-filter: var(--mds-preview-tray-backdrop-filter);
+      background-color: var(--mds-preview-tray-background);
+      border-radius: var(--mds-preview-tray-radius) var(--mds-preview-tray-radius) 0 0;
       bottom: 0;
       box-sizing: border-box;
       corner-shape: var(--magma-corner-shape);
@@ -167,6 +169,7 @@
       position: fixed;
       transition-duration: var(--private-preview-transition-duration);
       transition-property: width, left, right;
+      transition-timing-function: var(--mds-preview-transition-timing-function);
 
       /* the card, its padding, and the tray around it */
       width: calc(var(--mds-preview-docked-width) + 2 * var(--mds-preview-docked-padding) + 2 * --spacing(200));

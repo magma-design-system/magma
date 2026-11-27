@@ -1,6 +1,6 @@
 ---
 name: migrate
-description: Migrate a project from Magma 1 to Magma 2 (@maggioli-design-system/magma) with the official codemod. Run it as a dry run, review its report and the decisions it leaves, write the changes on a clean git tree, then fix what the build and the Magma lint report. Use when asked to upgrade or migrate from Magma 1, or when code uses names Magma 2 no longer has.
+description: Migrate a project from Magma 1 to Magma 2 with the official codemod - dry run, its report, the write on a clean git tree, then what the build and the lint report. Use when asked to upgrade or migrate from Magma 1, or when code uses names Magma 2 no longer has.
 license: MIT
 compatibility: A project in git with Magma 1 code. Runs the codemod with npx.
 metadata:

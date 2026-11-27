@@ -1,3 +1,17 @@
+Copyright (c) 2020-2026 Maggioli S.p.A.
+
+The files of this package are under the MIT License below, except as each family of artworks
+declares in the "rights" field of dist/identity.json:
+
+- "trademark": the files are under the MIT License, but the marks they show are trademarks of
+  Maggioli S.p.A. (Gruppo Maggioli, Maggioli Editore and Maggioli Academy are registered), and
+  the MIT License grants no right to them;
+- "proprietary": the files belong to Maggioli S.p.A., all rights reserved, and the MIT License
+  does not apply to them.
+
+The companies of the Maggioli Group, and those working for them, may use both in the products,
+sites and materials of the Group. Any other use needs the permission of Maggioli S.p.A.
+
 MIT License
 
 Copyright (c) 2020-2026 Maggioli S.p.A.

@@ -53,7 +53,7 @@ export class MdsPolicyAi {
     'https://www.maggiolieditore.it/il-regolamento-europeo-sull-intelligenza-artificiale.html';
 
   private readonly handleIconClick = (): void => {
-    window.open(this.href, '_blank');
+    window.open(this.href, '_blank', 'noopener,noreferrer');
   };
 
   render() {

@@ -30,7 +30,7 @@ illustration, content), and the design language is one group of it, Design langu
 | Who reads them | the `get_pattern` tool of the MCP server, the `ui` and `review` skills of the Claude Code plugin, the agents of the products, the docs site |
 | The format and its checks | `projects/lint/src/core/patterns.ts`, which ships inside `magma` |
 | The template | `projects/stencil/template/pattern.md`; for a domain, `projects/stencil/template/design-language.md`; for a block, `projects/stencil/template/block.md` |
-| The contributor skills | `.claude/skills/pattern-new`, `pattern-change`, `pattern-preview`, `pattern-list` (not in the plugin that ships) |
+| The contributor skills | `.claude/skills/magma-dev/skills/pattern-new`, `pattern-change`, `pattern-preview`, `pattern-list` (the maintainers' plugin `magma-dev`, not the plugin that ships) |
 | A product layer | `magma/patterns/<id>.md` in the product's own repository |
 
 ## The method
@@ -44,7 +44,7 @@ illustration, content), and the design language is one group of it, Design langu
   thing are a defect. A new component comes as a proposal attached to the pattern: its intent,
   its API and what it is built on, with a prototype rendered in the draft preview; on the
   maintainer's yes it becomes an issue the pattern waits on. What the new pattern makes redundant is deprecated in its favour or
-  overwritten. The steps are those of `/pattern-new`, step 2, which `/pattern-change` follows
+  overwritten. The steps are those of `/magma-dev:pattern-new`, step 2, which `/magma-dev:pattern-change` follows
   when a change swaps the components of a case or replaces a pattern (#1394).
 - **Every proposal is seen before it is kept.** A new pattern, block or domain, and a change to
   one, is shown rendered with the real components of the build before it is written as decided:
@@ -283,6 +283,15 @@ try: Press Salva: the error shows above the form, and what was written stays.
   preview, so an agent that reads the markup tells the context from the solution too; it is the
   maintainer's choice on #1396 (2026-11-13), over a wrapper around the solution, which changes
   the layout of the stage and splits when the solution does.
+- **A prototype** (#1492). A component the pattern proposes and Magma lacks is stood in for by
+  markup, in a draft and in the preview of a case that waits on it (`magma-gap`): plain
+  elements and the components Magma has, the outermost one marked with the tag the proposal
+  gives the component, `data-prototype="mds-preview"`. `render_preview` names it in
+  `prototypes` instead of reporting a problem, and reports it (`prototype-shipped`) once the
+  build has the component, so the change that ships the component writes it in the previews
+  (the skill `/magma-dev:component-new`, which builds the component from its issue and its prototype).
+  It is the maintainer's choice on #1492 (2026-11-23), over writing the proposed tag itself,
+  an element the page does not know, with no shadow tree, styled by hand.
 - **What to try**, required: one line, what to do in the preview ("Press Salva: ..."), or what
   to look at when there is nothing to do. The page shows it under the stage. A live preview with
   nothing said is a still form; the maintainer chose the line and no animation (#1186).
@@ -344,7 +353,7 @@ try: Press Salva: the error shows above the form, and what was written stays.
   stage: the repository's `.vscode/settings.json` maps the entry point the server writes,
   `.claude/previews/tailwind.css` (`docs/EDITOR_TOKENS.md`, "Tailwind classes").
 
-`/pattern-preview <id>` makes the previews a pattern lacks. `/pattern-new` and `/pattern-change`
+`/magma-dev:pattern-preview <id>` makes the previews a pattern lacks. `/magma-dev:pattern-new` and `/magma-dev:pattern-change`
 show every case as a draft preview while the proposal is written, so the maintainer corrects
 it before it is kept (The method, "Every proposal is seen before it is kept"), and call it again
 to save the previews, so a new or changed case leaves with its preview.
@@ -398,6 +407,16 @@ to the lint rules (a product may name rules of its own) nor to the generated bod
 generator does not ship). A pattern that comes back in the layers of two or three products is
 proposed for the default.
 
+The rule of the method holds in a product too: nothing of a layer or of a pattern of the
+product is written before the person has seen it rendered (`render_preview`, on the release
+the product installed), each choice with its options side by side, each case of its own
+pattern as the product writes it. A case of a product that needs a component Magma lacks uses
+a prototype of it, markup marked `data-prototype="<tag>"`, which `render_preview` names in
+`prototypes` instead of reporting it, and reports (`prototype-shipped`) once the release has
+the component; the component is proposed to Magma with its API and the image of the prototype
+(`agents/reporting.md`, "A component Magma lacks"), which becomes the issue a pattern of Magma
+waits on, as a proposal of `/magma-dev:pattern-new` does (#1492).
+
 The products learn the format from the section "A product's layer" of the shipped catalogue
 (`agents/patterns.md`, written by `sync-agent-docs.ts`), and write a layer with the plugin
 skill `/magma:pattern-layer`, in the file `get_pattern` names: `layerFile` with the id,
@@ -414,19 +433,19 @@ check on a product's folder.
 
 With Claude Code on this repository:
 
-- `/pattern-new <the need>`: checks the list first, then the components that hold the role,
+- `/magma-dev:pattern-new <the need>`: checks the list first, then the components that hold the role,
   turns a candidate into a pattern or starts a new one, researches the sources, writes the
   file, shows every case rendered as a draft for the maintainer to correct, runs the check, asks
   only the decisions the sources do not settle with their options rendered, attaches the
   proposal of a component the pattern needs and Magma lacks, opens the pull request;
-- `/pattern-change <id>`: shows why the current answer was decided, asks whether the change is
+- `/magma-dev:pattern-change <id>`: shows why the current answer was decided, asks whether the change is
   the default or one product's layer, shows the case as it is and as changed, rendered, before
   writing it, keeps the old id on a rename, checks the components that hold the role when a
   change swaps them;
-- `/pattern-preview <id>`: for each case with no preview, shows two options live and saves the
+- `/magma-dev:pattern-preview <id>`: for each case with no preview, shows two options live and saves the
   one the maintainer chooses; its drafts and the saved previews open in `mcp:serve.previews`,
   for the maintainer to adjust by hand;
-- `/pattern-list`: the list, read only.
+- `/magma-dev:pattern-list`: the list, read only.
 
 Without Claude:
 

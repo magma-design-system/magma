@@ -4,22 +4,34 @@
  * carries in each button (#831). Defaults are primary's, which secondary shares; a role that
  * defaults to another one follows the variant's value of that one.
  *
- *   fill            strong: background and ring, at rest (tone box too)
- *   fill-hover      strong: background and ring, on hover
- *   on-fill         strong: ink
- *   wash            weak: background and ring, at rest
- *   wash-hover      weak: background on hover
- *   wash-hover-ring weak: ring on hover
- *   ink             weak: ink and icon fill (the fill stays at rest on hover)
- *   ink-hover       weak: ink on hover
- *   outline         outline: ring
- *   outline-ink     outline: ink at rest
- *   text-ink        text: ink at rest; outline: ink on hover
- *   text-ink-hover  text: ink on hover
- *   text-wash       text: background on hover
- *   text-ink-active text: ink while active
- *   current-wash    weak: background of the current button (mds-button-current.css), the
- *                   selected role of the family; a variant whose hover keeps the wash keeps it
+ *   fill              strong: background and ring, at rest (tone box too)
+ *   fill-hover        strong: background and ring, on hover
+ *   fill-current      strong and box: background of the current button (mds-button-current.css),
+ *                     the selected fill of the family, between rest and hover
+ *   on-fill           strong: ink
+ *   wash              weak: background and ring, at rest
+ *   wash-hover        weak: background on hover
+ *   wash-hover-ring   weak: ring on hover
+ *   ink               weak: ink and icon fill (the fill stays at rest on hover)
+ *   ink-hover         weak: ink on hover
+ *   outline           outline: ring
+ *   outline-ink       outline: ink at rest
+ *   outline-ink-hover outline: ink on hover
+ *   text-ink          text: ink at rest
+ *   text-ink-hover    text: ink on hover
+ *   text-wash         text: background on hover
+ *   text-ink-active   text: ink while active
+ *   current-wash      weak: background of the current button, the selected wash of the family,
+ *                     between rest and hover; a variant whose hover keeps the wash keeps it
+ *   text-current-wash text and outline: background of the current button, the selected wash
+ *                     between no area and the wash of their hover
+ *
+ * The ink of the accents and the status hues is a text role of the family, solved on its washes
+ * (#1427): weak writes with text-default, text and outline with text-muted at rest and
+ * text-default on hover. A fill state as ink (emphasis-hover on weak) fell under Lc 60. At rest,
+ * text and outline of an accent write with its fg instead, the ink of a link (#1496): with no
+ * area, the hue is all that tells the action from the text beside it, and text-muted, solved for
+ * Lc 75, was a blue too light in dark to hold any (chroma 0.042).
  *
  * The tone rules stay at or below the specificity of the service variants, which come after
  * and set the public properties themselves, and of the tone sheet, which comes last. */
@@ -27,19 +39,22 @@
 :host {
   --private-button-fill: var(--magma-accent-emphasis);
   --private-button-fill-hover: var(--magma-accent-emphasis-hover);
+  --private-button-fill-current: var(--magma-accent-emphasis-selected);
   --private-button-on-fill: var(--magma-text-on-emphasis);
   --private-button-wash: var(--magma-accent-surface);
   --private-button-wash-hover: var(--magma-accent-surface-hover);
   --private-button-wash-hover-ring: var(--private-button-wash-hover);
-  --private-button-ink: var(--private-button-fill-hover);
+  --private-button-ink: var(--magma-accent-text-default);
   --private-button-ink-hover: var(--private-button-ink);
   --private-button-outline: var(--private-button-fill);
-  --private-button-outline-ink: var(--private-button-ink);
-  --private-button-text-ink: var(--magma-accent-emphasis-active);
-  --private-button-text-ink-hover: var(--private-button-fill);
+  --private-button-outline-ink: var(--private-button-text-ink);
+  --private-button-outline-ink-hover: var(--private-button-text-ink-hover);
+  --private-button-text-ink: var(--magma-accent-fg);
+  --private-button-text-ink-hover: var(--magma-accent-text-default);
   --private-button-text-wash: var(--magma-accent-surface-subtle);
   --private-button-text-ink-active: var(--private-button-text-ink);
   --private-button-current-wash: var(--magma-accent-surface-selected);
+  --private-button-text-current-wash: var(--magma-accent-surface-subtle-selected);
   --mds-button-background: rgb(var(--private-button-fill));
   --mds-button-border-color-rgb: var(--private-button-fill);
   --mds-button-color: rgb(var(--private-button-on-fill));
@@ -48,11 +63,15 @@
 :host([variant='ai']) {
   --private-button-fill: var(--magma-accent-ai-emphasis);
   --private-button-fill-hover: var(--magma-accent-ai-emphasis-hover);
+  --private-button-fill-current: var(--magma-accent-ai-emphasis-selected);
   --private-button-wash: var(--magma-accent-ai-surface);
   --private-button-wash-hover: var(--magma-accent-ai-surface-hover);
-  --private-button-text-ink: var(--magma-accent-ai-emphasis-active);
+  --private-button-ink: var(--magma-accent-ai-text-default);
+  --private-button-text-ink: var(--magma-accent-ai-fg);
+  --private-button-text-ink-hover: var(--magma-accent-ai-text-default);
   --private-button-text-wash: var(--magma-accent-ai-surface-subtle);
   --private-button-current-wash: var(--magma-accent-ai-surface-selected);
+  --private-button-text-current-wash: var(--magma-accent-ai-surface-subtle-selected);
 }
 
 /* the tones, strong (and box) at rest in the :host rule above */
@@ -82,7 +101,7 @@
 }
 
 :host([tone='outline']:hover) {
-  --mds-button-color: rgb(var(--private-button-text-ink));
+  --mds-button-color: rgb(var(--private-button-outline-ink-hover));
 }
 
 :host([tone='text']) {

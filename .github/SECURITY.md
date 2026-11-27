@@ -21,11 +21,11 @@ version before reporting an issue.
 Please do not report security vulnerabilities through public GitHub issues,
 discussions, or pull requests.
 
-Instead, report them privately using one of the following channels:
-
-- Open a [private security advisory](https://github.com/magma-design-system/magma/security/advisories/new)
-  on GitHub (preferred), or
-- Email the maintainers at [security_contact].
+Instead, report them privately through GitHub: open a
+[private security advisory](https://github.com/magma-design-system/magma/security/advisories/new)
+(the "Report a vulnerability" button in the repository's Security tab). Only
+the maintainers can read it, and the fix can be prepared in a private fork
+before the advisory is published.
 
 Please include as much of the following as you can:
 

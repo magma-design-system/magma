@@ -52,6 +52,23 @@ Colours: purple ai, amber assets, teal visual, blue components, grey tooling, wh
 npm install @maggioli-design-system/identity@latest
 ```
 
+##### License and trademarks
+
+The files of this package are MIT, like the rest of the repository, except as each family
+declares in the `rights` field of `dist/identity.json`:
+
+- `trademark`: the logos and avatars of Gruppo Maggioli, Maggioli Editore and Maggioli Academy,
+  and the logo of iLibro intelligente, are trademarks of Maggioli S.p.A. (Gruppo Maggioli,
+  Maggioli Editore and Maggioli Academy are registered). The MIT License covers the files, not
+  the marks.
+- `proprietary`: the illustration Contenuti aggiuntivi belongs to Maggioli S.p.A., all rights
+  reserved.
+- `mit`: the marks of Magma and of R&D, internal graphics, like the code.
+
+The companies of the Maggioli Group, and those working for them, may use the first two in the
+products, sites and materials of the Group; any other use needs the permission of Maggioli
+S.p.A. The text that applies: [LICENSE](LICENSE).
+
 ##### What each artwork is: `dist/identity.json`
 
 The file names lose accents, case and punctuation, and say nothing about which files belong
@@ -62,19 +79,20 @@ of one brand):
 {
   "assets": [
     {
-      "id": "argo",
-      "name": "Argo",
+      "id": "ilibro-intelligente",
+      "name": "iLibro intelligente",
       "kind": "logo",
       "group": "products",
-      "owner": { "id": "maggioli-informatica", "name": "Maggioli Informatica" },
+      "owner": { "id": "maggioli-editore", "name": "Maggioli Editore" },
+      "rights": "trademark",
       "variants": [
         {
-          "path": "products/maggioli-informatica/argo/logo-argo-icon-white",
-          "form": "symbol",
+          "path": "products/maggioli-editore/ilibro/logo-intelligente-white",
+          "form": "logo",
           "color": "white",
           "background": "dark",
-          "width": 61,
-          "height": 60
+          "width": 220,
+          "height": 77
         }
       ],
       "formats": { "svg": true, "pdf": true, "png": [256, 512, 1024], "webp": [256, 512, 1024] }
@@ -83,9 +101,12 @@ of one brand):
 }
 ```
 
-- `name`: as the artwork writes it (`L'Ufficio Tecnico`, `ilpersonale.it`, `R&D Days`).
+- `name`: as the artwork writes it (`iLibro intelligente`, `R&D Days`).
 - `kind`: `logo`, `avatar` or `illustration`. `group` is the folder of `dist/`.
-- `line`: the product line, when the family belongs to one (`{ "id": "city-mat", "name": "City MAT" }`).
+- `line`: the product line, when the family belongs to one (`{ "id": "...", "name": "..." }`);
+  no family has one today.
+- `rights`: `trademark`, `proprietary` or `mit`, as the [License](#license-and-trademarks)
+  section above says.
 - `variants[].path`: the file in `dist/` without its extension: add `.svg`, `.pdf`,
   `-<width>w.png` or `-<width>w.webp` with a width of `formats`.
 - `variants[].form`, for logos only: `logo`, `bordered` or `symbol` (without the name).
@@ -99,11 +120,15 @@ from the brand guidelines.
 
 The facts no file name carries are written by hand next to the artworks, one
 `identity.meta.json` per owner folder of `resources/` (and one in `resources/avatar/`): the
-owner, the families with their names and their files, the product lines. Add the new SVG to
+owner, the families with their names, rights and files, the product lines. Add the new SVG to
 the `files` of its family, or a new family, in the meta file of its folder. A file whose name
 does not say its form, colour or background can be listed as
-`{ "file": "...", "form": "...", "color": "...", "background": "..." }`.
+`{ "file": "...", "form": "...", "color": "...", "background": "..." }`. A new family declares
+its `rights`, as Maggioli decides them: a mark of the Group is `trademark`, an artwork that is
+not open source `proprietary`; name it in the [License](#license-and-trademarks) section above
+too.
 
 The build (`nx run identity:build`) fails on an SVG that no family lists, on a listed file that
-does not exist, on a family id used twice and on an owner or a line nobody defines.
+does not exist, on a family id used twice, on an owner or a line nobody defines, and on a family
+without `rights`.
 

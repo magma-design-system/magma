@@ -1,0 +1,17 @@
+/* Contrast preference. The component reflects the resolved mode from <html> onto its host as
+ * pref-contrast (preferenceStore in @common/preference); a refinement for high contrast sets a
+ * knob again on these plain shadow selectors, never a rule below :host. `more` is the explicit
+ * choice; `system` and no controller follow the OS via @media. Keep this sheet only when the
+ * component refines something, else delete it and its @import:
+ *
+ * :host([pref-contrast='more']) {
+ *   --{{tag}}-<knob>: <the stronger value>;
+ * }
+ *
+ * @media (prefers-contrast: more) {
+ *   :host([pref-contrast='system']),
+ *   :host(:not([pref-contrast])) {
+ *     --{{tag}}-<knob>: <the stronger value>;
+ *   }
+ * }
+ */

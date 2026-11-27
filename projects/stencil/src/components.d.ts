@@ -653,7 +653,7 @@ export namespace Components {
          */
         "size": ButtonSizeType;
         /**
-          * Specifies the target of the URL, if self or blank
+          * Specifies the target of the URL, if self or blank: blank opens a new tab, without giving it access to the page (`rel="noopener noreferrer"`)
           * @default 'self'
          */
         "target": ButtonTargetType;
@@ -706,6 +706,10 @@ export namespace Components {
           * Specifies if the component is disabled or not
          */
         "disabled"?: boolean;
+        /**
+          * The icon of the chevron, the button that opens the menu, in place of the arrow: a slug of the Magma icon library or SVG markup, as `icon`. Three dots (`mi/baseline/more-horiz`) make the component an item with the menu of its options, as the name of a conversation with an agent. The chevron keeps its name, `dropdownLabel` or the one the component builds
+         */
+        "dropdownIcon"?: string;
         /**
           * The accessible name of the chevron, the button that opens the menu, in place of the one the component builds in the language of the page: "More actions for" and `label`, or "More actions" without a label. Two split buttons of one page then name their chevrons apart
          */
@@ -941,7 +945,7 @@ export namespace Components {
      */
     interface MdsChip {
         /**
-          * Adds ARIA support to the element if has interaction
+          * Opens the content that revolves around what the chip names, such as the office or the person a record refers to: the label becomes a focusable button that the pointer, Enter and Space activate, and it emits `mdsChipClickLabel`. Not for an action of the application or of an agent (send, ask, a suggestion): that is an `mds-button`.
          */
         "clickable"?: boolean;
         /**
@@ -6220,7 +6224,7 @@ declare namespace LocalJSX {
          */
         "size"?: ButtonSizeType;
         /**
-          * Specifies the target of the URL, if self or blank
+          * Specifies the target of the URL, if self or blank: blank opens a new tab, without giving it access to the page (`rel="noopener noreferrer"`)
           * @default 'self'
          */
         "target"?: ButtonTargetType;
@@ -6273,6 +6277,10 @@ declare namespace LocalJSX {
           * Specifies if the component is disabled or not
          */
         "disabled"?: boolean;
+        /**
+          * The icon of the chevron, the button that opens the menu, in place of the arrow: a slug of the Magma icon library or SVG markup, as `icon`. Three dots (`mi/baseline/more-horiz`) make the component an item with the menu of its options, as the name of a conversation with an agent. The chevron keeps its name, `dropdownLabel` or the one the component builds
+         */
+        "dropdownIcon"?: string;
         /**
           * The accessible name of the chevron, the button that opens the menu, in place of the one the component builds in the language of the page: "More actions for" and `label`, or "More actions" without a label. Two split buttons of one page then name their chevrons apart
          */
@@ -6535,7 +6543,7 @@ declare namespace LocalJSX {
      */
     interface MdsChip {
         /**
-          * Adds ARIA support to the element if has interaction
+          * Opens the content that revolves around what the chip names, such as the office or the person a record refers to: the label becomes a focusable button that the pointer, Enter and Space activate, and it emits `mdsChipClickLabel`. Not for an action of the application or of an agent (send, ask, a suggestion): that is an `mds-button`.
          */
         "clickable"?: boolean;
         /**
@@ -9521,6 +9529,7 @@ declare namespace LocalJSX {
     interface MdsButtonDropdownAttributes {
         "label": string;
         "dropdownLabel": string;
+        "dropdownIcon": string;
         "autoFocus": boolean;
         "icon": string;
         "iconCurrent": string;

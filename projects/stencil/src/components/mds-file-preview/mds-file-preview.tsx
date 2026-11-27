@@ -214,6 +214,7 @@ export class MdsFilePreview {
           <mds-text
             class="file-name"
             typography="h6"
+            tag="span"
             variant="title"
             truncate={this.truncate}
             title={this.filename}

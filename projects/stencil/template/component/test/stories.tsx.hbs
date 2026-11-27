@@ -1,0 +1,35 @@
+import { h } from '@stencil/core';
+import { StateCell, StatesGrid } from '@fixture/states';
+
+export default {
+  title: '{{title}}',
+  argTypes: {},
+};
+
+const Template = (args) => <{{tag}} {...args}>The content</{{tag}}>;
+
+export const Default = {
+  render: Template,
+};
+
+// Every state of the component, each in a cell with its name, on the surface it sits on in a
+// product (SPEC.md, Tests rule 5; HOWTO.md, "The States story"): at rest, each variant, size and
+// tone, disabled, waiting, the long text that wraps; a state only an interaction reaches is
+// marked `play` and brought there by the play function of the story
+const states: { state: string; play?: boolean; props?: Record<string, unknown> }[] = [
+  { state: 'At rest' },
+];
+
+const TemplateStates = () => (
+  <StatesGrid>
+    {states.map(({ state, play, props }) => (
+      <StateCell key={state} state={state} play={play}>
+        <{{tag}} {...props}>The content</{{tag}}>
+      </StateCell>
+    ))}
+  </StatesGrid>
+);
+
+export const States = {
+  render: TemplateStates,
+};

@@ -72,6 +72,7 @@ Colours: purple ai, amber assets, teal visual, blue components, grey tooling, wh
 | `src/core/element.ts` | the element the template rules check, whatever the template language |
 | `src/core/checks.ts` | one check per template rule, pure |
 | `src/core/colors.ts` | the colour literals of a CSS value |
+| `src/core/agents.ts` | the markers of the Magma block the install guides write into a consumer's agent file, which `check_setup` of the MCP server finds (#1524) |
 | `src/core/patterns.ts` | the patterns (#1174) and the domains of the design language (#1196): reading a pattern or a product layer, the checks of its format, cases, carriers, links and layer, the case for a situation, the sections written from the frontmatter ([`docs/PATTERNS.md`](../../docs/PATTERNS.md)) |
 | `src/eslint/adapters.ts` | one adapter per parser: HTML (`@html-eslint/parser`), JSX, Angular templates (`@angular-eslint/template-parser`) |
 | `src/eslint/index.ts` | the ESLint rules and presets |

@@ -76,8 +76,8 @@ keep in step.
 - **Contract**: [`projects/stencil/SPEC.md`](../projects/stencil/SPEC.md), "Public API
   snapshot"; [`docs/WORKFLOW.md`](WORKFLOW.md), "6. Review by risk level".
 - **Read by**: `check.pr-risk` (the review level and the semver check posted on every pull
-  request), the reviewers, the skill `/magma-figma-component`
-  (`.claude/skills/magma-figma-component/scripts/magma_api.py`: the props, values and defaults
+  request), the reviewers, the skill `/magma-dev:magma-figma-component`
+  (`.claude/skills/magma-dev/skills/magma-figma-component/scripts/magma_api.py`: the props, values and defaults
   each component of the Figma library must have).
 - **Held by**: `check.api-snapshot` (the committed file equals the built API);
   `api-snapshot-lib.spec.ts`, `pr-risk-lib.spec.ts`.
@@ -164,6 +164,22 @@ keep in step.
   `test/themes.test.mts` of the studio (the export of a theme of one mode, the base one under its
   name, each choice of the modes a value of `color.modes`).
 
+## The roles of the semantic model
+
+- **What**: `semanticModel()` of `projects/design-tokens/semantic.model.ts`, every `--magma-*`
+  role of the semantic colour layer, by block (base, dark, contrast, the named themes), each with
+  the custom property it resolves to; a source module, read without a build.
+- **Produced by**: design-tokens, from `semantic.config.ts`.
+- **Contract**: [`projects/styles/SEMANTIC_COLOR_SPEC.md`](../projects/styles/SEMANTIC_COLOR_SPEC.md)
+  and the JSDoc of the module.
+- **Read by**: the styles build (`scripts/semantic.ts`, which prints `semantic.css`, the
+  Tailwind bridge and `themes.css`); the DTCG export of design-tokens (`scripts/dtcg/`); the
+  spec of `magma/host-knobs` (`projects/stencil/scripts/stylelint-host-knobs.spec.ts`), which
+  holds the rule's names of the colours to the roles, with the colours of
+  `projects/styles/css/globals.css` and of the roles a component passes down.
+- **Held by**: `test/dtcg-export.test.mts` and `test/theme-manifest.test.mts` of design-tokens;
+  the host-knobs spec, on the names the component sheets read.
+
 ## Icon slugs
 
 - **What**: the name `mds-icon` fetches, `mi/<variant>/<name>`, `mdi/<name>` or `mgg/<name>`,
@@ -194,6 +210,21 @@ keep in step.
 - **Held by**: the `check_setup` test, which collects every line that sets the path from the
   code blocks of the guides.
 
+## `identity.json` (identity)
+
+- **What**: one entry per family of artworks of the identity package: its name as the artwork
+  writes it, owner, kind, product line, `rights` (`trademark`, `proprietary` or `mit`, #1528)
+  and every variant with its path, form, colour, background and size.
+- **Produced by**: `projects/identity/scripts/manifest.ts`, from the SVG files and the
+  `identity.meta.json` written beside them.
+- **Contract**: [`projects/identity/README.md`](../projects/identity/README.md), "What each
+  artwork is" and "License and trademarks"; the `rights` values are defined by the package
+  `LICENSE`.
+- **Read by**: the docs site (`src/lib/identity.mjs`, the Brand pages); consumer agents, through
+  [`docs/agents/assets.md`](agents/assets.md), "Identity / brand".
+- **Held by**: the build of identity, which stops on an SVG no family lists, a listed file that
+  does not exist, and a family without `rights`.
+
 ## The agent guides
 
 - **What**: what the agent of a consumer project reads: the `AGENTS.md` and `agents/*.md` of
@@ -206,14 +237,22 @@ keep in step.
 - **Contract**: [`docs/agents/SPEC.md`](agents/SPEC.md) (the entry point and the targets);
   [`projects/stencil/SPEC.md`](../projects/stencil/SPEC.md), "Per-component usage docs".
 - **Read by**: the agents of consumer projects, the MCP `get_guide`, the skills of the Claude
-  Code plugin (`projects/claude-plugin/scripts/skills.ts`), the docs site; the studio reads the
-  tables of the section Variants of `docs/agents/variants.md` and of its section Tones, from the
-  repository (`projects/studio/src/paints.ts`: the colour variants, their kinds, the order of
-  the tones).
+  Code plugin (`projects/claude-plugin/scripts/skills.ts`: the targets of `docs/agents/SPEC.md`,
+  the rules of `docs/agents/lint.md`, and the rule in bold that opens each item of
+  `docs/agents/mistakes.md`, with the rules of the lint the item names, #1581), the docs site;
+  the studio reads the tables of the section Variants of `docs/agents/variants.md` and of its
+  section Tones, from the repository (`projects/studio/src/paints.ts`: the colour variants,
+  their kinds, the order of the tones).
 - **Held by**: `check.usage-docs` (every symbol a guide names exists); `component-docs.ts` fails
   the build on a relative link of a shipped guide that does not resolve inside its package;
-  `agent-docs-lib.spec.ts`; `nx run claude-plugin:check`; for the studio,
+  `agent-docs-lib.spec.ts`; `nx run claude-plugin:check` (an item of `mistakes.md` without its
+  rule in bold, or naming a rule the lint does not have, stops it); for the studio,
   `projects/studio/test/paints.test.mts` (the kinds and the tones it reads).
+- **The Magma block** (#1524): what the install guide writes into a consumer's root agent file
+  (step 3.8), between the markers of `projects/lint/src/core/agents.ts`; `magmaBlock` of
+  `agent-docs-lib.ts` writes it, `check_setup` (`agent-context`, `projects/mcp/src/checks.ts`)
+  finds it. Held by `agent-docs-lib.spec.ts` (the block written carries the markers),
+  `projects/lint/test/agents.test.ts` and the `check_setup` tests of mcp.
 
 ## The patterns
 
@@ -224,7 +263,8 @@ keep in step.
   catalogue `agents/patterns.md` and the preview of each case
   (`agents/patterns/previews/<id>/<case>.html`, of a rule of a domain `<domain>/<rule>.html`, of
   a situation of a block `<block>/<situation>.html`, the other examples of each `<id>.<n>.html`
-  from 2, #1221: the stage, its context marked `data-stage` (#1396), what to try in it, an optional
+  from 2, #1221: the stage, its context marked `data-stage` (#1396), the markup that stands in
+  for a component Magma lacks marked `data-prototype="<tag>"` (#1492), what to try in it, an optional
   height and `whole-page`, a stage with a frame of its own that takes no inset; never a page,
   the reader adds the stylesheets and the loader, compiles its Tailwind classes with the entry
   point of `agents/assets.md`, "Tailwind (optional)" (#1220), and runs it in a document of its
@@ -372,4 +412,7 @@ of one of them changes what it decides, the code and the line that cites it chan
 | MCP specification 2025-11-25 | the protocol of the server, the image content of a result | `projects/mcp/src/protocol.ts` |
 | Playwright (playwright.dev/docs/browsers, docs/api) | the browser channels a render tries, the API floor of the peer range (1.9) | `projects/mcp/src/render.ts` |
 | Claude Code (CHANGELOG 2.1.122, MCP docs), Anthropic vision docs | the 2000 px cap on a side of an image, the 25,000 tokens of a tool result | `projects/mcp/src/render.ts` |
-| Claude Code memory docs | how `CLAUDE.md` and `AGENTS.md` load, nested ones included | `CLAUDE.md` |
+| `known-css-properties`, resolved from stylelint | the CSS properties a knob's name may end with, the list of `property-no-unknown` | `projects/stencil/scripts/stylelint-host-knobs.mjs` |
+| Tailwind 4, its utility namespaces (`ease-*`, `shadow-*`, `rounded-*`, `z-*`, `bg-*`) | the family of design decisions of a class applied with `@apply` | `projects/stencil/scripts/stylelint-host-knobs.mjs`, held by its spec on the built theme |
+| Claude Code memory docs | how `CLAUDE.md` and `AGENTS.md` load, nested ones included | `CLAUDE.md`, the Magma block of the install guides (`projects/stencil/scripts/agent-docs-lib.ts`) |
+| Claude Code plugin docs (plugins/install, plugins/loading, mcp: "Plugin-provided MCP servers"), `claude plugin --help` 2.1.325 | the install scopes and their settings files, that a committed project setting does not download a plugin, `/reload-plugins`, `CLAUDE_PLUGIN_ROOT` and `CLAUDE_PROJECT_DIR` | the install guides (`projects/stencil/scripts/sync-agent-docs.ts`), `docs/agents/mcp.md`, the launcher of the plugin (`projects/claude-plugin/bin/magma-mcp.mjs`), `projects/mcp/src/checks.ts` |
