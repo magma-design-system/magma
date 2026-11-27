@@ -328,6 +328,8 @@ Altre relazioni:
 - **Contiene**: cosa è cambiato, in quale passo, prima e dopo. (proposta)
 - **Azioni**: annullare sempre; le azioni che tolgono lavoro non chiedono conferma. (persona)
 - **Si vede**: come prima e dopo sulla scena, rispetto all'ultima uscita. (persona)
+- **Si conta**: dall'ultima uscita; salvare o scaricare azzera il conto, aprire un preset lo fa
+  ripartire da quel preset, e la bozza lo tiene. (persona, 2026-11-27)
 
 ### Prove
 
@@ -372,12 +374,20 @@ La barra dello studio porta sempre con sé:
 - l'uscita;
 - le preferenze della persona.
 
+Costruita il 2026-11-27 (persona, sui render): le modifiche sono un pulsante con il loro numero,
+che le apre per passo, ognuna con il prima e il dopo; l'uscita è uno split button che salva o
+scarica il preset, con gli altri formati nel suo menu. I passi non stanno nella barra ma sotto,
+in una barra dei passi (sezione 8, "Passi in ordine").
+
 ### Introduzione
 
 - **Entità al centro**: nessuna, è un'introduzione. **Scopo**: dire a cosa serve lo studio. È la
   pagina Start di oggi e resta. (persona)
 - **Mai qui**: controlli del lavoro.
-- **Ingresso**: l'avvio, il nome dello studio nella barra. **Uscita**: Partenza.
+- **Intorno**: le viste in ordine, dalla Partenza al Giro completo, ognuna con quello che fa e un
+  link che la apre. (persona, 2026-11-27)
+- **Ingresso**: l'avvio, il nome dello studio nella barra. **Uscita**: Partenza; ogni vista,
+  dall'elenco. (persona, 2026-11-27)
 
 ### Partenza
 
@@ -389,6 +399,11 @@ La barra dello studio porta sempre con sé:
   - un colore di brand, con i candidati uno alla volta;
   - la bozza, da riprendere al passo dove era.
 - **Mai qui**: i controlli dei passi, la verifica.
+- **Come si apre** (persona, 2026-11-27): un tema pronto apre un tema del prodotto, una copia della
+  famiglia della sua tinta con i suoi accenti e le sue modalità (`my-editorial`); un colore di
+  brand apre un tema del prodotto con l'accento sul colore (`my-brand`). I candidati di un colore
+  di brand vengono dopo, con il lavoro del motore che li genera e li misura. Aprire sopra un lavoro
+  con modifiche si annulla da un toast, senza conferma.
 - **Ingresso**: Introduzione, o l'apertura senza una bozza. **Uscita**: Colori, o il passo della
   bozza. (proposta)
 
@@ -543,7 +558,10 @@ principio.
   non ha un pattern dei passi ordinati.
 - **Effetto**: senza una regola, l'ordine non si vede o si impone con un meccanismo inventato.
 - **Risoluzione** (persona): **decide il prodotto**, nel layer dello studio
-  (`/magma:pattern-layer`). Aperta finché il layer non la scrive.
+  (`/magma:pattern-layer`). Scritta il 2026-11-27 in
+  [`magma/patterns/stages-in-order.md`](magma/patterns/stages-in-order.md), sui render: i passi
+  sotto la barra in un `mds-stepper-bar`, il corrente segnato, quelli prima fatti; in fondo a ogni
+  passo il passo prima e il passo dopo, l'ultimo con l'uscita. (persona)
 
 ### Spazio di lavoro
 

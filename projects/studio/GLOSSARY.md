@@ -68,7 +68,7 @@ The studio speaks to the person with "tu", as the Italian of Magma does (README,
 | `candidate` | candidate | candidato | a generated, measured alternative, seen one at a time: of an exception, or of a theme from a brand colour (person) | a change | exception, or the opening (proposed: one parent per instance) | | | (none yet) |
 | `introduction` | introduction | Introduzione | the first view of the studio: what it is for, with no control of the work; its way out is the opening (person, model section 5) | a stage; the opening | (root of the flow) | | | `src/features/introduction/`, `#/introduction` (alias `#/start`, the address of the Start page it was) |
 | `opening` | opening | Partenza | the view that opens the preset to work on: Magma's preset, a ready theme, a brand colour, the draft at the stage it was on (person, model section 5) | a stage; the introduction; the exit | (root of the flow) | | preset, ready-theme, draft (model section 5) | `src/features/opening/`, `#/opening` |
-| `stage` | stage | passo | one step of the balancing flow: colours, weights, themes, exceptions (person) | a ramp step; a wash level | (root of the flow) | | | `src/shared/routes/routes.ts` (today: sections and views) |
+| `stage` | stage | passo | one step of the balancing flow: colours, weights, themes, exceptions (person) | a ramp step; a wash level | (root of the flow) | | | `STAGES` of `src/shared/routes/routes.ts`, `src/app/stages.tsx`, the pattern of the studio `magma/patterns/stages-in-order.md` |
 | `scene` | scene | scena | the product page a stage is judged on; it changes with the stage (person) | the verification | stage (proposed) | | theme | `scene.html`, `states.html` |
 | `condition` | condition | condizione | what the scene is judged under: mode, more contrast, breakpoint, ground (person) | | scene (`applyFrame`, `applyPrefs`) | | | `scene-prefs.tsx` |
 | `ground` | ground | fondo | what lies under an element: page, card, well, coloured fill (person) | a surface role | condition (proposed) | | surface (page, card, well) | `TRANSPARENT_SURFACES` (gate, partial) |
@@ -78,8 +78,8 @@ The studio speaks to the person with "tu", as the Italian of Magma does (README,
 | `floor` | floor | soglia | the Lc or ratio the verification holds a pair to | a target | verification (`DEFAULT_TARGETS`) | | | `GateTargets` |
 | `reported-pair` | reported pair | coppia segnalata | a pair under a target that does not block | an accepted pair | verification | pair (severity `warn`) | | `severity: 'warn'` |
 | `accepted-pair` | known offender | coppia accettata | a pair under its floor that the baseline accepts: debt in view (person) | an exception | verification (`contrast-baseline.json`) | pair | | `baseline`, `baselinedFailures` |
-| `change` | change | modifica | one edit, compared with the last exit | a candidate | preset (the draft, `state/draft.ts`) | | | `state/draft.ts` |
-| `exit` | exit | uscita | saving the preset (command) or downloading it (Pages) | | preset | | | `app/config-menu.tsx`, `state/exports.ts`, `engine/exports.ts` |
+| `change` | change | modifica | one edit, compared with the last exit | a candidate | preset (the draft, `state/draft.ts`) | | | `src/engine/changes.ts`, `changes` and `baseline` of `src/state/studio.ts` (counted from the last exit, 2026-11-27) |
+| `exit` | exit | uscita | saving the preset (command) or downloading it (Pages) | | preset | | | `exitOf` of `src/state/exports.ts`, the split button of the bar (`src/app/shell.tsx`) and its menu (`src/app/config-menu.tsx`), `engine/exports.ts` |
 | `full-review` | full review | giro completo | judging each theme in each mode before the exit, each marked as reviewed (person) | the verification | (root of the flow) | stage (proposed) | verification | (none yet) |
 | `hue` | hue | tonalità | the hue of a colour, in OKLCH degrees | a family | family | | | `hueShift` |
 | `hue-shift` | hue shift | spostamento di tonalità | the turn of the hue at the dark and light ends of a ramp | the saturation curve | family (config `colors[].hueShift`, or the root) | | | `hueShift` |
@@ -104,11 +104,12 @@ The studio speaks to the person with "tu", as the Italian of Magma does (README,
 balances / bilanciamenti; configuration / configurazione (as a name of the whole); known offender's
 Italian "eccezione nota"; "Famiglie di stato"; "Livelli di luminosità"; "livello" for the
 Start sections; "proposta"; the page "Semantic surface" / "Superficie semantica" (it becomes the
-Weights stage); the "Start" page (it is the introduction, 2026-11-27).
+Weights stage); the "Start" page (it is the introduction, 2026-11-27); the page "Diffs" / "Differenze"
+and the menu "Config" / "Configurazione" (the changes and the exit of the bar, 2026-11-27).
 
 Until the redesign of the studio (`studio.object-model.md`) the pages keep the names they have
-today: the sections Colors / Colori, Theme / Tema, Behavior / Regole and the menu Config /
-Configurazione; "known offender" / "eccezione nota"; "Status families" / "Famiglie di stato";
+today: the stage Colors / Colori (the Palette), the sections Theme / Tema and Behavior / Regole;
+"known offender" / "eccezione nota"; "Status families" / "Famiglie di stato";
 "Lightness levels" / "Livelli di luminosità"; "Semantic surface" / "Superficie semantica"; the
 levels of the Start page. The redesign brings them to the names of this register, decided on
 2026-11-20 (person).
