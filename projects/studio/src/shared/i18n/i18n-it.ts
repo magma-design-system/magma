@@ -1,8 +1,8 @@
 /*
   The Italian of the studio (#1336), by the English text it translates (i18n.ts). The studio
   speaks to the person with "tu", as the Italian of the Magma components does ("Hai caricato",
-  "Seleziona"). The words that come back on every page keep one Italian form, the glossary of the
-  README ("Languages"). The catalogue is in parts, by the pages they translate: this file holds the
+  "Seleziona"). The words that come back on every page keep one Italian form, the glossary of
+  docs/languages.md. The catalogue is in parts, by the pages they translate: this file holds the
   shell and what the modules share, the pages of Colors have a file each (i18n-it-*.ts), and the
   previews keep their own (i18n-it-previews.ts, i18n-previews.ts).
 */
@@ -175,12 +175,12 @@ export const IT_SHELL: Record<string, string> = {
   '{count} contrasts below target': "{count} contrasti sotto l'obiettivo",
   'Contrast not measured': 'Contrasto non misurato',
   '{count} known offender accepted by the baseline of design-tokens':
-    '{count} eccezione nota accettata dalla baseline di design-tokens',
+    '{count} coppia accettata dalla baseline di design-tokens',
   '{count} known offenders accepted by the baseline of design-tokens':
-    '{count} eccezioni note accettate dalla baseline di design-tokens',
+    '{count} coppie accettate dalla baseline di design-tokens',
   'Every pair the contrast gate judges meets its target, in every theme and mode':
     'Ogni coppia giudicata dalla verifica del contrasto raggiunge il suo obiettivo, in ogni tema e modalità',
-  'The pairs are on the Contrast check page': 'Le coppie sono nella pagina Verifica del contrasto',
+  'The pairs are in the full review': 'Le coppie sono nel giro completo',
   light: 'chiaro',
   dark: 'scuro',
   '{mode}: not offered': '{mode}: non offerto',

@@ -18,7 +18,7 @@ export const IT_FULL_REVIEW: Record<string, string> = {
     'sotto il suo obiettivo: la verifica del contrasto fallisce, la build di Magma rifiuta il tema',
   accepted: 'accettata',
   'under its target, accepted by the baseline of design-tokens as a known offender':
-    'sotto il suo obiettivo, accettata dalla baseline di design-tokens come eccezione nota',
+    'sotto il suo obiettivo, accettata dalla baseline di design-tokens: una coppia accettata',
   'under its target: the gate reports it, it does not fail on it':
     'sotto il suo obiettivo: la verifica la segnala, ma non fallisce per questo',
   'no floor': 'nessuna soglia',
