@@ -523,7 +523,13 @@ Fuori dai passi, come la sezione Tema e le Regole; è la pagina Groups di oggi, 
   - i gruppi in linea in una vista sola: superfici, bordi, testi, trasparenti;
   - la scena del passo, accanto: il prodotto intero, con il fondo come condizione;
   - le coppie toccate, le segnalate distinte e il debito. (persona)
-- **Mai qui**: palette, temi, eccezioni.
+- **Come si vede** (persona, sui render, 2026-11-27): in testa le schede Chiaro e Scuro, una
+  modalità alla volta, con la scena del prodotto accanto che segue la scheda; poi le coppie
+  toccate in un dettaglio chiuso, come in Colori; poi superfici, bordi e testi uno sotto l'altro, i
+  testi con un obiettivo solo per le due modalità, come il motore lo tiene. Costruita come dice
+  Magma oggi, senza `mds-preview`, finché #1487 non arriva in `main` (persona, 2026-11-27).
+- **Mai qui**: palette, temi, eccezioni; l'adesione alle superfici, che è un campo della famiglia
+  (in Colori) e del gruppo (in Gruppi) (persona, 2026-11-27).
 - **Ingresso**: Colori. **Uscita**: Temi.
 
 ### 3. Temi
