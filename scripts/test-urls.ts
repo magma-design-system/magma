@@ -130,6 +130,8 @@ const studioPages = (base: string, only?: 'colors'): { label: string; url: strin
           { label: 'Introduction', route: HOME },
           { label: 'Opening', route: { section: 'opening' } as Route },
         ]),
+    // the stage Colours, the family at its centre (#1403): where a change of a colour shows first
+    { label: 'Colours', route: { section: 'colours' } as Route },
     ...COLORS_PAGES.map((page) => ({
       label: `Colors / ${page.label}`,
       route: { section: 'colors', view: page.id } as Route,
