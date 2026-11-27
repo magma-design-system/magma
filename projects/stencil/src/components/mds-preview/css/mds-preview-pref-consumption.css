@@ -4,5 +4,5 @@
  * does. Cross-browser, no :host-context. */
 
 :host([pref-consumption='medium']) {
-  --mds-preview-docked-backdrop-filter: none;
+  --mds-preview-tray-backdrop-filter: none;
 }

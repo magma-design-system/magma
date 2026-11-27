@@ -1221,8 +1221,6 @@ mds-preview slot conditions
 mds-preview part frame
 mds-preview part head
 mds-preview part lens
-mds-preview css --mds-preview-docked-backdrop INTERNAL
-mds-preview css --mds-preview-docked-backdrop-filter INTERNAL
 mds-preview css --mds-preview-docked-background INTERNAL
 mds-preview css --mds-preview-docked-padding INTERNAL
 mds-preview css --mds-preview-docked-radius INTERNAL
@@ -1235,6 +1233,10 @@ mds-preview css --mds-preview-gap INTERNAL
 mds-preview css --mds-preview-head-gap INTERNAL
 mds-preview css --mds-preview-lens-inset INTERNAL
 mds-preview css --mds-preview-transition-duration INTERNAL
+mds-preview css --mds-preview-transition-timing-function INTERNAL
+mds-preview css --mds-preview-tray-backdrop-filter INTERNAL
+mds-preview css --mds-preview-tray-background INTERNAL
+mds-preview css --mds-preview-tray-radius INTERNAL
 mds-preview css --mds-preview-z-index
 mds-price-table encapsulation shadow
 mds-price-table slot (default)
