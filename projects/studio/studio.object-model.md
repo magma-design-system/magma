@@ -298,6 +298,11 @@ Altre relazioni:
     delle velature.
 - **Dove finisce**: nel preset: il blocco `theme` della configurazione di oggi più i ruoli trasparenti.
 - **Azioni**: regolare con uno slider che mostra il valore; annullare. (persona)
+- **Regola**: in ogni modalità una superficie non è mai più chiara di quella sopra, nell'ordine di
+  profondità sunken <= muted <= default <= raised <= overlay. Non devono essere diverse: livelli
+  uguali sono ammessi, per scelta di design possono essere tutte uguali. Lo slider di una
+  superficie portato oltre la vicina la spinge con sé (persona, 2026-11-27, invece di fermarsi alla
+  vicina o di permettere e segnalare); un preset caricato fuori ordine è segnalato. (proposta)
 - **Stati**: un peso è sbagliato, oltre alla verifica, quando un elemento sparisce in un contesto
   (pagina, card, pozzo). (persona)
 - **Sempre visibile**: il verdetto e il contrasto delle coppie che la modifica sposta. (persona)
@@ -528,6 +533,8 @@ Fuori dai passi, come la sezione Tema e le Regole; è la pagina Groups di oggi, 
   toccate in un dettaglio chiuso, come in Colori; poi superfici, bordi e testi uno sotto l'altro, i
   testi con un obiettivo solo per le due modalità, come il motore lo tiene. Costruita come dice
   Magma oggi, senza `mds-preview`, finché #1487 non arriva in `main` (persona, 2026-11-27).
+- **Ordine delle superfici** (persona, 2026-11-27): uno slider di Superfici portato oltre la vicina
+  la spinge con sé, in su e in giù, così l'ordine di profondità resta (sezione 4, Pesi, Regola).
 - **Mai qui**: palette, temi, eccezioni; l'adesione alle superfici, che è un campo della famiglia
   (in Colori) e del gruppo (in Gruppi) (persona, 2026-11-27).
 - **Ingresso**: Colori. **Uscita**: Temi.
