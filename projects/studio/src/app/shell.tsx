@@ -13,6 +13,7 @@ import { RulesPage } from '../features/rules/rules.js';
 import { ColoursPage } from '../features/colours/colours.js';
 import { ScalePage } from '../features/scale/scale.js';
 import { GroupsPage } from '../features/groups/groups.js';
+import { WeightsPage } from '../features/weights/weights.js';
 import { ExceptionsPage } from '../features/exceptions/exceptions.js';
 import { IntroductionPage } from '../features/introduction/introduction.js';
 import { OpeningPage } from '../features/opening/opening.js';
@@ -118,6 +119,11 @@ export function Studio({ state, router }: StudioProps = {}) {
           {route.section === 'groups' && (
             <div class="studio-section">
               <GroupsPage />
+            </div>
+          )}
+          {route.section === 'weights' && (
+            <div class="studio-section">
+              <WeightsPage foot={foot} />
             </div>
           )}
           {route.section === 'colors' && (

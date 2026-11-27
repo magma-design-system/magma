@@ -38,7 +38,6 @@ export const IT_SHELL: Record<string, string> = {
   Preferences: 'Preferenze',
 
   // the pages of the sections (shared/routes/routes.ts)
-  'Semantic surface': 'Superficie semantica',
   Themes: 'Temi',
   Groups: 'Gruppi',
   'Contrast check': 'Verifica del contrasto',
@@ -71,6 +70,8 @@ export const IT_SHELL: Record<string, string> = {
   '{count} pair touched': '{count} coppia toccata',
   '{count} pairs touched': '{count} coppie toccate',
   'all above their floor, in light and in dark': 'tutte sopra la soglia, in chiaro e in scuro',
+  'all above their floor, in light': 'tutte sopra la soglia, in chiaro',
+  'all above their floor, in dark': 'tutte sopra la soglia, in scuro',
   '{count} under its floor': '{count} sotto la soglia',
   '{count} under their floor': '{count} sotto la soglia',
   '{count} pair accepted by the baseline': '{count} accettata dalla baseline',

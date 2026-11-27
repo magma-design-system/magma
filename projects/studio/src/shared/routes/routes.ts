@@ -32,12 +32,11 @@ import { msg } from '../i18n/text.js';
 
 /**
  * The pages of today's Colors section still standing, by the id a draft saved before #1403 carries
- * (`view`, state/draft.ts): the table gives each its address and its name. 'surface' is Semantic
- * surface, an id kept from before the views were split. The Palette ('colors'), Contrast scales
- * ('scales') and Groups ('groups') went with #1403: Colours, Scale and the view Groups took their
- * places.
+ * (`view`, state/draft.ts): the table gives each its address and its name. The Palette ('colors'),
+ * Contrast scales ('scales'), Groups ('groups') and Semantic surface ('surface') went with #1403:
+ * Colours, Scale, the view Groups and Weights took their places.
  */
-export const COLORS_VIEWS = ['surface', 'themes', 'contrast'] as const;
+export const COLORS_VIEWS = ['themes', 'contrast'] as const;
 export type ColorsView = (typeof COLORS_VIEWS)[number];
 
 /** The page of Colors a draft names, if it is one. */
@@ -75,6 +74,8 @@ export type Route =
    * preset and of each group, and the export groups; outside the stages, as the Theme section.
    */
   | { section: 'groups' }
+  /** The stage Weights (#1403, features/weights/): the weights of the preset, one mode at a time. */
+  | { section: 'weights' }
   | { section: 'colors'; view: ColorsView }
   | { section: 'theme'; theme?: string; mode?: ModeView }
   | { section: 'behavior'; page: BehaviorPage }
@@ -84,7 +85,7 @@ export type Route =
 /** A section of the bar: its pages are the rows of PAGES that name it. */
 export type Section = Exclude<
   Route['section'],
-  'introduction' | 'opening' | 'colours' | 'scale' | 'groups' | 'exceptions'
+  'introduction' | 'opening' | 'colours' | 'scale' | 'groups' | 'weights' | 'exceptions'
 >;
 
 export interface MenuItem<Id extends string> {
@@ -106,13 +107,6 @@ export type Page =
 
 /** The pages of the studio, one table for the menus and the addresses, in the order of the bar. */
 export const PAGES: readonly Page[] = [
-  {
-    section: 'colors',
-    id: 'surface',
-    slug: 'semantic-surface',
-    label: msg('Semantic surface'),
-    icon: 'mi/baseline/account-tree',
-  },
   {
     section: 'colors',
     id: 'themes',
@@ -183,6 +177,7 @@ export const ALIASES: Readonly<Record<string, Route>> = {
   '#/colors/palette': { section: 'colours' },
   '#/colors/contrast-scales': { section: 'scale', formula: 'wcag3', name: 'default' },
   '#/colors/groups': { section: 'groups' },
+  '#/colors/semantic-surface': { section: 'weights' },
 };
 
 /** The formulas a contrast scale is written for, as the configuration names them. */
@@ -195,6 +190,7 @@ export function hrefOf(route: Route): string {
   if (route.section === 'opening') return '#/opening';
   if (route.section === 'colours') return '#/colours';
   if (route.section === 'groups') return '#/groups';
+  if (route.section === 'weights') return '#/weights';
   if (route.section === 'scale')
     return `#/colours/scale/${route.formula}/${route.name}${route.group ? `/from/${route.group}` : ''}`;
   if (route.section === 'exceptions') return '#/exceptions';
@@ -227,7 +223,8 @@ export function routeOf(hash: string): Route | undefined {
     section === 'introduction' ||
     section === 'opening' ||
     section === 'colours' ||
-    section === 'groups'
+    section === 'groups' ||
+    section === 'weights'
   )
     return slug === undefined ? { section } : undefined;
   if (section === 'exceptions') return slug === undefined ? { section: 'exceptions' } : undefined;
@@ -290,7 +287,7 @@ export const STAGES: readonly Stage[] = [
     label: msg('Weights'),
     icon: 'mi/baseline/account-tree',
     numbered: true,
-    route: { section: 'colors', view: 'surface' },
+    route: { section: 'weights' },
     beside: [],
   },
   {
@@ -352,6 +349,7 @@ export function workPlaceOf(view: unknown): string | undefined {
   if (view === 'scales') return '#/colors/contrast-scales';
   // Groups stood beside Colours; the view that replaced it is outside the stages
   if (view === 'groups') return '#/colours';
+  if (view === 'surface') return '#/weights';
   const page = colorsViewOf(view);
   if (page) return hrefOf({ section: 'colors', view: page });
   return routeOf(view) ? view : undefined;

@@ -3,7 +3,13 @@ import initialConfigJson from '@maggioli-design-system/design-tokens/.magma-desi
 import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs'
 
 import { gateReport } from './gate.js'
-import { touchedCells, touchedCellsOfScale, touchedPairs, touchedSummary } from './touched.js'
+import {
+  touchedCells,
+  touchedCellsOfScale,
+  touchedCellsOfWeights,
+  touchedPairs,
+  touchedSummary,
+} from './touched.js'
 import { builtinScalesOf } from '../state/scales.js'
 
 // The pairs of the contrast check a family touches (#1403): measured by moving the family and
@@ -43,6 +49,18 @@ test('the summary counts the pairs, and those that fail, are accepted or below, 
       { theme: 'editorial', fg: 'text-default', bg: 'surface-default', states: { light: 'pass', dark: 'pass' } },
     ]),
   ).toEqual({ pairs: 4, fail: 1, accepted: 1, below: 1 })
+})
+
+test('the weights of a mode touch the pairs of that mode only, in every theme', () => {
+  for (const mode of ['light', 'dark'] as const) {
+    const cells = touchedCellsOfWeights(preset, mode)
+    expect([...cells].every((key) => key.endsWith(`|${mode}`))).toBe(true)
+    const pairs = touchedPairs(report, cells)
+    expect(new Set(pairs.map((pair) => pair.theme)).size).toBe(report.themes.length)
+    expect(pairs.every((pair) => Object.keys(pair.states).join() === mode)).toBe(true)
+    // the text of the base theme on its canvas moves with the weights
+    expect(pairs.some((pair) => pair.fg === 'text-default' && pair.bg === 'surface-default')).toBe(true)
+  }
 })
 
 test('a scale touches the pairs of the families that use it; one no family uses, none', () => {

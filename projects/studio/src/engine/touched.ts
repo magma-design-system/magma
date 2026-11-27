@@ -1,8 +1,10 @@
 import chroma from 'chroma-js';
 import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
+import type { ThemeConfig } from '@maggioli-design-system/design-tokens/src/lib/surface.mjs';
 import type { Mode } from '@maggioli-design-system/design-tokens/src/lib/contrast-gate.js';
 import { gateReport, type GateReport, type PairState } from './gate.js';
 import { NO_THEME_CHOICES, type ThemeChoices } from './theme-choices.js';
+import { DEFAULT_THEME, percentOf } from './weights.js';
 
 /*
   The pairs of the contrast check a family touches (#1403): the pairs its change moves, which
@@ -86,6 +88,36 @@ export function touchedCellsOfScale(
   ratios[formula] = { ...(ratios[formula] ?? {}), [name]: steps.map((step) => step * (2 / 3)) };
   moved.ratios = ratios as MagmaConfig['ratios'];
   return movedCells(config, moved, choices);
+}
+
+/** A level moved by `by` points of lightness, kept on the ramp. */
+const shifted = (level: string | number | undefined, by: number): string =>
+  `${Math.min(100, Math.max(0, percentOf(level) + by))}%`;
+
+/**
+ * The cells of the check the weights of one mode move (#1403, the stage Weights): the surfaces of
+ * the mode pulled toward the middle of the ramp, its borders the same and further, every text
+ * target lowered, the preset solved again, and only the cells of that mode kept. The text targets
+ * are one for both modes; the view shows one mode at a time, so the cells of the other mode they
+ * move are left to its own tab.
+ */
+export function touchedCellsOfWeights(
+  config: MagmaConfig,
+  mode: Mode,
+  choices: ThemeChoices = NO_THEME_CHOICES,
+): Set<string> {
+  const moved = JSON.parse(JSON.stringify(config)) as MagmaConfig;
+  const theme = (moved.theme ??= JSON.parse(JSON.stringify(DEFAULT_THEME)) as ThemeConfig);
+  // toward the middle: down in light, up in dark
+  const toward = mode === 'light' ? -1 : 1;
+  const surfaces = theme.surfaces[mode] as Record<string, string | number>;
+  for (const role of Object.keys(surfaces)) surfaces[role] = shifted(surfaces[role], 6 * toward);
+  const borders = theme.borders[mode] as Record<string, string | number>;
+  for (const role of Object.keys(borders)) borders[role] = shifted(borders[role], 15 * toward);
+  const texts = (theme.text ?? {}) as Record<string, number | { step: number }>;
+  for (const [role, target] of Object.entries(texts))
+    if (typeof target === 'number') texts[role] = Math.max(0, target - 15);
+  return new Set([...movedCells(config, moved, choices)].filter((key) => key.endsWith(`|${mode}`)));
 }
 
 /** The pairs a family touches, as the view counts them: per pair of roles in a theme. */

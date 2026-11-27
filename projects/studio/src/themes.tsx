@@ -18,7 +18,7 @@ import {
   themesExportCss,
 } from './engine/themes.js';
 import { RESERVED_GROUPS } from './engine/groups.js';
-import { SurfaceCanvas } from './surfaces.js';
+import { SurfaceCanvas } from './shared/ui/surface-canvas.js';
 import { Field, Select, TextInput, type Option } from './shared/magma/magma.js';
 import { useStudio, type ExportAction } from './state/studio.js';
 import { setThemeAccent, setThemeModes, setThemeName } from './state/theme-choices.js';
@@ -448,12 +448,13 @@ function ThemeCard({
           {rich(t, '{family} has no surface+text scale.', { family: <code>{family}</code> })}
         </mds-text>
       ) : (
-        // the same canvas as Semantic surface per mode: the surfaces of the theme are in view
-        // (vittorio, 2026-11-05), the accents of the theme under each. A mode the theme does not
-        // offer stays in view, dimmed, and says so. Under each canvas, the link that tests the
-        // theme in that mode in the Theme section (vittorio, 2026-11-07), outside the canvas, which
-        // paints the colours of the theme and not the ones the button reads on; a mode not offered,
-        // or a theme whose name the Theme section refuses, has none, as the section cannot show it
+        // the canvas of the surfaces per mode (shared/ui/surface-canvas.tsx): the surfaces of the
+        // theme are in view (vittorio, 2026-11-05), the accents of the theme under each. A mode the
+        // theme does not offer stays in view, dimmed, and says so. Under each canvas, the link that
+        // tests the theme in that mode in the Theme section (vittorio, 2026-11-07), outside the
+        // canvas, which paints the colours of the theme and not the ones the button reads on; a
+        // mode not offered, or a theme whose name the Theme section refuses, has none, as the
+        // section cannot show it
         <div class="themes-modes">
           {MODES.map((mode) => {
             const s = surfaces[family][mode];

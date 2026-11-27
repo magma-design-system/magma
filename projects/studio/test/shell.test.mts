@@ -105,7 +105,7 @@ test('the changes of the bar: how many since the last exit, listed by stage, eac
   expect(panel().querySelector('[id="studio-changes-title"]')?.textContent).toBe('3 changes since the last exit')
   expect(links(panel())).toEqual([
     { text: '1. Colors: 2 changes', href: '#/colours', current: null },
-    { text: '2. Weights: 1 change', href: '#/colors/semantic-surface', current: null },
+    { text: '2. Weights: 1 change', href: '#/weights', current: null },
   ])
   const lines = [...panel().querySelectorAll('mds-text[tag="p"].ps-inset')].map((one) => one.textContent)
   expect(lines).toEqual([

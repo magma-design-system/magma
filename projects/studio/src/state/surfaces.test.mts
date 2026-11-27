@@ -1,10 +1,18 @@
 import { expect, test } from 'vitest'
 
-import { DEFAULT_THEME, toggleGroupSurface, toggleSurface, updateBalances } from './surfaces.js'
+import {
+  DEFAULT_THEME,
+  setBorderLevel,
+  setSurfaceLevel,
+  setTextTarget,
+  toggleGroupSurface,
+  toggleSurface,
+  updateBalances,
+} from './surfaces.js'
 import { updateConfig } from './studio.js'
 import { bundledConfig, familyOf, quietStudio } from './testing.mjs'
 
-// The actions of Semantic surface (#1400): which families generate surfaces, and the balances.
+// The actions of the surfaces (#1400): which families generate surfaces, and the weights (#1403).
 
 test('a family opts into the surfaces and out; out of a group that opts in, it says false', () => {
   const studio = quietStudio()
@@ -43,4 +51,24 @@ test('the balances change the theme block, from those of Magma when the configur
   })
   expect(studio.config.value.theme).toEqual({ ...DEFAULT_THEME, text: { ...DEFAULT_THEME.text, muted: { step: 7 } } })
   expect(DEFAULT_THEME).toEqual(bundledConfig().theme)
+})
+
+test('a surface set over the one above it pushes it along, in its mode only', () => {
+  const studio = quietStudio()
+  setSurfaceLevel(studio, 'light', 'sunken', 98)
+  const theme = studio.config.value.theme!
+  expect(theme.surfaces.light).toEqual({
+    sunken: '98%', muted: '98%', default: '98%', raised: '98%', overlay: '100%',
+  })
+  expect(theme.surfaces.dark).toEqual(DEFAULT_THEME.surfaces.dark)
+})
+
+test('a border and a text target are set on their own, the target for both modes', () => {
+  const studio = quietStudio()
+  setBorderLevel(studio, 'dark', 'strong', 72)
+  setTextTarget(studio, 'muted', 70)
+  const theme = studio.config.value.theme!
+  expect(theme.borders.dark).toEqual({ ...DEFAULT_THEME.borders.dark, strong: '72%' })
+  expect(theme.borders.light).toEqual(DEFAULT_THEME.borders.light)
+  expect(theme.text).toEqual({ ...DEFAULT_THEME.text, muted: 70 })
 })

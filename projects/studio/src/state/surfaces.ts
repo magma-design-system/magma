@@ -1,19 +1,19 @@
-import bundledJson from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json';
 import type { ColorConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
-import type { ThemeConfig } from '@maggioli-design-system/design-tokens/src/lib/surface.mjs';
+import {
+  SURFACE_ROLES,
+  type ThemeConfig,
+} from '@maggioli-design-system/design-tokens/src/lib/surface.mjs';
+import { DEFAULT_THEME, pushSurfaces, type Levels, type Mode } from '../engine/weights.js';
 import { clone, updateConfig, type StudioState } from './studio.js';
 
 /*
-  The actions of Semantic surface (#1400, out of the JSX of app.tsx): which families and groups
-  generate surfaces, and the balances of the `theme` block of the configuration.
+  The actions of the surfaces (#1400, out of the JSX of app.tsx): which families and groups
+  generate surfaces, a field of the family in Colours and of the group in Groups (#1403), and the
+  weights, the `theme` block of the configuration the stage Weights edits.
 */
 
-/**
- * The balances of a configuration that names none: the `theme` block of the configuration Magma
- * builds with (design-tokens `.magma-design-tokensrc.json`), its surface and border levels and the
- * APCA Lc targets of the text roles (A7, #632).
- */
-export const DEFAULT_THEME = (bundledJson as { theme: ThemeConfig }).theme;
+// the weights of a configuration that names none, those of Magma (engine/weights.ts)
+export { DEFAULT_THEME } from '../engine/weights.js';
 
 /**
  * Opts a family into the surfaces, or out. With a group that opts in, "off" is not always the
@@ -54,10 +54,46 @@ export function toggleGroupSurface(state: StudioState, groupName: string, on: bo
   });
 }
 
-/** Changes the balances: a configuration with none starts from those of Magma. */
+/** Changes the weights: a configuration with none starts from those of Magma. */
 export function updateBalances(state: StudioState, mutate: (theme: ThemeConfig) => void): void {
   updateConfig(state, (draft) => {
     if (!draft.theme) draft.theme = clone(DEFAULT_THEME);
     mutate(draft.theme);
+  });
+}
+
+/**
+ * Sets the lightness of a surface in a mode, the surfaces past it pushed along so the order of
+ * depth holds (engine/weights.ts, vittorio, 2026-11-27).
+ */
+export function setSurfaceLevel(
+  state: StudioState,
+  mode: Mode,
+  role: string,
+  percent: number,
+): void {
+  updateBalances(state, (theme) => {
+    const levels = theme.surfaces as Record<Mode, Levels>;
+    levels[mode] = pushSurfaces(levels[mode], SURFACE_ROLES, role, percent);
+  });
+}
+
+/** Sets the lightness of a border in a mode. */
+export function setBorderLevel(
+  state: StudioState,
+  mode: Mode,
+  role: string,
+  percent: number,
+): void {
+  updateBalances(state, (theme) => {
+    (theme.borders as Record<Mode, Levels>)[mode][role] = `${percent}%`;
+  });
+}
+
+/** Sets the APCA Lc target of a text role, one for both modes. */
+export function setTextTarget(state: StudioState, role: string, target: number): void {
+  updateBalances(state, (theme) => {
+    const text = (theme.text ??= { ...DEFAULT_THEME.text });
+    (text as Record<string, number | { step: number }>)[role] = target;
   });
 }

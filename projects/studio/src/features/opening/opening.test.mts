@@ -51,7 +51,7 @@ test('the draft comes first, and resuming it is the main action, at the stage it
   updateConfig(studio, (draft) => {
     draft.smooth = true
   })
-  studio.workPlace.value = '#/colors/semantic-surface'
+  studio.workPlace.value = '#/weights'
   const opened = show(studio)
   expect(titles()[0]).toBe('Your draft')
   const draft = cards()[0]
@@ -63,7 +63,7 @@ test('the draft comes first, and resuming it is the main action, at the stage it
   expect([resume.getAttribute('variant'), resume.getAttribute('tone')]).toEqual([null, null])
   expect(button("Open Magma's preset").getAttribute('tone')).toBe('weak')
   resume.click()
-  expect(opened).toEqual([{ section: 'colors', view: 'surface' }])
+  expect(opened).toEqual([{ section: 'weights' }])
   // the work is not touched
   expect(studio.config.value.smooth).toBe(true)
 })

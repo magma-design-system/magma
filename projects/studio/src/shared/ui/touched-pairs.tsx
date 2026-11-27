@@ -24,9 +24,16 @@ const MODE_WORD = { light: msg('Light'), dark: msg('Dark') } as const;
 /**
  * The pairs of the contrast check a family or a scale touches (touched.ts), in a closed detail under
  * its name, their count and their verdict in its title (vittorio on the renders of Colours,
- * 2026-11-27; Scale shows them the same way).
+ * 2026-11-27; Scale shows them the same way). Weights measures one mode at a time, and says which.
  */
-export function TouchedPairs({ pairs }: { pairs: TouchedPair[] | undefined }) {
+export function TouchedPairs({
+  pairs,
+  mode,
+}: {
+  pairs: TouchedPair[] | undefined;
+  /** The one mode the pairs were measured in; both when none. */
+  mode?: 'light' | 'dark';
+}) {
   const t = useT();
   if (!pairs)
     return (
@@ -44,7 +51,11 @@ export function TouchedPairs({ pairs }: { pairs: TouchedPair[] | undefined }) {
   const verdict = [
     summary.fail
       ? plural(t, summary.fail, '{count} under its floor', '{count} under their floor')
-      : t('all above their floor, in light and in dark'),
+      : mode === 'light'
+        ? t('all above their floor, in light')
+        : mode === 'dark'
+          ? t('all above their floor, in dark')
+          : t('all above their floor, in light and in dark'),
     ...(summary.accepted
       ? [
           plural(

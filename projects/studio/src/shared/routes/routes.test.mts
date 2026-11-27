@@ -46,7 +46,8 @@ test('the addresses read as the menus name the pages', () => {
   // the address of the Start page the introduction was (GLOSSARY.md, decision 13)
   expect(routeOf('#/start')).toEqual({ section: 'introduction' })
   expect(hrefOf({ section: 'colours' })).toBe('#/colours')
-  expect(hrefOf({ section: 'colors', view: 'surface' })).toBe('#/colors/semantic-surface')
+  expect(hrefOf({ section: 'weights' })).toBe('#/weights')
+  expect(hrefOf({ section: 'colors', view: 'themes' })).toBe('#/colors/themes')
   expect(hrefOf({ section: 'theme' })).toBe('#/theme')
   expect(hrefOf({ section: 'behavior', page: 'design-language' })).toBe('#/behavior/design-language')
 })
@@ -85,7 +86,7 @@ test('one table holds the pages: the menus of Colors and Behavior, and the Theme
     ...BEHAVIOR_PAGES.map(() => 'behavior'),
   ])
   expect(COLORS_PAGES.map(({ label }) => label)).toEqual([
-    'Semantic surface', 'Themes', 'Contrast check',
+    'Themes', 'Contrast check',
   ])
   expect(BEHAVIOR_PAGES.map(({ label }) => label)).toEqual(['Design language', 'Patterns', 'Blocks'])
   expect([THEME_PAGE.label, THEME_PAGE.icon]).toEqual(['Theme', 'mi/baseline/format-size'])
@@ -107,6 +108,8 @@ test('the ids of the pages of Colors and of the modes are those the table and th
   expect(colorsViewOf('groups')).toBeUndefined()
   expect(routeOf('#/colors/groups')).toEqual({ section: 'groups' })
   expect(workPlaceOf('groups')).toBe('#/colours')
+  // Semantic surface went with #1403 too: Weights took its place
+  expect(colorsViewOf('surface')).toBeUndefined()
   for (const mode of MODE_VIEWS)
     expect(routeOf(hrefOf({ section: 'theme', theme: 'editorial', mode }))).toEqual({
       section: 'theme',
@@ -124,7 +127,7 @@ test('the stages run in the order of the object model, each on the page of today
   expect(STAGES.map(({ numbered }) => numbered)).toEqual([true, true, true, true, false])
   expect(STAGES.map(({ route }) => hrefOf(route))).toEqual([
     '#/colours',
-    '#/colors/semantic-surface',
+    '#/weights',
     '#/colors/themes',
     '#/exceptions',
     '#/colors/contrast-check',
@@ -144,7 +147,7 @@ test('a page is a stage, a page beside one, or outside the flow', () => {
   expect(where({ section: 'scale', formula: 'wcag2', name: 'v1', group: 'tone' })).toBe('side-page of colours (0)')
   // Groups went out of the stages (#1403)
   expect(where({ section: 'groups' })).toBeUndefined()
-  expect(where({ section: 'colors', view: 'surface' })).toBe('stage of weights (1)')
+  expect(where({ section: 'weights' })).toBe('stage of weights (1)')
   expect(where({ section: 'colors', view: 'themes' })).toBe('stage of themes (2)')
   expect(where({ section: 'exceptions' })).toBe('stage of exceptions (3)')
   expect(where({ section: 'colors', view: 'contrast' })).toBe('stage of full-review (4)')
@@ -167,7 +170,7 @@ test('each stage leads back to the view before it and forward to the stage after
     return [name(before), name(after)]
   }
   // the first stage leads back to the view before the stages
-  expect(named(0)).toEqual(['Opening #/opening', '2. Weights #/colors/semantic-surface'])
+  expect(named(0)).toEqual(['Opening #/opening', '2. Weights #/weights'])
   expect(BEFORE_STAGES.route).toEqual({ section: 'opening' })
   expect(named(1)).toEqual(['1. Colors #/colours', '3. Themes #/colors/themes'])
   expect(named(3)).toEqual(['3. Themes #/colors/themes', 'Full review #/colors/contrast-check'])
@@ -182,6 +185,10 @@ test('the address of a page that went opens the view that replaced it', () => {
   expect(workPlaceOf('colors')).toBe('#/colours')
   expect(workPlaceOf('scales')).toBe('#/colors/contrast-scales')
   expect(routeOf('#/colors/contrast-scales')).toEqual({ section: 'scale', formula: 'wcag3', name: 'default' })
+  expect(routeOf('#/colors/semantic-surface')).toEqual({ section: 'weights' })
+  expect(workPlaceOf('surface')).toBe('#/weights')
+  expect(routeOf('#/weights')).toEqual({ section: 'weights' })
+  expect(routeOf('#/weights/more')).toBeUndefined()
   expect(workPlaceOf('#/colors/palette')).toBe('#/colors/palette')
   expect(workPlaceOf('#/nowhere')).toBeUndefined()
   expect(workPlaceOf(undefined)).toBeUndefined()

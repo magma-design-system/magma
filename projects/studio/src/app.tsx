@@ -1,26 +1,23 @@
 import type { ComponentChild } from 'preact';
 import { useEffect, useRef } from 'preact/hooks';
-import { SurfaceManager } from './surfaces.js';
 import { COLORS_PAGES, type ColorsView } from './shared/routes/routes.js';
 import { ThemesManager } from './themes.js';
 import { ContrastCheck } from './features/contrast-check/contrast-check.js';
 import { GateBadge } from './shared/ui/verdict.js';
 import { useStudio, type ExportAction } from './state/studio.js';
-import { toggleGroupSurface, toggleSurface, updateBalances } from './state/surfaces.js';
 import { guard } from './state/exports.js';
 import { msg, useT } from './shared/i18n/i18n.js';
 
 /*
   The pages of today's Colors section that no view of the object model has replaced yet (#1403
-  took the Palette, Contrast scales and Groups out to features/): Semantic surface, Themes and
+  took the Palette, Contrast scales, Groups and Semantic surface out to features/): Themes and
   Contrast check, each the whole width of the section, under the head of the page (its title, the
   verdict of the contrast check beside it, one line of what it holds). What brings a preset in is
   the opening, what takes it out the exit of the bar, what keeps it from loading the notices the
   shell shows over every page (app/shell.tsx).
 */
 
-// the views of the Colors section of the studio (shared/routes/routes.ts); 'surface' keeps its id so the
-// drafts saved before the views were split keep working
+// the views of the Colors section of the studio still standing (shared/routes/routes.ts)
 type View = ColorsView;
 
 interface AppProps {
@@ -40,9 +37,6 @@ interface AppProps {
 
 /** One line under the title of each view: what it holds. */
 const VIEW_SUMMARY: Record<View, string> = {
-  surface: msg(
-    'The families that generate surfaces, and the balances: the lightness of the surfaces and borders, the targets of the text.',
-  ),
   themes: msg(
     'Each family with surfaces, status aside, is a theme: its name, its accents and the CSS that switches it in.',
   ),
@@ -71,9 +65,7 @@ export function App({ view, foot, lead }: AppProps) {
   // shell's, so the exit of the bar asks it from any section
   const ask = (action: ExportAction) => guard(studio, action);
 
-  // the head of the page: the first thing of the region that scrolls, or, on Semantic surface,
-  // the start of its first column (surfaces.tsx), where the opt-in of the surfaces stands beside it
-  // on a wide page. Its title with the verdict of the contrast check beside it (page-header,
+  // the head of the page: the first thing of the region that scrolls. Its title with the verdict of the contrast check beside it (page-header,
   // `status`); no action of its own: the exit of the bar takes the preset out, the opening brings
   // one in (vittorio, 2026-11-27: Save and Reset went with the Palette)
   const pageTop = (
@@ -95,19 +87,10 @@ export function App({ view, foot, lead }: AppProps) {
   return (
     <div class="layout">
       <main class="content" ref={content}>
-        {view !== 'surface' && lead}
-        {view !== 'surface' && pageTop}
-        {view === 'surface' && (
-          <SurfaceManager
-            head={pageTop}
-            config={config}
-            report={report}
-            onToggleSurface={(colorName, on) => toggleSurface(studio, colorName, on)}
-            onToggleGroupSurface={(groupName, on) => toggleGroupSurface(studio, groupName, on)}
-            onUpdateTheme={(mutate) => updateBalances(studio, mutate)}
-          />
-        )}
-        {/* Themes are DERIVED from the surfaces opt-in of the view above - same axis, one step down. */}
+        {lead}
+        {pageTop}
+        {/* Themes are DERIVED from the surfaces opt-in of the families and the groups (Colours,
+          Groups) - same axis, one step down. */}
         {view === 'themes' && <ThemesManager config={config} report={report} guard={ask} />}
         {view === 'contrast' && <ContrastCheck report={report} />}
         {foot && <div class="mt-between-sections">{foot}</div>}

@@ -65,8 +65,8 @@ const runAction = (id: string) =>
 const openOn = async (draft: MagmaConfig, view = 'colours') => {
   storeDraft(draft, view)
   location.hash =
-    view === 'colours'
-      ? '#/colours'
+    view === 'colours' || view === 'weights'
+      ? `#/${view}`
       : `#/colors/${COLORS_PAGES.find((page) => page.id === view)!.slug}`
   render(h(Studio, {}), root)
   await vi.waitFor(() => {
@@ -93,11 +93,11 @@ const magmaButton = (label: string) =>
   document.querySelector<HTMLElement>(`mds-button[label="${label}"]`)
 
 test('the title of every page of Colors carries the verdict of the gate on the configuration edited', async () => {
-  await openOn(config(), 'surface')
+  await openOn(config(), 'weights')
   expect(badgeOf(pageHead())).toEqual({ variant: 'success', label: 'All contrasts are OK' })
   render(null, root)
 
-  await openOn(failing(), 'surface')
+  await openOn(failing(), 'weights')
   const { variant, label } = badgeOf(pageHead())
   expect(variant).toBe('error')
   expect(label).toMatch(/^\d+ contrasts below target$/)

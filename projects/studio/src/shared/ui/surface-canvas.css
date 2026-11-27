@@ -1,0 +1,79 @@
+/*
+  The canvas of a mode (surface-canvas.tsx; out of the sheet of Semantic surface, #1403): the
+  boxes paint the colours the configuration generates inline, so only their frame is written here,
+  spaces from the steps of --spacing and colours from the semantic roles.
+*/
+
+/* the boxes of a mode: the canvas and the surfaces on it, painted with the generated colours */
+
+.surfaces-canvas {
+  border: thin solid rgb(var(--magma-border-muted));
+  border-radius: var(--magma-radius-md);
+  corner-shape: var(--magma-corner-shape);
+  display: flex;
+  flex-direction: column;
+  font-size: var(--text-size-info-tip);
+  gap: calc(var(--spacing) * 200);
+  line-height: normal;
+  min-inline-size: 0;
+  padding: var(--magma-rhythm-inline);
+}
+
+.surfaces-canvas code {
+  font-family: var(--font-code);
+}
+
+/* a mode out of use (a theme that does not offer it, Themes): in view, dimmed */
+
+.surfaces-canvas-off {
+  opacity: var(--magma-disabled-opacity);
+}
+
+.surfaces-boxes {
+  display: flex;
+  gap: calc(var(--spacing) * 200);
+}
+
+.surfaces-box {
+  border-radius: var(--magma-radius-sm);
+  corner-shape: var(--magma-corner-shape);
+  flex: 1;
+  padding: calc(var(--spacing) * 200);
+}
+
+.surfaces-box--raised {
+  display: grid;
+  gap: calc(var(--spacing) * 200);
+}
+
+.surfaces-texts {
+  align-items: start;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing) * 100);
+}
+
+.surfaces-text {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--spacing) * 200);
+}
+
+.surfaces-borders {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--spacing) * 200);
+}
+
+/* the border of the role is the data: the chip draws it at the width the interface does */
+
+.surfaces-border {
+  align-items: center;
+  border: thin solid;
+  border-radius: var(--magma-radius-sm);
+  corner-shape: var(--magma-corner-shape);
+  display: inline-flex;
+  gap: calc(var(--spacing) * 200);
+  padding: calc(var(--spacing) * 100) calc(var(--spacing) * 200);
+}

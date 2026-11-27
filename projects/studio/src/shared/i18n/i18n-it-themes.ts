@@ -1,8 +1,7 @@
 /*
-  The Italian of Themes and Groups (themes.tsx, groups.tsx, and the summary of the gate,
-  gate-summary.tsx) (#1336), a part of the catalogue of the studio (i18n-it.ts): the English text
-  it translates is the key, and a key lives in one part only (test/i18n.test.mts). Contrast check
-  keeps its own (features/contrast-check/i18n-it.ts, #1401).
+  The Italian of Themes and Groups (themes.tsx, groups.tsx) (#1336), a part of the catalogue of the
+  studio (i18n-it.ts): the English text it translates is the key, and a key lives in one part only
+  (test/i18n.test.mts). Contrast check keeps its own (features/contrast-check/i18n-it.ts, #1401).
 */
 export const IT_THEMES: Record<string, string> = {
   // the Themes page (themes.tsx)
@@ -54,14 +53,7 @@ export const IT_THEMES: Record<string, string> = {
   'All the colors of the group are in the {section} section.':
     'Tutti i colori del gruppo sono nella sezione {section}.',
 
-  // the dialog of an export while the gate fails (features/contrast-check) and the summary of
-  // the gate (gate-summary.tsx)
+  // the dialog of an export while the gate fails (features/contrast-check)
   'and {count} more': 'e ancora {count}',
   'See every pair': 'Vedi tutte le coppie',
-  // the verdict of the gate beside the controls of the balances (gate-summary.tsx, #1418)
-  'Contrast gate': 'Verifica del contrasto',
-  '{fg} on {bg}, {mode}: {achieved} under {target}':
-    '{fg} su {bg}, {mode}: {achieved} sotto {target}',
-  'in {count} theme': 'in {count} tema',
-  'in {count} themes': 'in {count} temi',
 };

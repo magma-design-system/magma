@@ -106,8 +106,6 @@ export const IT_PALETTE: Record<string, string> = {
   'Add reference': 'Aggiungi riferimento',
 
   // the line under the title of each page of Colors (app.tsx)
-  'The families that generate surfaces, and the balances: the lightness of the surfaces and borders, the targets of the text.':
-    'Le famiglie che generano superfici, e gli equilibri: la luminosità delle superfici e dei bordi, gli obiettivi del testo.',
   'Each family with surfaces, status aside, is a theme: its name, its accents and the CSS that switches it in.':
     'Ogni famiglia con superfici, tranne quelle di stato, è un tema: il suo nome, i suoi accenti e il CSS che lo attiva.',
   'Every pair the contrast gate judges, in each theme and both modes: what the build of Magma would say of this configuration.':
