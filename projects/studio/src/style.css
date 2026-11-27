@@ -26,7 +26,7 @@
   mds-header-bar follows the window as the pages do and both start on one edge (vittorio,
   2026-11-27). The introduction is a page read once, the case `page`: its column keeps
   --magma-width-page (introduction.css), and so does the bar above it, still on the edge of the
-  column. Set on the element that holds the bar and the page, never on :root; `data-box` is the
+  column (vittorio, 2026-11-27). Set on the element that holds the bar and the page, never on :root; `data-box` is the
   variable `box` of the pattern.
 */
 .studio[data-box='workspace'] {
