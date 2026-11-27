@@ -644,7 +644,7 @@ export const accentTintDecls = (role: string, family: string): SemanticDecl[] =>
  * `ai` = `ai-`). `on-emphasis` is family-independent (the seed) so it is not
  * repointed. SHARED so the styles generator (`scripts/semantic.ts`, both the base
  * layer and each named-theme override) and the theme export of the studio
- * (`projects/studio/src/themes.tsx`) emit byte-identical CSS - a theme repoints an
+ * (`projects/studio/src/engine/themes.ts`) emit byte-identical CSS - a theme repoints an
  * accent exactly the way the base layer declares it.
  */
 export const accentTintOverride = (role: string, family: string): string[] =>
