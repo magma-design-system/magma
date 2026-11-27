@@ -1,3 +1,4 @@
+import type { ComponentChild } from 'preact';
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import initialConfigJson from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json';
 import type {
@@ -758,6 +759,11 @@ interface AppProps {
   view?: View;
   /** Opens a view: the shell follows its link. */
   onNavigate?: (view: View) => void;
+  /**
+   * The foot of the stage the view is (app/stages.tsx, #1402), at the end of the region that
+   * scrolls: the shell hands it in, so the page knows nothing of the flow.
+   */
+  foot?: ComponentChild;
 }
 
 /** One line under the title of each view: what it holds. */
@@ -781,7 +787,7 @@ const VIEW_SUMMARY: Record<View, string> = {
   diff: msg('The palette against the configuration Magma builds with.'),
 };
 
-export function App({ view: routedView, onNavigate }: AppProps = {}) {
+export function App({ view: routedView, onNavigate, foot }: AppProps = {}) {
   const t = useT();
   // the work is the state's (state/studio.ts, #1400): the pages read it and change it through its
   // actions, so it outlives them; what is left here is the state of the page
@@ -1652,6 +1658,7 @@ export function App({ view: routedView, onNavigate }: AppProps = {}) {
         )}
         {view === 'contrast' && <ContrastCheck report={report} />}
         {view === 'diff' && <DiffView config={config} />}
+        {foot && <div class="mt-between-sections">{foot}</div>}
       </main>
 
       {batchModal && (

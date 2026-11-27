@@ -10,6 +10,7 @@ import { GateBadge } from '../shared/ui/verdict.js';
 import { ConfigItems, useConfigMenu, type ConfigAction } from './config-menu.js';
 import { GateDialog } from '../features/contrast-check/gate-dialog.js';
 import { RulesPage } from '../features/rules/rules.js';
+import { ExceptionsPage } from '../features/exceptions/exceptions.js';
 import { StartPage } from '../start.js';
 import { ThemePage } from '../theme-section.js';
 import { createStudio, StudioContext, useStudio, type StudioState } from '../state/studio.js';
@@ -17,11 +18,13 @@ import { cancelExport, confirmExport } from '../state/exports.js';
 import { checkSource } from '../state/work.js';
 import { LANGS, LangProvider, useLang, useT } from '../shared/i18n/i18n.js';
 import { createRouter, type Router } from './router.js';
+import { StageBar, StageFoot } from './stages.js';
 import {
   BEHAVIOR_PAGES,
   COLORS_PAGES,
   HOME,
   hrefOf,
+  placeOf,
   THEME_PAGE,
   type BehaviorPage,
   type ColorsView,
@@ -82,6 +85,8 @@ export function Studio({ state, router }: StudioProps = {}) {
   }, []);
   const route = nav.route.value;
   const openColors = (view: ColorsView) => nav.navigate({ section: 'colors', view });
+  // the foot of a stage, handed to its page (stages.tsx); none on a page that is no stage
+  const foot = placeOf(route)?.place === 'stage' ? <StageFoot route={route} /> : undefined;
 
   return (
     <LangProvider value={lang}>
@@ -95,11 +100,14 @@ export function Studio({ state, router }: StudioProps = {}) {
               openColors(loaded ? 'colors' : (studio.colorsView.peek() ?? 'colors'))
             }
           />
+          {/* the stages in order, on a stage and on a page beside one (stages.tsx) */}
+          <StageBar route={route} onOpen={(next) => nav.navigate(next)} />
           {route.section === 'colors' && (
             <div class="studio-section">
-              <App view={route.view} onNavigate={openColors} />
+              <App view={route.view} onNavigate={openColors} foot={foot} />
             </div>
           )}
+          {route.section === 'exceptions' && <ExceptionsPage foot={foot} />}
           {route.section === 'start' && <StartPage draftView={studio.colorsView.value} />}
           {route.section === 'theme' && (
             <ThemePage

@@ -1,14 +1,19 @@
 import { expect, test } from 'vitest'
 
 import {
+  aroundStage,
+  BEFORE_STAGES,
   BEHAVIOR_PAGES,
   COLORS_PAGES,
   COLORS_VIEWS,
   colorsViewOf,
   hrefOf,
+  HOME,
   MODE_VIEWS,
   PAGES,
+  placeOf,
   routeOf,
+  STAGES,
   THEME_PAGE,
   type Route,
 } from './routes.js'
@@ -18,6 +23,7 @@ import {
 
 const pages: Route[] = [
   { section: 'start' },
+  { section: 'exceptions' },
   ...COLORS_PAGES.map(({ id }): Route => ({ section: 'colors', view: id })),
   { section: 'theme' },
   ...BEHAVIOR_PAGES.map(({ id }): Route => ({ section: 'behavior', page: id })),
@@ -90,4 +96,62 @@ test('the ids of the pages of Colors and of the modes are those the table and th
       theme: 'editorial',
       mode,
     })
+})
+
+// The stages in order (#1402, magma/patterns/stages-in-order.md): the four stages and the full
+// review, each opening the page of today that does its work, at the address it has today
+test('the stages run in the order of the object model, each on the page of today that does its work', () => {
+  expect(STAGES.map(({ id }) => id)).toEqual(['colours', 'weights', 'themes', 'exceptions', 'full-review'])
+  expect(STAGES.map(({ label }) => label)).toEqual(['Colors', 'Weights', 'Themes', 'Exceptions', 'Full review'])
+  // four numbered stages, then the review with no number
+  expect(STAGES.map(({ numbered }) => numbered)).toEqual([true, true, true, true, false])
+  expect(STAGES.map(({ route }) => hrefOf(route))).toEqual([
+    '#/colors/palette',
+    '#/colors/semantic-surface',
+    '#/colors/themes',
+    '#/exceptions',
+    '#/colors/contrast-check',
+  ])
+  expect(hrefOf({ section: 'exceptions' })).toBe('#/exceptions')
+  for (const stage of STAGES) expect(stage.icon).toMatch(/^mi\/baseline\//)
+})
+
+test('a page is a stage, a page beside one, or outside the flow', () => {
+  const where = (route: Route) => {
+    const place = placeOf(route)
+    return place && `${place.place} of ${place.stage.id} (${place.index})`
+  }
+  expect(where({ section: 'colors', view: 'colors' })).toBe('stage of colours (0)')
+  // Scale and Group beside Colours: today Contrast scales and Groups
+  expect(where({ section: 'colors', view: 'scales' })).toBe('side-page of colours (0)')
+  expect(where({ section: 'colors', view: 'groups' })).toBe('side-page of colours (0)')
+  expect(where({ section: 'colors', view: 'surface' })).toBe('stage of weights (1)')
+  expect(where({ section: 'colors', view: 'themes' })).toBe('stage of themes (2)')
+  expect(where({ section: 'exceptions' })).toBe('stage of exceptions (3)')
+  expect(where({ section: 'colors', view: 'contrast' })).toBe('stage of full-review (4)')
+  // no stage: the Start page, the Theme section, the rules, the palette against Magma's
+  for (const route of [
+    HOME,
+    { section: 'theme' },
+    { section: 'theme', theme: 'editorial', mode: 'dark' },
+    { section: 'behavior', page: 'patterns' },
+    { section: 'colors', view: 'diff' },
+  ] as Route[])
+    expect(placeOf(route)).toBeUndefined()
+})
+
+test('each stage leads back to the view before it and forward to the stage after it, the last to none', () => {
+  const named = (index: number) => {
+    const { before, after } = aroundStage(index)
+    const name = (link?: { label: string; number?: number; route: Route }) =>
+      link && `${link.number ? `${link.number}. ` : ''}${link.label} ${hrefOf(link.route)}`
+    return [name(before), name(after)]
+  }
+  // the first stage leads back to the view before the stages
+  expect(named(0)).toEqual(['Introduction #/start', '2. Weights #/colors/semantic-surface'])
+  expect(BEFORE_STAGES.route).toEqual(HOME)
+  expect(named(1)).toEqual(['1. Colors #/colors/palette', '3. Themes #/colors/themes'])
+  expect(named(3)).toEqual(['3. Themes #/colors/themes', 'Full review #/colors/contrast-check'])
+  // the full review has no number, and the exit after it
+  expect(named(4)).toEqual(['4. Exceptions #/exceptions', undefined])
 })

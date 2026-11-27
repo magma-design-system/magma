@@ -1,6 +1,7 @@
 import { exportOf, selectionOf, type ExportKind } from '../engine/exports.js';
 import { msg } from '../shared/i18n/text.js';
 import type { ExportAction, StudioState } from './studio.js';
+import { saveConfig } from './work.js';
 
 /*
   What hands the configuration out of the studio (#1400, out of app.tsx), each through the
@@ -20,6 +21,23 @@ export function confirmExport(state: StudioState): void {
   const action = state.pendingExport.peek();
   state.pendingExport.value = null;
   void action?.run();
+}
+
+/**
+ * The exit of the preset (the register: exit), the way forward of the last stage and the action
+ * of the bar: saved into the file a command serves when it takes saves, downloaded as JSON on its
+ * own (the site on Pages, a command that refuses saves). Run it through `guard`, which asks first
+ * while the gate fails (object model, Verification: leaving with it red is allowed, asking).
+ */
+export function exitOf(state: StudioState): ExportAction {
+  const served = state.served.peek();
+  return served && !served.readOnly
+    ? { label: msg('Save the preset'), proceed: msg('Save anyway'), run: () => saveConfig(state) }
+    : {
+        label: msg('Download the preset'),
+        proceed: msg('Download anyway'),
+        run: () => exportConfig(state, 'config'),
+      };
 }
 
 /** The person does not export: the action held goes. */

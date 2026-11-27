@@ -49,6 +49,16 @@ export const IT_SHELL: Record<string, string> = {
   'Design language': 'Linguaggio di design',
   Patterns: 'Pattern',
   Blocks: 'Blocchi',
+  // the stages in order (shared/routes/routes.ts, app/stages.tsx), with the names of the
+  // register (GLOSSARY.md): the stepper, the foot of a stage, the exit (state/exports.ts)
+  Stages: 'Passi',
+  'The stage before and after': 'Il passo prima e quello dopo',
+  Weights: 'Pesi',
+  Exceptions: 'Eccezioni',
+  'Full review': 'Giro completo',
+  Introduction: 'Introduzione',
+  'Save the preset': 'Salva il preset',
+  'Download the preset': 'Scarica il preset',
   // the Theme section (theme-section.tsx)
   Typography: 'Tipografia',
   Shape: 'Forma',
