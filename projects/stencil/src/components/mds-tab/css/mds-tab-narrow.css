@@ -1,0 +1,30 @@
+/* narrow="select" (#1593): under 768px of the width of its container (--container-3xl, the
+   threshold under which mds-header shows its mobile menu) the strip gives way to a select of its
+   tabs. The host is the container the width is read from, and only with this value: a container
+   takes no width from its content, so a strip in a row of a toolbar would shrink to nothing. The
+   queries read their Tailwind bridge at build time, since a container query reads no var() */
+
+:host([narrow='select']) {
+  container-name: mds-tab;
+  container-type: inline-size;
+}
+
+@container mds-tab (width >= --theme(--container-3xl)) {
+  .select {
+    display: none;
+  }
+}
+
+@container mds-tab (width < --theme(--container-3xl)) {
+  .tabs-wrapper {
+    display: none;
+  }
+
+  /* the vertical direction puts the strip beside the contents: the select goes above them, on
+     the whole width, as a narrow column has no room for two */
+
+  .select,
+  .contents {
+    grid-column: 1 / -1;
+  }
+}

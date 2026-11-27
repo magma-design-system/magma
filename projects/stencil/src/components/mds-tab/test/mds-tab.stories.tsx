@@ -1,6 +1,6 @@
 import { h } from '@stencil/core';
 import { horizontalActionsAnimationDictionary } from '@type/animation';
-import { directionDictionary } from '../meta/dictionary';
+import { directionDictionary, narrowDictionary } from '../meta/dictionary';
 import { tabSizeDictionary } from '@type/button';
 import clsx from 'clsx';
 import { useEffect, useState, useSyncExternalStore } from 'react';
@@ -22,6 +22,13 @@ export default {
       type: { name: 'string' },
       description: 'Sets if the component distributes item vertically or horzontally',
       options: directionDictionary,
+      control: { type: 'select' },
+    },
+    narrow: {
+      type: { name: 'string' },
+      description:
+        'What the strip does when its container is narrower than 768px: `scroll` keeps the row of tabs, `select` shows them as the options of a select in its place',
+      options: narrowDictionary,
       control: { type: 'select' },
     },
     size: {
@@ -530,6 +537,48 @@ const TemplateNavigationService = () => {
   );
 };
 
+const settingsSections = [
+  'My details',
+  'Profile',
+  'Password',
+  'Team',
+  'Plan',
+  'Billing',
+  'Email',
+  'Notifications',
+  'Integrations',
+  'API',
+];
+
+const SettingsTabs = (args) => (
+  <mds-tab aria-label="Settings sections" {...args}>
+    {settingsSections.map((section) => (
+      <mds-tab-item key={section} label={section} selected={section === 'Team'}></mds-tab-item>
+    ))}
+    {settingsSections.map((section) => (
+      <div key={section} slot="content" class="grid gap-100 auto-rows-min py-600">
+        <mds-text typography="h4">{section}</mds-text>
+        <mds-text>The settings of the section {section}.</mds-text>
+      </div>
+    ))}
+  </mds-tab>
+);
+
+// #1593: the same long strip on a phone, where it is a select, and on a wide container, where it
+// stays a strip; the threshold is 768px of the width of the container, not of the viewport
+const TemplateNarrowSelect = (args) => (
+  <div class="grid gap-1200">
+    <div class="grid gap-400 max-w-[375px]" data-frame="phone">
+      <mds-text typography="detail">A container of 375px, a phone</mds-text>
+      <SettingsTabs {...args} />
+    </div>
+    <div class="grid gap-400" data-frame="wide">
+      <mds-text typography="detail">The whole width of the page</mds-text>
+      <SettingsTabs {...args} />
+    </div>
+  </div>
+);
+
 export const Default = {
   render: Template,
 };
@@ -555,6 +604,32 @@ export const Direction = {
 
   args: {
     direction: 'vertical',
+  },
+};
+
+export const NarrowSelect = {
+  render: TemplateNarrowSelect,
+
+  args: {
+    narrow: 'select',
+  },
+
+  play: async ({ canvasElement, userEvent }) => {
+    const tab = canvasElement.querySelector('[data-frame="phone"] mds-tab') as HTMLMdsTabElement;
+    const items = Array.from<HTMLMdsTabItemElement>(tab.querySelectorAll('mds-tab-item'));
+    await Promise.all(items.map((item) => item.componentOnReady()));
+    const select = tab.shadowRoot!.querySelector('mds-input-select') as HTMLMdsInputSelectElement;
+    await select.componentOnReady();
+    const native = select.shadowRoot!.querySelector('select')!;
+    await waitFor(() => expect(native.options).toHaveLength(settingsSections.length));
+    expect(native.value).toBe(items[3].id);
+
+    // an option does what a click on its tab does: the tab is selected, its panel shown
+    await userEvent.selectOptions(native, items[5].id);
+    await waitFor(() => expect(items[5]).toHaveAttribute('selected'));
+    const panels = Array.from(tab.querySelectorAll('[slot="content"]'));
+    expect(panels[5]).not.toHaveAttribute('mds-tab-content-hidden');
+    expect(panels[3]).toHaveAttribute('mds-tab-content-hidden');
   },
 };
 

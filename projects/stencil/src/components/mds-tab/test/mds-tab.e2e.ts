@@ -1,5 +1,6 @@
 import { render, vi } from '@stencil/vitest';
 import { userEvent } from 'vitest/browser';
+import { NavigationService } from '@common/navigation';
 
 const strip = `<mds-tab>
   <mds-tab-item label="First" selected></mds-tab-item>
@@ -461,5 +462,208 @@ describe('mds-tab focus', () => {
     await settle();
 
     expect(document.activeElement).toBe(second);
+  });
+});
+
+// #1593: with narrow="select", under 768px of the width of its container (--container-3xl) the
+// strip gives way to a select of its tabs, and choosing an option does what a click on its tab does
+describe('mds-tab narrow="select"', () => {
+  const sections = (
+    attributes = '',
+  ) => `<mds-tab narrow="select" aria-label="Sections" ${attributes}>
+  <mds-tab-item label="Profile"></mds-tab-item>
+  <mds-tab-item label="Team" selected></mds-tab-item>
+  <mds-tab-item label="Billing" disabled></mds-tab-item>
+  <mds-tab-item title="Settings"></mds-tab-item>
+  <div slot="content">Profile panel</div>
+  <div slot="content">Team panel</div>
+  <div slot="content">Billing panel</div>
+  <div slot="content">Settings panel</div>
+</mds-tab>`;
+
+  const inside = async (width: number, markup: string) => {
+    const result = await render(`<div style="width: ${width}px">${markup}</div>`);
+    const tab = result.root.querySelector('mds-tab')!;
+    const items = Array.from(tab.querySelectorAll('mds-tab-item'));
+    await Promise.all(items.map((item) => item.componentOnReady()));
+    return { ...result, tab, items };
+  };
+
+  const selectOf = (tab: HTMLElement): HTMLMdsInputSelectElement =>
+    tab.shadowRoot!.querySelector('mds-input-select')!;
+
+  // the native select the field draws, with the copies of the options of the strip
+  const nativeOf = async (tab: HTMLElement): Promise<HTMLSelectElement> => {
+    const select = selectOf(tab);
+    await select.componentOnReady();
+    return select.shadowRoot!.querySelector('select')!;
+  };
+
+  const shown = (element: Element): boolean => getComputedStyle(element).display !== 'none';
+
+  const options = (native: HTMLSelectElement) =>
+    Array.from(native.options)
+      .filter((option) => !option.hidden)
+      .map((option) => ({ label: option.textContent, disabled: option.disabled }));
+
+  // the host follows a click of its own on the next task: wait past it
+  const settle = (): Promise<void> => new Promise((resolve) => setTimeout(resolve, 50));
+
+  afterEach(() => {
+    NavigationService.setHandler(undefined);
+  });
+
+  it('shows the select in place of the strip under 768px of its container', async () => {
+    const { tab } = await inside(375, sections());
+
+    expect(shown(selectOf(tab))).toBe(true);
+    expect(shown(tab.shadowRoot!.querySelector('.tabs-wrapper')!)).toBe(false);
+  });
+
+  it('keeps the strip from 768px up', async () => {
+    const { tab } = await inside(768, sections());
+
+    expect(shown(selectOf(tab))).toBe(false);
+    expect(shown(tab.shadowRoot!.querySelector('.tabs-wrapper')!)).toBe(true);
+  });
+
+  it('has no select without narrow="select": the strip scrolls, as it did', async () => {
+    const { tab } = await inside(375, sections().replace('narrow="select"', ''));
+
+    expect(tab).toEqualAttribute('narrow', 'scroll');
+    expect(selectOf(tab)).toBeNull();
+    expect(getComputedStyle(tab).containerType).toBe('normal');
+  });
+
+  it('lists the tabs as options, a disabled tab disabled, the selected one as the value', async () => {
+    const { tab, items } = await inside(375, sections());
+    const native = await nativeOf(tab);
+
+    await vi.waitFor(() =>
+      expect(options(native)).toEqual([
+        { label: 'Profile', disabled: false },
+        { label: 'Team', disabled: false },
+        { label: 'Billing', disabled: true },
+        // an item with no label is named by its title
+        { label: 'Settings', disabled: false },
+      ]),
+    );
+    expect(native.value).toBe(items[1].id);
+  });
+
+  it('names the select and the tablist with its aria-label', async () => {
+    const { tab } = await inside(375, sections());
+    const native = await nativeOf(tab);
+
+    expect(native).toEqualAttribute('aria-label', 'Sections');
+    expect(tab.shadowRoot!.querySelector('.tabs')).toEqualAttribute('aria-label', 'Sections');
+  });
+
+  it('selects the tab of the chosen option, shows its panel and says so once', async () => {
+    const { tab, items, spyOnEvent } = await inside(375, sections());
+    const change = spyOnEvent('mdsTabChange');
+    const inner = spyOnEvent('mdsInputSelectChange');
+    const native = await nativeOf(tab);
+    await vi.waitFor(() => expect(options(native)).toHaveLength(4));
+
+    await userEvent.selectOptions(native, items[0].id);
+
+    await vi.waitFor(() => expect(items[0]).toHaveAttribute('selected'));
+    expect(items[1]).not.toHaveAttribute('selected');
+    const panels = Array.from(tab.querySelectorAll('[slot="content"]'));
+    expect(panels.map((panel) => panel.hasAttribute('mds-tab-content-hidden'))).toEqual([
+      false,
+      true,
+      true,
+      true,
+    ]);
+    expect(change).toHaveReceivedEventTimes(1);
+    expect(change.lastEvent?.detail).toMatchObject({ id: 0 });
+    // the select is a part of the strip: the page hears mdsTabChange alone
+    expect(inner).not.toHaveReceivedEvent();
+  });
+
+  it('stays on the select when an option is chosen', async () => {
+    const { tab, items } = await inside(375, sections());
+    const native = await nativeOf(tab);
+    await vi.waitFor(() => expect(options(native)).toHaveLength(4));
+    native.focus();
+
+    await userEvent.selectOptions(native, items[3].id);
+    await vi.waitFor(() => expect(items[3]).toHaveAttribute('selected'));
+    await settle();
+
+    expect(selectOf(tab).shadowRoot!.activeElement).toBe(native);
+  });
+
+  it('follows a selection made in the strip or from code', async () => {
+    const { tab, items } = await inside(375, sections());
+    const native = await nativeOf(tab);
+
+    items[3].selected = true;
+
+    await vi.waitFor(() => expect(native.value).toBe(items[3].id));
+  });
+
+  it('rewrites an option when its tab changes after the load', async () => {
+    const { tab, items } = await inside(375, sections());
+    const native = await nativeOf(tab);
+
+    items[0].setAttribute('label', 'My profile');
+    items[2].disabled = false;
+
+    await vi.waitFor(() =>
+      expect(options(native).slice(0, 3)).toEqual([
+        { label: 'My profile', disabled: false },
+        { label: 'Team', disabled: false },
+        { label: 'Billing', disabled: false },
+      ]),
+    );
+    // the copies are new options: the selection is still on the selected tab
+    expect(native.value).toBe(items[1].id);
+  });
+
+  it('follows the link of the chosen option through the router', async () => {
+    const router = vi.fn();
+    NavigationService.setHandler(router);
+    const { tab, items } = await inside(
+      375,
+      `<mds-tab narrow="select">
+  <mds-tab-item href="#a" label="A" selected></mds-tab-item>
+  <mds-tab-item href="#b" label="B"></mds-tab-item>
+</mds-tab>`,
+    );
+    const native = await nativeOf(tab);
+    await vi.waitFor(() => expect(options(native)).toHaveLength(2));
+
+    await userEvent.selectOptions(native, items[1].id);
+    await settle();
+
+    expect(router).toHaveBeenCalledTimes(1);
+    expect(router.mock.calls[0][0]).toBe('#b');
+    expect(items[1]).toHaveAttribute('selected');
+    expect(window.location.hash).toBe('');
+  });
+
+  it('leaves the field empty while no tab is selected', async () => {
+    const { tab, items } = await inside(375, sections().replace(' selected', ''));
+    const native = await nativeOf(tab);
+    await vi.waitFor(() => expect(options(native)).toHaveLength(4));
+
+    expect(native.value).toBe('');
+
+    // the first tab is an option to choose like the others
+    await userEvent.selectOptions(native, items[0].id);
+    await vi.waitFor(() => expect(items[0]).toHaveAttribute('selected'));
+    await vi.waitFor(() => expect(native.value).toBe(items[0].id));
+  });
+
+  it('puts the select above the panels, on the whole width, in the vertical direction', async () => {
+    const { tab } = await inside(375, sections('direction="vertical"'));
+    const select = selectOf(tab).getBoundingClientRect();
+    const contents = tab.shadowRoot!.querySelector('.contents')!.getBoundingClientRect();
+
+    expect(Math.abs(select.width - tab.getBoundingClientRect().width)).toBeLessThanOrEqual(1);
+    expect(contents.top).toBeGreaterThanOrEqual(select.bottom);
   });
 });

@@ -1424,9 +1424,11 @@ mds-stepper-bar-item css --mds-stepper-bar-item-progress-background INTERNAL
 mds-stepper-bar-item css --mds-stepper-bar-item-progress-color INTERNAL
 mds-stepper-bar-item css --mds-stepper-bar-item-progress-thickness INTERNAL
 mds-tab encapsulation shadow
+mds-tab prop accessibleName (attr aria-label): string | undefined
 mds-tab prop animation (attr animation) [reflect]: "fade" | "slide" | undefined = 'slide'
 mds-tab prop direction (attr direction) [reflect, mutable]: "horizontal" | "vertical" | undefined = 'horizontal'
 mds-tab prop fill (attr fill) [reflect, mutable]: boolean | undefined
+mds-tab prop narrow (attr narrow) [reflect]: "scroll" | "select" | undefined = 'scroll'
 mds-tab prop overflow (attr overflow) [reflect, mutable]: boolean | undefined
 mds-tab prop scrollbar (attr scrollbar) [reflect, mutable]: boolean | undefined
 mds-tab prop size (attr size) [reflect, mutable]: "md" | "sm" | undefined
@@ -1434,6 +1436,7 @@ mds-tab event mdsTabChange: MdsTabEventDetail [bubbles, cancelable, composed]
 mds-tab slot (default)
 mds-tab slot content
 mds-tab part contents
+mds-tab part select
 mds-tab part slider
 mds-tab part tabs
 mds-tab css --mds-tab-direction-vertical-columns
@@ -1872,6 +1875,7 @@ type ModalAnimationStyleType = 'slide' | 'custom' | '3d';
 type ModalInteractionType = 'strict' | 'relaxed';
 type ModalOverflowType = 'auto' | 'manual';
 type ModalPositionType = | 'bottom' | 'bottom-left' | 'bottom-right' | 'center' | 'left' | 'right' | 'top' | 'top-left' | 'top-right';
+type NarrowType = 'scroll' | 'select';
 type NavigationHandler = (href: string, event: MouseEvent) => boolean | void
 type NavigationType = 'none' | 'scrollbar' | 'position';
 type NoiseType = 'classic' | 'none' | 'sharp' | 'soft' | 'tv';
