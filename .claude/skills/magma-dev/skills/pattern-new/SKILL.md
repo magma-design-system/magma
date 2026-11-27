@@ -1,6 +1,6 @@
 ---
 name: pattern-new
-description: Define a new Magma pattern (or turn a candidate into one) in this repository, the way the patterns of Messages and states were defined on #1174. The maintainer gives the need in one sentence and answers the few decisions the sources do not settle; the skill checks the list first, checks the components that hold the role (use as they are, change, a new one, or one way only), researches, writes docs/agents/patterns/<id>.md, runs the check and opens the pull request. Use when a maintainer asks for a new pattern or building block.
+description: Define a new Magma pattern, building block or domain of the design language in this repository, or turn a candidate into one - the components that hold the role, the research, the file, the check, the pull request. Use when a maintainer asks for a new pattern or building block.
 argument-hint: <the need, in one sentence>
 ---
 

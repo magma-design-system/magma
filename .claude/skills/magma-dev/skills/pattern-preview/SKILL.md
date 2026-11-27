@@ -1,6 +1,6 @@
 ---
 name: pattern-preview
-description: Make the previews a Magma pattern of this repository lacks (docs/agents/patterns/previews/<id>/<case>.html, #1186) - for each case with none, two options rendered with the real components, shown to the maintainer as a decision, the chosen one saved as the preview of the case. Use when a maintainer asks for the previews of a pattern, when check.patterns lists cases with no preview, at the end of pattern-new and pattern-change, and when a maintainer wants to adjust a preview or a draft by hand, live (mcp:serve.previews).
+description: Make the previews a Magma pattern of this repository lacks - two options per case rendered with the real components, the chosen one saved - or edit one live. Use when asked for previews, when check.patterns lists cases without one, and at the end of pattern-new and pattern-change.
 argument-hint: <id> [case]
 ---
 

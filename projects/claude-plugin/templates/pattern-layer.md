@@ -1,6 +1,6 @@
 ---
 name: pattern-layer
-description: Adapt a Magma pattern to this product. Write its layer in magma/patterns/<id>.md, which fixes the open choices the pattern leaves to each product (a toast duration, the wording of its messages) and maps the situations of the product's domain to the cases of the pattern, then check it with the magma MCP server until get_pattern applies it. Use when a product wants a Magma pattern (where a message goes, confirming an action, an empty, a loading or a failed part) narrowed for itself, its own situations answered, or a pattern of its own for a need Magma does not cover yet.
+description: Adapt a Magma pattern to this product - its layer in magma/patterns/<id>.md fixes the open choices and maps the product's situations to its cases, checked with get_pattern. Use when a product wants a Magma pattern narrowed, its own situations answered, or a pattern for a need Magma lacks.
 license: MIT
 compatibility: A project with @maggioli-design-system/magma installed. Uses the magma MCP server of this plugin.
 metadata:

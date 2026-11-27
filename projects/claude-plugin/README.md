@@ -162,4 +162,7 @@ after the skill `ui-sdk` of [vercel-labs/ui](https://github.com/vercel-labs/ui))
 built this way.
 
 A new skill is a new template: the generator picks it up. Keep the descriptions precise,
-since Claude decides from them when to load a skill on its own.
+since Claude decides from them when to load a skill on its own, and within 300 characters: in a
+product the plugin is listed beside the team's own plugins, within one budget, and Claude Code
+drops the descriptions that do not fit (`DESCRIPTION` in `scripts/agent-context.ts`, which
+`nx run magma:check.agent-context` holds, #1575).

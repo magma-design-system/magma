@@ -41,7 +41,12 @@ reads sit next to it. A skill with side effects or a high cost that only a perso
 takes `disable-model-invocation: true`: its description then stays out of what every session
 loads. Name the new skill in `AGENTS.md` as `/magma-dev:<name>`.
 
+Its description says what it does and when to use it in 300 characters at most; the rest goes
+in its body. Claude Code lists the descriptions of every plugin the person has enabled within one
+budget, and drops those of the skills used least when they do not fit: a skill listed by name
+only is not chosen from what the person says (#1575).
+
 `nx run magma:check.agent-context` holds the plugin (`scripts/agent-context.ts`, "projects and
 skills"): every skill named in `AGENTS.md`, its name and description valid, its description
-within the budget of what every session loads, and the copies a skill keeps of what another file
+within 300 characters and the budget of what every session loads, and the copies a skill keeps of what another file
 decides (the scales and the store of `paradigm-check`).
