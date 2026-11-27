@@ -101,7 +101,9 @@ export function Studio({ state, router }: StudioProps = {}) {
   return (
     <LangProvider value={lang}>
       <StudioContext.Provider value={studio}>
-        <div class="studio">
+        {/* how wide the bar and the page are (widths, style.css): the whole window on a page of the
+            work, the column of a page on the introduction */}
+        <div class="studio" data-box={route.section === 'introduction' ? 'page' : 'workspace'}>
           <StudioBar route={route} />
           {/* the stages in order, on a stage and on a page beside one (stages.tsx) */}
           <StageBar route={route} onOpen={(next) => nav.navigate(next)} />
