@@ -1,0 +1,98 @@
+<!--
+try: Premi Approvata, sopra la pagina: l'elenco dei modelli prende il posto della pagina, Aggiungi modello in testa. Scegli un altro modello: l'elenco si richiude, la pagina mostra quello e il fuoco va sul suo nome.
+height: 680
+-->
+<div class="mx-auto grid h-[640px] max-w-sm grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-md border border-border-muted" data-stage="frame">
+  <div class="border-b border-border-muted px-(--magma-width-page-gutter) py-inset" data-stage>
+    <mds-text typography="h6" tag="p">Sportello del cittadino</mds-text>
+  </div>
+  <div class="grid min-h-0 grid-rows-[auto_minmax(0,1fr)]">
+    <div class="px-(--magma-width-page-gutter) pt-inset">
+      <mds-button id="fold" type="button" variant="dark" tone="weak" icon="mi/baseline/expand-more" icon-position="right" label="Approvata" class="w-full justify-between" aria-expanded="false" aria-controls="items"></mds-button>
+    </div>
+    <aside id="items" class="hidden min-h-0 content-start gap-between-fields overflow-y-auto px-(--magma-width-page-gutter) py-inset" aria-label="I modelli degli avvisi">
+      <mds-button type="button" icon="mi/baseline/add" variant="primary" tone="outline" class="w-full">Aggiungi modello</mds-button>
+      <div class="grid gap-inline">
+        <mds-text typography="part" tag="h2">Richieste</mds-text>
+        <mds-list marker="none" class="grid">
+          <mds-list-item><mds-button href="#ricevuta" variant="dark" tone="text" icon="mi/baseline/mail" class="w-full justify-start">Ricevuta</mds-button></mds-list-item>
+          <mds-list-item><mds-button href="#approvata" variant="dark" tone="text" icon="mi/baseline/mail" class="w-full justify-start" current>Approvata</mds-button></mds-list-item>
+          <mds-list-item><mds-button href="#respinta" variant="dark" tone="text" icon="mi/baseline/mail" class="w-full justify-start">Respinta</mds-button></mds-list-item>
+          <mds-list-item><mds-button href="#da-integrare" variant="dark" tone="text" icon="mi/baseline/mail" class="w-full justify-start">Da integrare</mds-button></mds-list-item>
+        </mds-list>
+      </div>
+      <div class="grid gap-inline">
+        <mds-text typography="part" tag="h2">Pagamenti</mds-text>
+        <mds-list marker="none" class="grid">
+          <mds-list-item><mds-button href="#avviso" variant="dark" tone="text" icon="mi/baseline/mail" class="w-full justify-start">Avviso di pagamento</mds-button></mds-list-item>
+          <mds-list-item><mds-button href="#scadenza" variant="dark" tone="text" icon="mi/baseline/sms" class="w-full justify-start">Scadenza vicina</mds-button></mds-list-item>
+        </mds-list>
+      </div>
+    </aside>
+    <main id="detail" class="min-h-0 overflow-y-auto px-(--magma-width-page-gutter) pt-inset pb-between-sections">
+      <header class="mb-between-sections grid gap-title-content" data-stage>
+        <mds-text typography="page" tag="h1">Modelli degli avvisi</mds-text>
+        <mds-text typography="detail" tag="p" class="text-fg-muted">Le email e gli SMS che lo sportello manda a chi ha una richiesta, un pagamento o un appuntamento.</mds-text>
+      </header>
+      <section class="grid gap-between-groups" aria-labelledby="item-title">
+        <div class="grid gap-inline">
+          <div class="flex items-center gap-inline">
+            <mds-text id="item-title" typography="section" tag="h2" tabindex="-1">Approvata</mds-text>
+            <mds-button id="item-actions" type="button" icon="mi/baseline/more-vert" variant="dark" tone="text" aria-label="Azioni di Approvata"></mds-button>
+          </div>
+          <mds-text id="item-does" typography="detail" tag="p" class="text-fg-muted">Arriva a chi ha inviato una richiesta, quando l'ufficio la approva.</mds-text>
+        </div>
+        <div class="grid gap-between-fields">
+          <mds-input-field label="Oggetto"><mds-input id="subject" value="La tua richiesta e' stata approvata"></mds-input></mds-input-field>
+          <mds-input-field label="Testo"><mds-input id="body" type="textarea" value="Puoi ritirare il documento allo sportello, negli orari di apertura."></mds-input></mds-input-field>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+<script>
+  const items = {
+    ricevuta: ['Ricevuta', "Arriva a chi ha inviato una richiesta, appena lo sportello la riceve.", 'Abbiamo ricevuto la tua richiesta', "La trovi nell'area personale, con il suo numero."],
+    approvata: ['Approvata', "Arriva a chi ha inviato una richiesta, quando l'ufficio la approva.", "La tua richiesta e' stata approvata", "Puoi ritirare il documento allo sportello, negli orari di apertura."],
+    respinta: ['Respinta', "Arriva a chi ha inviato una richiesta, quando l'ufficio la respinge.", "La tua richiesta non e' stata accolta", "Trovi il motivo nell'area personale."],
+    'da-integrare': ['Da integrare', "Arriva a chi ha inviato una richiesta, quando all'ufficio manca un documento.", 'Manca un documento alla tua richiesta', "Caricalo dall'area personale entro 30 giorni."],
+    avviso: ['Avviso di pagamento', "Arriva a chi deve pagare, con l'importo e la scadenza.", 'Hai un pagamento da fare', 'Paga online o in una ricevitoria.'],
+    scadenza: ['Scadenza vicina', 'Arriva tre giorni prima della scadenza di un pagamento.', 'Pagamento in scadenza', 'Il tuo pagamento scade tra tre giorni.'],
+  };
+  const $ = (id) => document.getElementById(id);
+  const fold = $('fold');
+  const aside = $('items');
+  let shown = 'approvata';
+  for (const id of ['subject', 'body'])
+    $(id).addEventListener('mdsInputChange', () => {
+      items[shown][2] = $('subject').value;
+      items[shown][3] = $('body').value;
+    });
+  const setOpen = (open) => {
+    fold.setAttribute('aria-expanded', String(open));
+    fold.setAttribute('icon', open ? 'mi/baseline/expand-less' : 'mi/baseline/expand-more');
+    aside.classList.toggle('hidden', !open);
+    aside.classList.toggle('grid', open);
+    $('detail').classList.toggle('hidden', open);
+  };
+  fold.addEventListener('click', () => setOpen(fold.getAttribute('aria-expanded') !== 'true'));
+  aside.addEventListener('click', (event) => {
+    const button = event.target.closest('mds-list mds-button');
+    if (!button) return;
+    event.preventDefault();
+    const key = button.getAttribute('href').slice(1);
+    if (!button.hasAttribute('current')) {
+      shown = key;
+      for (const other of aside.querySelectorAll('mds-list mds-button')) other.toggleAttribute('current', other === button);
+      const item = items[key];
+      $('item-title').textContent = item[0];
+      $('item-actions').setAttribute('aria-label', 'Azioni di ' + item[0]);
+      $('item-does').textContent = item[1];
+      $('subject').value = item[2];
+      $('body').value = item[3];
+      fold.setAttribute('label', item[0]);
+    }
+    setOpen(false);
+    $('item-title').focus();
+  });
+</script>

@@ -1,0 +1,138 @@
+<!--
+try: Premi un altro modello nell'elenco: il dettaglio accanto mostra quello, l'elenco lo segna come corrente e resta com'era. Cambia l'oggetto, passa a un altro modello e torna: la modifica e' rimasta.
+height: 640
+whole-page: true
+-->
+<div class="grid h-dvh grid-rows-[auto_minmax(0,1fr)] overflow-hidden" style="--magma-width-page: none">
+  <mds-header data-stage>
+    <mds-header-bar>
+      <mds-text typography="h6" tag="p">Sportello del cittadino</mds-text>
+      <mds-button slot="nav" href="#" variant="dark" tone="text">Richieste</mds-button>
+      <mds-button slot="nav" href="#" variant="dark" tone="text" current>Avvisi</mds-button>
+    </mds-header-bar>
+  </mds-header>
+  <div class="min-h-0">
+    <div class="grid h-full grid-cols-[calc(var(--spacing)*6000)_minmax(0,1fr)]">
+      <aside id="items" class="grid min-h-0 content-start gap-between-fields overflow-y-auto border-e border-border-muted px-inline py-inset" aria-label="I modelli degli avvisi">
+        <mds-button type="button" icon="mi/baseline/add" variant="primary" tone="outline" class="w-full">Aggiungi modello</mds-button>
+        <div class="grid gap-inline">
+          <div class="flex items-center justify-between gap-inline">
+            <mds-text typography="part" tag="h2">Richieste</mds-text>
+            <mds-button href="#" icon="mi/outline/tune" variant="dark" tone="text" size="sm" aria-label="Il servizio Richieste, nelle impostazioni"></mds-button>
+          </div>
+          <mds-list marker="none" class="grid">
+            <mds-list-item><mds-button href="#ricevuta" variant="dark" tone="text" icon="mi/baseline/mail" class="w-full justify-start">Ricevuta</mds-button></mds-list-item>
+            <mds-list-item><mds-button href="#approvata" variant="dark" tone="text" icon="mi/baseline/mail" class="w-full justify-start" current>Approvata</mds-button></mds-list-item>
+            <mds-list-item><mds-button href="#respinta" variant="dark" tone="text" icon="mi/baseline/mail" class="w-full justify-start">Respinta</mds-button></mds-list-item>
+            <mds-list-item><mds-button href="#da-integrare" variant="dark" tone="text" icon="mi/baseline/mail" class="w-full justify-start">Da integrare</mds-button></mds-list-item>
+          </mds-list>
+        </div>
+        <div class="grid gap-inline">
+          <div class="flex items-center justify-between gap-inline">
+            <mds-text typography="part" tag="h2">Pagamenti</mds-text>
+            <mds-button href="#" icon="mi/outline/tune" variant="dark" tone="text" size="sm" aria-label="Il servizio Pagamenti, nelle impostazioni"></mds-button>
+          </div>
+          <mds-list marker="none" class="grid">
+            <mds-list-item><mds-button href="#avviso" variant="dark" tone="text" icon="mi/baseline/mail" class="w-full justify-start">Avviso di pagamento</mds-button></mds-list-item>
+            <mds-list-item><mds-button href="#ricevuto" variant="dark" tone="text" icon="mi/baseline/mail" class="w-full justify-start">Pagamento ricevuto</mds-button></mds-list-item>
+            <mds-list-item><mds-button href="#scadenza" variant="dark" tone="text" icon="mi/baseline/sms" class="w-full justify-start">Scadenza vicina</mds-button></mds-list-item>
+          </mds-list>
+        </div>
+        <div class="grid gap-inline">
+          <div class="flex items-center justify-between gap-inline">
+            <mds-text typography="part" tag="h2">Appuntamenti</mds-text>
+            <mds-button href="#" icon="mi/outline/tune" variant="dark" tone="text" size="sm" aria-label="Il servizio Appuntamenti, nelle impostazioni"></mds-button>
+          </div>
+          <mds-list marker="none" class="grid">
+            <mds-list-item><mds-button href="#conferma" variant="dark" tone="text" icon="mi/baseline/mail" class="w-full justify-start">Conferma</mds-button></mds-list-item>
+            <mds-list-item><mds-button href="#promemoria" variant="dark" tone="text" icon="mi/baseline/sms" class="w-full justify-start">Promemoria</mds-button></mds-list-item>
+          </mds-list>
+        </div>
+      </aside>
+      <main id="detail" class="min-h-0 overflow-y-auto px-(--magma-width-page-gutter) pt-inset pb-between-sections">
+        <header class="mb-between-sections grid gap-title-content" data-stage>
+          <mds-text typography="page" tag="h1">Modelli degli avvisi</mds-text>
+          <mds-text typography="detail" tag="p" class="text-fg-muted">Le email e gli SMS che lo sportello manda a chi ha una richiesta, un pagamento o un appuntamento.</mds-text>
+        </header>
+        <section class="grid max-w-form gap-between-groups" aria-labelledby="item-title">
+          <div class="grid gap-inline">
+            <div class="flex items-center gap-inline">
+              <mds-text id="item-title" typography="section" tag="h2">Approvata</mds-text>
+              <mds-button id="item-actions" type="button" icon="mi/baseline/more-vert" variant="dark" tone="text" aria-label="Azioni di Approvata"></mds-button>
+            </div>
+            <mds-text id="item-does" typography="detail" tag="p" class="text-fg-muted">Arriva a chi ha inviato una richiesta, quando l'ufficio la approva.</mds-text>
+            <mds-details>
+              <mds-text slot="title" id="item-used" typography="detail" tag="span">Usato da 3 servizi</mds-text>
+              <mds-list data-stage>
+                <mds-list-item>Cambio di residenza</mds-list-item>
+                <mds-list-item>Carta d'identita'</mds-list-item>
+                <mds-list-item>Iscrizione anagrafica</mds-list-item>
+              </mds-list>
+            </mds-details>
+          </div>
+          <div class="grid gap-between-fields">
+            <mds-input-field label="Canale">
+              <mds-input-select id="channel">
+                <option value="email" selected>Email</option>
+                <option value="sms">SMS</option>
+              </mds-input-select>
+            </mds-input-field>
+            <mds-input-field label="Oggetto"><mds-input id="subject" value="La tua richiesta e' stata approvata"></mds-input></mds-input-field>
+            <mds-input-field label="Testo"><mds-input id="body" type="textarea" value="Puoi ritirare il documento allo sportello, negli orari di apertura."></mds-input></mds-input-field>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+</div>
+<mds-dropdown target="#item-actions" placement="bottom-start" data-stage>
+  <mds-button icon="mi/baseline/content-copy" variant="dark" tone="text" label="Duplica"></mds-button>
+  <mds-separator></mds-separator>
+  <mds-button icon="mi/baseline/delete" variant="error" tone="text" label="Elimina modello"></mds-button>
+</mds-dropdown>
+<script>
+  const items = {
+    ricevuta: ['Ricevuta', "Arriva a chi ha inviato una richiesta, appena lo sportello la riceve.", 'email', 'Abbiamo ricevuto la tua richiesta', "La trovi nell'area personale, con il suo numero."],
+    approvata: ['Approvata', "Arriva a chi ha inviato una richiesta, quando l'ufficio la approva.", 'email', "La tua richiesta e' stata approvata", "Puoi ritirare il documento allo sportello, negli orari di apertura."],
+    respinta: ['Respinta', "Arriva a chi ha inviato una richiesta, quando l'ufficio la respinge.", 'email', 'La tua richiesta non e\' stata accolta', "Trovi il motivo nell'area personale."],
+    'da-integrare': ['Da integrare', "Arriva a chi ha inviato una richiesta, quando all'ufficio manca un documento.", 'email', 'Manca un documento alla tua richiesta', "Caricalo dall'area personale entro 30 giorni."],
+    avviso: ['Avviso di pagamento', 'Arriva a chi deve pagare, con l\'importo e la scadenza.', 'email', 'Hai un pagamento da fare', "Paga online o in una ricevitoria."],
+    ricevuto: ['Pagamento ricevuto', 'Arriva a chi ha pagato, con la ricevuta.', 'email', 'Abbiamo ricevuto il tuo pagamento', 'La ricevuta e\' nell\'area personale.'],
+    scadenza: ['Scadenza vicina', 'Arriva tre giorni prima della scadenza di un pagamento.', 'sms', 'Pagamento in scadenza', 'Il tuo pagamento scade tra tre giorni.'],
+    conferma: ['Conferma', 'Arriva a chi prenota un appuntamento.', 'email', 'Il tuo appuntamento e\' confermato', 'Ti aspettiamo allo sportello.'],
+    promemoria: ['Promemoria', 'Arriva il giorno prima di un appuntamento.', 'sms', 'Appuntamento domani', 'Domani hai un appuntamento allo sportello.'],
+  };
+  const $ = (id) => document.getElementById(id);
+  const aside = $('items');
+  let shown = 'approvata';
+  const save = () => {
+    items[shown][2] = $('channel').value;
+    items[shown][3] = $('subject').value;
+    items[shown][4] = $('body').value;
+  };
+  for (const id of ['channel', 'subject', 'body'])
+    $(id).addEventListener(id === 'channel' ? 'mdsInputSelectChange' : 'mdsInputChange', save);
+  const show = (key) => {
+    const item = items[key];
+    if (!item) return;
+    shown = key;
+    for (const button of aside.querySelectorAll('mds-list mds-button')) {
+      if (button.getAttribute('href') === '#' + key) button.setAttribute('current', '');
+      else button.removeAttribute('current');
+    }
+    $('item-title').textContent = item[0];
+    $('item-actions').setAttribute('aria-label', 'Azioni di ' + item[0]);
+    $('item-does').textContent = item[1];
+    $('channel').value = item[2];
+    $('subject').value = item[3];
+    $('body').value = item[4];
+  };
+  aside.addEventListener('click', (event) => {
+    const button = event.target.closest('mds-list mds-button');
+    if (!button) return;
+    event.preventDefault();
+    if (button.hasAttribute('current')) return;
+    history.replaceState(null, '', button.getAttribute('href'));
+    show(button.getAttribute('href').slice(1));
+  });
+</script>

@@ -111,6 +111,7 @@ describe('the patterns Magma ships', () => {
         .filter((one) => one.kind === 'pattern' && one.status === 'decided')
         .map((one) => one.id),
     ).toEqual([
+      'list-and-detail',
       'list-with-filters',
       'record-detail',
       'edit-with-preview',
