@@ -36,7 +36,7 @@ start of the bar links to it.
 | Where | What it holds (`src/app/`) |
 | --- | --- |
 | **The bar** (`shell.tsx`, option A of its renders, 2026-11-27) | the product; what stands outside the stages, **Groups** (#1403), the **Theme** section and the **rules** (Behavior, a menu); then the work, always in view: the **changes** since the last exit, a button with their count that opens them by stage (`changes.tsx`), and the **exit**, a split button that saves the preset where a command takes saves and downloads it otherwise, through the contrast gate, the other formats in its menu (`config-menu.tsx`); the menu of the person at the end |
-| **The stages** (`stages.tsx`, #1595) | under the bar and its notices, on a stage and on a page beside one, aligned with the title of the page and right above it: a strip of links, an `mds-tab` with one `mds-tab-item href` per stage in their order, the address holding the stage, the open one selected, every stage one click away; no status per stage and no foot, the exit is the bar's |
+| **The stages** (`stages.tsx`, #1595) | under the bar and its notices, on a stage and on a page beside one, aligned with the title of the page and right above it: a strip of links, an `mds-tab` with one `mds-tab-item href` per stage in their order, its icon and name with no number, the address holding the stage, the open one selected, every stage one click away; no status per stage and no foot, the exit is the bar's |
 
 The bar and the page follow the window, the gutter at their sides, and start on one edge: the
 studio is the case `workspace` of the widths (`docs/agents/patterns/widths.md`), so `.studio` sets

@@ -41,8 +41,7 @@ cases:
     where: "the strip of the stages under the bar, in a nav named after them (Passi), aligned with the title of the page, right above the stage: one link per stage in their order, the stage of the page selected; the page opens with its own title; no foot"
     use:
       - { role: "the strip, its items all links, so a navigation and not a tablist", use: "mds-tab overflow" }
-      - { role: "a stage of the four, its number before its name", use: "mds-tab-item href=<the address of the stage> label=<its number and name, 2. Pesi>" }
-      - { role: "the full review, last, with no number", use: "mds-tab-item href=<the address of the review> label=<Giro completo>" }
+      - { role: "a stage, its icon before its name, no number", use: "mds-tab-item href=<the address of the stage> icon=<the icon of the stage> label=<its name, Pesi>" }
       - { role: "the stage of the page, announced as the current one", use: "mds-tab-item selected" }
   - id: side-page
     place: side-page
@@ -71,7 +70,7 @@ always-true:
     rule: "Every stage is a page with its address, and every item of the strip a link to it (href), so the back and forward of the browser reach it, and a link opens it in a new tab."
     checked-by: review
   - id: every-stage-one-click
-    rule: "Every stage is one click away from the strip, the ones after the open one too: the order is shown by the place and the number, never imposed by locking a stage."
+    rule: "Every stage is one click away from the strip, the ones after the open one too: the order is shown by the place in the strip, never imposed by locking a stage."
     checked-by: review
   - id: no-status-per-stage
     rule: "An item of the strip says the name of its stage, never a status (done, changed, to do): the strip shows which stage is open, not how far the work is."
@@ -112,9 +111,9 @@ One question: is the page a stage, a page beside one, or neither.
 - **The strip**: under the bar and the notices of the preset, in the frame of the page, a `nav`
   named after the stages around one `mds-tab` with `overflow`, one `mds-tab-item` per stage with
   `href`. Its start lines up with the title of the page, the gutter of the page at its side.
-- **An item**: the number and the name of the stage ("2. Pesi"), the full review last without a
-  number; text only, no icon, no status. The stage of the page, or the stage a page beside one
-  belongs to, is `selected`.
+- **An item**: the icon and the name of the stage ("Pesi"), the icon the one the introduction and
+  the changes of the bar show for it; no number, no status. The stage of the page, or the stage a
+  page beside one belongs to, is `selected`.
 - **The way back of a page beside a stage**: the `back` of `page-header`, named after the family
   or the group the person came from.
 
@@ -138,9 +137,9 @@ of Tab, the selected one announced as the current one (`aria-current`). The stri
 
 ## Content
 
-An item says the number and the name of the stage: "1. Colori", "2. Pesi", "3. Temi",
-"4. Eccezioni"; the full review "Giro completo", with no number. The page of the stage opens with
-its own title, the name of the stage.
+An item says the name of the stage after its icon: "Colori", "Pesi", "Temi", "Eccezioni", "Giro
+completo"; no number, the order is the place in the strip. The page of the stage opens with its
+own title, the name of the stage.
 
 ## Magma gaps
 
@@ -163,6 +162,8 @@ stages in a column with their status, the open stage beside them; Magma has none
   with a status per stage (render B).
 - No foot (2026-11-27, #1595): with every stage one click away in the strip, the way back and the
   way forward at the end of a stage repeated it, and the exit is in the bar.
+- Icons, not numbers (2026-11-27, #1595): the person asked for an icon on each tab in place of
+  its number; all the items take one form, icon and name, and the order stays the place.
 
 ## Decisions
 
@@ -170,3 +171,4 @@ stages in a column with their status, the open stage beside them; Magma has none
 | --- | --- | --- |
 | 2026-11-27 | The stepper under the bar (option B of the renders), four cases | The order and the position in view; the bar stays the work's (vittorio) |
 | 2026-11-27 | A strip of `mds-tab-item href` in place of the stepper, under the bar, right above the stage; no status per stage, no foot; three cases (#1595) | A stepper is a wizard; the stages of a tool used over time are tabs, as the parts of a record (epic #1579; vittorio, render A over B, the foot dropped) |
+| 2026-11-27 | Each item the icon and the name of its stage, no number (#1595) | vittorio: icons in place of the numbers |

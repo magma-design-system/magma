@@ -13,13 +13,10 @@ import { COLORS_PAGES, hrefOf, placeOf, STAGES, type Route } from '../shared/rou
   forth between its stages, as between the parts of a record (record-detail, the research of epic
   #1579). No status per stage (render A of #1595, not B: a task list, which Magma lacks) and no
   foot with the stage before and after: the strip opens every stage, and the exit is the bar's.
+  Each item is the icon and the name of its stage, no number (vittorio, 2026-11-27): the order is
+  the place in the strip; the icon is the one of STAGES, as the introduction and the changes of
+  the bar show it.
 */
-
-/** The name of a stage in the strip: its number and name, `2. Weights`; the review has none. */
-const nameOf = (t: ReturnType<typeof useT>, index: number): string => {
-  const stage = STAGES[index];
-  return stage.numbered ? `${index + 1}. ${t(stage.label)}` : t(stage.label);
-};
 
 /**
  * The strip of the stages, under the bar: an `mds-tab` whose items are all links (`href`), so the
@@ -39,7 +36,8 @@ export function StageTabs({ route }: { route: Route }) {
         {STAGES.map((stage, index) => (
           <mds-tab-item
             href={hrefOf(stage.route)}
-            label={nameOf(t, index)}
+            icon={stage.icon}
+            label={t(stage.label)}
             value={stage.id}
             selected={index === place.index}
           ></mds-tab-item>

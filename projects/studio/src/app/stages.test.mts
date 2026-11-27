@@ -2,14 +2,16 @@ import { afterEach, beforeEach, expect, test, vi } from 'vitest'
 import { h, render } from 'preact'
 import { within } from '@testing-library/preact'
 
+import { STAGES } from '../shared/routes/routes.js'
 import { textOf } from '../../test/text.mjs'
 import { Studio } from './shell.js'
 
 // The stages in order (#1402; a strip of links since #1595), as the pattern of the studio has them
 // (magma/patterns/stages-in-order.md): on a stage and on a page beside one, a strip of mds-tab
-// under the bar, one link per stage, the current one selected, right above the stage; no foot.
-// jsdom does not upgrade the Magma components: the test reads the markup the shell writes, the
-// native elements by their role and name, the Magma ones by their tag and attributes.
+// under the bar, one link per stage with its icon and name, the current one selected, right above
+// the stage; no foot. jsdom does not upgrade the Magma components: the test reads the markup the
+// shell writes, the native elements by their role and name, the Magma ones by their tag and
+// attributes.
 
 const root = document.createElement('div')
 document.body.append(root)
@@ -40,20 +42,23 @@ const current = () => textOf(items().find((one) => one.hasAttribute('selected'))
 test('on a stage the strip shows the stages in order, one link each, the current one selected', async () => {
   await at('#/weights')
   expect(items().map((one) => ({ text: textOf(one), href: one.getAttribute('href') }))).toEqual([
-    { text: '1. Colors', href: '#/colours' },
-    { text: '2. Weights', href: '#/weights' },
-    { text: '3. Themes', href: '#/colors/themes' },
-    { text: '4. Exceptions', href: '#/exceptions' },
+    { text: 'Colors', href: '#/colours' },
+    { text: 'Weights', href: '#/weights' },
+    { text: 'Themes', href: '#/colors/themes' },
+    { text: 'Exceptions', href: '#/exceptions' },
     { text: 'Full review', href: '#/colors/contrast-check' },
   ])
+  // each the icon and the name of its stage, no number: the order is the place in the strip
+  expect(items().map((one) => one.getAttribute('icon'))).toEqual(STAGES.map(({ icon }) => icon))
+  expect(items().every((one) => one.getAttribute('icon'))).toBe(true)
   // one selected, the stage of the page
   expect(items().filter((one) => one.hasAttribute('selected'))).toHaveLength(1)
-  expect(current()).toBe('2. Weights')
+  expect(current()).toBe('Weights')
   // each stage of its own page opens with its item selected
   for (const [hash, stage] of [
-    ['#/colours', '1. Colors'],
-    ['#/colors/themes', '3. Themes'],
-    ['#/exceptions', '4. Exceptions'],
+    ['#/colours', 'Colors'],
+    ['#/colors/themes', 'Themes'],
+    ['#/exceptions', 'Exceptions'],
     ['#/colors/contrast-check', 'Full review'],
   ]) {
     location.hash = hash
@@ -77,7 +82,7 @@ test('the strip stands under the bar and right above the stage, with nothing bet
 test('a page beside a stage keeps its stage selected', async () => {
   // the page of a scale, beside Colours (#1403)
   await at('#/colours/scale/wcag3/tone')
-  await vi.waitFor(() => expect(current()).toBe('1. Colors'))
+  await vi.waitFor(() => expect(current()).toBe('Colors'))
 })
 
 test('a page that is no stage has no strip', async () => {
@@ -104,10 +109,10 @@ test('no stage ends with a foot: the strip opens every stage, the exit is the ba
 test('a link of the strip opens its stage, and the strip follows the address', async () => {
   await at('#/colors/themes')
   location.hash = items()[0].getAttribute('href')!
-  await vi.waitFor(() => expect(current()).toBe('1. Colors'))
+  await vi.waitFor(() => expect(current()).toBe('Colors'))
   // back in the history, the stage before
   location.hash = '#/colors/themes'
-  await vi.waitFor(() => expect(current()).toBe('3. Themes'))
+  await vi.waitFor(() => expect(current()).toBe('Themes'))
 })
 
 test('the strip speaks the language of the studio', async () => {
@@ -116,10 +121,10 @@ test('the strip speaks the language of the studio', async () => {
     await at('#/weights')
     const nav = within(root).getByRole('navigation', { name: 'Passi' })
     expect([...nav.querySelectorAll('mds-tab-item')].map((one) => textOf(one))).toEqual([
-      '1. Colori',
-      '2. Pesi',
-      '3. Temi',
-      '4. Eccezioni',
+      'Colori',
+      'Pesi',
+      'Temi',
+      'Eccezioni',
       'Giro completo',
     ])
   } finally {

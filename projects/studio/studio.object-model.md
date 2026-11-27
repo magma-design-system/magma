@@ -635,8 +635,8 @@ principio.
   volta in ordine, e lo studio è uno strumento a cui si torna, avanti e indietro tra i passi, come
   tra le parti di un record (`record-detail`; la ricerca dell'epic #1579). I passi sono una
   striscia di link (`mds-tab`, `href` su ogni elemento, l'indirizzo tiene il passo) sotto la
-  barra, allineata col titolo della pagina, subito sopra il passo; il passo aperto selezionato,
-  ogni passo a un clic. Nessuno stato per passo (fatto, modificato, da fare: servirebbe una task
+  barra, allineata col titolo della pagina, subito sopra il passo; ogni passo con la sua icona e
+  il suo nome, senza numero; il passo aperto selezionato, ogni passo a un clic. Nessuno stato per passo (fatto, modificato, da fare: servirebbe una task
   list, che Magma non ha) e nessun piede: l'uscita sta nella barra. (persona)
 
 ### Spazio di lavoro
@@ -857,6 +857,6 @@ confondersi con le eccezioni dei componenti.)
   ogni elemento, come le parti di un record in `record-detail`.
 - **Le risposte nuove** (persona, sui render di #1595): nessuno stato per passo, la striscia e non
   una task list; nessun piede con il passo prima e il passo dopo, perché la striscia apre ogni
-  passo e l'uscita sta nella barra.
+  passo e l'uscita sta nella barra; in ogni tab un'icona al posto del numero.
 - **Cosa è cambiato**: la barra, che porta i passi sotto di sé in una striscia di link (5); la
   risoluzione del conflitto "Passi in ordine" (8). Le viste e le entità non cambiano.
