@@ -211,14 +211,16 @@ How to write and run the tests (Vitest + `@stencil/vitest`, `render` / `userEven
 
 ## Per-component usage docs
 
-Every component documents its **semantic intent** in a `usage/` folder containing three markdown files. These are the **canonical source of truth** - agents and developers should read these to understand how a component is meant to be used.
+Every component documents its **semantic intent** in a `usage/` folder containing three markdown files, and two more, the need and the place, on the components epic #1579 has reached. These are the **canonical source of truth** - agents and developers should read these to understand how a component is meant to be used.
 
 ```
 src/components/mds-component-name/
 └── usage/
     ├── 1. Description.md   ← purpose, semantic behaviour, prop intent
     ├── 2. Examples.md      ← numbered list of correct uses, each with its code
-    └── 3. Mistakes.md      ← numbered list of incorrect uses with INCORRECT/CORRECT pairs
+    ├── 3. Mistakes.md      ← numbered list of incorrect uses with INCORRECT/CORRECT pairs
+    ├── 4. When to use.md   ← the needs it answers, and the near ones it does not (epic #1579)
+    └── 5. Placement context.md ← where it goes in a view, what sits around it, what it holds
 ```
 
 The `1. ` / `2. ` / `3. ` numeric prefixes exist to control the order of sections in the auto-generated `readme.md` — Stencil sorts usage files alphabetically by filename, and the headings it emits (`### 1. Description`, etc.) double as a deterministic table of contents.
@@ -230,6 +232,31 @@ The `1. ` / `2. ` / `3. ` numeric prefixes exist to control the order of section
 | `1. Description.md` | One-sentence purpose, runtime/semantic behaviour, the **intent** of each prop's values (when to pick `tone="strong"` vs `weak`) |
 | `2. Examples.md`    | 5-12 numbered examples showing correct, idiomatic use. Each has a "use this when…" line and one code block                      |
 | `3. Mistakes.md`    | 3-8 numbered mistakes. Each pairs an INCORRECT example with the CORRECT alternative and a one-line "why"                       |
+| `4. When to use.md` | The needs it answers (`Use it for`) and the near needs it does not, each with what answers it (`Not for`)                      |
+| `5. Placement context.md` | Where it goes in a view and where not, what sits around it, what it holds, what it does on a narrow screen               |
+
+### `4. When to use.md` and `5. Placement context.md`
+
+The two files the agent reads where it makes a choice (epic #1579): the need when it picks the component (`find_component` returns the `Not for` lines beside each candidate), the place when it composes the view (`get_component`). The pilot (#1580) writes them for five components; `check.usage-docs` holds their shape where they exist, and asks for them on every component once the epic ends.
+
+**`4. When to use.md`, the need.** Two headings and nothing else, each a list of one line per need:
+
+- `#### Use it for`: the needs this component answers, each written as the need ("The person must ..."), with the criterion that tells it from its neighbours inside the line: replaces the content or narrows the same list, steps in a fixed order and how many, can be undone or not, the kind of view (a task done once, a tool used over time) and the container (a page, a dialog).
+- `#### Not for`: the near needs it does not answer. The need, a colon, then what answers it in inline code: a component (`` `mds-tab` ``), a pattern of `docs/agents/patterns/` (`` `confirm-action` ``), or `` `gap` `` when Magma has none, which sends the agent to the gap path of the skill `ui` instead of the nearest component. A line may name more than one answer and add a criterion after it; other inline code in the line (`` `href` ``, `` `type="radio"` ``) is not an answer.
+
+The need lines a Description held move here; the Description keeps what the component is and how it behaves.
+
+**`5. Placement context.md`, the place.** Up to five headings, in this order, each a list:
+
+- `#### Where it goes`: the places in a view, the width, how many in one view;
+- `#### Not here`: the places it does not go, with where instead;
+- `#### Around it`: what sits before, after and beside it (the title, the row of actions, a message);
+- `#### Inside it`: what it holds, and how much;
+- `#### Narrow screens`: what it does in a narrow container, as it does today.
+
+Sizes are roles or token steps (`widths/form`, `--spacing()`), never px. A rule of the design language is named by its id in inline code (`` `actions/order` ``, `` `widths/dialog` ``), not rewritten: `get_component` returns it. A behaviour the component lacks goes to an issue on the component; the file describes what it does today. The places the patterns give it are not written by hand: the build adds them to the shipped file as `In the patterns`, from the cases of `docs/agents/patterns/` that use the component.
+
+The sources of each line (published design systems, research, the reference images of other products) go in the body of the pull request that decides the files, as the record of the decision; the files stay short, since the agent reads them.
 
 ### What `usage/` must NOT contain
 
