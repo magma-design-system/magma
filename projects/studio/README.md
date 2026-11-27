@@ -222,7 +222,7 @@ baseline, a decorative border has no floor.
 
 A configuration that fails the gate is handed out only by choice, never by default: while it
 fails, every way out of the studio (the downloads, the CSS of the themes among them, Build tokens
-on disk, Save, Copy JSON, Export selection of a batch, the exit at the foot of the full review)
+on disk, Save, Copy JSON, Export selection of a batch, the exit of the bar)
 opens a dialog first (`src/features/full-review/gate-dialog.tsx`). Its question counts the
 pairs below target, its text names the action and the consequence and lists the first pairs, with
 a link to the full review; Cancel and Esc never export, and the action repeats its verb

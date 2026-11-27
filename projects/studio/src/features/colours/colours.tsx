@@ -85,7 +85,7 @@ interface Draft {
 /** The choice of the select of the groups that writes a new one. */
 const NEW_GROUP = '';
 
-export function ColoursPage({ foot }: { foot?: ComponentChild }) {
+export function ColoursPage() {
   const t = useT(IT_COLOURS);
   const studio = useStudio();
   const config = studio.config.value;
@@ -439,7 +439,6 @@ export function ColoursPage({ foot }: { foot?: ComponentChild }) {
               </div>
             </div>
           )}
-          {foot && <div class="mt-between-sections">{foot}</div>}
         </main>
       </div>
       {draft && (

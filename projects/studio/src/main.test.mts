@@ -55,10 +55,9 @@ test('in memory, it opens where the host says, follows its own links and leaves 
     mounted = mount(element, { location: 'memory', address: '#/themes' })
   })
   await vi.waitFor(() => expect(title()).toBe('Themes'))
-  // the way forward of the stage, a link of Magma: in memory, the window keeps its hash
-  const forward = [...element.querySelectorAll('mds-button[href]')].find(
-    (one) => one.getAttribute('href') === '#/exceptions',
-  )!
+  // the stage in the strip of the stages, a link of Magma (#1595): in memory, the window keeps
+  // its hash
+  const forward = element.querySelector('mds-tab-item[href="#/exceptions"]')!
   const click = new MouseEvent('click', { bubbles: true, composed: true, cancelable: true })
   await act(() => {
     forward.dispatchEvent(click)

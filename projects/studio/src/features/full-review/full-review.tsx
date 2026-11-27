@@ -1,4 +1,3 @@
-import type { ComponentChild } from 'preact';
 import { useMemo, useState } from 'preact/hooks';
 import type { Mode } from '@maggioli-design-system/design-tokens/src/lib/contrast-gate.js';
 import type { GatePair } from '../../engine/gate.js';
@@ -23,7 +22,7 @@ import { MODE_NAMES, PairsTable, useFullReviewT } from './pairs.js';
   its centre: each theme per mode in a list beside, marked as looked at until a change touches it
   (engine/review.ts), the ones that block said; the item at the centre with its scene beside, in
   its mode, and its pairs, those that block, the reported ones and the debt the baseline accepts;
-  the exit at its foot, the way forward of the last stage, which asks first while the verification
+  the exit is the bar's (no stage has a foot since #1595), and asks first while the verification
   is red (gate-dialog.tsx, confirm-action `ask-first-many`). Each stage shows the verification
   filtered on itself, the full review the whole of it. Built as Magma says today: record-detail
   with the list beside, as Colours and Themes, until the review checklist (#1490) lands; its
@@ -76,13 +75,11 @@ const PAIR_GROUPS: ReadonlyArray<{ id: PairGroup; title: string; none: string; a
 export function FullReviewPage({
   theme: asked,
   mode: askedMode,
-  foot,
   onItem,
 }: {
   /** The theme of the item the address names, by its name. */
   theme?: string;
   mode?: Mode;
-  foot?: ComponentChild;
   /** The item at the centre, written in the address in place: a mark keeps it there. */
   onItem: (theme: string, mode: Mode) => void;
 }) {
@@ -106,7 +103,6 @@ export function FullReviewPage({
         <mds-banner class="max-w-text" variant="warning" headline={t('Contrast not measured')}>
           {report.verdict.message}
         </mds-banner>
-        {foot && <div class="mt-between-sections">{foot}</div>}
       </main>
     );
 
@@ -184,7 +180,6 @@ export function FullReviewPage({
               onMark={() => onItem(current.theme, current.mode)}
             />
           )}
-          {foot && <div class="mt-between-sections">{foot}</div>}
         </main>
       </div>
     </div>

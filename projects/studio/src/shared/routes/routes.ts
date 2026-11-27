@@ -266,8 +266,8 @@ export function routeOf(hash: string): Route | undefined {
 /**
  * The stages of the balancing, in their order (studio.object-model.md, section 5): the four
  * stages, numbered, then the full review. The pattern of the studio says how they show
- * (magma/patterns/stages-in-order.md): under the bar, the current one marked, each with the way
- * back and the way forward. The page of a contrast scale stands beside Colours (placeOf).
+ * (magma/patterns/stages-in-order.md): a strip of links under the bar, the current one selected
+ * (#1595). The page of a contrast scale stands beside Colours (placeOf).
  */
 export type StageId = 'colours' | 'weights' | 'themes' | 'exceptions' | 'full-review';
 
@@ -348,12 +348,6 @@ export const themeRoute = (theme?: string): Route => ({
   ...(theme ? { theme } : {}),
 });
 
-/** The view before the first stage, where its way back leads: the opening. */
-export const BEFORE_STAGES: { route: Route; label: string } = {
-  route: { section: 'opening' },
-  label: msg('Opening'),
-};
-
 /**
  * The address of the page of the work a draft names: the address it keeps since #1403, or the id
  * of a page of the Colors section a draft saved before carries (OLD_VIEWS: its address, which the
@@ -380,33 +374,4 @@ export function placeOf(route: Route): Place | undefined {
   // a stage at any of its addresses: Themes on any theme (#1404)
   const index = STAGES.findIndex((stage) => stage.route.section === route.section);
   return index < 0 ? undefined : { stage: STAGES[index], index, place: 'stage' };
-}
-
-/** A view the way back or the way forward of a stage opens: its page, and its name. */
-export interface StageLink {
-  route: Route;
-  /** The name of the view, in English (msg), translated where it is drawn. */
-  label: string;
-  /** The number of the stage it opens, for a stage of the four. */
-  number?: number;
-}
-
-const linkTo = (index: number): StageLink => {
-  const stage = STAGES[index];
-  return {
-    route: stage.route,
-    label: stage.label,
-    number: stage.numbered ? index + 1 : undefined,
-  };
-};
-
-/**
- * The views before and after a stage: the stage before it, or the view before the stages; the
- * stage after it, or none after the last, whose way forward is the exit.
- */
-export function aroundStage(index: number): { before: StageLink; after?: StageLink } {
-  return {
-    before: index > 0 ? linkTo(index - 1) : { ...BEFORE_STAGES },
-    after: index < STAGES.length - 1 ? linkTo(index + 1) : undefined,
-  };
 }

@@ -1,4 +1,3 @@
-import type { ComponentChild } from 'preact';
 import { msg, useT } from '../../shared/i18n/i18n.js';
 import { IT_EXCEPTIONS } from './i18n-it.js';
 
@@ -9,17 +8,16 @@ import { IT_EXCEPTIONS } from './i18n-it.js';
   track, the frame of the fields) are roles of Magma 3 (`transparent`, `fieldRoles` of
   semantic.config.ts on the branch 1292-magma-3), and its candidates need an engine that generates
   and measures them; the model puts the exceptions after the first release too (section 1).
-  Written in the classes of Magma (src/tailwind.css): the page needs no sheet of its own. The foot
-  of the stage (app/stages.tsx) is handed in by the shell, at the end of the region that scrolls.
+  Written in the classes of Magma (src/tailwind.css): the page needs no sheet of its own.
 */
 
 /** The translator of the page: its own Italian (i18n-it.ts), then the studio's. */
 const useExceptionsT = () => useT(IT_EXCEPTIONS);
 
-/** The name of the stage, the one the stepper shows (shared/routes/routes.ts, STAGES). */
+/** The name of the stage, as the strip of the stages shows it (shared/routes/routes.ts). */
 const TITLE = msg('Exceptions');
 
-export function ExceptionsPage({ foot }: { foot?: ComponentChild }) {
+export function ExceptionsPage() {
   const t = useExceptionsT();
   return (
     <main class="relative grid min-h-0 flex-1 content-start gap-between-sections overflow-y-auto px-(--magma-width-page-gutter) py-between-sections">
@@ -38,7 +36,6 @@ export function ExceptionsPage({ foot }: { foot?: ComponentChild }) {
           'This stage comes after Magma 3: its functions, the band, the track and the frame of the fields, are roles of Magma 3, and their weights enter the preset with them. Then it holds the functions, the components that adopt them, their candidates and the weight they share with Weights. Until then, go on to the full review.',
         )}
       </mds-banner>
-      {foot}
     </main>
   );
 }

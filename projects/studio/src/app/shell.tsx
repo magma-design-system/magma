@@ -29,7 +29,7 @@ import { checkSource } from '../state/work.js';
 import { LANGS, LangProvider, plural, useLang, useT } from '../shared/i18n/i18n.js';
 import type { BrokenTheme } from '../engine/gate.js';
 import { createRouter, type Router } from './router.js';
-import { StageBar, StageFoot } from './stages.js';
+import { StageTabs } from './stages.js';
 import {
   BEHAVIOR_PAGES,
   HOME,
@@ -99,8 +99,6 @@ export function Studio({ state, router }: StudioProps = {}) {
   useEffect(() => {
     if (placeOf(route)) studio.workPlace.value = hrefOf(route);
   }, [hrefOf(route)]);
-  // the foot of a stage, handed to its page (stages.tsx); none on a page that is no stage
-  const foot = placeOf(route)?.place === 'stage' ? <StageFoot route={route} /> : undefined;
 
   return (
     <LangProvider value={lang}>
@@ -109,12 +107,13 @@ export function Studio({ state, router }: StudioProps = {}) {
             work, the column of a page on the introduction */}
         <div class="studio" data-box={route.section === 'introduction' ? 'page' : 'workspace'}>
           <StudioBar route={route} />
-          {/* the stages in order, on a stage and on a page beside one (stages.tsx) */}
-          <StageBar route={route} onOpen={(next) => nav.navigate(next)} />
           <WorkNotices />
+          {/* the strip of the stages, on a stage and on a page beside one, right above it
+              (stages.tsx): nothing stands between the strip and the stage it opens */}
+          <StageTabs route={route} />
           {route.section === 'colours' && (
             <div class="studio-section">
-              <ColoursPage foot={foot} />
+              <ColoursPage />
             </div>
           )}
           {route.section === 'scale' && (
@@ -129,14 +128,13 @@ export function Studio({ state, router }: StudioProps = {}) {
           )}
           {route.section === 'weights' && (
             <div class="studio-section">
-              <WeightsPage foot={foot} />
+              <WeightsPage />
             </div>
           )}
           {route.section === 'themes' && (
             <div class="studio-section">
               <ThemesPage
                 theme={route.theme}
-                foot={foot}
                 onTheme={(theme) => nav.navigate(themeRoute(theme || undefined), { replace: true })}
               />
             </div>
@@ -146,12 +144,11 @@ export function Studio({ state, router }: StudioProps = {}) {
               <FullReviewPage
                 theme={route.theme}
                 mode={route.mode}
-                foot={foot}
                 onItem={(theme, mode) => nav.navigate(reviewRoute(theme, mode), { replace: true })}
               />
             </div>
           )}
-          {route.section === 'exceptions' && <ExceptionsPage foot={foot} />}
+          {route.section === 'exceptions' && <ExceptionsPage />}
           {route.section === 'introduction' && <IntroductionPage />}
           {route.section === 'opening' && <OpeningPage onOpen={(next) => nav.navigate(next)} />}
           {route.section === 'theme' && (
@@ -200,7 +197,9 @@ function PendingExport({ onReview }: { onReview: () => void }) {
  * What keeps the preset from loading or saving, over every page (#1403: from the head of the pages
  * of Colors, which every page did not have): the error of a preset that did not load; a draft with
  * edits of its own over a source that changed, which asks which to keep; the reason the command
- * refuses saves. A region of the page under the bar and the stages, at the width of a text.
+ * refuses saves. A region of the page under the bar and above the strip of the stages, at the
+ * width of a text: the notices are the preset's, and nothing stands between the strip and its
+ * stage.
  */
 function WorkNotices() {
   const studio = useStudio();
@@ -430,10 +429,11 @@ const behaviorRoute = (page: BehaviorPage): Route => ({ section: 'behavior', pag
  * The bar of the studio (#1402): the product, then what is outside the stages (the Theme section
  * and the rules, where #1401 left them), then the work, always in view: the changes since the last
  * exit (changes.tsx) and the exit, a split button that saves or downloads the preset in one click,
- * the other formats in its menu (config-menu.tsx). The stages are not in it: they stand under it
- * (stages.tsx, the pattern stages-in-order of the layer of the studio). Chosen on its render
- * (vittorio, 2026-11-27, option A). The menu at the end, at every width, holds the preferences of
- * the person; on a narrow window, where the bar hides the rest, it holds that first.
+ * the other formats in its menu (config-menu.tsx). The stages are not in it: their strip stands
+ * under it (stages.tsx, the pattern stages-in-order of the layer of the studio). Chosen on its
+ * render (vittorio, 2026-11-27, option A). The menu at the end, at every width, holds the
+ * preferences of the person; on a narrow window, where the bar hides the rest, it holds that
+ * first.
  */
 function StudioBar({ route }: { route: Route }) {
   const studio = useStudio();

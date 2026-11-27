@@ -2,7 +2,7 @@
   The Italian of the introduction (introduction.tsx, demo.ts; the Start page until #1402), by the
   English text it translates: the page hands it to the translator, which looks here before the
   catalogue of the studio (shared/i18n/i18n-it.ts); the names of the stages are there, with the
-  stepper. A key lives in one part only (test/i18n.test.mts).
+  strip of the stages. A key lives in one part only (test/i18n.test.mts).
 */
 export const IT_INTRODUCTION: Record<string, string> = {
   'Themes in light and dark, or in one mode of your choice':

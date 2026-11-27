@@ -410,7 +410,7 @@ La barra dello studio porta sempre con sé:
 Costruita il 2026-11-27 (persona, sui render): le modifiche sono un pulsante con il loro numero,
 che le apre per passo, ognuna con il prima e il dopo; l'uscita è uno split button che salva o
 scarica il preset, con gli altri formati nel suo menu. I passi non stanno nella barra ma sotto,
-in una barra dei passi (sezione 8, "Passi in ordine").
+in una striscia di link, subito sopra il passo (sezione 8, "Passi in ordine").
 
 ### Introduzione
 
@@ -651,10 +651,16 @@ principio.
   non ha un pattern dei passi ordinati.
 - **Effetto**: senza una regola, l'ordine non si vede o si impone con un meccanismo inventato.
 - **Risoluzione** (persona): **decide il prodotto**, nel layer dello studio
-  (`/magma:pattern-layer`). Scritta il 2026-11-27 in
-  [`magma/patterns/stages-in-order.md`](magma/patterns/stages-in-order.md), sui render: i passi
-  sotto la barra in un `mds-stepper-bar`, il corrente segnato, quelli prima fatti; in fondo a ogni
-  passo il passo prima e il passo dopo, l'ultimo con l'uscita. (persona)
+  (`/magma:pattern-layer`), in
+  [`magma/patterns/stages-in-order.md`](magma/patterns/stages-in-order.md). Scritta il 2026-11-27
+  sui render con un `mds-stepper-bar` sotto la barra e, in fondo a ogni passo, il passo prima e
+  il passo dopo; cambiata lo stesso giorno (#1595): uno stepper è un wizard, un compito fatto una
+  volta in ordine, e lo studio è uno strumento a cui si torna, avanti e indietro tra i passi, come
+  tra le parti di un record (`record-detail`; la ricerca dell'epic #1579). I passi sono una
+  striscia di link (`mds-tab`, `href` su ogni elemento, l'indirizzo tiene il passo) sotto la
+  barra, allineata col titolo della pagina, subito sopra il passo; ogni passo con la sua icona e
+  il suo nome, senza numero; il passo aperto selezionato, ogni passo a un clic. Nessuno stato per passo (fatto, modificato, da fare: servirebbe una task
+  list, che Magma non ha) e nessun piede: l'uscita sta nella barra. (persona)
 
 ### Spazio di lavoro
 
@@ -869,3 +875,14 @@ confondersi con le eccezioni dei componenti.)
   Scala e Giro completo ritoccate, Gruppi nuova al posto di Gruppo (5); Gruppi nel design system,
   su `list-with-filters` (7); le domande 10 e 11 chiuse (10). Partenza, Pesi, Temi ed Eccezioni
   non cambiano. Nessun conflitto nuovo con il design system.
+
+### 2026-11-27: i passi sono una striscia di link
+
+- **Richiesta** (persona, sulla ricerca dell'epic #1579): i passi di uno strumento usato nel tempo
+  non sono uno stepper, che è un wizard per un compito fatto una volta, ma `mds-tab` con `href` su
+  ogni elemento, come le parti di un record in `record-detail`.
+- **Le risposte nuove** (persona, sui render di #1595): nessuno stato per passo, la striscia e non
+  una task list; nessun piede con il passo prima e il passo dopo, perché la striscia apre ogni
+  passo e l'uscita sta nella barra; in ogni tab un'icona al posto del numero.
+- **Cosa è cambiato**: la barra, che porta i passi sotto di sé in una striscia di link (5); la
+  risoluzione del conflitto "Passi in ordine" (8). Le viste e le entità non cambiano.

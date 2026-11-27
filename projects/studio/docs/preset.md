@@ -4,7 +4,7 @@ How a preset comes into the studio and goes out of it: the opening brings one in
 bar takes it out, from any page; the draft keeps the work over a reload.
 
 Addresses: none of their own. The opening is `#/opening`; the exit and its menu stand in the bar of
-every page ([The shell](shell.md)), and at the foot of the [full review](full-review.md).
+every page ([The shell](shell.md)), the [full review](full-review.md) included.
 
 The studio works with any configuration, not just the repo one. The opening brings one in
 (**Import a preset**, a `.magma-design-tokensrc.json` from disk; an error shows on the opening),

@@ -87,6 +87,9 @@ const pageHead = () => root.querySelector('mds-text[tag="h1"]')?.closest('header
 const magmaButton = (label: string) =>
   document.querySelector<HTMLElement>(`mds-button[label="${label}"]`)
 
+// Six studios in a row, each running the gate on the whole preset: 1 s here, 4.4 s on the runner of
+// #1598 and 5.6 s on the one of #1599, over the 5 s of Vitest, so the test gets the 30 s the slow
+// tests of the studio have (weights.test.mts, introduction.test.mts).
 test('the title of every stage carries the verdict of the gate on the configuration edited', async () => {
   for (const view of ['weights', 'themes', 'full-review']) {
     await openOn(config(), view)
@@ -99,7 +102,7 @@ test('the title of every stage carries the verdict of the gate on the configurat
     expect(label, view).toMatch(/^\d+ contrasts below target$/)
     render(null, root)
   }
-})
+}, 30_000)
 
 // #1402: the menu of Colors and its count of the pairs went with the stages; the verdict stays
 // beside the title of every stage, and the exit of the bar asks while the gate fails

@@ -45,8 +45,8 @@ holds; a decorative border has no floor. Beside, the scene of the product in the
 of a column for it (`--container-side`); narrower, it is not drawn, as in Weights. While the gate cannot measure the preset, the view says why
 instead.
 
-The exit stands at the foot of the full review, the way forward of the last stage
-(`src/app/stages.tsx`): while the check is red it asks first, as every way out of the studio does
+The exit is the one of the bar, as on every page: the full review has no foot (#1595, vittorio,
+2026-11-27). While the check is red it asks first, as every way out of the studio does
 (`gate-dialog.tsx`, confirm-action `ask-first-many`), and its **See every pair** leads back here. A
 link from a pair to the stage that changes it is not built: it is left to the pattern of the
 review checklist (#1490, vittorio, 2026-11-27). Built as Magma says today, record-detail with the

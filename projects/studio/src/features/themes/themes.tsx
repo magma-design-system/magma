@@ -1,4 +1,3 @@
-import type { ComponentChild } from 'preact';
 import { useMemo, useRef, useState } from 'preact/hooks';
 import type { ColorMode } from '@maggioli-design-system/design-tokens/src/lib/theme-manifest.mjs';
 import { semantic } from '@maggioli-design-system/design-tokens/semantic.config';
@@ -72,12 +71,10 @@ const keyOf = (row: ThemeRow): string => (row.nameProblem ? row.family : row.nam
 
 export function ThemesPage({
   theme: asked,
-  foot,
   onTheme,
 }: {
   /** The theme the address names, by its name (or its family), else the base. */
   theme?: string;
-  foot?: ComponentChild;
   /** The address of the theme at the centre changed (a new name): written in place. */
   onTheme: (theme: string) => void;
 }) {
@@ -249,7 +246,6 @@ export function ThemesPage({
               </div>
             </div>
           )}
-          {foot && <div class="mt-between-sections">{foot}</div>}
         </main>
       </div>
     </div>

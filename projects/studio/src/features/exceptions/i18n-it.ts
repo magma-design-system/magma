@@ -1,8 +1,8 @@
 /*
   The Italian of the page of the stage of the exceptions (exceptions.tsx, #1402), by the English
   text it translates: the page hands it to the translator, which looks here before the catalogue
-  of the studio (shared/i18n/i18n-it.ts); the name of the stage is there, with the stepper. A key
-  lives in one part only (test/i18n.test.mts).
+  of the studio (shared/i18n/i18n-it.ts); the name of the stage is there, with the strip of the
+  stages. A key lives in one part only (test/i18n.test.mts).
 */
 export const IT_EXCEPTIONS: Record<string, string> = {
   'How a function shared by several components paints in every state, on every ground: the band of tabs and filters, the track of a quantity.':
