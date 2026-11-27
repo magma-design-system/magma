@@ -130,12 +130,16 @@ const studioPages = (base: string, only?: 'colors'): { label: string; url: strin
           { label: 'Introduction', route: HOME },
           { label: 'Opening', route: { section: 'opening' } as Route },
         ]),
-    // the stage Colours, the family at its centre (#1403): where a change of a colour shows first
+    // the stage Colours, the family at its centre (#1403): where a change of a colour shows first;
+    // then the stage Weights, the surfaces, borders and texts of a mode (#1403)
     { label: 'Colours', route: { section: 'colours' } as Route },
+    { label: 'Weights', route: { section: 'weights' } as Route },
     ...COLORS_PAGES.map((page) => ({
       label: `Colors / ${page.label}`,
       route: { section: 'colors', view: page.id } as Route,
     })),
+    // the view Groups, outside the stages: what the families inherit, the ramps of every group
+    { label: 'Groups', route: { section: 'groups' } as Route },
     // the stage with no page of Colors (#1402)
     ...(only ? [] : [{ label: 'Exceptions', route: { section: 'exceptions' } as Route }]),
     ...(only ? [] : [{ label: 'Theme', route: { section: 'theme' } as Route }]),
