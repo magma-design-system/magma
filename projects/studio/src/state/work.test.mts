@@ -11,6 +11,7 @@ import {
   saveConfig,
 } from './work.js'
 import { exitOf } from './exports.js'
+import { chromaticOrder } from '../engine/colour-order.js'
 import { bundledConfig, memoryStorage, quietStudio } from './testing.mjs'
 
 // Where the work comes from and where it goes (#1400): the start-up check of the draft against
@@ -129,6 +130,10 @@ test('a save writes the configuration to the file and makes it the source; a ref
     await saveConfig(studio)
     const put = asked.find(({ method }) => method === 'PUT')!
     expect(JSON.parse(put.body!)).toMatchObject({ smooth: true })
+    // the first save sorts the configuration once, and the work takes the order it went out in
+    const sorted = chromaticOrder(disk.colors).map((one) => one.name)
+    expect(JSON.parse(put.body!).colors.map((one: { name: string }) => one.name)).toEqual(sorted)
+    expect(studio.config.value.colors.map((one) => one.name)).toEqual(sorted)
     expect(studio.dirty.value).toBe(false)
     expect(studio.origin.value?.hash).toBe(hashText(studio.json.value))
     expect(studio.status.value).toEqual({ text: 'saved' })
