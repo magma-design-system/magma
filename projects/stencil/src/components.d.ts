@@ -80,7 +80,7 @@ import { StatusBarPositionType } from "./components/mds-status-bar/meta/types";
 import { StepperBarNavigationType } from "./components/mds-stepper-bar/meta/meta";
 import { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
 import { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
-import { DirectionType as DirectionType1 } from "./components/mds-tab/meta/type";
+import { DirectionType as DirectionType1, NarrowType } from "./components/mds-tab/meta/type";
 import { HorizontalActionsAnimationType } from "./type/animation";
 import { MdsTabEventDetail } from "./components/mds-tab/meta/event-detail";
 import { MdsTabBarEventDetail } from "./components/mds-tab-bar/meta/event-detail";
@@ -173,7 +173,7 @@ export { StatusBarPositionType } from "./components/mds-status-bar/meta/types";
 export { StepperBarNavigationType } from "./components/mds-stepper-bar/meta/meta";
 export { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
 export { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
-export { DirectionType as DirectionType1 } from "./components/mds-tab/meta/type";
+export { DirectionType as DirectionType1, NarrowType } from "./components/mds-tab/meta/type";
 export { HorizontalActionsAnimationType } from "./type/animation";
 export { MdsTabEventDetail } from "./components/mds-tab/meta/event-detail";
 export { MdsTabBarEventDetail } from "./components/mds-tab-bar/meta/event-detail";
@@ -3032,6 +3032,10 @@ export namespace Components {
      */
     interface MdsTab {
         /**
+          * The name assistive technology announces for the group of tabs: on the strip, when it is a tablist, and on the select that `narrow="select"` shows in its place, which has no other name. The page title or the heading above the tabs does not name them: write it here.
+         */
+        "accessibleName"?: string;
+        /**
           * Sets the animation type of the selection transition between `mds-tab-item` elements
           * @default 'slide'
          */
@@ -3045,6 +3049,11 @@ export namespace Components {
           * Sets if the tab area should fill the entire width
          */
         "fill"?: boolean;
+        /**
+          * What the strip does when its container is narrower than 768px (`--container-3xl`, the threshold under which `mds-header` shows its mobile menu): `scroll` keeps the row of tabs, which scrolls sideways; `select` shows the tabs as the options of a select in its place, the selected tab as its value, and choosing an option does what a click on its tab does. Use `select` for a long row, as the sections of a settings page. With `select` the component takes the width of its container, the width the threshold is measured on.
+          * @default 'scroll'
+         */
+        "narrow"?: NarrowType;
         /**
           * Sets if the tab area should show an inset shadow when the tabs overflows it's container
          */
@@ -8696,6 +8705,10 @@ declare namespace LocalJSX {
      */
     interface MdsTab {
         /**
+          * The name assistive technology announces for the group of tabs: on the strip, when it is a tablist, and on the select that `narrow="select"` shows in its place, which has no other name. The page title or the heading above the tabs does not name them: write it here.
+         */
+        "accessibleName"?: string;
+        /**
           * Sets the animation type of the selection transition between `mds-tab-item` elements
           * @default 'slide'
          */
@@ -8709,6 +8722,11 @@ declare namespace LocalJSX {
           * Sets if the tab area should fill the entire width
          */
         "fill"?: boolean;
+        /**
+          * What the strip does when its container is narrower than 768px (`--container-3xl`, the threshold under which `mds-header` shows its mobile menu): `scroll` keeps the row of tabs, which scrolls sideways; `select` shows the tabs as the options of a select in its place, the selected tab as its value, and choosing an option does what a click on its tab does. Use `select` for a long row, as the sections of a settings page. With `select` the component takes the width of its container, the width the threshold is measured on.
+          * @default 'scroll'
+         */
+        "narrow"?: NarrowType;
         /**
           * Emits when a children is changed
          */
@@ -9933,6 +9951,8 @@ declare namespace LocalJSX {
         "typography": TypographyType;
     }
     interface MdsTabAttributes {
+        "accessibleName": string;
+        "narrow": NarrowType;
         "direction": DirectionType;
         "scrollbar": boolean;
         "animation": HorizontalActionsAnimationType;

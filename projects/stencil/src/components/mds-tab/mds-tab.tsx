@@ -19,10 +19,23 @@ import clsx from 'clsx';
 import { cssDurationToMilliseconds } from '@common/unit';
 import { preferenceStore } from '@common/preference';
 import { TabSizeType } from '@type/button';
-import { DirectionType } from './meta/type';
+import { InputSizeType } from '@type/input';
+import { MdsInputSelectEventDetail } from '@component/mds-input-select/meta/event-detail';
+import { DirectionType, NarrowType } from './meta/type';
+
+/** An option of the select that `narrow="select"` shows in place of the strip: one per item. */
+interface NarrowOption {
+  disabled: boolean;
+  id: string;
+  label: string;
+}
+
+// the attributes of an item its option copies: a change of one rewrites the options
+const NARROW_OPTION_ATTRIBUTES = ['disabled', 'label', 'title', 'value'];
 
 /**
  * @part contents - Selects the container of the tabbed contents elements.
+ * @part select - Selects the `mds-input-select` shown in place of the strip on a narrow container, with `narrow="select"`.
  * @part slider - Selects the slider element which is visible when attribute `animation` is set to `slide`.
  * @part tabs - Selects the container of `mds-tab-item` list elements.
  * @slot content - Add `HTML elements` or `components`, one per mds-tab-item added; or none, when the
@@ -44,6 +57,8 @@ export class MdsTab {
   private tabs: HTMLElement;
   private tabsContainer: HTMLElement;
   private observer?: ResizeObserver;
+  private itemObserver?: MutationObserver;
+  private selectEl?: HTMLMdsInputSelectElement;
   private tabItems: Array<HTMLMdsTabItemElement> = [];
   private contentItems: Array<HTMLElement> = [];
   private cssSlideDelayDuration: string;
@@ -58,6 +73,27 @@ export class MdsTab {
   /** every item is a link: the strip is a navigation, not a tablist */
   @State() navigation: boolean = false;
   @State() hasContent: boolean = false;
+  /** the items as the options of the select of narrow="select", in their order */
+  @State() narrowOptions: Array<NarrowOption> = [];
+  /** the id of the selected item, the value of that select; none while no item is selected */
+  @State() selectedId?: string;
+
+  /**
+   * The name assistive technology announces for the group of tabs: on the strip, when it is a
+   * tablist, and on the select that `narrow="select"` shows in its place, which has no other
+   * name. The page title or the heading above the tabs does not name them: write it here.
+   */
+  @Prop({ attribute: 'aria-label' }) readonly accessibleName?: string;
+
+  /**
+   * What the strip does when its container is narrower than 768px (`--container-3xl`, the
+   * threshold under which `mds-header` shows its mobile menu): `scroll` keeps the row of tabs,
+   * which scrolls sideways; `select` shows the tabs as the options of a select in its place, the
+   * selected tab as its value, and choosing an option does what a click on its tab does. Use
+   * `select` for a long row, as the sections of a settings page. With `select` the component
+   * takes the width of its container, the width the threshold is measured on.
+   */
+  @Prop({ reflect: true }) readonly narrow?: NarrowType = 'scroll';
 
   /**
    * Sets if the component distributes item vertically or horzontally
@@ -107,10 +143,13 @@ export class MdsTab {
   // and componentDidLoad starts it
   connectedCallback(): void {
     this.initOverflowCheck();
+    this.observeItems();
   }
 
   disconnectedCallback(): void {
     this.unsetOverflowCheck();
+    this.itemObserver?.disconnect();
+    this.itemObserver = undefined;
   }
 
   componentDidLoad(): void {
@@ -169,7 +208,65 @@ export class MdsTab {
         this.currentItemEl = this.tabItems[this.currentItemIndex];
       }
     });
+    this.selectedId = this.currentItemIndex >= 0 ? this.currentItemEl.id : undefined;
+    this.updateNarrowOptions();
+    this.observeItems();
   };
+
+  /**
+   * The options of the select of `narrow="select"`, one per item: its label, else its title (the
+   * name of an item with an icon alone), else its value. An option shows no icon.
+   */
+  private updateNarrowOptions = (): void => {
+    this.narrowOptions = this.tabItems.map((item) => ({
+      disabled: !!item.disabled,
+      id: item.id,
+      label: item.label || item.title || item.value || '',
+    }));
+  };
+
+  /**
+   * The select copies the label and the state of every item: with `narrow="select"`, a change of
+   * one after the load rewrites the options. Only the items are watched, and only those
+   * attributes; the selection reaches the strip through the event of the item.
+   */
+  private observeItems = (): void => {
+    this.itemObserver?.disconnect();
+    if (this.narrow !== 'select' || typeof MutationObserver === 'undefined') {
+      this.itemObserver = undefined;
+      return;
+    }
+    this.itemObserver ??= new MutationObserver(this.updateNarrowOptions);
+    this.tabItems.forEach((item) =>
+      this.itemObserver?.observe(item, {
+        attributeFilter: NARROW_OPTION_ATTRIBUTES,
+        attributes: true,
+      }),
+    );
+  };
+
+  /**
+   * An option chosen does what a click on its tab does, on the same path: a tab selects its
+   * panel and the strip emits `mdsTabChange`, a link is followed, through the router registered
+   * with `NavigationService` when there is one, and a click listener on the item can still
+   * cancel it. The change of the select is a part of the strip: the page hears `mdsTabChange`.
+   */
+  private selectFromOption = (event: CustomEvent<MdsInputSelectEventDetail>): void => {
+    event.stopPropagation();
+    const item = this.tabItems.find((tab) => tab.id === event.detail.value);
+    if (item != null && item !== this.currentItemEl && !item.disabled) {
+      item.shadowRoot?.querySelector<HTMLMdsButtonElement>('mds-button')?.click();
+    }
+    // an option that selected no tab (the empty one, shown while none is selected) leaves the
+    // select on the tab that is
+    if (this.selectEl != null && (this.selectEl.value ?? '') !== (this.selectedId ?? '')) {
+      this.selectEl.value = this.selectedId ?? '';
+    }
+  };
+
+  // the size of the field, from the height of the strip it takes the place of: a strip md is
+  // 52px (an item of 36px and its padding), the field lg 48px; a strip sm 44px, the field md 36px
+  private narrowSelectSize = (): InputSizeType => (this.size === 'sm' ? 'md' : 'lg');
 
   private updateTabItems = (): void => {
     this.setTabsItems();
@@ -275,7 +372,9 @@ export class MdsTab {
   @Listen('mdsTabItemSelect')
   changeEventHandler(event: CustomEvent<MdsTabItemEventDetail>): void {
     // the focus goes back to the selected item only when it was in the strip: an item selected
-    // from code, while the user is elsewhere, does not pull the focus away (#341)
+    // from code, while the user is elsewhere, does not pull the focus away (#341). An option
+    // chosen in the select of narrow="select" leaves it on the select: the strip is hidden then,
+    // and an item that is not drawn takes no focus
     const focused = this.element.matches(':focus-within');
     // since the external developer can define a custom id
     // we must find the key from event.detail
@@ -284,6 +383,7 @@ export class MdsTab {
         this.changedEvent.emit({ id: key, value: item.value });
         this.currentItemIndex = key;
         this.currentItemEl = this.tabItems[this.currentItemIndex];
+        this.selectedId = item.id;
         this.scrollTabs(key);
         item.selected = true;
         // for some reason, mds-tab-item looses focus when we click Enter with the keyboard,
@@ -350,6 +450,11 @@ export class MdsTab {
     if (newValue) this.updateOverflowState();
   }
 
+  @Watch('narrow')
+  handleNarrowChange(): void {
+    this.observeItems();
+  }
+
   @Watch('size')
   handleSizeChange(newValue?: TabSizeType): void {
     this.tabItems.forEach((element: HTMLMdsTabItemElement) => {
@@ -365,6 +470,32 @@ export class MdsTab {
         pref-mode={preferenceStore.state.mode}
         pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
+        {this.narrow === 'select' && (
+          <mds-input-select
+            aria-label={this.accessibleName}
+            class="select"
+            onMdsInputSelectChange={this.selectFromOption}
+            part="select"
+            ref={(el) => (this.selectEl = el)}
+            size={this.narrowSelectSize()}
+            value={this.selectedId ?? ''}
+          >
+            {/* while no tab is selected the field is empty, as the strip shows none: an empty
+                option first, hidden from the list, which the select falls on */}
+            {this.selectedId === undefined && <option hidden key="none" value=""></option>}
+            {this.narrowOptions.map((option) => (
+              // the select copies its options when they are added: an option whose label or
+              // state changes is a new one, so the copy follows
+              <option
+                disabled={option.disabled}
+                key={`${option.id}|${option.label}|${option.disabled}`}
+                value={option.id}
+              >
+                {option.label}
+              </option>
+            ))}
+          </mds-input-select>
+        )}
         <div
           class={clsx(
             'tabs-wrapper',
@@ -388,7 +519,12 @@ export class MdsTab {
               )}
             ></div>
           )}
-          <div class="tabs" part="tabs" role={this.navigation ? undefined : 'tablist'}>
+          <div
+            aria-label={this.navigation ? undefined : this.accessibleName}
+            class="tabs"
+            part="tabs"
+            role={this.navigation ? undefined : 'tablist'}
+          >
             <slot />
             {this.animation === 'slide' && (
               <div

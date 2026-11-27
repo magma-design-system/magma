@@ -398,6 +398,10 @@ Type: `Promise<void>`
 
 ## Dependencies
 
+### Used by
+
+ - [mds-tab](../mds-tab)
+
 ### Depends on
 
 - [mds-icon](../mds-icon)
@@ -411,6 +415,7 @@ graph TD;
   mds-input-select --> mds-input-tip
   mds-input-select --> mds-input-tip-item
   mds-input-tip-item --> mds-text
+  mds-tab --> mds-input-select
   style mds-input-select fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
