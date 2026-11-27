@@ -14,9 +14,11 @@ import { COLORSPACES } from '@maggioli-design-system/design-tokens/src/lib/schem
 import iconOk from '@material-icons/svg/svg/check_circle/baseline.svg?raw';
 import iconWarning from '@material-icons/svg/svg/warning/baseline.svg?raw';
 import iconError from '@material-icons/svg/svg/cancel/baseline.svg?raw';
-import { generateScales, singleColorConfig } from './engine/generator.js';
-import type { FieldVariant } from './shared/magma/magma.js';
-import type { T } from './shared/i18n/i18n.js';
+import { generateScales, singleColorConfig } from './generator.js';
+import type { T } from '../shared/i18n/text.js';
+
+/** How a field stands, as mds-input-field takes it (its `variant`). */
+type FieldVariant = 'error' | 'warning' | 'success';
 
 /*
   How the colorspace of a family holds its seed, said in the message of its Colorspace field
