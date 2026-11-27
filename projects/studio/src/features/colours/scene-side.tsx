@@ -244,7 +244,7 @@ export function SceneSide({
       <div
         class="hidden flex-wrap items-center justify-between gap-inline @side/family:flex"
         role="toolbar"
-        aria-label={t('The side of the Palette')}
+        aria-label={t('The side of the family')}
       >
         <mds-tab
           aria-label={t('Show')}

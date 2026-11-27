@@ -47,7 +47,7 @@ const show = (family: string) => {
 const side = () => within(root).getByRole('complementary', { name: 'The family, as ramps or as a theme' })
 /** The filters of the side: the tabs of Magma in its toolbar, what it shows and in which mode. */
 const filters = () => [
-  ...within(side()).getByRole('toolbar', { name: 'The side of the Palette' }).querySelectorAll('mds-tab'),
+  ...within(side()).getByRole('toolbar', { name: 'The side of the family' }).querySelectorAll('mds-tab'),
 ]
 const choose = (filter: Element, value: string) =>
   filter.dispatchEvent(new CustomEvent('mdsTabChange', { detail: { id: 0, value }, bubbles: true }))

@@ -199,7 +199,7 @@ export function ThemesManager({
       <mds-text typography="detail" tag="p" class="themes-muted">
         {rich(
           t,
-          "Each family opted into a surface (Semantic surface), whatever its group, is a theme with a name of its own, except the status ones, which would mix with the messages they colour: {base}, drawn from {tint}, is the base {root}, and every other one switches in via {attribute}, repointing the whole {block} block (surface + border + text) to its family. The names of the themes Magma ships are reserved. An accent is a role that points at a {variant}; a theme may repoint it - pick a variant per role below and the accent retints with the theme. Any tint works; text comes from the family's own scale.",
+          "Each family that generates surfaces (its switch in Colours, or its group's in Groups), whatever its group, is a theme with a name of its own, except the status ones, which would mix with the messages they colour: {base}, drawn from {tint}, is the base {root}, and every other one switches in via {attribute}, repointing the whole {block} block (surface + border + text) to its family. The names of the themes Magma ships are reserved. An accent is a role that points at a {variant}; a theme may repoint it - pick a variant per role below and the accent retints with the theme. Any tint works; text comes from the family's own scale.",
           {
             base: <code>{nameOf(semantic.tint)}</code>,
             tint: <code>{semantic.tint}</code>,
@@ -214,7 +214,7 @@ export function ThemesManager({
       {extras.length === 0 && (
         <mds-text typography="detail" tag="p" class="themes-muted">
           {t(
-            'Only the base theme so far: opt another family into a surface (Semantic surface) and it appears here as a theme.',
+            'Only the base theme so far: turn on Generate surfaces for another family, in Colours, and it appears here as a theme.',
           )}
         </mds-text>
       )}

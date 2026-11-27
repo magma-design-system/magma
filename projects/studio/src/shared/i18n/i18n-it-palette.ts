@@ -175,7 +175,7 @@ export const IT_PALETTE: Record<string, string> = {
   Ramps: 'Rampe',
   Show: 'Mostra',
   'The family, as ramps or as a theme': 'La famiglia, come rampe o come tema',
-  'The side of the Palette': 'Il pannello laterale della Palette',
+  'The side of the family': 'Il pannello laterale della famiglia',
   'The theme {theme} on a page of a product': 'Il tema {theme} su una pagina di un prodotto',
   '{list} and {last}': '{list} e {last}',
   '{name} is the family of the theme {theme}, whose surfaces are the whole page':

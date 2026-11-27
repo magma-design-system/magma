@@ -128,7 +128,7 @@
   justify-self: stretch;
 }
 
-/* the two modes, each the canvas of Semantic surface (SurfaceCanvas) with the accents of the
+/* the two modes, each the canvas of the surfaces (SurfaceCanvas) with the accents of the
    theme under it: side by side once each has 20rem (2 x 20rem and the gap between them, inline,
    300 = 0.75rem, rounded up), one under the other in a narrower card */
 

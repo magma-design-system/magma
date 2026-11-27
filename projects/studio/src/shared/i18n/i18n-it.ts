@@ -97,7 +97,7 @@ export const IT_SHELL: Record<string, string> = {
   'The engine makes a group by this name from the families: choose another.':
     'Il motore crea un gruppo con questo nome dalle famiglie: scegline un altro.',
   'The group variant holds references alone.': 'Il gruppo variant contiene solo riferimenti.',
-  // the indicators of the play of the introduction, a column of Semantic surface
+  // the indicators of the play of the introduction, and the group of the texts of Weights
   Texts: 'Testi',
   'Save the preset': 'Salva il preset',
   'Download the preset': 'Scarica il preset',
