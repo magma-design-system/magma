@@ -4,8 +4,9 @@
  * elevation role is paper in both modes (SEMANTIC_COLOR_SPEC 10 and 15).
  * In the roles of mds-button-variant.css.
  *
- * Both keep the wash of weak on hover: the current button, halfway between rest and hover,
- * keeps it too, and its bold label marks it (#1264). */
+ * Light keeps its area on hover, weak and strong: the current button keeps it too, and its bold
+ * label marks it (#1264). Dark weak rests on the base wash and goes to the strong one on hover,
+ * with no ring of its own; the current one takes the selected wash between them (#1427). */
 
 :host([variant='light']) {
   --private-button-fill: var(--tone-neutral-seed);
@@ -17,23 +18,27 @@
   --private-button-ink-hover: var(--magma-text-default);
   --private-button-outline: var(--magma-text-on-emphasis);
   --private-button-outline-ink: var(--private-button-outline);
+  --private-button-outline-ink-hover: var(--private-button-outline);
   --private-button-text-ink: var(--private-button-outline);
   --private-button-text-ink-hover: var(--magma-on-inverse);
   --private-button-text-wash: var(--magma-surface-inverse-muted);
+  --private-button-fill-current: var(--private-button-fill);
   --private-button-current-wash: var(--private-button-wash);
+  --private-button-text-current-wash: var(--private-button-text-wash);
 }
 
 :host([variant='dark']) {
   --private-button-fill: var(--magma-surface-inverse);
   --private-button-fill-hover: var(--magma-surface-inverse-muted);
+  --private-button-fill-current: var(--magma-surface-inverse-selected);
   --private-button-on-fill: var(--magma-on-inverse);
-  --private-button-wash: var(--magma-wash-strong);
-  --private-button-wash-hover: var(--private-button-wash);
-  --private-button-wash-hover-ring: var(--magma-border-strong);
+  --private-button-wash: var(--magma-wash-base);
+  --private-button-wash-hover: var(--magma-wash-strong);
   --private-button-ink: var(--magma-text-default);
   --private-button-outline-ink: var(--magma-text-muted);
   --private-button-text-ink: var(--private-button-ink);
   --private-button-text-ink-hover: var(--private-button-ink);
   --private-button-text-wash: var(--magma-wash-soft);
-  --private-button-current-wash: var(--private-button-wash);
+  --private-button-current-wash: var(--magma-wash-selected);
+  --private-button-text-current-wash: var(--magma-wash-soft-selected);
 }

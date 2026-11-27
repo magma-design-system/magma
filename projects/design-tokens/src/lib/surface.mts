@@ -134,6 +134,34 @@ function familyOf(colorItem: ColorConfig): string {
   return colorItem.name.split(".")[1];
 }
 
+/**
+ * The surface levels the page of a family is placed on: its own when it opts into surfaces with
+ * an object, else the global `theme.surfaces`. A family with no surface opt-in (an accent, #1427)
+ * still has a page: the global one, the page its washes and its text sit on.
+ */
+export function familySurfaceLevels(
+  config: MagmaConfig,
+  colorItem: ColorConfig,
+): ModeLevels<SurfaceRole> | undefined {
+  if (config.theme === undefined) return undefined;
+  return resolveLevels(resolveSurfaceOptIn(config, colorItem), config.theme.surfaces, "surfaces");
+}
+
+/**
+ * The surfaces of a family placed by lightness from its key colour, in both modes, whether or not
+ * the family publishes them: the text-role engine solves the text of an accent against them, as it
+ * does for a family that publishes its own (#1427).
+ */
+export function familySurfaces(
+  keyColor: string,
+  levels: ModeLevels<SurfaceRole>,
+): ColorTokenSet {
+  return {
+    light: buildRoleSet(keyColor, SURFACE_ROLES, levels.light),
+    dark: buildRoleSet(keyColor, SURFACE_ROLES, levels.dark),
+  };
+}
+
 function resolveLevels<Role extends string>(
   optIn: SurfaceOptIn | undefined,
   global: ModeLevels<Role>,

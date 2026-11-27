@@ -9,11 +9,12 @@ const inject = async (css: string): Promise<string> =>
   ))!.code;
 
 describe('tokenFallbackPlugin', () => {
+  // the token behind the accent fill is the emphasis band generated for its family (#1427)
   it('falls back from a semantic role to the design token behind it, then to its value', async () => {
     const css = await inject('a{color:rgb(var(--magma-accent-emphasis))}');
 
     expect(css).toMatch(
-      /^a\{color:rgb\(var\(--magma-accent-emphasis, var\(--variant-primary-\d+, \d+ \d+ \d+\)\)\)\}$/,
+      /^a\{color:rgb\(var\(--magma-accent-emphasis, var\(--emphasis-primary-default, \d+ \d+ \d+\)\)\)\}$/,
     );
   });
 
@@ -29,7 +30,9 @@ describe('tokenFallbackPlugin', () => {
   it('keeps the tint a stylesheet reads itself', async () => {
     const css = await inject('a{color:rgb(var(--magma-tint-accent-emphasis))}');
 
-    expect(css).toMatch(/^a\{color:rgb\(var\(--magma-tint-accent-emphasis, var\(--variant-/);
+    expect(css).toMatch(
+      /^a\{color:rgb\(var\(--magma-tint-accent-emphasis, var\(--emphasis-primary-/,
+    );
   });
 
   it('resolves a global token to the value globals.css declares', async () => {

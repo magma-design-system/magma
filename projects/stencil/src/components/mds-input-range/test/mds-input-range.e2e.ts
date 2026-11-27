@@ -199,7 +199,10 @@ describe('the thumb in dark', () => {
   const contrast = (a: number, b: number): number =>
     (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
 
-  it('stands out on the progress and its ring, and on the empty track', async () => {
+  // on the empty track the thumb is drawn by its ring, the colour of the progress, as in light:
+  // the track is a wash generated at the same distance from the page in both modes (#1427), and
+  // the fill of the thumb, the ink of the progress, is as dark as the page
+  it('stands out on the progress, and by its ring on the empty track', async () => {
     await inDark();
     const { root } = await render<HTMLMdsInputRangeElement>(
       '<mds-input-range value="18" min="14" max="24" step="2"></mds-input-range>',
@@ -212,7 +215,7 @@ describe('the thumb in dark', () => {
     const track = read('--mds-input-range-track-background');
 
     expect(contrast(thumb, progress)).toBeGreaterThanOrEqual(3);
-    expect(contrast(thumb, track)).toBeGreaterThanOrEqual(3);
+    expect(contrast(progress, track)).toBeGreaterThanOrEqual(3);
   });
 
   // one rule for a handle on an accent fill: the ink of the fill

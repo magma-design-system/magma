@@ -22,6 +22,7 @@ describe('mds-file-preview', () => {
     const shadow = root.shadowRoot!;
     expect(shadow.querySelector('.preview--icon mds-icon')).not.toBeNull();
     expect(shadow.querySelector('mds-text.file-name')).toEqualAttributes({
+      tag: 'span',
       truncate: 'word',
       typography: 'h6',
       variant: 'title',

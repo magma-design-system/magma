@@ -42,7 +42,11 @@ describe('the two themes of the products', () => {
     expect(editorial.get('--magma-tint-default')).toBe('var(--surface-bisque-default)')
     expect(editorial.get('--magma-tint-text-default')).toBe('var(--text-bisque-default)')
     expect(editorial.get('--magma-tint-scale-09')).toBe('var(--tone-bisque-09)')
-    expect(editorial.get('--magma-tint-accent-emphasis')).toBe('var(--variant-secondary-04)')
+    // the washes of its family, generated from its page (#1427)
+    expect(editorial.get('--magma-tint-wash-base')).toBe('var(--wash-bisque-base)')
+    expect(editorial.get('--magma-tint-inverse-selected')).toBe('var(--inverse-bisque-selected)')
+    expect(editorial.get('--magma-tint-accent-emphasis')).toBe('var(--emphasis-secondary-default)')
+    expect(editorial.get('--magma-tint-accent-surface')).toBe('var(--wash-secondary-base)')
     // the AI accent is not the brand's: editorial leaves it alone
     expect([...editorial.keys()].some((name) => name.startsWith('--magma-tint-accent-ai-'))).toBe(false)
   })
@@ -61,16 +65,16 @@ describe('the preview of each theme', () => {
   const previews = declarations(':root')
 
   test.each(model.themes.map(({ name }) => name))('%s publishes its wash and its accent on :root', (name) => {
-    expect(previews.get(`--magma-preview-${name}-wash`)).toMatch(/^var\(--tone-[a-z]+-09\)$/)
-    expect(previews.get(`--magma-preview-${name}-accent`)).toMatch(/^var\(--variant-[a-z]+-04\)$/)
+    expect(previews.get(`--magma-preview-${name}-wash`)).toMatch(/^var\(--wash-[a-z]+-base\)$/)
+    expect(previews.get(`--magma-preview-${name}-accent`)).toMatch(/^var\(--emphasis-[a-z]+-default\)$/)
   })
 
   test('a preview is what the roles resolve to under its theme', () => {
     const editorial = declarations(`:root${scope('editorial')}`)
-    expect(previews.get('--magma-preview-editorial-wash')).toBe(editorial.get('--magma-tint-scale-09'))
+    expect(previews.get('--magma-preview-editorial-wash')).toBe(editorial.get('--magma-tint-wash-base'))
     expect(previews.get('--magma-preview-editorial-accent')).toBe(editorial.get('--magma-tint-accent-emphasis'))
-    expect(previews.get('--magma-preview-business-wash')).toBe('var(--tone-neutral-09)')
-    expect(previews.get('--magma-preview-business-accent')).toBe('var(--variant-primary-04)')
+    expect(previews.get('--magma-preview-business-wash')).toBe('var(--wash-neutral-base)')
+    expect(previews.get('--magma-preview-business-accent')).toBe('var(--emphasis-primary-default)')
   })
 })
 

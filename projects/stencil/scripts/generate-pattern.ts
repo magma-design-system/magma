@@ -76,7 +76,7 @@ const existing = existsSync(file)
   : undefined;
 if (existing && existing.status !== 'candidate')
   fail(
-    `${relative(REPO, file)} exists, ${existing.status}: change it instead (/pattern-change ${id}).`,
+    `${relative(REPO, file)} exists, ${existing.status}: change it instead (/magma-dev:pattern-change ${id}).`,
   );
 const kind = option('kind') ?? existing?.kind ?? 'pattern';
 if (kind !== 'pattern' && kind !== BLOCK && kind !== DESIGN_LANGUAGE)

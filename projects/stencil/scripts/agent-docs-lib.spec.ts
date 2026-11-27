@@ -4,6 +4,7 @@ import {
   brokenLinks,
   COMPONENT_CATEGORIES,
   componentDocsJson,
+  magmaBlock,
   relativeLinks,
   renderComponentAgentsMd,
   renderUsageFile,
@@ -18,6 +19,7 @@ import {
   type DocsComponent,
   renderPatternCatalogue,
 } from './agent-docs-lib';
+import { hasMagmaBlock, MAGMA_BLOCK_END, MAGMA_BLOCK_START } from '../../lint/src/core/agents';
 
 const button: DocsComponent = {
   tag: 'mds-button',
@@ -472,5 +474,31 @@ describe('renderPatternCatalogue', () => {
     expect(text.indexOf('## Design language')).toBeLessThan(text.indexOf('## Building blocks'));
     expect(text.indexOf('## Building blocks')).toBeLessThan(text.indexOf('## Data'));
     expect(text.split('## Data')[1]).not.toContain('page-header');
+  });
+});
+
+describe('magmaBlock', () => {
+  const block = magmaBlock('@maggioli-design-system/magma-react');
+
+  it('sits between the markers a later install replaces', () => {
+    const lines = block.split('\n');
+    expect(lines[0]).toBe(MAGMA_BLOCK_START);
+    expect(lines.at(-1)).toBe(MAGMA_BLOCK_END);
+    expect(lines.filter((line) => line.startsWith('<!-- magma:'))).toHaveLength(2);
+    // check_setup of the MCP server finds it by the same markers
+    expect(hasMagmaBlock(`# The project\n\n${block}\n`)).toBe(true);
+  });
+
+  it('points at the guide of the package that wrote it, and at its plugin section', () => {
+    expect(block).toContain('`node_modules/@maggioli-design-system/magma-react/AGENTS.md`');
+    expect(block).toContain('"Using the components"');
+    // every line fits the width of the guides, the longest package name included
+    for (const line of magmaBlock('@maggioli-design-system/magma-angular').split('\n').slice(1, -1))
+      expect(line.length).toBeLessThanOrEqual(100);
+    expect(block).toContain('"Claude Code: the Magma plugin"');
+  });
+
+  it('is ASCII, as every shipped guide', () => {
+    expect(block).toMatch(/^[\x20-\x7e\n]*$/);
   });
 });

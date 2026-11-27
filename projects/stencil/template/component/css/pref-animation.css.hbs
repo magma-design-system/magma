@@ -1,0 +1,17 @@
+@import '../../../tailwind/pref-animation.css';
+
+/* Animation preference. The component mirrors the resolved mode from <html> onto its host as
+ * pref-animation (preferenceStore in @common/preference); these plain shadow selectors zero the
+ * private duration the base CSS reads. `reduce` always stops; `system` and no controller follow
+ * the OS via @media. */
+
+:host([pref-animation='reduce']) {
+  --private-{{short}}-transition-duration: 0s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :host([pref-animation='system']),
+  :host(:not([pref-animation])) {
+    --private-{{short}}-transition-duration: 0s;
+  }
+}

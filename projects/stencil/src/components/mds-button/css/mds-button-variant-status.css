@@ -1,5 +1,9 @@
-/* The status variants, in the roles of mds-button-variant.css. A hue says the selected area of
- * its wash by intensity, wash-soft, lighter than the wash-strong of its hover (#1269) */
+/* The status variants, in the roles of mds-button-variant.css. A hue says the selected areas by
+ * intensity: wash-selected between the wash-base of rest and the wash-strong of hover, and
+ * wash-soft-selected between no area and the wash-soft of the hover of text and outline (#1427).
+ * Weak writes with text-default at rest and on hover (ink-hover follows ink, the default of
+ * mds-button-variant.css), text and outline with text-muted at rest and text-default on hover and
+ * while active. */
 
 :host([variant='info']),
 :host([variant='success']),
@@ -12,51 +16,55 @@
 :host([variant='info']) {
   --private-button-fill: var(--magma-info-emphasis);
   --private-button-fill-hover: var(--magma-info-emphasis-hover);
+  --private-button-fill-current: var(--magma-info-emphasis-selected);
   --private-button-on-fill: var(--magma-info-on-emphasis);
   --private-button-wash: var(--magma-info-wash-base);
-  --private-button-current-wash: var(--magma-info-wash-soft);
+  --private-button-current-wash: var(--magma-info-wash-selected);
   --private-button-wash-hover: var(--magma-info-wash-strong);
-  --private-button-ink: var(--magma-info-text-subtle);
-  --private-button-ink-hover: var(--magma-info-text-default);
+  --private-button-ink: var(--magma-info-text-default);
   --private-button-text-ink: var(--magma-info-text-muted);
   --private-button-text-wash: var(--magma-info-wash-soft);
+  --private-button-text-current-wash: var(--magma-info-wash-soft-selected);
 }
 
 :host([variant='success']) {
   --private-button-fill: var(--magma-success-emphasis);
   --private-button-fill-hover: var(--magma-success-emphasis-hover);
+  --private-button-fill-current: var(--magma-success-emphasis-selected);
   --private-button-on-fill: var(--magma-success-on-emphasis);
   --private-button-wash: var(--magma-success-wash-base);
-  --private-button-current-wash: var(--magma-success-wash-soft);
+  --private-button-current-wash: var(--magma-success-wash-selected);
   --private-button-wash-hover: var(--magma-success-wash-strong);
-  --private-button-ink: var(--magma-success-text-subtle);
-  --private-button-ink-hover: var(--magma-success-text-default);
+  --private-button-ink: var(--magma-success-text-default);
   --private-button-text-ink: var(--magma-success-text-muted);
   --private-button-text-wash: var(--magma-success-wash-soft);
+  --private-button-text-current-wash: var(--magma-success-wash-soft-selected);
 }
 
 :host([variant='warning']) {
   --private-button-fill: var(--magma-warning-emphasis);
   --private-button-fill-hover: var(--magma-warning-emphasis-hover);
+  --private-button-fill-current: var(--magma-warning-emphasis-selected);
   --private-button-on-fill: var(--magma-warning-on-emphasis);
   --private-button-wash: var(--magma-warning-wash-base);
-  --private-button-current-wash: var(--magma-warning-wash-soft);
+  --private-button-current-wash: var(--magma-warning-wash-selected);
   --private-button-wash-hover: var(--magma-warning-wash-strong);
-  --private-button-ink: var(--magma-warning-text-subtle);
-  --private-button-ink-hover: var(--magma-warning-text-default);
+  --private-button-ink: var(--magma-warning-text-default);
   --private-button-text-ink: var(--magma-warning-text-muted);
   --private-button-text-wash: var(--magma-warning-wash-soft);
+  --private-button-text-current-wash: var(--magma-warning-wash-soft-selected);
 }
 
 :host([variant='error']) {
   --private-button-fill: var(--magma-danger-emphasis);
   --private-button-fill-hover: var(--magma-danger-emphasis-hover);
+  --private-button-fill-current: var(--magma-danger-emphasis-selected);
   --private-button-on-fill: var(--magma-danger-on-emphasis);
   --private-button-wash: var(--magma-danger-wash-base);
-  --private-button-current-wash: var(--magma-danger-wash-soft);
+  --private-button-current-wash: var(--magma-danger-wash-selected);
   --private-button-wash-hover: var(--magma-danger-wash-strong);
-  --private-button-ink: var(--magma-danger-text-subtle);
-  --private-button-ink-hover: var(--magma-danger-text-default);
+  --private-button-ink: var(--magma-danger-text-default);
   --private-button-text-ink: var(--magma-danger-text-muted);
   --private-button-text-wash: var(--magma-danger-wash-soft);
+  --private-button-text-current-wash: var(--magma-danger-wash-soft-selected);
 }

@@ -9,6 +9,11 @@ const cover = (width: number, height: number, fill = '#e8a33d'): string =>
     `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}"><rect width="100%" height="100%" fill="${fill}"/></svg>`,
   )}`;
 
+// an image that fails at once, in the browser alone: a path the test server does not have failed
+// too, but its 404 could arrive after the second vi.waitFor waits by default, with the browser
+// tests running side by side in CI (four times on 2026-11-26), and the tests failed by turns
+const broken = 'data:image/png;base64,AAAA';
+
 // the mark of a publisher, black on a transparent ground as a mark usually is
 const logo = `data:image/svg+xml,${encodeURIComponent(
   '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="30"><circle cx="20" cy="15" r="12" fill="black"/></svg>',
@@ -169,7 +174,7 @@ describe('mds-book', () => {
 
     it('draws the cover when the image fails to load, in the colour of a drawn cover', async () => {
       const { root } = await render(
-        `<mds-book src="/missing-cover.webp" name="Manuale" style="--mds-book-color: ${drawnColor}"></mds-book>`,
+        `<mds-book src="${broken}" name="Manuale" style="--mds-book-color: ${drawnColor}"></mds-book>`,
       );
 
       await vi.waitFor(() => expect(part(root, '.drawn-name')).toEqualText('Manuale'));
@@ -214,9 +219,7 @@ describe('mds-book', () => {
     });
 
     it('tries a new image again after a failed one', async () => {
-      const { root, waitForChanges } = await render(
-        '<mds-book src="/missing-cover.webp"></mds-book>',
-      );
+      const { root, waitForChanges } = await render(`<mds-book src="${broken}"></mds-book>`);
       await vi.waitFor(() => expect(part(root, 'img')).toBeNull());
 
       root.setAttribute('src', cover(170, 240));
@@ -419,7 +422,7 @@ describe('mds-book', () => {
 
     it('prints the name of the publisher when its mark does not load', async () => {
       const { root } = await render(
-        '<mds-book publisher="Maggioli Editore" publisher-logo="/missing-logo.svg"></mds-book>',
+        `<mds-book publisher="Maggioli Editore" publisher-logo="${broken}"></mds-book>`,
       );
 
       await vi.waitFor(() =>

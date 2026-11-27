@@ -7,6 +7,24 @@ describe('mds-policy-ai', () => {
     expect(root).toHaveAttribute('hydrated');
   });
 
+  describe('the icon variant', () => {
+    it('opens its URL in a new tab without access to the page', async () => {
+      const open = vi.spyOn(window, 'open').mockImplementation(() => null);
+      const { root } = await render(
+        '<mds-policy-ai variant="icon" href="https://example.com/policy"></mds-policy-ai>',
+      );
+
+      root.shadowRoot!.querySelector<HTMLElement>('.icon-help')!.click();
+
+      expect(open).toHaveBeenCalledWith(
+        'https://example.com/policy',
+        '_blank',
+        'noopener,noreferrer',
+      );
+      open.mockRestore();
+    });
+  });
+
   // #802: the chip part sat on the wrapper of the chip and of its dropdown
   describe('the chip variant', () => {
     it('puts the chip part on the mds-chip, and the chip-wrapper part on its wrapper', async () => {

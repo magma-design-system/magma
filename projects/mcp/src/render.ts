@@ -15,6 +15,10 @@
   domain, and another example of any (<id>.<n>.html, #1221), with the height of its page and
   the language of its words, so the check of the image runs on every preview.
 
+  A prototype of a component proposed to Magma (markup marked data-prototype="<tag>", #1492) is
+  no problem of the image: the answer names it in prototypes, so the agent says which part of
+  the image is a proposal, until the installed Magma has that component (./render-page.ts).
+
   The same render makes the images magma ships of its previews (#1243, renderPreviewImages):
   the build of magma renders every preview in the frame of PREVIEW_IMAGE of the core, light and
   dark, and fails on an image with a problem, so no image ships that the check did not pass.
@@ -49,7 +53,14 @@ import {
 } from './context.js';
 import { folderOf, slugFile } from './icons.js';
 import { ToolError, withImages, type Tool } from './protocol.js';
-import { inPage, PREVIEW_ID, type Inspection, type PageProblem, type Step } from './render-page.js';
+import {
+  inPage,
+  PREVIEW_ID,
+  type Inspection,
+  type PageProblem,
+  type Prototype,
+  type Step,
+} from './render-page.js';
 
 /** The origin the page is served from: `.invalid` never resolves (RFC 2606), https makes it a secure context. */
 const ORIGIN = 'https://preview.magma.invalid';
@@ -431,6 +442,8 @@ export interface Image {
   file: string;
   representative: boolean;
   problems: PageProblem[];
+  /** The markup that stands in for components proposed to Magma (data-prototype). */
+  prototypes: Prototype[];
 }
 
 /** How long a page may take to load and settle. */
@@ -477,7 +490,13 @@ const capture = async (
   width: number,
   options: Options,
   frame?: Frame,
-): Promise<{ png: Buffer; webp?: Buffer; height: number; problems: PageProblem[] }> => {
+): Promise<{
+  png: Buffer;
+  webp?: Buffer;
+  height: number;
+  problems: PageProblem[];
+  prototypes: Prototype[];
+}> => {
   const timeout = options.timeout ?? TIMEOUT;
   // no call to the page waits longer than the page may take to load
   const answer = <T>(call: Promise<T>, what: string) => within(call, timeout, what);
@@ -589,7 +608,13 @@ const capture = async (
       const key = JSON.stringify(one);
       return !seen.has(key) && seen.add(key);
     });
-    return { png, ...(webp ? { webp } : {}), height, problems: unique };
+    return {
+      png,
+      ...(webp ? { webp } : {}),
+      height,
+      problems: unique,
+      prototypes: inspection.prototypes,
+    };
   } finally {
     await session.close();
   }
@@ -656,12 +681,28 @@ export const render = async (
       const problems = [...untailwinded, ...captured.problems];
       const file = path.join(out, `${id}-${width}-${options.mode}.png`);
       writeFileSync(file, png);
-      images.push({ width, height, file, png, representative: !problems.length, problems });
+      images.push({
+        width,
+        height,
+        file,
+        png,
+        representative: !problems.length,
+        problems,
+        prototypes: captured.prototypes,
+      });
     }
     return images;
   } finally {
     await browser.close();
   }
+};
+
+/** The prototypes of the images, each once: the same markup at every width. */
+const prototypesOf = (images: Image[]): { prototypes?: Prototype[] } => {
+  const seen = new Map<string, Prototype>();
+  for (const one of images.flatMap((image) => image.prototypes))
+    seen.set(`${one.tag} ${one.element}`, one);
+  return seen.size ? { prototypes: [...seen.values()] } : {};
 };
 
 /** The image of a preview Magma ships in one mode, as WebP, and what is wrong in it. */
@@ -786,14 +827,14 @@ export const renderPreview = (context: ToolContext): Tool => ({
   name: 'render_preview',
   title: 'Render Magma markup as an image',
   description:
-    'Render HTML with Magma components on the magma installed in the project, offline, and get the image (to look at, and to show the person) with its file, and a report of what in it is not representative: a component unknown or not hydrated, an element with no size, a component that shows one flat colour, a console error, an icon, a font or an image that did not load, a word broken across lines, content cut. Instead of markup, pattern and case render the preview Magma ships for that case of a pattern (for a building block, case is the id of one of its situations), pattern and rule the preview of a rule of a domain of the design language, and example another example of either. Render each option before asking a person to decide on an interface. Needs playwright-core in the project and Chrome or Edge on the machine; writes the image into node_modules/.cache/magma/previews.',
+    'Render HTML with Magma components on the magma installed in the project, offline, and get the image (to look at, and to show the person) with its file, and a report of what in it is not representative: a component unknown or not hydrated, an element with no size, a component that shows one flat colour, a console error, an icon, a font or an image that did not load, a word broken across lines, content cut. Markup that stands in for a component you propose to Magma, marked data-prototype="<its tag>", is named in prototypes instead, until the installed Magma has that component. Instead of markup, pattern and case render the preview Magma ships for that case of a pattern (for a building block, case is the id of one of its situations), pattern and rule the preview of a rule of a domain of the design language, and example another example of either. Render each option before asking a person to decide on an interface. Needs playwright-core in the project and Chrome or Edge on the machine; writes the image into node_modules/.cache/magma/previews.',
   inputSchema: {
     type: 'object',
     properties: {
       markup: {
         type: 'string',
         description:
-          'The HTML to render, the body of a page: mds-* components, plain elements, a <style> for the layout; a <script> runs, offline. Images as data: URLs.',
+          'The HTML to render, the body of a page: mds-* components, plain elements, a <style> for the layout; a <script> runs, offline. Images as data: URLs. A component Magma lacks is stood in for by plain markup marked data-prototype="<the tag you propose>".',
       },
       pattern: {
         type: 'string',
@@ -861,6 +902,16 @@ export const renderPreview = (context: ToolContext): Tool => ({
         required: ['pattern', 'file'],
       },
       representative: { type: 'boolean' },
+      prototypes: {
+        type: 'array',
+        description:
+          'The markup that stands in for components proposed to Magma (data-prototype): the tag of each and the element. Name them next to the image.',
+        items: {
+          type: 'object',
+          properties: { tag: string, element: string },
+          required: ['tag', 'element'],
+        },
+      },
       images: {
         type: 'array',
         items: {
@@ -986,6 +1037,7 @@ export const renderPreview = (context: ToolContext): Tool => ({
             }
           : {}),
         representative: images.every((one) => one.representative),
+        ...prototypesOf(images),
         images: images.map(({ width, height, file, representative, problems }) => ({
           width,
           height,

@@ -178,9 +178,12 @@ const scoreOf = (pattern: Pattern, words: string[]): number => {
   );
 };
 
-/** What a candidate answers: Magma knows the need, no default covers it yet. */
+/**
+ * What a candidate answers: Magma knows the need, no default covers it yet. The choice the agent
+ * makes instead is a proposal, shown rendered before it is built on (#1492).
+ */
 export const CANDIDATE =
-  'A candidate: Magma knows this need and has no default for it yet. Do not present a choice of yours as the Magma default: tell the user which choice you made and why. ' +
+  'A candidate: Magma knows this need and has no default for it yet. Do not present a choice of yours as the Magma default: render it with render_preview and show it to the user before you build on it, and tell them which choice you made and why. ' +
   GAP;
 
 export const getPattern = (context: ToolContext): Tool => ({

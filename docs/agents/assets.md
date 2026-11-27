@@ -338,15 +338,22 @@ npm i @maggioli-design-system/identity
 
 Assets live under `@maggioli-design-system/identity/dist/`:
 
-- `dist/brand/` - logos per brand (gruppo-maggioli, maggioli-editore, rnd, ...)
-- `dist/avatar/` - avatar illustrations (svg / webp / png / pdf)
-- `dist/illustrations/`, `dist/products/` - additional brand imagery
+- `dist/brand/` - the logos of the Group's brands (gruppo-maggioli, maggioli-editore, maggioli-academy)
+- `dist/products/` - product logos (ilibro)
+- `dist/avatar/` - square images for profiles (svg / webp / png / pdf)
+- `dist/illustrations/` - illustrations (contenuti-aggiuntivi)
+- `dist/internal/` - the marks of Magma and of the R&D department
 
 These are static read-only files - serve them like any other asset, do not modify
 them in the consumer project. `dist/identity.json` describes them: one entry per family of
-artworks, with its name as the artwork writes it, its owner and kind, and every variant with
-its path, form, colour, the background it is drawn for and its size. Read names and alt texts
-from it instead of from the file names, which lose accents and punctuation.
+artworks, with its name as the artwork writes it, its owner and kind, its rights, and every
+variant with its path, form, colour, the background it is drawn for and its size. Read names
+and alt texts from it instead of from the file names, which lose accents and punctuation.
+
+Not every file is open source: `rights` is `trademark` for a mark of Maggioli S.p.A. (the file
+is MIT, the mark is not) and `proprietary` for an artwork that is Maggioli's, all rights
+reserved. Use those only in a product of the Maggioli Group, or made for it; outside one, ask
+the user before using them. The package LICENSE is the text that applies.
 
 ## 5. Editor autocomplete
 

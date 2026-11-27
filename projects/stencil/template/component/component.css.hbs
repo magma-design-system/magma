@@ -1,0 +1,43 @@
+@import './css/{{tag}}-fouc.css';
+
+/**
+ * @prop --{{tag}}-background: The background of the component
+ * @prop --{{tag}}-color: The colour of the text of the component
+ * @prop --{{tag}}-radius: The radius of the component
+ * @prop --{{tag}}-transition-duration: The duration of the change of the colours of the component
+ * @prop --{{tag}}-transition-timing-function: The easing of the change of the colours of the component
+ */
+
+/* The design decisions the Magma tokens feed into the component, in one place
+   (projects/stencil/SPEC.md, "The design decisions on :host"): its colours, radii, shadows,
+   motion and z-index are custom properties on :host with the token as default, so the inspector
+   shows which tokens reach {{tag}}; the rules read them. A variant, a state or a preference sets
+   one again on its :host(...). Spacing and geometry stay written in the rules. A knob is named
+   --{{tag}}[-<part>][-<variant>][-<state>]-<property>, internal unless a product needs it and no
+   role, theme or prop gives it: then its @prop starts with `Public.` (SPEC.md, Styling API) */
+
+:host {
+  --{{tag}}-background: rgb(var(--magma-surface-default));
+  --{{tag}}-color: rgb(var(--magma-text-default));
+  --{{tag}}-radius: var(--magma-radius-md);
+  --{{tag}}-transition-duration: var(--duration-200);
+  --{{tag}}-transition-timing-function: var(--ease-out);
+
+  /* the duration the transition reads: pref-animation sets it to 0s */
+  --private-{{short}}-transition-duration: var(--{{tag}}-transition-duration);
+
+  background-color: var(--{{tag}}-background);
+  border-radius: var(--{{tag}}-radius);
+  color: var(--{{tag}}-color);
+  corner-shape: var(--magma-corner-shape);
+  display: flex;
+  gap: --spacing(200);
+  padding: --spacing(400);
+  transition-duration: var(--private-{{short}}-transition-duration);
+  transition-property: background-color, color;
+  transition-timing-function: var(--{{tag}}-transition-timing-function);
+}
+
+@import './css/{{tag}}-pref-animation.css';
+@import './css/{{tag}}-pref-contrast.css';
+@import './css/{{tag}}-pref-mode.css';

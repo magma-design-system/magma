@@ -6,8 +6,9 @@
  *
  * In dark the progress is accent-emphasis, a light blue, and the thumb sits on it inside a ring of
  * the same colour: it takes the ink of that fill, text-on-emphasis, as the knob of an
- * mds-input-switch that is on (#1141). 10.19:1 on the progress, 3.16:1 on the empty track.
- * It used to take accent-emphasis, the colour of its ring and of the progress, so the three
+ * mds-input-switch that is on (#1141). 10.5:1 on the progress. On the empty track, a wash as
+ * light on the page as in light since #1427 (1.43:1), it is drawn by its ring, 7.4:1, as the
+ * white thumb of light is (4.6:1). It used to take accent-emphasis, the colour of its ring and of the progress, so the three
  * were one shape (#1073); then text-default, light like the progress, 1.61:1 on it. */
 
 :host([pref-mode='dark']:not([pref-theme-scheme='light'])),

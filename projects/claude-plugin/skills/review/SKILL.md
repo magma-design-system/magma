@@ -1,6 +1,6 @@
 ---
 name: review
-description: Review code that uses the Magma design system against its rules. Run the Magma lint, check templates and stylesheets with the magma MCP server, compare with the rules of the installed guides, and report each finding with its fix. Use when asked to review, check or audit UI code in a Magma project, or after finishing UI work there.
+description: Review code that uses Magma against its rules - the Magma lint, the checks of the magma MCP server, the rules of the installed guides - each finding with its fix. Use when asked to review, check or audit UI code in a Magma project, or after finishing UI work there.
 license: MIT
 compatibility: A project with @maggioli-design-system/magma installed. Uses the magma MCP server of this plugin and the project's ESLint and Stylelint.
 metadata:

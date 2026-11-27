@@ -15,6 +15,13 @@
   - the animations: a hidden or throttled page pauses them, so a component can be caught
     half faded in (#1180); finished, they show their end state, and an infinite one (a
     spinner) is paused where it is.
+
+  A prototype is markup that stands in for a component proposed to Magma and not in it yet,
+  marked with the tag the proposal gives it (`data-prototype="mds-preview"`, the maintainer's
+  choice on #1492, over writing the proposed tag itself, an unknown element with no shadow tree
+  to style by hand). The inspection names it, so the image says which part of it is a proposal,
+  and reports it as a problem once the installed Magma has that component: then the markup
+  writes the component instead.
 */
 
 export type ProblemKind =
@@ -26,13 +33,23 @@ export type ProblemKind =
   | 'asset'
   | 'font'
   | 'broken-word'
-  | 'cut';
+  | 'cut'
+  | 'prototype-shipped'
+  | 'prototype-unnamed';
 
 export interface PageProblem {
   kind: ProblemKind;
   /** The element, as the markup writes it: its tag, its place among its peers, its text. */
   element?: string;
   detail: string;
+}
+
+/** Markup that stands in for a component proposed to Magma (`data-prototype`). */
+export interface Prototype {
+  /** The tag the proposal gives the component. */
+  tag: string;
+  /** The element that stands in for it, as the markup writes it. */
+  element: string;
 }
 
 /** A box of the page to look at in the image, in CSS pixels. */
@@ -52,6 +69,8 @@ export type Step =
 
 export interface Inspection {
   problems: PageProblem[];
+  /** The prototypes of the markup, whose components the installed Magma does not have. */
+  prototypes: Prototype[];
   /** The components with content, whose image must not be one flat colour. */
   regions: Region[];
   /** The height of the content, to size the viewport to it. */
@@ -172,6 +191,26 @@ export const inPage = async (args: Step): Promise<void | Inspection | PageProble
           detail:
             'The component did not hydrate: it stays hidden (hydrated.css) or shows its markup before rendering. A console error usually says why.',
         });
+    }
+
+    // prototypes: markup marked with the tag of a component proposed to Magma (#1492)
+    const prototypes: Prototype[] = [];
+    for (const element of preview.querySelectorAll('[data-prototype]')) {
+      const tag = (element.getAttribute('data-prototype') ?? '').trim().toLowerCase();
+      if (!/^[a-z][a-z0-9]*-[a-z0-9-]*$/.test(tag))
+        problems.push({
+          kind: 'prototype-unnamed',
+          element: label(element),
+          detail:
+            'data-prototype names no component: write the tag the proposal gives it, such as data-prototype="mds-preview".',
+        });
+      else if (customElements.get(tag))
+        problems.push({
+          kind: 'prototype-shipped',
+          element: label(element),
+          detail: `${tag} is a component of the installed Magma now: write it instead of its prototype.`,
+        });
+      else prototypes.push({ tag, element: label(element) });
     }
 
     // the boxes of the components of the markup, and of its images
@@ -353,7 +392,12 @@ export const inPage = async (args: Step): Promise<void | Inspection | PageProble
     }
 
     const content = preview.getBoundingClientRect();
-    return { problems, regions, height: Math.ceil(content.bottom + window.scrollY) };
+    return {
+      problems,
+      prototypes,
+      regions,
+      height: Math.ceil(content.bottom + window.scrollY),
+    };
   }
 
   // the image as WebP, base64, for the images Magma ships of its previews (#1243): encoded from

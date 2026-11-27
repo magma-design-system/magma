@@ -238,14 +238,14 @@ mds-badge {
 
 #### Do Not Use `<mds-badge>` for Interactive Controls
 
-`<mds-badge>` is purely presentational - it emits no events and has no focus management. For a selectable or dismissible tag, use [`mds-chip`](../../mds-chip) instead.
+`<mds-badge>` is purely presentational - it emits no events and has no focus management. For a tag of a record that the user removes, selects as a filter value or opens, use [`mds-chip`](../../mds-chip) instead; the chip's label names the tag, and its delete button removes it. For an action, use [`mds-button`](../../mds-button).
 
 ```html
 <!-- INCORRECT: listening to a click on a non-interactive component -->
-<mds-badge label="Rimuovi" variant="error" onclick="removeTag()"></mds-badge>
+<mds-badge label="Urgente" variant="error" onclick="removeTag()"></mds-badge>
 
-<!-- CORRECT: use mds-chip for interactive tag behavior -->
-<mds-chip label="Rimuovi" variant="error" deletable></mds-chip>
+<!-- CORRECT: use mds-chip for a tag the user removes from the record -->
+<mds-chip label="Urgente" variant="error" deletable></mds-chip>
 ```
 
 
