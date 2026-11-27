@@ -29,10 +29,16 @@ const MODE_WORD = { light: msg('Light'), dark: msg('Dark') } as const;
 export function TouchedPairs({
   pairs,
   mode,
+  whole,
 }: {
   pairs: TouchedPair[] | undefined;
   /** The one mode the pairs were measured in; both when none. */
   mode?: 'light' | 'dark';
+  /**
+   * The pairs are those of a whole theme, not the ones a change touches: the stage Themes shows
+   * the theme at its centre by them (#1404).
+   */
+  whole?: boolean;
 }) {
   const t = useT();
   if (!pairs)
@@ -73,7 +79,11 @@ export function TouchedPairs({
         <mds-badge
           variant={summary.fail ? 'error' : summary.accepted ? 'warning' : 'success'}
           tone="weak"
-          label={plural(t, summary.pairs, '{count} pair touched', '{count} pairs touched')}
+          label={
+            whole
+              ? plural(t, summary.pairs, '{count} pair of the theme', '{count} pairs of the theme')
+              : plural(t, summary.pairs, '{count} pair touched', '{count} pairs touched')
+          }
         ></mds-badge>
         <mds-text typography="detail" tag="span">
           {verdict}

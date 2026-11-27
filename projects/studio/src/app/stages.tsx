@@ -1,5 +1,5 @@
 import { useT } from '../shared/i18n/i18n.js';
-import { COLORS_PAGES, hrefOf, placeOf, STAGES, type Route } from '../shared/routes/routes.js';
+import { hrefOf, placeOf, STAGES, type Route } from '../shared/routes/routes.js';
 
 /*
   The stages in order (#1402; a strip of links since #1595), as the pattern of the studio has them
@@ -43,58 +43,6 @@ export function StageTabs({ route }: { route: Route }) {
           ></mds-tab-item>
         ))}
       </mds-tab>
-    </nav>
-  );
-}
-
-/** The page of today a route of Colors opens: its name and icon in the table of the pages. */
-const pageOf = (route: Route) =>
-  route.section === 'colors' ? COLORS_PAGES.find((page) => page.id === route.view) : undefined;
-
-/**
- * The head of a stage and of a page beside it, above its title, while the pages of today stand in
- * for the views of the object model (until #1403): on a page beside a stage, the way back to its
- * stage, named after it (stages-in-order, `side-page`); on a stage with pages beside it, the links
- * to them, which the menu of Colors held before the stages. The object model reaches Scale from the
- * scale of a family and Group from the group in the list: #1403 puts the links there.
- */
-export function StageLead({ route }: { route: Route }) {
-  const t = useT();
-  const place = placeOf(route);
-  if (!place) return null;
-  if (place.place === 'side-page')
-    return (
-      <div class="mb-title-content">
-        <mds-button
-          href={hrefOf(place.stage.route)}
-          icon="mi/baseline/arrow-back"
-          variant="dark"
-          tone="text"
-          size="sm"
-          label={t(place.stage.label)}
-        ></mds-button>
-      </div>
-    );
-  const beside = place.stage.beside.flatMap((page) => {
-    const row = pageOf(page);
-    return row ? [{ route: page, row }] : [];
-  });
-  if (!beside.length) return null;
-  return (
-    <nav
-      aria-label={t('Beside {stage}', { stage: t(place.stage.label) })}
-      class="mb-title-content flex flex-wrap gap-inline"
-    >
-      {beside.map(({ route: page, row }) => (
-        <mds-button
-          href={hrefOf(page)}
-          icon={row.icon.replace('/baseline/', '/outline/')}
-          variant="dark"
-          tone="text"
-          size="sm"
-          label={t(row.label)}
-        ></mds-button>
-      ))}
     </nav>
   );
 }

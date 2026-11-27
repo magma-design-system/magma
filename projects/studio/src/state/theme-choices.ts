@@ -7,7 +7,9 @@ import type { StudioState } from './studio.js';
   The theme choices of the work (#1400): a signal of the state (studio.ts), kept in the storage of
   the studio beside the draft, so a reload keeps them, until the configuration keeps the themes
   itself (#694). The choices themselves, and what no choice means, are the model of
-  engine/theme-choices.ts; the actions of the Themes page change them, one family at a time.
+  engine/theme-choices.ts; the actions of the stage Themes change them, one family at a time. The
+  actions that change the preset with them (a theme deleted, moved to another tint) are in
+  state/themes.ts.
 */
 
 export const THEME_CHOICES_KEY = 'magma-studio:theme-choices';

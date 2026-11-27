@@ -28,7 +28,7 @@ afterEach(() => {
 /** The studio at an address. */
 const at = async (hash: string) => {
   location.hash = hash
-  render(h(Studio, {}), root)
+  render(h(Studio, null), root)
   await vi.waitFor(() => {
     if (!root.querySelector('mds-header-bar')) throw new Error('no bar yet')
   })
@@ -44,9 +44,9 @@ test('on a stage the strip shows the stages in order, one link each, the current
   expect(items().map((one) => ({ text: textOf(one), href: one.getAttribute('href') }))).toEqual([
     { text: 'Colors', href: '#/colours' },
     { text: 'Weights', href: '#/weights' },
-    { text: 'Themes', href: '#/colors/themes' },
+    { text: 'Themes', href: '#/themes' },
     { text: 'Exceptions', href: '#/exceptions' },
-    { text: 'Full review', href: '#/colors/contrast-check' },
+    { text: 'Full review', href: '#/full-review' },
   ])
   // each the icon and the name of its stage, no number: the order is the place in the strip
   expect(items().map((one) => one.getAttribute('icon'))).toEqual(STAGES.map(({ icon }) => icon))
@@ -57,9 +57,9 @@ test('on a stage the strip shows the stages in order, one link each, the current
   // each stage of its own page opens with its item selected
   for (const [hash, stage] of [
     ['#/colours', 'Colors'],
-    ['#/colors/themes', 'Themes'],
+    ['#/themes', 'Themes'],
     ['#/exceptions', 'Exceptions'],
-    ['#/colors/contrast-check', 'Full review'],
+    ['#/full-review', 'Full review'],
   ]) {
     location.hash = hash
     await vi.waitFor(() => expect(current()).toBe(stage))
@@ -95,7 +95,7 @@ test('a page that is no stage has no strip', async () => {
 })
 
 test('no stage ends with a foot: the strip opens every stage, the exit is the bar', async () => {
-  for (const hash of ['#/colours', '#/weights', '#/exceptions', '#/colors/contrast-check']) {
+  for (const hash of ['#/colours', '#/weights', '#/exceptions', '#/full-review']) {
     await at(hash)
     // the stepper and the foot of #1402 are gone
     expect(root.querySelector('mds-stepper-bar')).toBeNull()
@@ -107,11 +107,11 @@ test('no stage ends with a foot: the strip opens every stage, the exit is the ba
 })
 
 test('a link of the strip opens its stage, and the strip follows the address', async () => {
-  await at('#/colors/themes')
+  await at('#/themes')
   location.hash = items()[0].getAttribute('href')!
   await vi.waitFor(() => expect(current()).toBe('Colors'))
   // back in the history, the stage before
-  location.hash = '#/colors/themes'
+  location.hash = '#/themes'
   await vi.waitFor(() => expect(current()).toBe('Themes'))
 })
 

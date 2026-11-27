@@ -2,7 +2,7 @@
   The menu of the exit, in the bar (app/shell.tsx; the Config menu until #1402): the preset saved
   or downloaded is the action of the split button, and its menu holds the other ways out of the
   studio, the formats of today: the preset as JSON, the tokens, the Figma tokens, the CSS, a GIMP
-  palette, a copy of the JSON, the build on disk when a command serves the studio. What brings a
+  palette, the CSS of the themes (#1404), a copy of the JSON, the build on disk when a command serves the studio. What brings a
   preset in is the opening's (features/opening/, Import a preset). The actions are the
   state's (state/work.ts, state/exports.ts), each through the contrast gate before anything leaves,
   so the menu works from any page; the bar draws them, in the menu of its split button and in the
@@ -12,7 +12,13 @@
 import { useState } from 'preact/hooks';
 import type { ExportKind } from '../engine/exports.js';
 import { useT, msg } from '../shared/i18n/i18n.js';
-import { copyConfig, downloadPreset, exportConfig, guard } from '../state/exports.js';
+import {
+  copyConfig,
+  downloadPreset,
+  downloadThemesCss,
+  exportConfig,
+  guard,
+} from '../state/exports.js';
 import { useStudio } from '../state/studio.js';
 import { buildTokens } from '../state/work.js';
 
@@ -74,6 +80,19 @@ export function useConfigMenu() {
           run: () => exportConfig(studio, kind),
         }),
     })),
+    // the themes as a theme file of styles takes them (#1404; Copy CSS of the Themes page until then)
+    {
+      id: 'themes',
+      label: msg('Download the CSS of the themes'),
+      format: 'css',
+      icon: DOWNLOAD,
+      run: () =>
+        guard(studio, {
+          label: msg('Download the CSS of the themes'),
+          proceed: msg('Download anyway'),
+          run: () => downloadThemesCss(studio),
+        }),
+    },
     {
       id: 'copy',
       label: copied ? msg('Copied!') : msg('Copy JSON'),

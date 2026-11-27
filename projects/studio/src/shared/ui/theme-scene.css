@@ -1,0 +1,14 @@
+/*
+  The frame of a theme on the page of a product (theme-scene.tsx, #1404): a page small as a phone,
+  as the sides of Colours and Weights draw it. Sizes from the steps of --spacing and the radii of
+  Magma, colours from the semantic roles.
+*/
+
+.theme-scene {
+  aspect-ratio: 9 / 16;
+  border: thin solid rgb(var(--magma-border-muted));
+  border-radius: var(--magma-radius-lg);
+  corner-shape: var(--magma-corner-shape);
+  inline-size: 100%;
+  max-block-size: 75dvh;
+}

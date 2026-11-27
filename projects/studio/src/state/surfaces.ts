@@ -93,7 +93,8 @@ export function setBorderLevel(
 /** Sets the APCA Lc target of a text role, one for both modes. */
 export function setTextTarget(state: StudioState, role: string, target: number): void {
   updateBalances(state, (theme) => {
-    const text = (theme.text ??= { ...DEFAULT_THEME.text });
+    // the targets of Magma, which the bundled preset always holds
+    const text = (theme.text ??= { ...DEFAULT_THEME.text! });
     (text as Record<string, number | { step: number }>)[role] = target;
   });
 }

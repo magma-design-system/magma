@@ -1,5 +1,5 @@
 /*
-  The Contrast check page (contrast-check.tsx): its layout is written in classes; here the sample
+  The pairs of the full review (pairs.tsx; the Contrast check page until #1404): its layout is written in classes; here the sample
   of a pair, the two colours the configuration generates, painted inline, so only their frame is
   written: the text on its background, or the border around it.
 */

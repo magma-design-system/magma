@@ -6,9 +6,9 @@ import { createRouter, memoryLocation } from './router.js'
 // The router follows a location: in memory here, as for a host that owns the address of its page
 // (#695)
 test('the router opens the page of the address, else the first page, its address written in place', () => {
-  const themes = memoryLocation('#/colors/themes')
-  expect(createRouter({ location: themes }).route.value).toEqual({ section: 'colors', view: 'themes' })
-  expect(themes.entries).toEqual(['#/colors/themes'])
+  const themes = memoryLocation('#/themes/editorial')
+  expect(createRouter({ location: themes }).route.value).toEqual({ section: 'themes', theme: 'editorial' })
+  expect(themes.entries).toEqual(['#/themes/editorial'])
 
   for (const start of ['', '#', '#/colors/nothing']) {
     const location = memoryLocation(start)
@@ -67,11 +67,11 @@ test('an alias opens its page and writes the address of the page in its place', 
   const router = createRouter({ location })
   expect(router.route.value).toEqual({ section: 'introduction' })
   expect(location.entries).toEqual(['#/introduction'])
-  location.go('#/colors/themes')
+  location.go('#/themes')
   location.go('#/start')
   expect(router.route.value).toEqual({ section: 'introduction' })
   // in place: back leads to the page before it, not to the alias
-  expect(location.entries).toEqual(['#/introduction', '#/colors/themes', '#/introduction'])
+  expect(location.entries).toEqual(['#/introduction', '#/themes', '#/introduction'])
   // #1403: the address of the Palette opens Colours, which took its place
   location.go('#/colors/palette')
   expect(router.route.value).toEqual({ section: 'colours' })
@@ -80,4 +80,11 @@ test('an alias opens its page and writes the address of the page in its place', 
   location.go('#/colors/contrast-scales')
   expect(router.route.value).toEqual({ section: 'scale', formula: 'wcag3', name: 'default' })
   expect(location.read()).toBe('#/colours/scale/wcag3/default')
+  // #1404: the addresses of Themes and Contrast check open the stage Themes and the full review
+  location.go('#/colors/themes')
+  expect(router.route.value).toEqual({ section: 'themes' })
+  expect(location.read()).toBe('#/themes')
+  location.go('#/colors/contrast-check')
+  expect(router.route.value).toEqual({ section: 'full-review' })
+  expect(location.read()).toBe('#/full-review')
 })

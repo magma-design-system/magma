@@ -53,7 +53,7 @@ test('the balances change the theme block, from those of Magma when the configur
     delete draft.theme
   })
   updateBalances(studio, (theme) => {
-    theme.text = { ...theme.text, muted: { step: 7 } }
+    theme.text = { ...theme.text!, muted: { step: 7 } }
   })
   expect(studio.config.value.theme).toEqual({ ...DEFAULT_THEME, text: { ...DEFAULT_THEME.text, muted: { step: 7 } } })
   expect(DEFAULT_THEME).toEqual(bundledConfig().theme)

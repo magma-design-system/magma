@@ -10,7 +10,7 @@
     "allowJs": true,
     "allowImportingTsExtensions": true,
     "skipLibCheck": true,
-    "strict": false,
+    "strict": true,
     "noEmit": true
   },
   "include": ["src", "test", "build", "vite.config.ts"]

@@ -36,7 +36,7 @@ afterEach(() => {
 const RAMPS = 'the ramps of the family'
 const show = (family: string) => {
   const choices = studio.themeChoices.peek()
-  const scene = sceneStyle(config, choices)
+  const scene = sceneStyle(config, choices)!
   const painted = paintedBy(family, { config, themes: scene.themes, choices })
   render(
     inStudio(studio, h(SceneSide, { family, painted, scene: scene.css, ramps: h('p', null, RAMPS) })),

@@ -29,7 +29,7 @@ const SLOW = { timeout: 10_000 }
 function show (lang: 'en' | 'it' = 'en'): StudioState {
   vi.stubGlobal('fetch', () => Promise.reject(new Error('no server')))
   const studio = startStudio()
-  render(h(LangProvider, { value: lang }, inStudio(studio, h(WeightsPage, {}))), root)
+  render(h(LangProvider, { value: lang }, inStudio(studio, h(WeightsPage, null))), root)
   return studio
 }
 

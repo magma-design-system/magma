@@ -10,7 +10,7 @@ inference or an edge with no source yet. `config` is
 `projects/design-tokens/.magma-design-tokensrc.json`, `semantic` is
 `projects/design-tokens/semantic.config.ts` (the Magma 3 branch for the transparent roles).
 
-The studio speaks to the person with "tu", as the Italian of Magma does (README, "Languages").
+The studio speaks to the person with "tu", as the Italian of Magma does ([`docs/languages.md`](docs/languages.md)).
 
 ## Decisions (person, 2026-11-20)
 
@@ -30,6 +30,7 @@ The studio speaks to the person with "tu", as the Italian of Magma does (README,
 | 12 | "gruppo" (IT): a group of families and an export group meet on the Groups page | qualify: the export group is always **gruppo di export** / **export group** (the interface says "export"); **gruppo** alone is the group of families | register; model |
 | 13 | "start" (EN, 2026-11-27): today's Start page vs "the start" of a theme from a brand colour, in this register (`candidate`) | rename: the page that says what the studio is for is the **introduction** / **Introduzione**, the view that opens the preset the **opening** / **Partenza** (#1402); the code follows (`StartPage`, `section: 'start'`); the address becomes `#/introduction`, and `#/start` stays as an alias that opens it, so a link written before keeps working | register; README; code (`src/features/introduction/`, `src/shared/routes/routes.ts`) |
 | 14 | none (2026-11-27): the cases outside Magma (decision 11) get a place, the view of the Groups page, which stays outside the stages; the side page Gruppo of the model (2026-11-26) is dropped before it was built | new row: **Gruppi** / **Groups**, the view; a scale that is not Magma-compatible serves only the families that paint nothing of Magma (person) | register; model (sections 4, 5, 12) |
+| 15 | none (2026-11-27, #1404): the full review and the toast of the other themes name two things the model says in words, "guardato" and "si rompe" | new rows: **look** / **guardato**, the mark of a theme in a mode; **broken theme** / **tema rotto**, a theme a change made fail | register; code (`src/engine/review.ts`, `brokenSince` of `src/engine/gate.ts`) |
 
 ## Taxonomy register
 
@@ -59,21 +60,21 @@ The studio speaks to the person with "tu", as the Italian of Magma does (README,
 | `track` | track | traccia | the transparent track of a quantity | a band | weights (semantic `transparent.roles`) | role | ink | `--magma-track` |
 | `wash-intensity` | wash intensity | intensità delle velature | one factor on the alpha of every transparent role | a wash level | weights (semantic `transparent.intensity`) | | | `--magma-wash-intensity` |
 | `ink` | ink | inchiostro | the colour a transparent role lays over its ground | | weights (semantic `transparent.ink`) | | text (`text-default`) | `transparent.ink` |
-| `theme` | theme | tema | the file a page wears: tint, accents, modes (person) | a preset | preset (`themes/<name>.json`; semantic `themes`) | | family (tint, accents) | `themes/*.json`, `data-theme-name`, `ThemeDef` |
+| `theme` | theme | tema | the file a page wears: tint, accents, modes (person) | a preset | preset (`themes/<name>.json`; semantic `themes`) | | family (tint, accents) | `themes/*.json`, `data-theme-name`, `ThemeDef`; in the studio a family that generates surfaces, keyed by its short name (`src/engine/theme-list.ts`), set in the stage Themes (`src/features/themes/`, `#/themes/<name>`) |
 | `ready-theme` | ready theme | tema pronto | a theme Magma ships: business, editorial | a product's theme | preset (`projects/design-tokens/themes/`) | theme | | `business`, `editorial` |
-| `tint` | tint | tinta | the family a theme's neutral scaffolding takes | the built-in `tint` contrast scale | theme (`color.tint`) | | family | `color.tint`, `--magma-tint-*` |
+| `tint` | tint | tinta | the family a theme's neutral scaffolding takes; a theme of the product chooses it among the families, a ready theme keeps the one of its file (person, 2026-11-27) | the built-in `tint` contrast scale | theme (`color.tint`) | | family | `color.tint`, `--magma-tint-*`; `tintChoices` (`src/engine/theme-list.ts`), `moveTheme` (`src/state/themes.ts`) |
 | `accent` | accent | accento | the brand role and the AI role, each pointed at a family | | theme (`color.accents`) | role | family | `accents`, `--magma-accent-*` |
 | `mode` | mode | modalità | light or dark | | theme (`color.modes`) | condition (proposed) | | `color.modes`, `pref-mode-*` |
-| `exception` | exception | eccezione | the colour or background of a function shared by several components that comes neither from the palette nor from a surface: the band of tabs and filters (person) | an accepted pair | preset (proposed: decided once, the same in every theme) | | role (band, track, field...); the components that adopt it | `transparent`, `fieldRoles` (semantic, today) |
+| `exception` | exception | eccezione | the colour or background of a function shared by several components that comes neither from the palette nor from a surface: the band of tabs and filters (person) | an accepted pair | preset (proposed: decided once, the same in every theme) | | role (band, track, field...); the components that adopt it | `transparent`, `fieldRoles` (semantic, on the branch of Magma 3); the stage waits for them (`src/features/exceptions/`, `#/exceptions`, person, 2026-11-27) |
 | `component-state` | state | stato | rest, hover, active, current, disabled of a component | a status colour | exception (proposed: the grid of its components) | | | `:hover`, `active`, `current`, `disabled` |
 | `candidate` | candidate | candidato | a generated, measured alternative, seen one at a time: of an exception, or of a theme from a brand colour (person) | a change | exception, or the opening (proposed: one parent per instance) | | | (none yet) |
 | `introduction` | introduction | Introduzione | the first view of the studio: what it is for, with no control of the work; its way out is the opening (person, model section 5) | a stage; the opening | (root of the flow) | | | `src/features/introduction/`, `#/introduction` (alias `#/start`, the address of the Start page it was) |
 | `opening` | opening | Partenza | the view that opens the preset to work on: Magma's preset, a ready theme, a brand colour, the draft at the stage it was on (person, model section 5) | a stage; the introduction; the exit | (root of the flow) | | preset, ready-theme, draft (model section 5) | `src/features/opening/`, `#/opening` |
-| `stage` | stage | passo | one step of the balancing flow: colours, weights, themes, exceptions (person) | a ramp step; a wash level | (root of the flow) | | | `STAGES` of `src/shared/routes/routes.ts`, `src/app/stages.tsx`, the pattern of the studio `magma/patterns/stages-in-order.md`; the views built: colours (`src/features/colours/`, `#/colours`, alias `#/colors/palette`), weights (`src/features/weights/`, `#/weights`) |
-| `scene` | scene | scena | the product page a stage is judged on; it changes with the stage (person) | the verification | stage (proposed) | | theme | `scene.html`, `states.html` |
+| `stage` | stage | passo | one step of the balancing flow: colours, weights, themes, exceptions (person) | a ramp step; a wash level | (root of the flow) | | | `STAGES` of `src/shared/routes/routes.ts`, `src/app/stages.tsx`, the pattern of the studio `magma/patterns/stages-in-order.md`; the views: colours (`src/features/colours/`, `#/colours`, alias `#/colors/palette`), weights (`src/features/weights/`, `#/weights`), themes (`src/features/themes/`, `#/themes`, alias `#/colors/themes`), exceptions (`src/features/exceptions/`, waiting for Magma 3) |
+| `scene` | scene | scena | the product page a stage is judged on; it changes with the stage (person) | the verification | stage (proposed) | | theme | `scene.html`, `states.html`; a theme in a mode and a contrast beside its stage (`src/shared/ui/theme-scene.tsx`) |
 | `condition` | condition | condizione | what the scene is judged under: mode, more contrast, breakpoint, ground (person) | | scene (`applyFrame`, `applyPrefs`) | | | `scene-prefs.tsx` |
 | `ground` | ground | fondo | what lies under an element: page, card, well, coloured fill (person) | a surface role | condition (proposed) | | surface (page, card, well) | `TRANSPARENT_SURFACES` (gate, partial) |
-| `verification` | contrast check | verifica del contrasto | the one check of the whole preset, every theme and mode, filtered on each stage (person) | the scene | preset (`gate.ts`) | | | `contrast-gate.ts`, `gatePairs` |
+| `verification` | contrast check | verifica del contrasto | the one check of the whole preset, every theme and mode, filtered on each stage (person) | the scene | preset (`gate.ts`) | | | `contrast-gate.ts`, `gatePairs`; whole in the full review, filtered in each stage (`src/shared/ui/touched-pairs.tsx`) |
 | `pair` | pair | coppia | a foreground and a background measured in one mode and theme | | verification (`gatePairs`) | | role (two), theme, mode | `PairResult`; the pairs a change touches: `src/engine/touched.ts`, `src/shared/ui/touched-pairs.tsx` |
 | `verdict` | verdict | verdetto | the outcome of the verification | | verification | | | `verdict.tsx` |
 | `floor` | floor | soglia | the Lc or ratio the verification holds a pair to | a target | verification (`DEFAULT_TARGETS`) | | | `GateTargets` |
@@ -81,7 +82,9 @@ The studio speaks to the person with "tu", as the Italian of Magma does (README,
 | `accepted-pair` | known offender | coppia accettata | a pair under its floor that the baseline accepts: debt in view (person) | an exception | verification (`contrast-baseline.json`) | pair | | `baseline`, `baselinedFailures` |
 | `change` | change | modifica | one edit, compared with the last exit | a candidate | preset (the draft, `state/draft.ts`) | | | `src/engine/changes.ts`, `changes` and `baseline` of `src/state/studio.ts` (counted from the last exit, 2026-11-27) |
 | `exit` | exit | uscita | saving the preset (command) or downloading it (Pages) | | preset | | | `exitOf` of `src/state/exports.ts`, the split button of the bar (`src/app/shell.tsx`) and its menu (`src/app/config-menu.tsx`), `engine/exports.ts` |
-| `full-review` | full review | giro completo | judging each theme in each mode before the exit, each marked as reviewed (person) | the verification | (root of the flow) | stage (proposed) | verification | (none yet) |
+| `full-review` | full review | giro completo | judging each theme in each mode before the exit, each marked as reviewed (person) | the verification | (root of the flow) | stage (proposed) | verification | `src/features/full-review/`, `#/full-review/<theme>/<mode>` (alias `#/colors/contrast-check`, the Contrast check page it was); `reviewItems` (`src/engine/review.ts`) |
+| `look` | looked at | guardato | the mark the person sets on a theme in a mode in the full review, kept until a change touches that theme in that mode, then said to have changed after the look (person, model section 4, Verifica) | a verdict of the verification | full-review | | theme, mode | `Looks`, `printOf` (`src/engine/review.ts`), `looks` of `src/state/studio.ts` (`src/state/review.ts`, kept as `magma-studio:looks`) |
+| `broken-theme` | broken theme | tema rotto | a theme that fails the verification in a mode where the preset at the last exit passed: a change broke it, and a toast says so (person, model section 4, Tema: "silenzio finché uno non si rompe") | a theme that failed already | verification | | theme, mode, change | `brokenSince` (`src/engine/gate.ts`), `broken` of `src/state/studio.ts`, the toasts of `src/app/shell.tsx` |
 | `hue` | hue | tonalità | the hue of a colour, in OKLCH degrees | a family | family | | | `hueShift` |
 | `hue-shift` | hue shift | spostamento di tonalità | the turn of the hue at the dark and light ends of a ramp | the saturation curve | family (config `colors[].hueShift`, or the root) | | | `hueShift` |
 | `saturation` | saturation | saturazione | the curve of the saturation across a ramp, global or per family | the hue shift | family (config `colors[].saturation`, or the root) | | | `saturation` |
@@ -109,9 +112,11 @@ Start sections; "proposta"; the pages Palette, "Contrast scales" and "Semantic s
 "Superficie semantica" (the stage Colours, the page Scale and the stage Weights, #1403), and with
 them "Status families" and "Lightness levels"; the "Start" page (it is the introduction,
 2026-11-27); the page "Diffs" / "Differenze" and the menu "Config" / "Configurazione" (the changes
-and the exit of the bar, 2026-11-27).
+and the exit of the bar, 2026-11-27); the pages "Themes" and "Contrast check" / "Verifica del
+contrasto" of the Colors section, and the section itself (the stage Themes and the full review,
+#1404).
 
 Until the redesign of the studio (`studio.object-model.md`) is whole, what it has not reached yet
-keeps the name it has today: the sections Theme / Tema and Behavior / Regole; "known offender" /
-"eccezione nota". The redesign brings them to the names of this register, decided on 2026-11-20
-(person).
+keeps the name it has today: the sections Theme / Tema and Behavior / Regole. The redesign brings
+them to the names of this register, decided on 2026-11-20 (person); the full review brought the
+accepted pair to "coppia accettata" (#1404).

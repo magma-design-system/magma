@@ -9,7 +9,7 @@ import {
 } from '../../engine/opening.js';
 import { ColorInput, Field } from '../../shared/magma/magma.js';
 import { plural, useT, type T } from '../../shared/i18n/i18n.js';
-import { COLORS_PAGES, placeOf, routeOf, STAGES, type Route } from '../../shared/routes/routes.js';
+import { placeOf, routeOf, STAGES, type Route } from '../../shared/routes/routes.js';
 import { openBrandColour, openImported, openMagma, openReadyTheme } from '../../state/opening.js';
 import { bundled, say, useStudio } from '../../state/studio.js';
 import { IT_OPENING } from './i18n-it.js';
@@ -42,11 +42,7 @@ function draftRoute(view: Route | undefined): Route {
 
 /** The name of where the draft resumes: its stage, or the page beside a stage it was on. */
 function draftPlace(t: T, route: Route): string {
-  const place = placeOf(route);
-  if (place?.place === 'stage') return t(place.stage.label);
-  const page =
-    route.section === 'colors' ? COLORS_PAGES.find(({ id }) => id === route.view) : undefined;
-  return t(page?.label ?? STAGES[0].label);
+  return t(placeOf(route)?.stage.label ?? STAGES[0].label);
 }
 
 /** A card of the opening: its title and what it is, then what it holds, then its actions. */

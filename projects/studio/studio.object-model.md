@@ -202,7 +202,7 @@ Altre relazioni:
 - **Scopo**: le famiglie di un tipo, con le impostazioni che hanno in comune. (progetto: sezione
   `groups` della configurazione)
 - **Contiene**: le sue famiglie (il prefisso del loro nome, `label.red`); scala di contrasto,
-  formula ed export, che una famiglia eredita se non li cambia. (progetto: README dello studio)
+  formula ed export, che una famiglia eredita se non li cambia. (progetto: `docs/groups.md`)
 - **Azioni**:
   - crearlo, liberamente (persona, 2026-11-26);
   - nasce con il suo primo colore: in "New color" il campo Gruppo accetta un nome nuovo, e un
@@ -265,8 +265,8 @@ Altre relazioni:
 
 - **Scopo**: gli obiettivi dei gradini, condivisi tra le famiglie che la usano. È un'entità a sé.
   (persona)
-- **Contiene**: gradini, minimo, massimo, distribuzione (un easing o manuale). (progetto: README
-  dello studio)
+- **Contiene**: gradini, minimo, massimo, distribuzione (un easing o manuale). (progetto:
+  `docs/scale.md`)
 - **Tipi** (persona, 2026-11-26):
   - integrata, cioè arrivata con il motore (`default`, `tint`, `tone`, `v1`, `v2`): gli obiettivi
     si regolano, il numero dei gradini resta quello che ha;
@@ -551,6 +551,18 @@ Fuori dai passi, come la sezione Tema e le Regole; è la pagina Groups di oggi, 
   - le modalità, in linea;
   - gli altri temi, con un avviso solo quando uno si rompe;
   - le famiglie, con un link a Colori. (persona)
+- **Come si vede** (persona, sui render, 2026-11-27): come Colori, l'elenco accanto, i temi pronti
+  e quelli del prodotto, ognuno con il verdetto per modalità, e "Nuovo tema" che porta alla
+  Partenza; al centro il tema, con una riga che dice cos'è, il verdetto e le sue coppie in un
+  dettaglio chiuso; poi nome, tinta, accenti con il loro campione in chiaro e in scuro, modalità.
+  La tinta di un tema del prodotto si sceglie tra le famiglie, in ordine cromatico, e sceglierla
+  sposta il tema sulla famiglia, con annulla; quella del tema di base e dei temi pronti resta, e
+  la riga dice perché. La scena del prodotto accanto, con Chiaro e Scuro e "Più contrasto"; la
+  tela delle superfici di oggi esce. Il CSS dei temi si scarica dal menu dell'uscita. Eliminare un
+  tema sta nel suo menu, con annulla; il tema di base non si elimina.
+- **Gli altri temi** (persona, 2026-11-27): un tema che passava all'ultima uscita e una modifica
+  rompe lo dice un toast che resta, con il link alla sua voce del Giro completo (`message-placement`,
+  caso `action-failed-elsewhere`); nessun toast per il tema al centro di Temi né nel Giro completo.
 - **Mai qui**: pesi, palette.
 - **Ingresso**: Pesi; un tema nuovo nasce nella Partenza. **Uscita**: Eccezioni.
 
@@ -567,6 +579,10 @@ Fuori dai passi, come la sezione Tema e le Regole; è la pagina Groups di oggi, 
   - le misure;
   - il perché.
 - **Mai qui**: palette, tinta e accenti.
+- **Quando** (persona, 2026-11-27): dopo Magma 3. Le sue funzioni (banda, traccia, cornice dei
+  campi) sono ruoli di Magma 3, sul suo branch, e i loro pesi entrano nel preset con loro; i
+  candidati vogliono un motore che li genera e li misura. Fino ad allora il passo ha una pagina
+  che dice quando arriva. Un'issue a parte lo costruisce.
 - **Ingresso**: Temi, o un elemento toccato sulla scena. **Uscita**: Giro completo.
 
 ### Giro completo
@@ -577,6 +593,13 @@ Fuori dai passi, come la sezione Tema e le Regole; è la pagina Groups di oggi, 
   - ogni tema per modalità, in linea, con il segno di "guardato";
   - la sua scena e le sue coppie: che bloccano, segnalate e debito;
   - l'uscita, salvare o scaricare, con una domanda se la verifica è rossa. (persona)
+- **Come si vede** (persona, sui render, 2026-11-27): come Colori e Temi, l'elenco accanto, ogni
+  tema per modalità con il segno (da guardare, guardato, cambiato dopo che lo hai guardato) e le
+  coppie che bloccano; al centro la voce, con "Segna come guardato" e, guardata, "Prossimo da
+  guardare"; le sue coppie in tre gruppi, che bloccano, segnalate e debito; la scena accanto nella
+  sua modalità. Il segno resta finché una modifica non tocca i colori delle coppie di quel tema in
+  quella modalità. Il link dalla coppia al suo passo non c'è ancora: il criterio lo decide il
+  pattern della revisione a voci (#1490). Costruita come dice Magma oggi.
 - **Ingresso**: Eccezioni, o l'avviso di un tema rotto. **Uscita**: l'uscita, oppure il passo a
   cui appartiene una coppia.
 
@@ -617,7 +640,7 @@ principio.
 | Giro completo | lacuna: revisione a voci; `confirm-action` per uscire con la verifica rossa | `actions` |
 | annulla | `message-placement` (toast con Annulla) | `actions` (rimozione) |
 | la macchina | `loading` | |
-| un altro tema rotto | `message-placement` (toast con link) | |
+| un altro tema rotto | `message-placement`, caso `action-failed-elsewhere` (toast che resta, con link) | |
 
 ## 8. Conflitti
 
@@ -654,14 +677,17 @@ principio.
   zoom che tiene la posizione.
 - **Il design system dice**: nessun pattern per confrontare alternative.
 - **Risoluzione** (persona): **cambia il design system**: un pattern che parte dalla pagina della
-  board della cornice (versione 2). L'issue si apre sul sì della persona.
+  board della cornice (versione 2), #1489 nell'epica #1487. Si scrive dopo il passo Eccezioni, che
+  arriva dopo Magma 3, dai suoi render (persona, 2026-11-27).
 
 ### Revisione a voci
 
 - **Il modello dice**: ogni tema e modalità resta segnato come guardato, finché una modifica non
   lo tocca.
 - **Il design system dice**: nessun pattern.
-- **Risoluzione** (persona): **cambia il design system**. L'issue si apre sul sì della persona.
+- **Risoluzione** (persona): **cambia il design system**, #1490 nell'epica #1487. Il Giro completo
+  è costruito come dice Magma oggi (#1404) e il pattern si scrive dai suoi render (persona,
+  2026-11-27), come #1262 dai render di Colori.
 
 ### Valore ereditato
 

@@ -35,7 +35,7 @@ import type { ToolContext } from '../../mcp/src/context.ts';
 import { slugFiles } from '../../mcp/src/icons.ts';
 import { ICON_PATH, fileOf, loaderOf } from '../../mcp/src/render.ts';
 
-/** The tag that tells the studio there is no API beside the page: `hasApi` of src/app.tsx reads it. */
+/** The tag that tells the studio there is no API beside the page: `pageSaysNoApi` of src/state/studio.ts reads it. */
 const API_META = '<meta name="magma-studio-api" content="none">';
 
 /** The sets an icon slug starts with, each of its own package (agents/assets.md, "Icons"). */

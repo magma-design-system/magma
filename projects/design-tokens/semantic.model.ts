@@ -423,20 +423,22 @@ export const themeOf = (name: string, def: ThemeDef): SemanticTheme => {
   }
   const { surface, accents: accentOverride, scale, modes, deprecated } = normalizeTheme(def);
   const mode = lockedMode(modes);
-  const retints = Boolean(surface && surface !== tint);
-  const ramp = retints ? scaleFamily(surface, scale) : undefined;
+  // the family the theme retints the tint block with, none when it keeps the base tint (typed so,
+  // for the strict check of the studio that imports this file, #1404)
+  const retinted = surface && surface !== tint ? surface : undefined;
+  const ramp = retinted ? scaleFamily(retinted, scale) : undefined;
   const decls: SemanticDecl[] = [];
-  if (retints) {
+  if (retinted) {
     decls.push(
-      ...surfaceRoles.map((r) => pointer(r, `surface-${surface}-${r}`)),
-      ...borderRoles.map((r) => pointer(`border-${r}`, `border-${surface}-${r}`)),
-      ...textRoles.map((r) => pointer(`text-${r}`, `text-${surface}-${r}`)),
+      ...surfaceRoles.map((r) => pointer(r, `surface-${retinted}-${r}`)),
+      ...borderRoles.map((r) => pointer(`border-${r}`, `border-${retinted}-${r}`)),
+      ...textRoles.map((r) => pointer(`text-${r}`, `text-${retinted}-${r}`)),
       // the washes and the selected inverse of its family, generated from its page (#1427)
-      ...washLevels.map((level) => pointer(`wash-${level}`, `wash-${surface}-${level}`)),
-      pointer('inverse-selected', `inverse-${surface}-selected`),
+      ...washLevels.map((level) => pointer(`wash-${level}`, `wash-${retinted}-${level}`)),
+      pointer('inverse-selected', `inverse-${retinted}-selected`),
       // the ramp retints with the rest of the block, or the raw steps a component
       // still uses would stay on the base tint while its surfaces moved
-      ...scaleTintDecls(ramp),
+      ...scaleTintDecls(scaleFamily(retinted, scale)),
     );
   }
   if (accentOverride) {
@@ -453,7 +455,7 @@ export const themeOf = (name: string, def: ThemeDef): SemanticTheme => {
   // the theme contrasted within its own ramp instead of borrowing the base tint.
   // A theme that only overrides accents leaves the tint text/border alone, so the
   // base block already covers it and nothing extra is emitted.
-  const contrast = retints ? contrastTintDecls(surface, CONTRAST_LEVEL) : [];
+  const contrast = retinted ? contrastTintDecls(retinted, CONTRAST_LEVEL) : [];
   const preview = previewOf(
     name,
     surface ?? tint,
