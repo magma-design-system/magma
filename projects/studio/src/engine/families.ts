@@ -85,7 +85,7 @@ export function withoutSaturation(config: MagmaConfig): MagmaConfig {
  * - the colorspace, Smooth, the hue shifting and the saturation from the preset.
  */
 export type InheritedField =
-  'ratios' | 'export' | 'formula' | 'colorspace' | 'smooth' | 'hueShift' | 'saturation';
+  'ratios' | 'export' | 'formula' | 'colorspace' | 'smooth' | 'hueShift' | 'saturation' | 'surface';
 
 /** Where an inherited value is decided: a group, by its name, or the preset. */
 export type InheritedFrom = { from: 'group'; group: string } | { from: 'preset' };
@@ -98,7 +98,9 @@ export function inheritedFrom(
 ): InheritedFrom | undefined {
   if (family[field] !== undefined) return undefined;
   const group = groupOf(family.name);
-  if (field === 'ratios' || field === 'export') return { from: 'group', group };
+  // the surfaces have no setting of the preset: a family that says nothing follows its group
+  if (field === 'ratios' || field === 'export' || field === 'surface')
+    return { from: 'group', group };
   if (field === 'formula' && config.groups?.[group]?.formula !== undefined)
     return { from: 'group', group };
   return { from: 'preset' };

@@ -4,9 +4,11 @@ import type {
   MagmaConfig,
 } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
 import { COLORSPACES } from '@maggioli-design-system/design-tokens/src/lib/schema.mjs';
+import { resolveSurfaceOptIn } from '@maggioli-design-system/design-tokens/src/lib/surface.mjs';
 import type { Step } from '../../engine/generator.js';
 import { MARK, type ColorspaceVerdict } from '../../engine/colorspace-verdict.js';
 import { inheritedFrom, MAGMA_STEPS, type InheritedField } from '../../engine/families.js';
+import { NO_SURFACE_GROUPS, RESERVED_GROUPS } from '../../engine/groups.js';
 import { Check, ColorInput, Field, Select, type Option } from '../../shared/magma/magma.js';
 import { rich, useT } from '../../shared/i18n/i18n.js';
 import { CommitText } from '../../shared/ui/commit-text.js';
@@ -58,6 +60,8 @@ export interface FamilyFieldsProps {
   hasGlobalShift: boolean;
   hasGlobalSaturation: boolean;
   onChange: (patch: Partial<ColorConfig>) => void;
+  /** opts the family into the surfaces or out (state/surfaces.ts, toggleSurface) */
+  onSurface: (on: boolean) => void;
   /** fired with each colour of the colour field, after onChange: a code typed, a step of a pick */
   onColorCommit: (hex: string) => void;
 }
@@ -106,6 +110,52 @@ function Inherited({
         </mds-text>
       )}
       {after}
+    </div>
+  );
+}
+
+/**
+ * Whether the family generates surfaces, and with them a theme (#1403: out of Semantic surface,
+ * which Weights replaced; vittorio, 2026-11-27): its own choice, or its group's, said on the line
+ * under the switch. A status colour generates them always (engine/groups.ts, RESERVED_GROUPS): the
+ * switch is on and locked, and says why; one a preset turned off can be turned on. A group of
+ * references (`variant`) has no switch.
+ */
+function SurfaceField({
+  config,
+  family,
+  onSurface,
+}: {
+  config: MagmaConfig;
+  family: ColorConfig;
+  onSurface: (on: boolean) => void;
+}) {
+  const t = useT(IT_COLOURS);
+  const group = family.name.split('.')[0];
+  if (NO_SURFACE_GROUPS.has(group)) return null;
+  const on = resolveSurfaceOptIn(config, family) !== undefined;
+  const locked = RESERVED_GROUPS.has(group) && on;
+  const control = (
+    <div class="flex min-h-1200 items-end" data-surface-switch>
+      <Check type="switch" checked={on} disabled={locked} onChecked={onSurface}>
+        {t('Generate surfaces')}
+      </Check>
+    </div>
+  );
+  if (!RESERVED_GROUPS.has(group))
+    return (
+      <Inherited config={config} family={family} field="surface">
+        {control}
+      </Inherited>
+    );
+  return (
+    <div class="grid min-w-0 content-start gap-label-control">
+      {control}
+      <mds-text typography="caption" tag="p" class="text-fg-muted" data-surface-status>
+        {t(
+          'Always on for the status colours: banners, toasts and badges paint their text on their tint, which needs the text roles the surfaces generate. A status colour is never a theme.',
+        )}
+      </mds-text>
     </div>
   );
 }
@@ -288,6 +338,7 @@ export function FamilyFields(props: FamilyFieldsProps) {
             </Check>
           </div>
         </Inherited>
+        <SurfaceField config={config} family={family} onSurface={props.onSurface} />
         <div class="flex min-h-1200 items-end">
           <Check
             type="switch"

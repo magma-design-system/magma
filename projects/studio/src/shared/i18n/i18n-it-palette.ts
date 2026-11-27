@@ -3,6 +3,10 @@
   text it translates is the key, and a key lives in one part only (test/i18n.test.mts).
 */
 export const IT_PALETTE: Record<string, string> = {
+  // the switch of the surfaces of a family (Colours) and of a group (Groups), #1403
+  'Generate surfaces': 'Genera superfici',
+  'Always on for the status colours: banners, toasts and badges paint their text on their tint, which needs the text roles the surfaces generate. A status colour is never a theme.':
+    'Sempre attiva per i colori di stato: banner, toast e badge dipingono il testo sulla loro tinta, che ha bisogno dei ruoli del testo generati con le superfici. Un colore di stato non è mai un tema.',
   // the Palette: the list of the families and the family selected (app.tsx)
   'hue shifting of its own, over the global one':
     'spostamento di tonalità proprio, sopra quello globale',

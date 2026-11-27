@@ -16,18 +16,18 @@ import { clone, updateConfig, type StudioState } from './studio.js';
 export { DEFAULT_THEME } from '../engine/weights.js';
 
 /**
- * Opts a family into the surfaces, or out. With a group that opts in, "off" is not always the
- * absence of the key: a family of such a group writes an explicit `false`, or it would inherit
- * the group straight back. When the group is silent, the key goes, so the config stays clean.
+ * Opts a family into the surfaces, or out (the switch of the family in Colours, #1403). Set to what
+ * its group says, the family inherits it again and the key goes, as the other fields of a family
+ * do; set against it, the family says so: `true` in a silent group, `false` in a group that opts in
+ * (or it would inherit the group straight back).
  */
 export function toggleSurface(state: StudioState, colorName: string, on: boolean): void {
   updateConfig(state, (draft) => {
     const color = draft.colors.find((c) => c.name === colorName) as ColorConfig | undefined;
     if (!color) return;
     const groupOn = Boolean(draft.groups?.[colorName.split('.')[0]]?.surface);
-    if (on) color.surface = true;
-    else if (groupOn) color.surface = false;
-    else delete color.surface;
+    if (on === groupOn) delete color.surface;
+    else color.surface = on;
   });
 }
 

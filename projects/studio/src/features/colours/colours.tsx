@@ -39,6 +39,7 @@ import {
   selectFamily,
 } from '../../state/palette.js';
 import { builtinScalesOf, scalesOf } from '../../state/scales.js';
+import { toggleSurface } from '../../state/surfaces.js';
 import { useStudio } from '../../state/studio.js';
 import { FamilyFields, ReferenceFields, type ScaleChoice } from './family-fields.js';
 import { Ramps, SceneSide } from './scene-side.js';
@@ -388,6 +389,7 @@ export function ColoursPage({ foot }: { foot?: ComponentChild }) {
                       hasGlobalShift={config.hueShift !== undefined}
                       hasGlobalSaturation={hasSaturation(config.saturation)}
                       onChange={(patch) => patchFamily(studio, selected.name, patch)}
+                      onSurface={(on) => toggleSurface(studio, selected.name, on)}
                       onColorCommit={(hex) => autoNameFamily(studio, selected.name, hex)}
                     />
                   )}

@@ -50,7 +50,11 @@ test('a value the family does not set comes from its group or from the preset', 
   expect(inheritedFrom(withFormula, neutral, 'formula')).toEqual({ from: 'group', group: 'tone' })
   expect(inheritedFrom(preset, neutral, 'colorspace')).toEqual({ from: 'preset' })
   expect(inheritedFrom(preset, neutral, 'smooth')).toEqual({ from: 'preset' })
+  // the surfaces have no setting of the preset: a family that says nothing follows its group
+  expect(inheritedFrom(preset, family('status.info'), 'surface')).toEqual({ from: 'group', group: 'status' })
+  expect(inheritedFrom(preset, family('tone.kaolin'), 'surface')).toEqual({ from: 'group', group: 'tone' })
   // a value of its own comes from nowhere else
+  expect(inheritedFrom(preset, neutral, 'surface')).toBeUndefined()
   expect(inheritedFrom(preset, neutral, 'export')).toBeUndefined()
   expect(inheritedFrom(preset, family('tone.kaolin'), 'colorspace')).toBeUndefined()
 })

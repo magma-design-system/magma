@@ -768,3 +768,33 @@ test('New group opens the dialog on a group to write, which refuses the names of
   expect(groups.at(-1)).toBe('game-board')
   expect(heading()).toBe('game-board.lava')
 })
+
+/** The switch of the surfaces of the family shown. */
+const surfaceSwitch = () => colorSection().querySelector('[data-surface-switch] mds-input-switch')!
+
+test('a family generates surfaces from its switch, inheriting its group until it decides', async () => {
+  // tone.neutral decides for itself: on, no line under it
+  expect(surfaceSwitch().hasAttribute('checked')).toBe(true)
+  expect(colorSection().querySelector('[data-inherits="surface"]')).toBeNull()
+  // off, as its group tone says: it inherits again, and the line says from whom
+  emit(surfaceSwitch(), 'mdsInputSwitchChange', { name: '', checked: undefined, value: '' })
+  await vi.waitFor(() => expect(color('tone.neutral')).not.toHaveProperty('surface'))
+  await vi.waitFor(() =>
+    expect(colorSection().querySelector('[data-inherits="surface"]')?.textContent).toBe('Inherits from the group tone'),
+  )
+  expect(surfaceSwitch().hasAttribute('checked')).toBe(false)
+  emit(surfaceSwitch(), 'mdsInputSwitchChange', { name: '', checked: true, value: '' })
+  await vi.waitFor(() => expect(color('tone.neutral')?.surface).toBe(true))
+})
+
+test('a status colour generates surfaces always: its switch is on and locked, and says why', async () => {
+  selectFamily(studio, 'status.info')
+  await vi.waitFor(() => expect(heading()).toBe('status.info'))
+  expect(surfaceSwitch().hasAttribute('checked')).toBe(true)
+  expect(surfaceSwitch().hasAttribute('disabled')).toBe(true)
+  expect(colorSection().querySelector('[data-surface-status]')?.textContent).toMatch(/^Always on for the status colours/)
+  // a reference generates none of its own: no switch
+  selectFamily(studio, 'variant.primary')
+  await vi.waitFor(() => expect(heading()).toBe('variant.primary'))
+  expect(colorSection().querySelector('[data-surface-switch]')).toBeNull()
+})

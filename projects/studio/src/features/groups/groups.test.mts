@@ -53,12 +53,14 @@ test('the preset comes first, then the groups in their order, their families in 
   expect(cards().map((one) => one.querySelector('mds-text[tag="h2"]')?.textContent)).toEqual([
     'The preset', 'variant', 'tone', 'status', 'label', 'brand',
   ])
-  expect([...card('tone').querySelectorAll('mds-input-switch')].map((el) => el.textContent)).toEqual([
+  // the families, each a checkbox of Magma, always on the page, apart from the switch of the group
+  const families = [...card('tone').querySelectorAll('mds-input-switch')].filter(
+    (el) => !el.closest('[data-surface-switch]'),
+  )
+  expect(families.map((el) => el.textContent)).toEqual([
     'porcelain', 'kaolin', 'neutral', 'bisque', 'fireclay',
   ])
-  // a checkbox of Magma, always on the page
-  for (const check of card('tone').querySelectorAll('mds-input-switch'))
-    expect(check.getAttribute('type')).toBe('checkbox')
+  for (const check of families) expect(check.getAttribute('type')).toBe('checkbox')
 })
 
 test('the settings of the preset, which every family inherits, are written to the preset', async () => {
@@ -172,4 +174,23 @@ test('each family leads to Colours, the family selected there', () => {
   expect(link.getAttribute('href')).toBe('#/colours')
   link.click()
   expect(studio.selectedName.value).toBe('label.red')
+})
+
+/** The switch of the surfaces of a group, in its card. */
+const surfaceSwitchOf = (scope: Element) => scope.querySelector('[data-surface-switch] mds-input-switch')!
+
+test('a group generates surfaces from its switch; status always, variant never', async () => {
+  const studio = show()
+  expect(surfaceSwitchOf(card('label')).hasAttribute('checked')).toBe(false)
+  emit(surfaceSwitchOf(card('label')), 'mdsInputSwitchChange', { name: '', checked: true, value: '' })
+  await vi.waitFor(() => expect(studio.config.value.groups?.label).toEqual({ surface: true }))
+  await vi.waitFor(() => expect(surfaceSwitchOf(card('label')).hasAttribute('checked')).toBe(true))
+  emit(surfaceSwitchOf(card('label')), 'mdsInputSwitchChange', { name: '', checked: undefined, value: '' })
+  await vi.waitFor(() => expect(studio.config.value.groups?.label).toBeUndefined())
+  // status is on and locked, saying why; the references of variant have no switch
+  const status = surfaceSwitchOf(card('status'))
+  expect(status.hasAttribute('checked')).toBe(true)
+  expect(status.hasAttribute('disabled')).toBe(true)
+  expect(card('status').textContent).toContain('Always on for the status colours')
+  expect(card('variant').querySelector('[data-surface-switch]')).toBeNull()
 })

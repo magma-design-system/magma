@@ -13,6 +13,7 @@ import {
 import { COLORSPACES } from '@maggioli-design-system/design-tokens/src/lib/schema.mjs';
 import { chromaticOrder, groupOf, groupsInOrder } from '../../engine/colour-order.js';
 import { isAlias, MAGMA_STEPS, withoutSaturation } from '../../engine/families.js';
+import { NO_SURFACE_GROUPS, RESERVED_GROUPS } from '../../engine/groups.js';
 import { generateScales, singleColorConfig, type Step } from '../../engine/generator.js';
 import { Check, Field, Select, TextInput } from '../../shared/magma/magma.js';
 import { msg, plural, useT } from '../../shared/i18n/i18n.js';
@@ -24,6 +25,7 @@ import { exportSelection, guard } from '../../state/exports.js';
 import { setExports, updateGroup } from '../../state/groups.js';
 import { selectFamily, setGlobal } from '../../state/palette.js';
 import { scalesOf } from '../../state/scales.js';
+import { toggleGroupSurface } from '../../state/surfaces.js';
 import { useStudio } from '../../state/studio.js';
 import { BatchExportModal } from './batch.js';
 import { IT_GROUPS } from './i18n-it.js';
@@ -393,6 +395,13 @@ export function GroupsPage() {
                       />
                     </Field>
                   </div>
+                  {!NO_SURFACE_GROUPS.has(group) && (
+                    <GroupSurface
+                      group={group}
+                      on={Boolean(groupConfig.surface)}
+                      onSurface={(on) => toggleGroupSurface(studio, group, on)}
+                    />
+                  )}
                   <div class={membersGrid}>
                     {members.length > 0 ? (
                       members.map(member)
@@ -431,5 +440,40 @@ export function GroupsPage() {
         />
       )}
     </main>
+  );
+}
+
+/**
+ * Whether the families of a group generate surfaces, and with them a theme, when they do not decide
+ * for themselves (#1403: out of Semantic surface, which Weights replaced; vittorio, 2026-11-27). A
+ * group of status colours generates them always (engine/groups.ts, RESERVED_GROUPS): on and
+ * locked, saying why; one a preset turned off can be turned on.
+ */
+function GroupSurface({
+  group,
+  on,
+  onSurface,
+}: {
+  group: string;
+  on: boolean;
+  onSurface: (on: boolean) => void;
+}) {
+  const t = useT(IT_GROUPS);
+  const reserved = RESERVED_GROUPS.has(group);
+  return (
+    <div class="grid content-start gap-label-control" data-surface-switch>
+      <Check type="switch" checked={on} disabled={reserved && on} onChecked={onSurface}>
+        {t('Generate surfaces')}
+      </Check>
+      <mds-text typography="caption" tag="p" class="max-w-text text-fg-muted">
+        {reserved
+          ? t(
+              'Always on for the status colours: banners, toasts and badges paint their text on their tint, which needs the text roles the surfaces generate. A status colour is never a theme.',
+            )
+          : t(
+              'Every family of the group that does not decide for itself generates surfaces, and becomes a theme.',
+            )}
+      </mds-text>
+    </div>
   );
 }

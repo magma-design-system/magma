@@ -24,6 +24,12 @@ test('a family opts into the surfaces and out; out of a group that opts in, it s
   // the group status opts in: out has to say so, or the family inherits it back
   toggleSurface(studio, 'status.info', false)
   expect(familyOf(studio, 'status.info')?.surface).toBe(false)
+  // back to what its group says, it inherits again: the key goes
+  toggleSurface(studio, 'status.info', true)
+  expect(familyOf(studio, 'status.info')).not.toHaveProperty('surface')
+  // a family of a silent group set off again inherits too
+  toggleSurface(studio, 'tone.neutral', false)
+  expect(familyOf(studio, 'tone.neutral')).not.toHaveProperty('surface')
 })
 
 test('a group opts in and back out, leaving the configuration as it was', () => {

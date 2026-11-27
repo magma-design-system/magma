@@ -11,4 +11,6 @@ export const IT_GROUPS: Record<string, string> = {
   'What every family inherits when it does not set it.':
     'Ciò che ogni famiglia eredita quando non lo fissa.',
   'Open {name} in Colours': 'Apri {name} in Colori',
+  'Every family of the group that does not decide for itself generates surfaces, and becomes a theme.':
+    'Ogni famiglia del gruppo che non decide da sé genera superfici e diventa un tema.',
 };
