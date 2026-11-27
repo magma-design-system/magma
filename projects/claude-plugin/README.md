@@ -151,4 +151,7 @@ no dependency: Claude Code runs the plugin from its copy of this repository.
    `claude plugin validate .` check the manifests as Claude Code reads them.
 
 A new skill is a new template: the generator picks it up. Keep the descriptions precise,
-since Claude decides from them when to load a skill on its own.
+since Claude decides from them when to load a skill on its own, and within 300 characters: in a
+product the plugin is listed beside the team's own plugins, within one budget, and Claude Code
+drops the descriptions that do not fit (`DESCRIPTION` in `scripts/agent-context.ts`, which
+`nx run magma:check.agent-context` holds, #1575).

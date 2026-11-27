@@ -1,6 +1,6 @@
 ---
 name: ui
-description: How to write interface code in a project that uses the Magma design system (mds-* web components, the MdsX wrappers of React and Angular, the Magma Tailwind classes and roles). Find the component, read its API and how the framework writes it, paint with roles, check icon slugs and the markup before saving. Use whenever building or changing UI in a Magma project.
+description: How to write interface code in a project that uses Magma (mds-* components, the React and Angular wrappers, the Tailwind classes and roles) - find the component, read its API, paint with roles, check the markup. Use whenever building or changing UI in a Magma project.
 license: MIT
 compatibility: A project with @maggioli-design-system/magma installed. Uses the magma MCP server of this plugin; without it, the guides installed with the package.
 metadata:
