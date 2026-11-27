@@ -13,6 +13,8 @@ $RECYCLE.BIN/
 # the local work of Claude Code stays out; the skills of the repository are shared (#1174)
 /.claude/*
 !/.claude/skills/
+# what the external skill /v2:work cannot know of Magma (docs/WORKFLOW.md rule 2, #1584)
+!/.claude/v2.json
 .directory/
 .env/
 .idea/

@@ -196,7 +196,7 @@ When the maintainer says the drafts are done:
    page then shows
    the draft read-only.
 3. Each separate action only on its own ok, naming it. A merge follows `docs/WORKFLOW.md` rule 1
-   (the commands of `/magma-dev:epic`, step 3): an ok naming the pull request, a green pipeline, never
+   (`gh pr merge <n> --merge` into the branch of an epic, `gh pr merge <n>` into the queue of `main`): an ok naming the pull request, a green pipeline, never
    `--auto` or `--admin`.
 4. Show the table of step 0 again, and go on with step 7.
 

@@ -4,8 +4,8 @@
   docs/WORKFLOW.md rule 2: the parts of an epic (its sub-issues) come back to the branch of the
   epic with a pull request each, the open parts sync with it after each merge, and the epic lands
   in the default branch with one pull request. Rule 1: a person decides every merge. This script
-  only reads; the skill /magma-dev:epic (.claude/skills/magma-dev/skills/epic) shows its table and carries out the merges a
-  person approves.
+  only reads; the external skill /v2:work (docs/WORKFLOW.md rule 2) shows it and carries out the
+  merges a person approves.
 
     tsx scripts/epic.ts <epic number> [--branch=<branch of the epic>]
                                     print the table in Markdown, then the next action
