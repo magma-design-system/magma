@@ -81,7 +81,7 @@ test('a page beside a stage keeps its stage current, and has no foot', async () 
 })
 
 test('a page that is no stage has neither the stepper nor the foot', async () => {
-  for (const hash of ['#/start', '#/theme', '#/behavior/patterns']) {
+  for (const hash of ['#/introduction', '#/opening', '#/theme', '#/behavior/patterns']) {
     await at(hash)
     expect(stages()).toBeNull()
     expect(foot()).toBeNull()
@@ -106,7 +106,7 @@ test('the foot of a stage leads back and forward, named after where it leads, at
   location.hash = '#/colors/palette'
   await vi.waitFor(() =>
     expect(footButtons()).toEqual([
-      { text: 'Introduction', href: '#/start' },
+      { text: 'Opening', href: '#/opening' },
       { text: '2. Weights', href: '#/colors/semantic-surface' },
     ]),
   )

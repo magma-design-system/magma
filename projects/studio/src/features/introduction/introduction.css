@@ -1,39 +1,21 @@
 /*
-  The Start page (start.tsx): the hero on a band of the accent, the whole width, then the steps and
-  the levels, each a section of the page. Spaces
-  from the rhythm, widths from the widths, colours from the semantic roles (src/magma.css); a
-  length with no relation a step of --spacing.
+  The sheet of the introduction (introduction.tsx; the Start page until #1402): the frame of the
+  page and the hero, the band of the accent with the play of the banner, its motion and the
+  preview it paints, which classes do not write. The list of the stages is written in the classes of
+  Magma. Spaces from the rhythm, widths from the widths, colours from the semantic roles; a length
+  with no relation a step of --spacing.
 */
 
-/* the region that scrolls starts with the band of the hero, under the bar */
-
-.start {
-  padding-block-start: 0;
-}
-
 /* the column of the page (widths/page, `page-frame`): at most --magma-width-page, centred, the
-   gutter outside it. The width is written: a section is an item of the grid of the page, where
-   auto margins would shrink it to its content */
+   gutter outside it. The width is written, so not the class page-frame: a section is an item of
+   the grid of the page, where its auto margins would shrink it to its content */
 
-.start-frame {
+.intro-frame {
   box-sizing: border-box;
   inline-size: 100%;
   margin-inline: auto;
   max-inline-size: calc(var(--magma-width-page) + 2 * var(--magma-width-page-gutter));
   padding-inline: var(--magma-width-page-gutter);
-}
-
-/* a section of the page: its title, then what it names */
-
-.start-section {
-  align-content: start;
-  display: grid;
-  gap: var(--magma-rhythm-title-content);
-}
-
-.start-section-head {
-  display: grid;
-  gap: var(--magma-rhythm-title-content);
 }
 
 /*
@@ -49,32 +31,32 @@
   one ink, so the text of the band has no muted level, its order is its typography.
 */
 
-.start-hero {
+.intro-hero {
   background-color: rgb(var(--magma-accent-emphasis));
   color: rgb(var(--magma-accent-on-emphasis));
-  container: start-hero / inline-size;
+  container: intro-hero / inline-size;
   padding-block: var(--magma-rhythm-between-sections);
 }
 
-.start-hero-grid {
+.intro-hero-grid {
   display: grid;
   gap: var(--magma-rhythm-between-groups);
 }
 
-@container start-hero (width >= 60rem) {
-  .start-hero-grid {
+@container intro-hero (width >= 60rem) {
+  .intro-hero-grid {
     align-items: center;
     column-gap: var(--magma-rhythm-between-sections);
     grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
   }
 }
 
-.start-hero-head {
+.intro-hero-head {
   display: grid;
   gap: var(--magma-rhythm-between-groups);
 }
 
-.start-hero-intro {
+.intro-hero-intro {
   display: grid;
   gap: var(--magma-rhythm-title-content);
 }
@@ -85,18 +67,18 @@
 
 /* aligned with the intro over it: none of the indent of mds-list */
 
-.start-features {
+.intro-features {
   display: grid;
   gap: var(--magma-rhythm-label-control);
   padding-inline-start: 0;
 }
 
 /*
-  The play (start.tsx): the banner in the middle, the room of its trays kept over and under it, so
+  The play (introduction.tsx): the banner in the middle, the room of its trays kept over and under it, so
   the band never changes height while they come and go. The tray over the banner and the trays
   under it share their row each; a tray back behind the banner (no data-open) sits under it,
   hidden by it, then hidden for good once it is there. A tray comes out with an elastic movement,
-  after the one before it went back (--duration-150), in --duration-500: TRAY_MS of start.tsx.
+  after the one before it went back (--duration-150), in --duration-500: TRAY_MS of introduction.tsx.
 
   The elastic is light, a spring that passes its place by 8 % once and settles; Magma has no
   elastic easing (its --ease-out-back passes once, with no spring). The bounce beside it is the
@@ -105,16 +87,59 @@
   of damping 8 and 1.4 turns, and a fall with rebounds of 6 % and 1.5 %.
 */
 
-.start-stage {
-  --start-ease-elastic: linear(
-    0, 0.331, 0.618, 0.833, 0.972, 1.049, 1.08, 1.081, 1.068, 1.049, 1.031, 1.016, 1.006, 0.999,
-    0.996, 0.995, 0.996, 0.997, 0.998, 0.999, 0.999, 1
+.intro-stage {
+  --intro-ease-elastic: linear(
+    0,
+    0.331,
+    0.618,
+    0.833,
+    0.972,
+    1.049,
+    1.08,
+    1.081,
+    1.068,
+    1.049,
+    1.031,
+    1.016,
+    1.006,
+    0.999,
+    0.996,
+    0.995,
+    0.996,
+    0.997,
+    0.998,
+    0.999,
+    0.999,
+    1
   );
-  --start-ease-bounce: linear(
-    0, 0.005, 0.019, 0.043, 0.077, 0.121, 0.174, 0.236, 0.309, 0.391, 0.482, 0.584, 0.694, 0.815,
-    0.945, 0.981, 0.954, 0.941, 0.945, 0.965, 0.995, 0.99, 0.985, 0.989, 1
+  --intro-ease-bounce: linear(
+    0,
+    0.005,
+    0.019,
+    0.043,
+    0.077,
+    0.121,
+    0.174,
+    0.236,
+    0.309,
+    0.391,
+    0.482,
+    0.584,
+    0.694,
+    0.815,
+    0.945,
+    0.981,
+    0.954,
+    0.941,
+    0.945,
+    0.965,
+    0.995,
+    0.99,
+    0.985,
+    0.989,
+    1
   );
-  --start-ease-tray: var(--start-ease-elastic);
+  --intro-ease-tray: var(--intro-ease-elastic);
 
   display: grid;
   grid-template-areas: 'over' 'banner' 'under';
@@ -123,9 +148,9 @@
 
 /* the banner of the product, the frame its own size (hero.html): the radius of mds-banner
    (--mds-banner-radius), the only shadow of the hero, over its trays, so the banner is what the
-   eye takes first. The height until the hero reads the one of the banner (start.tsx) */
+   eye takes first. The height until the hero reads the one of the banner (introduction.tsx) */
 
-.start-stage-frame {
+.intro-stage-frame {
   block-size: calc(var(--spacing) * 5600);
   border: 0;
   border-radius: var(--magma-radius-2xl);
@@ -147,8 +172,8 @@
    away (vittorio, 2026-11-09). Its inset grows by as much on that side, so its text keeps its
    place; back behind the banner, it moves by its height less that part, already hidden */
 
-.start-tray {
-  --start-tray-tuck: var(--magma-radius-2xl);
+.intro-tray {
+  --intro-tray-tuck: var(--magma-radius-2xl);
 
   background-color: rgb(var(--magma-surface-default));
   color: rgb(var(--magma-text-default));
@@ -160,27 +185,27 @@
   visibility: hidden;
 }
 
-.start-tray-over {
+.intro-tray-over {
   align-self: end;
   border-start-end-radius: var(--magma-radius-lg);
   border-start-start-radius: var(--magma-radius-lg);
   grid-area: over;
-  margin-block-end: calc(-1 * var(--start-tray-tuck));
-  padding-block-end: calc(var(--magma-rhythm-inset) + var(--start-tray-tuck));
-  transform: translateY(calc(100% - var(--start-tray-tuck)));
+  margin-block-end: calc(-1 * var(--intro-tray-tuck));
+  padding-block-end: calc(var(--magma-rhythm-inset) + var(--intro-tray-tuck));
+  transform: translateY(calc(100% - var(--intro-tray-tuck)));
 }
 
-.start-tray-under {
+.intro-tray-under {
   align-self: start;
   border-end-end-radius: var(--magma-radius-lg);
   border-end-start-radius: var(--magma-radius-lg);
   grid-area: under;
-  margin-block-start: calc(-1 * var(--start-tray-tuck));
-  padding-block-start: calc(var(--magma-rhythm-inset) + var(--start-tray-tuck));
-  transform: translateY(calc(-100% + var(--start-tray-tuck)));
+  margin-block-start: calc(-1 * var(--intro-tray-tuck));
+  padding-block-start: calc(var(--magma-rhythm-inset) + var(--intro-tray-tuck));
+  transform: translateY(calc(-100% + var(--intro-tray-tuck)));
 }
 
-.start-tray[data-open] {
+.intro-tray[data-open] {
   transform: none;
   visibility: visible;
 }
@@ -188,63 +213,63 @@
 /* going back, then hidden once behind the banner; coming out after it, elastic */
 
 @media (prefers-reduced-motion: no-preference) {
-  .start-tray {
+  .intro-tray {
     transition:
       transform var(--duration-300) var(--ease-in-out-quad),
       visibility 0s linear var(--duration-300);
   }
 
-  .start-tray[data-open] {
+  .intro-tray[data-open] {
     transition:
-      transform var(--duration-500) var(--start-ease-tray) var(--duration-150),
+      transform var(--duration-500) var(--intro-ease-tray) var(--duration-150),
       visibility 0s;
   }
 }
 
 /* a tray that says one thing: its mark, its sentence, and Replay at the end of the last one */
 
-.start-note {
+.intro-note {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
   gap: var(--magma-rhythm-inline);
 }
 
-.start-note > mds-text {
+.intro-note > mds-text {
   flex: 1 1 calc(var(--spacing) * 4800);
 }
 
-.start-note-icon {
+.intro-note-icon {
   flex: none;
 }
 
 /* the marks of the states in the fill of their status: next to the sentence that says it, the
    ink of a text of the status would be nearly black */
 
-.start-note-problem {
+.intro-note-problem {
   fill: rgb(var(--magma-danger-emphasis));
 }
 
-.start-note-fixed {
+.intro-note-fixed {
   fill: rgb(var(--magma-success-emphasis));
 }
 
-/* the three indicators of the banner (CHECKS of start-demo.ts) side by side at any width: in a
+/* the three indicators of the banner (CHECKS of demo.ts) side by side at any width: in a
    narrow column the figure and its badge wrap under the name, the tray stays short */
 
-.start-readings {
+.intro-readings {
   display: grid;
   gap: var(--magma-rhythm-inline);
   grid-template-columns: repeat(3, minmax(0, 1fr));
   margin: 0;
 }
 
-.start-reading {
+.intro-reading {
   display: grid;
   gap: calc(var(--spacing) * 100);
 }
 
-.start-reading dd {
+.intro-reading dd {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
@@ -254,128 +279,7 @@
 
 /* the bar of the pairs brought back over their floor, the count over it */
 
-.start-meter {
+.intro-meter {
   display: grid;
   gap: var(--magma-rhythm-label-control);
-}
-
-/* the steps of the work, side by side as many as the page holds, each opened by its number */
-
-.start-steps {
-  counter-reset: start-step;
-  display: grid;
-  gap: var(--magma-rhythm-between-containers);
-  grid-template-columns: repeat(auto-fit, minmax(calc(var(--spacing) * 5600), 1fr));
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.start-step {
-  border-block-start: thin solid rgb(var(--magma-border-default));
-  counter-increment: start-step;
-  display: grid;
-  gap: var(--magma-rhythm-title-content);
-  grid-template-rows: auto auto 1fr auto;
-  justify-items: start;
-  padding-block-start: var(--magma-rhythm-inset);
-}
-
-.start-step::before {
-  background-color: rgb(var(--magma-accent-surface));
-  block-size: calc(var(--spacing) * 800);
-  border-radius: var(--magma-radius-full);
-  color: rgb(var(--magma-accent-fg));
-  content: counter(start-step);
-  display: grid;
-  font-weight: 700;
-  inline-size: calc(var(--spacing) * 800);
-  place-items: center;
-}
-
-/* the link of a step at the start of its column, as text */
-
-.start-step-link {
-  margin-inline-start: calc(var(--spacing) * -300);
-}
-
-/*
-  The levels, from the finest to the broadest: a row each, its name, what a change acts on and
-  what it reaches, then its pages; one under the other with no room for the row. 52rem holds the
-  two texts at a reading measure each. A literal, since a container query reads no var().
-*/
-
-.start-levels {
-  container: start-levels / inline-size;
-  display: grid;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-/* a row of the layout, not a line of text: the reset caps every li at the reading measure
-   (widths/reading), its texts keep theirs (mds-text caps itself) */
-
-.start-level {
-  border-block-end: thin solid rgb(var(--magma-border-muted));
-  display: grid;
-  gap: var(--magma-rhythm-between-fields);
-  max-inline-size: none;
-  padding-block: var(--magma-rhythm-inset);
-}
-
-@container start-levels (width >= 52rem) {
-  .start-level {
-    align-items: start;
-    grid-template-columns: minmax(0, 2fr) minmax(0, 7fr) minmax(0, 2fr);
-  }
-
-  .start-level-values {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  }
-}
-
-.start-level-name {
-  align-items: center;
-  display: flex;
-  gap: var(--magma-rhythm-inline);
-}
-
-.start-level-icon {
-  background-color: rgb(var(--magma-accent-surface));
-  block-size: calc(var(--spacing) * 1200);
-  border-radius: var(--magma-radius-lg);
-  corner-shape: var(--magma-corner-shape);
-  display: grid;
-  fill: rgb(var(--magma-accent-fg));
-  flex: none;
-  inline-size: calc(var(--spacing) * 1200);
-  place-items: center;
-}
-
-.start-level-title {
-  display: grid;
-}
-
-.start-level-values {
-  display: grid;
-  gap: var(--magma-rhythm-between-fields);
-  margin: 0;
-}
-
-.start-level-values > div {
-  align-content: start;
-  display: grid;
-  gap: var(--magma-rhythm-label-control);
-}
-
-.start-level-values dd {
-  display: grid;
-  gap: calc(var(--spacing) * 100);
-  margin: 0;
-}
-
-.start-level-pages {
-  display: grid;
-  justify-items: start;
 }

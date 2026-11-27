@@ -17,12 +17,12 @@ import {
   type TextConfig,
   type TextRole,
 } from '@maggioli-design-system/design-tokens/src/lib/text-role.mjs';
-import { gateReport, type GateCell, type GateVerdict } from './engine/gate.js';
-import { sceneStyle } from './engine/scene-css.js';
-import { msg } from './shared/i18n/i18n.js';
+import { gateReport, type GateCell, type GateVerdict } from '../../engine/gate.js';
+import { sceneStyle } from '../../engine/scene-css.js';
+import { msg } from '../../shared/i18n/i18n.js';
 
 /*
-  The demo of the hero of the Start page (start.tsx): the configuration Magma builds with, drawn
+  The demo of the hero of the introduction (introduction.tsx; the Start page until #1402): the configuration Magma builds with, drawn
   pale, then brought back to its own, step by step. Each step runs what the pages of Colors run on
   an edit: the generator solves every ramp and picks the step of each role (text-role.mts), the
   contrast gate judges every pair in every theme and mode (gate.ts), and the palette and the
@@ -46,7 +46,7 @@ type Steps = Record<TextRole, number>;
  * the engine holds a target to its floor on the washes of its family, so a target under the
  * floors no longer reads faint (#1414), while a pinned step skips the search. They are the steps
  * the targets 45, 30, 22 and 15 the demo started from landed on (the neutral ramp of the banner:
- * Lc 48.5, 36.2, 25.0 and 15.2 on its overlay, light mode; test/start.test.mts holds each under
+ * Lc 48.5, 36.2, 25.0 and 15.2 on its overlay, light mode; introduction.test.mts holds each under
  * its floor).
  */
 export const POOR_STEPS: Steps = { default: 6, muted: 7, subtle: 8, disabled: 9 };
@@ -89,7 +89,7 @@ export function magmaSteps(): Steps {
  * How much of its contrast the ramp of the accent keeps at the start: 0.6 puts the ink of the
  * icons and the fill of the main action under their floors (Lc 46 of 60, 49 of 75), and brings
  * them back over at different steps, the icons before the action (measured on the committed
- * configuration, test/start.test.mts).
+ * configuration, introduction.test.mts).
  */
 export const PALE_RAMP = 0.6;
 
@@ -203,7 +203,7 @@ export interface DemoReading {
   cell: GateCell;
 }
 
-/** The tone of the bar of the hero (start.tsx), one of the states of Magma. */
+/** The tone of the bar of the hero (introduction.tsx), one of the states of Magma. */
 export type DemoTone = 'error' | 'warning' | 'success';
 
 export interface DemoStep {

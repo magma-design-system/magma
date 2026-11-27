@@ -8,7 +8,6 @@ import { within } from '@testing-library/preact'
 import initialConfig from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json'
 import blueMark from '@maggioli-design-system/identity/dist/internal/magma-design-system/logo-magma.svg?url'
 import whiteMark from '@maggioli-design-system/identity/dist/internal/magma-design-system/logo-magma-white.svg?url'
-import { DRAFT_STORAGE_KEY, hashText, type StudioDraft } from '../src/state/draft.js'
 import { Studio, applyFrame } from '../src/app/shell.js'
 import { createStudio, type StudioState } from '../src/state/studio.js'
 import { THEME_CHOICES_KEY, setThemeModes, setThemeName } from '../src/state/theme-choices.js'
@@ -44,9 +43,9 @@ const at = async (hash: string, state?: StudioState) => {
     if (!root.querySelector('mds-header-bar')) throw new Error('no bar yet')
   })
 }
-// the name of the studio, a link to the Start page
+// the name of the studio, a link to the introduction
 const product = () => within(root).getByRole('link', { name: /^Magma Studio/ })
-// the Start page, the main landmark its hero is in, the region its title names
+// the introduction, the main landmark its hero is in, the region its title names
 const START_TITLE = 'The theme of your product, readable by everyone'
 const startPage = () => within(root).queryByRole('region', { name: START_TITLE })?.closest('main') ?? null
 // the bar of the Theme section, a toolbar named after it
@@ -183,44 +182,20 @@ test('served by a command that takes saves, the exit saves the preset and its me
     .toEqual(['config', 'zip', 'figma', 'css', 'gimp', 'copy', 'build', 'import'])
 })
 
-// The Start page comes before the sections (start.tsx): a start with no address opens it, the
-// name of the studio links back to it, and its first step opens the palette, or the page of
-// Colors the draft was on
-test('a start with no address opens the Start page, which the name of the studio links to', async () => {
+// The introduction comes before the stages (features/introduction/, the Start page until #1402):
+// a start with no address opens it, the name of the studio links back to it, and it leads out to
+// the opening
+test('a start with no address opens the introduction, which the name of the studio links to', async () => {
   await at('')
-  await vi.waitFor(() => expect(location.hash).toBe('#/start'))
+  await vi.waitFor(() => expect(location.hash).toBe('#/introduction'))
   const start = startPage()
   expect(start?.querySelector('mds-text[tag="h1"]')?.textContent?.trim()).toBe(START_TITLE)
-  expect(product().getAttribute('href')).toBe('#/start')
+  expect(product().getAttribute('href')).toBe('#/introduction')
   // no section of the bar is the one on screen; the changes are outlined
   const nav = [...root.querySelectorAll('mds-header-bar > mds-button[slot="nav"]')]
   expect(nav.map((one) => one.getAttribute('tone'))).toEqual(['text', 'text', 'outline'])
-  expect(links(start).find(({ text }) => text === 'Open the palette')?.href).toBe('#/colors/palette')
-})
-
-test('the Start page offers to continue on the page of Colors the draft was on', async () => {
-  const draft: StudioDraft = {
-    config: initialConfig as StudioDraft['config'],
-    selectedName: 'tone.neutral',
-    view: 'scales',
-    source: { path: null, hash: hashText(JSON.stringify(initialConfig)) },
-  }
-  localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft))
-  await at('#/start')
-  const start = startPage()
-  expect(start).not.toBeNull()
-  expect(links(start).find(({ text }) => text?.startsWith('Continue on'))).toEqual({
-    text: 'Continue on Contrast scales',
-    href: '#/colors/contrast-scales',
-    current: null,
-  })
-  // the page last opened, once the person has opened one
-  location.hash = '#/colors/groups'
-  await vi.waitFor(() => expect(startPage()).toBeNull())
-  location.hash = '#/start'
-  await vi.waitFor(() =>
-    expect(links(startPage()).map(({ text }) => text)).toContain('Continue on Groups'),
-  )
+  // its way out, the opening
+  expect(links(start).find(({ text }) => text === 'Get started')?.href).toBe('#/opening')
 })
 
 test('the Theme section shows the theme in a document of its own, its controls in a bar over it', async () => {
@@ -432,7 +407,7 @@ test('the mark of the bar is the white one of identity in the dark mode, at once
   html.setAttribute('data-magma-pref', '')
   html.classList.add('pref-mode-dark')
   try {
-    await at('#/start')
+    await at('#/introduction')
     const mark = () => root.querySelector('mds-header-bar img')!.getAttribute('src')
     expect(mark()).toBe(whiteMark)
     html.classList.replace('pref-mode-dark', 'pref-mode-light')
@@ -446,7 +421,7 @@ test('the mark of the bar is the white one of identity in the dark mode, at once
 // #1336: the menu of the bar, at every width, holds the preferences of the person: the language
 // first, then the mode, the contrast and the animations; on a narrow window the sections before them
 test('the menu of the bar holds the preferences of the person, at every width', async () => {
-  await at('#/start')
+  await at('#/introduction')
   expect(root.querySelector('mds-header')?.getAttribute('menu')).toBe('all')
   // the menu of the bar: the sections, a navigation, then the preferences, a group named by its title
   const menu = root.querySelector<HTMLElement>('mds-header > [slot="menu"]')!
@@ -476,7 +451,7 @@ test('the menu hides its sections from the width the bar shows them, the tablet 
 test('the studio follows the language of <html lang> at once', async () => {
   document.documentElement.lang = 'it'
   try {
-    await at('#/start')
+    await at('#/introduction')
     const nav = () => [...root.querySelectorAll('mds-header-bar > mds-button[slot="nav"]')].map((one) => textOf(one))
     expect(nav()).toEqual(['Tema', 'Regole', 'Nessuna modifica'])
     document.documentElement.lang = 'en'

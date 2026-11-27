@@ -22,7 +22,8 @@ import {
 // to the page: a link is the page (app-shell, "sections-are-links").
 
 const pages: Route[] = [
-  { section: 'start' },
+  { section: 'introduction' },
+  { section: 'opening' },
   { section: 'exceptions' },
   ...COLORS_PAGES.map(({ id }): Route => ({ section: 'colors', view: id })),
   { section: 'theme' },
@@ -35,7 +36,10 @@ test('every page has an address that leads back to it', () => {
 })
 
 test('the addresses read as the menus name the pages', () => {
-  expect(hrefOf({ section: 'start' })).toBe('#/start')
+  expect(hrefOf({ section: 'introduction' })).toBe('#/introduction')
+  expect(hrefOf({ section: 'opening' })).toBe('#/opening')
+  // the address of the Start page the introduction was (GLOSSARY.md, decision 13)
+  expect(routeOf('#/start')).toEqual({ section: 'introduction' })
   expect(hrefOf({ section: 'colors', view: 'colors' })).toBe('#/colors/palette')
   expect(hrefOf({ section: 'colors', view: 'surface' })).toBe('#/colors/semantic-surface')
   expect(hrefOf({ section: 'theme' })).toBe('#/theme')
@@ -43,7 +47,7 @@ test('the addresses read as the menus name the pages', () => {
 })
 
 test('an address that names no page is no route', () => {
-  for (const hash of ['', '#', '#/colors', '#/colors/nothing', '#/foundation', '#/start/more'])
+  for (const hash of ['', '#', '#/colors', '#/colors/nothing', '#/foundation', '#/start/more', '#/opening/more', '#/introduction/more'])
     expect(routeOf(hash)).toBeUndefined()
   // a hash that is no address of the studio: the anchor of a heading of the page that hosts it
   for (const hash of ['#start', '#colors/palette', '#the-colors-of-a-theme'])
@@ -134,6 +138,7 @@ test('a page is a stage, a page beside one, or outside the flow', () => {
   // no stage: the Start page, the Theme section, the rules, the palette against Magma's
   for (const route of [
     HOME,
+    { section: 'opening' },
     { section: 'theme' },
     { section: 'theme', theme: 'editorial', mode: 'dark' },
     { section: 'behavior', page: 'patterns' },
@@ -149,8 +154,8 @@ test('each stage leads back to the view before it and forward to the stage after
     return [name(before), name(after)]
   }
   // the first stage leads back to the view before the stages
-  expect(named(0)).toEqual(['Introduction #/start', '2. Weights #/colors/semantic-surface'])
-  expect(BEFORE_STAGES.route).toEqual(HOME)
+  expect(named(0)).toEqual(['Opening #/opening', '2. Weights #/colors/semantic-surface'])
+  expect(BEFORE_STAGES.route).toEqual({ section: 'opening' })
   expect(named(1)).toEqual(['1. Colors #/colors/palette', '3. Themes #/colors/themes'])
   expect(named(3)).toEqual(['3. Themes #/colors/themes', 'Full review #/colors/contrast-check'])
   // the full review has no number, and the exit after it

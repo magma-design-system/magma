@@ -11,7 +11,7 @@ import { ConfigItems, useConfigMenu } from './config-menu.js';
 import { GateDialog } from '../features/contrast-check/gate-dialog.js';
 import { RulesPage } from '../features/rules/rules.js';
 import { ExceptionsPage } from '../features/exceptions/exceptions.js';
-import { StartPage } from '../start.js';
+import { IntroductionPage } from '../features/introduction/introduction.js';
 import { ThemePage } from '../theme-section.js';
 import { createStudio, StudioContext, useStudio, type StudioState } from '../state/studio.js';
 import { cancelExport, confirmExport, exitOf, guard } from '../state/exports.js';
@@ -35,7 +35,7 @@ export { applyFrame, type Scheme } from '../shared/frames/frame.js';
 
 /*
   The shell of the studio (#695; in app/ since #1402): the bar of the application and its three
-  sections, the Start page before them, built with the components of the Magma installed where the
+  sections, the introduction before them, built with the components of the Magma installed where the
   studio runs (vendor.ts). The bar follows the
   app-shell block of Magma; Colors and Behavior open their pages from a menu, a case the block
   does not have yet (#695). Config, after them, is a menu of actions, not a section: it brings a
@@ -112,7 +112,7 @@ export function Studio({ state, router }: StudioProps = {}) {
             </div>
           )}
           {route.section === 'exceptions' && <ExceptionsPage foot={foot} />}
-          {route.section === 'start' && <StartPage draftView={studio.colorsView.value} />}
+          {route.section === 'introduction' && <IntroductionPage />}
           {route.section === 'theme' && (
             <ThemePage
               theme={route.theme}

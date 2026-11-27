@@ -14,9 +14,13 @@ import { msg } from '../i18n/text.js';
   - Colors: the views of the tokens playground, each a page of its own;
   - Theme: the theme full screen, with its controls over it;
   - Behavior: the design language, the patterns and the blocks.
-  Before them the Start page (start.tsx): what the studio does, the steps of the work and what
-  each section changes; the name of the studio at the start of the bar (app-shell, `product`)
-  links to it. It is no page of a menu, so it has no row in PAGES: its address is `#/start`.
+  Before them the introduction (features/introduction/, the Start page until #1402): what the
+  studio is for and the stages in order; the name of the studio at the start of the bar
+  (app-shell, `product`) links to it, and so does a start with no address. Then the opening
+  (features/opening/): the preset to work on. Neither is a page of a menu, so neither has a row in
+  PAGES: their addresses are `#/introduction` and `#/opening`. `#/start`, the address of the Start
+  page, opens the introduction too (GLOSSARY.md, decision 13), and the router writes its address
+  in its place.
 
   The stages of the balancing (#1402, STAGES below) run through those pages in the order of the
   work: until #1403 and #1404 build their views, each stage opens the page of today that does its
@@ -61,7 +65,9 @@ export type ModeView = (typeof MODE_VIEWS)[number];
  * (vittorio, 2026-11-07), and the address follows the choices made in the section.
  */
 export type Route =
-  | { section: 'start' }
+  | { section: 'introduction' }
+  /** The opening: the preset to work on (#1402). */
+  | { section: 'opening' }
   | { section: 'colors'; view: ColorsView }
   | { section: 'theme'; theme?: string; mode?: ModeView }
   | { section: 'behavior'; page: BehaviorPage }
@@ -69,7 +75,7 @@ export type Route =
   | { section: 'exceptions' };
 
 /** A section of the bar: its pages are the rows of PAGES that name it. */
-export type Section = Exclude<Route['section'], 'start' | 'exceptions'>;
+export type Section = Exclude<Route['section'], 'introduction' | 'opening' | 'exceptions'>;
 
 export interface MenuItem<Id extends string> {
   id: Id;
@@ -170,14 +176,18 @@ export const BEHAVIOR_PAGES: MenuItem<BehaviorPage>[] = pagesOf('behavior');
 export const THEME_PAGE: MenuItem<'theme'> = pagesOf('theme')[0];
 
 /**
- * The first page of the studio: the Start page, which says what the studio does and where each
- * change is made, before the work starts on the palette. A start with no address opens it.
+ * The first page of the studio: the introduction, which says what the studio is for and the
+ * stages in order, before the opening. A start with no address opens it.
  */
-export const HOME: Route = { section: 'start' };
+export const HOME: Route = { section: 'introduction' };
+
+/** The address of the Start page the introduction was, kept so a link written before opens it. */
+export const START_ALIAS = '#/start';
 
 /** The address of a page, as a link writes it: `#/colors/palette`. */
 export function hrefOf(route: Route): string {
-  if (route.section === 'start') return '#/start';
+  if (route.section === 'introduction') return '#/introduction';
+  if (route.section === 'opening') return '#/opening';
   if (route.section === 'exceptions') return '#/exceptions';
   if (route.section === 'theme') {
     if (!route.theme) return '#/theme';
@@ -195,7 +205,9 @@ export const isAddress = (hash: string): boolean => hash.startsWith('#/');
 export function routeOf(hash: string): Route | undefined {
   if (!isAddress(hash)) return undefined;
   const [section, slug, ...rest] = hash.slice(2).split('/');
-  if (section === 'start') return slug === undefined ? { section: 'start' } : undefined;
+  if (hash === START_ALIAS) return { section: 'introduction' };
+  if (section === 'introduction' || section === 'opening')
+    return slug === undefined ? { section } : undefined;
   if (section === 'exceptions') return slug === undefined ? { section: 'exceptions' } : undefined;
   if (section === 'theme') {
     if (!slug) return rest.length ? undefined : { section: 'theme' };
@@ -287,13 +299,10 @@ export const STAGES: readonly Stage[] = [
   },
 ];
 
-/**
- * The view before the first stage, where its way back leads: the introduction, until the
- * opening stands between them (#1402).
- */
+/** The view before the first stage, where its way back leads: the opening. */
 export const BEFORE_STAGES: { route: Route; label: string } = {
-  route: HOME,
-  label: msg('Introduction'),
+  route: { section: 'opening' },
+  label: msg('Opening'),
 };
 
 /** Where a page stands in the flow: a stage, a page beside one, or neither (undefined). */
