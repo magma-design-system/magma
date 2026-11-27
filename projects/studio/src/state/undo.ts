@@ -9,13 +9,18 @@ import { clone, type StudioState, type Text } from './studio.js';
   the toast (studio.ts), so Undo never takes back more than the action did.
 */
 
-/** Runs an action that takes work away, kept for Undo with what the toast says. */
+/**
+ * Runs an action that takes work away, kept for Undo with what the toast says: the preset, the
+ * family selected and the theme choices before it (a theme deleted or moved to another tint
+ * changes both the preset and the choices, #1404).
+ */
 export function undoably(state: StudioState, said: Text, act: () => void): void {
   const before = clone(state.config.peek());
   const selectedName = state.selectedName.peek();
+  const choices = state.themeChoices.peek();
   batch(() => {
     act();
-    state.lastUndo.value = { said, before, selectedName, after: state.json.peek() };
+    state.lastUndo.value = { said, before, selectedName, choices, after: state.json.peek() };
   });
 }
 
@@ -27,6 +32,7 @@ export function undoLast(state: StudioState): void {
     state.lastUndo.value = null;
     state.config.value = clone(undo.before);
     state.selectedName.value = undo.selectedName;
+    state.themeChoices.value = undo.choices;
   });
 }
 

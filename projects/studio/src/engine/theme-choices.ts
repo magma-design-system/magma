@@ -21,3 +21,25 @@ export interface ThemeChoices {
 
 /** No choice: every theme as Magma ships it, or as its family. */
 export const NO_THEME_CHOICES: ThemeChoices = { names: {}, accents: {}, modes: {} };
+
+/**
+ * The choices of a theme moved to another family, its new tint (#1404): the name it had (given or
+ * not, so the theme keeps it), its accents and its modes go with it, and the family it leaves keeps
+ * none.
+ */
+export function moveChoices(
+  choices: ThemeChoices,
+  from: string,
+  to: string,
+  name: string,
+): ThemeChoices {
+  function take<V>(record: Record<string, V>): Record<string, V> {
+    const { [from]: moved, ...rest } = record;
+    return moved === undefined ? rest : { ...rest, [to]: moved };
+  }
+  return {
+    names: { ...take(choices.names), [to]: name },
+    accents: take(choices.accents),
+    modes: take(choices.modes),
+  };
+}

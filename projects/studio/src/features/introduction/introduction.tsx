@@ -73,13 +73,13 @@ const lessMotion = (): boolean =>
  * the comment above it: a line the studio stops holding goes with it.
  */
 export const FEATURES: string[] = [
-  // the Themes page: the colour modes each theme is used in (theme-choices.ts, `modes`)
+  // the stage Themes: the colour modes each theme is used in (theme-choices.ts, `modes`)
   msg('Themes in light and dark, or in one mode of your choice'),
   // the contrast gate of the build of Magma, run on the configuration at every edit (gate.ts)
   msg('Contrast checked by itself at every edit'),
   // Palette and Contrast scales: the base colour of a family, the contrast of each step of its ramp
   msg('Colour ramps you shape step by step'),
-  // the downloads (app.tsx): the Figma tokens (DTCG), the configuration and the tokens Magma
+  // the downloads (the menu of the exit, app/config-menu.tsx): the Figma tokens (DTCG), the configuration and the tokens Magma
   // builds with, the CSS tokens, a GIMP palette
   msg('Exports for Figma, the design system, CSS and GIMP'),
 ];

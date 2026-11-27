@@ -41,7 +41,7 @@ beforeEach(async () => {
     configs.push(studio.config.value)
   })
   render(
-    inStudio(studio, h(ColoursPage, {}), h(ConfigMenu, { take: (handed: ConfigAction[]) => (actions = handed) })),
+    inStudio(studio, h(ColoursPage, null), h(ConfigMenu, { take: (handed: ConfigAction[]) => (actions = handed) })),
     root,
   )
   await vi.waitFor(() => expect(heading()).toBe('tone.neutral'))
@@ -595,6 +595,7 @@ test('the head of the view is its title and the verdict of the check; the exit t
     ['Download Figma tokens', 'DTCG'],
     ['Download CSS tokens', 'css'],
     ['Download GIMP palette', 'gpl'],
+    ['Download the CSS of the themes', 'css'],
     ['Copy JSON', undefined],
   ])
 
@@ -714,10 +715,10 @@ test('a family that paints Magma is offered the compatible scales alone; one out
   )
 })
 
-test('the head of the family says what it paints, in which themes, with a link to Themes', async () => {
+test('the head of the family says what it paints, in which themes, each a link to it in Themes', async () => {
   const paints = () => root.querySelector('[data-paints]')
   await vi.waitFor(() => expect(paints()?.textContent).toBe('Tint of the theme business.'))
-  expect(paints()?.querySelector('mds-link')?.getAttribute('href')).toBe('#/colors/themes')
+  expect(paints()?.querySelector('mds-link')?.getAttribute('href')).toBe('#/themes/business')
   selectFamily(studio, 'label.red')
   await vi.waitFor(() => expect(paints()?.textContent).toBe('It paints the variant red.'))
   selectFamily(studio, 'brand.rnd')

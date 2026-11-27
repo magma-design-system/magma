@@ -87,12 +87,12 @@ export function statesMarkup(plan: StatesPlan, t: T): string {
     const { tag, tones } = plan.action;
     const head = tones
       .map(
-        (tone) => `<mds-text typography="caption" class="states-muted">${escape(tone)}</mds-text>`,
+        (tone) => `<mds-text typography="caption" class="text-fg-muted">${escape(tone)}</mds-text>`,
       )
       .join('');
     const rows = ACTION_STATES.map(
       ({ label, attribute }) =>
-        `<mds-text typography="caption" class="states-muted">${escape(t(label))}</mds-text>` +
+        `<mds-text typography="caption" class="text-fg-muted">${escape(t(label))}</mds-text>` +
         tones
           .map(
             (tone) =>
@@ -100,15 +100,19 @@ export function statesMarkup(plan: StatesPlan, t: T): string {
           )
           .join(''),
     ).join('');
+    // a row per state, a column per tone, the names of both at the edges. A scroller clips what
+    // its items draw past their box (the ring of an outline, the shadow of a box, the focus ring),
+    // the other axis too: room for them as wide as the inset of the page, given back by the
+    // margin, so the grid reaches the edges of the frame and the rhythm stays
     parts.push(
-      `<section class="states-grid" style="--states-tones: ${tones.length}" aria-label="${named(tag)}"><span></span>${head}${rows}</section>`,
+      `<section class="-me-inset -mb-inset grid grid-cols-[max-content_repeat(var(--states-tones),max-content)] items-center justify-items-start gap-inline overflow-x-auto pe-inset pb-inset" style="--states-tones: ${tones.length}" aria-label="${named(tag)}"><span></span>${head}${rows}</section>`,
     );
   }
   if (plan.message) {
     const { tag, tones } = plan.message;
     const text = escape(t('The text of a message of the page.'));
     parts.push(
-      `<section class="states-stack" aria-label="${named(tag)}">${tones
+      `<section class="grid gap-between-containers" aria-label="${named(tag)}">${tones
         .map(
           (tone) =>
             `<${tag} variant="${variant}" tone="${escape(tone)}" headline="${escape(t('Tone {tone}', { tone }))}">${text}</${tag}>`,
@@ -118,7 +122,7 @@ export function statesMarkup(plan: StatesPlan, t: T): string {
   }
   for (const { tag, tones } of plan.markers)
     parts.push(
-      `<section class="states-row" aria-label="${named(tag)}">${tones
+      `<section class="flex flex-wrap items-center gap-inline" aria-label="${named(tag)}">${tones
         .map(
           (tone) =>
             `<${tag} variant="${variant}" tone="${escape(tone)}" label="${escape(tone)}"></${tag}>`,

@@ -11,47 +11,12 @@
       <main> (states.ts) and sets the theme, the mode and the palette of the family solved on the
       scale on <html>, as it does for the scene (frame.ts): a document of its own, so the palette
       moves this page and leaves the studio alone.
-      The plain CSS below takes every value from the tokens of the installed Magma.
+      The page is written in the classes of Magma (src/tailwind.css), the markup states.ts writes
+      too, and needs no sheet of its own.
     -->
-    <style>
-      .states-main {
-        display: grid;
-        gap: var(--magma-rhythm-between-containers);
-        padding: var(--magma-rhythm-inset);
-      }
-      .states-muted {
-        color: rgb(var(--magma-text-muted));
-      }
-      /* an action: a row per state, a column per tone, the names of both at the edges */
-      .states-grid {
-        display: grid;
-        gap: var(--magma-rhythm-inline);
-        grid-template-columns: max-content repeat(var(--states-tones), max-content);
-        align-items: center;
-        justify-items: start;
-        overflow-x: auto;
-        /* a scroller clips what its items draw past their box (the ring of an outline, the shadow
-           of a box, the focus ring), the other axis too: room for them as wide as the inset of
-           the page, given back by the margin, so the grid reaches the edges of the frame and the
-           rhythm stays */
-        margin-block-end: calc(-1 * var(--magma-rhythm-inset));
-        margin-inline-end: calc(-1 * var(--magma-rhythm-inset));
-        padding-block-end: var(--magma-rhythm-inset);
-        padding-inline-end: var(--magma-rhythm-inset);
-      }
-      .states-stack {
-        display: grid;
-        gap: var(--magma-rhythm-between-containers);
-      }
-      .states-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: var(--magma-rhythm-inline);
-        align-items: center;
-      }
-    </style>
+    <link rel="stylesheet" href="/src/tailwind.css" />
   </head>
   <body>
-    <main id="states" class="states-main"></main>
+    <main id="states" class="grid gap-between-containers p-inset"></main>
   </body>
 </html>

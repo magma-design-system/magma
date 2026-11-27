@@ -162,3 +162,14 @@ export function touchedSummary(pairs: readonly TouchedPair[]): TouchedSummary {
     below: count('below'),
   };
 }
+
+/** Every cell of one theme, in both modes: the pairs the stage Themes measures a theme by (#1404). */
+export function cellsOfTheme(report: GateReport, theme: string): Set<string> {
+  const cells = new Set<string>();
+  for (const one of report.themes)
+    if (one.name === theme)
+      for (const pair of one.pairs)
+        for (const mode of MODES)
+          if (pair.cells[mode]) cells.add(cellKey(one.name, pair.fg, pair.bg, mode));
+  return cells;
+}

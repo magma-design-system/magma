@@ -310,7 +310,7 @@ export function FamilyFields(props: FamilyFieldsProps) {
             <Select
               // mds-input-select reads its options once, when they enter it: a change of their marks
               // (another family, another curve) mounts it again, as the components that read their
-              // text once (README, "Languages")
+              // text once (docs/languages.md)
               key={colorspaceOptions.map((option) => option.label).join('|')}
               value={family.colorspace ?? ''}
               options={colorspaceOptions}

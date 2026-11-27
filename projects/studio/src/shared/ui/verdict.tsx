@@ -5,7 +5,7 @@ import { msg, plural, useT, type T } from '../i18n/i18n.js';
 /*
   The verdict of the contrast gate as badges (#698): the status of the configuration, beside the
   title of every page of Colors and at the head of the Colors menu, and the verdict of a theme per
-  mode, on its card of the Themes page and of the Contrast check page. Types only from gate.ts, so
+  mode, in the list of the stage Themes and under the theme at its centre. Types only from gate.ts, so
   the pages that draw a verdict (themes.tsx) do not load the gate, which reads them.
 */
 
@@ -52,7 +52,7 @@ export function GateBadge({ verdict }: { verdict: GateVerdict | null }) {
       <mds-badge
         variant="error"
         label={verdictLabel(t, verdict)}
-        title={t('The pairs are on the Contrast check page')}
+        title={t('The pairs are in the full review')}
       ></mds-badge>
     );
   return (

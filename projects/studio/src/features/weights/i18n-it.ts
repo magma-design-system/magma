@@ -16,7 +16,6 @@ export const IT_WEIGHTS: Record<string, string> = {
   'In each mode a surface is never lighter than the one above it, from sunken to overlay; equal levels are allowed. Move either slider and the surfaces past it follow.':
     'In ogni modalità una superficie non è mai più chiara di quella sopra, da sunken a overlay; livelli uguali sono ammessi. Muovi uno dei due slider e le superfici oltre lo seguono.',
   '{role} at {level} over {above} at {aboveLevel}': '{role} a {level} sopra {above} a {aboveLevel}',
-  'The scene of the product': 'La scena del prodotto',
   'The scene of the product, in the theme {theme}, in {mode}: it follows the tab.':
     'La scena del prodotto, nel tema {theme}, in {mode}: segue la scheda.',
   'The theme {theme} has no {mode} mode: the scene shows it in {shown}.':

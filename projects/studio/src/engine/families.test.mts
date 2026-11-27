@@ -78,7 +78,7 @@ test('a new group takes a name that names tokens, never a derived one, never var
 })
 
 test('the themes that use a family, as their tint or through an accent', () => {
-  const { themes } = sceneStyle(preset, NO_THEME_CHOICES)
+  const { themes } = sceneStyle(preset, NO_THEME_CHOICES)!
   expect(themesUsing(preset, 'tone.neutral', themes, NO_THEME_CHOICES)).toEqual([{ theme: 'business', as: 'tint' }])
   // business and porcelain point their accent at variant.primary, which follows brand.maggioli;
   // editorial points it at variant.secondary, which follows brand.maggioli-editore

@@ -262,9 +262,9 @@ test('the stages in order, each with what it does and the link that opens it', (
     { caption: 'Before the stages', name: 'Opening', link: ['Open Opening', '#/opening'] },
     { caption: 'Stage 1', name: 'Colors', link: ['Open Colors', '#/colours'] },
     { caption: 'Stage 2', name: 'Weights', link: ['Open Weights', '#/weights'] },
-    { caption: 'Stage 3', name: 'Themes', link: ['Open Themes', '#/colors/themes'] },
+    { caption: 'Stage 3', name: 'Themes', link: ['Open Themes', '#/themes'] },
     { caption: 'Stage 4', name: 'Exceptions', link: ['Open Exceptions', '#/exceptions'] },
-    { caption: 'After the stages', name: 'Full review', link: ['Open Full review', '#/colors/contrast-check'] },
+    { caption: 'After the stages', name: 'Full review', link: ['Open Full review', '#/full-review'] },
   ])
   // the stages are those of the table of the pages, in its order
   expect(FLOW.slice(1).map(({ route }) => hrefOf(route))).toEqual(STAGES.map(({ route }) => hrefOf(route)))

@@ -1,8 +1,8 @@
 /*
   The Italian of the studio (#1336), by the English text it translates (i18n.ts). The studio
   speaks to the person with "tu", as the Italian of the Magma components does ("Hai caricato",
-  "Seleziona"). The words that come back on every page keep one Italian form, the glossary of the
-  README ("Languages"). The catalogue is in parts, by the pages they translate: this file holds the
+  "Seleziona"). The words that come back on every page keep one Italian form, the glossary of
+  docs/languages.md. The catalogue is in parts, by the pages they translate: this file holds the
   shell and what the modules share, the pages of Colors have a file each (i18n-it-*.ts), and the
   previews keep their own (i18n-it-previews.ts, i18n-previews.ts).
 */
@@ -28,6 +28,21 @@ export const IT_SHELL: Record<string, string> = {
 
   // the bar and its menu (app/shell.tsx)
   'for Magma v{version}': 'per Magma v{version}',
+  'Download the CSS of the themes': 'Scarica il CSS dei temi',
+  'Could not build the CSS of the themes: {error}':
+    'Non è stato possibile creare il CSS dei temi: {error}',
+  // a theme a change broke (app/shell.tsx, Toasts, #1404)
+  'The theme {theme} no longer passes the contrast check in {mode}: {count} pair under its floor.':
+    'Il tema {theme} non supera più la verifica del contrasto in modalità {mode}: {count} coppia sotto la soglia.',
+  'The theme {theme} no longer passes the contrast check in {mode}: {count} pairs under their floor.':
+    'Il tema {theme} non supera più la verifica del contrasto in modalità {mode}: {count} coppie sotto la soglia.',
+  'Review it': 'Rivedilo',
+  // a theme deleted, or moved to another tint, undone from a toast (state/themes.ts, #1404)
+  'The theme {theme} takes its tint from {family}.': 'Il tema {theme} prende la tinta da {family}.',
+  'The theme {theme} deleted.': 'Tema {theme} eliminato.',
+  // the scene beside a stage and its conditions (Weights, Themes, the full review)
+  'The scene of the product': 'La scena del prodotto',
+  'More contrast': 'Più contrasto',
   Colors: 'Colori',
   Theme: 'Tema',
   // Regole, not Comportamento: the pages of the section are rules (of composition, patterns,
@@ -40,7 +55,6 @@ export const IT_SHELL: Record<string, string> = {
   // the pages of the sections (shared/routes/routes.ts)
   Themes: 'Temi',
   Groups: 'Gruppi',
-  'Contrast check': 'Verifica del contrasto',
   'Design language': 'Linguaggio di design',
   Patterns: 'Pattern',
   Blocks: 'Blocchi',
@@ -48,7 +62,6 @@ export const IT_SHELL: Record<string, string> = {
   // register (GLOSSARY.md): the stepper, the foot of a stage, the exit (state/exports.ts)
   Stages: 'Passi',
   'The stage before and after': 'Il passo prima e quello dopo',
-  'Beside {stage}': 'Accanto a {stage}',
   Weights: 'Pesi',
   Exceptions: 'Eccezioni',
   'Full review': 'Giro completo',
@@ -69,6 +82,8 @@ export const IT_SHELL: Record<string, string> = {
   // the pairs of the contrast check a family or a scale touches (shared/ui/touched-pairs.tsx)
   '{count} pair touched': '{count} coppia toccata',
   '{count} pairs touched': '{count} coppie toccate',
+  '{count} pair of the theme': '{count} coppia del tema',
+  '{count} pairs of the theme': '{count} coppie del tema',
   'all above their floor, in light and in dark': 'tutte sopra la soglia, in chiaro e in scuro',
   'all above their floor, in light': 'tutte sopra la soglia, in chiaro',
   'all above their floor, in dark': 'tutte sopra la soglia, in scuro',
@@ -160,12 +175,12 @@ export const IT_SHELL: Record<string, string> = {
   '{count} contrasts below target': "{count} contrasti sotto l'obiettivo",
   'Contrast not measured': 'Contrasto non misurato',
   '{count} known offender accepted by the baseline of design-tokens':
-    '{count} eccezione nota accettata dalla baseline di design-tokens',
+    '{count} coppia accettata dalla baseline di design-tokens',
   '{count} known offenders accepted by the baseline of design-tokens':
-    '{count} eccezioni note accettate dalla baseline di design-tokens',
+    '{count} coppie accettate dalla baseline di design-tokens',
   'Every pair the contrast gate judges meets its target, in every theme and mode':
     'Ogni coppia giudicata dalla verifica del contrasto raggiunge il suo obiettivo, in ogni tema e modalità',
-  'The pairs are on the Contrast check page': 'Le coppie sono nella pagina Verifica del contrasto',
+  'The pairs are in the full review': 'Le coppie sono nel giro completo',
   light: 'chiaro',
   dark: 'scuro',
   '{mode}: not offered': '{mode}: non offerto',

@@ -20,120 +20,34 @@
       The window of a dialog stands for the modal, which would cover the frame.
 
       Like scene.html, a document of its own: the theme, the mode and the contrast come from the
-      bar of the Theme section (theme-section.tsx, applyFrame). The plain CSS below takes every value
-      from the tokens of the installed Magma; the script writes the matrices from their lists.
+      bar of the Theme section (theme-section.tsx, applyFrame). The page is written in the classes
+      of Magma (src/tailwind.css), and needs no sheet of its own; the script writes the matrices
+      from their lists, each class written whole, as Tailwind reads it.
     -->
-    <style>
-      .groups-main {
-        display: grid;
-        gap: var(--magma-rhythm-between-sections);
-        max-width: var(--magma-width-page);
-        margin-inline: auto;
-        padding: var(--magma-rhythm-between-groups) var(--magma-width-page-gutter);
-      }
-      .groups-section {
-        display: grid;
-        gap: var(--magma-rhythm-between-groups);
-      }
-      .groups-head,
-      .groups-part {
-        display: grid;
-        gap: var(--magma-rhythm-title-content);
-      }
-      .groups-part {
-        gap: var(--magma-rhythm-between-fields);
-      }
-      .groups-muted {
-        color: rgb(var(--magma-text-muted));
-      }
-      .groups-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: var(--magma-rhythm-inline);
-        align-items: center;
-      }
-      /* a matrix: the names of the columns over it, the name of each row before it */
-      .groups-matrix {
-        display: grid;
-        grid-template-columns: repeat(calc(var(--groups-columns) + 1), max-content);
-        gap: var(--magma-rhythm-inline);
-        align-items: center;
-        justify-content: start;
-        justify-items: start;
-        overflow-x: auto;
-      }
-      /* the banners take the width of their column, which their text needs */
-      .groups-matrix.groups-wide {
-        grid-template-columns: max-content repeat(var(--groups-columns), minmax(0, 1fr));
-        justify-content: stretch;
-        justify-items: stretch;
-      }
-      /* the rows of one tone: its name, then every variant in it */
-      .groups-tones {
-        display: grid;
-        grid-template-columns: max-content 1fr;
-        gap: var(--magma-rhythm-inline);
-        align-items: center;
-      }
-      .groups-cards {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(min(100%, calc(var(--magma-width-form) * 2 / 3)), 1fr));
-        gap: var(--magma-rhythm-between-containers);
-        align-items: start;
-      }
-      .groups-fields {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(min(100%, calc(var(--magma-width-form) / 2)), 1fr));
-        gap: var(--magma-rhythm-between-fields) var(--magma-rhythm-between-containers);
-        align-items: start;
-      }
-      /* the surfaces, each with the text of every prominence, a link and a badge on it */
-      .groups-box {
-        display: grid;
-        gap: calc(var(--spacing) * 100);
-        align-content: start;
-        justify-items: start;
-        padding: var(--magma-rhythm-inset);
-        border: thin solid rgb(var(--magma-border-default));
-        border-radius: var(--magma-radius-lg);
-        corner-shape: var(--magma-corner-shape);
-      }
-      /* the window of a dialog at its width, then the dropdown and the tooltip open under their
-         triggers beside it, room kept for them below */
-      .groups-floating {
-        display: flex;
-        flex-wrap: wrap;
-        gap: var(--magma-rhythm-between-groups) calc(var(--spacing) * 4800);
-        align-items: start;
-        padding-block-end: calc(var(--spacing) * 4800);
-      }
-      .groups-floating > mds-banner {
-        flex: 0 1 var(--magma-width-dialog);
-      }
-    </style>
+    <link rel="stylesheet" href="/src/tailwind.css" />
   </head>
   <body>
-    <main class="groups-main">
-      <header class="groups-head">
+    <main class="mx-auto grid max-w-(--magma-width-page) gap-between-sections px-(--magma-width-page-gutter) py-between-groups">
+      <header class="grid gap-title-content">
         <mds-text typography="page" tag="h1">Groups</mds-text>
-        <mds-text typography="detail" tag="p" class="groups-muted">
+        <mds-text typography="detail" tag="p" class="text-fg-muted">
           The components by their role in the composition: what holds content, what the person acts with, what is read at a glance.
         </mds-text>
       </header>
 
-      <section class="groups-section" aria-labelledby="container">
-        <header class="groups-head">
+      <section class="grid gap-between-groups" aria-labelledby="container">
+        <header class="grid gap-title-content">
           <mds-text id="container" typography="section" tag="h2">Container</mds-text>
-          <mds-text typography="detail" tag="p" class="groups-muted">Card, banner, accordion, table, dropdown, tooltip, and the window of a dialog.</mds-text>
+          <mds-text typography="detail" tag="p" class="text-fg-muted">Card, banner, accordion, table, dropdown, tooltip, and the window of a dialog.</mds-text>
         </header>
-        <div class="groups-part">
+        <div class="grid gap-between-fields">
           <mds-text typography="part" tag="h3">Surfaces, text and borders</mds-text>
-          <div class="groups-cards" data-surfaces></div>
-          <div class="groups-cards" data-borders></div>
+          <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,calc(var(--magma-width-form)*2/3)),1fr))] items-start gap-between-containers" data-surfaces></div>
+          <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,calc(var(--magma-width-form)*2/3)),1fr))] items-start gap-between-containers" data-borders></div>
         </div>
-        <div class="groups-part">
+        <div class="grid gap-between-fields">
           <mds-text typography="part" tag="h3">Card, accordion, table</mds-text>
-          <div class="groups-cards">
+          <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,calc(var(--magma-width-form)*2/3)),1fr))] items-start gap-between-containers">
             <mds-card>
               <mds-card-header>
                 <mds-text typography="part" tag="h4">Card</mds-text>
@@ -176,14 +90,17 @@
             </mds-table>
           </div>
         </div>
-        <div class="groups-part">
+        <div class="grid gap-between-fields">
           <mds-text typography="part" tag="h3">Banner, by variant and tone</mds-text>
-          <div class="groups-matrix groups-wide" data-banners></div>
+          <!-- the banners take the width of their column, which their text needs -->
+          <div class="grid grid-cols-[max-content_repeat(var(--groups-columns),minmax(0,1fr))] items-center justify-stretch justify-items-stretch gap-inline overflow-x-auto" data-banners></div>
         </div>
-        <div class="groups-part">
+        <div class="grid gap-between-fields">
           <mds-text typography="part" tag="h3">Dialog window, dropdown, tooltip</mds-text>
-          <div class="groups-floating">
-            <mds-banner variant="light" tone="box" headline="Window of a dialog" dismissible>
+          <!-- the window of a dialog at its width, then the dropdown and the tooltip open under their
+               triggers beside it, room kept for them below -->
+          <div class="flex flex-wrap items-start gap-x-4800 gap-y-between-groups pb-4800">
+            <mds-banner class="flex-[0_1_var(--magma-width-dialog)]" variant="light" tone="box" headline="Window of a dialog" dismissible>
               A form, a choice, a confirmation.
               <mds-button slot="action" variant="dark" tone="outline" size="sm">Cancel</mds-button>
               <mds-button slot="action" size="sm">Confirm</mds-button>
@@ -199,18 +116,19 @@
         </div>
       </section>
 
-      <section class="groups-section" aria-labelledby="control">
-        <header class="groups-head">
+      <section class="grid gap-between-groups" aria-labelledby="control">
+        <header class="grid gap-title-content">
           <mds-text id="control" typography="section" tag="h2">Control</mds-text>
-          <mds-text typography="detail" tag="p" class="groups-muted">Button, input, select, textarea, tab.</mds-text>
+          <mds-text typography="detail" tag="p" class="text-fg-muted">Button, input, select, textarea, tab.</mds-text>
         </header>
-        <div class="groups-part">
+        <div class="grid gap-between-fields">
           <mds-text typography="part" tag="h3">Button, by variant and tone</mds-text>
-          <div class="groups-matrix" data-buttons></div>
+          <!-- a matrix: the names of the columns over it, the name of each row before it -->
+          <div class="grid grid-cols-[repeat(calc(var(--groups-columns)+1),max-content)] items-center justify-start justify-items-start gap-inline overflow-x-auto" data-buttons></div>
         </div>
-        <div class="groups-part">
+        <div class="grid gap-between-fields">
           <mds-text typography="part" tag="h3">Button, by size</mds-text>
-          <div class="groups-row">
+          <div class="flex flex-wrap items-center gap-inline">
             <mds-button size="sm">Small</mds-button>
             <mds-button size="md">Medium</mds-button>
             <mds-button size="lg">Large</mds-button>
@@ -218,13 +136,13 @@
             <mds-button icon="mi/baseline/add" aria-label="Add"></mds-button>
           </div>
         </div>
-        <div class="groups-part">
+        <div class="grid gap-between-fields">
           <mds-text typography="part" tag="h3">Fields, by state</mds-text>
-          <div class="groups-fields" data-fields></div>
+          <div class="grid grid-cols-[repeat(auto-fill,minmax(min(100%,calc(var(--magma-width-form)/2)),1fr))] items-start gap-x-between-containers gap-y-between-fields" data-fields></div>
         </div>
-        <div class="groups-part">
+        <div class="grid gap-between-fields">
           <mds-text typography="part" tag="h3">Select, textarea, date, number, tab</mds-text>
-          <div class="groups-fields">
+          <div class="grid grid-cols-[repeat(auto-fill,minmax(min(100%,calc(var(--magma-width-form)/2)),1fr))] items-start gap-x-between-containers gap-y-between-fields">
             <mds-input-field label="Select">
               <mds-input-select>
                 <option>First</option>
@@ -249,49 +167,50 @@
         </div>
       </section>
 
-      <section class="groups-section" aria-labelledby="marker">
-        <header class="groups-head">
+      <section class="grid gap-between-groups" aria-labelledby="marker">
+        <header class="grid gap-title-content">
           <mds-text id="marker" typography="section" tag="h2">Marker</mds-text>
-          <mds-text typography="detail" tag="p" class="groups-muted">Checkbox, switch, badge, chip, label, avatar, dot.</mds-text>
+          <mds-text typography="detail" tag="p" class="text-fg-muted">Checkbox, switch, badge, chip, label, avatar, dot.</mds-text>
         </header>
-        <div class="groups-part">
+        <div class="grid gap-between-fields">
           <mds-text typography="part" tag="h3">Checkbox, radio, switch</mds-text>
-          <div class="groups-row">
+          <div class="flex flex-wrap items-center gap-inline">
             <mds-input-switch type="checkbox" checked>Checked</mds-input-switch>
             <mds-input-switch type="checkbox">Unchecked</mds-input-switch>
             <mds-input-switch type="checkbox" indeterminate>Indeterminate</mds-input-switch>
             <mds-input-switch type="checkbox" checked disabled>Disabled</mds-input-switch>
           </div>
-          <div class="groups-row">
+          <div class="flex flex-wrap items-center gap-inline">
             <mds-input-switch type="radio" name="groups-radio" checked>Chosen</mds-input-switch>
             <mds-input-switch type="radio" name="groups-radio">Not chosen</mds-input-switch>
             <mds-input-switch type="radio" name="groups-radio-off" disabled>Disabled</mds-input-switch>
           </div>
-          <div class="groups-row">
+          <div class="flex flex-wrap items-center gap-inline">
             <mds-input-switch type="switch" checked>On</mds-input-switch>
             <mds-input-switch type="switch">Off</mds-input-switch>
             <mds-input-switch type="switch" checked disabled>Disabled</mds-input-switch>
           </div>
         </div>
-        <div class="groups-part">
+        <div class="grid gap-between-fields">
           <mds-text typography="part" tag="h3">Badge, by tone</mds-text>
-          <div class="groups-tones" data-badges></div>
+          <!-- the rows of one tone: its name, then every variant in it -->
+          <div class="grid grid-cols-[max-content_1fr] items-center gap-inline" data-badges></div>
         </div>
-        <div class="groups-part">
+        <div class="grid gap-between-fields">
           <mds-text typography="part" tag="h3">Chip, by tone and state</mds-text>
-          <div class="groups-tones" data-chips></div>
+          <div class="grid grid-cols-[max-content_1fr] items-center gap-inline" data-chips></div>
         </div>
-        <div class="groups-part">
+        <div class="grid gap-between-fields">
           <mds-text typography="part" tag="h3">Label, by tone</mds-text>
-          <div class="groups-tones" data-labels></div>
+          <div class="grid grid-cols-[max-content_1fr] items-center gap-inline" data-labels></div>
         </div>
-        <div class="groups-part">
+        <div class="grid gap-between-fields">
           <mds-text typography="part" tag="h3">Avatar, by tone</mds-text>
-          <div class="groups-tones" data-avatars></div>
+          <div class="grid grid-cols-[max-content_1fr] items-center gap-inline" data-avatars></div>
         </div>
-        <div class="groups-part">
+        <div class="grid gap-between-fields">
           <mds-text typography="part" tag="h3">Dot, by variant</mds-text>
-          <div class="groups-row" data-dots></div>
+          <div class="flex flex-wrap items-center gap-inline" data-dots></div>
         </div>
       </section>
     </main>
@@ -308,7 +227,7 @@
         label: { variants: [...STATES, ...HUES], tones: ['weak', 'strong'] },
         avatar: { variants: ['primary', ...STATES, ...HUES], tones: ['weak', 'strong'] },
       };
-      const caption = (text) => `<mds-text typography="caption" class="groups-muted">${text}</mds-text>`;
+      const caption = (text) => `<mds-text typography="caption" class="text-fg-muted">${text}</mds-text>`;
       const fill = (name, html) => {
         document.querySelector(`[data-${name}]`).innerHTML = html;
       };
@@ -332,29 +251,43 @@
         fill(
           name,
           tones
-            .map((tone) => caption(tone) + `<div class="groups-row">${variants.map((variant) => cell(variant, tone)).join('')}</div>`)
+            .map((tone) => caption(tone) + `<div class="flex flex-wrap items-center gap-inline">${variants.map((variant) => cell(variant, tone)).join('')}</div>`)
             .join('') + extra,
         );
 
+      // the surfaces, each with the text of every prominence, a link and a badge on it, then the
+      // borders: the class of each role written whole, as Tailwind reads it in this page
+      const SURFACES = {
+        sunken: 'bg-surface-sunken',
+        muted: 'bg-surface-muted',
+        default: 'bg-surface-default',
+        raised: 'bg-surface-raised',
+        overlay: 'bg-surface-overlay',
+      };
+      const TEXTS = { default: 'text-fg-default', muted: 'text-fg-muted', subtle: 'text-fg-subtle', disabled: 'text-fg-disabled' };
+      const BORDERS = { muted: 'border-border-muted', default: 'border-border-default', strong: 'border-border-strong' };
+      const box = (classes, html) =>
+        `<div class="grid content-start justify-items-start gap-100 rounded-(--magma-radius-lg) border p-inset [corner-shape:var(--magma-corner-shape)] ${classes}">${html}</div>`;
       fill(
         'surfaces',
-        ['sunken', 'muted', 'default', 'raised', 'overlay']
-          .map(
-            (surface) => `<div class="groups-box" style="background: rgb(var(--magma-surface-${surface}))">
-              ${caption(`surface-${surface}`)}
-              ${['default', 'muted', 'subtle', 'disabled']
-                .map((text) => `<mds-text typography="detail" style="color: rgb(var(--magma-text-${text}))">text-${text}</mds-text>`)
+        Object.entries(SURFACES)
+          .map(([surface, background]) =>
+            box(
+              `${background} border-border-default`,
+              `${caption(`surface-${surface}`)}
+              ${Object.entries(TEXTS)
+                .map(([text, color]) => `<mds-text typography="detail" class="${color}">text-${text}</mds-text>`)
                 .join('')}
               <mds-link href="#">A link</mds-link>
-              <mds-badge variant="info" label="info"></mds-badge>
-            </div>`,
+              <mds-badge variant="info" label="info"></mds-badge>`,
+            ),
           )
           .join(''),
       );
       fill(
         'borders',
-        ['muted', 'default', 'strong']
-          .map((border) => `<div class="groups-box" style="border-color: rgb(var(--magma-border-${border}))">${caption(`border-${border}`)}</div>`)
+        Object.entries(BORDERS)
+          .map(([border, color]) => box(color, caption(`border-${border}`)))
           .join(''),
       );
       matrix('banners', lists.banner, (variant, tone) => `<mds-banner variant="${variant}" tone="${tone}" headline="${variant}"></mds-banner>`);
@@ -380,7 +313,7 @@
         lists.chip,
         (variant, tone) => `<mds-chip variant="${variant}" tone="${tone}" icon="mi/baseline/label" label="${variant}"></mds-chip>`,
         caption('state') +
-          `<div class="groups-row">
+          `<div class="flex flex-wrap items-center gap-inline">
             <mds-chip label="selectable" selectable></mds-chip>
             <mds-chip label="selected" selectable selected></mds-chip>
             <mds-chip label="deletable" deletable tone="weak"></mds-chip>

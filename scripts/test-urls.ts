@@ -22,10 +22,10 @@
     `ui-chip--docs`), so no address is written without the index. Storybook's address: the port
     the `start` script of projects/stencil/package.json pins (`storybook dev -p <port>`);
   - the studio (`projects/studio/`): its pages and their addresses from
-    projects/studio/src/shared/routes/routes.ts (`COLORS_PAGES`, `BEHAVIOR_PAGES`, `hrefOf`), at the port
+    projects/studio/src/shared/routes/routes.ts (`STAGES`, `BEHAVIOR_PAGES`, `hrefOf`), at the port
     of `server.port` in projects/studio/vite.config.ts;
   - design tokens and styles (`projects/design-tokens/`, `projects/styles/`): no page of their
-    own; the Colors pages of the studio are the views of the tokens (routes.ts), the components
+    own; the stages of the studio are the views of the tokens (routes.ts), the components
     show the styles in Storybook;
   - a preview of a case (`<SOURCES.previews>/<folder>/<name>.html`): `/view/previews/<folder>/<name>`
     of serve.previews (`SOURCES`, `PORT` and the routes of projects/mcp/scripts/serve-previews.ts);
@@ -38,7 +38,6 @@ import { fileURLToPath } from 'node:url';
 import { PORT as PREVIEWS_PORT, SOURCES } from '../projects/mcp/scripts/serve-previews.ts';
 import {
   BEHAVIOR_PAGES,
-  COLORS_PAGES,
   HOME,
   hrefOf,
   type Route,
@@ -134,10 +133,10 @@ const studioPages = (base: string, only?: 'colors'): { label: string; url: strin
     // then the stage Weights, the surfaces, borders and texts of a mode (#1403)
     { label: 'Colours', route: { section: 'colours' } as Route },
     { label: 'Weights', route: { section: 'weights' } as Route },
-    ...COLORS_PAGES.map((page) => ({
-      label: `Colors / ${page.label}`,
-      route: { section: 'colors', view: page.id } as Route,
-    })),
+    // the stage Themes and the full review (#1404): the themes judged on the scene, then every
+    // theme in every mode before the exit
+    { label: 'Themes', route: { section: 'themes' } as Route },
+    { label: 'Full review', route: { section: 'full-review' } as Route },
     // the view Groups, outside the stages: what the families inherit, the ramps of every group
     { label: 'Groups', route: { section: 'groups' } as Route },
     // the stage with no page of Colors (#1402)

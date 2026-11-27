@@ -1,4 +1,5 @@
 import { exportOf, selectionOf, type ExportKind } from '../engine/exports.js';
+import { themesCssOf } from '../engine/theme-list.js';
 import { msg } from '../shared/i18n/text.js';
 import { markExited, type ExportAction, type StudioState } from './studio.js';
 import { saveConfig } from './work.js';
@@ -84,6 +85,23 @@ export function exportConfig(state: StudioState, kind: ExportKind): void {
     state.notice.value = null;
   } catch (error) {
     state.notice.value = { text: FAILURES[kind], vars: { error: messageOf(error) } };
+  }
+}
+
+/**
+ * Hands the person the CSS of the themes (#1404), the file a theme of styles is pasted from: the
+ * base is the `:root` of semantic.css, so only what the themes change is in it.
+ */
+export function downloadThemesCss(state: StudioState): void {
+  try {
+    const css = themesCssOf(state.config.peek(), state.themeChoices.peek());
+    state.download({ name: 'themes.css', data: `${css}\n`, type: 'text/css' });
+    state.notice.value = null;
+  } catch (error) {
+    state.notice.value = {
+      text: msg('Could not build the CSS of the themes: {error}'),
+      vars: { error: messageOf(error) },
+    };
   }
 }
 

@@ -63,7 +63,7 @@ export function keyColorOf(config: MagmaConfig, colorItem: ColorConfig): string 
   let current: ColorConfig | undefined = colorItem;
   while (current && !current.color && current.alias && !seen.has(current.name)) {
     seen.add(current.name);
-    const target = current.alias;
+    const target: string = current.alias;
     current = config.colors.find((one) => one.name === target);
   }
   if (!current?.color) {

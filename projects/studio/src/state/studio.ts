@@ -4,10 +4,17 @@ import { useContext } from 'preact/hooks';
 import bundledJson from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json';
 import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
 import { changesOf, type Change, type PresetState } from '../engine/changes.js';
-import { gateReport, type GateReport, type GateVerdict } from '../engine/gate.js';
+import {
+  brokenSince,
+  gateReport,
+  type BrokenTheme,
+  type GateReport,
+  type GateVerdict,
+} from '../engine/gate.js';
 import { generateScales, type ColorScales } from '../engine/generator.js';
 import { sceneStyle, type SceneStyle } from '../engine/scene-css.js';
 import type { ThemeChoices } from '../engine/theme-choices.js';
+import type { Looks } from '../engine/review.js';
 import type { FileOut } from '../engine/exports.js';
 import type { T, Vars } from '../shared/i18n/text.js';
 import { workPlaceOf } from '../shared/routes/routes.js';
@@ -22,6 +29,7 @@ import {
   type StudioDraft,
 } from './draft.js';
 import { readThemeChoices, writeThemeChoices } from './theme-choices.js';
+import { readLooks, writeLooks } from './review.js';
 
 /*
   The state of the studio (#1400): the work as signals, what is derived from it as computed
@@ -114,6 +122,8 @@ export interface StudioState {
   selectedName: Signal<string>;
   /** The choices of the Themes page: names, accents, colour modes (engine/theme-choices.ts). */
   themeChoices: Signal<ThemeChoices>;
+  /** What the person looked at in the full review, theme by mode (state/review.ts, #1404). */
+  looks: Signal<Looks>;
   /**
    * The address of the page of the work, a stage or a page beside one: the one of the draft, then
    * the last one opened (the shell writes it). The opening resumes the draft there.
@@ -176,6 +186,11 @@ export interface StudioState {
   dirty: ReadonlySignal<boolean>;
   /** What changed since the last exit, in the order of the stages (engine/changes.ts). */
   changes: ReadonlySignal<Change[]>;
+  /**
+   * The themes a change broke: each theme and mode that fails the gate now and passed in the preset
+   * at the last exit (engine/gate.ts, brokenSince, #1404): the toast of the shell names them.
+   */
+  broken: ReadonlySignal<BrokenTheme[]>;
 
   // what the state reaches outside
   /** Where the draft and the theme choices are kept. */
@@ -201,13 +216,15 @@ export interface WorkSnapshot {
 }
 
 /**
- * An action undone from a toast: what it said, the preset and the family selected before it, and
- * the preset it left (JSON), which an edit after it leaves behind.
+ * An action undone from a toast: what it said, the preset, the family selected and the theme
+ * choices before it, and the preset it left (JSON), which an edit after it leaves behind.
  */
 export interface Undoable {
   said: Text;
   before: CloneableConfig;
   selectedName: string;
+  /** The theme choices before the action, which Undo brings back with the preset. */
+  choices: ThemeChoices;
   after: string;
 }
 
@@ -285,12 +302,18 @@ export function createStudio(options: StudioOptions = {}): StudioState {
   const savedJson = signal<string | null>(null);
   const baseline = signal(boot?.baseline ?? presetJson(start, themeChoices.peek()));
   const base = computed(() => JSON.parse(baseline.value) as PresetState);
+  // the gate on the preset at the last exit, what a broken theme is told from: solved again only
+  // when the baseline moves (an exit, an opening)
+  const baseReport = computed(() =>
+    gateReport(base.value.config as unknown as MagmaConfig, base.value.choices),
+  );
 
   const state: StudioState = {
     config,
     loadedRatios: signal(boot?.loadedRatios ?? ratiosOf(bundled())),
     selectedName: signal(boot ? boot.selectedName : defaultSelected(start.colors)),
     themeChoices,
+    looks: signal(readLooks(storage)),
     workPlace: signal(workPlaceOf(boot?.view)),
     autoNamed: new Set(),
     origin: signal(null),
@@ -319,6 +342,7 @@ export function createStudio(options: StudioOptions = {}): StudioState {
     changes: computed(() =>
       changesOf(base.value, { config: config.value, choices: themeChoices.value }),
     ),
+    broken: computed(() => brokenSince(baseReport.value, report.value)),
     storage,
     api: options.api ?? !pageSaysNoApi(),
     download: options.download ?? downloadInBrowser,
@@ -360,6 +384,13 @@ export function createStudio(options: StudioOptions = {}): StudioState {
     if (first) first = false;
     else writeThemeChoices(choices, storage);
   });
+  // the looks of the full review kept beside the draft, once the person looked at something
+  let firstLooks = true;
+  const stopLooks = effect(() => {
+    const looks = state.looks.value;
+    if (firstLooks) firstLooks = false;
+    else writeLooks(looks, storage);
+  });
   // an undo holds while the preset is the one the action left: an edit after it closes the toast,
   // so Undo never takes back more than the action did
   const stopUndo = effect(() => {
@@ -369,6 +400,7 @@ export function createStudio(options: StudioOptions = {}): StudioState {
   state.dispose = () => {
     stopDraft();
     stopChoices();
+    stopLooks();
     stopUndo();
   };
   return state;
@@ -394,8 +426,9 @@ export function adoptConfig(state: StudioState, next: CloneableConfig, keep = fa
   batch(() => {
     state.config.value = next;
     state.loadedRatios.value = ratiosOf(next);
-    // a preset opened: the changes are counted from it
+    // a preset opened: the changes are counted from it, and nothing of it was looked at yet
     state.baseline.value = presetJson(next, state.themeChoices.peek());
+    state.looks.value = {};
     const name = state.selectedName.peek();
     if (!keep || !next.colors.some((color) => color.name === name))
       state.selectedName.value = defaultSelected(next.colors);

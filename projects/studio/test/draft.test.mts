@@ -1,5 +1,5 @@
 import { afterEach, expect, test, vi } from 'vitest'
-import { h, render } from 'preact'
+import { h, render, type ComponentChild } from 'preact'
 
 import initialConfig from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json'
 import {
@@ -130,7 +130,7 @@ const conflict = (): Element | null | undefined => button('Keep the draft')?.clo
 const exit = () => root.querySelector<HTMLElement>('#studio-exit')
 
 /** The whole studio on Colours, its notices over the page (#1403: the shell shows them). */
-function open (...beside: ReturnType<typeof h>[]) {
+function open (...beside: ComponentChild[]) {
   location.hash = '#/colours'
   const state = startStudio()
   render(inStudio(state, h(Studio, { state }), ...beside), root)

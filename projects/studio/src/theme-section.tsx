@@ -180,7 +180,7 @@ function PreviewPanel({
  * preferences reach every frame (scene-prefs.tsx). The select offers the
  * themes of the configuration the person edits, which the frame paints (scene-css.ts); while the
  * generator refuses the configuration, the themes Magma ships. The theme and the mode are those of
- * the address (a link of the Themes page, shared/routes/routes.ts), the first theme in light when it names
+ * the address (shared/routes/routes.ts), the first theme in light when it names
  * none: a choice made here writes its address in place, and back, forward or a link typed choose
  * again. One source, so the echo of an address written here never undoes a choice made after it.
  */
@@ -199,7 +199,7 @@ export function ThemePage({
   const frames = useRef<Array<HTMLIFrameElement | null>>([]);
   const select = useRef<HTMLMdsInputSelectElement>(null);
   const t = useT();
-  // the palette and the themes of the work, the choices of the Themes page (names, accents,
+  // the palette and the themes of the work, the choices of the stage Themes (names, accents,
   // modes) in them: a computed of the state, which the frame paints
   const scene = useStudio().scene.value;
   const names = scene?.themes.map((one) => one.name) ?? PREVIEW_THEMES;

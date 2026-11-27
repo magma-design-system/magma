@@ -326,17 +326,21 @@ tests it when it or `design-tokens` changes.
   the installed magma: in this repository the build of `stencil`, an implicit dependency. Its
   pages are written in the Tailwind layer of `styles` (#1401), the theme imported as `reference`:
   the bundle declares no variable of the theme, and each utility reads the installed one.
-- **The shell** follows the app-shell block: three sections, Colors (the pages of the playground,
-  from a menu that opens with the verdict of the contrast gate), Theme (the theme full screen in an
-  iframe, its controls over it) and Behavior (design language, patterns, blocks, from a menu). A
-  section that opens its pages from a menu is a case the app-shell block does not have yet.
+- **The shell** follows the app-shell block: the bar holds the changes, the exit and what stands
+  outside the stages (Groups, Theme, the theme full screen in an iframe, and Behavior, design
+  language, patterns, blocks, from a menu); under it the stages of the balancing in order (Colours,
+  Weights, Themes, Exceptions, the full review), a pattern of the studio's own layer
+  (`projects/studio/magma/patterns/stages-in-order.md`). A section that opens its pages from a menu
+  is a case the app-shell block does not have yet.
 - **Folders by layer** (#1397): `build/` for what runs in Node (the plugins of Vite, the static
   site), `src/engine/` for what computes and paints with no Preact and no state, `src/state/` for
   the work in Preact Signals, `src/shared/` for what several pages use (the table of the pages
   among it), `src/features/` for a page each, `src/app/` for the shell and the router; imports go
   one way (`engine` <- `state` <- `features` <- `app`, `shared` under the pages), held by ESLint.
 - **Two hosts, one app** (#695): the docs site mounts it with nothing to install, and a command of
-  the `magma` package serves it inside a project, on its `magma/` folder.
+  the `magma` package serves it inside a project, on its `magma/` folder. Every host calls the one
+  entry, `mount(element, options)` of `projects/studio/src/main.tsx` (#1404): the address in the
+  hash of the window or in memory, where the work is kept, whether a command stands beside.
 - **Published beside the Storybook**: the studio of `main` is on GitHub Pages at
   `magma-design-system.github.io/magma/studio/`, built by `deploy-site.yml` with the Storybook
   (section 6), and the docs site links to it (decided on #693, 2026-11-06; mounting it in a page

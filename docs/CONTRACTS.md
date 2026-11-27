@@ -27,7 +27,7 @@ keep in step.
   Storybook: `storybook` at the top is its address, `storybook` on a component the id of its
   docs page, which opens at `<storybook>?path=/docs/<id>` (#1148). Beside it, `studio` is the
   address of the published studio, whose pages open at `<studio>#/<page>` (`#/theme`,
-  `#/colours`, #1294; the addresses of the pages #1403 replaced still open). Both are folders of
+  `#/colours`, #1294; the addresses of the pages #1403 and #1404 replaced still open). Both are folders of
   the GitHub Pages site of the repository, where `deploy-site.yml` publishes the site of `main`,
   and both stand at the top of the
   `documentation.json` of each component too. And `usage` on each
@@ -162,8 +162,9 @@ keep in step.
 - **Held by**: `test/theme-manifest.test.mts` of design-tokens (the block of a single-mode
   theme, the shipped themes declare nothing); `src/common/test/preference-modes.spec.ts` of
   stencil (the name the producer exports, the values read); the `mds-pref-theme` e2e;
-  `test/themes.test.mts` of the studio (the export of a theme of one mode, the base one under its
-  name, each choice of the modes a value of `color.modes`).
+  `src/engine/theme-list.test.mts` of the studio (the CSS of the themes with a theme of one mode,
+  the base one under its name) and `src/features/themes/themes.test.mts` (each choice of the modes
+  a value of `color.modes`).
 
 ## The roles of the semantic model
 

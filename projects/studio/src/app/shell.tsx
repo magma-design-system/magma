@@ -4,16 +4,17 @@ import { useEffect, useRef, useState } from 'preact/hooks';
 import { createPortal } from 'preact';
 import logo from '@maggioli-design-system/identity/dist/internal/magma-design-system/logo-magma.svg?url';
 import logoWhite from '@maggioli-design-system/identity/dist/internal/magma-design-system/logo-magma-white.svg?url';
-import { App } from '../app.js';
 import { useDarkMode } from '../dark-mode.js';
 import { ChangesButton, ChangesPanel } from './changes.js';
 import { ConfigItems, useConfigMenu } from './config-menu.js';
-import { GateDialog } from '../features/contrast-check/gate-dialog.js';
+import { GateDialog } from '../features/full-review/gate-dialog.js';
 import { RulesPage } from '../features/rules/rules.js';
 import { ColoursPage } from '../features/colours/colours.js';
 import { ScalePage } from '../features/scale/scale.js';
 import { GroupsPage } from '../features/groups/groups.js';
 import { WeightsPage } from '../features/weights/weights.js';
+import { ThemesPage } from '../features/themes/themes.js';
+import { FullReviewPage } from '../features/full-review/full-review.js';
 import { ExceptionsPage } from '../features/exceptions/exceptions.js';
 import { IntroductionPage } from '../features/introduction/introduction.js';
 import { OpeningPage } from '../features/opening/opening.js';
@@ -25,15 +26,18 @@ import { ThemePage } from '../theme-section.js';
 import { createStudio, say, StudioContext, useStudio, type StudioState } from '../state/studio.js';
 import { cancelExport, confirmExport, exitOf, guard } from '../state/exports.js';
 import { checkSource } from '../state/work.js';
-import { LANGS, LangProvider, useLang, useT } from '../shared/i18n/i18n.js';
+import { LANGS, LangProvider, plural, useLang, useT } from '../shared/i18n/i18n.js';
+import type { BrokenTheme } from '../engine/gate.js';
 import { createRouter, type Router } from './router.js';
-import { StageBar, StageFoot, StageLead } from './stages.js';
+import { StageBar, StageFoot } from './stages.js';
 import {
   BEHAVIOR_PAGES,
   HOME,
   hrefOf,
   placeOf,
+  reviewRoute,
   THEME_PAGE,
+  themeRoute,
   type BehaviorPage,
   type MenuItem,
   type Route,
@@ -128,9 +132,23 @@ export function Studio({ state, router }: StudioProps = {}) {
               <WeightsPage foot={foot} />
             </div>
           )}
-          {route.section === 'colors' && (
+          {route.section === 'themes' && (
             <div class="studio-section">
-              <App view={route.view} foot={foot} lead={<StageLead route={route} />} />
+              <ThemesPage
+                theme={route.theme}
+                foot={foot}
+                onTheme={(theme) => nav.navigate(themeRoute(theme || undefined), { replace: true })}
+              />
+            </div>
+          )}
+          {route.section === 'full-review' && (
+            <div class="studio-section">
+              <FullReviewPage
+                theme={route.theme}
+                mode={route.mode}
+                foot={foot}
+                onItem={(theme, mode) => nav.navigate(reviewRoute(theme, mode), { replace: true })}
+              />
             </div>
           )}
           {route.section === 'exceptions' && <ExceptionsPage foot={foot} />}
@@ -146,8 +164,8 @@ export function Studio({ state, router }: StudioProps = {}) {
             />
           )}
           {route.section === 'behavior' && <RulesPage page={route.page} />}
-          <PendingExport onReview={() => nav.navigate({ section: 'colors', view: 'contrast' })} />
-          <UndoToasts />
+          <PendingExport onReview={() => nav.navigate({ section: 'full-review' })} />
+          <Toasts route={route} />
         </div>
       </StudioContext.Provider>
     </LangProvider>
@@ -227,20 +245,72 @@ function WorkNotices() {
   );
 }
 
+/** The key of a broken theme in a mode, for the toasts closed. */
+const brokenKey = (broken: BrokenTheme) => `${broken.family}|${broken.mode}`;
+
 /**
+ * The toasts of the studio, in the one region of the toasts of the application (message-placement),
+ * on document.body as the dialog of the gate stands.
+ *
  * The toasts that undo what took work away, with no confirmation (confirm-action, `act-then-undo`:
  * the toast with Undo, `duration=0 dismissible`): a preset opened over work with changes (#1402),
- * a family or a scale deleted, a scale taken back to its built-in steps (#1403, state/undo.ts). Each stays until closed; closed by the person or by Undo, what it kept
- * goes either way. On document.body, in the region of the toasts of the application, as the dialog
- * of the gate stands.
+ * a family or a scale deleted, a scale taken back to its built-in steps (#1403, state/undo.ts), a
+ * theme deleted or moved to another tint (#1404). Each stays until closed; closed by the person or
+ * by Undo, what it kept goes either way.
+ *
+ * The toasts of a theme a change broke (#1404, state.broken): the other themes say nothing until
+ * one breaks, then a toast that stays says which and in which mode, with the way to its item of the
+ * full review (message-placement, `action-failed-elsewhere`). None for the theme the page shows at
+ * its centre, whose verdict is in view, nor on the full review, which shows them all; a toast
+ * closed stays closed while the theme stays broken.
  */
-function UndoToasts() {
+function Toasts({ route }: { route: Route }) {
   const studio = useStudio();
   const t = useT();
   const opening = studio.lastOpening.value;
   const undo = studio.lastUndo.value;
+  const broken = studio.broken.value;
+  const [closed, setClosed] = useState<ReadonlySet<string>>(new Set());
+  // a theme mended forgets its toast closed: if it breaks again, it says so again
+  useEffect(() => {
+    const still = new Set(broken.map(brokenKey));
+    setClosed((was) => {
+      const kept = [...was].filter((key) => still.has(key));
+      return kept.length === was.size ? was : new Set(kept);
+    });
+  }, [broken]);
+  const inView = (one: BrokenTheme) =>
+    route.section === 'full-review' || (route.section === 'themes' && route.theme === one.theme);
+  const toasts = broken.filter((one) => !closed.has(brokenKey(one)) && !inView(one));
   return createPortal(
     <mds-toast-region>
+      {toasts.map((one) => (
+        <mds-toast
+          key={brokenKey(one)}
+          visible
+          variant="error"
+          duration={0}
+          dismissible
+          data-broken={brokenKey(one)}
+          onmdsToastClose={() => setClosed((was) => new Set([...was, brokenKey(one)]))}
+        >
+          {plural(
+            t,
+            one.failing,
+            'The theme {theme} no longer passes the contrast check in {mode}: {count} pair under its floor.',
+            'The theme {theme} no longer passes the contrast check in {mode}: {count} pairs under their floor.',
+            { theme: one.theme, mode: t(one.mode === 'light' ? 'light' : 'dark') },
+          )}
+          <mds-button
+            slot="action"
+            size="sm"
+            variant="error"
+            tone="outline"
+            href={hrefOf(reviewRoute(one.theme, one.mode))}
+            label={t('Review it')}
+          ></mds-button>
+        </mds-toast>
+      ))}
       {opening && (
         <mds-toast
           visible

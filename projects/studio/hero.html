@@ -16,21 +16,19 @@
       The page is the banner and nothing else, so the frame of the hero is the banner: the frame
       takes the height of the page (start.tsx) and draws the shadow, which the banner would cast
       outside the frame, where it is clipped; --mds-banner-shadow and --mds-banner-radius are
-      public properties of mds-banner.
+      public properties of mds-banner. The page is written in the classes of Magma
+      (src/tailwind.css), and needs no sheet of its own: the page transparent, the frame showing
+      through it, and the banner with no shadow of its own (a class sets its public property).
     -->
-    <style>
-      html,
-      body {
-        margin: 0;
-        background: transparent;
-      }
-      mds-banner {
-        --mds-banner-shadow: none;
-      }
-    </style>
+    <link rel="stylesheet" href="/src/tailwind.css" />
   </head>
-  <body>
-    <mds-banner icon="mi/outline/info" headline="Send the request to the officer?" dismissible>
+  <body class="bg-transparent">
+    <mds-banner
+      class="[--mds-banner-shadow:none]"
+      icon="mi/outline/info"
+      headline="Send the request to the officer?"
+      dismissible
+    >
       The request of Laura Bianchi, the extension of a house in Via Roma 12, goes to Marco Rossi,
       who answers within 30 days. You can add documents to it until then.
       <mds-button slot="action" variant="primary" tone="outline">Cancel</mds-button>

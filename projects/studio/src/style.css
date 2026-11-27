@@ -1,6 +1,6 @@
 /*
-  The frame of the studio: the shell (src/app/shell.tsx), the Theme section and the frame of the pages
-  of Colors (src/app.tsx). The document itself, its font and its colours, is the one of Magma
+  The frame of the studio: the shell (src/app/shell.tsx) and the Theme section; the views are written
+  in classes (src/features/). The document itself, its font and its colours, is the one of Magma
   (styles/base.css); each page keeps its rules in the sheet beside its module, all from the tokens
   (src/magma.css). A length the rhythm has no relation for is a step of the spacing scale of Magma,
   calc(var(--spacing) * N), as the components write --spacing(N).
@@ -8,7 +8,7 @@
 
 /*
   The shell: the bar, then the section, the whole height of the window. The document never
-  scrolls: the regions of a page do (.content, .studio-page, the list of the Palette), each the
+  scrolls: the regions of a page do (the <main> of a view, the list beside it), each the
   containing block of what it positions, so nothing inside them (the hidden name of a slider,
   magma.css) reaches past the window and makes the window scroll too.
 */
@@ -150,46 +150,6 @@
   color: rgb(var(--magma-text-muted));
 }
 
-/* the head of a page: the page-header block, the title and its line, then the actions */
-.studio-page-head {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--magma-rhythm-inline);
-  align-items: start;
-  justify-content: space-between;
-  padding: var(--magma-rhythm-inset) var(--magma-width-page-gutter);
-}
-
-.studio-page-title {
-  display: grid;
-  flex: 1 1 calc(var(--spacing) * 9000);
-  gap: var(--magma-rhythm-title-content);
-  min-width: 0;
-}
-
-/* the title and the status of what is edited beside it, which wraps under it with no room
-   (page-header, `status`); side by side in one row (rhythm/inline) */
-.studio-page-name {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--magma-rhythm-inline);
-  align-items: center;
-}
-
-.studio-page {
-  position: relative;
-  display: grid;
-  gap: var(--magma-rhythm-between-sections);
-  align-content: start;
-  padding-block-end: var(--magma-rhythm-between-sections);
-  overflow-y: auto;
-}
-
-.studio-page > mds-banner {
-  max-width: var(--magma-width-reading);
-  margin-inline: var(--magma-width-page-gutter);
-}
-
 /* the Theme section: the frames, the whole section, the bar of the theme floating over them */
 .studio-theme {
   position: relative;
@@ -267,27 +227,3 @@
   align-self: center;
 }
 
-/* the pages of today's Colors section that no view has replaced yet (app.tsx): the region that
-   scrolls, alone; the head of the page is its first thing, so it scrolls with the page (vittorio,
-   2026-11-05). Colours lays its list beside its page with its own classes (#1403). */
-.layout {
-  display: grid;
-  grid-template: minmax(0, 1fr) / 1fr;
-  height: 100%;
-}
-
-.content {
-  position: relative;
-  grid-column: -2 / -1;
-  grid-row: 1 / -1;
-  padding: var(--magma-rhythm-inset) var(--magma-width-page-gutter)
-    var(--magma-rhythm-between-sections);
-  overflow-y: auto;
-}
-
-/* inside the region the head takes its spaces from it: none of its own around it, the space of a
-   section below it */
-.content > .studio-page-head {
-  padding: 0;
-  margin-block-end: var(--magma-rhythm-between-sections);
-}
