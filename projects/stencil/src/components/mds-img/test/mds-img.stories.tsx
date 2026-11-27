@@ -1,4 +1,5 @@
 import { h } from '@stencil/core';
+import { StateCell, StatesGrid } from '@fixture/states';
 import { argTypes, URLs } from '../meta/storybook';
 
 export default {
@@ -142,4 +143,75 @@ export const BrokenImage = {
     src: './broken-image-path.jpg',
     'srcset-consumption': './broken-image-path.jpg low',
   },
+};
+
+/**
+ * Every state of an image once the story has opened (#1440, @fixture/states), on the local
+ * images of the other stories: named by its file when it has no `alt`, by its `alt`, decorative
+ * with an empty `alt`, a portrait picture, a picture cropped by the box of the host, a source
+ * that does not load (a file that is deliberately missing: its 404 is in the console), with and
+ * without `alt`, and the sources by consumption (`srcset-consumption`). The consumption is a
+ * preference of the page, not of one image: the story opens at `high`, and the placeholder that
+ * `low` draws instead of the picture, with its "click to load", is seen by opening the story
+ * with `&globals=consumption:low` (HOWTO.md, "A story in a preference, by link"). An image
+ * has no interaction at `high`: no play function.
+ */
+interface ImgState {
+  state: string;
+  img: Record<string, string>;
+}
+
+const imgStates: ImgState[] = [
+  { state: 'rest, named by its file', img: { src: './640x480.png' } },
+  { state: 'alt', img: { src: './640x480.png', alt: 'Anteprima della pagina, 640 per 480 pixel' } },
+  { state: 'decorative, empty alt', img: { src: './640x480.png', alt: '' } },
+  {
+    state: 'portrait',
+    img: { src: './480x640.png', alt: 'Anteprima verticale, 480 per 640 pixel' },
+  },
+  {
+    state: 'cropped by the host',
+    img: {
+      src: './1920x1024.png',
+      alt: 'Anteprima panoramica, ritagliata in un quadrato',
+      class: 'aspect-square object-cover',
+    },
+  },
+  {
+    state: 'source not found, alt',
+    img: { src: './immagine-mancante.jpg', alt: 'Planimetria del piano terra' },
+  },
+  { state: 'source not found, no alt', img: { src: './immagine-mancante.jpg' } },
+  {
+    state: 'consumption sources, high',
+    img: {
+      alt: "L'appalto integrato",
+      class: 'aspect-book object-cover',
+      'srcset-consumption':
+        './book-cover-10.webp low, ./book-cover-11.webp medium, ./book-cover-09.webp high',
+    },
+  },
+  {
+    state: 'consumption source for low only, src at high',
+    img: {
+      alt: 'Il nuovo Codice dei contratti pubblici e la disciplina vigente nel periodo transitorio',
+      class: 'aspect-book object-cover',
+      src: './book-cover-12.webp',
+      'srcset-consumption': './book-cover-12.webp low',
+    },
+  },
+];
+
+const TemplateStates = () => (
+  <StatesGrid>
+    {imgStates.map(({ state, img }) => (
+      <StateCell key={state} state={state}>
+        <mds-img {...img}></mds-img>
+      </StateCell>
+    ))}
+  </StatesGrid>
+);
+
+export const States = {
+  render: TemplateStates,
 };
