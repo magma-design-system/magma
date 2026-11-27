@@ -36,7 +36,7 @@ start of the bar links to it.
 | Where | What it holds (`src/app/`) |
 | --- | --- |
 | **The bar** (`shell.tsx`, option A of its renders, 2026-11-27) | the product; what stands outside the stages, **Groups** (#1403), the **Theme** section and the **rules** (Behavior, a menu); then the work, always in view: the **changes** since the last exit, a button with their count that opens them by stage (`changes.tsx`), and the **exit**, a split button that saves the preset where a command takes saves and downloads it otherwise, through the contrast gate, the other formats in its menu (`config-menu.tsx`); the menu of the person at the end |
-| **The stages** (`stages.tsx`) | under the bar, on a stage and on a page beside one, the stages in order in an `mds-stepper-bar`, the current one marked, the ones before it done and opened from it; at the end of a stage, the way back and the way forward named after where they lead, the last stage ending with the exit |
+| **The stages** (`stages.tsx`, #1595) | under the bar and its notices, on a stage and on a page beside one, aligned with the title of the page and right above it: a strip of links, an `mds-tab` with one `mds-tab-item href` per stage in their order, the address holding the stage, the open one selected, every stage one click away; no status per stage and no foot, the exit is the bar's |
 
 The bar and the page follow the window, the gutter at their sides, and start on one edge: the
 studio is the case `workspace` of the widths (`docs/agents/patterns/widths.md`), so `.studio` sets
@@ -46,12 +46,13 @@ studio is the case `workspace` of the widths (`docs/agents/patterns/widths.md`),
 The stages are the pattern of the studio in its layer,
 [`magma/patterns/stages-in-order.md`](magma/patterns/stages-in-order.md): Magma has no pattern for
 stages in order (object model, section 8), so the studio writes its own, which the MCP server of
-Magma reads (`get_pattern`) and checks (`layerErrors`). Each stage opens its view (`STAGES` of
-`src/shared/routes/routes.ts`): Colours `#/colours` and Weights `#/weights`, the views #1403
-built, with Scale beside Colours at the address of any scale (`placeOf`); Themes the Themes page,
-`#/colors/themes`, until #1404 builds its view; the full review Contrast check,
-`#/colors/contrast-check`; Exceptions has a page that says what it will hold
-(`src/features/exceptions/`). Groups (`#/groups`) stands outside the stages, as the Theme section
+Magma reads (`get_pattern`) and checks (`layerErrors`): a strip of tabs, as `record-detail` shows
+the parts of a record, since a stepper is a wizard for a task done once (#1595). Each stage opens
+its view (`STAGES` of `src/shared/routes/routes.ts`): Colours `#/colours` and Weights
+`#/weights`, the views #1403 built, with Scale beside Colours at the address of any scale
+(`placeOf`); Themes the Themes page, `#/colors/themes`, until #1404 builds its view; the full
+review Contrast check, `#/colors/contrast-check`; Exceptions has a page that says what it will
+hold (`src/features/exceptions/`). Groups (`#/groups`) stands outside the stages, as the Theme section
 and the rules (object model, section 5). Diffs went: the changes of the bar take its place.
 
 The changes count every value of the preset that differs from the preset at the last exit
