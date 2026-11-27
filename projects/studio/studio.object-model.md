@@ -479,9 +479,16 @@ in una barra dei passi (sezione 8, "Passi in ordine").
     l'azione che la riporta ai gradini integrati (persona, 2026-11-27);
   - la scena del campione, accanto: i suoi componenti in ogni stato;
   - le coppie toccate. (progetto, proposta)
+- **Come si vede** (persona, sui render, 2026-11-27): una scala al centro, su una pagina sua; in
+  testa il ritorno che nomina da dove si è arrivati, il nome con i badge (integrata, compatibile
+  con Magma) e il menu (duplica, rinomina, elimina con annulla), la riga del perché; poi le coppie
+  toccate in un dettaglio chiuso, come in Colori; "Usata da", le famiglie per gruppo, quella
+  scelta è il campione; la distribuzione, senza aggiungere né togliere gradini su una integrata; gli
+  stati del campione accanto. Accanto al nome, la formula e la scala sono due selettori: si apre
+  qualunque scala, anche una che nessuna famiglia usa.
 - **Ingresso**: la scala di una famiglia in Colori, o quella di un gruppo in Gruppi (2026-11-26,
-  2026-11-27). **Uscita**: torna da dove si è arrivati, la famiglia o il gruppo, con un link che lo
-  nomina.
+  2026-11-27); un'altra scala, dai selettori della pagina. **Uscita**: torna da dove si è arrivati,
+  la famiglia o il gruppo, con un link che lo nomina.
 
 ### Gruppi
 
