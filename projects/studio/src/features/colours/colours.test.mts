@@ -41,7 +41,7 @@ beforeEach(async () => {
     configs.push(studio.config.value)
   })
   render(
-    inStudio(studio, h(ColoursPage, {}), h(ConfigMenu, { take: (handed: ConfigAction[]) => (actions = handed) })),
+    inStudio(studio, h(ColoursPage, null), h(ConfigMenu, { take: (handed: ConfigAction[]) => (actions = handed) })),
     root,
   )
   await vi.waitFor(() => expect(heading()).toBe('tone.neutral'))

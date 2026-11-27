@@ -316,7 +316,7 @@ test('the choices of the Themes page outlive a reload', async () => {
 // CI on #1559, where a choice made at once was undone by the echo of the first address)
 test('a choice made as the section opens stays: the address it writes follows it', async () => {
   location.hash = '#/theme'
-  render(h(Studio, {}), root)
+  render(h(Studio, null), root)
   // at once, before the section has written its first address
   const modes = root.querySelector('mds-dropdown[target="#studio-axis-preferences"] mds-tab[aria-label="Mode"]')!
   modes.dispatchEvent(new CustomEvent('mdsTabChange', { detail: { id: 2, value: 'both' }, bubbles: true }))

@@ -1,5 +1,5 @@
 import { afterEach, expect, test } from 'vitest'
-import { h, render } from 'preact'
+import { h, render, type ComponentChild } from 'preact'
 
 import { LangProvider } from '../../shared/i18n/i18n.js'
 import { ExceptionsPage } from './exceptions.js'
@@ -15,7 +15,7 @@ afterEach(() => {
   render(null, root)
 })
 
-const show = (lang: 'en' | 'it' = 'en', foot?: ReturnType<typeof h>) =>
+const show = (lang: 'en' | 'it' = 'en', foot?: ComponentChild) =>
   render(h(LangProvider, { value: lang }, h(ExceptionsPage, { foot })), root)
 
 const title = () => root.querySelector('mds-text[tag="h1"]')?.textContent

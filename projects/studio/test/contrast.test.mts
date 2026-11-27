@@ -65,7 +65,7 @@ const runAction = (id: string) =>
 const openOn = async (draft: MagmaConfig, view = 'colours') => {
   storeDraft(draft, view)
   location.hash = `#/${view}`
-  render(h(Studio, {}), root)
+  render(h(Studio, null), root)
   await vi.waitFor(() => {
     if (!root.querySelector('mds-text[tag="h1"]')) throw new Error('no page yet')
   })
@@ -107,7 +107,7 @@ test('while the gate fails, the exit of the bar asks first, from any page', asyn
   storeDraft(failing())
   location.hash = '#/theme'
   try {
-    render(h(Studio, {}), root)
+    render(h(Studio, null), root)
     const exit = await vi.waitFor(() => {
       const found = root.querySelector<HTMLElement>('#studio-exit')
       if (!found) throw new Error('no exit yet')
