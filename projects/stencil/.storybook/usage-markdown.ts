@@ -4,7 +4,7 @@
  * the `Markdown` block, the spec in src/storybook/test checks them.
  */
 
-export type UsageSectionKey = 'description' | 'examples' | 'mistakes';
+export type UsageSectionKey = 'description' | 'whenToUse' | 'placement' | 'examples' | 'mistakes';
 
 export interface UsageSection {
   key: UsageSectionKey;
@@ -12,15 +12,42 @@ export interface UsageSection {
   file: string;
   /** the heading of the section in the Docs page */
   heading: string;
+  /**
+   * a file only the components epic #1579 has reached have (SPEC.md, "Per-component usage docs"):
+   * its section shows when the file exists, and the page does not wait for it
+   */
+  optional?: boolean;
 }
 
-export type UsageSections = Record<UsageSectionKey, string>;
+/** the content of each file the component has, by section */
+export type UsageSections = Partial<Record<UsageSectionKey, string>>;
 
+/**
+ * The sections of a component's Docs page, in the order of the page: the need and the place right
+ * after the description, before the primary story, then the examples and the mistakes after it.
+ */
 export const USAGE_SECTIONS: readonly UsageSection[] = [
   { key: 'description', file: '1. Description.md', heading: 'Description' },
+  { key: 'whenToUse', file: '4. When to use.md', heading: 'When to use', optional: true },
+  {
+    key: 'placement',
+    file: '5. Placement context.md',
+    heading: 'Placement context',
+    optional: true,
+  },
   { key: 'examples', file: '2. Examples.md', heading: 'Examples' },
   { key: 'mistakes', file: '3. Mistakes.md', heading: 'Mistakes' },
 ];
+
+/**
+ * The sections a component's page shows, given which of its usage files exist: every required
+ * one and the optional ones it has, in the order of the page; `null` when a required one is
+ * missing, and the page keeps the default template.
+ */
+export const usageSectionsOf = (hasFile: (file: string) => boolean): UsageSection[] | null =>
+  USAGE_SECTIONS.every(({ file, optional }) => optional || hasFile(file))
+    ? USAGE_SECTIONS.filter(({ file }) => hasFile(file))
+    : null;
 
 export const COMPONENTS_PATH = 'projects/stencil/src/components';
 export const REPOSITORY_URL = 'https://github.com/magma-design-system/magma';

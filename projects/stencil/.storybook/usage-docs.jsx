@@ -9,7 +9,12 @@ import {
   Title,
 } from '@storybook/addon-docs/blocks';
 
-import { USAGE_SECTIONS, componentTagOf, renderUsageMarkdown } from './usage-markdown';
+import {
+  USAGE_SECTIONS,
+  componentTagOf,
+  renderUsageMarkdown,
+  usageSectionsOf,
+} from './usage-markdown';
 
 /**
  * The `usage/*.md` files of every component, each one a module loaded on demand (`?raw`):
@@ -22,27 +27,34 @@ const usageFiles = import.meta.glob('../src/components/*/usage/*.md', {
 
 const usageFileKey = (tag, file) => `../src/components/${tag}/usage/${file}`;
 
-/** whether the component has the three `usage/*.md` files */
-export const hasUsage = (tag) =>
-  USAGE_SECTIONS.every(({ file }) => usageFileKey(tag, file) in usageFiles);
+/** the sections of the component's page, from the `usage/*.md` files it has; `null` without the three required */
+const sectionsOf = (tag) => usageSectionsOf((file) => usageFileKey(tag, file) in usageFiles);
 
-/** the content of the three files, `null` for a component without them */
+/** whether the component has the three required `usage/*.md` files */
+export const hasUsage = (tag) => sectionsOf(tag) !== null;
+
+/**
+ * the content of its files, by section: the three required ones and the need and the place where
+ * it has them; `null` for a component without the three
+ */
 export const loadUsage = async (tag) => {
-  if (!tag || !hasUsage(tag)) {
+  const sections = tag ? sectionsOf(tag) : null;
+  if (!sections) {
     return null;
   }
   const contents = await Promise.all(
-    USAGE_SECTIONS.map(({ file }) => usageFiles[usageFileKey(tag, file)]()),
+    sections.map(({ file }) => usageFiles[usageFileKey(tag, file)]()),
   );
-  return Object.fromEntries(USAGE_SECTIONS.map(({ key }, index) => [key, contents[index]]));
+  return Object.fromEntries(sections.map(({ key }, index) => [key, contents[index]]));
 };
 
-/** one section of the Docs page: the markdown of a `usage/*.md` file */
-export const UsageSection = ({ tag, section, content }) => (
-  <Markdown>{renderUsageMarkdown({ tag, section, content })}</Markdown>
-);
+/** one section of the Docs page: the markdown of a `usage/*.md` file, nothing without its file */
+export const UsageSection = ({ tag, section, content }) =>
+  content === undefined ? null : (
+    <Markdown>{renderUsageMarkdown({ tag, section, content })}</Markdown>
+  );
 
-/** the three sections one after the other: the page of a component without stories */
+/** the sections one after the other, those it has files for: the page of a component without stories */
 export const UsageDocs = ({ tag, sections }) => (
   <>
     {USAGE_SECTIONS.map(({ key }) => (
@@ -95,7 +107,8 @@ export const UsageProvider = ({ context, children }) => {
 
 /**
  * The autodocs template (`parameters.docs.page`): title, description and primary story as in
- * the default page, with the usage sections around them. A page without usage files (the
+ * the default page, with the usage sections around them: the description, the need and the place
+ * before the primary story, the examples and the mistakes after it. A page without usage files (the
  * pages of src/storybook, the use-case stories files) keeps the default template.
  */
 export const UsageDocsPage = () => {
@@ -110,6 +123,8 @@ export const UsageDocsPage = () => {
       <Subtitle />
       <Description of="meta" />
       <UsageSection tag={tag} section="description" content={sections.description} />
+      <UsageSection tag={tag} section="whenToUse" content={sections.whenToUse} />
+      <UsageSection tag={tag} section="placement" content={sections.placement} />
       <Primary />
       <Controls />
       <UsageSection tag={tag} section="examples" content={sections.examples} />
