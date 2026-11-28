@@ -27,6 +27,7 @@ Run the project's ESLint and Stylelint on those files. When the Magma presets ar
 | `magma/no-color-scheme-override` | A `prefers-color-scheme` media query follows the OS, not the mode the user picked (`mds-pref-mode`). |
 | `magma/no-raw-color` | A hex, `rgb()`, `hsl()`, `oklch()` or other colour literal where a role belongs. |
 | `magma/no-internal-tokens` | An `--mds-*` custom property, set or read, that no component promises. |
+| `magma/stepper-forward-named` | The way forward of a stepper names the step it leads to, and the main action of its last step what it does. |
 
 ## 2. What the lint does not see
 

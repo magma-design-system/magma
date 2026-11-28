@@ -112,6 +112,7 @@ component may change in any release, or a prop the next major removes. When a ru
 | [`no-color-scheme-override`](#no-color-scheme-override) | Stylelint | error | error |
 | [`no-raw-color`](#no-raw-color) | Stylelint | warning | error |
 | [`no-internal-tokens`](#no-internal-tokens) | ESLint, Stylelint | warn | error |
+| [`stepper-forward-named`](#stepper-forward-named) | ESLint | warn | error |
 
 The ESLint rules are named `magma/<rule>` once the preset is loaded, the Stylelint rules
 `magma/<rule>` once the plugin (`@maggioli-design-system/magma/stylelint`) is.
@@ -299,6 +300,28 @@ mds-chip {
 When no public custom property does what you need, use a prop, a documented part, or a role
 on the markup around the component; if none does, ask for one ([`reporting.md`](reporting.md))
 rather than setting an internal one.
+
+### stepper-forward-named
+
+The way forward of a stepper names the step it leads to, and the main action of its last step
+what it does. It is the place of the actions in the placement context of `mds-stepper-bar`
+(`placement.md` beside its `AGENTS.md`): a bare "Avanti" makes the person read the stepper to
+know where it goes.
+
+```html
+<!-- INCORRECT -->
+<mds-stepper-bar>...</mds-stepper-bar>
+<mds-button label="Avanti"></mds-button>
+
+<!-- CORRECT -->
+<mds-stepper-bar>...</mds-stepper-bar>
+<mds-button label="Avanti: Preferenze"></mds-button>
+```
+
+Reported: in a file that holds an `mds-stepper-bar`, an `mds-button` whose label is only a word
+for "next" in one of the languages Magma ships its strings in (Avanti, Continua, Prosegui,
+Procedi, Prossimo, Successivo, Next, Continue, Proceed, Siguiente, Continuar, and the Greek ones),
+whatever its case and punctuation. Any other label may name a step, so it passes.
 
 ## Settings
 
