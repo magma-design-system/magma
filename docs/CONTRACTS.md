@@ -31,8 +31,12 @@ keep in step.
   `deploy-site.yml` publishes the site of `main`, and both stand at the top of the
   `documentation.json` of each component too. And `usage` on each
   component: its hand-written files, keyed by the file name without `.md`, `1. Description`,
-  `2. Examples` and `3. Mistakes` (the number only sets the order; `USAGE_FILES` in
+  `2. Examples` and `3. Mistakes`, and `4. When to use` and `5. Placement context` on the
+  components epic #1579 has reached (the number only sets the order; `USAGE_FILES` in
   `projects/stencil/scripts/agent-docs-lib.ts`), their links rewritten for the shipped layout.
+  The last two are read with the parser of the lint core (`projects/lint/src/core/usage.ts`,
+  `parseWhenToUse` and `parsePlacement`, exported by magma as `./lint`); `5. Placement context`
+  holds only what is written by hand, without the `In the patterns` of the shipped file.
   The first `html` block of `2. Examples` is the canonical form of the component. Before #1169
   the last two were `2. Pattern` and `3. Antipattern`: a reader that supports a version from
   before the rename accepts both names.
@@ -228,22 +232,28 @@ keep in step.
 ## The agent guides
 
 - **What**: what the agent of a consumer project reads: the `AGENTS.md` and `agents/*.md` of
-  the three entry packages, and the `AGENTS.md`, `examples.md` and `mistakes.md` of each
-  component. Written for a consumer project, never for work on this repository: the root
+  the three entry packages, and the `AGENTS.md`, `when-to-use.md`, `placement.md`,
+  `examples.md` and `mistakes.md` of each component (the need and the place where the component
+  has them, epic #1579; `placement.md` ends with `In the patterns`, the cases of
+  `docs/agents/patterns/` whose `use` writes the component, from `placesOfComponent` of the lint
+  core). Written for a consumer project, never for work on this repository: the root
   `CLAUDE.md` keeps Claude Code from loading the generated ones here.
 - **Produced by**: `projects/stencil/scripts/sync-agent-docs.ts` from `docs/agents/`, before the
   stencil build, into the entry packages (gitignored there); `component-docs.ts` from the
   `usage/*.md` of each component, into `dist/collection/components/<tag>/`.
 - **Contract**: [`docs/agents/SPEC.md`](agents/SPEC.md) (the entry point and the targets);
   [`projects/stencil/SPEC.md`](../projects/stencil/SPEC.md), "Per-component usage docs".
-- **Read by**: the agents of consumer projects, the MCP `get_guide`, the skills of the Claude
+- **Read by**: the agents of consumer projects, the MCP `get_guide`, the MCP `get_component`
+  and `find_component` for the need and the place (coming next in epic #1579, from
+  `documentation.json` and the patterns through the lint core), the skills of the Claude
   Code plugin (`projects/claude-plugin/scripts/skills.ts`: the targets of `docs/agents/SPEC.md`,
   the rules of `docs/agents/lint.md`, and the rule in bold that opens each item of
   `docs/agents/mistakes.md`, with the rules of the lint the item names, #1581), the docs site;
   the studio reads the tables of the section Variants of `docs/agents/variants.md` and of its
   section Tones, from the repository (`projects/studio/src/paints.ts`: the colour variants,
   their kinds, the order of the tones).
-- **Held by**: `check.usage-docs` (every symbol a guide names exists); `component-docs.ts` fails
+- **Held by**: `check.usage-docs` (every symbol a guide names exists; the format of the need and
+  the place, their answers, their citations and their reciprocity); `component-docs.ts` fails
   the build on a relative link of a shipped guide that does not resolve inside its package;
   `agent-docs-lib.spec.ts`; `nx run claude-plugin:check` (an item of `mistakes.md` without its
   rule in bold, or naming a rule the lint does not have, stops it); for the studio,

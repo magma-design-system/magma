@@ -6,21 +6,24 @@ If you only need to look up the props of a known component, skip this and read i
 
 ## Where component documentation lives
 
-Every component under [`projects/stencil/src/components/<name>/`](../projects/stencil/src/components/) has four documentation files in the repo, and the build writes four more into the package. Different files answer different questions - grep the right one:
+Every component under [`projects/stencil/src/components/<name>/`](../projects/stencil/src/components/) has four documentation files in the repo, and the build writes four more into the package; the components epic #1579 has reached have two more of each, the need and the place. Different files answer different questions - grep the right one:
 
 | File                                     | Owner             | Versioned | Answers                                                                                  |
 | ---------------------------------------- | ----------------- | --------- | ---------------------------------------------------------------------------------------- |
 | `usage/1. Description.md`                | Authored          | yes       | What the component **is**, its semantic behavior, why it exists                          |
 | `usage/2. Examples.md`                   | Authored          | yes       | How to use it **correctly** - recommended recipes with code                              |
 | `usage/3. Mistakes.md`                   | Authored          | yes       | How **not** to use it - paired `INCORRECT` / `CORRECT` snippets                          |
+| `usage/4. When to use.md`                | Authored (epic #1579) | yes   | Which **needs** it answers, and the near needs it does not, each with what answers it   |
+| `usage/5. Placement context.md`          | Authored (epic #1579) | yes   | **Where** it goes in a view, what sits around it, what it holds, on a narrow screen      |
 | `readme.md`                              | Stencil (auto)    | yes       | What props, events, slots, methods, CSS vars exist (human-readable), plus the usage text |
 | `dist/collection/components/<name>/AGENTS.md` | build (auto) | no        | The shipped API: props with their allowed values, events, methods, slots, parts, CSS vars |
 | `dist/collection/components/<name>/examples.md`, `mistakes.md` | build (auto) | no | The shipped copies of `2. Examples.md` / `3. Mistakes.md`, links rewritten |
+| `dist/collection/components/<name>/when-to-use.md`, `placement.md` | build (auto) | no | The shipped copies of `4. When to use.md` / `5. Placement context.md`, where they exist; `placement.md` ends with `In the patterns`, the cases of the patterns that use the component |
 | `dist/collection/components/<name>/documentation.json` | build (auto) | no | Its entry of the docs JSON, with full type metadata                                |
 
-**Build flow.** Only the three `usage/*.md` files are hand-authored. On build, Stencil bundles them into `dist/documentation.json` (all components, gitignored) and injects the content into `readme.md`; then `scripts/component-docs.ts` writes the per-component files of `dist/collection/components/<name>/`. As a consequence: never hand-edit `readme.md` or a generated file - they are regenerated and your edits will be lost. The one exception is worse: Stencil keeps whatever sits above `<!-- Auto Generated Below -->` in a readme and ships it in the `readme` field of `dist/documentation.json`, where nobody keeps it current. Only the title and the generic intro belong there, and `check.usage-docs` fails on anything else. To change what a component's docs say, edit the matching `usage/*.md` (and the JSDoc of the props, events, methods, slots, parts and CSS vars: `check.usage-docs` also fails on a member without a description). A prop whose value has a format or a syntax the name does not reveal (a date, a CSS selector, a `srcset`, a language code, a pattern) also carries an `@example`: one value, on one line, quoted, as `@example '2025-06-15'`; it reaches `documentation.json`, where the docs site shows it as the placeholder of the field. A prop whose value is plain text (`label`, `name`, `headline`) needs none. Everything under `dist/` exists only after `nx run stencil:build`.
+**Build flow.** Only the `usage/*.md` files are hand-authored. On build, Stencil bundles them into `dist/documentation.json` (all components, gitignored) and injects the content into `readme.md`; then `scripts/component-docs.ts` writes the per-component files of `dist/collection/components/<name>/`. As a consequence: never hand-edit `readme.md` or a generated file - they are regenerated and your edits will be lost. The one exception is worse: Stencil keeps whatever sits above `<!-- Auto Generated Below -->` in a readme and ships it in the `readme` field of `dist/documentation.json`, where nobody keeps it current. Only the title and the generic intro belong there, and `check.usage-docs` fails on anything else. To change what a component's docs say, edit the matching `usage/*.md` (and the JSDoc of the props, events, methods, slots, parts and CSS vars: `check.usage-docs` also fails on a member without a description). A prop whose value has a format or a syntax the name does not reveal (a date, a CSS selector, a `srcset`, a language code, a pattern) also carries an `@example`: one value, on one line, quoted, as `@example '2025-06-15'`; it reaches `documentation.json`, where the docs site shows it as the placeholder of the field. A prop whose value is plain text (`label`, `name`, `headline`) needs none. Everything under `dist/` exists only after `nx run stencil:build`.
 
-**Storybook.** The same three files make up each component's Docs page in Storybook (sections Description, Examples and Mistakes around the primary story), read at runtime from `usage/*.md`: see the Storybook paragraph of [`projects/stencil/SPEC.md`](../projects/stencil/SPEC.md#per-component-usage-docs).
+**Storybook.** The same files make up each component's Docs page in Storybook (sections Description, When to use and Placement context before the primary story, Examples and Mistakes after it; the two middle ones only where the files exist), read at runtime from `usage/*.md`: see the Storybook paragraph of [`projects/stencil/SPEC.md`](../projects/stencil/SPEC.md#per-component-usage-docs).
 
 **Examples and mistakes, not patterns.** In Magma a pattern is the solution to a task people carry out again and again (confirm an action, search a list), across components and over time: the definition of the docs site (`agents/patterns.md` in `magma-design-system/docs`) that phase 5 of #1083 ships in the package. The two files of one component show how to write it and what not to write, so they take the words its shipped `AGENTS.md` always used for them, "correct usage, with examples" and "mistakes to avoid"; not "usage", already the folder, the `usage` field of `documentation.json` and the MCP `get_usage` (#1169).
 
@@ -30,7 +33,9 @@ Pick by task, not by preference:
 
 | You need...                                                       | Read                                                                                                                                        |
 | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| Semantic intent ("what is this for, when do I use it?")         | `usage/1. Description.md` (smallest, always present, hand-authored)                                                                         |
+| Semantic intent ("what is this component, how does it behave?") | `usage/1. Description.md` (smallest, always present, hand-authored)                                                                         |
+| The need ("is this the component for my need, or a neighbour?") | `usage/4. When to use.md`, where it exists: the `Not for` lines name what answers each near need                                           |
+| The place ("where does it go, what sits around it?")            | `usage/5. Placement context.md`, where it exists; the shipped `placement.md` adds the cases of the patterns that use it                    |
 | Idiomatic examples / common mistakes                            | `usage/2. Examples.md` and `usage/3. Mistakes.md`                                                                                           |
 | Props (with allowed values), events, slots, parts, CSS custom properties | the generated `AGENTS.md` after a build (compact); otherwise `readme.md` (always present)                                            |
 | Typed prop value sets (what `tone` / `variant` / `size` accept) | [`components.d.ts`](../projects/stencil/src/components.d.ts) + [`type/*.ts`](../projects/stencil/src/type/) - the versioned source of truth |
@@ -71,6 +76,19 @@ Numbered list (`## 1.`, `## 2.`, ...) of mistakes. Each entry:
 - A paired code block with both the `<!-- INCORRECT -->` and `<!-- CORRECT -->` form.
 
 Prioritize mistakes that an AI agent or new contributor is statistically likely to commit (boolean attrs as strings, slot misuse, shadow-DOM piercing, raw HTML elements replacing components).
+
+### `4. When to use.md`
+
+The need, on the components epic #1579 has reached. Two headings and nothing else, each a list of one line per need:
+
+- `#### Use it for`: the needs it answers, written as the need ("The person must ..."), with the criterion that tells it from its neighbours.
+- `#### Not for`: the near needs it does not answer. The need, a colon, then what answers it in inline code: a component (`mds-tab`), a pattern by its id (`confirm-action`), or `gap` when Magma has none.
+
+A `Not for` that names a component with its own `4. When to use.md` must find its need among that component's `Use it for` lines: `check.usage-docs` compares their words. The format in full: [`projects/stencil/SPEC.md`](../projects/stencil/SPEC.md#per-component-usage-docs).
+
+### `5. Placement context.md`
+
+The place, on the same components. Up to five headings, in this order, each a list: `Where it goes`, `Not here`, `Around it`, `Inside it`, `Narrow screens`. Sizes are roles or token steps, never px; a rule of the design language is named by its id in inline code (`actions/order`, `widths/dialog`), not rewritten. The places the patterns give the component are not written here: the build adds them to the shipped `placement.md` as `In the patterns`.
 
 ## Categories
 
