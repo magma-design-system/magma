@@ -600,3 +600,75 @@ test('every rule describes itself and links its section of the guide, at the ins
     'https://github.com/magma-design-system/magma/blob/magma@2.6.0/docs/agents/lint.md#no-false-boolean',
   );
 });
+
+describe('stepper-forward-named', () => {
+  const rule = rules['stepper-forward-named']!;
+  const stepper =
+    '<mds-stepper-bar><mds-stepper-bar-item label="Genitori"></mds-stepper-bar-item></mds-stepper-bar>';
+  tester('html').run('html', rule, {
+    valid: [
+      // named after the step it leads to
+      {
+        code: `${stepper}<mds-button label="Avanti: Preferenze"></mds-button>`,
+        filename: filename.html,
+      },
+      {
+        code: `${stepper}<mds-button label="Invia la domanda"></mds-button>`,
+        filename: filename.html,
+      },
+      // no stepper in the file: a bare Avanti is not this rule's business
+      { code: '<mds-button label="Avanti"></mds-button>', filename: filename.html },
+    ],
+    invalid: [
+      {
+        code: `${stepper}<section><mds-button label="Avanti"></mds-button></section>`,
+        filename: filename.html,
+        errors: [
+          { message: /label="Avanti"> in a page with mds-stepper-bar: name the way forward/ },
+        ],
+      },
+      {
+        // the button before the stepper, the punctuation and the case do not matter
+        code: `<mds-button label="Next >"></mds-button>${stepper}<mds-button label="continua"></mds-button>`,
+        filename: filename.html,
+        errors: 2,
+      },
+      {
+        // Greek, as Magma ships its strings in it (escaped: the sources are ASCII)
+        code: `${stepper}<mds-button label="\u0395\u03c0\u03cc\u03bc\u03b5\u03bd\u03bf"></mds-button>`,
+        filename: filename.html,
+        errors: 1,
+      },
+    ],
+  });
+  tester('jsx').run('jsx', rule, {
+    valid: [
+      {
+        code: '<><MdsStepperBar /><MdsButton label="Vai a Preferenze" /></>',
+        filename: filename.jsx,
+      },
+    ],
+    invalid: [
+      {
+        code: '<><MdsStepperBar /><MdsButton label="Avanti" /></>',
+        filename: filename.jsx,
+        errors: 1,
+      },
+    ],
+  });
+  tester('angular').run('angular', rule, {
+    valid: [
+      {
+        code: '<mds-stepper-bar></mds-stepper-bar><mds-button label="Avanti: Genitori"></mds-button>',
+        filename: filename.angular,
+      },
+    ],
+    invalid: [
+      {
+        code: '<mds-stepper-bar></mds-stepper-bar><mds-button label="Avanti"></mds-button>',
+        filename: filename.angular,
+        errors: 1,
+      },
+    ],
+  });
+});

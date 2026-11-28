@@ -77,6 +77,76 @@ const createRule = (name: string, description: string, check: Check): Rule.RuleM
   },
 });
 
+/*
+  The way forward of a stepper names the step it leads to: "5. Placement context" of
+  mds-stepper-bar, "the way forward last, on the edge, named after the step it leads to", and
+  its main action at the last step "names what it does (Invia la domanda), not Avanti". The
+  check sees a file, not an element: a button is reported only when the file holds an
+  mds-stepper-bar, and only when its label is a bare word for "next", which names no step.
+  Criterion of the words: the generic labels of a forward button in the four languages Magma
+  ships its own strings in (it, en, es, el, the locale files of the components); any other
+  label may name a step, so it passes.
+*/
+const GENERIC_FORWARD = new Set([
+  'avanti',
+  'continua',
+  'prosegui',
+  'procedi',
+  'prossimo',
+  'successivo',
+  'next',
+  'continue',
+  'proceed',
+  'siguiente',
+  'continuar',
+  // the Greek ones, escaped: the sources are ASCII
+  '\u03b5\u03c0\u03cc\u03bc\u03b5\u03bd\u03bf', // epomeno
+  '\u03c3\u03c5\u03bd\u03ad\u03c7\u03b5\u03b9\u03b1', // synecheia
+]);
+const genericForward = (label: unknown): boolean =>
+  typeof label === 'string' &&
+  GENERIC_FORWARD.has(label.toLocaleLowerCase('it').replace(/^[^\p{L}]+|[^\p{L}]+$/gu, ''));
+
+const stepperForwardNamed: Rule.RuleModule = {
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'The way forward of a stepper names the step it leads to, not a bare "Avanti".',
+      url: lintGuideUrl('stepper-forward-named'),
+    },
+    schema: [],
+  },
+  create(context) {
+    let stepper = false;
+    const generic: Finding[] = [];
+    const run = (element: LintElement | undefined) => {
+      if (!element) return;
+      if (element.tag === 'mds-stepper-bar') stepper = true;
+      if (element.tag !== 'mds-button') return;
+      const label = element.attributes.find(({ name }) => name === 'label');
+      if (label && genericForward(label.value))
+        generic.push({
+          node: label.node,
+          message:
+            `<mds-button label="${String(label.value)}"> in a page with mds-stepper-bar: name the way ` +
+            'forward after the step it leads to ("Avanti: Preferenze", "Vai a Preferenze"), and the ' +
+            'main action of the last step after what it does ("Invia la domanda"); ' +
+            'mds-stepper-bar, 5. Placement context.',
+        });
+    };
+    return {
+      Tag: (node: unknown) => run(fromHtml(node as Parameters<typeof fromHtml>[0])),
+      JSXOpeningElement: (node: unknown) => run(fromJsx(node as Parameters<typeof fromJsx>[0])),
+      Element: (node: unknown) => run(fromAngular(node as Parameters<typeof fromAngular>[0])),
+      'Program:exit': () => {
+        if (stepper)
+          for (const { node, message } of generic)
+            context.report({ node: node as Rule.Node, message });
+      },
+    } as Rule.RuleListener;
+  },
+};
+
 const rules: Record<string, Rule.RuleModule> = {
   'valid-attribute-values': createRule(
     'valid-attribute-values',
@@ -111,6 +181,7 @@ const rules: Record<string, Rule.RuleModule> = {
         ? noInternalTokens(element, data.styles())
         : [],
   ),
+  'stepper-forward-named': stepperForwardNamed,
 };
 
 const plugin: ESLint.Plugin & { configs: Record<'recommended' | 'strict', Linter.Config> } = {
@@ -134,6 +205,7 @@ plugin.configs.recommended = {
     'magma/no-deprecated': 'warn',
     'magma/no-raw-palette-classes': 'warn',
     'magma/no-internal-tokens': 'warn',
+    'magma/stepper-forward-named': 'warn',
   },
 };
 plugin.configs.strict = {

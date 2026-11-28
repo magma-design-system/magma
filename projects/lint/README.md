@@ -96,6 +96,14 @@ line here, and its test runs on the real data or on the guide it enforces, not o
 picked by hand. The tools of the MCP server, which answer from this core, have their lines in
 [`projects/mcp/README.md`](../mcp/README.md).
 
+- **A generic way forward** (`stepper-forward-named`): the rule enforces the placement context
+  of `mds-stepper-bar` (its `5. Placement context.md`, "named after the step it leads to", "not
+  Avanti"), so it sees a file, not an element: it reports only in a file that holds an
+  `mds-stepper-bar`, at the end of the file (`Program:exit`), wherever the stepper stands. A
+  label is generic when, lowercased and stripped of the punctuation around it, it is one of the
+  words for "next" in the four languages Magma ships its own strings in (it, en, es, el: the
+  `locale.*.json` files of the components); the guide names them. Any other label may name a
+  step, so it passes: the rule does not guess which button moves forward.
 - **Where a rule looks** (`no-internal-tokens`, `no-raw-palette-classes`): everywhere a
   project writes the thing it checks, with the stack Magma ships, not only the first form that
   comes to mind. A custom property is written in an inline style, in a framework binding, in a
