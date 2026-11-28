@@ -51,7 +51,8 @@ keep in step.
   (the styling API and the public mark) and "Per-component usage docs" (the usage files);
   [`docs/ARCHITECTURE.md`](ARCHITECTURE.md), 3.5.
 - **Read by**: the lint core (`projects/lint/src/core/data.ts`), the component tools of the MCP
-  server, the per-component `AGENTS.md` (`component-docs.ts`), `check.usage-docs`, the codemod
+  server (`find_component` and `get_component` read `4. When to use` and `5. Placement context`
+  too, #1580), the per-component `AGENTS.md` (`component-docs.ts`), `check.usage-docs`, the codemod
   manifest ([`projects/codemod/README.md`](../projects/codemod/README.md), "Regenerating the
   manifest from the docs"), the studio (`projects/studio/magma-api.ts`: the `variant` and the
   `tone` of each component, for the previews of a colour), the docs site. The docs site reads
@@ -244,8 +245,10 @@ keep in step.
 - **Contract**: [`docs/agents/SPEC.md`](agents/SPEC.md) (the entry point and the targets);
   [`projects/stencil/SPEC.md`](../projects/stencil/SPEC.md), "Per-component usage docs".
 - **Read by**: the agents of consumer projects, the MCP `get_guide`, the MCP `get_component`
-  and `find_component` for the need and the place (coming next in epic #1579, from
-  `documentation.json` and the patterns through the lint core), the skills of the Claude
+  (the paths of `AGENTS.md`, `when-to-use.md`, `placement.md`, `examples.md` and `mistakes.md`
+  in `files`; the need and the place as data it reads, as `find_component` does, from the
+  `usage` of `documentation.json` and the patterns through the lint core, #1580,
+  [`projects/mcp/README.md`](../projects/mcp/README.md), "Where each answer comes from"), the skills of the Claude
   Code plugin (`projects/claude-plugin/scripts/skills.ts`: the targets of `docs/agents/SPEC.md`,
   the rules of `docs/agents/lint.md`, and the rule in bold that opens each item of
   `docs/agents/mistakes.md`, with the rules of the lint the item names, #1581), the docs site;

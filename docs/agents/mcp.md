@@ -123,8 +123,8 @@ an answer names (a preview, the layer of a pattern) is absolute.
 
 | Tool | Ask it | Instead of |
 | --- | --- | --- |
-| `find_component` | which component fits a need ("a date range picker") | reading the catalogue |
-| `get_component` | the API of one component: props with their values and default, events, methods, slots, parts, public CSS custom properties; and in `rules` the rules of the design language that govern it (the inset `mds-banner` draws, from the rhythm) | reading its `AGENTS.md` |
+| `find_component` | which component fits a need ("a date range picker"); a candidate with a When to use carries in `notFor` the near needs it does not answer, each with the component, the pattern or the `gap` that answers it, and the component a `Not for` line names comes up when your need matches that line, with the line in `via` | reading the catalogue |
+| `get_component` | the API of one component: props with their values and default, events, methods, slots, parts, public CSS custom properties; in `rules` the rules of the design language that govern it (the inset `mds-banner` draws, from the rhythm); where it has them, in `whenToUse` the needs it answers and the near ones it does not, and in `placement` where it goes in a view, what stands around it and inside it, with the places the patterns give it, and in `cites` the rules their lines name by id (`actions/order`) | reading its `AGENTS.md`, `when-to-use.md` and `placement.md` |
 | `get_usage` | how HTML, React or Angular writes it: import, props, events (`onMdsInputChange`, `(mdsInputChange)`) | guessing the names |
 | `list_tokens` | the role for a need ("secondary text"), with its value and class | reading [`color.md`](color.md) |
 | `suggest_role` | the role for a colour, a raw class or a palette step, as a class of the same utility (`shadow-*/80` stays a shadow class) | picking a role by eye |
