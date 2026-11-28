@@ -211,14 +211,16 @@ How to write and run the tests (Vitest + `@stencil/vitest`, `render` / `userEven
 
 ## Per-component usage docs
 
-Every component documents its **semantic intent** in a `usage/` folder containing three markdown files. These are the **canonical source of truth** - agents and developers should read these to understand how a component is meant to be used.
+Every component documents its **semantic intent** in a `usage/` folder containing three markdown files, and two more, the need and the place, on the components epic #1579 has reached. These are the **canonical source of truth** - agents and developers should read these to understand how a component is meant to be used.
 
 ```
 src/components/mds-component-name/
 └── usage/
     ├── 1. Description.md   ← purpose, semantic behaviour, prop intent
     ├── 2. Examples.md      ← numbered list of correct uses, each with its code
-    └── 3. Mistakes.md      ← numbered list of incorrect uses with INCORRECT/CORRECT pairs
+    ├── 3. Mistakes.md      ← numbered list of incorrect uses with INCORRECT/CORRECT pairs
+    ├── 4. When to use.md   ← the needs it answers, and the near ones it does not (epic #1579)
+    └── 5. Placement context.md ← where it goes in a view, what sits around it, what it holds
 ```
 
 The `1. ` / `2. ` / `3. ` numeric prefixes exist to control the order of sections in the auto-generated `readme.md` — Stencil sorts usage files alphabetically by filename, and the headings it emits (`### 1. Description`, etc.) double as a deterministic table of contents.
@@ -230,6 +232,31 @@ The `1. ` / `2. ` / `3. ` numeric prefixes exist to control the order of section
 | `1. Description.md` | One-sentence purpose, runtime/semantic behaviour, the **intent** of each prop's values (when to pick `tone="strong"` vs `weak`) |
 | `2. Examples.md`    | 5-12 numbered examples showing correct, idiomatic use. Each has a "use this when…" line and one code block                      |
 | `3. Mistakes.md`    | 3-8 numbered mistakes. Each pairs an INCORRECT example with the CORRECT alternative and a one-line "why"                       |
+| `4. When to use.md` | The needs it answers (`Use it for`) and the near needs it does not, each with what answers it (`Not for`)                      |
+| `5. Placement context.md` | Where it goes in a view and where not, what sits around it, what it holds, what it does on a narrow screen               |
+
+### `4. When to use.md` and `5. Placement context.md`
+
+The two files the agent reads where it makes a choice (epic #1579): the need when it picks the component (`find_component` returns the `Not for` lines beside each candidate), the place when it composes the view (`get_component`). The pilot (#1580) writes them for five components; `check.usage-docs` holds their shape where they exist, and asks for them on every component once the epic ends. One parser reads them for every reader, in the lint core (`projects/lint/src/core/usage.ts`, exported by magma as `./lint`): the build that ships them, the check, the MCP server.
+
+**`4. When to use.md`, the need.** Two headings and nothing else, each a list of one line per need:
+
+- `#### Use it for`: the needs this component answers, each written as the need ("The person must ..."), with the criterion that tells it from its neighbours inside the line: replaces the content or narrows the same list, steps in a fixed order and how many, can be undone or not, the kind of view (a task done once, a tool used over time) and the container (a page, a dialog).
+- `#### Not for`: the near needs it does not answer. The need, a colon, then what answers it in inline code: a component (`` `mds-tab` ``), a pattern of `docs/agents/patterns/` (`` `confirm-action` ``), or `` `gap` `` when Magma has none, which sends the agent to the gap path of the skill `ui` instead of the nearest component. A line may name more than one answer and add a criterion after it; other inline code in the line (`` `href` ``, `` `type="radio"` ``) is not an answer.
+
+The need lines a Description held move here; the Description keeps what the component is and how it behaves.
+
+**`5. Placement context.md`, the place.** Up to five headings, in this order, each a list:
+
+- `#### Where it goes`: the places in a view, the width, how many in one view;
+- `#### Not here`: the places it does not go, with where instead;
+- `#### Around it`: what sits before, after and beside it (the title, the row of actions, a message);
+- `#### Inside it`: what it holds, and how much;
+- `#### Narrow screens`: what it does in a narrow container, as it does today.
+
+Sizes are roles or token steps (`widths/form`, `--spacing()`), never px. A rule of the design language is named by its id in inline code (`` `actions/order` ``, `` `widths/dialog` ``), not rewritten: `get_component` returns it. A behaviour the component lacks goes to an issue on the component; the file describes what it does today. The places the patterns give it are not written by hand: the build adds them to the shipped file as `In the patterns`, from the cases of `docs/agents/patterns/` that use the component.
+
+The sources of each line (published design systems, research, the reference images of other products) go in the body of the pull request that decides the files, as the record of the decision; the files stay short, since the agent reads them.
 
 ### What `usage/` must NOT contain
 
@@ -239,7 +266,7 @@ The `1. ` / `2. ` / `3. ` numeric prefixes exist to control the order of section
 
 ### Auto-generation flow
 
-`usage/*.md` files are bundled by the Stencil build into `dist/documentation.json` and then injected into `readme.md`; after the build, `scripts/component-docs.ts` writes the shipped per-component docs (`AGENTS.md`, `examples.md`, `mistakes.md`, `documentation.json`) into `dist/collection/components/<tag>/`. As a consequence:
+`usage/*.md` files are bundled by the Stencil build into `dist/documentation.json` and then injected into `readme.md`; after the build, `scripts/component-docs.ts` writes the shipped per-component docs (`AGENTS.md`, `when-to-use.md`, `placement.md`, `examples.md`, `mistakes.md`, `documentation.json`) into `dist/collection/components/<tag>/`. `when-to-use.md` and `placement.md` exist only for a component that has the files 4 and 5, and the `AGENTS.md` lists them first under "Read next"; `placement.md` ends with `In the patterns`, one line per case of `docs/agents/patterns/` whose `use` writes the component (and per region of a building block): the pattern, linked to its shipped copy, the case, what the component does there and the `where` of the case. As a consequence:
 
 - **Do not edit `readme.md` or a generated file by hand** - they are regenerated on every build
 - **`dist/documentation.json`** is a structured JSON mirror of the same content plus full prop type metadata and cross-references. It is **gitignored** and only exists after a local build - do not assume it is present in a fresh clone or on GitHub
@@ -247,17 +274,17 @@ The `1. ` / `2. ` / `3. ` numeric prefixes exist to control the order of section
 
 ### Checked in CI
 
-`scripts/check-usage-docs.ts` (`npm run check.usage-docs`, after a build) checks every usage doc against the built API and the token layer, outside the INCORRECT half of the examples of a mistake, which is wrong on purpose: every `mds-*` tag, attribute, enumerated value, slot, documented part, event, `--mds-*` property, token and icon slug must exist, and every `--mds-*` property must be public (an internal one, documented or not, is `internal-css-var`); no palette step (`--tone-*`, `--variant-*`, `--status-*`) where a semantic role belongs ([`docs/agents/color.md`](../../docs/agents/color.md)), no raw `--radius-*`, no `="false"` boolean, no self-closed `<mds-* />` (HTML leaves it open), no `>>>`, `dark:` or preference media query, a language on every fence, no emoji. It also fails on a component member that ships without a description: every prop, event, method, slot, part and `@prop` custom property needs one, since its JSDoc is its only line in the readme and in the shipped `AGENTS.md`. Stencil lists a part that `render()` sets even without an `@part`, with an empty description, and reads `@part` and `@slot` only from the JSDoc right above `@Component`: a plain `/*` comment, or a block above another declaration, never reaches the docs. It runs in CI on every stencil build; the pure checks are tested in `scripts/usage-docs-lib.spec.ts`.
+`scripts/check-usage-docs.ts` (`npm run check.usage-docs`, after a build) checks every usage doc against the built API and the token layer, outside the INCORRECT half of the examples of a mistake, which is wrong on purpose: every `mds-*` tag, attribute, enumerated value, slot, documented part, event, `--mds-*` property, token and icon slug must exist, and every `--mds-*` property must be public (an internal one, documented or not, is `internal-css-var`); no palette step (`--tone-*`, `--variant-*`, `--status-*`) where a semantic role belongs ([`docs/agents/color.md`](../../docs/agents/color.md)), no raw `--radius-*`, no `="false"` boolean, no self-closed `<mds-* />` (HTML leaves it open), no `>>>`, `dark:` or preference media query, a language on every fence, no emoji. It also fails on a component member that ships without a description: every prop, event, method, slot, part and `@prop` custom property needs one, since its JSDoc is its only line in the readme and in the shipped `AGENTS.md`. Stencil lists a part that `render()` sets even without an `@part`, with an empty description, and reads `@part` and `@slot` only from the JSDoc right above `@Component`: a plain `/*` comment, or a block above another declaration, never reaches the docs. Where a component has its need and its place, it holds them to the format above: `4. When to use.md` has its two headings in order with only list items under them, and every `Not for` line its colon and an answer that exists (a component of the build, a pattern by its id, `gap`; a hyphenated name in code that is neither a pattern nor a name of the API is `unknown-pattern`); `5. Placement context.md` only its five headings in order, each a list, and no hand-written `In the patterns`; every rule either cites as `pattern/id` names a rule, a case or a region of that pattern (`unknown-rule`). A `Not for` of A that names B, where B has its own `4. When to use.md`, must find its need among the `Use it for` lines of B (`not-reciprocal`): the need, the text before the colon, shares two words with one of those lines, after a light normalisation (lowercase, inline code and stop words left out, plurals and `-ing` reduced). It runs in CI on every stencil build; the pure checks are tested in `scripts/usage-docs-lib.spec.ts`, the parser in `projects/lint/test/usage.test.ts`.
 
 ### Storybook
 
-The three files are also the component's **Docs page** in Storybook. `.storybook/usage-docs.jsx` replaces the autodocs template (`parameters.docs.page` in `.storybook/preview.jsx`) with the default blocks around the usage docs: title and subtitle, `1. Description.md` as the **Description** section, the primary story with its Controls table, then **Examples** (`2. Examples.md`) and **Mistakes** (`3. Mistakes.md`). The files are read at runtime through a Vite glob (`?raw`), so editing a `.md` updates the open page without a build; a table of contents (`parameters.docs.toc`) lists the sections and their headings. On the way the `####` headings of the files are shifted right below their section heading, and the repository-relative links (`docs/COMPONENTS.md`, `SPEC.md`, a sibling component) are pointed at GitHub, `main` branch. Code blocks are left untouched. The transforms live in `.storybook/usage-markdown.ts`, with their spec in `src/storybook/test/`.
+The usage files are also the component's **Docs page** in Storybook. `.storybook/usage-docs.jsx` replaces the autodocs template (`parameters.docs.page` in `.storybook/preview.jsx`) with the default blocks around the usage docs: title and subtitle, `1. Description.md` as the **Description** section, then **When to use** (`4. When to use.md`) and **Placement context** (`5. Placement context.md`) where the component has them, the primary story with its Controls table, then **Examples** (`2. Examples.md`) and **Mistakes** (`3. Mistakes.md`). A component without the three required files keeps the default page. The files are read at runtime through a Vite glob (`?raw`), so editing a `.md` updates the open page without a build; a table of contents (`parameters.docs.toc`) lists the sections and their headings. On the way the `####` headings of the files are shifted right below their section heading, and the repository-relative links (`docs/COMPONENTS.md`, `SPEC.md`, a sibling component) are pointed at GitHub, `main` branch. Code blocks are left untouched. The transforms live in `.storybook/usage-markdown.ts`, with their spec in `src/storybook/test/`.
 
-A component without a stories file (a part of a compound component, e.g. `mds-table-cell`) has no autodocs page: it gets a `test/<name>.mdx` of a few lines that imports its three files and renders them with `UsageDocs`, under the title of its compound (`UI / Data / Table / Cell`, see [Where a page sits in Storybook](#tests)). Copy one of them when adding such a component. The stories file of a use case (`mds-tree-apk.stories.tsx`) keeps the default autodocs page: only the file named after its component folder, or after a prefix of it (`mds-input-tip-item/test/mds-input-tip.stories.tsx`), carries the usage docs.
+A component without a stories file (a part of a compound component, e.g. `mds-table-cell`) has no autodocs page: it gets a `test/<name>.mdx` of a few lines that imports its three files (and its files 4 and 5, as `whenToUse` and `placement`, once it has them) and renders them with `UsageDocs`, under the title of its compound (`UI / Data / Table / Cell`, see [Where a page sits in Storybook](#tests)). Copy one of them when adding such a component. The stories file of a use case (`mds-tree-apk.stories.tsx`) keeps the default autodocs page: only the file named after its component folder, or after a prefix of it (`mds-input-tip-item/test/mds-input-tip.stories.tsx`), carries the usage docs.
 
 ### Templates
 
-Authoring templates with inline rules and section prompts live in [`template/usage/`](../../projects/stencil/template/usage). Copy these when adding `usage/` docs to an existing component, or rely on the scaffolder for new ones.
+Authoring templates with inline rules and section prompts live in [`template/usage/`](../../projects/stencil/template/usage). Copy these when adding `usage/` docs to an existing component, or rely on the scaffolder for new ones. The scaffolders write the first three (`SCAFFOLDED_USAGE_FILES` in `scripts/agent-docs-lib.ts`): `4. When to use.md` and `5. Placement context.md` are copied from their templates when epic #1579 reaches the component, until the epic asks them of every component.
 
 ## Scaffolding a new component
 

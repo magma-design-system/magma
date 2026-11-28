@@ -2312,7 +2312,7 @@ export namespace Components {
          */
         "close": () => Promise<void>;
         /**
-          * Hides the modal backdrop
+          * Hides the backdrop and opens the dialog as non-modal (`show()`, not `showModal()`): the page behind stays usable and the focus is not held in the window
           * @default false
          */
         "hideBackdrop"?: boolean;
@@ -7905,7 +7905,7 @@ declare namespace LocalJSX {
          */
         "animation"?: ModalAnimationStyleType;
         /**
-          * Hides the modal backdrop
+          * Hides the backdrop and opens the dialog as non-modal (`show()`, not `showModal()`): the page behind stays usable and the focus is not held in the window
           * @default false
          */
         "hideBackdrop"?: boolean;

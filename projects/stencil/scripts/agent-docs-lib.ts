@@ -11,6 +11,7 @@
  */
 import path from 'path';
 import { MAGMA_BLOCK_END, MAGMA_BLOCK_START } from '../../lint/src/core/agents';
+import { IN_THE_PATTERNS, type PatternPlace } from '../../lint/src/core/usage';
 import { isPublic, type ContractStyle } from './style-contract-lib';
 
 /** Folder of one component's docs inside the magma package. */
@@ -190,7 +191,21 @@ export interface DocsComponent {
  * documentation.json, the docs site first (docs/CONTRACTS.md, "documentation.json"), which
  * leaves out a name it does not know: a name outside this list fails the build instead.
  */
-export const USAGE_FILES = ['1. Description', '2. Examples', '3. Mistakes'] as const;
+export const USAGE_FILES = [
+  '1. Description',
+  '2. Examples',
+  '3. Mistakes',
+  '4. When to use',
+  '5. Placement context',
+] as const;
+
+/**
+ * The usage files a new component starts with (generate-component.ts, generate-usage.ts): the need
+ * and the place (`4. When to use`, `5. Placement context`) are asked of every component only once
+ * epic #1579 ends (SPEC.md, "Per-component usage docs"); until then a component writes them when
+ * the epic reaches it, from the templates in template/usage/.
+ */
+export const SCAFFOLDED_USAGE_FILES = USAGE_FILES.slice(0, 3);
 
 /** The keys of a component's `usage` that are not in USAGE_FILES. */
 export const unknownUsageFiles = (component: DocsComponent): string[] =>
@@ -227,8 +242,18 @@ export function renderComponentAgentsMd(
   const description = usage['1. Description']?.trim();
   const hasExamples = !!usage['2. Examples']?.trim();
   const hasMistakes = !!usage['3. Mistakes']?.trim();
+  const hasWhenToUse = !!usage['4. When to use']?.trim();
+  const hasPlacement = !!usage['5. Placement context']?.trim();
 
+  // the need and the place first: an agent reads them where it picks the component and where it
+  // composes the view (SPEC.md, "Per-component usage docs", epic #1579)
   const readNext = [
+    hasWhenToUse
+      ? '[`when-to-use.md`](when-to-use.md) - the needs it answers, and the near ones it does not, with what answers them'
+      : '',
+    hasPlacement
+      ? '[`placement.md`](placement.md) - where it goes in a view, what sits around it, what it holds'
+      : '',
     hasExamples ? '[`examples.md`](examples.md) - correct usage, from the most common case' : '',
     hasMistakes ? '[`mistakes.md`](mistakes.md) - the wrong forms, each with the right one' : '',
     storybookUrl && component.storybook
@@ -352,7 +377,10 @@ export function renderComponentAgentsMd(
     .concat('\n');
 }
 
-/** A usage file (examples / mistakes) as shipped beside the component's AGENTS.md. */
+/**
+ * A usage file (when to use, placement, examples, mistakes) as shipped beside the component's
+ * AGENTS.md.
+ */
 export function renderUsageFile(tag: string, title: string, md: string): string {
   return `<!--
   GENERATED FILE - do not edit by hand.
@@ -365,6 +393,31 @@ export function renderUsageFile(tag: string, title: string, md: string): string 
 
 ${rewriteUsageLinks(md.trim())}
 `;
+}
+
+/**
+ * The section the build appends to the shipped placement.md: one item per place the patterns give
+ * the component (placesOfComponent of the lint core), its pattern linked to the copy shipped in
+ * agents/patterns/, the case or the region, what the component does there and the `where` of the
+ * case. Empty when no pattern uses it.
+ */
+export function renderInThePatterns(places: PatternPlace[]): string {
+  if (!places.length) return '';
+  const items = places.map(({ pattern, id, roles, where }) => {
+    const role = roles.length ? ` (${roles.join('; ')})` : '';
+    const text = toAscii(where.replace(/\s+/g, ' ').trim());
+    return `- [\`${pattern}\`](${TO_PACKAGE_ROOT}agents/patterns/${pattern}.md), \`${id}\`${toAscii(role)}: ${text}`;
+  });
+  return `#### ${IN_THE_PATTERNS}\n\n${items.join('\n')}\n`;
+}
+
+/**
+ * `5. Placement context.md` as shipped, placement.md: the hand-written sections, then the places
+ * the patterns give the component, generated (SPEC.md: never written by hand).
+ */
+export function renderPlacementFile(tag: string, md: string, places: PatternPlace[]): string {
+  const generated = renderInThePatterns(places);
+  return renderUsageFile(tag, 'placement context', generated ? `${md.trim()}\n\n${generated}` : md);
 }
 
 /** The docs-json entry of one component as shipped beside it: no readme, links rewritten. */

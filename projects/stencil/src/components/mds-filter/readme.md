@@ -317,6 +317,50 @@ mds-filter {
 ```
 
 
+### 4. When to use
+
+#### Use it for
+
+- The person must narrow the items of a list or a table on screen by one property with a few values (the statuses of the items), seeing how many items each value would show.
+- The person must clear every filter in one step.
+
+#### Not for
+
+- The person switches between views that replace the content (a mode, a representation, another panel): `mds-tab`.
+- The property has many values, or the person filters by several properties at once: `list-with-filters`, the fields of its search form (`mds-input-select`), until the panel of the filters (#1602).
+- The list is short enough to read whole: no filter, `item-list`.
+- Choosing items from a list for something else (the members to add to a group): `choose-items`.
+- Choosing the value of a field of a form: `form-and-validation`, with `mds-input-switch` or `mds-input-select`.
+
+
+### 5. Placement context
+
+#### Where it goes
+
+- Above the list or the table it narrows, in its search form, under the fields (`item-list`, `list-with-filters`).
+- One per list.
+
+#### Not here
+
+- In the header of the table or of a column: the column orders the list (`mds-table-header-cell` with `sortable`), the filter narrows it.
+- In the header of the page.
+- As a second strip of tabs: when the choice replaces the content, it is `mds-tab`.
+
+#### Around it
+
+- When the page has tabs, they stand above the search form and the filter.
+- Under the search form, the summary of which items are on screen out of how many, read out after every change (`list-with-filters`).
+- Rimuovi i filtri at the end of the row, only while a filter is on: the component draws it.
+
+#### Inside it
+
+- Only `mds-filter-item`, each with its label and how many items it would show.
+
+#### Narrow screens
+
+- The row keeps one line and scrolls, the chosen item in view.
+
+
 
 ## Properties
 

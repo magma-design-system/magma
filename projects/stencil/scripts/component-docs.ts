@@ -5,6 +5,10 @@
  *
  *   AGENTS.md            what it is + its API (props with allowed values, events,
  *                        methods, slots, parts, CSS custom properties)
+ *   when-to-use.md       the need             (usage/4. When to use.md, where it exists)
+ *   placement.md         the place            (usage/5. Placement context.md, where it
+ *                        exists, then "In the patterns": the cases of the patterns of
+ *                        docs/agents/patterns/ that use it, generated)
  *   examples.md          correct usage        (usage/2. Examples.md)
  *   mistakes.md          mistakes to avoid    (usage/3. Mistakes.md)
  *   documentation.json   its docs-json entry, same shape as dist/documentation.json
@@ -30,11 +34,14 @@
  */
 import fs from 'fs';
 import path from 'path';
+import { readPatternDir, type Pattern } from '../../lint/src/core/patterns';
+import { placesOfComponent } from '../../lint/src/core/usage';
 import {
   COMPONENT_DOCS_DIR,
   brokenLinks,
   componentDocsJson,
   renderComponentAgentsMd,
+  renderPlacementFile,
   renderUsageFile,
   rewriteUsageEntries,
   unknownUsageFiles,
@@ -48,6 +55,16 @@ import { PUBLISHED_SITE, readComponentStories, storybookDocsIds } from './story-
 const STENCIL_DIR = process.cwd();
 const DOCS_JSON = path.join(STENCIL_DIR, 'dist', 'documentation.json');
 const COMPONENTS_OUT = path.join(STENCIL_DIR, COMPONENT_DOCS_DIR);
+/** The patterns whose cases give a component its places, "In the patterns" of placement.md. */
+const PATTERNS_DIR = path.join(STENCIL_DIR, '../../docs/agents/patterns');
+
+/** The usage files shipped beside AGENTS.md: the key in `usage`, the file, its title. */
+const SHIPPED_USAGE = [
+  ['4. When to use', 'when-to-use.md', 'when to use'],
+  ['5. Placement context', 'placement.md', 'placement context'],
+  ['2. Examples', 'examples.md', 'examples'],
+  ['3. Mistakes', 'mistakes.md', 'mistakes'],
+] as const;
 
 /** Package roots whose AGENTS.md + agents/ are checked, relative to the stencil package. */
 const PACKAGES = ['.', '../stencil-react', '../stencil-angular/magma-angular'];
@@ -64,6 +81,7 @@ interface DocsJson {
 }
 
 function writeComponentDocs(docs: DocsJson, version: string): number {
+  const patterns = readPatternDir<Pattern>(PATTERNS_DIR).map(({ data }) => data);
   for (const component of docs.components) {
     const dir = path.join(COMPONENTS_OUT, component.tag);
     fs.mkdirSync(dir, { recursive: true });
@@ -73,14 +91,16 @@ function writeComponentDocs(docs: DocsJson, version: string): number {
       path.join(dir, 'AGENTS.md'),
       renderComponentAgentsMd(component, version, docs.storybook),
     );
-    for (const [key, file, title] of [
-      ['2. Examples', 'examples.md', 'examples'],
-      ['3. Mistakes', 'mistakes.md', 'mistakes'],
-    ] as const) {
+    for (const [key, file, title] of SHIPPED_USAGE) {
       const target = path.join(dir, file);
-      if (usage[key]?.trim())
-        fs.writeFileSync(target, renderUsageFile(component.tag, title, usage[key]));
-      else fs.rmSync(target, { force: true });
+      const md = usage[key];
+      if (!md?.trim()) fs.rmSync(target, { force: true });
+      else if (key === '5. Placement context')
+        fs.writeFileSync(
+          target,
+          renderPlacementFile(component.tag, md, placesOfComponent(patterns, component.tag)),
+        );
+      else fs.writeFileSync(target, renderUsageFile(component.tag, title, md));
     }
     const single = {
       timestamp: docs.timestamp,
@@ -120,7 +140,7 @@ function shippedDocs(): { file: string; root: string; resolve: (link: string) =>
     }
   }
   for (const tag of fs.readdirSync(COMPONENTS_OUT)) {
-    for (const f of ['AGENTS.md', 'examples.md', 'mistakes.md']) {
+    for (const f of ['AGENTS.md', ...SHIPPED_USAGE.map(([, file]) => file)]) {
       const file = path.join(COMPONENTS_OUT, tag, f);
       if (fs.existsSync(file))
         out.push({

@@ -91,7 +91,8 @@ export class MdsModal {
   @Prop({ reflect: true, mutable: true }) opened?: boolean = false;
 
   /**
-   * Hides the modal backdrop
+   * Hides the backdrop and opens the dialog as non-modal (`show()`, not `showModal()`): the page
+   * behind stays usable and the focus is not held in the window
    */
   @Prop({ reflect: true, mutable: true }) hideBackdrop?: boolean = false;
 

@@ -205,6 +205,48 @@ answer comes from".
   map, so a new root fails a test instead of reading as a background. A role is matched in
   its family, `--magma-shadow-ink` for a shadow (or a fill, for a glow), and the class keeps
   the utility and the opacity of the class given.
+- **The need and the place of a component** (`find_component`, `get_component`, #1580): the
+  usage files `4. When to use.md` and `5. Placement context.md`, in the format of
+  [`projects/stencil/SPEC.md`](../stencil/SPEC.md), "Per-component usage docs", read from the
+  `usage` of `documentation.json` (`4. When to use`, `5. Placement context`, the text written by
+  hand) with the parser of the lint core, `src/core/usage.ts` (its choices in
+  [`projects/lint/README.md`](../lint/README.md), "The need and the place"). An answer of a
+  `Not for` line is what `answersOf` finds after its first `: `: a component of
+  `documentation.json`, a pattern the server reads from `agents/patterns/` by its id, or `gap`;
+  the need is the text before the colon, plain (no inline code, link or bold), as an agent
+  reads a summary. `find_component` gives these lines on each candidate that has the file
+  (`notFor`). Its score weighs a word of the query by where it is found: the tag (6, part of
+  it 4), the summary (3), a `Use it for` line (2), the full text (1). A `Use it for` line is a
+  need the component answers, said by its maintainers, so it tells more than the rest of the
+  text and less than the summary, which says what the component is; the full text holds both
+  lists, since they took the need lines a Description held before the file existed. The lines
+  are compared without the words every need is written with (`person`, `people`, `user`,
+  `must`; the stop words of `needWords` of the reciprocity check,
+  `projects/stencil/scripts/usage-docs-lib.ts`), and a word of the query is in a line when a
+  word of the line starts with it, since `wordsOf` cuts the final `s` of the query (`stage`
+  finds `stages`, `narrow` finds `narrowing`). A query matches a `Not for` line when its need
+  holds half of the words of the query, and two at least when the query has two or more: one
+  word in common is chance, two place the need (`RECIPROCITY_SHARED_WORDS` of the same check).
+  The component whose line it is gets the matched words once more at the weight of the text,
+  so it shows with the line that sends the agent elsewhere; the component the line names gets
+  them as a `Use it for` line of its own (2 and 1), with the line in `via`, since the
+  reciprocity check holds that the need of a `Not for` of A that names B is among the
+  `Use it for` of B: the right answer stands above the wrong one on that line. A pattern or the
+  gap the line names is in the `notFor` of the candidate. The words are matched, not the
+  sense: a need that says what it is not (`not narrow the same list`) matches the words it
+  negates, and the agent reads the line. `get_component` lists `when-to-use.md` and
+  `placement.md` in `files` when the package ships them (only for a component that has the
+  files), and gives them as data: `whenToUse` (the `Use it for` lines as written, the
+  `Not for` lines with their need, answers and whole text) and `placement` (its sections, from
+  the text of `documentation.json`, not from the shipped `placement.md`, whose
+  `In the patterns` the parser refuses as written by hand; and `places`, the same
+  `In the patterns` as data, `placesOfComponent` on the patterns the server reads), and in
+  `cites` what the lines of both name by id (`actions/order`), the rule, the case or the region
+  with its text (`citationsOf` and `resolveCitation` of the core): SPEC.md has a file name a
+  rule of the design language by its id instead of rewriting it, and `get_component` give it.
+  The tests run on the built `documentation.json`: the query of the issue (the stages of an
+  editor used over time) shows `mds-stepper-bar` with the line that names `mds-tab`, and
+  `mds-tab` through it.
 - **The answers of `get_pattern`** (`src/patterns.ts`, on the patterns core of the lint, whose
   choices are in [`projects/lint/README.md`](../lint/README.md): the format, when a case holds,
   the layers, the files of the previews): a search by need scores the words of the need
@@ -340,7 +382,8 @@ write.
 
 Some tests need more than the fixtures: the render ones a Chrome or an Edge on the machine (the
 runners of GitHub have Chrome) and the build of `styles`; the ones on the build of magma
-(`render_preview` of the built `mds-button`, every preview of a case, `test/shipped.test.ts`:
+(`render_preview` of the built `mds-button`, every preview of a case, the need and the place
+on the built `documentation.json`, checked against the output schemas, `test/shipped.test.ts`:
 the server as magma ships it, started with node from `dist/mcp`) are skipped when there is no
 build, and required on CI. The `consumer-lint` job of the stencil workflow runs them, after the
 tests of the lint, on the `mcp:build` of the same run and its build artifact.

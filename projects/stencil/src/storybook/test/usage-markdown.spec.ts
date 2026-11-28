@@ -2,9 +2,11 @@ import { describe, expect, it } from 'vitest';
 import {
   REPOSITORY_BRANCH,
   REPOSITORY_URL,
+  USAGE_SECTIONS,
   componentTagOf,
   renderUsageMarkdown,
   repositoryUrl,
+  usageSectionsOf,
 } from '../../../.storybook/usage-markdown';
 
 const github = `${REPOSITORY_URL}/blob/${REPOSITORY_BRANCH}`;
@@ -35,6 +37,45 @@ describe('componentTagOf', () => {
   it('documents no component from the stories outside the components folder', () => {
     expect(componentTagOf('./src/storybook/color-scale.stories.tsx')).toBeNull();
     expect(componentTagOf(undefined)).toBeNull();
+  });
+});
+
+describe('usageSectionsOf', () => {
+  const required = ['1. Description.md', '2. Examples.md', '3. Mistakes.md'];
+  const keysOf = (files: string[]) =>
+    usageSectionsOf((file) => files.includes(file))?.map(({ key }) => key) ?? null;
+
+  it('puts the need and the place right after the description, before the examples', () => {
+    expect(USAGE_SECTIONS.map(({ heading }) => heading)).toEqual([
+      'Description',
+      'When to use',
+      'Placement context',
+      'Examples',
+      'Mistakes',
+    ]);
+    expect(keysOf([...required, '4. When to use.md', '5. Placement context.md'])).toEqual([
+      'description',
+      'whenToUse',
+      'placement',
+      'examples',
+      'mistakes',
+    ]);
+  });
+
+  it('shows the need and the place only for a component that has their files', () => {
+    expect(keysOf(required)).toEqual(['description', 'examples', 'mistakes']);
+    expect(keysOf([...required, '5. Placement context.md'])).toEqual([
+      'description',
+      'placement',
+      'examples',
+      'mistakes',
+    ]);
+  });
+
+  it('keeps the default page for a component without the three required files', () => {
+    expect(keysOf(['1. Description.md', '4. When to use.md', '5. Placement context.md'])).toBe(
+      null,
+    );
   });
 });
 
@@ -117,6 +158,23 @@ describe('renderUsageMarkdown', () => {
     );
     expect(renderUsageMarkdown({ tag: 'mds-button', section: 'mistakes', content: 'x' })).toBe(
       '## Mistakes\n\nx\n',
+    );
+    expect(renderUsageMarkdown({ tag: 'mds-tab', section: 'whenToUse', content: 'x' })).toBe(
+      '## When to use\n\nx\n',
+    );
+    expect(renderUsageMarkdown({ tag: 'mds-tab', section: 'placement', content: 'x' })).toBe(
+      '## Placement context\n\nx\n',
+    );
+  });
+
+  it('nests the headings of the need and the place below their section', () => {
+    const rendered = renderUsageMarkdown({
+      tag: 'mds-tab',
+      section: 'whenToUse',
+      content: '#### Use it for\n\n- A need.\n\n#### Not for\n\n- Another: `mds-filter`.\n',
+    });
+    expect(rendered).toBe(
+      '## When to use\n\n### Use it for\n\n- A need.\n\n### Not for\n\n- Another: `mds-filter`.\n',
     );
   });
 

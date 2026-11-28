@@ -11,7 +11,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ### 1. Description
 
-The `<mds-chip>` web component is the Magma Design System's compact element for a short piece of metadata of a record: a tag, a status, a category, the value of a property. It renders the label on one line, with an optional leading icon or colour swatch and an optional delete affordance. Its interactions act on that metadata and only on it: the chip can be removed from the record that holds it (`deletable`), selected as the value of a filter or a choice (`selectable`), or opened to show the content that revolves around what it names (`clickable`), such as the office or the person a record refers to. An action of the application or of an agent (send, ask, a suggestion, a follow-up) is not a chip: it is an [`mds-button`](../../mds-button), with `truncate="none"` for a long label.
+The `<mds-chip>` web component is the Magma Design System's compact element for a short piece of metadata of a record: a tag, a category, the value of a property. The status of a record is not a chip: it is an [`mds-badge`](../../mds-badge). It renders the label on one line, with an optional leading icon or colour swatch and an optional delete affordance. Its interactions act on that metadata and only on it: the chip can be removed from the record that holds it (`deletable`), selected as the value of a filter or a choice (`selectable`), or opened to show the content that revolves around what it names (`clickable`), such as the office or the person a record refers to.
 
 #### Semantic Behavior
 
@@ -47,18 +47,18 @@ Correct and idiomatic ways to use the `<mds-chip>` component, ordered from most 
 The simplest form. Use the required `label` prop to display a read-only tag. With no interaction props the chip is passive and non-focusable.
 
 ```html
-<mds-chip label="In lavorazione" variant="warning" tone="strong"></mds-chip>
+<mds-chip label="Urbanistica"></mds-chip>
 ```
 
 #### Variant and Tone for Semantic Emphasis
 
-Pair the same `variant` with a different `tone` to express importance or category. Do not invent custom colors to dim or saturate. The variant paints the leading icon badge (and the border of a selected chip), not the body of the chip: give the chip an `icon` when its color has to carry meaning.
+Give each category of a set its own `variant`, and pair it with a `tone` for emphasis. Do not invent custom colors to dim or saturate. The variant paints the leading icon badge (and the border of a selected chip), not the body of the chip: give the chip an `icon` when its color has to carry meaning.
 
 ```html
-<!-- Status chips -->
-<mds-chip label="Completato" icon="mi/baseline/check-circle" variant="success" tone="strong"></mds-chip>
-<mds-chip label="In attesa" icon="mi/baseline/schedule" variant="warning" tone="weak"></mds-chip>
-<mds-chip label="Errore" icon="mi/baseline/error" variant="error" tone="strong"></mds-chip>
+<!-- The categories of a set of records: the status of a record is an mds-badge -->
+<mds-chip label="Urbanistica" icon="mi/baseline/location-city" variant="blue" tone="strong"></mds-chip>
+<mds-chip label="Lavori pubblici" icon="mi/baseline/work" variant="orange" tone="weak"></mds-chip>
+<mds-chip label="Eventi" icon="mi/baseline/event" variant="violet" tone="strong"></mds-chip>
 
 <!-- Decorative label chips -->
 <mds-chip label="Natura" icon="mi/baseline/eco" variant="green" tone="weak"></mds-chip>
@@ -368,6 +368,58 @@ A chip shows a piece of metadata of a record, and its interactions act on that m
   tone="weak"
 ></mds-button>
 ```
+
+
+### 4. When to use
+
+#### Use it for
+
+- The person must see a short piece of metadata of a record (a tag, a category, the value of a property) beside the record: in a list, a table, the page of the record.
+- The person must take off a label that they or someone gave the record (a tag of an entity, an active filter).
+- The person must open the content of what the chip names (the office, the person a record refers to).
+- The person must choose values from a set shown whole, several at a time, with a limit if there is one: the tags or the categories a record will carry (the tags of a cafe, the skills of a profile), or the values of a property in the panel of the filters.
+
+#### Not for
+
+- An action of the application or of an agent (send, ask, a suggested prompt, the follow-up of an AI answer): `mds-button`, with `truncate="none"` for a long label.
+- Going to another page: `mds-button` with `href`; in running text, `mds-link`.
+- Narrowing the items of a list on screen: `mds-filter`, the strip above the list (renamed with #1601); several properties go in the fields of the search form of `list-with-filters`, until the panel of the filters (#1602).
+- One value among a few in a field of a form (a role): `mds-input-switch` with `type="radio"`.
+- The status of a record (in progress, done, critical): `mds-badge`.
+- A count or a number on another element: `mds-badge`.
+- A person named in the content: `mds-mention`.
+- Several values chosen among a few fixed options in a field of a form: `mds-input-select` with `multiple`.
+- Several values searched in a list or typed in a field (the emails to invite, the recipients of a message): `gap`, a field of values as removable chips (#1607).
+
+
+### 5. Placement context
+
+#### Where it goes
+
+- Beside what it describes: after or under the title of a record, near the title of an item of a list, on a card; in a cell of a table, after the text it qualifies, one or two per cell.
+- In a group: the chips of one record side by side, in one row that wraps.
+- Under the label of a field of a form, as the set of values to choose from: a group that wraps in the column of the form, the limit in the hint under the label (Fino a 3).
+- With the values of a property in the panel of the filters (#1602): a group under the name of the property.
+
+#### Not here
+
+- In running text: a person is an `mds-mention`, a link is an `mds-link`.
+- Inside a button, a link or a heading.
+- As the status of a record next to its heading: `mds-badge`, as `record-detail` does.
+
+#### Around it
+
+- Centred on the line of the text beside it.
+- The chips of the active filters stand near the results they narrow, with Rimuovi i filtri after the last one.
+
+#### Inside it
+
+- A label of a few words, on one line; one leading mark, an icon or a swatch.
+- One kind of mark in a group: all with an icon, all with a swatch, or none.
+
+#### Narrow screens
+
+- The group wraps; a chip never wraps its label.
 
 
 

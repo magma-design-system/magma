@@ -16,7 +16,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
 import Handlebars from 'handlebars';
-import { COMPONENT_CATEGORIES, USAGE_FILES } from './agent-docs-lib';
+import { COMPONENT_CATEGORIES, SCAFFOLDED_USAGE_FILES } from './agent-docs-lib';
 import {
   componentNames,
   partTitle,
@@ -91,7 +91,10 @@ const files: [template: string, output: string][] = [
   category !== undefined
     ? ['component/test/stories.tsx.hbs', `test/${tag}.stories.tsx`]
     : ['component/test/part.mdx.hbs', `test/${tag}.mdx`],
-  ...USAGE_FILES.map((stem): [string, string] => [`usage/${stem}.md.hbs`, `usage/${stem}.md`]),
+  ...SCAFFOLDED_USAGE_FILES.map((stem): [string, string] => [
+    `usage/${stem}.md.hbs`,
+    `usage/${stem}.md`,
+  ]),
 ];
 
 const dir = join(COMPONENTS_DIR, tag);

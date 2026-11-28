@@ -599,3 +599,58 @@ describe('mds-modal close button', () => {
     });
   });
 });
+
+// #1580, 5. Placement context.md: "closing it brings the focus back to that control". The modal
+// is opened by a button the person clicks, then closed in each of the three ways a person or the
+// page has; the focus goes back to the button, not to the body, so a keyboard user carries on
+// from where they were
+describe('mds-modal focus after closing', () => {
+  const openFromButton = async () => {
+    const { root, waitForChanges } = await render(
+      '<div><button type="button" class="opener">Apri</button>' +
+        '<mds-modal><p>Contenuto</p><button type="button">Azione</button></mds-modal></div>',
+    );
+    const opener = root.querySelector<HTMLButtonElement>('.opener')!;
+    const modal = root.querySelector<HTMLMdsModalElement>('mds-modal')!;
+    opener.addEventListener('click', () => {
+      modal.opened = true;
+    });
+    const shown = entered(modal);
+    await userEvent.click(opener);
+    await waitForChanges();
+    await shown;
+    // showModal() moved the focus into the window: the opener no longer has it
+    expect(document.activeElement).not.toBe(opener);
+    return { modal, opener, waitForChanges };
+  };
+
+  it('goes back to the control that opened it, closed with the built-in close button', async () => {
+    const { modal, opener, waitForChanges } = await openFromButton();
+
+    await userEvent.click(modal.shadowRoot!.querySelector<HTMLElement>('.action-close')!);
+    await waitForChanges();
+
+    expect(modal).not.toHaveAttribute('opened');
+    await vi.waitFor(() => expect(document.activeElement).toBe(opener));
+  });
+
+  it('goes back to the control that opened it, closed with Esc', async () => {
+    const { modal, opener, waitForChanges } = await openFromButton();
+
+    await userEvent.keyboard('{Escape}');
+    await waitForChanges();
+
+    expect(modal).not.toHaveAttribute('opened');
+    await vi.waitFor(() => expect(document.activeElement).toBe(opener));
+  });
+
+  it('goes back to the control that opened it, closed with close()', async () => {
+    const { modal, opener, waitForChanges } = await openFromButton();
+
+    await modal.close();
+    await waitForChanges();
+
+    expect(modal).not.toHaveAttribute('opened');
+    await vi.waitFor(() => expect(document.activeElement).toBe(opener));
+  });
+});
