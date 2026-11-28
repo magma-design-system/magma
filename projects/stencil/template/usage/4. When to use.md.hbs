@@ -1,0 +1,54 @@
+<!--
+================================================================================
+AUTHORING RULES - 4. When to use.md
+================================================================================
+Purpose: say WHICH NEEDS `<{{componentName}}>` answers, and the near needs it
+         does not answer, each with what answers it instead. The reader is an
+         AI agent picking a component: `find_component` of the MCP server
+         returns the `Not for` lines beside each candidate (epic #1579).
+
+Companion docs to read first (do not re-derive their content here):
+  - projects/stencil/SPEC.md - "Per-component usage docs", "`4. When to use.md`
+                               and `5. Placement context.md`": the format, and
+                               what `npm run check.usage-docs` verifies in CI.
+  - docs/agents/patterns/    - the patterns a `Not for` line may name by id.
+
+MUST contain (in this exact order, and nothing else):
+  1. "#### Use it for": one list item per need, on one line, written as the
+     need ("The person must ..."), with the criterion that tells this
+     component from its neighbours inside the line: replaces the content or
+     narrows the same list, steps in a fixed order and how many, can be
+     undone or not, the kind of view (a task done once, a tool used over
+     time), the container (a page, a dialog).
+  2. "#### Not for": one list item per near need it does not answer. The
+     need, a colon (the FIRST ": " of the line), then what answers it in
+     inline code: a component (`mds-tab`), a pattern by its id
+     (`confirm-action`), or `gap` when Magma has none. A line may name more
+     than one answer and add a criterion after it; other inline code in the
+     line (`href`, `type="radio"`) is not an answer.
+
+CHECKED IN CI (npm run check.usage-docs):
+  - the two headings, in this order, and only list items under them;
+  - every `Not for` line has its colon and at least one answer that exists;
+  - a `Not for` that names a component with its own `4. When to use.md` finds
+    its need among that component's `Use it for` lines (shared words).
+
+MUST NOT contain:
+  - What the component is and how it behaves (that is `1. Description.md`).
+  - Where it goes in a view (that is `5. Placement context.md`).
+  - Code blocks, paragraphs, nested or wrapped items.
+
+STYLE & LENGTH:
+  - Plain, short sentences; 2-6 `Use it for` lines, as many `Not for` lines
+    as there are near needs an agent may confuse with this one.
+  - Delete this comment block before committing.
+================================================================================
+-->
+
+#### Use it for
+
+- The person must <!-- the need, with the criterion that tells it from its neighbours -->.
+
+#### Not for
+
+- <!-- a near need -->: `<!-- mds-component, pattern-id or gap -->`.

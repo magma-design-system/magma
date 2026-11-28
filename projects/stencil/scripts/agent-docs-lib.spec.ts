@@ -7,6 +7,8 @@ import {
   magmaBlock,
   relativeLinks,
   renderComponentAgentsMd,
+  renderInThePatterns,
+  renderPlacementFile,
   renderUsageFile,
   readTaxonomy,
   renderCatalogue,
@@ -177,6 +179,28 @@ describe('renderComponentAgentsMd', () => {
     expect(md).not.toContain('[`mistakes.md`](mistakes.md)');
   });
 
+  it('lists the need and the place first in Read next, only when the component has them', () => {
+    expect(md).not.toContain('when-to-use.md');
+    expect(md).not.toContain('placement.md');
+    const withBoth = renderComponentAgentsMd(
+      {
+        ...button,
+        usage: {
+          ...button.usage,
+          '4. When to use': '#### Use it for\n\n- A need.',
+          '5. Placement context': '#### Where it goes\n\n- Here.',
+        },
+      },
+      '2.1.0',
+    );
+    const readNext = withBoth.slice(withBoth.indexOf('## Read next')).split('\n').slice(2, 5);
+    expect(readNext).toEqual([
+      '- [`when-to-use.md`](when-to-use.md) - the needs it answers, and the near ones it does not, with what answers them',
+      '- [`placement.md`](placement.md) - where it goes in a view, what sits around it, what it holds',
+      '- [`examples.md`](examples.md) - correct usage, from the most common case',
+    ]);
+  });
+
   it('lists the allowed values of each prop, escaped for the table', () => {
     expect(md).toContain(
       '| `tone` | `tone` | `"strong" \\| "weak"` | `\'strong\'` | The tone of the button |',
@@ -266,7 +290,45 @@ describe('renderUsageFile', () => {
   });
 });
 
+describe('renderPlacementFile', () => {
+  const places = [
+    {
+      pattern: 'confirm-action',
+      id: 'ask-first',
+      roles: ['the dialog, named by its question'],
+      where: 'a dialog before acting:\n  the question names the item',
+    },
+    { pattern: 'item-list', id: 'filters', roles: [], where: 'the statuses as one filter' },
+  ];
+
+  it('appends the places the patterns give the component, each linked to its pattern', () => {
+    const md = renderPlacementFile('mds-modal', '#### Where it goes\n\n- Centred.\n', places);
+    expect(md).toContain('# mds-modal - placement context');
+    expect(md).toContain(
+      '#### Where it goes\n\n- Centred.\n\n#### In the patterns\n\n' +
+        '- [`confirm-action`](../../../../agents/patterns/confirm-action.md), `ask-first` (the dialog, named by its question): a dialog before acting: the question names the item\n' +
+        '- [`item-list`](../../../../agents/patterns/item-list.md), `filters`: the statuses as one filter\n',
+    );
+  });
+
+  it('leaves the section out when no pattern uses the component', () => {
+    expect(renderInThePatterns([])).toBe('');
+    expect(renderPlacementFile('mds-x', '#### Where it goes\n\n- Here.\n', [])).not.toContain(
+      'In the patterns',
+    );
+  });
+});
+
 describe('unknownUsageFiles', () => {
+  it('knows the need and the place, the files of epic #1579', () => {
+    expect(
+      unknownUsageFiles({
+        tag: 'mds-x',
+        usage: { '4. When to use': 'x', '5. Placement context': 'x' },
+      }),
+    ).toEqual([]);
+  });
+
   it('names the usage files outside the contract, the names from before #1169 too', () => {
     expect(unknownUsageFiles(button)).toEqual([]);
     expect(

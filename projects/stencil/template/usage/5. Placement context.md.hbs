@@ -1,0 +1,65 @@
+<!--
+================================================================================
+AUTHORING RULES - 5. Placement context.md
+================================================================================
+Purpose: say WHERE `<{{componentName}}>` goes in a view, what sits around it
+         and what it holds. The reader is an AI agent composing a view:
+         `get_component` of the MCP server returns it, with the rules it
+         cites (epic #1579).
+
+Companion docs to read first (do not re-derive their content here):
+  - projects/stencil/SPEC.md - "Per-component usage docs", "`4. When to use.md`
+                               and `5. Placement context.md`": the format, and
+                               what `npm run check.usage-docs` verifies in CI.
+  - docs/agents/patterns/    - the domains of the design language (actions,
+                               widths, surfaces, titles...) whose rules this
+                               file cites by id.
+
+MAY contain (up to five headings, in this exact order, each a list):
+  1. "#### Where it goes": the places in a view, the width, how many in one view.
+  2. "#### Not here": the places it does not go, with where instead.
+  3. "#### Around it": what sits before, after and beside it (the title, the
+     row of actions, a message).
+  4. "#### Inside it": what it holds, and how much.
+  5. "#### Narrow screens": what it does in a narrow container, as it does today.
+
+CHECKED IN CI (npm run check.usage-docs):
+  - only these headings, in this order, each with list items only;
+  - every rule cited as `pattern/id` names a pattern of docs/agents/patterns/
+    and a rule, a case or a region inside it.
+
+MUST NOT contain:
+  - Sizes in px: roles or token steps (`widths/form`, `--spacing()`).
+  - A rule of the design language rewritten: name it by its id in inline code
+    (`actions/order`, `widths/dialog`); `get_component` returns its text.
+  - A behaviour the component lacks: it goes to an issue on the component;
+    the file describes what it does today.
+  - The places the patterns give it ("In the patterns"): the build adds them
+    to the shipped placement.md from the cases of docs/agents/patterns/.
+
+STYLE & LENGTH:
+  - Plain, short sentences, one line per item; leave out a heading with
+    nothing to say.
+  - Delete this comment block before committing.
+================================================================================
+-->
+
+#### Where it goes
+
+- <!-- a place in a view, its width (`widths/<role>`), how many in one view -->.
+
+#### Not here
+
+- <!-- a place it does not go -->: <!-- where instead -->.
+
+#### Around it
+
+- <!-- what sits before, after and beside it, citing the rules (`actions/order`) -->.
+
+#### Inside it
+
+- <!-- what it holds, and how much -->.
+
+#### Narrow screens
+
+- <!-- what it does in a narrow container, as it does today -->.
