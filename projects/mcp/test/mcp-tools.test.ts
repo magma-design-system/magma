@@ -434,9 +434,15 @@ describe.skipIf(!existsSync(BUILT_DOCS) && !process.env.CI)(
       expect(modal.placement.places).toContainEqual(
         expect.objectContaining({ pattern: 'confirm-action', id: 'ask-first' }),
       );
+      // the rules its lines name by id, with their text, each once
+      const cited = modal.cites.map(({ from, id }: Result) => `${from}/${id}`);
+      expect(cited).toEqual(expect.arrayContaining(['actions/order', 'widths/dialog']));
+      expect(new Set(cited).size).toBe(cited.length);
+      for (const one of modal.cites) expect(one.text, `${one.from}/${one.id}`).not.toBe('');
       const button = await call('get_component', { tag: 'mds-button' });
       expect(button).not.toHaveProperty('whenToUse');
       expect(button).not.toHaveProperty('placement');
+      expect(button).not.toHaveProperty('cites');
       expect(button.files).not.toHaveProperty('whenToUse');
       expect(button.files).not.toHaveProperty('placement');
     });

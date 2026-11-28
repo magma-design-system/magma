@@ -11,6 +11,7 @@ import { existsSync } from 'node:fs';
 import path from 'node:path';
 import {
   answersOf,
+  citationsOf,
   magmaRoot,
   parsePlacement,
   parseWhenToUse,
@@ -18,6 +19,7 @@ import {
   PLACEMENT_HEADINGS,
   propInfo,
   readData,
+  resolveCitation,
   tagOf,
   readPatternDir,
   rulesOfComponent,
@@ -326,7 +328,7 @@ export const getComponent = (context: ToolContext): Tool => ({
   name: 'get_component',
   title: 'Read the API of a Magma component',
   description:
-    'The API of one Magma component in the installed version: props with their type, allowed values and default, events with their detail, methods, slots, parts and public CSS custom properties (the only ones a product sets; the internal ones are counted, they may change in any release), the files of its usage guide (when to use, placement, examples, mistakes), and in rules the rules of the design language that govern it (the relations and rules of the domains of the design language it carries or that write it, each with its domain and its text; the whole domain with get_guide). Where the component has them, whenToUse gives the needs it answers and the near ones it does not, each with what answers it, and placement where it goes in a view, what stands around it and inside it, with the places the patterns give it. Use it before writing the component.',
+    'The API of one Magma component in the installed version: props with their type, allowed values and default, events with their detail, methods, slots, parts and public CSS custom properties (the only ones a product sets; the internal ones are counted, they may change in any release), the files of its usage guide (when to use, placement, examples, mistakes), and in rules the rules of the design language that govern it (the relations and rules of the domains of the design language it carries or that write it, each with its domain and its text; the whole domain with get_guide). Where the component has them, whenToUse gives the needs it answers and the near ones it does not, each with what answers it, and placement where it goes in a view, what stands around it and inside it, with the places the patterns give it; cites gives the rules their lines name by id (actions/order), with their text. Use it before writing the component.',
   inputSchema: {
     type: 'object',
     properties: {
@@ -398,6 +400,24 @@ export const getComponent = (context: ToolContext): Tool => ({
           },
         },
         required: ['sections', 'places'],
+      },
+      cites: {
+        type: 'array',
+        description:
+          'What the lines of whenToUse and placement name by id (`actions/order`): the rule, the case or the region, with its text.',
+        items: {
+          type: 'object',
+          properties: {
+            from: { type: 'string', description: 'The pattern or the domain.' },
+            id: string,
+            kind: { type: 'string', enum: ['rule', 'case', 'region'] },
+            text: {
+              type: 'string',
+              description: 'The rule, the where of the case, the what of the region.',
+            },
+          },
+          required: ['from', 'id', 'kind', 'text'],
+        },
       },
       props: {
         type: 'array',
@@ -518,6 +538,19 @@ export const getComponent = (context: ToolContext): Tool => ({
     const place = component.usage?.[PLACEMENT]?.trim()
       ? parsePlacement(component.usage[PLACEMENT])
       : undefined;
+    // the rules the two files name by id and do not rewrite (SPEC.md: "get_component returns
+    // it"), each once, in the order of the files; one that names nothing check.usage-docs reports
+    const lines = [
+      ...(need ? [...need.useFor, ...need.notFor] : []),
+      ...(place?.sections.flatMap((one) => one.lines) ?? []),
+    ];
+    const cites = [
+      ...new Map(
+        lines
+          .flatMap((line) => citationsOf(line))
+          .map(({ from, id }) => [`${from}/${id}`, resolveCitation(patterns, from, id)] as const),
+      ).values(),
+    ].filter((one) => one !== undefined);
     return {
       tag: component.tag,
       summary: summaryOf(component),
@@ -540,6 +573,7 @@ export const getComponent = (context: ToolContext): Tool => ({
             },
           }
         : {}),
+      ...(cites.length ? { cites } : {}),
       props: component.props.map((prop) => {
         const values = valuesOf(prop);
         return {
