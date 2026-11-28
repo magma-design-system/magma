@@ -39,7 +39,7 @@ This component does not use the shared `variant` / `tone` ladders; its configura
 - **`animation`** selects the motion style of the window: `'slide'` (default), `'3d'`, or `'custom'` (driven entirely by CSS custom properties).
 - **`interaction`** governs how forgiving dismissal is - `'relaxed'` allows backdrop clicks, `'strict'` requires the close button.
 - **`overflow`** chooses whether the component manages body scroll locking (`'auto'`) or leaves it to the consumer (`'manual'`).
-- **`hideBackdrop`** removes the dimmed overlay behind the window (shown by default).
+- **`hideBackdrop`** removes the dimmed overlay behind the window (shown by default) and makes the dialog non-modal: it opens with `show()` instead of `showModal()`, so the page behind stays usable and the focus is not held in the window. Pick it only when the person works in the dialog while still using the page; a panel at an edge that keeps the page in view but waits for an answer keeps its backdrop.
 
 
 ### 2. Examples
@@ -378,6 +378,67 @@ Using a raw `<dialog>` element bypasses the system's managed animation, body-scr
 ```
 
 
+### 4. When to use
+
+#### Use it for
+
+- The person must confirm an action that cannot be undone, before it happens, as `confirm-action` decides.
+- The person must answer something that blocks the task they started: a missing piece of information, a warning that work would be lost.
+- The person must do a short task on one item of the page (a short form, the action of a record) and come back to where they were.
+- The person manages a short list of one item (who has access, the members and their role): each change holds at once, and the dialog closes with its X or Fatto.
+- The person changes a few settings of one group (the appearance), with no sections.
+- The person does a longer task on one item while keeping the page in view: at an edge, with the backdrop.
+- The person works on something while still using the page (a message being written): at an edge or a corner with `hide-backdrop`, which makes the dialog non-modal.
+
+#### Not for
+
+- Telling the outcome of an action, or a message that asks nothing: `message-placement`; when a task follows the outcome, the dialog is named after the task.
+- An action that can be undone: `confirm-action`, act and then offer to undo.
+- A long or complex task (many fields, a table, more than three steps): a page of its own, `form-and-validation`.
+- Settings in several sections: a page, `app-shell`; a wide dialog with its sections is the choice of a product.
+- A dialog over another dialog, such as the confirmation of an action started in a dialog: the question of `confirm-action` takes the place of the content of that dialog, and Annulla brings the content back.
+- A task the person repeats often: on the page, `form-and-validation`.
+- A short explanation of one part of the page: `mds-tooltip`, `mds-help`.
+- A menu of actions or options: `mds-dropdown`.
+- Content anchored to the control that opens it (the notifications under the bell): `mds-dropdown`.
+- The filters of a list: `list-with-filters`, the fields of its search form, until the panel of the filters (#1602).
+- The error of one field: `form-and-validation`, next to the field.
+
+
+### 5. Placement context
+
+#### Where it goes
+
+- Centred over the page, for a short dialog.
+- At an edge, with the backdrop, for a longer task on one item that keeps the page in view (a panel as tall as the screen, at the right).
+- With `hide-backdrop`, at an edge or a corner, only when the page must stay usable while the person works in the dialog (a message being written).
+- Opened by a control the person chose; closing it brings the focus back to that control.
+- One at a time, never over another dialog: the confirmation of an action started in a dialog takes the place of its content, and Annulla brings the content back.
+
+#### Not here
+
+- Opening on its own when the page loads (a promotion, a sign-up).
+
+#### Around it
+
+- The window is `mds-banner` with `slot="window"` (`surfaces/dialog`), its headline the title of the dialog (`titles/dialog`), the X at the end of the title row (`actions/dismiss`).
+- The row of actions at the end of the window: the main action last, on the edge, Annulla right before it (`actions/order`).
+- A dialog that manages a short list has no Annulla and Salva: the field to add sits at the top with its own button, and the row at the end holds Fatto alone, or nothing beside the X.
+- When the action fails, its error stands right above the row, not dismissible (`message-placement`).
+- With a long content the whole window scrolls, its title and its actions with it (#1608 keeps them in place).
+
+#### Inside it
+
+- A short form, one question, or a choice among a few options, in the width of a dialog (`widths/dialog`).
+- A short list of items with one control per row (`item-list`), the data of one item as labels and values (`labels-and-values`); no table, accordion or other dialog.
+- Three steps at most: the way forward names the next step, Indietro from the second; a stepper of three steps at most; tabs only in a panel at an edge, never in a centred dialog.
+- On opening, the focus goes to the first field; in a confirmation, to Annulla, the least destructive action.
+
+#### Narrow screens
+
+- The window takes the screen, leaving a strip of backdrop for the close button.
+
+
 
 ## Properties
 
@@ -385,7 +446,7 @@ Using a raw `<dialog>` element bypasses the system's managed animation, body-scr
 | ---------------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ----------- |
 | `accessibleName` | `aria-label`    | The accessible name of the modal: the name a screen reader announces when the window opens. The `<dialog>` this component renders is the dialog, so the name goes there.                                                                                                                                                                                                      | `string \| undefined`                                                                                                             | `undefined` |
 | `animation`      | `animation`     | Specifies the animation style of the modal window                                                                                                                                                                                                                                                                                                                             | `"3d" \| "custom" \| "slide" \| undefined`                                                                                        | `'slide'`   |
-| `hideBackdrop`   | `hide-backdrop` | Hides the modal backdrop                                                                                                                                                                                                                                                                                                                                                      | `boolean \| undefined`                                                                                                            | `false`     |
+| `hideBackdrop`   | `hide-backdrop` | Hides the backdrop and opens the dialog as non-modal (`show()`, not `showModal()`): the page behind stays usable and the focus is not held in the window                                                                                                                                                                                                                      | `boolean \| undefined`                                                                                                            | `false`     |
 | `interaction`    | `interaction`   | Specifies if the component can be closed with close button, or also if the backdrop background is cliccked. If `strict` is selected only the close button can dismiss the component via UI. If `relaxed` is selected the component can be dismissed also by clicking the backdrop area: a click pressed and released on the backdrop, once the window has finished its entry. | `"relaxed" \| "strict"`                                                                                                           | `'relaxed'` |
 | `opened`         | `opened`        | Specifies if the modal is opened or not                                                                                                                                                                                                                                                                                                                                       | `boolean \| undefined`                                                                                                            | `false`     |
 | `overflow`       | `overflow`      | Specifies if the component prevents the body from scrolling when modal window is opened                                                                                                                                                                                                                                                                                       | `"auto" \| "manual"`                                                                                                              | `'auto'`    |

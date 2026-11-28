@@ -447,6 +447,63 @@ mds-tab::part(tabs) {
 ```
 
 
+### 4. When to use
+
+#### Use it for
+
+- The person must switch between related groups of content in the same place, one group at a time, without needing them together (the data, the documents and the history of a record).
+- The person must switch the view of a panel that the page draws (a mode, a representation): the strip alone.
+- The person must move between a few closely related pages of one subject, the address holding the tab: every item with `href`.
+
+#### Not for
+
+- Content the person must compare or read together: one page, with a title per part, `page-header`.
+- Steps done once, in a fixed order: `mds-stepper-bar`.
+- Narrowing the items of a list on screen, such as the statuses of the same list (All, Pending, Inactive): `mds-filter`.
+- Choosing one record among many of the same kind (a tab per company, per customer): `mds-input-select`, or `mds-filter` when the records are a list on screen; the tabs are the parts of one thing, not a list of things.
+- Many short parts stacked: `mds-accordion`.
+- One or two short parts of minor weight: `mds-details`.
+- Content the person must not miss: above the strip, outside the tabs, `record-detail`.
+- Starting an action: `mds-button`.
+- The sections of the application: `app-shell`.
+- The main navigation of a mobile application: `mds-tab-bar`.
+
+
+### 5. Placement context
+
+#### Where it goes
+
+- Under the title of the page, for the parts of a page (the sections of the settings, of the billing).
+- Under the header of a record, after what every tab shares (the title, a description, the main figures, the actions of the record).
+- At the top of the main column of a page in two columns, beside the fixed data of the record or the list it is chosen from.
+- Aligned with the start of the title above it; right above its panel, the baseline of the strip as wide as the panel, and nothing else between the strip and the panel.
+- With many parts (the settings, eight sections or more): the strip vertical (`direction="vertical"`) at the start of the page, the panel beside it.
+- In a page, a card, or a panel beside the page (`mds-modal` at an edge).
+
+#### Not here
+
+- As the sections of the application: `app-shell`.
+- With a single tab: no strip, the content right under the header.
+- As a second row inside a panel, to narrow the list of that panel: `mds-filter`.
+- In a centred dialog: a dialog holds a short task; in a panel beside the page the tabs are allowed.
+
+#### Around it
+
+- Above the strip, what every tab shares: the title, the status, the actions of the record; those actions do not change with the tab, the actions of a part stand in its panel.
+- Each panel opens with the title of its part.
+- When the tabs are links, the address holds the tab (`href` on every item).
+
+#### Inside it
+
+- In the strip, only tab items: no button, menu or search beside them.
+- Labels of one or two words, all in one form: all text, or all icon and text.
+- The first tab is the one people need most.
+
+#### Narrow screens
+
+- The strip keeps one row and scrolls, the selected tab in view; it never wraps to a second row (a select in a narrow container: #1593).
+
+
 
 ## Properties
 

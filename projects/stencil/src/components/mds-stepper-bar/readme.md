@@ -143,9 +143,9 @@ Add elements with `slot="content"` - one per step in the same order as the items
 </mds-stepper-bar>
 ```
 
-#### Scrollbar Navigation for Long Flows
+#### Scrollbar Navigation for a Narrow Track
 
-For flows with many steps, set `navigation="scrollbar"` to expose a styled horizontal scrollbar under the indicator track. The active item scrolls into view automatically; the scrollbar appearance is configurable through the `--mds-stepper-bar-scrollbar-*` custom properties.
+When the steps do not fit the width of the track (a narrow column, a card, a phone), set `navigation="scrollbar"` to expose a styled horizontal scrollbar under the indicator track. It is not a way to hold more steps: a flow keeps 6 steps at most (`4. When to use.md`). The active item scrolls into view automatically; the scrollbar appearance is configurable through the `--mds-stepper-bar-scrollbar-*` custom properties.
 
 ```html
 <mds-stepper-bar items-done="1" navigation="scrollbar">
@@ -320,6 +320,60 @@ The component pairs panels to items by index position; if a panel is missing for
 <!-- CORRECT -->
 <mds-stepper-bar items-done="1">...</mds-stepper-bar>
 ```
+
+
+### 4. When to use
+
+#### Use it for
+
+- The person must complete a task they do once or rarely (a sign-up, an application), in 3 to 6 steps that come in a fixed order, and see where they are and how many steps are left.
+- The person must go back to a step already done, to change an answer, before finishing.
+
+#### Not for
+
+- The person moves between the stages or the sections of a tool they work in over time, going back and forth (an editor, a configuration workspace): `mds-tab`, with `href` on every item and the address holding the stage; when the status of each stage matters, the task list of the next line.
+- The person does the steps in any order, over several sessions, and needs the status of each step, who does it and by when: `gap`, a task list (the steps in a column with their status, the open step beside them, the summary and the activity on the other side).
+- The person who knows the object creates it often, or a step holds sections of its own: `form-and-validation`, one form with its sections.
+- The task has fewer than 3 steps, or is a short form split into pages: `form-and-validation`, one form with its button.
+- The number of steps changes with the answers: `mds-progress`.
+- The person must see where a page sits in the hierarchy of the site: `mds-breadcrumb`.
+- The person waits for a process the system runs (an upload, an import): `mds-progress`.
+
+
+### 5. Placement context
+
+#### Where it goes
+
+- In a frame of its own, when the flow takes the whole screen (a sign-up, an onboarding, a checkout): under the bar of the frame, which holds only the product and the name of the task, or inside that bar when the stepper is compact.
+- In a page of the application: under the title of the page, which names the task, not the step.
+- In a container (a card, a dialog): as a band at the top of the container; in a dialog, three steps at most.
+- As wide as the content it leads: the column of a form (`widths/form`) when every step is a short form or a choice; the main column when a step is wider.
+- Beside a summary of what the flow builds (an order, a plan, its total): above the column of the steps, or across the top of the page; never above the summary alone.
+- One per page, never inside another stepper.
+
+#### Not here
+
+- In the bar of the application or in the header of a page, as the way between sections: `app-shell`.
+- Twice for the same flow (a vertical one in a side panel and a horizontal one above the form): one stepper.
+- Down a side column: the stepper has no vertical form (#1586).
+- With the buttons that move between steps at the top of the page: they go at the foot of each step.
+
+#### Around it
+
+- Each panel opens with the title of its step; when the step changes, the page moves the focus to that title (`tabindex="-1"` on the heading, as `record-detail` does with its own).
+- At the foot of each panel, the row of actions (`actions/place`, `actions/order`): the way forward last, on the edge, named after the step it leads to; the way back right before it.
+- The last step is a review of the answers, each with a way to change it, and its main action names what it does (Invia la domanda), not Avanti.
+- The error of a step stands right above its row of actions.
+
+#### Inside it
+
+- A label per step that names it in one or two words, never "Step 1".
+- With a line of description under each label, five steps at most on one row.
+- One panel per step, one subject per panel, only the fields that subject needs.
+
+#### Narrow screens
+
+- The track keeps its row and scrolls, the current step in view (a compact form: #1587).
 
 
 
