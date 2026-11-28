@@ -453,14 +453,14 @@ mds-tab::part(tabs) {
 
 - The person must switch between related groups of content in the same place, one group at a time, without needing them together (the data, the documents and the history of a record).
 - The person must switch the view of a panel that the page draws (a mode, a representation): the strip alone.
-- The person must move between a few closely related pages of one subject, the address holding the tab: every item with `href`.
+- The person must move between a few closely related pages of one subject, or between the stages or the sections of a tool they work in over time, going back and forth (an editor, a configuration workspace), the address holding the tab: every item with `href`.
 
 #### Not for
 
 - Content the person must compare or read together: one page, with a title per part, `page-header`.
 - Steps done once, in a fixed order: `mds-stepper-bar`.
 - Narrowing the items of a list on screen, such as the statuses of the same list (All, Pending, Inactive): `mds-filter`.
-- Choosing one record among many of the same kind (a tab per company, per customer): `mds-input-select`, or `mds-filter` when the records are a list on screen; the tabs are the parts of one thing, not a list of things.
+- Choosing one record among many of the same kind (a tab per company, per customer): `mds-input-select`, or the search of `list-with-filters` when the records are many; the tabs are the parts of one thing, not a list of things.
 - Many short parts stacked: `mds-accordion`.
 - One or two short parts of minor weight: `mds-details`.
 - Content the person must not miss: above the strip, outside the tabs, `record-detail`.

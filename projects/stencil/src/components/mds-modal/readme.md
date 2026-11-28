@@ -17,6 +17,7 @@ The `<mds-modal>` web component is the Magma Design System overlay container for
 
 - **Open state**: Visibility is driven by the `opened` prop. Setting it `true` runs the intro animation and emits `mdsModalOpen`; clearing it runs the outro animation and emits `mdsModalClose`.
 - **Programmatic close**: Exposes an async `close()` method that dismisses the modal regardless of `interaction`, mirroring the close-button action.
+- **Focus return**: Closing the modal, with the built-in close button, `Esc` or `close()`, gives the focus back to the control that had it when the modal opened, as the native `<dialog>` does: the page has nothing to restore.
 - **Show/hide events**: `mdsModalShow` fires when the intro finishes (fully visible) and `mdsModalHide` when the outro finishes (fully hidden), the latter being the safe point to detach the modal to reclaim memory.
 - **Backdrop dismissal**: With `interaction="relaxed"` (default) a click on the backdrop or `Esc` closes the modal. The click counts when it is pressed and released on the backdrop once the window has stopped: a text selection dragged out of a field, a drag from the backdrop into the window or a click while the window is still coming in leave the modal open. With `interaction="strict"` both are ignored, and the touch swipe too (below): only the close button or `close()` can dismiss it.
 - **Body scroll lock**: When `overflow="auto"` the component locks body scroll while open and restores it on close.
@@ -412,7 +413,7 @@ Using a raw `<dialog>` element bypasses the system's managed animation, body-scr
 - Centred over the page, for a short dialog.
 - At an edge, with the backdrop, for a longer task on one item that keeps the page in view (a panel as tall as the screen, at the right).
 - With `hide-backdrop`, at an edge or a corner, only when the page must stay usable while the person works in the dialog (a message being written).
-- Opened by a control the person chose; closing it brings the focus back to that control.
+- Opened by a control the person chose.
 - One at a time, never over another dialog: the confirmation of an action started in a dialog takes the place of its content, and Annulla brings the content back.
 
 #### Not here
