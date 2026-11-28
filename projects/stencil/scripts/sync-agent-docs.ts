@@ -235,6 +235,7 @@ Once installed, do not guess component APIs or rules - read only the file you ne
 | How the parts of a screen stand together: the space between two elements, which action weighs more, the style of a title, when a surface, how wide | [\`agents/patterns.md\`](agents/patterns.md), section Design language - the rules of composition; ask \`get_pattern\` for the rule of your context, \`get_guide\` for a domain by its id (\`rhythm\`) |
 | One component's API (props with allowed values, events, methods, slots, parts, CSS vars) | its \`AGENTS.md\`, linked from the catalogue |
 | Correct usage and mistakes for one component | \`examples.md\` / \`mistakes.md\` beside its \`AGENTS.md\` |
+| When one component fits the need, and where it goes in a view | \`when-to-use.md\` / \`placement.md\` beside its \`AGENTS.md\`, where written |
 | Rules shared by every component: naming, events, slots, compound, icons, a11y, styling from outside | [\`agents/conventions.md\`](agents/conventions.md) |
 | \`variant\` and \`tone\` values | [\`agents/variants.md\`](agents/variants.md) |
 | Mistakes to avoid with any component | [\`agents/mistakes.md\`](agents/mistakes.md) |
@@ -315,7 +316,8 @@ function buildComponentsMd(docsPrefix: string): string {
   return `${BANNER}# Magma components catalogue (${summaries.size} components)
 
 > Generated from each component's usage description. Each tag links the component's
-> own \`AGENTS.md\` (its API, with \`examples.md\` and \`mistakes.md\` beside it) in
+> own \`AGENTS.md\` (its API, with \`examples.md\`, \`mistakes.md\` and, where written,
+> \`when-to-use.md\` and \`placement.md\` beside it) in
 > \`@maggioli-design-system/magma/${COMPONENT_DOCS_DIR}/<tag>/\`. The rules shared by
 > every component: [\`conventions.md\`](conventions.md), [\`variants.md\`](variants.md),
 > [\`mistakes.md\`](mistakes.md).
