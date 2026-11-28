@@ -19,6 +19,16 @@
  * must not survive in a guide either. A guide also fences commands, JSON and prompts. The
  * bodies of the patterns (docs/agents/patterns/*.md, #1174) are guides too.
  *
+ * The need and the place of a component, `4. When to use.md` and `5. Placement context.md`
+ * (epic #1579), where they exist, are held to their format (SPEC.md, "Per-component usage
+ * docs"), read by the parser of the lint core (projects/lint/src/core/usage.ts): file 4 has its
+ * two headings in order with only list items under them, every `Not for` line its colon and an
+ * answer that exists (a component of the build, a pattern of docs/agents/patterns/, `gap`); file
+ * 5 only its five headings in order, each a list, and no hand-written "In the patterns"; every
+ * rule either cites as `pattern/id` names a rule, a case or a region of that pattern. A `Not for`
+ * of A that names B, where B has its own file 4, finds its need among the `Use it for` lines of B
+ * (two words in common with one line: reciprocityFailures of usage-docs-lib.ts).
+ *
  * It also keeps the readme.md of every component free of hand-written text: above the
  * generated part only the title and the generic intro, since the usage files are the only
  * hand-authored docs (#842); and it fails on a prop, event, method, slot, part or documented
@@ -36,14 +46,23 @@
  */
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
+import { readPatternDir, type Pattern } from '../../lint/src/core/patterns';
+import { parseWhenToUse, type WhenToUse } from '../../lint/src/core/usage';
 import { PROJECT_DIR } from './meta';
 import {
+  apiNamesOf,
   checkUsageDoc,
   handWrittenReadme,
+  placementFindings,
   rawHtmlMembers,
+  reciprocityFailures,
+  reciprocityFinding,
   undescribedMembers,
+  whenToUseFindings,
   type ApiComponent,
   type DescribedComponent,
+  type NeedModel,
+  type UsageFinding,
   type UsageModel,
 } from './usage-docs-lib';
 
@@ -119,9 +138,30 @@ const model: UsageModel = {
   icons: new Set(icons),
 };
 
+// the need and the place (epic #1579): checked against the components and the patterns
+const WHEN_TO_USE = '4. When to use.md';
+const PLACEMENT = '5. Placement context.md';
+const needModel: NeedModel = {
+  tags: new Set(model.components.keys()),
+  patterns: readPatternDir<Pattern>(join(REPO, 'docs/agents/patterns')).map(({ data }) => data),
+  apiNames: apiNamesOf(model.components.values()),
+};
+const whenToUse = new Map<string, WhenToUse>();
+for (const tag of readdirSync(COMPONENTS)) {
+  const path = join(COMPONENTS, tag, 'usage', WHEN_TO_USE);
+  if (existsSync(path)) whenToUse.set(tag, parseWhenToUse(readFileSync(path, 'utf8')));
+}
+const notReciprocal = reciprocityFailures(whenToUse, needModel);
+let needFiles = 0;
+
 let total = 0;
-const check = (path: string, guide = false, text = readFileSync(path, 'utf8')): void => {
-  const findings = checkUsageDoc(text, model, guide);
+const check = (
+  path: string,
+  guide = false,
+  text = readFileSync(path, 'utf8'),
+  extra: UsageFinding[] = [],
+): void => {
+  const findings = [...checkUsageDoc(text, model, guide), ...extra].sort((a, b) => a.line - b.line);
   if (!findings.length) return;
   total += findings.length;
   console.error(`\n${relative(REPO, path)}`);
@@ -137,7 +177,19 @@ for (const tag of readdirSync(COMPONENTS).sort()) {
     .filter((f) => f.endsWith('.md'))
     .sort()) {
     files++;
-    check(join(dir, name));
+    const path = join(dir, name);
+    const text = readFileSync(path, 'utf8');
+    const extra =
+      name === WHEN_TO_USE
+        ? [
+            ...whenToUseFindings(text, needModel),
+            ...notReciprocal.filter((one) => one.tag === tag).map(reciprocityFinding),
+          ]
+        : name === PLACEMENT
+          ? placementFindings(text, needModel)
+          : [];
+    if (name === WHEN_TO_USE || name === PLACEMENT) needFiles++;
+    check(path, false, text, extra);
   }
 }
 
@@ -209,10 +261,10 @@ if (rawHtml.length) {
 if (total) {
   console.error(
     `\n${total} problem(s) in the usage docs. The rules: docs/agents/conventions.md, variants.md, color.md, theming.md;` +
-      ' the API: each component readme.md.',
+      ' the API: each component readme.md; the need and the place: SPEC.md, "Per-component usage docs".',
   );
   process.exit(1);
 }
 console.log(
-  `OK - ${files} usage docs of ${model.components.size} components and ${guides.length} shared agent guides and ${patterns.length} patterns match the API and the token layer, every member of the API has a description, with its tags as code`,
+  `OK - ${files} usage docs of ${model.components.size} components and ${guides.length} shared agent guides and ${patterns.length} patterns match the API and the token layer, every member of the API has a description, with its tags as code; ${needFiles} files of the need and the place (${whenToUse.size} components with a When to use) hold to their format, every Not for has an answer that takes its need`,
 );

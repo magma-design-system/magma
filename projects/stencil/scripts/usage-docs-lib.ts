@@ -10,6 +10,17 @@
  * INCORRECT half of the example of a mistake is wrong on purpose and is skipped.
  */
 import { parseFragment, type DefaultTreeAdapterMap } from 'parse5';
+import { indexPatterns, type Pattern } from '../../lint/src/core/patterns';
+import {
+  answersOf,
+  citationsOf,
+  parsePlacement,
+  parseWhenToUse,
+  resolveCitation,
+  type UsageLine,
+  type UsageProblem,
+  type WhenToUse,
+} from '../../lint/src/core/usage';
 import { isPublic, type Visibility } from './style-contract-lib';
 
 type Node = DefaultTreeAdapterMap['node'];
@@ -56,7 +67,12 @@ export type UsageFindingKind =
   | 'unknown-icon'
   | 'shadow-piercing'
   | 'dark-variant'
-  | 'pref-media-query';
+  | 'pref-media-query'
+  | 'usage-format'
+  | 'no-answer'
+  | 'unknown-pattern'
+  | 'unknown-rule'
+  | 'not-reciprocal';
 
 export interface UsageFinding {
   line: number;
@@ -519,4 +535,244 @@ function membersWhose(c: DescribedComponent, test: (docs: string) => boolean): s
     ...c.parts.filter(picked).map((m) => `part ${m.name}`),
     ...c.styles.filter(picked).map((m) => `css ${m.name}`),
   ];
+}
+
+/* ---- the need and the place (epic #1579) -------------------------------------------- */
+
+/**
+ * What `4. When to use.md` and `5. Placement context.md` are checked against: the components of
+ * the build, the patterns of docs/agents/patterns/, and the names of the API that a code span may
+ * be without being an answer (apiNamesOf).
+ */
+export interface NeedModel {
+  tags: ReadonlySet<string>;
+  patterns: Pattern[];
+  /** attribute names, enumerated values, slots and parts of every component of the build */
+  apiNames: ReadonlySet<string>;
+}
+
+/**
+ * The names of the API a code span of a usage file may be without naming a component or a
+ * pattern: every attribute, enumerated value, slot and part of the build (`hide-backdrop`,
+ * `top-right`, `action-close`), and the global attributes of HTML.
+ */
+export function apiNamesOf(components: Iterable<ApiComponent>): Set<string> {
+  const names = new Set<string>();
+  for (const c of components) {
+    for (const p of c.props) {
+      if (p.attr) names.add(p.attr);
+      for (const v of p.values ?? []) if (v.value !== undefined) names.add(v.value);
+    }
+    for (const slot of c.slots) if (slot.name) names.add(slot.name);
+    for (const part of c.parts) names.add(part.name);
+  }
+  return names;
+}
+
+/** kebab-case with at least one hyphen: the form of most pattern ids, `confirm-action` */
+const HYPHENATED_ID = /^[a-z0-9]+(?:-[a-z0-9]+)+$/;
+
+const formatFindings = (problems: UsageProblem[]): UsageFinding[] =>
+  problems.map(({ line, message }) => ({ line, kind: 'usage-format', what: message }));
+
+/** the citations of a line, `pattern/id`, that name no pattern, or nothing inside the pattern */
+function citationFindings(lines: UsageLine[], patterns: Pattern[]): UsageFinding[] {
+  const { byId, aliases } = indexPatterns(patterns);
+  return lines.flatMap((line) =>
+    citationsOf(line).flatMap(({ from, id }): UsageFinding[] => {
+      const cited = `${from}/${id}`;
+      if (!byId.has(from)) {
+        const renamed = aliases.get(from);
+        const what = renamed
+          ? `${cited}: ${from} is now ${renamed}`
+          : `${cited}: no pattern ${from} in docs/agents/patterns/`;
+        return [{ line: line.line, kind: 'unknown-rule', what }];
+      }
+      return resolveCitation(patterns, from, id)
+        ? []
+        : [
+            {
+              line: line.line,
+              kind: 'unknown-rule',
+              what: `${cited}: ${from} has no rule, case or region ${id} of its own`,
+            },
+          ];
+    }),
+  );
+}
+
+/**
+ * The checks of `4. When to use.md` (SPEC.md, "Per-component usage docs"): the two headings in
+ * their order with only list items under them (`usage-format`, the parser of the lint core);
+ * every `Not for` line with its colon and at least one answer, a component of the build, a pattern
+ * or `gap` (`no-answer`); a code span after the colon in the form of a pattern id that is no
+ * pattern, nor a name of the API (`unknown-pattern`); every `pattern/id` it cites names a rule, a
+ * case or a region (`unknown-rule`). An `mds-*` the build does not have is `unknown-tag`, from
+ * checkUsageDoc, which reads every usage file. Only what is certainly wrong: a single word in code
+ * (`href`, `multiple`) may be an attribute, so only a hyphenated name, or an id a pattern left
+ * behind when it was renamed, is reported as a pattern that does not exist.
+ */
+export function whenToUseFindings(md: string, model: NeedModel): UsageFinding[] {
+  const parsed = parseWhenToUse(md);
+  const { byId, aliases } = indexPatterns(model.patterns);
+  const known = { tags: model.tags, patterns: new Set(byId.keys()) };
+  const findings = formatFindings(parsed.problems);
+  for (const line of parsed.notFor) {
+    // a line with no colon has its problem already, and no candidate
+    if (!line.text.includes(': ')) continue;
+    if (!answersOf(line, known).length)
+      findings.push({
+        line: line.line,
+        kind: 'no-answer',
+        what: 'no component, pattern or `gap` after the colon',
+      });
+    for (const code of line.codes) {
+      if (code === 'gap' || code.startsWith('mds-') || known.patterns.has(code)) continue;
+      if (model.tags.has(code) || model.apiNames.has(code)) continue;
+      const renamed = aliases.get(code);
+      if (renamed)
+        findings.push({
+          line: line.line,
+          kind: 'unknown-pattern',
+          what: `${code} is now ${renamed}`,
+        });
+      else if (HYPHENATED_ID.test(code))
+        findings.push({
+          line: line.line,
+          kind: 'unknown-pattern',
+          what: `${code}: no pattern of docs/agents/patterns/ has this id, nor is it a name of the API`,
+        });
+    }
+  }
+  findings.push(...citationFindings([...parsed.useFor, ...parsed.notFor], model.patterns));
+  return findings.sort((a, b) => a.line - b.line);
+}
+
+/**
+ * The checks of `5. Placement context.md`: only the five headings, in their order, each a list,
+ * and no "In the patterns", which the build writes (`usage-format`); every `pattern/id` it cites
+ * names a pattern and a rule, a case or a region inside it (`unknown-rule`).
+ */
+export function placementFindings(md: string, model: Pick<NeedModel, 'patterns'>): UsageFinding[] {
+  const parsed = parsePlacement(md);
+  return [
+    ...formatFindings(parsed.problems),
+    ...citationFindings(
+      parsed.sections.flatMap((one) => one.lines),
+      model.patterns,
+    ),
+  ].sort((a, b) => a.line - b.line);
+}
+
+/**
+ * The words a need is compared by: lowercase words of three letters or more, the inline code left
+ * out, the stop words and the words every need is written with (`person`, `must`) dropped, each
+ * reduced to a light stem (plural, `-ing`, `-ed`, a final `e`), so that `narrowing` and `narrow`,
+ * `steps` and `step`, `choose` and `choosing` meet. Each once, in the order of the text.
+ */
+export function needWords(text: string): string[] {
+  const words = text
+    .replace(/`[^`]*`/g, ' ')
+    .toLowerCase()
+    .split(/[^a-z]+/)
+    .filter((word) => word.length >= 3 && !STOP_WORDS.has(word))
+    .map(stem);
+  return [...new Set(words)];
+}
+
+/** a light stem: plural, `-ing`, `-ed`, then a final `e` */
+function stem(word: string): string {
+  let w = word;
+  if (w.length > 4 && w.endsWith('ies')) w = `${w.slice(0, -3)}y`;
+  else if (w.length > 4 && /(?:s|x|z|ch|sh)es$/.test(w)) w = w.slice(0, -2);
+  else if (w.length > 3 && w.endsWith('s') && !/(?:ss|us|is)$/.test(w)) w = w.slice(0, -1);
+  else if (w.length > 5 && w.endsWith('ing')) w = w.slice(0, -3);
+  else if (w.length > 4 && w.endsWith('ed')) w = w.slice(0, -2);
+  if (w.length > 3 && w.endsWith('e')) w = w.slice(0, -1);
+  return w;
+}
+
+/**
+ * English function words, and the words of the format every need is written with ("The person
+ * must ..."): they would make any two needs meet.
+ */
+const STOP_WORDS = new Set(
+  (
+    'the and but not nor for with from into onto out off over under about above below between ' +
+    'among within without before after during through per via than then that this these those ' +
+    'there their they them its his her our your you who whom whose which what when where while ' +
+    'why how all any each every both few many much more most other another same such some own ' +
+    'only also just very too can may might must should would will shall does did done doing has ' +
+    'have had having are was were been being one two three person people user users need needs ' +
+    'needing'
+  ).split(' '),
+);
+
+/** How many words a `Not for` need must share with one `Use it for` line of the component it names. */
+export const RECIPROCITY_SHARED_WORDS = 2;
+
+/** A `Not for` of one component that the component it names does not take among its needs. */
+export interface ReciprocityFailure {
+  /** the component whose `Not for` line it is */
+  tag: string;
+  line: number;
+  need: string;
+  /** the component the line names, which has its own `4. When to use.md` */
+  answer: string;
+  words: string[];
+  /** each `Use it for` line of the answer, with the words it shares */
+  against: { line: number; text: string; shared: string[] }[];
+}
+
+/**
+ * Reciprocity (SPEC.md): a `Not for` of A that names B, where B has its own `4. When to use.md`,
+ * finds its need among the `Use it for` lines of B, or one of the two files is wrong: A sends the
+ * agent to B for a need B does not say it answers. The need (the text before the first `: `) and
+ * one `Use it for` line of B must share RECIPROCITY_SHARED_WORDS words (needWords): one word in
+ * common is chance ("time", "move"); two place the need. A line naming A itself is left out.
+ */
+export function reciprocityFailures(
+  files: ReadonlyMap<string, WhenToUse>,
+  model: Pick<NeedModel, 'tags' | 'patterns'>,
+): ReciprocityFailure[] {
+  const known = { tags: model.tags, patterns: new Set(model.patterns.map((one) => one.id)) };
+  const failures: ReciprocityFailure[] = [];
+  for (const [tag, file] of [...files].sort(([a], [b]) => a.localeCompare(b))) {
+    for (const line of file.notFor) {
+      const words = needWords(line.need);
+      for (const answer of answersOf(line, known)) {
+        const other = answer.kind === 'component' ? files.get(answer.id) : undefined;
+        if (!other || answer.id === tag) continue;
+        const against = other.useFor.map((use) => {
+          const theirs = new Set(needWords(use.text));
+          return { line: use.line, text: use.text, shared: words.filter((w) => theirs.has(w)) };
+        });
+        if (!against.some((one) => one.shared.length >= RECIPROCITY_SHARED_WORDS))
+          failures.push({
+            tag,
+            line: line.line,
+            need: line.need,
+            answer: answer.id,
+            words,
+            against,
+          });
+      }
+    }
+  }
+  return failures;
+}
+
+/** A reciprocity failure as a finding on the `Not for` line, with the words compared. */
+export function reciprocityFinding(failure: ReciprocityFailure): UsageFinding {
+  const lines = failure.against
+    .map(({ line, shared }) => `line ${line} [${shared.join(', ')}]`)
+    .join(', ');
+  return {
+    line: failure.line,
+    kind: 'not-reciprocal',
+    what:
+      `${failure.answer} takes no such need among its Use it for lines ` +
+      `(${RECIPROCITY_SHARED_WORDS} words in common with one of them): ` +
+      `the need [${failure.words.join(', ')}]; its lines ${lines}`,
+  };
 }

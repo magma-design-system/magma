@@ -1,14 +1,23 @@
 import { describe, expect, it } from 'vitest';
+import type { Pattern } from '../../lint/src/core/patterns';
+import { parseWhenToUse } from '../../lint/src/core/usage';
 import {
+  apiNamesOf,
   checkUsageDoc,
   handWrittenReadme,
   incorrectLines,
+  needWords,
+  placementFindings,
   rawHtmlMembers,
   README_INTRO,
+  reciprocityFailures,
+  reciprocityFinding,
   splitMarkdown,
   undescribedMembers,
+  whenToUseFindings,
   type ApiComponent,
   type DescribedComponent,
+  type NeedModel,
   type UsageModel,
 } from './usage-docs-lib';
 
@@ -434,5 +443,210 @@ describe('rawHtmlMembers', () => {
         styles: [{ name: '--mds-button-radius', docs: 'The radius of the <button>' }],
       }),
     ).toEqual(['prop label', 'event mdsButtonClick', 'slot (default)', 'css --mds-button-radius']);
+  });
+});
+
+describe('the need and the place', () => {
+  // a pattern with a case and an old id, a domain with a rule of its own and one it cites
+  const patterns = [
+    {
+      id: 'confirm-action',
+      aliases: ['ask-to-confirm'],
+      kind: 'pattern',
+      cases: [{ id: 'ask-first', where: 'a dialog' }],
+    },
+    {
+      id: 'actions',
+      kind: 'design-language',
+      'always-true': [
+        { id: 'order', rule: 'the main action last' },
+        { id: 'inset', from: 'rhythm' },
+      ],
+      cases: [{ id: 'dismiss', where: 'an X' }],
+    },
+  ] as unknown as Pattern[];
+  const needModel: NeedModel = {
+    tags: new Set(['mds-button', 'mds-input', 'mds-modal']),
+    patterns,
+    apiNames: apiNamesOf([
+      button,
+      {
+        ...input,
+        props: [
+          { name: 'hideBackdrop', attr: 'hide-backdrop', values: [{ type: 'boolean' }] },
+          {
+            name: 'position',
+            attr: 'position',
+            values: [{ type: 'string', value: 'top-right' }],
+          },
+        ],
+      },
+    ]),
+  };
+  const whenToUse = (notFor: string[], useFor = ['The person must act.']) =>
+    ['#### Use it for', '', ...useFor.map((l) => `- ${l}`), '', '#### Not for', '']
+      .concat(notFor.map((l) => `- ${l}`))
+      .join('\n');
+  const findings = (md: string) =>
+    whenToUseFindings(md, needModel).map(({ line, kind, what }) => `${line} ${kind} ${what}`);
+
+  describe('whenToUseFindings', () => {
+    it('passes a file whose every Not for names a component, a pattern or gap', () => {
+      expect(
+        findings(
+          whenToUse([
+            'Confirming: `confirm-action`, with `hide-backdrop` and `href`.',
+            'Nothing yet: `gap`.',
+            'Acting: `mds-button` with `position` set to `top-right`.',
+          ]),
+        ),
+      ).toEqual([]);
+    });
+
+    it('names the format problems the parser of the lint core finds', () => {
+      expect(findings('#### Not for\n\n- A: `gap`\n')).toEqual([
+        '1 usage-format no "Use it for" heading',
+      ]);
+    });
+
+    it('wants an answer after the colon, never a code span that is only an attribute', () => {
+      expect(findings(whenToUse(['Going elsewhere: a link with `href`.']))).toEqual([
+        '7 no-answer no component, pattern or `gap` after the colon',
+      ]);
+      // a line with no colon has its problem, not a second one
+      expect(findings(whenToUse(['Going elsewhere `mds-button`']))).toEqual([
+        '7 usage-format no ": " between the need and what answers it',
+      ]);
+    });
+
+    it('names a code span in the form of a pattern id that is no pattern, nor a name of the API', () => {
+      expect(findings(whenToUse(['Asking: `confirm-actions`, or `mds-modal`.']))).toEqual([
+        '7 unknown-pattern confirm-actions: no pattern of docs/agents/patterns/ has this id, nor is it a name of the API',
+      ]);
+      expect(findings(whenToUse(['Asking: `ask-to-confirm`.']))).toEqual([
+        '7 no-answer no component, pattern or `gap` after the colon',
+        '7 unknown-pattern ask-to-confirm is now confirm-action',
+      ]);
+      // a single word may be an attribute the release does not have: not certainly wrong
+      expect(findings(whenToUse(['Asking: `mds-modal` with `loud`.']))).toEqual([]);
+    });
+
+    it('leaves an mds-* the build does not have to unknown-tag, which every usage file gets', () => {
+      const md = whenToUse(['Asking: `mds-dialog`.']);
+      expect(findings(md)).toEqual(['7 no-answer no component, pattern or `gap` after the colon']);
+      expect(checkUsageDoc(md, model).map((f) => `${f.line} ${f.kind} ${f.what}`)).toContain(
+        '7 unknown-tag mds-dialog',
+      );
+    });
+
+    it('holds every rule it cites to its pattern', () => {
+      expect(
+        findings(whenToUse(['Asking: `mds-modal`, its X as `actions/dismiss`, `actions/inset`.'])),
+      ).toEqual([
+        '7 unknown-rule actions/inset: actions has no rule, case or region inset of its own',
+      ]);
+    });
+  });
+
+  describe('placementFindings', () => {
+    const placement = (md: string) =>
+      placementFindings(md, needModel).map(({ line, kind, what }) => `${line} ${kind} ${what}`);
+
+    it('passes the five headings in their order, each a list, citing rules that exist', () => {
+      expect(
+        placement(
+          '#### Where it goes\n\n- Centred, `confirm-action/ask-first`.\n\n#### Around it\n\n- The row (`actions/order`), the icon `mdi/close`.\n',
+        ),
+      ).toEqual([]);
+    });
+
+    it('names a heading out of order and an "In the patterns" written by hand', () => {
+      expect(
+        placement(
+          '#### Around it\n\n- A.\n\n#### Where it goes\n\n- B.\n\n#### In the patterns\n\n- C.\n',
+        ),
+      ).toEqual([
+        '5 usage-format "Where it goes" is out of order: "Where it goes", "Not here", "Around it", "Inside it", "Narrow screens"',
+        '9 usage-format "In the patterns" is written by the build from the cases of the patterns, not by hand',
+      ]);
+    });
+
+    it('names a citation of a pattern that does not exist, or was renamed, or of nothing in it', () => {
+      expect(
+        placement(
+          '#### Where it goes\n\n- `widths/dialog`, `ask-to-confirm/ask-first`, `actions/nothing`.\n',
+        ),
+      ).toEqual([
+        '3 unknown-rule widths/dialog: no pattern widths in docs/agents/patterns/',
+        '3 unknown-rule ask-to-confirm/ask-first: ask-to-confirm is now confirm-action',
+        '3 unknown-rule actions/nothing: actions has no rule, case or region nothing of its own',
+      ]);
+    });
+  });
+
+  describe('needWords', () => {
+    it('keeps the words that place a need, reduced to a light stem', () => {
+      expect(needWords('The person must narrow the items of a list on screen')).toEqual([
+        'narrow',
+        'item',
+        'list',
+        'screen',
+      ]);
+      expect(needWords('Narrowing the statuses, choosing steps')).toEqual([
+        'narrow',
+        'status',
+        'choos',
+        'step',
+      ]);
+      expect(needWords('choose a `mds-tab` per company')).toEqual(['choos', 'company']);
+    });
+  });
+
+  describe('reciprocityFailures', () => {
+    const tags = { tags: needModel.tags, patterns };
+    const files = (button: string[], modal: string[]) =>
+      new Map([
+        ['mds-button', parseWhenToUse(whenToUse(button, ['The person must start an action.']))],
+        [
+          'mds-modal',
+          parseWhenToUse(
+            whenToUse(modal, ['The person must confirm an action that cannot be undone.']),
+          ),
+        ],
+      ]);
+
+    it('passes a Not for whose need the component it names takes among its needs', () => {
+      expect(
+        reciprocityFailures(
+          files(['Confirming an action that cannot be undone: `mds-modal`.'], ['Starting: `gap`.']),
+          tags,
+        ),
+      ).toEqual([]);
+    });
+
+    it('names a Not for the component it names does not take, with the words compared', () => {
+      const failures = reciprocityFailures(
+        files(['Showing a long form: `mds-modal`, or `mds-input` (no file 4).'], ['A: `gap`.']),
+        tags,
+      );
+      expect(failures).toHaveLength(1);
+      expect(reciprocityFinding(failures[0])).toEqual({
+        line: 7,
+        kind: 'not-reciprocal',
+        what: 'mds-modal takes no such need among its Use it for lines (2 words in common with one of them): the need [show, long, form]; its lines line 3 []',
+      });
+    });
+
+    it('wants two words in common: one is chance', () => {
+      expect(
+        reciprocityFailures(files(['An action of the page: `mds-modal`.'], ['A: `gap`.']), tags),
+      ).toHaveLength(1);
+    });
+
+    it('leaves out a line that names the component itself', () => {
+      expect(
+        reciprocityFailures(files(['Something else: `mds-button`.'], ['A: `gap`.']), tags),
+      ).toEqual([]);
+    });
   });
 });
