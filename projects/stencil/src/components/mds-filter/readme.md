@@ -326,7 +326,7 @@ mds-filter {
 
 #### Not for
 
-- The person switches between views that replace the content, not narrow the same list (a mode, a representation, another panel): `mds-tab`.
+- The person switches between views that replace the content (a mode, a representation, another panel): `mds-tab`.
 - The property has many values, or the person filters by several properties at once: `list-with-filters`, the fields of its search form (`mds-input-select`), until the panel of the filters (#1602).
 - The list is short enough to read whole: no filter, `item-list`.
 - Choosing items from a list for something else (the members to add to a group): `choose-items`.

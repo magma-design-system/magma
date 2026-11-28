@@ -374,7 +374,7 @@ A chip shows a piece of metadata of a record, and its interactions act on that m
 
 #### Use it for
 
-- The person must see a short piece of metadata of a record (a tag, a category, the value of a property, never its status) beside the record: in a list, a table, the page of the record.
+- The person must see a short piece of metadata of a record (a tag, a category, the value of a property) beside the record: in a list, a table, the page of the record.
 - The person must take off a label that they or someone gave the record (a tag of an entity, an active filter).
 - The person must open the content of what the chip names (the office, the person a record refers to).
 - The person must choose values from a set shown whole, several at a time, with a limit if there is one: the tags or the categories a record will carry (the tags of a cafe, the skills of a profile), or the values of a property in the panel of the filters.
