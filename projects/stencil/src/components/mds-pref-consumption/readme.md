@@ -198,6 +198,11 @@ graph TD;
   mds-pref-consumption --> mds-text
   mds-pref-consumption --> mds-tab
   mds-pref-consumption --> mds-tab-item
+  mds-tab --> mds-input-select
+  mds-input-select --> mds-icon
+  mds-input-select --> mds-input-tip
+  mds-input-select --> mds-input-tip-item
+  mds-input-tip-item --> mds-text
   mds-tab-item --> mds-button
   mds-button --> mds-icon
   mds-button --> mds-spinner
