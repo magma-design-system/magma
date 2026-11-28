@@ -13,6 +13,7 @@ import {
 } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
+import { AjvJsonSchemaValidator } from '@modelcontextprotocol/sdk/validation/ajv';
 import { describe, expect, test } from 'vitest';
 
 import {
@@ -128,6 +129,108 @@ describe('the component tools', () => {
     expect(components[0].summary).toMatch(/\.$/);
   });
 
+  /** find_component on a magma whose documentation.json holds these components alone. */
+  const findIn = (components: Array<{ tag: string; description: string; whenToUse?: string }>) => {
+    const magma = mkdtempSync(path.join(tmpdir(), 'magma-need-'));
+    cpSync(fakeMagma, magma, { recursive: true });
+    const documentation = path.join(magma, 'data/documentation.json');
+    writeFileSync(
+      documentation,
+      JSON.stringify({
+        components: components.map(({ tag, description, whenToUse }) => ({
+          tag,
+          docs: '',
+          usage: {
+            '1. Description': description,
+            ...(whenToUse ? { '4. When to use': whenToUse } : {}),
+          },
+        })),
+      }),
+    );
+    const tool = toolsOf({ ...context, settings: { ...context.settings, documentation } }).find(
+      (one) => one.name === 'find_component',
+    )!;
+    return async (query: string) => ((await tool.run({ query })) as Result).components;
+  };
+
+  test('find_component weighs a Use it for line between the summary and the text (#1580)', async () => {
+    const find = findIn([
+      { tag: 'mds-alpha', description: 'Uploads files.' },
+      {
+        tag: 'mds-beta',
+        description: 'A box.',
+        whenToUse: [
+          '#### Use it for',
+          '',
+          '- The person must upload a file.',
+          '',
+          '#### Not for',
+          '',
+          '- Anything else: `gap`',
+        ].join('\n'),
+      },
+      { tag: 'mds-gamma', description: 'A box. It can upload too.' },
+    ]);
+    // the summary 3 and the text 1; the Use it for 2 and the text 1; the text alone
+    expect((await find('upload')).map(({ tag, score }: Result) => ({ tag, score }))).toEqual([
+      { tag: 'mds-alpha', score: 4 },
+      { tag: 'mds-beta', score: 3 },
+      { tag: 'mds-gamma', score: 1 },
+    ]);
+    // the words every need is written with weigh no Use it for: only the text holds them
+    expect(
+      (await find('the person must')).map(({ tag, score }: Result) => ({ tag, score })),
+    ).toEqual([{ tag: 'mds-beta', score: 2 }]);
+  });
+
+  test('find_component gives the Not for lines, and the component a matching one names (#1580)', async () => {
+    const find = findIn([
+      {
+        tag: 'mds-wizard',
+        description: 'A wizard.',
+        whenToUse: [
+          '#### Use it for',
+          '',
+          '- The person must complete a task once, in steps that come in a fixed order.',
+          '',
+          '#### Not for',
+          '',
+          '- The person moves between the **stages** of a tool they work in over time: `mds-switcher`, with `href` on every item.',
+          '- The person tracks the status of each step over several sessions: `gap`, a task list.',
+          '- The person confirms an action that cannot be undone: `confirm-action`.',
+        ].join('\n'),
+      },
+      { tag: 'mds-switcher', description: 'A strip of choices.' },
+    ]);
+    const components = await find('the stages of a tool used over time');
+    // the line holds 4 of the 5 words: the wizard has them in its text (1 each) and the line
+    // once more (1 each); the switcher takes the line as a Use it for line of its own (3 each)
+    expect(components.map(({ tag, score }: Result) => ({ tag, score }))).toEqual([
+      { tag: 'mds-switcher', score: 12 },
+      { tag: 'mds-wizard', score: 8 },
+    ]);
+    const need = 'The person moves between the stages of a tool they work in over time';
+    expect(components[0].via).toEqual([{ tag: 'mds-wizard', need }]);
+    expect(components[0]).not.toHaveProperty('notFor');
+    // each line plain, with its answers: a component, the gap, a pattern; `href` is none
+    expect(components[1].notFor).toEqual([
+      { need, answers: [{ kind: 'component', id: 'mds-switcher' }] },
+      {
+        need: 'The person tracks the status of each step over several sessions',
+        answers: [{ kind: 'gap', id: 'gap' }],
+      },
+      {
+        need: 'The person confirms an action that cannot be undone',
+        answers: [{ kind: 'pattern', id: 'confirm-action' }],
+      },
+    ]);
+    expect(components[1]).not.toHaveProperty('via');
+    // one word of a longer query in common is chance: the line brings up nothing
+    expect((await find('a tool to pick colours')).map(({ tag }: Result) => tag)).toEqual([
+      'mds-wizard',
+    ]);
+  });
+
   test('get_component gives the values, events and docs of a component, by tag or wrapper name', async () => {
     const button = await run('get_component', { tag: 'MdsButton' });
     expect(button.tag).toBe('mds-button');
@@ -157,7 +260,7 @@ describe('the component tools', () => {
     );
   });
 
-  test('get_component lists the shipped docs of the component: its API, examples and mistakes', async () => {
+  test('get_component lists the shipped docs of the component: its API, need, place, examples and mistakes', async () => {
     // a magma package with the shipped docs of mds-button beside its documentation.json
     const root = mkdtempSync(path.join(tmpdir(), 'magma-docs-'));
     const documentation = path.join(root, 'data/documentation.json');
@@ -165,7 +268,13 @@ describe('the component tools', () => {
     writeFileSync(documentation, readFileSync(data.documentation));
     const dir = path.join(root, 'dist/collection/components/mds-button');
     mkdirSync(dir, { recursive: true });
-    for (const name of ['AGENTS.md', 'examples.md', 'mistakes.md'])
+    for (const name of [
+      'AGENTS.md',
+      'when-to-use.md',
+      'placement.md',
+      'examples.md',
+      'mistakes.md',
+    ])
       writeFileSync(path.join(dir, name), '');
     const settings = { ...context.settings, documentation };
     const getComponent = toolsOf({ ...context, settings }).find(
@@ -174,6 +283,8 @@ describe('the component tools', () => {
     const { files } = (await getComponent.run({ tag: 'mds-button' })) as Result;
     expect(files).toEqual({
       api: path.join(dir, 'AGENTS.md'),
+      whenToUse: path.join(dir, 'when-to-use.md'),
+      placement: path.join(dir, 'placement.md'),
       examples: path.join(dir, 'examples.md'),
       mistakes: path.join(dir, 'mistakes.md'),
     });
@@ -253,6 +364,84 @@ describe('the component tools', () => {
     expect(html.example).not.toMatch(/addEventListener/);
   });
 });
+
+// The need and the place (#1580) on the build of this repository: the usage of its
+// documentation.json, the files it ships beside each component and the patterns it ships in
+// agents/. On CI the build artifact holds them; locally skipped when there is no build.
+const BUILT_DOCS = path.join(import.meta.dirname, '../../stencil/dist/documentation.json');
+describe.skipIf(!existsSync(BUILT_DOCS) && !process.env.CI)(
+  'the need and the place on the built magma',
+  () => {
+    const built = Object.fromEntries(
+      toolsOf({ ...context, settings: { documentation: BUILT_DOCS } }).map((tool) => [
+        tool.name,
+        tool,
+      ]),
+    );
+    const validator = new AjvJsonSchemaValidator();
+    /** The answer of a tool, checked against its output schema as the MCP client checks it. */
+    const call = async (name: string, args: Record<string, unknown>): Promise<Result> => {
+      const tool = built[name]!;
+      const answer = (await tool.run(args)) as Result;
+      const { valid, errorMessage } = validator.getValidator(tool.outputSchema)(answer);
+      expect(valid, errorMessage).toBe(true);
+      return answer;
+    };
+    const PILOT = ['mds-stepper-bar', 'mds-chip', 'mds-filter', 'mds-tab', 'mds-modal'];
+
+    test('find_component shows the stepper with the Not for line that sends the stages of an editor to the tabs, and the tabs', async () => {
+      const { components } = await call('find_component', {
+        query: 'navigation between the stages of an editor people work in over time',
+      });
+      const tags = components.map(({ tag }: Result) => tag);
+      const stepper = components.find(({ tag }: Result) => tag === 'mds-stepper-bar');
+      const tab = components.find(({ tag }: Result) => tag === 'mds-tab');
+      expect(stepper, tags.join(', ')).toBeDefined();
+      expect(tab, tags.join(', ')).toBeDefined();
+      // the line of the stages, which names the tabs; the gap of the task list, on its own line
+      const line = stepper.notFor.find(({ need }: Result) => /stages.*over time/.test(need));
+      expect(line.answers).toContainEqual({ kind: 'component', id: 'mds-tab' });
+      expect(stepper.notFor.flatMap(({ answers }: Result) => answers)).toContainEqual({
+        kind: 'gap',
+        id: 'gap',
+      });
+      // the tabs come up through that line, above the stepper
+      expect(tab.via).toContainEqual({ tag: 'mds-stepper-bar', need: line.need });
+      expect(tags.indexOf('mds-tab')).toBeLessThan(tags.indexOf('mds-stepper-bar'));
+    });
+
+    test('get_component returns the need and the place of the five components of the pilot, and of no other', async () => {
+      for (const tag of PILOT) {
+        const component = await call('get_component', { tag });
+        expect(Object.keys(component.files), tag).toEqual(
+          expect.arrayContaining(['whenToUse', 'placement']),
+        );
+        for (const file of Object.values(component.files) as string[])
+          expect(existsSync(file), file).toBe(true);
+        expect(component.whenToUse.useFor.length, tag).toBeGreaterThan(0);
+        expect(component.whenToUse.notFor.length, tag).toBeGreaterThan(0);
+        for (const line of component.whenToUse.notFor)
+          expect(line.answers.length, `${tag}: ${line.text}`).toBeGreaterThan(0);
+        expect(component.placement.sections.length, tag).toBeGreaterThan(0);
+        expect(component.placement.sections[0].lines.length, tag).toBeGreaterThan(0);
+      }
+      // a Not for that names a pattern, and the places the cases of confirm-action give the modal
+      const modal = await call('get_component', { tag: 'mds-modal' });
+      expect(modal.whenToUse.notFor.flatMap(({ answers }: Result) => answers)).toContainEqual({
+        kind: 'pattern',
+        id: 'confirm-action',
+      });
+      expect(modal.placement.places).toContainEqual(
+        expect.objectContaining({ pattern: 'confirm-action', id: 'ask-first' }),
+      );
+      const button = await call('get_component', { tag: 'mds-button' });
+      expect(button).not.toHaveProperty('whenToUse');
+      expect(button).not.toHaveProperty('placement');
+      expect(button.files).not.toHaveProperty('whenToUse');
+      expect(button.files).not.toHaveProperty('placement');
+    });
+  },
+);
 
 describe('the token tools', () => {
   test('list_tokens finds a role by what it is for, with its class and value', async () => {
