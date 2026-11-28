@@ -203,11 +203,16 @@ const cell = (text: string) =>
   The table need -> component of each category, from the `4. When to use.md` of the components:
   - every `Use it for` line, the need -> the component of the file;
   - every `Not for` line, the need -> what follows its colon, unless each of its answers is a
-    component with a file of its own: that file holds the need among its `Use it for` lines
-    already (reciprocityFailures of projects/stencil/scripts/usage-docs-lib.ts, held by
-    check.usage-docs), so the row would repeat it.
-  A `Not for` row goes to the category of the first component it names, or, when it names only
-  patterns or `gap`, to the one of the component of the file. In a table, the rows of each
+    component with a file of its own: that file is the place of the need, among its `Use it for`
+    lines, so the row would repeat it. What holds it is a heuristic, not a proof:
+    check.usage-docs asks the need to share two significant words with one of those lines
+    (reciprocityFailures and RECIPROCITY_SHARED_WORDS of
+    projects/stencil/scripts/usage-docs-lib.ts). It catches a file that does not cover the need
+    at all; a need the other file words another way reaches the table in that file's words.
+  A line that names a component and a pattern or `gap` too is a row: the pattern or the gap is
+  an answer no `Use it for` line holds. A `Not for` row goes to the category of the first
+  component it names, or, when it names only patterns or `gap`, to the one of the component of
+  the file. In a table, the rows of each
   component come in the order of the tags, its own lines first, then the rows of each pattern,
   then those of `gap`; a row the same as another is written once. A file of a component with no
   category, a category that is not one of `categories`, or a `Not for` line with no answer stops
