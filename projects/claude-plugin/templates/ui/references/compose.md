@@ -14,8 +14,11 @@ When the interface tells the person something or makes them wait or decide (a me
 
 ## 2. The components
 
-<!-- The choice of the component: the table of needs and components, generated from the "Use it for" and "Not for" lines of each component, lands here (#1579, part 2). -->
-`find_component` with the need in words; then, for the one you pick:
+Pick the component by the need, before you search: read the table of each category your need belongs to. A row gives what answers a need: a component, a pattern (`get_pattern` with its id) or `gap`, when Magma has nothing for it yet (path 2). Each category says which components its table holds so far:
+
+{{componentCategories}}
+
+No row takes your need, or the component it needs is not in a table yet: `find_component` with the need in words. Then, for the one you pick:
 
 - `get_component`: its API (props and their values, events, slots, parts) and the rules of the design language that govern it (`rules`): what it draws by itself, such as the inset of `mds-banner`, you do not add again;
 - `get_usage`: how the project's framework writes it (the import, the element or wrapper, each prop and event).

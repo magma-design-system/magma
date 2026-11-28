@@ -12,7 +12,7 @@ is the marketplace `magma`, whose plugin `magma` is this folder.
 | `/magma:review` | the person, or Claude after UI work | checks the changed files: the lint, `check_markup`, the rules of the guides |
 | `/magma:migrate` | the person | Magma 1 to 2 with the codemod: dry run, report, write, lint |
 | `/magma:pattern-layer` | the person, or Claude when a product wants a pattern narrowed | writes the layer of a Magma pattern for the product (`magma/patterns/<id>.md`: its open choices, its situations) and checks it with `get_pattern` until it is applied |
-| `/magma:ui` | Claude, on UI work in a Magma project | writes UI with the tools of the server: a path for each job (build with what Magma has, report what it lacks, let the person decide), the rules every path follows, the checks and the report at the end |
+| `/magma:ui` | Claude, on UI work in a Magma project | writes UI with the tools of the server: a path for each job (build with what Magma has, report what it lacks, let the person decide), the table need -> component of each category, the rules every path follows, the checks and the report at the end |
 
 The skills are procedures, not data: the API, the tokens and the rules come from the MCP
 server and the guides of the version installed in the project. So the plugin carries no
@@ -25,11 +25,22 @@ The generator fills each template with what it lists, read from where it is deci
 gets the plugin from the marketplace of this repository, loads the skills when a job comes up and
 starts the server of the magma version installed in the project.
 
+The generator reads the core of the lint through `@maggioli-design-system/magma/lint`, as the
+server does. Nx would read that import as a dependency on `stencil`, whose build would then run
+before every target of the plugin (`test` depends on `build`, `build` on the builds of its
+dependencies): `project.json` drops it (`!stencil`) and names `lint` instead. For the same
+reason the categories of the components and their `@category` are read as text, from
+`docs/COMPONENTS.md` and the sources (`scripts/skill-files.ts`), not imported from the scripts of
+stencil.
+
 ```mermaid
 flowchart LR
   MCP["mcp<br/>src/server.ts: toolsOf"]
   AG["docs/agents<br/>SPEC.md, lint.md, mistakes.md"]
   CM["codemod<br/>package.json"]
+  LINT["lint<br/>src/core: parseWhenToUse, answersOf"]
+  WCS["stencil<br/>src/components: usage/4. When to use.md, @category"]
+  CAT["docs/COMPONENTS.md<br/>Categories"]
   MKT[".claude-plugin/marketplace.json<br/>at the repository root"]
   subgraph cp["claude-plugin<br/>served from main, not on npm"]
     GEN["scripts/skills.ts<br/>fills templates/, checks"]
@@ -37,14 +48,14 @@ flowchart LR
     MAN[".claude-plugin/plugin.json<br/>.mcp.json: bin/magma-mcp.mjs"]
     GEN --> SK
   end
-  MCP & AG & CM --> GEN
+  MCP & AG & CM & LINT & WCS & CAT --> GEN
   MKT --> MAN
   SERVER["stencil<br/>package magma, installed: magma-mcp"] <-.->|"tool calls, stdio"| CC(["Claude Code in the consumer project"])
   MAN -.->|"magma@magma, starts the server"| CC
   SK -.->|"loaded on demand"| CC
   class MCP,AG,MKT,GEN,SK,MAN,CC ai
-  class SERVER components
-  class CM tooling
+  class SERVER,WCS,CAT components
+  class CM,LINT tooling
   class cp area
   classDef ai fill:#efe5ff,stroke:#8250df,color:#3e1f79
   classDef assets fill:#fff1d6,stroke:#bf8700,color:#5c3d00
@@ -132,10 +143,10 @@ no dependency: Claude Code runs the plugin from its copy of this repository.
 | `bin/magma-mcp.mjs` | the launcher: the server of the magma installed in the project, or a server with no tools |
 | `test/` | the tests of the launcher, run as a process on stdio, and of the parts of the generator that read only files (`nx run claude-plugin:test`) |
 | `templates/<name>.md` | the source of each skill, its `SKILL.md` |
-| `templates/<name>/` | the other files of a skill, such as `references/` (optional) |
+| `templates/<name>/` | the other files of a skill, such as `references/` (optional); a file whose path holds `[category]` is written once per category of the components |
 | `skills/<name>/` | the skills, generated from the templates: do not edit them |
 | `scripts/skills.ts` | the generator and its check |
-| `scripts/skill-files.ts` | which template writes which file of a skill, and the rules every path of a skill follows, read from `docs/agents/mistakes.md` |
+| `scripts/skill-files.ts` | which template writes which file of a skill, the rules every path of a skill follows, read from `docs/agents/mistakes.md`, and the table need -> component of each category, read from the usage files of the components |
 
 ## Changing a skill
 
@@ -144,14 +155,20 @@ no dependency: Claude Code runs the plugin from its copy of this repository.
    (`projects/mcp/src`), the rules of the lint (`docs/agents/lint.md`), the rules every path
    follows (`{{commonRules}}`: the rule in bold that opens each item of
    `docs/agents/mistakes.md`, with the rules of the lint the item names), the codemod
-   (`projects/codemod/package.json`). `$ARGUMENTS` is what the person wrote after the command.
+   (`projects/codemod/package.json`), the table need -> component of `ui`
+   (`{{componentCategories}}` and the files of `templates/ui/references/components/[category].md`:
+   every `Use it for` line of the `usage/4. When to use.md` of the components, and every `Not for`
+   line whose answer is not a component with a file of its own, by the `@category` of the
+   component and the table "Categories" of `docs/COMPONENTS.md`). `$ARGUMENTS` is what the person
+   wrote after the command.
 2. `nx run claude-plugin:build` writes the skills; commit them with the template.
 3. `nx run claude-plugin:check` fails when a file of a skill is out of date, when a skill has a
    file no template writes, or when a skill breaks the Agent Skills format (portable
    frontmatter keys only, `name` equal to its folder, a description of at most 1024
    characters, ASCII in every file); the `claude-plugin-ci` workflow runs it when the plugin,
-   the server, the guides, the codemod or the root toolchain (`package.json`,
-   `package-lock.json`, `.nvmrc`) change.
+   the server, the lint, the guides, the codemod, the usage files or the sources of a component,
+   `docs/COMPONENTS.md` or the root toolchain (`package.json`, `package-lock.json`, `.nvmrc`)
+   change. A pull request that writes a `4. When to use.md` rebuilds the skills too.
 4. With Claude Code installed, `claude plugin validate projects/claude-plugin` and
    `claude plugin validate .` check the manifests as Claude Code reads them.
 
@@ -159,7 +176,8 @@ A skill that does more than one job keeps its `SKILL.md` short: what it is, the 
 job, the rules every path follows and what to do when done; each path is a file of
 `templates/<name>/references/`, which the agent reads only when it takes that path (#1581,
 after the skill `ui-sdk` of [vercel-labs/ui](https://github.com/vercel-labs/ui)). `ui` is
-built this way.
+built this way: its table need -> component is a file per category (#1615), since one table of
+every component would weigh about 28k tokens, read on every interface job.
 
 A new skill is a new template: the generator picks it up. Keep the descriptions precise,
 since Claude decides from them when to load a skill on its own, and within 300 characters: in a
