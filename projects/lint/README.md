@@ -32,7 +32,7 @@ flowchart LR
   DT["design-tokens<br/>dist/dtcg"]
   ST["styles<br/>consumption.json, dist/dtcg"]
   subgraph lint["lint<br/>compiled into magma as dist/lint by build-lint.ts"]
-    CORE["src/core<br/>data, element, checks, colors, patterns"]
+    CORE["src/core<br/>data, element, checks, colors, patterns, usage"]
     ESL["src/eslint<br/>rules, one adapter per parser"]
     STY["src/stylelint<br/>rules, presets"]
     CORE --> ESL
@@ -74,6 +74,7 @@ Colours: purple ai, amber assets, teal visual, blue components, grey tooling, wh
 | `src/core/colors.ts` | the colour literals of a CSS value |
 | `src/core/agents.ts` | the markers of the Magma block the install guides write into a consumer's agent file, which `check_setup` of the MCP server finds (#1524) |
 | `src/core/patterns.ts` | the patterns (#1174) and the domains of the design language (#1196): reading a pattern or a product layer, the checks of its format, cases, carriers, links and layer, the case for a situation, the sections written from the frontmatter ([`docs/PATTERNS.md`](../../docs/PATTERNS.md)) |
+| `src/core/usage.ts` | the need and the place of a component (#1579): its usage files `4. When to use.md` and `5. Placement context.md` read as data, the answers of a `Not for` line, the rules a line cites, the places the patterns give the component; read by the stencil build, which ships and checks the files, and by the MCP server |
 | `src/eslint/adapters.ts` | one adapter per parser: HTML (`@html-eslint/parser`), JSX, Angular templates (`@angular-eslint/template-parser`) |
 | `src/eslint/index.ts` | the ESLint rules and presets |
 | `src/stylelint/` | the Stylelint rules and presets |
@@ -205,6 +206,21 @@ picked by hand. The tools of the MCP server, which answer from this core, have t
   values show (#1396): every component outside `data-stage` named by the `use` of one of them,
   each required one shown; a region that is not required shows when there is something to put
   in it, and its `use` lists alternatives, so neither all of them nor their order is asked.
+- **The need and the place** (`src/core/usage.ts`, epic #1579): the format is
+  [`projects/stencil/SPEC.md`](../stencil/SPEC.md), "Per-component usage docs", decided on the
+  pilot #1580. A `Not for` line splits at its first `: `, as SPEC.md writes it: the need before,
+  the candidates after. An answer is inline code after the colon that is a component of the
+  release (`documentation.json`), a pattern of `docs/agents/patterns/` by its current id, or
+  `gap`; any other code (`href`, `type="radio"`) is no answer, and an old id of a renamed pattern
+  is none either, since the id is the contract the files cite. A citation is `pattern/id` in
+  inline code, the short form `parseRuleRef` reads, never an icon slug (`mdi/...`); it names a
+  rule of the pattern's own (never one it cites, which its own pattern names), a case, or a
+  region of a building block. The places of a component are the cases whose `use` writes its tag,
+  and the regions whose `use` does, by pattern id then in the order of the file; the domains of
+  the design language are left out, their relations being rules that a file cites and
+  `rulesOfComponent` gives. The parser reports the shape and nothing it cannot see; what needs
+  the data of the release (an answer that does not exist, reciprocity) is the check of the stencil
+  build, `scripts/usage-docs-lib.ts`.
 - **What a rule says about itself** (the documentation site reads it from the installed
   package, magma-design-system/docs#1): the same fields on both plugins, a description and the
   URL of its section of `agents/lint.md` (an ESLint rule in `meta.docs`, a Stylelint rule in
@@ -222,7 +238,8 @@ nx run lint:test
 The tests run on fixtures cut from the real data (`test/fixtures`: a few components of
 `documentation.json`, a few palette tokens, the colour utilities), so they need no build of
 the other projects: every template rule on HTML, JSX and Angular templates through ESLint's
-`RuleTester`, the CSS rules through Stylelint, the patterns core on the patterns Magma ships.
+`RuleTester`, the CSS rules through Stylelint, the patterns core on the patterns Magma ships,
+the usage core on the usage files 4 and 5 the components have (`test/usage.test.ts`).
 The tests of the MCP server read the same data from here, so a change to it runs both
 ([`projects/mcp/README.md`](../mcp/README.md), "Tests"). The `consumer-lint` job of the
 stencil workflow runs them, on the `lint:build` of the same run; the stencil pipeline builds
