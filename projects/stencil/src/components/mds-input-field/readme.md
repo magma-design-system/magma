@@ -17,6 +17,7 @@ The `<mds-input-field>` web component is the form-field wrapper of the Magma Des
 
 - **Compound parent**: The interactive control is supplied through the default slot; the field is not used standalone. Validation is wired to the first slotted element; with an empty slot the field only logs a console warning at load.
 - **Form association**: The field participates in the surrounding `<form>` through the control it wraps, requiring no extra wiring.
+- **Label click**: A click on the label moves the focus to the first slotted control, its native input included (`mds-input`, `mds-input-date`, a native `<input>`), as a native `<label>` does; a disabled control, by its own `disabled` or by a `<fieldset disabled>`, is left alone.
 - **Validation-driven state**: It listens for the slotted control's `mdsInputValidation` event. When the control reports errors it switches `variant` to `'error'` and shows the joined error strings in `message`; otherwise it sets `variant` to `'success'` and clears `message`.
 - **Message rendering**: `message` is split on `;` and each segment is rendered as a separate caption line, so multiple validation messages stack vertically.
 

@@ -60,6 +60,30 @@ export class MdsInputField {
     this.appliedName = this.label;
   };
 
+  // the label is not a `<label for>` (see above), so the click a native label turns into the focus
+  // of its control is written here: the first slotted control takes it, through the method that
+  // reaches its native input when it has one (in its shadow root, out of reach of `focus()` on a
+  // host that does not delegate it: `setFocus()` of `mds-input`, `focusInput()` of
+  // `mds-input-date`), unless it is disabled, which a native label leaves alone as well. `:disabled`
+  // matches the `disabled` of a native control and of a form-associated one (both reflect it), and
+  // the `<fieldset disabled>` around either. The label holds only text: no interactive element of
+  // its own to leave the click to
+  private readonly focusSlottedControl = (): void => {
+    const control = this.slotInput?.assignedElements()[0] as
+      | (HTMLElement & { focusInput?: () => Promise<void>; setFocus?: () => Promise<void> })
+      | undefined;
+    if (control == null || control.matches(':disabled')) return;
+    if (typeof control.setFocus === 'function') {
+      void control.setFocus();
+      return;
+    }
+    if (typeof control.focusInput === 'function') {
+      void control.focusInput();
+      return;
+    }
+    control.focus();
+  };
+
   componentDidLoad(): void {
     this.nameSlottedControls();
     const [mdsInput] = this.slotInput.assignedElements() as HTMLMdsInputElement[];
@@ -115,12 +139,12 @@ export class MdsInputField {
         {icon !== undefined && icon !== '' ? (
           <div class="label-row">
             <mds-icon aria-hidden="true" class="label-icon" name={icon} />
-            <mds-text class="label" typography="label">
+            <mds-text class="label" typography="label" onClick={this.focusSlottedControl}>
               {this.label}
             </mds-text>
           </div>
         ) : (
-          <mds-text class="label" typography="label">
+          <mds-text class="label" typography="label" onClick={this.focusSlottedControl}>
             {this.label}
           </mds-text>
         )}

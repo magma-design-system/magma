@@ -173,6 +173,67 @@ describe('mds-input-field', () => {
     });
   });
 
+  // #1503: a native label moves the focus to its control when clicked
+  describe('click on the label', () => {
+    it('focuses the slotted mds-input', async () => {
+      const { mdsInput, label } = await setup(
+        '<mds-input-field label="Nome"><mds-input></mds-input></mds-input-field>',
+      );
+
+      await userEvent.click(label);
+
+      expect(document.activeElement).toBe(mdsInput);
+      expect(mdsInput.shadowRoot!.activeElement).toBe(mdsInput.shadowRoot!.querySelector('input'));
+    });
+
+    // the other control the slot names: its host does not delegate the focus, and its method to
+    // reach the native input is focusInput()
+    it('focuses the slotted mds-input-date', async () => {
+      const { element, label } = await setup(
+        '<mds-input-field label="Data"><mds-input-date></mds-input-date></mds-input-field>',
+      );
+      const date = element.querySelector('mds-input-date')!;
+
+      await userEvent.click(label);
+
+      expect(document.activeElement).toBe(date);
+      expect(date.shadowRoot!.activeElement).toBe(date.shadowRoot!.querySelector('input'));
+    });
+
+    it('focuses a slotted control that has no setFocus()', async () => {
+      const { element, label } = await setup(
+        '<mds-input-field label="Nome"><input name="nome" /></mds-input-field>',
+      );
+
+      await userEvent.click(label);
+
+      expect(document.activeElement).toBe(element.querySelector('input'));
+    });
+
+    it('leaves a disabled control alone, as a native label does', async () => {
+      const { mdsInput, label } = await setup(
+        '<mds-input-field label="Nome"><mds-input disabled></mds-input></mds-input-field>',
+      );
+
+      await userEvent.click(label);
+
+      expect(document.activeElement).not.toBe(mdsInput);
+    });
+
+    it('leaves a control disabled by its fieldset alone', async () => {
+      // the root rendered is the fieldset, so the field is looked up inside it
+      const { root } = await render(
+        '<fieldset disabled><mds-input-field label="Nome"><mds-input></mds-input></mds-input-field></fieldset>',
+      );
+      const mdsInput = root.querySelector('mds-input')!;
+      const label = root.querySelector('mds-input-field')!.shadowRoot!.querySelector('.label')!;
+
+      await userEvent.click(label);
+
+      expect(document.activeElement).not.toBe(mdsInput);
+    });
+  });
+
   // #1189 rhythm/label-control
   it('stands its label 12px from its control', async () => {
     const { mdsInput, label } = await setup(
