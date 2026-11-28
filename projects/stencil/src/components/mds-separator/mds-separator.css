@@ -22,3 +22,12 @@
   display: flex;
   height: 1px;
 }
+
+/* #1554: the weak tone takes the role the tokens give to decorative dividers, for the rows
+ * of a list inside a card, whose own outline is `border-default`. The same #612 layer
+ * promotes it one step under `pref-contrast-more` (to `border-default`), so the weak rule
+ * never drops below what that preference asks for, and the strong one stays a step above it. */
+
+:host([tone='weak']) {
+  --mds-separator-background: rgb(var(--magma-border-muted));
+}

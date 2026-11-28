@@ -96,7 +96,7 @@ The `tone` types:
 
 | Type                        | Allowed `tone` values                      | Components |
 | --------------------------- | ------------------------------------------ | ---------- |
-| `ToneMinimalVariantType`    | `strong`, `weak`                           | `mds-avatar`, `mds-avatar-stack-item`, `mds-button-dropdown`, `mds-chip`, `mds-entity`, `mds-label`, `mds-push-notification-item`, `mds-toast` |
+| `ToneMinimalVariantType`    | `strong`, `weak`                           | `mds-avatar`, `mds-avatar-stack-item`, `mds-button-dropdown`, `mds-chip`, `mds-entity`, `mds-label`, `mds-push-notification-item`, `mds-separator`, `mds-toast` |
 | `ToneMinimalBoxVariantType` | `strong`, `weak`, `box`                    | `mds-banner` |
 | `ToneSmartVariantType`      | `strong`, `weak`, `outline`                | `mds-badge` |
 | `ToneVariantType`           | `outline`, `strong`, `text`, `weak`        | `mds-radial-menu`, `mds-radial-menu-item` |
