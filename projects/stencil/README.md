@@ -113,13 +113,14 @@ flowchart LR
   BUILD -.->|"./components, ./loader, ./hydrate, ./services"| APP(["consumer app"])
   BUILD -->|"dist/magma-components, loaded by its pages"| STU["studio"]
   DOCS -->|"documentation.json"| CM["codemod"]
+  BUILD -->|"usage/4. When to use.md, @category, from src/"| CP["claude-plugin"]
   DOCS -->|"documentation.json"| STU
   DOCS -->|"magma.api.txt"| RISK["check.pr-risk"]
   DOCS -.->|"AGENTS.md, agents/"| AGENT(["the agent of a consumer project"])
   DOCS -.->|"documentation.json"| SITE(["docs site"])
   IMG -.->|"agents/patterns/previews/*.webp"| SITE
   BL -.->|"./eslint, ./stylelint, magma-mcp"| AGENT
-  class AGD,MCP,DOCS,BL,IMG,AGENT ai
+  class AGD,MCP,DOCS,BL,IMG,AGENT,CP ai
   class SI,ID assets
   class DT,ST,STU visual
   class BUILD,RE,AN components

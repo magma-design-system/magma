@@ -237,7 +237,7 @@ The `1. ` / `2. ` / `3. ` numeric prefixes exist to control the order of section
 
 ### `4. When to use.md` and `5. Placement context.md`
 
-The two files the agent reads where it makes a choice (epic #1579): the need when it picks the component (`find_component` returns the `Not for` lines beside each candidate), the place when it composes the view (`get_component`). The pilot (#1580) writes them for five components; `check.usage-docs` holds their shape where they exist, and asks for them on every component once the epic ends. One parser reads them for every reader, in the lint core (`projects/lint/src/core/usage.ts`, exported by magma as `./lint`): the build that ships them, the check, the MCP server.
+The two files the agent reads where it makes a choice (epic #1579): the need when it picks the component (`find_component` returns the `Not for` lines beside each candidate), the place when it composes the view (`get_component`). The pilot (#1580) writes them for five components; `check.usage-docs` holds their shape where they exist, and asks for them on every component once the epic ends. One parser reads them for every reader, in the lint core (`projects/lint/src/core/usage.ts`, exported by magma as `./lint`): the build that ships them, the check, the MCP server, and the generator of the Claude plugin, which writes the needs into the table need -> component of the skill `ui`, one file per category (#1615): a change to a `4. When to use.md` rebuilds the skills too (`nx run claude-plugin:build`).
 
 **`4. When to use.md`, the need.** Two headings and nothing else, each a list of one line per need:
 
