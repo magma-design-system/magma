@@ -23,8 +23,9 @@ core and runs the rules for `check_markup`, through these same exports.
 ## Architecture
 
 One core reads the data of the version installed in the project; the ESLint and Stylelint rules
-sit on it, and the MCP server reads both through the exports of magma. The stencil build
-compiles the whole project into magma, so the rules always match the components.
+sit on it, and the MCP server reads both through the exports of magma; the generator of the
+Claude plugin reads the core the same way, for the table need -> component of the skill `ui`.
+The stencil build compiles the whole project into magma, so the rules always match the components.
 
 ```mermaid
 flowchart LR
@@ -39,13 +40,15 @@ flowchart LR
     CORE --> STY
   end
   MCP["mcp<br/>the tools read the core, check_markup runs the rules"]
+  CP["claude-plugin<br/>scripts/skills.ts: the table need -> component"]
   WC & DT & ST -.-> CORE
   CORE -->|"./lint"| MCP
+  CORE -->|"./lint: parseWhenToUse, answersOf, readPatternDir"| CP
   ESL -->|"./eslint"| MCP
   STY -->|"./stylelint/*"| MCP
   ESL -.->|"magma/eslint"| PE(["ESLint of the project"])
   STY -.->|"magma/stylelint"| PS(["Stylelint of the project"])
-  class MCP ai
+  class MCP,CP ai
   class DT,ST visual
   class WC components
   class CORE,ESL,STY,PE,PS tooling

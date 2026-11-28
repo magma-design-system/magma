@@ -52,7 +52,10 @@ keep in step.
   [`docs/ARCHITECTURE.md`](ARCHITECTURE.md), 3.5.
 - **Read by**: the lint core (`projects/lint/src/core/data.ts`), the component tools of the MCP
   server (`find_component` and `get_component` read `4. When to use` and `5. Placement context`
-  too, #1580), the per-component `AGENTS.md` (`component-docs.ts`), `check.usage-docs`, the codemod
+  too, #1580), the generator of the Claude plugin (`projects/claude-plugin/scripts/skills.ts`,
+  the tables need -> component of the skill `ui`, #1615: `4. When to use` read from the sources,
+  `usage/4. When to use.md`, with the `@category` of each component and the table "Categories"
+  of `docs/COMPONENTS.md`, so that it needs no build), the per-component `AGENTS.md` (`component-docs.ts`), `check.usage-docs`, the codemod
   manifest ([`projects/codemod/README.md`](../projects/codemod/README.md), "Regenerating the
   manifest from the docs"), the studio (`projects/studio/magma-api.ts`: the `variant` and the
   `tone` of each component, for the previews of a colour), the docs site. The docs site reads
@@ -65,7 +68,10 @@ keep in step.
 - **Held by**: `component-docs.ts` fails the build on a mark it cannot read
   (`style-contract-lib.spec.ts`), on a component with no Storybook page of its own
   (`story-titles-lib.spec.ts`) and on a usage file outside `USAGE_FILES`
-  (`agent-docs-lib.spec.ts`); `check.usage-docs`; `check.api-snapshot`.
+  (`agent-docs-lib.spec.ts`); `check.usage-docs`; `check.api-snapshot`; `claude-plugin:check`,
+  when the tables of the skill `ui` are out of date with the usage files, on a
+  `4. When to use.md` with a problem of its format and on a category that is not a row of
+  "Categories" (`projects/claude-plugin/test/skill-files.test.ts`).
   `story-titles-lib.spec.ts` holds `storybook` and `studio` to the folders of `deploy-site.yml`,
   the studio to the `og:url` of its page and to its link in `docs/agents/theming.md`, and reads
   both in the built file.

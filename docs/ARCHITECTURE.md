@@ -32,6 +32,7 @@ graph TD
   ID --> WC
   LINT --> WC
   LINT --> MCP
+  LINT --> CP
   MCP --> WC
   MCP --> CP
   WC --> RE
@@ -294,7 +295,7 @@ Its tests run on fixtures cut from the real data, the ones the lint reads too an
 
 The Claude Code plugin of Magma (`projects/claude-plugin`, #1114): the skills that run a whole job (`/magma:setup`, `/magma:review`, `/magma:migrate`, `/magma:pattern-layer`, and `ui`, which Claude loads by itself for UI work) and the entry that starts the MCP server of section 2.8, through a launcher that serves no tools where Magma is not installed (#1524). It is not an npm package: `.claude-plugin/marketplace.json` at the repository root is the marketplace `magma`, whose plugin is this folder, so Claude Code reads it from `main`. A person installs it for the team (declared in the project's committed `.claude/settings.json`, which downloads it for nobody: each colleague installs it once per clone), for themselves in every project, or in one project only; the bootstrap of the packages' `AGENTS.md` proposes it and asks the scope, and writes a Magma block into the project's root `AGENTS.md` so that a colleague's agent proposes it too (#1524).
 
-The skills are procedures that defer to the installed version (the MCP server, the shipped guides), so the plugin follows `main` with no version of its own. They are generated from `templates/` with what they list taken from the code and the guides (the packages per target, the tools of the server, the rules of the lint, the codemod), and the `claude-plugin-ci` workflow fails when one is out of date or breaks the Agent Skills format. How to change one: [`projects/claude-plugin/README.md`](../projects/claude-plugin/README.md).
+The skills are procedures that defer to the installed version (the MCP server, the shipped guides), so the plugin follows `main` with no version of its own. They are generated from `templates/` with what they list taken from the code and the guides (the packages per target, the tools of the server, the rules of the lint, the codemod, and the needs of the components: the table need -> component of `ui`, one file per category, from their `4. When to use.md`, #1615), and the `claude-plugin-ci` workflow fails when one is out of date or breaks the Agent Skills format. How to change one: [`projects/claude-plugin/README.md`](../projects/claude-plugin/README.md).
 
 The skills that work on this repository are another plugin, `magma-dev` (`/magma-dev:<skill>`), kept in `.claude/skills/magma-dev/` and never shipped: Claude Code loads it for whoever works in the repository, with no install (#1546). How it loads and how to change a skill: [`.claude/skills/magma-dev/README.md`](../.claude/skills/magma-dev/README.md).
 

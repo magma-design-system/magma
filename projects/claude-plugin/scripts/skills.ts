@@ -8,7 +8,12 @@
   - the rules of the lint: the first sentence of each rule in docs/agents/lint.md;
   - the rules every path follows: the rule in bold that opens each item of
     docs/agents/mistakes.md, with the rules of the lint the item names;
-  - the codemod: the name and the command of projects/codemod/package.json.
+  - the codemod: the name and the command of projects/codemod/package.json;
+  - the table need -> component (#1615): the `4. When to use.md` of each component
+    (projects/stencil/src/components/<tag>/usage/), read with the lint core, its category from the
+    `@category` of the component and the table "Categories" of docs/COMPONENTS.md, the patterns
+    from docs/agents/patterns/. A template whose path holds `[category]` is written once per
+    category, with the values of that category.
 
     nx run claude-plugin:build    regenerate the skills (tsx scripts/skills.ts write)
     nx run claude-plugin:check    fail when a skill is out of date, or breaks the format
@@ -20,16 +25,35 @@
   (https://agentskills.io/specification): name equal to its folder, a description of at most
   1024 characters, no key Claude Code alone reads.
 */
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import {
+  answersOf,
+  parseWhenToUse,
+  readPatternDir,
+  type Pattern,
+} from '@maggioli-design-system/magma/lint';
 import { toolsOf } from '../../mcp/src/server.js';
-import { commonRules, filesUnder, templateTargets } from './skill-files.js';
+import {
+  CATEGORY_SLOT,
+  categoriesOf,
+  commonRules,
+  filesUnder,
+  needsByCategory,
+  needTable,
+  taxonomyOf,
+  templateTargets,
+  writtenList,
+  writtenSentence,
+  type NeedFile,
+} from './skill-files.js';
 
 const PLUGIN = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const REPOSITORY = path.resolve(PLUGIN, '../..');
 const TEMPLATES = path.join(PLUGIN, 'templates');
 const SKILLS = path.join(PLUGIN, 'skills');
+const COMPONENTS = 'projects/stencil/src/components';
 
 /** The frontmatter keys of the Agent Skills format: what every client that reads skills understands. */
 const PORTABLE = new Set([
@@ -69,7 +93,78 @@ const tableAfter = (markdown: string, heading: string): string[][] => {
   );
 };
 
-const values = (): Record<string, string> => {
+/**
+  The table need -> component of each category (#1615), read from the sources, without a build:
+  the components are the folders `mds-*` of projects/stencil/src/components, as the stencil
+  scripts list them (readComponentStories of story-titles-lib.ts); a `4. When to use.md` with a
+  problem of its format stops the build, as check.usage-docs would.
+*/
+const componentNeeds = () => {
+  const categories = categoriesOf(read('docs/COMPONENTS.md'), 'docs/COMPONENTS.md');
+  const tags = readdirSync(path.join(REPOSITORY, COMPONENTS), { withFileTypes: true })
+    .filter((entry) => entry.isDirectory() && entry.name.startsWith('mds-'))
+    .map(({ name }) => name)
+    .sort();
+  const taxonomy = new Map(
+    tags.map((tag) => [tag, taxonomyOf(read(`${COMPONENTS}/${tag}/${tag}.tsx`))] as const),
+  );
+  const known = {
+    tags: new Set(tags),
+    patterns: new Set(
+      readPatternDir<Pattern>(path.join(REPOSITORY, 'docs/agents/patterns')).map(
+        ({ data }) => data.id,
+      ),
+    ),
+  };
+  const files = new Map<string, NeedFile>();
+  for (const tag of tags) {
+    const file = `${COMPONENTS}/${tag}/usage/4. When to use.md`;
+    if (!existsSync(path.join(REPOSITORY, file))) continue;
+    const { useFor, notFor, problems } = parseWhenToUse(read(file));
+    if (problems.length)
+      throw new Error(
+        `${file}:${problems[0]!.line}: ${problems[0]!.message} (nx run stencil:check.usage-docs)`,
+      );
+    files.set(tag, {
+      useFor: useFor.map(({ text }) => ({ text })),
+      notFor: notFor.map((line) => ({
+        need: line.need,
+        answer: line.text.slice(line.text.indexOf(': ') + 2),
+        answers: answersOf(line, known),
+      })),
+    });
+  }
+  const tables = needsByCategory(files, taxonomy, categories);
+  return { categories, tables };
+};
+
+const values = (): {
+  shared: Record<string, string>;
+  perCategory: Array<{ id: string; values: Record<string, string> }>;
+} => {
+  const { categories, tables } = componentNeeds();
+  const shared = sharedValues();
+  shared.componentCategories = categories
+    .map(
+      ({ id, holds }) =>
+        `- [\`${id}\`](components/${id}.md): ${holds}. In the table: ${writtenList(tables.get(id)!)}.`,
+    )
+    .join('\n');
+  return {
+    shared,
+    perCategory: categories.map(({ id, holds }) => ({
+      id,
+      values: {
+        category: id,
+        categoryHolds: holds,
+        categoryTable: needTable(tables.get(id)!),
+        categoryWritten: writtenSentence(tables.get(id)!),
+      },
+    })),
+  };
+};
+
+const sharedValues = (): Record<string, string> => {
   // the package of each target, from the install SPEC
   const targets = tableAfter(read('docs/agents/SPEC.md'), '## Pick your target').map(
     ([target, pkg]) => `| ${target} | ${pkg} |`,
@@ -103,22 +198,35 @@ const values = (): Record<string, string> => {
 
 /** Every file of every skill, by its path: the template with its values, and a note on where it comes from. */
 export const renderSkills = (): Map<string, string> => {
-  const filled = values();
+  const { shared, perCategory } = values();
   const skills = new Map<string, string>();
-  for (const { template: file, target } of templateTargets(TEMPLATES)) {
+  for (const { template: file, target: written } of templateTargets(TEMPLATES)) {
     const template = readFileSync(path.join(TEMPLATES, file), 'utf8');
-    const text = template.replace(/\{\{(\w+)\}\}/g, (_, key: string) => {
-      if (!(key in filled)) throw new Error(`templates/${file}: no value for {{${key}}}`);
-      return filled[key]!;
-    });
-    const note = `<!-- Generated from projects/claude-plugin/templates/${file} by scripts/skills.ts: edit the template. -->`;
-    if (!target.endsWith('/SKILL.md')) {
-      skills.set(path.join(SKILLS, target), `${note}\n\n${text}`);
-      continue;
+    const once = written.includes(CATEGORY_SLOT)
+      ? perCategory.map(({ id, values: own }) => ({
+          target: written.replace(CATEGORY_SLOT, id),
+          filled: { ...shared, ...own },
+          from: ' and the usage/4. When to use.md of the components',
+        }))
+      : [{ target: written, filled: shared, from: '' }];
+    if (/\[[^\]]*\]/.test(written.replace(CATEGORY_SLOT, '')))
+      throw new Error(`templates/${file}: only ${CATEGORY_SLOT} is written once per item`);
+    for (const { target, filled, from } of once) {
+      const text = template.replace(/\{\{(\w+)\}\}/g, (_, key: string) => {
+        if (!(key in filled)) throw new Error(`templates/${file}: no value for {{${key}}}`);
+        return filled[key]!;
+      });
+      const note = from
+        ? `<!-- Generated from projects/claude-plugin/templates/${file}${from} by scripts/skills.ts: edit those. -->`
+        : `<!-- Generated from projects/claude-plugin/templates/${file} by scripts/skills.ts: edit the template. -->`;
+      if (!target.endsWith('/SKILL.md')) {
+        skills.set(path.join(SKILLS, target), `${note}\n\n${text}`);
+        continue;
+      }
+      const [, frontmatter, body] = /^---\n([\s\S]*?)\n---\n([\s\S]*)$/.exec(text) ?? [];
+      if (!frontmatter) throw new Error(`templates/${file}: no frontmatter`);
+      skills.set(path.join(SKILLS, target), `---\n${frontmatter}\n---\n\n${note}\n${body}`);
     }
-    const [, frontmatter, body] = /^---\n([\s\S]*?)\n---\n([\s\S]*)$/.exec(text) ?? [];
-    if (!frontmatter) throw new Error(`templates/${file}: no frontmatter`);
-    skills.set(path.join(SKILLS, target), `---\n${frontmatter}\n---\n\n${note}\n${body}`);
   }
   return skills;
 };
