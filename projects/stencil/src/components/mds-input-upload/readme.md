@@ -420,6 +420,11 @@ graph TD;
   mds-progress --> mds-radial-progress
   mds-radial-progress --> mds-icon
   mds-radial-progress --> mds-text
+  mds-tab --> mds-input-select
+  mds-input-select --> mds-icon
+  mds-input-select --> mds-input-tip
+  mds-input-select --> mds-input-tip-item
+  mds-input-tip-item --> mds-text
   mds-tab-item --> mds-button
   mds-file-preview --> mds-button
   mds-file-preview --> mds-img

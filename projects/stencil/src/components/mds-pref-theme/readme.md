@@ -261,6 +261,11 @@ graph TD;
   mds-pref-theme --> mds-tab
   mds-pref-theme --> mds-tab-item
   mds-pref-theme --> mds-dropdown
+  mds-tab --> mds-input-select
+  mds-input-select --> mds-icon
+  mds-input-select --> mds-input-tip
+  mds-input-select --> mds-input-tip-item
+  mds-input-tip-item --> mds-text
   mds-tab-item --> mds-button
   mds-button --> mds-icon
   mds-button --> mds-spinner

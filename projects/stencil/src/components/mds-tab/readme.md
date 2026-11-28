@@ -30,10 +30,12 @@ The `<mds-tab>` web component is the compound container that orchestrates a tabb
 - **`animation`** governs the transition between active items: `'slide'` (default) renders the moving slider indicator, while `'fade'` cross-fades without the slider. The slider slides only when the selection changes: on load, and when the strip is shown again after being hidden, it is already under the selected tab.
 - **`fill`** makes the tab strip stretch to occupy the full available width rather than hugging its content.
 - **`overflow`** enables the inset-shadow affordance that signals more tabs exist beyond the visible edges; **`scrollbar`** instead exposes the native horizontal scrollbar for accessibility.
+- **`narrow`** decides what the strip does when its container is narrower than 768px (`--container-3xl`, the threshold of the mobile menu of `mds-header`): `'scroll'` (default) keeps the row of tabs, which scrolls sideways; `'select'` shows the tabs as the options of an `<mds-input-select>` in its place, the selected tab as its value. Choosing an option does what a click on its tab does: the panel changes and `mdsTabChange` is emitted, or the link is followed, through the router registered with `NavigationService` when there is one. An option shows the `label` of its item (else its `title`), never its icon; a disabled item is a disabled option. With `'select'` the component takes the width of its container, the width the threshold is measured on.
 
 #### Other behavioral props
 
 - **`size`** sets the scale (`'sm'` / `'md'`) for the whole group and is forwarded to the child items; it is the only way to size the tabs consistently.
+- **`aria-label`** names the group of tabs for assistive technology: the strip, when it is a tablist, and the select of `narrow="select"`, which has no other name.
 
 
 ### 2. Examples
@@ -162,6 +164,34 @@ Enable `overflow` when the tab strip can contain more items than the viewport pe
   <mds-tab-item label="Dicembre"></mds-tab-item>
 </mds-tab>
 ```
+
+#### Select on a Narrow Container
+
+A long strip, as the sections of a settings page, shows three or four tabs on a phone and hides the others past the edge. Set `narrow="select"`: under 768px of the width of its container the strip becomes a select of its tabs, and from 768px up it is the strip again. Name the group with `aria-label`, since the select has no visible label.
+
+```html
+<mds-tab narrow="select" aria-label="Sezioni delle impostazioni">
+  <mds-tab-item label="Dati personali"></mds-tab-item>
+  <mds-tab-item label="Profilo"></mds-tab-item>
+  <mds-tab-item label="Password"></mds-tab-item>
+  <mds-tab-item label="Team" selected></mds-tab-item>
+  <mds-tab-item label="Piano"></mds-tab-item>
+  <mds-tab-item label="Fatturazione"></mds-tab-item>
+  <mds-tab-item label="Notifiche"></mds-tab-item>
+  <mds-tab-item label="Integrazioni"></mds-tab-item>
+
+  <div slot="content"><mds-text>Dati personali.</mds-text></div>
+  <div slot="content"><mds-text>Profilo.</mds-text></div>
+  <div slot="content"><mds-text>Password.</mds-text></div>
+  <div slot="content"><mds-text>Membri del team.</mds-text></div>
+  <div slot="content"><mds-text>Piano.</mds-text></div>
+  <div slot="content"><mds-text>Fatturazione.</mds-text></div>
+  <div slot="content"><mds-text>Notifiche.</mds-text></div>
+  <div slot="content"><mds-text>Integrazioni.</mds-text></div>
+</mds-tab>
+```
+
+The items keep working as tabs or links: an option chosen selects its panel and emits `mdsTabChange`, or follows its `href`, through the router registered with `NavigationService`. The threshold is the width of the container, not of the screen: a strip in a narrow column of a desktop page becomes a select too.
 
 #### Scrollbar for Accessible Overflow
 
@@ -339,6 +369,30 @@ A strip is either a `tablist` of tabs, each controlling a panel, or a navigation
 <mds-button label="Portale" href="https://portale.example.com" target="blank" tone="text"></mds-button>
 ```
 
+#### Do Not Put a Strip with `narrow="select"` in a Row Sized by Its Content
+
+With `narrow="select"` the component is the container its threshold is measured on, and a container takes no width from its content: in a flex row that sizes every child from its content it shrinks to nothing. Give it the room of the row, or a line of its own.
+
+```html
+<!-- INCORRECT: the strip has no width of its own in the row -->
+<div style="display: flex">
+  <mds-tab narrow="select" aria-label="Sezioni">
+    <mds-tab-item label="Profilo" selected></mds-tab-item>
+    <mds-tab-item label="Team"></mds-tab-item>
+  </mds-tab>
+  <mds-button label="Aggiungi utente"></mds-button>
+</div>
+
+<!-- CORRECT: the strip takes what the row leaves -->
+<div style="display: flex">
+  <mds-tab narrow="select" aria-label="Sezioni" style="flex: 1">
+    <mds-tab-item label="Profilo" selected></mds-tab-item>
+    <mds-tab-item label="Team"></mds-tab-item>
+  </mds-tab>
+  <mds-button label="Aggiungi utente"></mds-button>
+</div>
+```
+
 #### Do Not Put Tab Items Outside `<mds-tab>`
 
 `<mds-tab-item>` communicates with its parent through internal Stencil events. Used outside `<mds-tab>` it renders as an inert button with no selection, panel, or keyboard management.
@@ -507,14 +561,16 @@ mds-tab::part(tabs) {
 
 ## Properties
 
-| Property    | Attribute   | Description                                                                             | Type                                      | Default        |
-| ----------- | ----------- | --------------------------------------------------------------------------------------- | ----------------------------------------- | -------------- |
-| `animation` | `animation` | Sets the animation type of the selection transition between `mds-tab-item` elements     | `"fade" \| "slide" \| undefined`          | `'slide'`      |
-| `direction` | `direction` | Sets if the component distributes item vertically or horzontally                        | `"horizontal" \| "vertical" \| undefined` | `'horizontal'` |
-| `fill`      | `fill`      | Sets if the tab area should fill the entire width                                       | `boolean \| undefined`                    | `undefined`    |
-| `overflow`  | `overflow`  | Sets if the tab area should show an inset shadow when the tabs overflows it's container | `boolean \| undefined`                    | `undefined`    |
-| `scrollbar` | `scrollbar` | Shows the horizontal scrollbar to maximize accessibility                                | `boolean \| undefined`                    | `undefined`    |
-| `size`      | `size`      | Sets the size of the component items nested inside it                                   | `"md" \| "sm" \| undefined`               | `undefined`    |
+| Property         | Attribute    | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | Type                                      | Default        |
+| ---------------- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- | -------------- |
+| `accessibleName` | `aria-label` | The name assistive technology announces for the group of tabs: on the strip, when it is a tablist, and on the select that `narrow="select"` shows in its place, which has no other name. The page title or the heading above the tabs does not name them: write it here.                                                                                                                                                                                                                                                                  | `string \| undefined`                     | `undefined`    |
+| `animation`      | `animation`  | Sets the animation type of the selection transition between `mds-tab-item` elements                                                                                                                                                                                                                                                                                                                                                                                                                                                       | `"fade" \| "slide" \| undefined`          | `'slide'`      |
+| `direction`      | `direction`  | Sets if the component distributes item vertically or horzontally                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | `"horizontal" \| "vertical" \| undefined` | `'horizontal'` |
+| `fill`           | `fill`       | Sets if the tab area should fill the entire width                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | `boolean \| undefined`                    | `undefined`    |
+| `narrow`         | `narrow`     | What the strip does when its container is narrower than 768px (`--container-3xl`, the threshold under which `mds-header` shows its mobile menu): `scroll` keeps the row of tabs, which scrolls sideways; `select` shows the tabs as the options of a select in its place, the selected tab as its value, and choosing an option does what a click on its tab does. Use `select` for a long row, as the sections of a settings page. With `select` the component takes the width of its container, the width the threshold is measured on. | `"scroll" \| "select" \| undefined`       | `'scroll'`     |
+| `overflow`       | `overflow`   | Sets if the tab area should show an inset shadow when the tabs overflows it's container                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `boolean \| undefined`                    | `undefined`    |
+| `scrollbar`      | `scrollbar`  | Shows the horizontal scrollbar to maximize accessibility                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | `boolean \| undefined`                    | `undefined`    |
+| `size`           | `size`       | Sets the size of the component items nested inside it                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | `"md" \| "sm" \| undefined`               | `undefined`    |
 
 
 ## Events
@@ -534,11 +590,12 @@ mds-tab::part(tabs) {
 
 ## Shadow Parts
 
-| Part         | Description                                                                               |
-| ------------ | ----------------------------------------------------------------------------------------- |
-| `"contents"` | Selects the container of the tabbed contents elements.                                    |
-| `"slider"`   | Selects the slider element which is visible when attribute `animation` is set to `slide`. |
-| `"tabs"`     | Selects the container of `mds-tab-item` list elements.                                    |
+| Part         | Description                                                                                               |
+| ------------ | --------------------------------------------------------------------------------------------------------- |
+| `"contents"` | Selects the container of the tabbed contents elements.                                                    |
+| `"select"`   | Selects the `mds-input-select` shown in place of the strip on a narrow container, with `narrow="select"`. |
+| `"slider"`   | Selects the slider element which is visible when attribute `animation` is set to `slide`.                 |
+| `"tabs"`     | Selects the container of `mds-tab-item` list elements.                                                    |
 
 
 ## CSS Custom Properties
@@ -590,9 +647,18 @@ mds-tab::part(tabs) {
  - [mds-pref-mode](../mds-pref-mode)
  - [mds-pref-theme](../mds-pref-theme)
 
+### Depends on
+
+- [mds-input-select](../mds-input-select)
+
 ### Graph
 ```mermaid
 graph TD;
+  mds-tab --> mds-input-select
+  mds-input-select --> mds-icon
+  mds-input-select --> mds-input-tip
+  mds-input-select --> mds-input-tip-item
+  mds-input-tip-item --> mds-text
   mds-input-date-range --> mds-tab
   mds-input-upload --> mds-tab
   mds-pref-animation --> mds-tab

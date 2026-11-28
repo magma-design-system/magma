@@ -29,10 +29,14 @@ Two cases where the copy you see is not the one you edit:
 |---|---|
 | `component-new` | Build a new component from the proposal a pattern made |
 | `context-review` | Bring the agent context up to date before a pull request |
-| `epic` | Where an epic stands, its preview, the merges a person approves |
 | `magma-figma-component` | Align a component of the Figma library with the code |
 | `paradigm-check` | Judge the issues and pull requests of contributors, and reply; launched by a maintainer only |
 | `pattern-change`, `pattern-list`, `pattern-new`, `pattern-preview` | Define, change, list and preview the patterns |
+
+The skills of this plugin are for the design system itself. The state of the work, its preview
+and the merges a person approves are not among them: until the team picks the skills for the
+work of every repository, they go through an external skill, `/v2:work` of the plugin v2
+(`docs/WORKFLOW.md` rule 2, #1584).
 
 ## Adding or changing a skill
 

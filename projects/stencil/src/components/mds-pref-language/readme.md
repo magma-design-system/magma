@@ -254,10 +254,10 @@ mds-pref-language mds-tab-item {
 
 ## Properties
 
-| Property | Attribute | Description                                                                                                                                                                                                                                                                                               | Type                        | Default     |
-| -------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- | ----------- |
-| `set`    | `set`     | Specifies the language code based on HTML `lang` attribute  A string representing the language version as defined in {@link https://datatracker.ietf.org/doc/html/rfc5646 RFC 5646: Tags for Identifying Languages (also known as BCP 47)}.  Supported languages are Italiano, English, Español, ελληνικά | `string`                    | `'auto'`    |
-| `size`   | `size`    | Sets the size of the component items nested inside it                                                                                                                                                                                                                                                     | `"md" \| "sm" \| undefined` | `undefined` |
+| Property | Attribute | Description                                                                                                                                                                                                                                                                                          | Type                        | Default     |
+| -------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- | ----------- |
+| `set`    | `set`     | Specifies the language code based on HTML `lang` attribute  A string representing the language version as defined in [RFC 5646: Tags for Identifying Languages (also known as BCP 47)](https://datatracker.ietf.org/doc/html/rfc5646).  Supported languages are Italiano, English, Español, ελληνικά | `string`                    | `'auto'`    |
+| `size`   | `size`    | Sets the size of the component items nested inside it                                                                                                                                                                                                                                                | `"md" \| "sm" \| undefined` | `undefined` |
 
 
 ## Events
@@ -291,6 +291,11 @@ graph TD;
   mds-pref-language --> mds-tab
   mds-pref-language --> mds-tab-item
   mds-pref-language --> mds-dropdown
+  mds-tab --> mds-input-select
+  mds-input-select --> mds-icon
+  mds-input-select --> mds-input-tip
+  mds-input-select --> mds-input-tip-item
+  mds-input-tip-item --> mds-text
   mds-tab-item --> mds-button
   mds-button --> mds-icon
   mds-button --> mds-spinner
