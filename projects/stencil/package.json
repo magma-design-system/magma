@@ -198,7 +198,7 @@
     "@storybook/react-vite": "10.6.9",
     "@tailwindcss/postcss": "4.3.5",
     "@types/mustache": "4.2.6",
-    "autoprefixer": "10.7.0",
+    "autoprefixer": "10.7.1",
     "axe-core": "4.14.1",
     "cssnano": "7.1.9",
     "esbuild": "0.28.2",
